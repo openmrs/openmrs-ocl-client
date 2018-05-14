@@ -6,7 +6,11 @@ import Navbar from './components/Navbar';
 import store from './Reducers/Index';
 import './App.css';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import Dashboard from './Components/Dashboard';
+import Navigation from './Components/Navigation';
+import SideNavigation from './Components/SideNavigation';
+import './App.css';
+
 
 class App extends Component {
   render() {
@@ -23,6 +27,8 @@ class App extends Component {
           </div>
         </BrowserRouter>
       </Provider>
+
+
     );
   }
 }
