@@ -21,6 +21,34 @@
     $ npm install(if using npm)
     $ yarn install (if using yarn)
 ```
+### Run in development
+```
+- After installing all the dependencies:
+```
+1. Run the command below to start the server
+    ```
+    npm start
+    ```
+- The site should now be running at http://localhost:3000/ in the browser where you will see the app, You can change the port to your wish.
+```
+
+```
+### To change ports
+```
+- Modify scripts part of package.json and add the port you want to use:
+```
+```
+1. For MacOs or Linux:
+"start": "PORT=3006 react-scripts start"
+```
+```
+2. For Windows:
+"start": "set PORT=3006 && react-scripts start"
+```
+```
+For instances where port 3000 is being used it will prompt you to reply Y change the port.
+```
+
 ### Running tests
 ```
 To run tests 
