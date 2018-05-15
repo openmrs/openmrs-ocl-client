@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SideNavigation Component should render without crashing 1`] = `
+<SideNavigation>
+  <div
+    className="sidenav"
+  />
+</SideNavigation>
+`;

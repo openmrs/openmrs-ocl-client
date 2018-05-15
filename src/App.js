@@ -4,13 +4,10 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import store from './Reducers/Index';
-import './App.css';
 import Login from './components/Login';
-import Dashboard from './Components/Dashboard';
-import Navigation from './Components/Navigation';
-import SideNavigation from './Components/SideNavigation';
+import Dashboard from './components/Dashboard';
+import SideNavigation from './components/SideNavigation';
 import './App.css';
-
 
 class App extends Component {
   render() {
@@ -20,6 +17,7 @@ class App extends Component {
           <div className="App">
             <Notifications />
             <Navbar />
+            <SideNavigation />
             <Switch>
               <Route exact path="/" component={Login} />
               <Route exact path="/dashboard" component={Dashboard} />
@@ -27,8 +25,6 @@ class App extends Component {
           </div>
         </BrowserRouter>
       </Provider>
-
-
     );
   }
 }
