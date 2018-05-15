@@ -1,15 +1,30 @@
 # Stage-1 Build process
-# Use the official node:7.10 runtime image for the build environment and tag the build as build-deps
-FROM node:7.10 as build-deps
+# Use the official node:9.6.1 runtime image for the build environment and tag the build as build-deps
+FROM node:9.6.1 as build-deps
 
-# Create a workking directory for the build project
-WORKDIR /urs/src/app
+# Create a working directory for the build project
+RUN mkdir /usr/src/app
+
+# Navigate to the created directory
+WORKDIR /usr/src/app
+
+# Create an enviroment variable for the node_modules
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # Copy the package.json and the package-lock.json to the working directory
 COPY package.json package-lock.json ./
 
+# Install the project dependencies and silence the npm output
+RUN npm install --silent
+
+# Install react-scripts and silence the npm output
+RUN npm install react-scripts@1.1.1 -g --silent
+
+# Copy everything to the working directory
+COPY . /usr/src/app
+
 # Create an optimized build version of the project
-RUN npm build
+RUN npm run build
 
 # Stage-2 Production Environment
 # Use the nginx 1.12-alpine runtime image for the production environment
