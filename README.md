@@ -8,18 +8,18 @@
 > allow reusability of the existing concepts and allow one to create their concepts if they are not in exsitance.
 
 ## Build
-### Requirements
-
-- Node and Npm [Here](https://nodejs.org/en/download/).
-
+## Requirements
+### Ensure you have NodeJS and Npm installed before you start the installation process
+- To download NodeJS and Npm [click here](https://nodejs.org/en/download/). OR To install Node.js and Npm via package manager [click here](https://nodejs.org/en/download/package-manager/)
+### Npm is distributed with Node.js- which means that when you download Node.js, you automatically get npm installed on your computer.
 ### Installation Process
 ```
-- Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page 
-- Clone the forked repository to your computer
-    # git clone [the url of the repository]
-- Run 
-    $ npm install(if using npm)
-    $ yarn install (if using yarn)
+- Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page.
+- Clone the forked repository to your computer ensure to run the command below in the directory you want to store the project.
+    # git clone [the url of the repository] For example; 
+    # git clone https://github.com/yourusername/openmrs-ocl-client.git
+- In the root directory of the project install all the dependencies using the command below 
+    $ npm install.
 ```
 ### Run in development
 ```
@@ -30,9 +30,6 @@
     npm start
     ```
 - The site should now be running at http://localhost:3000/ in the browser where you will see the app, You can change the port to your wish.
-```
-
-```
 ### To change ports
 ```
 - Modify scripts part of package.json and add the port you want to use:
@@ -46,14 +43,13 @@
 "start": "set PORT=3006 && react-scripts start"
 ```
 ```
-For instances where port 3000 is being used it will prompt you to reply Y change the port.
+For instances where port 3000 is being used it will prompt you to reply with letter Y to change the port automatically.
 ```
 
 ### Running tests
 ```
 To run tests 
- $ npm test (if using npm)
- $ yarn test (if using yarn)
+ $ npm test -- -u --coverage
 ```
 
 ## How to contribute to this project?
