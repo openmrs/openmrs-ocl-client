@@ -1,9 +1,12 @@
 import React from 'react';
-import Login from './Login';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Login from './Login';
+
 
 const Navbar = props => (
   <div>
+
     <nav className="navbar navbar-expand-lg navbar-dark bgcolor">
       <a className="navbar-brand" >OCLforOpenMRS</a>
       <button
@@ -25,7 +28,8 @@ const Navbar = props => (
               className="nav-item nav-link text-white"
               href="!#"
             >
-              <strong>{''} { props.username.username} {''} </strong>
+              <strong>{''} { localStorage.getItem('username') || props.user.username } {''} </strong>
+
             </a> :
             <a
               className="nav-item nav-link text-white"
@@ -48,7 +52,7 @@ const Navbar = props => (
 
 const mapStateToProps = state => ({
   loggedIn: state.users.loggedIn,
-  username: state.users.payload,
+  user: state.users.payload,
 });
 
 export default connect(mapStateToProps)(Navbar);

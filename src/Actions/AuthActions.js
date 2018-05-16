@@ -12,6 +12,7 @@ const LoginAction = ({ username, token }) => async (dispatch) => {
     const response = await axios.post(url, null, { headers });
     dispatch(Login(response));
     localStorage.setItem('token', `Token ${token}`);
+    localStorage.setItem('username', `${username}`);
   } catch (error) {
     if (error.response) {
       dispatch(LoginFailed(error.response.data.detail));

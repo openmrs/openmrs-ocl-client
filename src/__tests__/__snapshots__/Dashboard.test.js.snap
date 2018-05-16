@@ -2,6 +2,12 @@
 
 exports[`Dashboard Component should render without crashing 1`] = `
 <Dashboard>
-  <div />
+  <div>
+    <SideNavigation>
+      <div
+        className="sidenav"
+      />
+    </SideNavigation>
+  </div>
 </Dashboard>
 `;

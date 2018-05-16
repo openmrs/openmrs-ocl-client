@@ -10,6 +10,7 @@ import SideNavigation from './components/SideNavigation';
 import './App.css';
 
 class App extends Component {
+  
   render() {
     return (
       <Provider store={store}>
@@ -17,7 +18,6 @@ class App extends Component {
           <div className="App">
             <Notifications />
             <Navbar />
-            <SideNavigation />
             <Switch>
               <Route exact path="/" component={Login} />
               <Route exact path="/dashboard" component={Dashboard} />
