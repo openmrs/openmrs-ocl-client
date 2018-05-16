@@ -14,7 +14,7 @@
 
 ### Installation Process
 ```
-- Fork the repository https://github.com/openmrs/openmrs-ocl-client#fork-destination-box
+- Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page 
 - Clone the forked repository to your computer
     # git clone [the url of the repository]
 - Run 
