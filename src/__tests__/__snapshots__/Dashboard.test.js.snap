@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard Component should render without crashing 1`] = `
+<Dashboard>
+  <div>
+    <SideNavigation>
+      <div
+        className="sidenav"
+      />
+    </SideNavigation>
+  </div>
+</Dashboard>
+`;
