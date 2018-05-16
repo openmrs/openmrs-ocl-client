@@ -23,8 +23,7 @@ const Navbar = props => (
       </button>
       <div className="collapse navbar-collapse " id="navbarNav">
         <ul className="navbar-nav ml-auto">
-
-          { props.loggedIn ?
+        { props.loggedIn ?
             <a
               className="nav-item nav-link text-white"
               href="!#"
