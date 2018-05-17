@@ -1,6 +1,8 @@
-/* .App {
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+
+.App {
   text-align: center;
-} */
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
@@ -61,9 +63,7 @@
 #signinModal {
   margin-top: 70px;
 }
-.nav {
-  background-color: rgba(0, 0, 0, 0.856) !important;
-}
+
 .navbar-brand {
   color: white !important;
 }
@@ -85,4 +85,110 @@
     color: #ccc !important;
     background: none;
   }
+
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
+  
+.sidenav {
+  height: 100%;
+  width: 6%;
+  position: fixed; 
+  padding-top: 20px;
+  background-color: #343a40; 
+  font-family: 'Open Sans Condensed', sans-serif;
+  border-top-right-radius: 2em;
+  border-right:solid;
+}
+
+.sidenav a {
+  display: block; 
+  text-align: center;
+  color: white;
+  font-size: 20px;
+}
+
+.navbar{
+  position: fixed;
+  border-bottom-right-radius: 1em;
+  border-bottom:solid;
+  width:100%;
+  background-color: #495056;
+}
+
+.navbar-brand{
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size:2.25em;
+  margin-left:40%;
+}
+
+.bgcolor{
+  background-color: #495056
+}
+
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+
+
+p{
+  text-align: center;
+  color: white;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 18px;
+  padding-top: 20px;
+  margin-left: auto;
+}
+  
+.sidenav {
+  height: 100%;
+  width: 8%;
+  position: fixed; 
+  padding-top: 20px;
+  background-color: #343a40; 
+  font-family: 'Open Sans Condensed', sans-serif;
+  border-top-right-radius: 2em;
+  border-right:solid;
+}
+
+.sidenav a {
+  display: block; 
+  text-align: center;
+  color: white;
+  font-size: 20px;
+}
+
+.navbar{
+  position: fixed;
+  border-bottom-right-radius: 1em;
+  border-bottom:solid;
+  width:100%;
+}
+
+.navbar-brand{
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size:2.25em;
+  margin-left:9%;
+}
+
+.button {
+  width: 100px;
+  height: 45px;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 8px;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  border-radius: 45px;
+  margin-bottom:6em;
+  margin-top:16em;
+  }
+
+.button:hover {
+  background-color:#000;
+  color: #fff;
+}
+
+.bgcolor{
+  background-color: #495056
+}
+

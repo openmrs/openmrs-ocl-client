@@ -22,3 +22,6 @@ yarn-debug.log*
 yarn-error.log*
 public/index.html~HEAD
 yarn.lock
+
+#test snapshots
+**/__snapshots__/**
