@@ -32,6 +32,7 @@
     transform: rotate(360deg);
   }
 }
+
 .login {
   display: block;
   background-color: white;
@@ -44,15 +45,6 @@
   margin-left: 20px;
   margin-right: 20px;
 }
-.label {
-  margin-left: 10px;
-}
-.modal-title {
-  text-align: center !important;
-}
-.checkbox {
-  margin-left: 20px;
-}
 .footer {
   background-color: #c4c4c4;
   height: 70px;
@@ -60,17 +52,18 @@
 .signin {
   float: right !important;
 }
-#signinModal {
-  margin-top: 70px;
+.signinModal {
+  margin-top: 100px !important;
 }
-
+.nav {
+  background-color: rgba(0, 0, 0, 0.856) !important;
+}
 .navbar-brand {
   color: white !important;
 }
 
 .nav-item.nav-link:hover {
-  color: black !important;
-  background-color: white;
+  background-color: rgb(70, 65, 65);
 }
 .nav-link {
   line-height: 2.2 !important;
@@ -85,11 +78,40 @@
     color: #ccc !important;
     background: none;
   }
-
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
-  
+.btn-login {
+  background-color: whitesmoke;
+  border-color: #007bff;
+  border-style: solid;
+}
+.btn-login:hover {
+  background-color: #007bff;
+  color: white;
+}
+.modal-header {
+  background-color: #3a3e4198 !important;
+  justify-content: center;
+  align-items: center;
+}
+.loader {
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .sidenav {
   height: 100%;
   width: 6%;
@@ -108,28 +130,6 @@
   font-size: 20px;
 }
 
-.navbar{
-  position: fixed;
-  border-bottom-right-radius: 1em;
-  border-bottom:solid;
-  width:100%;
-  background-color: #495056;
-}
-
-.navbar-brand{
-  font-family: 'Open Sans Condensed', sans-serif;
-  font-size:2.25em;
-  margin-left:40%;
-}
-
-.bgcolor{
-  background-color: #495056
-}
-
-from { transform: rotate(0deg); }
-to { transform: rotate(360deg); }
-
-
 p{
   text-align: center;
   color: white;
@@ -138,38 +138,6 @@ p{
   padding-top: 20px;
   margin-left: auto;
 }
-  
-.sidenav {
-  height: 100%;
-  width: 8%;
-  position: fixed; 
-  padding-top: 20px;
-  background-color: #343a40; 
-  font-family: 'Open Sans Condensed', sans-serif;
-  border-top-right-radius: 2em;
-  border-right:solid;
-}
-
-.sidenav a {
-  display: block; 
-  text-align: center;
-  color: white;
-  font-size: 20px;
-}
-
-.navbar{
-  position: fixed;
-  border-bottom-right-radius: 1em;
-  border-bottom:solid;
-  width:100%;
-}
-
-.navbar-brand{
-  font-family: 'Open Sans Condensed', sans-serif;
-  font-size:2.25em;
-  margin-left:9%;
-}
-
 .button {
   width: 100px;
   height: 45px;
@@ -191,4 +159,3 @@ p{
 .bgcolor{
   background-color: #495056
 }
-

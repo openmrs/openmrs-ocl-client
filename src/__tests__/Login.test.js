@@ -12,6 +12,7 @@ const initialState = {
 };
 // here it is possible to pass in any middleware if needed into //configureStore
 const mockStore = configureStore();
+const preventDefault = jest.fn();
 let store;
 let wrapper;
 
@@ -20,18 +21,25 @@ beforeEach(() => {
   store = mockStore(initialState);
   wrapper = mount(<StaticRouter context={{}}>
     <LoginComponent store={store} />
-                  </StaticRouter>);
+  </StaticRouter>);
 });
 
 describe('Login Component', () => {
   it('should render without crashing', () => {
     expect(wrapper).toMatchSnapshot();
   });
-
+  it('renders loginAction functions', () => {
+    expect(wrapper.find('LoginAction')).toBeTruthy();
+  });
   it('should respond to input changes', () => {
     wrapper
       .find('[name="username"]')
       .simulate('change', { target: { name: 'username', value: 'js' } });
     expect(wrapper.find('[name="username"]').prop('value')).toBe('js');
   });
+
+  // it('submits data', () => {
+  //   wrapper.find('form').simulate('submit', { preventDefault });
+  //   expect(preventDefault).toBeCalled();
+  // });
 });
