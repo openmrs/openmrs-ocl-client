@@ -1,8 +1,10 @@
+version: '2.1'
+
 services:
   oclclient:
-    image: openmrs/ocl-client:qa
+    image: openmrs/ocl-client:local
     ports:
       - 8081:80
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/ping"]
+      test: ["CMD", "wget", "-q", "-s", "http://localhost/"]
