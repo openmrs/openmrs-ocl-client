@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { notify } from 'react-notify-toast';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import { LoginAction } from '../Actions/AuthActions';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import LoginAction from '../Actions/AuthActions';
+
 
 export class Login extends Component {
   state = {
@@ -10,12 +12,12 @@ export class Login extends Component {
     token: '',
   };
 
-  handleInput = event => {
+  handleInput = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
 
-  handleLogin = event => {
+  handleLogin = (event) => {
     event.preventDefault();
     const { username, token } = this.state;
     this.props.LoginAction({ username, token });
@@ -70,22 +72,24 @@ export class Login extends Component {
                   <form onSubmit={this.handleLogin}>
                     <div className="form-group">
                       <strong>
-                        <label className="label">Username</label>
+                        <label className="label" htmlFor="username">Username</label>
                       </strong>
                       <input
                         type="text"
                         className="form-control"
                         placeholder="username"
                         name="username"
+                        id="username"
                         value={username}
                         onChange={this.handleInput}
                       />
                     </div>
                     <div className="form-group">
                       <strong>
-                        <label className="label">API Token</label>
+                        <label className="label" htmlFor="token">API Token</label>
                       </strong>
                       <input
+                        id="token"
                         type="text"
                         className="form-control"
                         placeholder="token"
@@ -110,9 +114,9 @@ export class Login extends Component {
                   </div>
                   <div className="modal-footer text-center">
                     New User?{' '}
-                    <Link to="https://openconceptlab.org/accounts/signup/">
+                    <a href="https://openconceptlab.org/accounts/signup/">
                       Create account
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -123,6 +127,16 @@ export class Login extends Component {
     );
   }
 }
+Login.propTypes = {
+  LoginAction: PropTypes.shape({ username: PropTypes.string, token: PropTypes.string }),
+  history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }),
+
+};
+
+Login.defaultProps = {
+  LoginAction: {},
+  history: {},
+};
 
 const mapStateToProps = state => ({
   loggedIn: state.users.loggedIn,

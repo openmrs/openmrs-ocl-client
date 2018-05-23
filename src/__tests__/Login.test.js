@@ -20,7 +20,7 @@ beforeEach(() => {
   store = mockStore(initialState);
   wrapper = mount(<StaticRouter context={{}}>
     <LoginComponent store={store} />
-                  </StaticRouter>);
+  </StaticRouter>);
 });
 
 describe('Login Component', () => {
