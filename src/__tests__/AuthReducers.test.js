@@ -3,6 +3,8 @@ import authReducer from '../Reducers/AuthReducers';
 import {
   AUTHENTICATED,
   AUTHENTICATION_FAILED,
+  AUTHENTICATION_IN_PROGRESS,
+  LOGGED_OUT,
 } from '../ActionCreators/AuthActionCreators';
 
 let state;
@@ -29,6 +31,7 @@ describe('AuthReducer', () => {
     };
     action = {
       type: AUTHENTICATED,
+      loading: false,
       payload: { ...responseData },
     };
 
@@ -37,6 +40,7 @@ describe('AuthReducer', () => {
 
     expect(authReducer(state, action)).toEqual({
       loggedIn: true,
+      loading: false,
       payload: { ...responseData },
     });
   });
@@ -48,6 +52,7 @@ describe('AuthReducer', () => {
     };
     action = {
       type: AUTHENTICATION_FAILED,
+      loading: false,
       payload: { ...response },
     };
 
@@ -56,7 +61,38 @@ describe('AuthReducer', () => {
 
     expect(authReducer(state, action)).toEqual({
       loggedIn: false,
+      loading: false,
       payload: { ...response },
+    });
+  });
+
+  it('should respond correctly for loading', () => {
+    action = {
+      type: AUTHENTICATION_IN_PROGRESS,
+      loggedIn: false,
+      loading: true,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(authReducer(state, action)).toEqual({
+      loggedIn: false,
+      loading: true,
+    });
+  });
+
+  it('should respond correctly for logout', () => {
+    action = {
+      type: LOGGED_OUT,
+      loggedIn: false,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(authReducer(state, action)).toEqual({
+      loggedIn: false,
     });
   });
 });

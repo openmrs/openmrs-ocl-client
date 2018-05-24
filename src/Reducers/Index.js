@@ -37,7 +37,7 @@ const store = createStoreWithMiddleware(rootReducer, persistedState);
 
 store.subscribe(() => {
   saveState({
-    users: { loggedIn: store.getState().users },
+    users: { loggedIn: store.getState().users.loggedIn },
   });
 });
 

@@ -3,11 +3,14 @@ import { notify } from 'react-notify-toast';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { LoginAction } from '../Actions/AuthActions';
+import Loader from './Loader'
 
 export class Login extends Component {
   state = {
-    username: '',
     token: '',
+    username: ''
+    
+    
   };
 
   handleInput = event => {
@@ -22,10 +25,11 @@ export class Login extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const { payload, loggedIn } = nextProps;
+    const { payload, loggedIn, loading } = nextProps;
+    if(loading) return;
+    
     if (loggedIn) {
-      notify.show('loggedin successfully', 'success', 3000);
-      document.getElementById('CloseLoginModal').click();
+      notify.show(`loggedin successfully as ${this.state.username}`, 'success', 3000);
       this.props.history.push('/dashboard');
       return;
     }
@@ -36,41 +40,23 @@ export class Login extends Component {
   }
 
   render() {
-    const { username, token } = this.state;
+    const { username, token} = this.state;
+    const { loading } = this.props;
 
     return (
-      <div>
-        <div>
-          <div
-            className="modal fade"
-            id="signinModal"
-            tabIndex="-1"
-            role="dialog"
-            aria-labelledby="signin-modal-label"
-            aria-hidden="true"
-          >
+      <div className="signinModal">
             <div className="modal-dialog" role="document">
-              <div className="modal-content">
+              <div className="modal-content ">
                 <div className="modal-header">
-                  <h3 className="modal-title " id="signin-modal-label">
-                    Login
+                  <h3 className="modal-title">
+                    <strong>Login</strong>
                   </h3>
-
-                  <button
-                    type="button"
-                    className="close"
-                    data-dismiss="modal"
-                    aria-label="Close"
-                    id="CloseLoginModal"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                 </div>
                 <div className="modal-body">
                   <form onSubmit={this.handleLogin}>
                     <div className="form-group">
                       <strong>
-                        <label className="label">Username</label>
+                        <label>Username</label>
                       </strong>
                       <input
                         type="text"
@@ -83,7 +69,7 @@ export class Login extends Component {
                     </div>
                     <div className="form-group">
                       <strong>
-                        <label className="label">API Token</label>
+                        <label>API Token</label>
                       </strong>
                       <input
                         type="text"
@@ -95,12 +81,12 @@ export class Login extends Component {
                       />
                     </div>
                     <div className="form-group">
-                      <button
+                      {loading?<Loader />:<button
                         type="submit"
-                        className="btn btn-primary form-control"
+                        className="btn btn-login form-control"
                       >
-                        Sign In
-                      </button>
+                        <strong>Sign In</strong>
+                      </button>}
                     </div>
                   </form>
                   <div className="text-center">
@@ -108,8 +94,8 @@ export class Login extends Component {
                       Forgot password?
                     </a>
                   </div>
-                  <div className="modal-footer text-center">
-                    New User?{' '}
+                  <div className="modal-footer">
+                   <span>New User?</span>
                     <Link to="https://openconceptlab.org/accounts/signup/">
                       Create account
                     </Link>
@@ -118,8 +104,6 @@ export class Login extends Component {
               </div>
             </div>
           </div>
-        </div>
-      </div>
     );
   }
 }
@@ -127,6 +111,7 @@ export class Login extends Component {
 const mapStateToProps = state => ({
   loggedIn: state.users.loggedIn,
   payload: state.users.payload,
+  loading: state.users.loading,
 });
 
 export default connect(mapStateToProps, { LoginAction })(withRouter(Login));
