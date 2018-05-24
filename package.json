@@ -25,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:bamboo": "react-scripts test --env=jsdom -u --ci --coverage --testResultsProcessor ./node_modules/jest-junit"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
@@ -33,6 +34,7 @@
     "eslint-plugin-json": "^1.2.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "jest-junit": "^4.0.0",
     "react-addons-test-utils": "^15.6.2"
   },
   "jest": {
