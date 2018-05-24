@@ -45,7 +45,9 @@
 ```
 For instances where port 3000 is being used it will prompt you to reply with letter Y to change the port automatically.
 ```
-## Setting up with Docker 
+## Setting up with Docker
+
+ Our environments are running in docker. 
 
  Ensure you have docker installed and running locally. Install docker [from here](https://www.docker.com/community-edition).
 
