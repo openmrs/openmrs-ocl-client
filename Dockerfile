@@ -33,6 +33,9 @@ FROM nginx:1.12-alpine
 # Copy the tagged files from the build to the production environmnet of the nginx server
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
+# Copy nginx configuration 
+COPY --from=build-deps /usr/src/app/docker/default.conf /etc/nginx/conf.d/ 
+
 # Make port 80 available to the world outside the container
 EXPOSE 80
 

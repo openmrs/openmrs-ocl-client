@@ -12,7 +12,7 @@
 ### Ensure you have NodeJS and Npm installed before you start the installation process
 - To download NodeJS and Npm [click here](https://nodejs.org/en/download/). OR To install Node.js and Npm via package manager [click here](https://nodejs.org/en/download/package-manager/)
 ### Npm is distributed with Node.js- which means that when you download Node.js, you automatically get npm installed on your computer.
-### Installation Process
+### Set-up Process (Manual Environment Setup)
 ```
 - Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page.
 - Clone the forked repository to your computer ensure to run the command below in the directory you want to store the project.
@@ -44,6 +44,32 @@
 ```
 ```
 For instances where port 3000 is being used it will prompt you to reply with letter Y to change the port automatically.
+```
+## Setting up with Docker 
+
+ Ensure you have docker installed and running locally. Install docker [from here](https://www.docker.com/community-edition).
+
+```
+- Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page.
+
+- Clone the forked repository to your computer and ensure to run the command below in the directory you want to store the project.
+
+    $ git clone [the url of the repository] For example: 
+
+    $ git clone https://github.com/yourusername/openmrs-ocl-client.git
+```
+### Running the Docker Image
+```
+- Build the Docker image using the provided Dockerfile in the root folder. 
+   
+$ docker build -t openmrs/ocl-client:local .
+
+- Run the docker image using docker-compose
+
+$ docker-compose -f docker/docker-compose.yml up -d
+
+- Navigate to your http://localhost:8081/
+Your should now see your app running :)
 ```
 
 ### Running tests
