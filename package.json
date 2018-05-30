@@ -11,11 +11,9 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
     "eslint": "^4.19.1",
-    "jest-localstorage-mock": "^2.2.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-mock-router": "^1.0.15",
     "react-notify-toast": "^0.4.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
@@ -23,7 +21,6 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.1",
-    "redux-test-utils": "^0.2.2",
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
@@ -32,8 +29,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "test:bamboo": "react-scripts test --env=jsdom -u --ci --coverage --testResultsProcessor ./node_modules/jest-junit",
-    "lint": "eslint ./src",
-    "coverage": "react-scripts test --env=jsdom --coverage"
+    "lint": "eslint ./src"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
@@ -45,9 +41,6 @@
     "react-addons-test-utils": "^15.6.2"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "**/src/**/*.{js,jsx}"
-    ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
