@@ -2,11 +2,6 @@
   "extends": "airbnb",
   "rules": {
     "react/jsx-filename-extension": 0,
-    "no-undef": 0,
-    "camelcase":"off",
-    "jsx-a11y/label-has-for":0,
-    "react/jsx-closing-tag-location":0,
-    "import/no-named-as-default":0
-  },
-  "parser": "babel-eslint"
+    "no-undef": 0
+  }
 }
