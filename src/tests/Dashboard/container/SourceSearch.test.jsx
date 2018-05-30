@@ -17,7 +17,7 @@ describe('Dashboard Component', () => {
       clearSources: jest.fn(),
       hasMore: false,
     };
-    const wrapper = shallow(<SourceSearch {...props} />);
+    const wrapper = mount(<SourceSearch {...props} />);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -73,7 +73,6 @@ describe('Dashboard Component', () => {
   it('should search for a source', () => {
     const props = {
       fetchSources: jest.fn(),
-
       fetchingOrganizations: jest.fn(),
       sources: [sources],
       isFetching: true,
