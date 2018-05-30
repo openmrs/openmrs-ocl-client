@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { LogoutAction } from '../Actions/AuthActions';
+import PropTypes from 'prop-types';
+import { logoutAction } from '../Actions/AuthActions';
 
-class Navbar extends Component {
-  logoutUser = event => {
+export class Navbar extends Component {
+  logoutUser = (event) => {
     event.preventDefault();
-    this.props.LogoutAction();
+    this.props.logoutAction();
     this.props.history.push('/');
     notify.show('You Loggedout successfully', 'success', 3000);
   };
@@ -34,9 +35,9 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse " id="navbarNav">
             {this.props.loggedIn && (
               <ul className="navbar-nav ml-auto">
-                <li class="nav-item nav-link dropdown">
+                <li className="nav-item nav-link dropdown">
                   <a
-                    class="nav-link dropdown-toggle text-white"
+                    className="nav-link dropdown-toggle text-white"
                     href="!#"
                     id="navbarDropdown"
                     role="button"
@@ -52,9 +53,9 @@ class Navbar extends Component {
                       {''}{' '}
                     </strong>
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a
-                      class="dropdown-item nav-link"
+                      className="dropdown-item nav-link"
                       href="!#"
                       onClick={this.logoutUser}
                     >
@@ -73,10 +74,17 @@ class Navbar extends Component {
   }
 }
 
+Navbar.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  user: PropTypes.shape({ username: PropTypes.string }).isRequired,
+  logoutAction: PropTypes.func.isRequired,
+  history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
+};
+
 const mapStateToProps = state => ({
   loggedIn: state.users.loggedIn,
   user: state.users.payload,
   payload: state.users.payload,
 });
 
-export default connect(mapStateToProps, { LogoutAction })(withRouter(Navbar));
+export default connect(mapStateToProps, { logoutAction })(withRouter(Navbar));
