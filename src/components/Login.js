@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import { notify } from 'react-notify-toast';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import { LoginAction } from '../Actions/AuthActions';
-import Loader from './Loader'
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import Loader from './Loader';
+import { loginAction } from '../Actions/AuthActions';
+
 
 export class Login extends Component {
   state = {
     token: '',
-    username: ''
-    
-    
+    username: '',
+
+
   };
 
-  handleInput = event => {
+  handleInput = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
 
-  handleLogin = event => {
+  handleLogin = (event) => {
     event.preventDefault();
     const { username, token } = this.state;
-    this.props.LoginAction({ username, token });
+    this.props.loginAction({ username, token });
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { payload, loggedIn, loading } = nextProps;
-    if(loading) return;
-    
+    if (loading) return;
+
     if (loggedIn) {
       notify.show(`loggedin successfully as ${this.state.username}`, 'success', 3000);
       this.props.history.push('/dashboard');
@@ -40,73 +42,80 @@ export class Login extends Component {
   }
 
   render() {
-    const { username, token} = this.state;
+    const { username, token } = this.state;
     const { loading } = this.props;
 
     return (
       <div className="signinModal">
-            <div className="modal-dialog" role="document">
-              <div className="modal-content ">
-                <div className="modal-header">
-                  <h3 className="modal-title">
-                    <strong>Login</strong>
-                  </h3>
+        <div className="modal-dialog" role="document">
+          <div className="modal-content ">
+            <div className="modal-header">
+              <h3 className="modal-title">
+                <strong>Login</strong>
+              </h3>
+            </div>
+            <div className="modal-body">
+              <form onSubmit={this.handleLogin}>
+                <div className="form-group">
+                  <strong>
+                    <label className="label" htmlFor="username">Username</label>
+                  </strong>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="username"
+                    name="username"
+                    id="username"
+                    value={username}
+                    onChange={this.handleInput}
+                  />
                 </div>
-                <div className="modal-body">
-                  <form onSubmit={this.handleLogin}>
-                    <div className="form-group">
-                      <strong>
-                        <label>Username</label>
-                      </strong>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="username"
-                        name="username"
-                        value={username}
-                        onChange={this.handleInput}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <strong>
-                        <label>API Token</label>
-                      </strong>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="token"
-                        name="token"
-                        value={token}
-                        onChange={this.handleInput}
-                      />
-                    </div>
-                    <div className="form-group">
-                      {loading?<Loader />:<button
-                        type="submit"
-                        className="btn btn-login form-control"
-                      >
-                        <strong>Sign In</strong>
-                      </button>}
-                    </div>
-                  </form>
-                  <div className="text-center">
-                    <a href="https://openconceptlab.org/accounts/password/reset/">
+                <div className="form-group">
+                  <strong>
+                    <label className="label" htmlFor="token">API Token</label>
+                  </strong>
+                  <input
+                    id="token"
+                    type="text"
+                    className="form-control"
+                    placeholder="token"
+                    name="token"
+                    value={token}
+                    onChange={this.handleInput}
+                  />
+                </div>
+                <div className="form-group">
+                  {loading ? <Loader /> : <button
+                    type="submit"
+                    className="btn btn-login form-control"
+                  >
+                    <strong>Sign In</strong>
+                  </button>}
+                </div>
+              </form>
+              <div className="text-center">
+                <a href="https://openconceptlab.org/accounts/password/reset/">
                       Forgot password?
-                    </a>
-                  </div>
-                  <div className="modal-footer">
-                   <span>New User?</span>
-                    <Link to="https://openconceptlab.org/accounts/signup/">
+                </a>
+              </div>
+              <div className="modal-footer text-center">
+                <span>New User?</span>
+                <a href="https://openconceptlab.org/accounts/signup/">
                       Create account
-                    </Link>
-                  </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
+        </div>
+      </div>
     );
   }
 }
+Login.propTypes = {
+  loginAction: PropTypes.func.isRequired,
+  history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 const mapStateToProps = state => ({
   loggedIn: state.users.loggedIn,
@@ -114,4 +123,4 @@ const mapStateToProps = state => ({
   loading: state.users.loading,
 });
 
-export default connect(mapStateToProps, { LoginAction })(withRouter(Login));
+export default connect(mapStateToProps, { loginAction })(withRouter(Login));
