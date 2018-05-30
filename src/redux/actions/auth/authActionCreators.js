@@ -1,4 +1,10 @@
-import { AUTHENTICATED, AUTHENTICATION_FAILED, AUTHENTICATION_IN_PROGRESS, LOGGED_OUT, LOGOUT_FAILED } from '../types';
+import {
+  AUTHENTICATED,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_IN_PROGRESS,
+  LOGGED_OUT,
+  LOGOUT_FAILED,
+} from '../types';
 
 // Action creator
 const login = response => ({
@@ -28,10 +34,5 @@ const logoutFailed = errorMessage => ({
   payload: { errorMessage },
 });
 
-export {
-  login,
-  loginFailed,
-  loginStarted,
-  logout,
-  logoutFailed,
-};
+
+export { login, loginFailed, loginStarted, logout, logoutFailed };
