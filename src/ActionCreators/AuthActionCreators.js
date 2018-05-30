@@ -1,4 +1,9 @@
-import { AUTHENTICATED, AUTHENTICATION_FAILED, AUTHENTICATION_IN_PROGRESS, LOGGED_OUT, LOGOUT_FAILED } from '../types';
+
+const AUTHENTICATED = 'loggedin_user';
+const AUTHENTICATION_FAILED = 'login_failed';
+const AUTHENTICATION_IN_PROGRESS = 'login-progess';
+const LOGGED_OUT = 'logout';
+const LOGOUT_FAILED = 'logout_failed';
 
 // Action creator
 const login = response => ({
@@ -29,6 +34,11 @@ const logoutFailed = errorMessage => ({
 });
 
 export {
+  AUTHENTICATED,
+  AUTHENTICATION_FAILED,
+  AUTHENTICATION_IN_PROGRESS,
+  LOGGED_OUT,
+  LOGOUT_FAILED,
   login,
   loginFailed,
   loginStarted,
