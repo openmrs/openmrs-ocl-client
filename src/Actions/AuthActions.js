@@ -1,35 +1,35 @@
 import axios from 'axios';
 import {
-  login,
-  loginFailed,
-  loginStarted,
-  logout,
+  Login,
+  LoginFailed,
+  LoginStarted,
+  Logout,
 } from '../ActionCreators/AuthActionCreators';
 
 const BASE_URL = 'https://api.openconceptlab.org/';
 
-const loginAction = ({ username, token }) => async (dispatch) => {
+const LoginAction = ({ username, token }) => async (dispatch) => {
   try {
     const url = `${BASE_URL}/users/${username}/`;
     const headers = { Authorization: `Token ${token}` };
-    dispatch(loginStarted());
+    dispatch(LoginStarted());
     const response = await axios.post(url, null, { headers });
-    dispatch(login(response));
+    dispatch(Login(response));
     localStorage.setItem('token', `Token ${token}`);
     localStorage.setItem('username', `${username}`);
   } catch (error) {
     if (error.response) {
-      dispatch(loginFailed(error.response.data.detail));
+      dispatch(LoginFailed(error.response.data.detail));
     } else if (error.request) {
-      dispatch(loginFailed("Request can't be made"));
+      dispatch(LoginFailed("Request can't be made"));
     }
   }
 };
 
-const logoutAction = () => (dispatch) => {
-  dispatch(loginStarted());
-  dispatch(logout());
+const LogoutAction = () => (dispatch) => {
+  dispatch(LoginStarted());
+  dispatch(Logout());
   localStorage.clear();
 };
 
-export { loginAction, logoutAction };
+export { LoginAction, LogoutAction };
