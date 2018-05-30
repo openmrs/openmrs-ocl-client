@@ -1,10 +1,5 @@
 import axios from 'axios';
-import {
-  login,
-  loginFailed,
-  loginStarted,
-  logout,
-} from '../ActionCreators/AuthActionCreators';
+import { login, loginFailed, loginStarted, logout } from './authActionCreators';
 
 const BASE_URL = 'https://api.openconceptlab.org/';
 

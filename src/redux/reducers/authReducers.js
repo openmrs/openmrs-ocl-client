@@ -3,7 +3,7 @@ import {
   AUTHENTICATION_FAILED,
   AUTHENTICATION_IN_PROGRESS,
   LOGGED_OUT,
-} from '../ActionCreators/AuthActionCreators';
+} from '../actions/types';
 
 const initialState = {
   loggedIn: false,

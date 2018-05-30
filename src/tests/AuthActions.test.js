@@ -1,4 +1,5 @@
-import { login, AUTHENTICATED, logout, LOGGED_OUT } from '../ActionCreators/AuthActionCreators';
+import { AUTHENTICATED, LOGGED_OUT } from '../redux/actions/types';
+import { login, logout } from '../redux/actions/auth/authActionCreators';
 
 describe('Login', () => {
   const response = {
@@ -27,4 +28,3 @@ describe('Logout', () => {
     expect(logout(response)).toEqual(responseData);
   });
 });
-
