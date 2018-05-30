@@ -7,6 +7,11 @@ import {
 
 const initialState = {
   loggedIn: false,
+  user: {},
+  loginAction: () => {},
+  logoutAction: () => {},
+  history: {},
+  loading: false,
 };
 
 export default (state = initialState, action) => {
@@ -32,7 +37,7 @@ export default (state = initialState, action) => {
         loading: false,
       };
     case LOGGED_OUT:
-      return {loggedIn: false };
+      return { loggedIn: false };
     default:
       return state;
   }
