@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Loader from './Loader';
-import { loginAction } from '../Actions/AuthActions';
+import { loginAction } from '../redux/actions/auth/authActions';
 
 
 export class Login extends Component {
