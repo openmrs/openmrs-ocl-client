@@ -29,6 +29,7 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk, logger)(createStor
 const persistedState = loadState();
 const store = createStoreWithMiddleware(rootReducer, persistedState);
 
+
 store.subscribe(() => {
   saveState({
     users: { loggedIn: store.getState().users.loggedIn },
