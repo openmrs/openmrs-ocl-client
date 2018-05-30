@@ -114,7 +114,11 @@ export class Login extends Component {
 Login.propTypes = {
   loginAction: PropTypes.func.isRequired,
   history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
+};
+
+Login.defaultProps = {
+  loading: false,
 };
 
 const mapStateToProps = state => ({
