@@ -6,7 +6,8 @@
     "camelcase":"off",
     "jsx-a11y/label-has-for":0,
     "react/jsx-closing-tag-location":0,
-    "import/no-named-as-default":0
+    "import/no-named-as-default":0,
+    "class-methods-use-this": "off"
   },
   "parser": "babel-eslint"
 }

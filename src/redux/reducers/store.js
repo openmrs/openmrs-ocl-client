@@ -1,12 +1,7 @@
-import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import reduxThunk from 'redux-thunk';
 import logger from 'redux-logger';
-import AuthReducers from './AuthReducers';
-
-// combined reducer to give a global state
-const rootReducer = combineReducers({
-  users: AuthReducers,
-});
+import rootReducer from './index';
 
 const saveState = (state) => {
   try {
@@ -33,6 +28,7 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk, logger)(createStor
 
 const persistedState = loadState();
 const store = createStoreWithMiddleware(rootReducer, persistedState);
+
 
 store.subscribe(() => {
   saveState({

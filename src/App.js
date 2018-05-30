@@ -3,10 +3,11 @@ import Notifications from 'react-notify-toast';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import store from './Reducers/Index';
+import store from './redux/reducers/store';
 import './App.css';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
+import Authenticate from './components/Auth';
+import SourceSearch from './components/dashboard/container/SourceSearch';
 
 const App = () => (
   <Provider store={store}>
@@ -16,7 +17,7 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard" component={Authenticate(SourceSearch)} />
         </Switch>
       </div>
     </BrowserRouter>

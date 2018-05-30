@@ -3,7 +3,7 @@ import { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { logoutAction } from '../Actions/AuthActions';
+import { logoutAction } from '../redux/actions/auth/authActions';
 
 export class Navbar extends Component {
   logoutUser = (event) => {
@@ -15,7 +15,7 @@ export class Navbar extends Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light nav">
+        <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light nav">
           <strong>
             <a className="navbar-brand" href="/">
               OCL for OpenMRS
@@ -47,18 +47,11 @@ export class Navbar extends Component {
                   >
                     <i className="fa fa-user" />
                     <strong>
-                      {''}{' '}
-                      {localStorage.getItem('username') ||
-                        this.props.user.username}{' '}
-                      {''}{' '}
+                      {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
                     </strong>
                   </a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a
-                      className="dropdown-item nav-link"
-                      href="!#"
-                      onClick={this.logoutUser}
-                    >
+                    <a className="dropdown-item nav-link" href="!#" onClick={this.logoutUser}>
                       <strong>
                         Logout <i className="fa fa-sign-out" />
                       </strong>
@@ -76,9 +69,13 @@ export class Navbar extends Component {
 
 Navbar.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
-  user: PropTypes.shape({ username: PropTypes.string }).isRequired,
+  user: PropTypes.shape({ username: PropTypes.string }),
   logoutAction: PropTypes.func.isRequired,
   history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
+};
+
+Navbar.defaultProps = {
+  user: {},
 };
 
 const mapStateToProps = state => ({

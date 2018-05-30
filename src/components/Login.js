@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import Loader from './Loader';
-import { loginAction } from '../Actions/AuthActions';
+import { loginAction } from '../redux/actions/auth/authActions';
 
 
 export class Login extends Component {
@@ -114,7 +114,11 @@ export class Login extends Component {
 Login.propTypes = {
   loginAction: PropTypes.func.isRequired,
   history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool,
+};
+
+Login.defaultProps = {
+  loading: false,
 };
 
 const mapStateToProps = state => ({

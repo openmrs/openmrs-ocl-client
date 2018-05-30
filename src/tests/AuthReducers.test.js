@@ -1,11 +1,11 @@
 import deepFreeze from 'deep-freeze';
-import authReducer from '../Reducers/AuthReducers';
+import authReducer from '../redux/reducers/authReducers';
 import {
   AUTHENTICATED,
   AUTHENTICATION_FAILED,
   AUTHENTICATION_IN_PROGRESS,
   LOGGED_OUT,
-} from '../ActionCreators/AuthActionCreators';
+} from '../redux/actions/types';
 
 let state;
 let action;
