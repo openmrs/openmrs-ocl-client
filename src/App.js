@@ -7,7 +7,6 @@ import store from './redux/reducers/store';
 import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import Authenticate from './components/Auth';
 
 const App = () => (
   <Provider store={store}>
@@ -17,7 +16,7 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route exact path="/dashboard" component={Authenticate(Dashboard)} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </Switch>
       </div>
     </BrowserRouter>
