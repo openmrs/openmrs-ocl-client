@@ -5,30 +5,29 @@ const AUTHENTICATION_IN_PROGRESS = 'login-progess';
 const LOGGED_OUT = 'logout';
 const LOGOUT_FAILED = 'logout_failed';
 
-// Action creator
-const login = response => ({
+const Login = response => ({
   type: AUTHENTICATED,
   payload: response.data,
   loading: false,
 });
 
-const loginFailed = errorMessage => ({
+const LoginFailed = errorMessage => ({
   type: AUTHENTICATION_FAILED,
   payload: { errorMessage },
   loading: false,
 });
 
-const loginStarted = () => ({
+const LoginStarted = () => ({
   type: AUTHENTICATION_IN_PROGRESS,
   loading: true,
 });
 
-const logout = () => ({
+const Logout = () => ({
   type: LOGGED_OUT,
   payload: {},
 });
 
-const logoutFailed = errorMessage => ({
+const LogoutFailed = errorMessage => ({
   type: LOGOUT_FAILED,
   payload: { errorMessage },
 });
@@ -39,9 +38,9 @@ export {
   AUTHENTICATION_IN_PROGRESS,
   LOGGED_OUT,
   LOGOUT_FAILED,
-  login,
-  loginFailed,
-  loginStarted,
-  logout,
-  logoutFailed,
+  Login,
+  LoginFailed,
+  LoginStarted,
+  Logout,
+  LogoutFailed,
 };

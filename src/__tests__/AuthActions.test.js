@@ -1,4 +1,4 @@
-import { login, AUTHENTICATED, logout, LOGGED_OUT } from '../ActionCreators/AuthActionCreators';
+import { Login, AUTHENTICATED, Logout, LOGGED_OUT } from '../ActionCreators/AuthActionCreators';
 
 describe('Login', () => {
   const response = {
@@ -11,7 +11,7 @@ describe('Login', () => {
   };
 
   it('should return action type and payload', () => {
-    expect(login(response)).toEqual(responseData);
+    expect(Login(response)).toEqual(responseData);
   });
 });
 
@@ -24,7 +24,7 @@ describe('Logout', () => {
     payload: {},
   };
   it('should return action type and payload', () => {
-    expect(logout(response)).toEqual(responseData);
+    expect(Logout(response)).toEqual(responseData);
   });
 });
 
