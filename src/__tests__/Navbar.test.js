@@ -19,7 +19,7 @@ beforeEach(() => {
   store = mockStore(initialState);
   wrapper = mount(<StaticRouter context={{}}>
     <Navbar store={store} />
-  </StaticRouter>);
+                  </StaticRouter>);
 });
 describe('Navbar Component', () => {
   it('should render without crashing', () => {

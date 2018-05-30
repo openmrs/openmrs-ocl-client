@@ -4,7 +4,6 @@ node_js:
 script:
   - npm install
   - npm install coveralls
-  - npm run lint
   - npm test -- -u --coverage
 
 after_success:
