@@ -3,7 +3,7 @@ import Notifications from 'react-notify-toast';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import store from './redux/reducers/store';
+import store from './Reducers/Index';
 import './App.css';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
