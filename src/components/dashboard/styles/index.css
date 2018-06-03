@@ -1,0 +1,160 @@
+a:hover {
+  text-decoration: none;
+}
+
+nav {
+  z-index: 2;
+}
+
+.fixed-top {
+  margin-bottom: 5rem;
+}
+
+.side-nav {
+  height: 100%;
+  min-width: 6%;
+  position: fixed;
+  padding: .5rem;
+  z-index: 1;
+  color: white;
+  background: #383838f8
+}
+
+.side-nav .nav {
+  background: transparent !important;
+}
+
+.side-nav a {
+  color: white;
+  padding: .2rem .5rem;
+  margin: .2rem;
+}
+
+.side-nav a:hover {
+  background: rgba(0, 0, 0, 0.29);
+  border-radius: .4rem;
+}
+
+.search-bar {
+  border: none;
+  background: inherit;
+  line-height: 2rem;
+  height: 2rem;
+  outline: none;
+  box-shadow: none;
+}
+
+.search-bar-wrapper:hover {
+  box-shadow: 0px 8px 20px -8px rgba(0, 0, 0, 0.471);
+}
+
+.search-bar-wrapper {
+  transition: all 400ms ease-in-out;
+  background: rgb(233, 233, 233);
+  border-radius: .2rem;
+  padding: .7rem;
+  z-index: 0;
+}
+
+.search-bar-wrapper i {
+  color: #757575;
+}
+
+.btn {
+  box-shadow: 0px 8px 20px -8px rgba(0, 0, 0, 0.471);
+  outline: none;
+  transition: all 400ms ease-in-out;
+}
+
+.btn:hover {
+  box-shadow: none;
+}
+
+.sort-search {
+  align-self: center;
+}
+
+.mini-sort-btn a,
+.mini-source-btn a {
+  color: #757575;
+}
+
+.item-list {
+  height: 7rem;
+  overflow: scroll;
+  overflow: hidden;
+  align-items: center;
+  box-shadow: none;
+  border-radius: .2rem;
+  box-shadow: 5px 5px 20px 2px rgba(0, 0, 0, 0.07);
+  transition: all 400ms ease-in-out;
+}
+
+.item-list:hover {
+  box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.07);
+}
+
+.card-header {
+  height: 3rem;
+}
+
+.source-menu {
+  font-size: 1rem;
+  width: 15rem;
+}
+
+.source-name {
+  padding: 0;
+}
+
+.source-name h6,
+.source-name p {
+  color: black;
+  padding: 0;
+  margin: 0;
+  line-height: 1.2rem;
+  text-align: left;
+}
+
+.source-name .update-time {
+  font-size: .7rem;
+  background: rgb(233, 233, 233);
+  border-radius: .2rem;
+  padding: .1rem .4rem;
+  margin-top: .5rem;
+  max-width: 8rem;
+}
+
+.name-url {
+  color: #757575;
+}
+
+.name-url:hover {
+  color: #414141;
+}
+
+.owner-type {
+  align-self: flex-end;
+}
+
+.dashboard-wrapper {
+  margin-top: 4rem;
+}
+
+.description {
+  font-size: .8rem;
+}
+
+.key-icons {
+  font-size: .7rem;
+  text-align: right;
+}
+
+.key-icons a {
+  color: #414141;
+  padding: 0 1rem;
+}
+
+.key-icons i {
+  margin-right: .3rem;
+}

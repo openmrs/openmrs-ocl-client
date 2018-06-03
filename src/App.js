@@ -6,8 +6,8 @@ import Navbar from './components/Navbar';
 import store from './redux/reducers/store';
 import './App.css';
 import Login from './components/Login';
-import Dashboard from './components/Dashboard';
 import Authenticate from './components/Auth';
+import Dashboard from './components/dashboard/container';
 
 const App = () => (
   <Provider store={store}>
