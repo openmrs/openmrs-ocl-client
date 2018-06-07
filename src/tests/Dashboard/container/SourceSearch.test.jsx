@@ -1,6 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { SourceSearch } from '../../../components/dashboard/container';
+import {
+  SourceSearch,
+  mapStateToProps,
+} from '../../../components/dashboard/container/SourceSearch';
 import sources from '../../__mocks__/sources';
 
 describe('Dashboard Component', () => {
@@ -48,40 +51,35 @@ describe('Dashboard Component', () => {
     };
 
     const wrapper = mount(<SourceSearch {...props} />);
-
     wrapper.find('#dictionary').simulate('click', {
       preventDefault: () => {},
     });
 
-
     expect(wrapper).toMatchSnapshot();
   });
-
-  it('should sort sources', () => {
+  it('should search for a source', () => {
     const props = {
       fetchSources: jest.fn(),
       sources: [sources],
-      isFetching: false,
-      onSubmit: jest.fn(),
-      onSearch: jest.fn(),
-      sort: jest.fn(),
+      isFetching: true,
     };
-
     const wrapper = mount(<SourceSearch {...props} />);
-
-    wrapper.find('#sortAsc').simulate('click', {
-      preventDefault: () => {},
-    });
-    wrapper.find('#sortDesc').simulate('click', {
-      preventDefault: () => {},
-    });
-    wrapper.find('#sort-asc').simulate('click', {
-      preventDefault: () => {},
-    });
-    wrapper.find('#sort-desc').simulate('click', {
+    const event = { target: { name: 'searchInput', value: 'ciel' } };
+    wrapper.find('#search').simulate('change', event);
+    wrapper.find('#dictionary').simulate('click', {
       preventDefault: () => {},
     });
 
-    expect(wrapper).toMatchSnapshot();
+    wrapper.find('.search-bar-wrapper').simulate('submit', {
+      preventDefault: () => {},
+    });
+  });
+
+  it('should test mapStateToProps', () => {
+    const initialState = {
+      sources: { sources: [], loading: false },
+    };
+    expect(mapStateToProps(initialState).sources).toEqual([]);
+    expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
 });

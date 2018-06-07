@@ -21,11 +21,10 @@ export class SourceSearch extends Component {
 
     this.state = {
       searchInput: '',
-      sort: 'sortAsc=name',
+      sort: 'sortAsc=bestmatch',
     };
     this.onSearch = this.onSearch.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.sortData = this.sortData.bind(this);
   }
 
   componentDidMount() {
@@ -59,12 +58,6 @@ export class SourceSearch extends Component {
     this.props.fetchSources(this.state.searchInput, sourceType, 25, 1, sortParams || sort);
   }
 
-  sortData(event, sort) {
-    event.preventDefault();
-    this.setState({ sort });
-    this.onSubmit(event, sort);
-  }
-
   render() {
     const {
       searchInput, dict, ext, IR, IT,
@@ -80,17 +73,25 @@ export class SourceSearch extends Component {
           ext={ext}
           IR={IR}
           IT={IT}
-          sort={this.sortData}
         />
-        <ListWrapper sources={this.props.sources} fetching={this.props.isFetching} />
+        <div className="container-fluid">
+          <div className="row justify-content-center">
+            <div className="offset-sm-1 col-10">
+              <ListWrapper sources={this.props.sources} fetching={this.props.isFetching} />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   sources: state.sources.sources,
   isFetching: state.sources.loading,
 });
 
-export default connect(mapStateToProps, { fetchSources })(SourceSearch);
+export default connect(
+  mapStateToProps,
+  { fetchSources },
+)(SourceSearch);
