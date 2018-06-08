@@ -2,7 +2,7 @@ import React from 'react';
 import Tooltip from 'react-tooltip';
 
 /* eslint-disable */
-const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT, sort }) => (
+const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT }) => (
   <div className="container-fluid">
     <div className="row justify-content-center">
       <div className="col-1" />
@@ -15,8 +15,8 @@ const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT, sort })
             id="search"
             value={searchValue}
             onChange={onSearch}
-            className="search-bar col-5 col-sm-7 col-md-6 col-lg-7"
-            placeholder="Search for sources"
+            className="search-bar col-5 col-sm-7 col-md-6 col-lg-9"
+            placeholder="Search for a source"
           />
           <div className="dropdown d-inline d-md-none col-1 mini-source-btn">
             <a
@@ -38,41 +38,6 @@ const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT, sort })
               </a>
             </div>
           </div>
-          <div className="dropdown d-inline d-md-none mini-sort-btn col-1">
-            <a
-              className="dropdown-toggle"
-              href="#"
-              role="button"
-              id="sort"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              data-tip="sort"
-            >
-              <i className="fas fa-sort-alpha-up fa-fw" />
-            </a>
-
-            <div className="dropdown-menu" aria-labelledby="sort">
-              <a
-                className="dropdown-item"
-                id="sortAsc"
-                href="#"
-                onClick={event => sort(event, 'sortAsc=name')}
-              >
-                <i className="fas fa-sort-alpha-up fa-fw" />
-                Name (Asc)
-              </a>
-              <a
-                className="dropdown-item"
-                href="#"
-                id="sortDesc"
-                onClick={event => sort(event, 'sortDesc=name')}
-              >
-                <i className="fas fa-sort-alpha-down fa-fw" />
-                Name (Desc)
-              </a>
-            </div>
-          </div>
           <div className="dropdown d-none d-md-inline d-lg-inline d-xl-inline mini-sort-btn col-md-2">
             <a
               className="dropdown-toggle"
@@ -83,8 +48,7 @@ const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT, sort })
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <i className="fas fa-filter fa-fw" />
-              Source Type
+              Filter by source type
             </a>
 
             <div className="dropdown-menu source-menu" aria-labelledby="sourceType">
@@ -145,41 +109,6 @@ const SearchBar = ({ onSearch, onSubmit, searchValue, dict, ext, IR, IT, sort })
                   filter result
                 </a>
               </div>
-            </div>
-          </div>
-          <div className="dropdown d-none d-md-inline d-lg-inline d-xl-inline mini-sort-btn col-md-2">
-            <a
-              className="dropdown-toggle"
-              href="#"
-              role="button"
-              id="sort"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i className="fas fa-sort fa-fw" />
-              Sort
-            </a>
-
-            <div className="dropdown-menu" aria-labelledby="sort">
-              <a
-                className="dropdown-item"
-                id="sort-asc"
-                href="#"
-                onClick={event => sort(event, 'sortAsc=name')}
-              >
-                <i className="fas fa-sort-alpha-up fa-fw" />
-                Name (Asc)
-              </a>
-              <a
-                className="dropdown-item"
-                id="sort-desc"
-                href="#"
-                onClick={event => sort(event, 'sortDesc=name')}
-              >
-                <i className="fas fa-sort-alpha-down fa-fw" />
-                Name (Desc)
-              </a>
             </div>
           </div>
         </form>

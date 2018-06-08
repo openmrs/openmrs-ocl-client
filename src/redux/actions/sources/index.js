@@ -7,7 +7,7 @@ export const fetchSources = (
   types = [],
   limit = 25,
   page = 1,
-  sort = 'sortAsc=name',
+  sort = 'sortAsc=bestmatch',
 ) => async (dispatch) => {
   dispatch(isFetching(true));
   let url = `sources/?q=${query}&limit=${limit}&page=${page}&verbose=true&${sort}`;

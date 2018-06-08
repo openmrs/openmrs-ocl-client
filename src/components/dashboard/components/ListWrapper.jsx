@@ -5,7 +5,13 @@ import Loader from '../../Loader';
 
 const ListWrapper = ({ sources, fetching }) => {
   if (sources.length >= 1) {
-    return sources.map(source => <Card source={source} key={source.uuid} />);
+    return (
+      <div className="row justify-content-center">
+        {sources.map(source => (
+          <Card source={source} key={source.uuid} />
+        ))}
+      </div>
+    );
   }
   if (fetching) {
     return (
