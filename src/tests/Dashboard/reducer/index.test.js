@@ -1,21 +1,23 @@
 import reducer from '../../../redux/reducers/sourcesReducer';
 import { FETCH_SOURCES, IS_FETCHING } from '../../../redux/actions/types';
+import sources from '../../__mocks__/sources';
 
-const initialState = { sources: [], loading: false };
-describe('Test suite for vote reducer', () => {
+const initialState = { sources: [], loading: false, hasMore: false };
+describe('Test suite for sources reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
   it('should handle FETCH_SOURCES', () => {
     expect(reducer(
-      {},
+      { sources: [] },
       {
         type: FETCH_SOURCES,
-        payload: [],
+        payload: [sources],
       },
     )).toEqual({
-      sources: [],
+      sources: [sources],
+      hasMore: false,
     });
   });
 

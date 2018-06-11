@@ -1,16 +1,21 @@
-import { FETCH_SOURCES, IS_FETCHING } from '../types';
+import { IS_FETCHING, CLEAR_SOURCES } from '../types';
 
-export const isSuccess = payload => ({
-  type: FETCH_SOURCES,
+export const isSuccess = (type, payload) => ({
+  type,
   payload,
 });
 
-export const isErrored = payload => ({
-  type: FETCH_SOURCES,
+export const isErrored = (type, payload) => ({
+  type,
   payload,
 });
 
 export const isFetching = payload => ({
   type: IS_FETCHING,
   payload,
+});
+
+export const clearSources = () => ({
+  type: CLEAR_SOURCES,
+  payload: [],
 });

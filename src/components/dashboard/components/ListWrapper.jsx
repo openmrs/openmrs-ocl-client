@@ -7,9 +7,7 @@ const ListWrapper = ({ sources, fetching }) => {
   if (sources.length >= 1) {
     return (
       <div className="row justify-content-center">
-        {sources.map(source => (
-          <Card source={source} key={source.uuid} />
-        ))}
+        {sources.map(source => <Card source={source} key={source.uuid} />)}
       </div>
     );
   }
@@ -21,8 +19,8 @@ const ListWrapper = ({ sources, fetching }) => {
     );
   }
   return (
-    <div className="text-center mt-3">
-      <h5>No source found</h5>
+    <div className="text-center mt-3 p-10">
+      <h6 className="p-20">No source found</h6>
     </div>
   );
 };
