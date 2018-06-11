@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import Router from 'react-mock-router';
 import {
   SourceSearch,
   mapStateToProps,
@@ -13,7 +14,7 @@ describe('Dashboard Component', () => {
       sources: [],
       isFetching: false,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<Router><SourceSearch {...props} /></Router>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -24,7 +25,7 @@ describe('Dashboard Component', () => {
       sources: [],
       isFetching: true,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<Router><SourceSearch {...props} /></Router>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -35,7 +36,7 @@ describe('Dashboard Component', () => {
       sources: [sources],
       isFetching: true,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<Router><SourceSearch {...props} /></Router>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -50,7 +51,7 @@ describe('Dashboard Component', () => {
       sort: jest.fn(),
     };
 
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<Router><SourceSearch {...props} /></Router>);
     wrapper.find('#dictionary').simulate('click', {
       preventDefault: () => {},
     });
@@ -63,7 +64,7 @@ describe('Dashboard Component', () => {
       sources: [sources],
       isFetching: true,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<Router><SourceSearch {...props} /></Router>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('#dictionary').simulate('click', {

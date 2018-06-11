@@ -56,11 +56,11 @@ nav {
 .search-bar-wrapper {
   transition: all 400ms ease-in-out;
   background: rgb(233, 233, 233);
-  border-radius: .2rem;
-  padding: .7rem;
+  border-radius: 10rem;
+  margin-top: 10px;
+  padding: .5rem;
   z-index: 0;
 }
-
 .search-bar-wrapper i {
   color: #757575;
 }
@@ -315,4 +315,10 @@ nav {
   border-radius: .2rem;
   margin-top: .5rem;
   padding: .2rem .5rem;
+}
+.concept-table{
+  text-align: left!important;
+}
+.header{
+  background-color: #4f6196;
 }
