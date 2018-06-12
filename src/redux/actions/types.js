@@ -10,3 +10,7 @@ export const FETCH_SOURCES = '[sources] fetch sources';
 export const SEARCH_SOURCES = '[sources] search sources';
 export const FILTER_SOURCES = '[sources] filter sources';
 export const CLEAR_SOURCES = '[sources] clear sources';
+
+export const ADDING_DICTIONARY = '[dictionary] add dictionaries';
+export const FETCHING_ORGANIZATIONS = '[orgs] fetch user organizations';
+export const ADDING_DICTIONARY_FAILURE = '[dictionary] adding dictionaries failure';
