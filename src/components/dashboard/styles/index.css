@@ -207,6 +207,10 @@ nav {
   position: relative;
   font-family: 'Roboto', sans-serif;
   min-height: 7rem;
+<<<<<<< HEAD
+=======
+  /* min-width: 20rem; */
+>>>>>>> f5242d32c9b9e94be380af913cce7fe876b6207a
   border-radius: .2rem .2rem 0 0;
   background: white;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.08);
@@ -316,9 +320,16 @@ nav {
   margin-top: .5rem;
   padding: .2rem .5rem;
 }
+<<<<<<< HEAD
 .concept-table{
   text-align: left!important;
 }
 .header{
   background-color: #4f6196;
+=======
+
+.no-shadow {
+  box-shadow: none;
+  text-shadow: none;
+>>>>>>> f5242d32c9b9e94be380af913cce7fe876b6207a
 }
