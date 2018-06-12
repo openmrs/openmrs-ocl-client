@@ -1,19 +1,13 @@
-import { FETCH_SOURCES } from '../../../redux/actions/types';
-import { isErrored, isSuccess } from '../../../redux/actions/sources/sourcesActionCreators';
+import { CLEAR_SOURCES } from '../../../redux/actions/types';
+import { clearSources } from '../../../redux/actions/sources/sourcesActionCreators';
 
-describe('Test for successful sources fetch', () => {
+describe('Test for clearSources', () => {
   const response = {
-    data: {},
-  };
-  const responseData = {
-    type: FETCH_SOURCES,
-    payload: { data: {} },
+    type: CLEAR_SOURCES,
+    payload: [],
   };
 
   it('should return action type and payload', () => {
-    expect(isSuccess(response)).toEqual(responseData);
-  });
-  it('Test for errors while fetching sources', () => {
-    expect(isErrored(response)).toEqual(responseData);
+    expect(clearSources()).toEqual(response);
   });
 });

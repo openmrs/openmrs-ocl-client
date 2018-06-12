@@ -12,6 +12,8 @@ describe('Dashboard Component', () => {
       fetchSources: jest.fn(),
       sources: [],
       isFetching: false,
+      clearSources: jest.fn(),
+      hasMore: false,
     };
     const wrapper = mount(<SourceSearch {...props} />);
 
@@ -23,6 +25,8 @@ describe('Dashboard Component', () => {
       fetchSources: jest.fn(),
       sources: [],
       isFetching: true,
+      clearSources: jest.fn(),
+      hasMore: false,
     };
     const wrapper = mount(<SourceSearch {...props} />);
 
@@ -34,6 +38,8 @@ describe('Dashboard Component', () => {
       fetchSources: jest.fn(),
       sources: [sources],
       isFetching: true,
+      clearSources: jest.fn(),
+      hasMore: false,
     };
     const wrapper = mount(<SourceSearch {...props} />);
 
@@ -48,6 +54,8 @@ describe('Dashboard Component', () => {
       onSubmit: jest.fn(),
       onSearch: jest.fn(),
       sort: jest.fn(),
+      clearSources: jest.fn(),
+      hasMore: false,
     };
 
     const wrapper = mount(<SourceSearch {...props} />);
@@ -62,6 +70,8 @@ describe('Dashboard Component', () => {
       fetchSources: jest.fn(),
       sources: [sources],
       isFetching: true,
+      clearSources: jest.fn(),
+      hasMore: false,
     };
     const wrapper = mount(<SourceSearch {...props} />);
     const event = { target: { name: 'searchInput', value: 'ciel' } };

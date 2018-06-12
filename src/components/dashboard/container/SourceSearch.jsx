@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import autoBind from 'react-autobind';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import { fetchSources } from '../../../redux/actions/sources/index';
+import { clearSources } from '../../../redux/actions/sources/sourcesActionCreators';
 import '../styles/index.css';
 
 import SideBar from '../components/SideNavigation';
@@ -15,16 +19,18 @@ export class SourceSearch extends Component {
       name: PropTypes.string,
     })).isRequired,
     isFetching: PropTypes.bool.isRequired,
+    clearSources: PropTypes.func.isRequired,
+    hasMore: PropTypes.bool.isRequired,
   };
   constructor(props) {
     super(props);
 
     this.state = {
       searchInput: '',
-      sort: 'sortAsc=bestmatch',
+      sourceType: [],
+      offset: 2,
     };
-    this.onSearch = this.onSearch.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    autoBind(this);
   }
 
   componentDidMount() {
@@ -33,51 +39,80 @@ export class SourceSearch extends Component {
 
   onSearch(event) {
     const { value, name, checked } = event.target;
+    const { sourceType } = this.state;
     const trueValue = event.target.type === 'checkbox' ? checked : value;
     this.setState({ [name]: trueValue });
+    if (name === 'searchInput' && value.length <= 0) {
+      this.props.clearSources();
+      this.props.fetchSources(value, sourceType, 25, 1);
+      this.setState({ offset: 2 });
+    }
   }
 
-  onSubmit(event, sortParams = null) {
+  onSubmit(event) {
     event.preventDefault();
     const {
-      dict, ext, IR, IT, sort,
+      dictionary, external, indicatorRegistry, interfaceTerminology,
     } = this.state;
     const sourceType = [];
-    if (dict) {
+    if (dictionary) {
       sourceType.push('Dictionary');
     }
-    if (ext) {
+    if (external) {
       sourceType.push('External');
     }
-    if (IR) {
+    if (indicatorRegistry) {
       sourceType.push('"Indicator Registry"');
     }
-    if (IT) {
+    if (interfaceTerminology) {
       sourceType.push('"Interface Terminology"');
     }
-    this.props.fetchSources(this.state.searchInput, sourceType, 25, 1, sortParams || sort);
+    this.props.clearSources();
+    this.setState({ sourceType, offset: 2 });
+    this.props.fetchSources(this.state.searchInput, sourceType, 25, 1);
+  }
+
+  handleSources(
+    searchInput = this.state.searchInput,
+    sourceType = this.state.sourceType,
+    offset = this.state.offset,
+  ) {
+    this.props.fetchSources(searchInput, sourceType, 25, offset);
+    this.setState(prevState => ({
+      offset: prevState.offset + 1,
+    }));
+  }
+
+  renderEndMessage(sources) {
+    if (!this.props.isFetching) {
+      return (
+        <h6 className="pt-5">
+          You have seen all the {sources.length} source(s) your search query returned.
+        </h6>
+      );
+    }
+    return '';
   }
 
   render() {
-    const {
-      searchInput, dict, ext, IR, IT,
-    } = this.state;
+    const { searchInput } = this.state;
+    const { hasMore, sources, isFetching } = this.props;
     return (
       <div className="dashboard-wrapper">
         <SideBar />
-        <SearchBar
-          onSearch={this.onSearch}
-          onSubmit={this.onSubmit}
-          searchValue={searchInput}
-          dict={dict}
-          ext={ext}
-          IR={IR}
-          IT={IT}
-        />
+        <SearchBar onSearch={this.onSearch} onSubmit={this.onSubmit} searchValue={searchInput} />
         <div className="container-fluid">
           <div className="row justify-content-center">
             <div className="offset-sm-1 col-10">
-              <ListWrapper sources={this.props.sources} fetching={this.props.isFetching} />
+              <InfiniteScroll
+                dataLength={sources.length}
+                next={this.handleSources}
+                hasMore={hasMore}
+                loader={<h6>Loading...</h6>}
+                endMessage={this.renderEndMessage(sources)}
+              >
+                <ListWrapper sources={sources} fetching={isFetching} />
+              </InfiniteScroll>
             </div>
           </div>
         </div>
@@ -89,9 +124,10 @@ export class SourceSearch extends Component {
 export const mapStateToProps = state => ({
   sources: state.sources.sources,
   isFetching: state.sources.loading,
+  hasMore: state.sources.hasMore,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchSources },
+  { fetchSources, clearSources },
 )(SourceSearch);
