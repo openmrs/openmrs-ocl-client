@@ -7,7 +7,9 @@ const ListWrapper = ({ sources, fetching }) => {
   if (sources.length >= 1) {
     return (
       <div className="row justify-content-center">
-        {sources.map(source => <Card source={source} key={source.uuid} />)}
+        {sources.map(source => (
+          <Card source={source} key={source.uuid} />
+        ))}
       </div>
     );
   }
