@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import store from './redux/reducers/store';
 import './App.css';
+import './components/dashboard/components/dictionary/styles/dictionary-modal.css';
 import Login from './components/Login';
 import Authenticate from './components/Auth';
 import SourceSearch from './components/dashboard/container/SourceSearch';

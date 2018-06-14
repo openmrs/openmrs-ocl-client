@@ -1,0 +1,13 @@
+.sidenav-concept-btn {
+    margin-top: 30%;
+ }
+ .modal-fade {
+     padding-top: 10%;
+     opacity: 10 !important;
+     background-color: rgba(0, 0, 0, 0.5);
+ }
+ .modal-content {
+     width: 150%;
+     margin-left: -36%;
+     margin-top: 20%  
+ }

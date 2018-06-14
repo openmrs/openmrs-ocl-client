@@ -6,6 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 import { fetchSources } from '../../../redux/actions/sources/index';
 import { clearSources } from '../../../redux/actions/sources/sourcesActionCreators';
+import { fetchingOrganizations } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import '../styles/index.css';
 
 import SideBar from '../components/SideNavigation';
@@ -19,6 +20,7 @@ export class SourceSearch extends Component {
       name: PropTypes.string,
     })).isRequired,
     isFetching: PropTypes.bool.isRequired,
+    fetchingOrganizations: PropTypes.func.isRequired,
     clearSources: PropTypes.func.isRequired,
     hasMore: PropTypes.bool.isRequired,
   };
@@ -35,6 +37,7 @@ export class SourceSearch extends Component {
 
   componentDidMount() {
     this.props.fetchSources();
+    this.props.fetchingOrganizations();
   }
 
   onSearch(event) {
@@ -125,9 +128,10 @@ export const mapStateToProps = state => ({
   sources: state.sources.sources,
   isFetching: state.sources.loading,
   hasMore: state.sources.hasMore,
+  organizations: state.organizations,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchSources, clearSources },
+  { fetchSources, clearSources, fetchingOrganizations },
 )(SourceSearch);
