@@ -18,6 +18,11 @@ export default {
         .then(() => {
           return instance.post('user/sources/', data);
         }),
+
+    fetchingDictionaries: () =>
+      instance
+      .get(`collections/?q=${''}&limit=${1000}&page=${1}&verbose=true`)
+      .then(payload => payload.data) 
   },
   organizations: {
     fetchOrganizations: () =>

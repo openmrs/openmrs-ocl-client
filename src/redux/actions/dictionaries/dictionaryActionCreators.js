@@ -1,5 +1,5 @@
 import { notify } from 'react-notify-toast';
-import { addDictionary, fetchOrganizations } from './dictionaryActions';
+import { addDictionary, fetchOrganizations, isSuccess, isFetching } from './dictionaryActions';
 import api from './../../api';
 
 export const createDictionary = data => dispatch =>
@@ -27,3 +27,22 @@ export const fetchingOrganizations = () => dispatch =>
     .fetchOrganizations()
     .then(payload =>
       dispatch(fetchOrganizations(payload)));
+
+export const fetchDictionaries = () => dispatch =>     
+api.dictionaries
+        .fetchingDictionaries()
+        .then(dispatch(isFetching(true)))  
+        .then(payload =>
+          dispatch(isSuccess(payload)),
+          dispatch(isFetching(false))
+        )
+        .catch((error) => () => {
+          if (error.payload){
+            dispatch(isSuccess(error.payload));
+            dispatch(isFetching(false));
+          } else {
+            dispatch(isErrored(error.payload.data));
+            dispatch(isFetching(false));
+          }
+        }
+        );
