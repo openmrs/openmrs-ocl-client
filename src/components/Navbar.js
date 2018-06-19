@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { notify } from 'react-notify-toast';
+import Notification, { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,6 +15,7 @@ export class Navbar extends Component {
   render() {
     return (
       <div>
+        <Notification options={{ zIndex: 10000, top: '200px' }} />
         <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light nav">
           <strong>
             <a className="navbar-brand" href="/">

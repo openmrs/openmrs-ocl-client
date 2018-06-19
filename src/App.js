@@ -1,5 +1,4 @@
 import React from 'react';
-import Notifications from 'react-notify-toast';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -15,7 +14,6 @@ const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <div className="App">
-        <Notifications />
         <Navbar />
         <Switch>
           <Route exact path="/" component={Login} />
