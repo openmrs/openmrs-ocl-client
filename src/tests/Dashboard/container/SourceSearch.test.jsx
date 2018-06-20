@@ -5,6 +5,7 @@ import {
   mapStateToProps,
 } from '../../../components/dashboard/container/SourceSearch';
 import sources from '../../__mocks__/sources';
+import { Router,MemoryRouter,BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 describe('Dashboard Component', () => {
@@ -17,7 +18,7 @@ describe('Dashboard Component', () => {
       clearSources: jest.fn(),
       hasMore: false,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = shallow(<MemoryRouter><SourceSearch {...props} /></MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -31,7 +32,7 @@ describe('Dashboard Component', () => {
       clearSources: jest.fn(),
       hasMore: false,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><SourceSearch {...props} /></MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -45,7 +46,7 @@ describe('Dashboard Component', () => {
       clearSources: jest.fn(),
       hasMore: false,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><SourceSearch {...props} /></MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -63,7 +64,7 @@ describe('Dashboard Component', () => {
       hasMore: false,
     };
 
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><SourceSearch {...props} /></MemoryRouter>);
     wrapper.find('#dictionary').simulate('click', {
       preventDefault: () => {},
     });
@@ -79,7 +80,7 @@ describe('Dashboard Component', () => {
       clearSources: jest.fn(),
       hasMore: false,
     };
-    const wrapper = mount(<SourceSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><SourceSearch {...props} /></MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('#dictionary').simulate('click', {

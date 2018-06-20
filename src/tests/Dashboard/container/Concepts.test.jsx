@@ -5,6 +5,7 @@ import {
   mapStateToProps,
 } from '../../../components/dashboard/container/Concepts';
 import concepts from '../../__mocks__/concepts';
+import { Router,MemoryRouter,BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 
@@ -15,7 +16,7 @@ describe('Dashboard Concept Component', () => {
       concepts: [],
       isFetching: false,
     };
-    const wrapper = mount(<ConceptSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -25,7 +26,7 @@ describe('Dashboard Concept Component', () => {
       concepts: [],
       isFetching: true,
     };
-    const wrapper = mount(<ConceptSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -35,7 +36,7 @@ describe('Dashboard Concept Component', () => {
       concepts: [concepts],
       isFetching: true,
     };
-    const wrapper = mount(<ConceptSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('.search-bar-wrapper').simulate('submit', {
@@ -56,7 +57,7 @@ describe('Dashboard Concept Component', () => {
       concepts: [concepts],
       isFetching: true,
     };
-    const wrapper = mount(<ConceptSearch {...props} />);
+    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
 });

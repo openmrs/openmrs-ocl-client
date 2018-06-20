@@ -326,9 +326,29 @@ nav {
 .concept-table {
   text-align: left !important;
 }
+
 .header {
   background-color: #4f6196;
 }
+
 .display-name{
   font-size: 20px;
+}
+
+#dictionary {
+  min-height: 8rem;
+}
+
+#dictionaryHeader{
+  background: #2b6d27;
+}
+
+#dictionary-owner {
+  background: #225a21;
+}
+
+#viewDetails{
+  margin-bottom: 6%;
+  font-size: 11px;
+  border: none;
 }
