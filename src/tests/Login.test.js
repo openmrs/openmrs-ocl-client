@@ -1,26 +1,20 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { StaticRouter } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
-import LoginComponent from '../components/Login';
+import Router from 'react-mock-router';
+import { Login } from '../components/Login';
 
-// create any initial state needed
-const initialState = {
-  users: {
-    loggedIn: false,
-  },
-};
-// here it is possible to pass in any middleware if needed into //configureStore
-const mockStore = configureStore();
-let store;
 let wrapper;
 
+const props = {
+  loginAction: jest.fn(),
+  history: { push: jest.fn() },
+  loading: false,
+};
+
 beforeEach(() => {
-  // creates the store with any initial state
-  store = mockStore(initialState);
-  wrapper = mount(<StaticRouter context={{}}>
-    <LoginComponent store={store} />
-  </StaticRouter>);
+  wrapper = mount(<Router>
+    <Login {...props} />
+  </Router>);
 });
 
 describe('Login Component', () => {
@@ -37,8 +31,7 @@ describe('Login Component', () => {
     expect(wrapper.find('[name="username"]').prop('value')).toBe('js');
   });
 
-  // it('submits data', () => {
-  //   wrapper.find('form').simulate('submit', { preventDefault });
-  //   expect(preventDefault).toBeCalled();
-  // });
+  it('submits data', () => {
+    wrapper.find('form').simulate('submit', { preventDefault: () => {} });
+  });
 });
