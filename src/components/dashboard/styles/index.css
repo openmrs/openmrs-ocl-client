@@ -187,6 +187,11 @@ nav {
 
 .dashboard-wrapper {
   margin-top: 4rem;
+
+}
+.title-wrapper {
+  margin-top: 3rem;
+  font-size: 1.45rem;
 }
 
 .key-icons {
@@ -351,4 +356,14 @@ nav {
   margin-bottom: 6%;
   font-size: 11px;
   border: none;
+}
+.head{
+  color: #ffff;
+}
+
+.table1{
+  width: 10rem;
+}
+.table2{
+  width: 30rem;
 }
