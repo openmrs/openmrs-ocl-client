@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Router from 'react-mock-router';
-import { Login } from '../components/Login';
+import { Login } from '../../../components/login/container/index';
 
 let wrapper;
 
