@@ -36,7 +36,7 @@ export class Login extends Component {
       return;
     }
 
-    if (payload.errorMessage) {
+    if (payload && payload.errorMessage) {
       notify.show(payload.errorMessage, 'error', 3000);
     }
   }

@@ -13,6 +13,9 @@ export const AuthWrapper = (WrappedComponent) => {
       history: PropTypes.shape({
         push: PropTypes.func,
       }).isRequired,
+      location: PropTypes.shape({
+        pathname: PropTypes.string,
+      }).isRequired,
     };
 
     static defaultProps = {
@@ -22,6 +25,10 @@ export const AuthWrapper = (WrappedComponent) => {
     componentWillMount() {
       if (!this.props.loggedIn) {
         this.props.history.push('/');
+        return;
+      }
+      if (this.props.location.pathname === '/') {
+        this.props.history.push('/dashboard');
       }
     }
 

@@ -19,7 +19,7 @@ const App = () => (
         <Notifications />
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Login} />
+          <Route exact path="/" component={Authenticate(Login)} />
           <Route exact path="/dashboard" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />

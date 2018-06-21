@@ -11,6 +11,7 @@ import TestComponent from '../__mocks__/FakeComponent';
 let store = createMockStore(authenticated);
 const props = {
   history: { push: jest.fn() },
+  location: { push: jest.fn() },
 };
 
 describe('higher-order component', () => {
@@ -33,7 +34,7 @@ describe('higher-order component', () => {
       <Router>
         <WrapperComponent {...props} />
       </Router>
-                          </Provider>);
+    </Provider>);
     expect(wrapper).toMatchSnapshot();
   });
 });
