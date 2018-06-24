@@ -22,7 +22,7 @@ export default {
     fetchingDictionaries: () =>
       instance
       .get(`collections/?q=${''}&limit=${1000}&page=${1}&verbose=true`)
-      .then(payload => payload.data) 
+      .then(payload => payload.data)
   },
   organizations: {
     fetchOrganizations: () =>
