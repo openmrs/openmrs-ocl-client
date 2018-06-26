@@ -52,8 +52,8 @@ describe('Test suite for dictionary actions', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: IS_FETCHING, payload: false },
       { type: FETCHING_DICTIONARIES, payload: [dictionaries] },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore({ payload: {} });
@@ -73,6 +73,7 @@ describe('Test suite for dictionary actions', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
+      { type: FETCHING_DICTIONARIES, payload: 'could not complete this request' },
       { type: IS_FETCHING, payload: false },
     ];
 
