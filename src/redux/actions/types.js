@@ -16,3 +16,4 @@ export const ADDING_DICTIONARY_FAILURE = '[dictionary] adding dictionaries failu
 export const FETCHING_DICTIONARIES = '[dictionaries] fetch dictionaries';
 export const FETCH_DICTIONARY_CONCEPT = '[concepts] fetch concepts of one dictionary';
 export const GET_TOTAL = '[concepts] get total number of concepts';
+export const CLEAR_DICTIONARIES = '[dictionaries] clear dictionaries';

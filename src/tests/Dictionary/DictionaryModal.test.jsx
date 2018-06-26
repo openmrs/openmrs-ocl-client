@@ -3,6 +3,7 @@ import { shallow } from 'enzyme';
 import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
 import SideNavigation from '../../components/dashboard/components/SideNavigation';
+import { AddDictionary } from '../../components/dashboard/components/dictionary/AddDictionary';
 
 const props = {
   title: 'Add Dictionary',
@@ -21,6 +22,9 @@ const props = {
 describe('Test suite for dictionary modal', () => {
   const wrapper = shallow(<DictionaryModal {...props} />);
   const preventDefault = { preventDefault: jest.fn() };
+  const toUpperCase = { toUpperCase: jest.fn() };
+  const then = { then: jest.fn() };
+
   it('should take a snapshot', () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.instance().componentDidMount());
@@ -35,10 +39,21 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.state('errors')).toEqual({});
   });
 
-  it('Test to check modal opens and closes on trigger', () => {
+  it('Opens and closes modal on trigger', () => {
     expect(wrapper.find('#cancel').simulate('click'));
     const dictionaryWrapper = shallow(<SideNavigation {...props} />);
     expect(dictionaryWrapper.instance().handleHide(preventDefault));
     expect(dictionaryWrapper.instance().handleShow(preventDefault));
+  });
+  it('Renders component that adds a dictionary', () => {
+    const data = {
+      dictionary: {
+        name: toUpperCase,
+        submit: then,
+        then: jest.fn(),
+      },
+    };
+    const component = shallow(<AddDictionary {...props} {...preventDefault} {...data} />);
+    expect(component).toMatchSnapshot();
   });
 });

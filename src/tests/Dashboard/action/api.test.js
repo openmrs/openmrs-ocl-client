@@ -33,7 +33,6 @@ describe('Test suite for organization actions', () => {
     ];
 
     const store = mockStore({ payload: {} });
-
     return store
       .dispatch(fetchingOrganizations('ocl', ['Dictionary'], 10, 1, 'sortAsc=name'))
       .then(() => {
