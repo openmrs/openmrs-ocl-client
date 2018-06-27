@@ -1,5 +1,6 @@
 import reducer from '../../../redux/reducers/ConceptReducers';
 import { FETCH_CONCEPTS, IS_FETCHING } from '../../../redux/actions/types';
+import concepts from '../../__mocks__/concepts';
 
 const initialState = {
   concepts: [],
@@ -7,6 +8,7 @@ const initialState = {
   dictionaryConcepts: [],
   filteredSources: [],
   filteredClass: [],
+  hasMore: false,
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
@@ -15,13 +17,14 @@ describe('Test suite for concepts reducer', () => {
 
   it('should handle FETCH_CONCEPTS', () => {
     expect(reducer(
-      {},
+      { concepts: [] },
       {
         type: FETCH_CONCEPTS,
-        payload: [],
+        payload: [concepts],
       },
     )).toEqual({
-      concepts: [],
+      concepts: [concepts],
+      hasMore: false,
     });
   });
 

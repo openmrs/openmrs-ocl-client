@@ -55,6 +55,7 @@ describe('Dashboard SpecificConcept Component', () => {
       fetchConceptsActionTypes: jest.fn(),
       concepts: [concepts],
       isFetching: true,
+      clearConcepts: jest.fn(),
     };
     const params = {
       match: {

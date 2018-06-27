@@ -1,4 +1,4 @@
-import { IS_FETCHING, FETCH_CONCEPTS, FETCH_DICTIONARY_CONCEPT } from '../actions/types';
+import { IS_FETCHING, FETCH_CONCEPTS, FETCH_DICTIONARY_CONCEPT, SEARCH_CONCEPTS, CLEAR_CONCEPTS } from '../actions/types';
 import { filterSources, filterClass } from './util';
 
 const initialState = {
@@ -7,13 +7,30 @@ const initialState = {
   dictionaryConcepts: [],
   filteredSources: [],
   filteredClass: [],
+  hasMore: false,
 };
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_CONCEPTS:
+  const calculatePayload = () => {
+    if (action.payload.length === 25) {
       return {
         ...state,
-        concepts: action.payload,
+        concepts: [...state.concepts, ...action.payload],
+        hasMore: true,
+      };
+    }
+    return {
+      ...state,
+      concepts: [...state.concepts, ...action.payload],
+      hasMore: false,
+    };
+  };
+  switch (action.type) {
+    case FETCH_CONCEPTS:
+      return calculatePayload();
+    case IS_FETCHING:
+      return {
+        ...state,
+        loading: action.payload,
       };
     case FETCH_DICTIONARY_CONCEPT:
       return {
@@ -22,10 +39,16 @@ export default (state = initialState, action) => {
         filteredSources: filterSources(action.payload),
         filteredClass: filterClass(action.payload),
       };
-    case IS_FETCHING:
+    case SEARCH_CONCEPTS:
       return {
         ...state,
         loading: action.payload,
+        hasMore: false,
+      };
+    case CLEAR_CONCEPTS:
+      return {
+        ...state,
+        concepts: [],
       };
     default:
       return state;
