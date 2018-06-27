@@ -190,6 +190,7 @@ nav {
 
 }
 .title-wrapper {
+  text-align: center;
   margin-top: 3rem;
   font-size: 1.45rem;
 }
@@ -366,4 +367,7 @@ nav {
 }
 .table2{
   width: 30rem;
+}
+.load{
+  text-align: center
 }
