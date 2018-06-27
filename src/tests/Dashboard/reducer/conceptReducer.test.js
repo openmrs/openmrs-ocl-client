@@ -1,8 +1,14 @@
 import reducer from '../../../redux/reducers/ConceptReducers';
 import { FETCH_CONCEPTS, IS_FETCHING } from '../../../redux/actions/types';
 
-const initialState = { concepts: [], loading: false };
-describe('Test suite for vote reducer', () => {
+const initialState = {
+  concepts: [],
+  loading: false,
+  dictionaryConcepts: [],
+  filteredSources: [],
+  filteredClass: [],
+};
+describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
