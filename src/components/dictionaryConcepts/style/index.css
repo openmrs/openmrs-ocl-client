@@ -1,0 +1,129 @@
+* {
+  text-align: left;
+}
+
+body {
+  background: white;
+}
+
+.rounded-edge {
+  border-radius: 2rem;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  -ms-border-radius: 2rem;
+  -o-border-radius: 2rem;
+}
+
+.concept-header {
+  margin-top: 5rem;
+}
+
+.concept-dropdown {
+  padding-left: 2rem;
+}
+
+.concept-btn {
+  margin-right: 1rem;
+}
+
+.concept-dropdown .btn {
+  box-shadow: none;
+}
+
+.sidenav-container {
+  width: 100%;
+  background: white;
+  padding: .5rem .7rem;
+  box-shadow: 0 4px 15px 1px #00000012;
+  font-size: 70%;
+  margin-bottom: 2rem;
+}
+
+.sidenav-container .sidenav-header {
+  padding: .5rem .7rem;
+  padding-bottom: 0;
+  font-weight: 400;
+}
+
+.sidenav-container .custom-control-label {
+  margin-bottom: 0;
+  padding-top: .3rem;
+}
+
+.search-container {
+  padding-left: 2rem;
+}
+
+.search-container .concept-search-wrapper {
+  background: rgb(240, 240, 240);
+  padding: .2rem 1rem;
+  border-radius: 2rem;
+  -webkit-border-radius: 2rem;
+  -moz-border-radius: 2rem;
+  -ms-border-radius: 2rem;
+  -o-border-radius: 2rem;
+}
+
+.search-container .search-pagination {
+  position: relative;
+  line-height: 2rem;
+  font-size: 1rem;
+  width: 100%;
+  height: 2rem;
+}
+
+.paginate-count {
+  position: absolute;
+  bottom: -11px;
+  right: -1px;
+  font-style: italic;
+  font-size: 80%;
+  padding-top: .4rem;
+}
+
+.search-container .concept-search-wrapper .fa-search {
+  font-size: .8rem;
+  padding-right: .7rem;
+  color: grey;
+}
+
+.search-container .search-icons {
+  font-size: .8rem;
+}
+
+.concept-search {
+  border: none;
+  background: inherit;
+  line-height: 2rem;
+  height: 2rem;
+  width: 90%;
+  outline: none;
+  box-shadow: none;
+}
+
+.custom-concept-list {
+  padding: 2rem 1rem 1rem;
+  border-radius: .4rem;
+  -webkit-border-radius: .4rem;
+  -moz-border-radius: .4rem;
+  -ms-border-radius: .4rem;
+  -o-border-radius: .4rem;
+  overflow: hidden;
+}
+
+.custom-concept-list .table {
+  box-shadow: 0 4px 15px 1px #00000012;
+  border-style: hidden;
+  font-size: .8rem;
+}
+
+.custom-concept-list a,
+.dummy-link {
+  color: #4f6196;
+  padding-right: .5rem;
+  cursor: not-allowed;
+}
+
+.custom-concept-list a:nth-last-of-type {
+  padding-right: 0;
+}

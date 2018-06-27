@@ -14,3 +14,5 @@ export const ADDING_DICTIONARY = '[dictionary] add dictionaries';
 export const FETCHING_ORGANIZATIONS = '[orgs] fetch user organizations';
 export const ADDING_DICTIONARY_FAILURE = '[dictionary] adding dictionaries failure';
 export const FETCHING_DICTIONARIES = '[dictionaries] fetch dictionaries';
+export const FETCH_DICTIONARY_CONCEPT = '[concepts] fetch concepts of one dictionary';
+export const GET_TOTAL = '[concepts] get total number of concepts';

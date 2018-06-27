@@ -11,6 +11,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
     "eslint": "^4.19.1",
+    "expect": "^23.2.0",
     "jest-localstorage-mock": "^2.2.0",
     "moment": "^2.22.1",
     "moxios": "^0.4.0",

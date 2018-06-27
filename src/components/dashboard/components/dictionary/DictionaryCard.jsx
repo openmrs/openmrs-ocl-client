@@ -1,15 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import persistActiveconcept from './helperFunction';
 
 const DictionaryCard = (dictionary)=> {
   const {
     dictionary: {
       name,
       owner,
+      short_code,
       owner_type,
+      owner_url,
       active_concepts,
       created_by,
     },
   } = dictionary;
+
+  const ownerType = owner_type === 'Organization' ? 'org' : 'user';
   return (
     <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
       <div className="card-container" id="dictionary">
@@ -26,9 +32,11 @@ const DictionaryCard = (dictionary)=> {
         </div>
           <div className="description col-12 text-left">
             <p>
-              <a className="source-type">
+              <Link to={`/concepts${owner_url}${short_code}`} 
+              className="source-type" 
+                onClick={() => persistActiveconcept(active_concepts)}>
                 Concepts: { active_concepts }
-              </a>
+              </Link>
               <br/>
               <a className="source-type">
                 Created By: { created_by.toUpperCase().charAt(0) + created_by.slice(1)  }
