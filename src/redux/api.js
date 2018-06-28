@@ -27,7 +27,12 @@ export default {
     searchDictionaries: (searchTerm) =>
       instance
       .get(`collections/?q=${searchTerm}&limit=${1000}&page=${1}&verbose=true`)
-      .then(payload => payload.data)
+      .then(payload => payload.data),
+
+    fetchDictionary: (data) =>
+      instance
+        .get(`${data}`)
+        .then(response => response.data),
   },
   organizations: {
     fetchOrganizations: () =>

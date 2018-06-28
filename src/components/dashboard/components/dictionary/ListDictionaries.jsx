@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Card from './DictionaryCard';
 import Loader from '../../../Loader';
 
-const ListDictionaries = ({ dictionaries, fetching }) => {
+const ListDictionaries = ({ dictionaries, fetching, fetchData }) => {
   if (fetching) {
     return (
       <div className="text-center mt-3">
@@ -14,11 +14,12 @@ const ListDictionaries = ({ dictionaries, fetching }) => {
   if (dictionaries.length >= 1) {
     return (
       <div className="row justify-content-center">
-        {dictionaries.map((dictionary) => {
+        {dictionaries.map((dictionary, index) => {
           return dictionary.repository_type === 'OpenMRSDictionary' ?
-            <Card dictionary={dictionary} key={dictionary.uuid} />
+            <Card dictionary={dictionary} key={dictionary.uuid}
+            fetchData={fetchData}/>
                         :
-            <div> {' '} </div>;
+            <div key={index}> {' '} </div>;
                 })}
       </div>
     );
