@@ -115,22 +115,22 @@
 .sidenav {
   height: 100%;
   width: 6%;
-  position: fixed; 
+  position: fixed;
   padding-top: 20px;
-  background-color: #343a40; 
+  background-color: #343a40;
   font-family: 'Open Sans Condensed', sans-serif;
   border-top-right-radius: 2em;
-  border-right:solid;
+  border-right: solid;
 }
 
 .sidenav a {
-  display: block; 
+  display: block;
   text-align: center;
   color: white;
   font-size: 20px;
 }
 
-p{
+p {
   text-align: center;
   color: white;
   font-family: 'Open Sans Condensed', sans-serif;
@@ -147,15 +147,35 @@ p{
   background-color: #000;
   border: none;
   border-radius: 45px;
-  margin-bottom:6em;
-  margin-top:16em;
-  }
+  margin-bottom: 6em;
+  margin-top: 16em;
+}
 
 .button:hover {
-  background-color:#000;
+  background-color: #000;
   color: #fff;
 }
 
-.bgcolor{
-  background-color: #495056
+.bgcolor {
+  background-color: #495056;
+}
+.not-found {
+  display: flex;
+  height: 880px;
+  background: url('./images/404.jpg') no-repeat;
+  background-size: cover;
+  padding: 9% 0 4% 0;
+}
+.not-found-container {
+  bottom: 40%;
+  margin: auto;
+  position: relative;
+}
+.btn-not-found {
+  background-color: #495056;
+  border-color: white;
+  margin-bottom: -287% !important;
+}
+.error-template {
+  margin-top: 10px !important;
 }
