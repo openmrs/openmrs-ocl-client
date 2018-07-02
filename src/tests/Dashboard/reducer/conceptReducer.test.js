@@ -7,6 +7,11 @@ const initialState = {
   dictionaryConcepts: [],
   filteredSources: [],
   filteredClass: [],
+  filteredList: [],
+  filteredByClass: [],
+  filteredBySource: [],
+  sourceList: [],
+  classList: [],
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {

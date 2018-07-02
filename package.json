@@ -13,6 +13,7 @@
     "eslint": "^4.19.1",
     "expect": "^23.2.0",
     "jest-localstorage-mock": "^2.2.0",
+    "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "moxios": "^0.4.0",
     "prop-types": "^15.6.1",
