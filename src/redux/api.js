@@ -22,6 +22,11 @@ export default {
     fetchingDictionaries: () =>
       instance
       .get(`collections/?q=${''}&limit=${1000}&page=${1}&verbose=true`)
+      .then(payload => payload.data),
+      
+    searchDictionaries: (searchTerm) =>
+      instance
+      .get(`collections/?q=${searchTerm}&limit=${1000}&page=${1}&verbose=true`)
       .then(payload => payload.data)
   },
   organizations: {

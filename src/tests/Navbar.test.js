@@ -28,5 +28,6 @@ describe('Navbar Component', () => {
 
   it('renders logout function', () => {
     expect(wrapper.find('LogoutAction')).toBeTruthy();
+    expect(wrapper).toMatchSnapshot();
   });
 });
