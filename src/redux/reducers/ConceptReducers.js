@@ -1,5 +1,12 @@
-import { IS_FETCHING, FETCH_CONCEPTS, FETCH_DICTIONARY_CONCEPT } from '../actions/types';
-import { filterSources, filterClass } from './util';
+import {
+  FETCH_CONCEPTS,
+  FILTER_BY_CLASS,
+  FILTER_BY_SOURCES,
+  FETCH_DICTIONARY_CONCEPT,
+  POPULATE_SIDEBAR,
+  IS_FETCHING,
+} from '../actions/types';
+import { filterSources, filterClass, filterList, normalizeList } from './util';
 
 const initialState = {
   concepts: [],
@@ -7,6 +14,11 @@ const initialState = {
   dictionaryConcepts: [],
   filteredSources: [],
   filteredClass: [],
+  filteredList: [],
+  filteredByClass: [],
+  filteredBySource: [],
+  sourceList: [],
+  classList: [],
 };
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -15,10 +27,26 @@ export default (state = initialState, action) => {
         ...state,
         concepts: action.payload,
       };
+    case FILTER_BY_SOURCES:
+      return {
+        ...state,
+        sourceList: normalizeList(action.payload, [action.payload, ...state.sourceList]),
+        filteredBySource: filterList(action.payload, state.sourceList),
+      };
+    case FILTER_BY_CLASS:
+      return {
+        ...state,
+        classList: normalizeList(action.payload, [action.payload, ...state.classList]),
+        filteredByClass: filterList(action.payload, state.classList),
+      };
     case FETCH_DICTIONARY_CONCEPT:
       return {
         ...state,
         dictionaryConcepts: action.payload,
+      };
+    case POPULATE_SIDEBAR:
+      return {
+        ...state,
         filteredSources: filterSources(action.payload),
         filteredClass: filterClass(action.payload),
       };

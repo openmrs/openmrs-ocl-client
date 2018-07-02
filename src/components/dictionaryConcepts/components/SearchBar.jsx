@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SearchBar = ({ conceptsCount, totalConceptsCount }) => (
+const SearchBar = ({
+  conceptsCount, totalConceptsCount, handleSearch, searchValue, submit,
+}) => (
   <div className="row search-container">
     <div className="concept-search-wrapper col-12 col-md-5 col-sm-8">
       <i className="fa fa-search search-icons" aria-hidden="true" />
-      <input
-        type="search"
-        name="search-concept"
-        className="concept-search"
-        id="search-concept"
-        disabled
-        placeholder="search"
-      />
+      <form action="" onSubmit={submit}>
+        <input
+          type="search"
+          name="searchInput"
+          className="concept-search"
+          id="search-concept"
+          value={searchValue}
+          onChange={handleSearch}
+          placeholder="search"
+        />
+      </form>
     </div>
     <div className="search-pagination col-12 col-md-5 offset-md-1 offset-lg-1 col-sm-5">
       <span className="paginate-count">
@@ -24,7 +29,10 @@ const SearchBar = ({ conceptsCount, totalConceptsCount }) => (
 
 SearchBar.propTypes = {
   conceptsCount: PropTypes.number.isRequired,
-  totalConceptsCount: PropTypes.number.isRequired,
+  totalConceptsCount: PropTypes.string.isRequired,
+  handleSearch: PropTypes.func.isRequired,
+  searchValue: PropTypes.string.isRequired,
+  submit: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

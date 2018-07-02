@@ -17,3 +17,18 @@ export default {
   version_url: '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
   url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
 };
+
+export const mockConceptStore = {
+  concepts: {
+    concepts: [],
+    loading: false,
+    dictionaryConcepts: [],
+    filteredSources: ['dev-col', 'MapTypes', 'Classes'],
+    filteredClass: ['Diagnosis', 'MapType', 'Concept Class'],
+    filteredList: [],
+    filteredByClass: [],
+    filteredBySource: [],
+    sourceList: [],
+    classList: [],
+  },
+};

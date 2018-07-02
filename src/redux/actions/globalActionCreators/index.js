@@ -1,6 +1,6 @@
 import { IS_FETCHING } from '../types';
 
-export const fetchDictionaryConcepts = (payload, type) => ({
+export const getDictionaryConcepts = (payload, type) => ({
   type,
   payload,
 });

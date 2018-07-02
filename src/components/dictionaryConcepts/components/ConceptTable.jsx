@@ -43,7 +43,7 @@ const ConceptTable = ({ concepts, loading }) => {
       render={() => (
         <tr>
           <th scope="row" colSpan="6" className="text-center">
-            No concepts added yet
+            No concepts found
           </th>
         </tr>
       )}
