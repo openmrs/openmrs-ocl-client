@@ -12,6 +12,7 @@ import ConceptSearch from './components/dashboard/container/Concepts';
 import DictionaryDisplay from './components/dashboard/container/DictionariesDisplay';
 import SpecificConcept from './components/dashboard/container/SpecificConcept';
 import DictionaryConcepts from './components/dictionaryConcepts/containers/DictionaryConcepts';
+import NotFound from './components/NotFound';
 
 const App = () => (
   <Provider store={store}>
@@ -24,11 +25,8 @@ const App = () => (
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
           <Route exact path="/dashboard/concepts/:organization/:name" component={Authenticate(SpecificConcept)} />
-          <Route
-            exact
-            path="/concepts/:type/:typeName/:collectionName"
-            component={Authenticate(DictionaryConcepts)}
-          />
+          <Route exact path="/concepts/:type/:typeName/:collectionName" component={Authenticate(DictionaryConcepts)} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     </BrowserRouter>
