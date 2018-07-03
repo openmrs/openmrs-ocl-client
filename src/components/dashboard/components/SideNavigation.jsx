@@ -1,6 +1,7 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import AddDictionary from './dictionary/AddDictionary';
-import { Link }from 'react-router-dom';
+
 class SideNavigation extends React.Component {
   constructor(props) {
     super(props);
@@ -12,29 +13,30 @@ class SideNavigation extends React.Component {
   handleHide = () => this.setState({ show: false });
 
   handleShow = () => this.setState({ show: true });
-
   render() {
     return (
       <div className="side-nav d-none d-md-block d-lg-block">
         <ul className="nav flex-column">
           <li className="nav-item">
-        <a className="nav-link active" onClick={this.handleShow}>
+            <a className="nav-link active" onClick={this.handleShow}>
           Add Dictionary
-        </a>
-        <a href="/dashboard/concepts" className="nav-link active">
-              <i className="fa fa-tags" /> Concepts
-          </a>
+            </a>
           </li>
-        <li className="nav-item">
-          <Link className="nav-link active" to="/dashboard/dictionaries">
+          <li className="nav-item">
+            <NavLink to="/dashboard/dictionaries" className="nav-link" activeClassName="activeStyle">
             Dictionaries
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link active" to="/dashboard">
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/dashboard/sources" className="nav-link" activeClassName="activeStyle">
             Sources
-          </Link>
-        </li>
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/dashboard/concepts" className="nav-link" activeClassName="activeStyle">
+              Concepts
+            </NavLink>
+          </li>
         </ul>
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
       </div>

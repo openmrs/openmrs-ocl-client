@@ -20,8 +20,8 @@ nav {
   position: fixed;
   padding: 0.5rem;
   z-index: 1;
-  color: gray;
-  background: white;
+  color: #181717;
+  background:rgba(168, 166, 166, 0.171);
 }
 
 .side-nav .nav {
@@ -29,7 +29,7 @@ nav {
 }
 
 .side-nav a {
-  color: #676767;
+  color: #181717;
   padding: 0.2rem 0.5rem;
   margin: 0.2rem;
 }
@@ -37,7 +37,13 @@ nav {
 .side-nav a:hover {
   background: rgba(0, 0, 0, 0.29);
   border-radius: 0.4rem;
+}
+
+.activeStyle{
+  background-color: rgb(173, 170, 170);
+  border-bottom-color: white;
   color: white;
+  border-radius: 10px
 }
 
 .search-bar {

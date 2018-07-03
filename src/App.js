@@ -21,7 +21,8 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Authenticate(Login)} />
-          <Route exact path="/dashboard" component={Authenticate(SourceSearch)} />
+          <Route exact path="/dashboard" component={Authenticate(DictionaryDisplay)} />
+          <Route exact path="/dashboard/sources" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
           <Route exact path="/dashboard/concepts/:organization/:name" component={Authenticate(SpecificConcept)} />
