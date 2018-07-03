@@ -1,6 +1,6 @@
 import reducer from '../../../redux/reducers/dictionaryReducer';
 import dictionaryreducer from '../../../redux/reducers/dictionaryReducers';
-import { FETCHING_ORGANIZATIONS, FETCHING_DICTIONARIES, IS_FETCHING, ADDING_DICTIONARY } from '../../../redux/actions/types';
+import { FETCHING_ORGANIZATIONS, FETCHING_DICTIONARIES, IS_FETCHING, ADDING_DICTIONARY, FETCHING_DICTIONARY } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 
 const initialState = {};
@@ -32,6 +32,7 @@ describe('Test suite for vote reducer', () => {
 
 const state = {
   dictionaries: [],
+  dictionary: {},
   loading: false,
 };
 describe('Test suite for dictionaries reducers', () => {
@@ -57,5 +58,14 @@ describe('Test suite for dictionaries reducers', () => {
     )).toEqual({
       loading: false,
     });
+  });
+  it('should fetch a dictionary', () => {
+    expect(dictionaryreducer(
+      { dictionary: [] },
+      {
+        type: FETCHING_DICTIONARY,
+        payload: [dictionaries],
+      },
+    )).toEqual({ dictionary: [dictionaries] });
   });
 });

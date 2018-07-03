@@ -4,6 +4,7 @@ import {
   fetchOrganizations,
   isSuccess,
   isFetching,
+  dictionaryIsSuccess,
   isErrored,
 } from './dictionaryActions';
 import api from './../../api';
@@ -67,3 +68,11 @@ export const searchDictionaries = searchItem => (dispatch) => {
       dispatch(isFetching(false));
     });
 };
+
+export const fetchDictionary = data => dispatch =>
+  api.dictionaries
+    .fetchDictionary(data)
+    .then(
+      payload =>
+      dispatch(dictionaryIsSuccess(payload))
+    )

@@ -5,6 +5,7 @@ import { DictionaryDisplay, mapStateToProps } from '../../../components/dashboar
 import dictionaries from '../../__mocks__/dictionaries';
 import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
+import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryDisplay', () => {
@@ -82,5 +83,14 @@ describe('DictionaryDisplay', () => {
       const component = mount(<ListDictionaries {...props} />);
       expect(component).toMatchSnapshot();
     });
+  });
+});
+describe('DictionaryCard', () => {
+  it('should render with data', () => {
+    const props = {
+      dictionary: [dictionaries],
+    };
+    const wrapper = shallow(<DictionaryCard {...props} />)
+    expect(wrapper).toMatchSnapshot();
   });
 });

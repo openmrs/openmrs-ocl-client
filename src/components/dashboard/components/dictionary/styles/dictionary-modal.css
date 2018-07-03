@@ -11,3 +11,47 @@
      margin-left: -36%;
      margin-top: 20%  
  }
+ .dictionaryDetails{
+    padding-top: 3%;
+    padding-left: 4%;
+    padding-right: 8%;
+    margin-left: 13%;
+}
+.paragraph{
+    color: black;
+    font-size: 20px;
+    padding-top: 0px;
+    margin-top: -2%;
+}
+#rightside-detail{
+    border-left: solid 1px;
+}
+#headingDict{
+    font-size: 35px;
+    margin-top: -0.5%;
+}
+#headerDict{
+    background-color: #ffffff;
+    border-bottom: none;
+    text-transform: capitalize;
+}
+#description{
+    float: left;
+}
+#param{
+    color: black;
+    font-size: 20px;
+    padding-top: 0px;
+    text-align: left;
+}
+.genCon{
+    font-size: 23px;
+}
+#descHd{
+    margin-left: 45%;
+    padding-top: 1%
+}
+#conceptB{
+    /* margin-right: 58%; */
+    margin-top: 13%;
+}

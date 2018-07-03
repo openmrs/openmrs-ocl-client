@@ -377,3 +377,7 @@ nav {
 .load{
   text-align: center
 }
+
+#cardCapitalize{
+  text-transform: capitalize;
+}
