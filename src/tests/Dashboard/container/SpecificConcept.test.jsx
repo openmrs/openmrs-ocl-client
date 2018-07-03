@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount , shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import {
   SpecificConcept,
@@ -15,6 +15,8 @@ describe('Dashboard SpecificConcept Component', () => {
       fetchConceptsActionTypes: jest.fn(),
       concepts: [],
       isFetching: false,
+      clearSources: jest.fn(),
+      hasMore: false,
     };
     const params = {
       match: {
@@ -30,6 +32,27 @@ describe('Dashboard SpecificConcept Component', () => {
 
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should render fetch specific concepts', () => {
+    const props = {
+      fetchConceptsActionTypes: jest.fn(),
+      concepts: [concepts],
+      isFetching: true,
+    };
+    const params = {
+      match: {
+        params: {
+          organization: 'owner',
+          name: 'name',
+        },
+      },
+    };
+    const wrapper = mount(<MemoryRouter>
+      <SpecificConcept {...props} match={{ params }} />
+    </MemoryRouter>);
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should render preloader spinner', () => {
     const props = {
       fetchConceptsActionTypes: jest.fn(),
@@ -50,17 +73,19 @@ describe('Dashboard SpecificConcept Component', () => {
 
     expect(wrapper).toMatchSnapshot();
   });
+
   it('should search for a specific concept', () => {
     const props = {
       fetchConceptsActionTypes: jest.fn(),
       concepts: [concepts],
       isFetching: true,
+      clearConcepts: jest.fn(),
     };
     const params = {
       match: {
         params: {
           organization: 'owner',
-          name: 'name',
+          nameType: 'nameType',
         },
       },
     };
@@ -74,31 +99,37 @@ describe('Dashboard SpecificConcept Component', () => {
     });
   });
 
-  it('should test mapStateToProps', () => {
-    const initialState = {
-      concepts: { concepts: [], loading: false },
-    };
-    expect(mapStateToProps(initialState).concepts).toEqual([]);
-    expect(mapStateToProps(initialState).isFetching).toEqual(false);
-  });
-  it('should render with specific concepts', () => {
+  it('should not search for un existing concept', () => {
     const props = {
       fetchConceptsActionTypes: jest.fn(),
-      concepts: [concepts],
+      concepts: [],
       isFetching: true,
+      clearConcepts: jest.fn(),
     };
     const params = {
       match: {
         params: {
           organization: 'owner',
-          name: 'name',
+          nameType: 'nameType',
         },
       },
     };
     const wrapper = mount(<MemoryRouter>
       <SpecificConcept {...props} match={{ params }} />
     </MemoryRouter>);
-    expect(wrapper).toMatchSnapshot();
+    const event = { target: { name: 'searchInput', value: '' } };
+    wrapper.find('#search').simulate('change', event);
+    wrapper.find('.search-bar-wrapper').simulate('submit', {
+      preventDefault: () => {},
+    });
+  });
+
+  it('should test mapStateToProps', () => {
+    const initialState = {
+      concepts: { concepts: [], loading: false },
+    };
+    expect(mapStateToProps(initialState).concepts).toEqual([]);
+    expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
 });
 

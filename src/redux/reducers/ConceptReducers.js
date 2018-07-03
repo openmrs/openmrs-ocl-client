@@ -5,6 +5,8 @@ import {
   FETCH_DICTIONARY_CONCEPT,
   POPULATE_SIDEBAR,
   IS_FETCHING,
+  SEARCH_CONCEPTS,
+  CLEAR_CONCEPTS,
 } from '../actions/types';
 import { filterSources, filterClass, filterList, normalizeList } from './util';
 
@@ -19,13 +21,30 @@ const initialState = {
   filteredBySource: [],
   sourceList: [],
   classList: [],
+  hasMore: false,
 };
 export default (state = initialState, action) => {
-  switch (action.type) {
-    case FETCH_CONCEPTS:
+  const calculatePayload = () => {
+    if (action.payload.length === 25) {
       return {
         ...state,
-        concepts: action.payload,
+        concepts: [...state.concepts, ...action.payload],
+        hasMore: true,
+      };
+    }
+    return {
+      ...state,
+      concepts: [...state.concepts, ...action.payload],
+      hasMore: false,
+    };
+  };
+  switch (action.type) {
+    case FETCH_CONCEPTS:
+      return calculatePayload();
+    case IS_FETCHING:
+      return {
+        ...state,
+        loading: action.payload,
       };
     case FILTER_BY_SOURCES:
       return {
@@ -50,10 +69,16 @@ export default (state = initialState, action) => {
         filteredSources: filterSources(action.payload),
         filteredClass: filterClass(action.payload),
       };
-    case IS_FETCHING:
+    case SEARCH_CONCEPTS:
       return {
         ...state,
         loading: action.payload,
+        hasMore: false,
+      };
+    case CLEAR_CONCEPTS:
+      return {
+        ...state,
+        concepts: [],
       };
     default:
       return state;
