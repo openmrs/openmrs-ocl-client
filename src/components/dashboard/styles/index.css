@@ -21,7 +21,7 @@ nav {
   padding: 0.5rem;
   z-index: 1;
   color: #181717;
-  background:rgba(168, 166, 166, 0.171);
+  background: rgba(168, 166, 166, 0.171);
 }
 
 .side-nav .nav {
@@ -39,11 +39,11 @@ nav {
   border-radius: 0.4rem;
 }
 
-.activeStyle{
+.activeStyle {
   background-color: rgb(173, 170, 170);
   border-bottom-color: white;
   color: white;
-  border-radius: 10px
+  border-radius: 10px;
 }
 
 .search-bar {
@@ -193,7 +193,6 @@ nav {
 
 .dashboard-wrapper {
   margin-top: 4rem;
-
 }
 .title-wrapper {
   text-align: center;
@@ -343,7 +342,7 @@ nav {
   background-color: #4f6196;
 }
 
-.display-name{
+.display-name {
   font-size: 20px;
 }
 
@@ -351,7 +350,7 @@ nav {
   min-height: 8rem;
 }
 
-#dictionaryHeader{
+#dictionaryHeader {
   background: #2b6d27;
 }
 
@@ -359,25 +358,47 @@ nav {
   background: #225a21;
 }
 
-#viewDetails{
+#viewDetails {
   margin-bottom: 6%;
   font-size: 11px;
   border: none;
 }
-.head{
+.head {
   color: #ffff;
 }
 
-.table1{
+.table1 {
   width: 10rem;
 }
-.table2{
+.table2 {
   width: 30rem;
 }
-.load{
-  text-align: center
+.load {
+  text-align: center;
 }
 
-#cardCapitalize{
+#cardCapitalize {
   text-transform: capitalize;
+}
+
+.concept-modal {
+  padding-top: 80px !important;
+  font-family: 'Open Sans Condensed', sans-serif !important;
+}
+
+.add-btn {
+  font-size: 1rem;
+  color: #4f6196;
+}
+.add-btn:hover {
+  border-bottom: thin solid #4f6196;
+}
+
+#dictionary-link {
+  text-align: left !important;
+  font-size: 0.9rem;
+  color: #4f6196;
+}
+.modal-header {
+  background-color: rgba(192, 189, 189, 0.733) !important;
 }

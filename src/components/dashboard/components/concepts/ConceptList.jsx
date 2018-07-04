@@ -13,6 +13,7 @@ const ConceptList = ({ concepts, fetching }) => {
             <th scope="col"><div>Name</div></th>
             <th scope="col">Class and Datatype</th>
             <th scope="col">Source</th>
+            <th scope="col">Actions</th>
           </tr>
 
         </thead>

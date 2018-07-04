@@ -1,9 +1,15 @@
 import React from 'react';
+import AddConceptModal from './ConceptModal';
 
 const ConceptTable = (concept) => {
   const {
     concept: {
-      id, display_name, concept_class, datatype, source,
+      id,
+      display_name,
+      concept_class,
+      datatype,
+      source,
+      owner,
     },
   } = concept;
   return (
@@ -16,6 +22,19 @@ const ConceptTable = (concept) => {
         {concept_class}/ {datatype}
       </td>
       <td>{source}</td>
+      <td>
+        <a className="dummy-link"> Add </a>{' '}
+        <a href="!#" className="add-btn" data-toggle="modal" data-target={`#conceptPreview${id}`}>
+          Preview
+        </a>
+      </td>
+      <AddConceptModal
+        id={id}
+        display_name={display_name}
+        concept_class={concept_class}
+        source={source}
+        owner={owner}
+      />
     </tr>
   );
 };

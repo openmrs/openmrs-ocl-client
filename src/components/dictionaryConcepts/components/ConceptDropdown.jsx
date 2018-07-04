@@ -4,7 +4,7 @@ const ConceptDropdown = () => (
   <div className="col-12 col-md-10 concept-dropdown">
     <div className="btn-group concept-btn">
       <button
-        className="btn btn-outline-dark dropdown-toggle rounded-edge disabled"
+        className="btn btn-outline-dark dropdown-toggle rounded-edge"
         type="button"
         data-toggle="dropdown"
         aria-haspopup="true"
@@ -13,13 +13,10 @@ const ConceptDropdown = () => (
         Add existing concepts
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a className="dropdown-item" href="#!">
+        <a className="dropdown-item" href="/dashboard/concepts/hadijah315/ICD-10">
           Add CIEL concepts
         </a>
-        <a className="dropdown-item" href="#!">
-          Add Bahmni concepts
-        </a>
-        <a className="dropdown-item" href="#!">
+        <a className="dropdown-item" href="/dashboard/concepts">
           Bulk add concepts
         </a>
       </div>
