@@ -14,6 +14,9 @@ const initialState = {
   sourceList: [],
   classList: [],
   hasMore: false,
+  newName: [],
+  description: [],
+  newConcept: {},
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
