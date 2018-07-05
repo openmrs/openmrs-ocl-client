@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import autoBind from 'react-autobind';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchConceptsActionTypes from '../../../redux/actions/concepts/specificConceptAction';
@@ -98,6 +99,9 @@ export class SpecificConcept extends Component {
         <div className="container-fluid pt-3">
           <div className="row justify-content-center">
             <div className="col-10 offset-sm-1">
+              <Link to="/dashboard/dictionaries" id="dictionary-link">
+                <i className="fas fa-chevron-left" /> Back to Dictionaries
+              </Link>
               <InfiniteScroll
                 dataLength={concepts.length}
                 next={this.handleNextConcepts}

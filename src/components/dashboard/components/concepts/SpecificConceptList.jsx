@@ -14,6 +14,7 @@ const SpecificConceptList = ({ concepts, fetching }) => {
               <th className="table1">ID</th>
               <th className="table2">Name</th>
               <th>Class{' '}/{' '}Datatype</th>
+              <th className="table3">Actions</th>
             </tr>
           </thead>
           <tbody>
