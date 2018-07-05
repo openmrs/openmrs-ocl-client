@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-const ConceptDropdown = props => (
+const ConceptDropdown = () => (
   <div className="col-12 col-md-10 concept-dropdown">
     <div className="btn-group concept-btn">
       <button
@@ -26,7 +24,7 @@ const ConceptDropdown = props => (
 
     <div className="btn-group concept-btn">
       <button
-        className="btn btn-outline-dark dropdown-toggle rounded-edge"
+        className="btn btn-outline-dark dropdown-toggle rounded-edge disabled"
         type="button"
         data-toggle="dropdown"
         aria-haspopup="true"
@@ -35,35 +33,33 @@ const ConceptDropdown = props => (
         Create new concept
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <Link className="dropdown-item" to={`${props.pathName}/new/diagnosis`}>
+        <a className="dropdown-item" href="#!">
           Create a Diagnosis concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/symptom-finding`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Symptom/Finding concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/procedure`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Procedure concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/question`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Q-and-A concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/drug`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Drug concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/test`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Test concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/set`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create a Set of concept
-        </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new`}>
+        </a>
+        <a className="dropdown-item" href="#!">
           Create another kind of concept
-        </Link>
+        </a>
       </div>
     </div>
   </div>
 );
-ConceptDropdown.propTypes = {
-  pathName: PropTypes.string.isRequired,
-};
+
 export default ConceptDropdown;

@@ -7,14 +7,8 @@ import {
   IS_FETCHING,
   SEARCH_CONCEPTS,
   CLEAR_CONCEPTS,
-  CREATE_NEW_NAMES,
-  REMOVE_ONE_NAME,
-  ADD_NEW_DESCRIPTION,
-  REMOVE_ONE_DESCRIPTION,
-  CLEAR_FORM_SELECTIONS,
-  CREATE_NEW_CONCEPT,
 } from '../actions/types';
-import { filterSources, filterClass, filterList, normalizeList, filterNames } from './util';
+import { filterSources, filterClass, filterList, normalizeList } from './util';
 
 const initialState = {
   concepts: [],
@@ -28,9 +22,6 @@ const initialState = {
   sourceList: [],
   classList: [],
   hasMore: false,
-  newName: [],
-  description: [],
-  newConcept: {},
 };
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -77,38 +68,6 @@ export default (state = initialState, action) => {
         ...state,
         filteredSources: filterSources(action.payload),
         filteredClass: filterClass(action.payload),
-      };
-    case CREATE_NEW_NAMES:
-      return {
-        ...state,
-        newName: [action.payload, ...state.newName],
-      };
-    case REMOVE_ONE_NAME:
-      return {
-        ...state,
-        newName: filterNames(action.payload, state.newName),
-      };
-    case ADD_NEW_DESCRIPTION:
-      return {
-        ...state,
-        description: [action.payload, ...state.description],
-      };
-    case REMOVE_ONE_DESCRIPTION:
-      return {
-        ...state,
-        description: filterNames(action.payload, state.description),
-      };
-    case CLEAR_FORM_SELECTIONS:
-      return {
-        ...state,
-        description: action.payload,
-        newName: action.payload,
-        newConcept: {},
-      };
-    case CREATE_NEW_CONCEPT:
-      return {
-        ...state,
-        newConcept: action.payload,
       };
     case SEARCH_CONCEPTS:
       return {
