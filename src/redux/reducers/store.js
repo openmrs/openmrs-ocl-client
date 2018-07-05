@@ -24,11 +24,13 @@ const loadState = () => {
   }
 };
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk, logger)(createStore);
-
+const middlewares = [reduxThunk];
 const persistedState = loadState();
-const store = createStoreWithMiddleware(rootReducer, persistedState);
+if (process.env.NODE_ENV === 'development') {
+  middlewares.push(logger);
+}
 
+const store = createStore(rootReducer, persistedState, applyMiddleware(...middlewares));
 
 store.subscribe(() => {
   saveState({
