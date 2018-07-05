@@ -28,16 +28,16 @@ export class DictionaryDisplay extends Component {
       autoBind(this);
     }
     componentDidMount() {
-        this.props.fetchDictionaries()
+      this.props.fetchDictionaries();
     }
     UNSAFE_componentWillReceiveProps(nextProps) {
-        const size = Object.keys(nextProps.dictionary).length
-        { size > 0 &&
-            this.props.history.push("/dictionary-details");
-        }
+      const size = Object.keys(nextProps.dictionary).length;
+      { size > 0 &&
+            this.props.history.push('/dictionary-details');
+      }
     }
     handleDictionaryFetch = (data) => {
-        this.props.fetchDictionary(data.url)
+      this.props.fetchDictionary(data.url);
     }
     onSearch(event) {
       const { value, name, checked } = event.target;
@@ -101,7 +101,7 @@ export class DictionaryDisplay extends Component {
 export const mapStateToProps = state => ({
   dictionaries: state.dictionaries.dictionaries,
   isFetching: state.dictionaries.loading,
-  dictionary: state.dictionaries.dictionary
+  dictionary: state.dictionaries.dictionary,
 });
 export default connect(mapStateToProps, {
   fetchDictionaries,

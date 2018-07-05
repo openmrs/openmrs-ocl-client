@@ -4,6 +4,7 @@ import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import InlineError from '../messages/InlineError';
+import language from './Languages';
 
 export class DictionaryModal extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export class DictionaryModal extends React.Component {
         owner: '',
         description: '',
         supported_locales: 'en, es',
-        repository_type: 'OpenMRSDictionary'
+        repository_type: 'OpenMRSDictionary',
       },
       errors: {},
     };
@@ -109,9 +110,8 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.preffered_sources}
                     >
-                      <option value=""> Please Choose an Option </option>
-                      <option value="1">CIEL </option>
-                      <option value="2">Others</option>
+                      <option value="" />
+                      <option value="1">CIEL (default source)</option>
                     </FormControl>
                   </FormGroup>
 
@@ -125,9 +125,12 @@ export class DictionaryModal extends React.Component {
                       id="supported_locales"
                       placeholder="English"
                     >
-                      <option value=""> Please Choose an Option </option>
-                      <option value="en">English </option>
-                      <option value="es">Spanish </option>
+                      {language &&
+                      language.map(languages => (
+                        <option value={languages.value} key={languages.value}>
+                          { languages.label }
+                        </option>
+                      ))}
                     </FormControl>
                   </FormGroup>
 
@@ -143,7 +146,7 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.public_access}
                     >
-                      <option value=""> Please Choose an Option </option>
+                      <option value="" />
                       <option value="View">Private </option>
                       <option value="Edit"> Public </option>
                     </FormControl>
@@ -173,12 +176,12 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.owner}
                     >
-                      <option value=""> Please Choose an Option </option>
-                      <option value="Individual"> Individual </option>
+                      <option value="" />
+                      <option value="Individual" style={{ textTransform: 'capitalize' }}> {localStorage.getItem('username')} (Yourself) </option>
                       {organizations &&
                         organizations.map(organization => (
                           <option value={organization.id} key={organization.id}>
-                            {organization.id}{' '}
+                            {organization.id}{' '} (organization)
                           </option>
                         ))}
                     </FormControl>
