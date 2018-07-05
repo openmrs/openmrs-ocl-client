@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { DictionaryDisplay, mapStateToProps } from '../../../components/dashboard/container/DictionariesDisplay';
 import dictionaries from '../../__mocks__/dictionaries';
+import organizations from '../../__mocks__/organizations';
 import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
 import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
@@ -14,6 +15,7 @@ describe('DictionaryDisplay', () => {
       fetchDictionaries: jest.fn(),
       dictionaries: [],
       isFetching: false,
+      organizations: [organizations],
     };
     const wrapper = <MemoryRouter><DictionaryDisplay {...props} /></MemoryRouter>;
     const rShallow = shallow(wrapper);
@@ -24,6 +26,7 @@ describe('DictionaryDisplay', () => {
       fetchDictionaries: jest.fn(),
       dictionaries: [dictionaries],
       isFetching: true,
+      organizations: [organizations],
     };
     const wrapper = mount(<MemoryRouter><DictionaryDisplay {...props} /></MemoryRouter>);
 
@@ -35,6 +38,7 @@ describe('DictionaryDisplay', () => {
       fetchDictionaries: jest.fn(),
       dictionaries: [],
       isFetching: true,
+      organizations: [],
     };
     const wrapper = shallow(<MemoryRouter><DictionaryDisplay {...props} /></MemoryRouter>);
 
@@ -43,8 +47,10 @@ describe('DictionaryDisplay', () => {
   it('should test mapStateToProps', () => {
     const initialState = {
       dictionaries: { dictionaries: [], loading: false },
+      organizations: { organizations: [], loading: false },
     };
     expect(mapStateToProps(initialState).dictionaries).toEqual([]);
+    expect(mapStateToProps(initialState).organizations).toEqual([]);
     expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
   it('should search for a dictionary', () => {
@@ -56,6 +62,7 @@ describe('DictionaryDisplay', () => {
       searchDictionaries: jest.fn(),
       onSearch: jest.fn(),
       onSubmit: jest.fn(),
+      organizations: [organizations],
 
     };
     const wrapper = mount(<MemoryRouter><DictionaryDisplay {...props} /></MemoryRouter>);
@@ -83,6 +90,18 @@ describe('DictionaryDisplay', () => {
       const component = mount(<ListDictionaries {...props} />);
       expect(component).toMatchSnapshot();
     });
+
+    it('returns the openmrs user dictionaries when it receives correct properties', () => {
+      const props = {
+        dictionaries: [dictionaries],
+        fetching: false,
+        fetchData: true,
+        dictionaryViewOptions: 'user',
+      };
+      const component = mount(<ListDictionaries {...props} />);
+      expect(component.props().dictionaryViewOptions).toBe(props.dictionaryViewOptions);
+      expect(component.props().dictionaries[0].repository_type).toBe('OpenMRSDictionary');
+    });
   });
 });
 describe('DictionaryCard', () => {
@@ -90,7 +109,7 @@ describe('DictionaryCard', () => {
     const props = {
       dictionary: [dictionaries],
     };
-    const wrapper = shallow(<DictionaryCard {...props} />)
+    const wrapper = shallow(<DictionaryCard {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

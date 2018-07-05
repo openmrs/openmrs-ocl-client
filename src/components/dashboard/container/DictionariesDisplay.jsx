@@ -9,6 +9,7 @@ import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionar
 import SideBar from '../components/SideNavigation';
 import ListDictionaries from '../components/dictionary/ListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
+import UserDashboard from '../components/dictionary/user/UserDashboard';
 
 export class DictionaryDisplay extends Component {
     static propTypes = {
@@ -19,26 +20,34 @@ export class DictionaryDisplay extends Component {
       isFetching: propTypes.bool.isRequired,
       searchDictionaries: propTypes.func.isRequired,
       clearDictionaries: propTypes.func.isRequired,
+      fetchDictionary: propTypes.func.isRequired,
+      organizations: propTypes.arrayOf.isRequired,
     };
     constructor(props) {
       super(props);
       this.state = {
         searchInput: '',
+        dictionaryViewOptions: 'user',
       };
       autoBind(this);
     }
+
     componentDidMount() {
       this.props.fetchDictionaries();
     }
-    UNSAFE_componentWillReceiveProps(nextProps) {
-      const size = Object.keys(nextProps.dictionary).length;
-      { size > 0 &&
-            this.props.history.push('/dictionary-details');
+
+    onSubmit(event) {
+      event.preventDefault();
+      const { user } = this.state;
+      if (user) {
+        this.setState({ dictionaryViewOptions: 'user' });
+      } else {
+        this.setState({ dictionaryViewOptions: 'organizations' });
       }
+      this.props.clearDictionaries();
+      this.props.searchDictionaries(this.state.searchInput);
     }
-    handleDictionaryFetch = (data) => {
-      this.props.fetchDictionary(data.url);
-    }
+
     onSearch(event) {
       const { value, name, checked } = event.target;
       const trueValue = event.target.type === 'checkbox' ? checked : value;
@@ -49,12 +58,16 @@ export class DictionaryDisplay extends Component {
       }
     }
 
-    onSubmit(event) {
-      event.preventDefault();
-      this.props.clearDictionaries();
-      this.props.searchDictionaries(this.state.searchInput);
+    UNSAFE_componentWillReceiveProps(nextProps) {
+      const size = Object.keys(nextProps.dictionary).length;
+      { size > 0 &&
+            this.props.history.push('/dictionary-details');
+      }
     }
 
+    handleDictionaryFetch = (data) => {
+      this.props.fetchDictionary(data.url);
+    }
     renderEndMessage() {
       if (!this.props.isFetching) {
         return (
@@ -67,11 +80,16 @@ export class DictionaryDisplay extends Component {
       return '';
     }
     render() {
-      const { dictionaries, isFetching } = this.props;
-      const { searchInput } = this.state;
+      const { dictionaries, isFetching, organizations } = this.props;
+      const { searchInput, dictionaryViewOptions } = this.state;
       return (
         <div className="dashboard-wrapper">
           <SideBar />
+          <UserDashboard
+            dictionaries={dictionaries}
+            organizations={organizations}
+            viewState={dictionaryViewOptions}
+          />
           <SearchDictionaries
             onSearch={this.onSearch}
             onSubmit={this.onSubmit}
@@ -89,6 +107,7 @@ export class DictionaryDisplay extends Component {
                   dictionaries={dictionaries}
                   fetching={isFetching}
                   fetchData={this.handleDictionaryFetch}
+                  dictionaryViewOptions={dictionaryViewOptions}
                 />
               </InfiniteScroll>
             </div>
@@ -102,6 +121,7 @@ export const mapStateToProps = state => ({
   dictionaries: state.dictionaries.dictionaries,
   isFetching: state.dictionaries.loading,
   dictionary: state.dictionaries.dictionary,
+  organizations: state.organizations.organizations,
 });
 export default connect(mapStateToProps, {
   fetchDictionaries,

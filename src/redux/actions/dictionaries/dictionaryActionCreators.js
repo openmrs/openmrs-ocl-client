@@ -41,19 +41,19 @@ export const fetchingOrganizations = () => dispatch =>
     .fetchOrganizations()
     .then(payload => dispatch(fetchOrganizations(payload)));
 
-    export const fetchDictionaries = () => dispatch => {
-      dispatch(isFetching(true));
-      return api.dictionaries
-        .fetchingDictionaries()
-        .then(payload => {
-          dispatch(isSuccess(payload));
-          dispatch(isFetching(false));
-        })
-        .catch(error => {
-          dispatch(isErrored(error.response.data));
-          dispatch(isFetching(false));
-        });
-    }
+export const fetchDictionaries = () => (dispatch) => {
+  dispatch(isFetching(true));
+  return api.dictionaries
+    .fetchingDictionaries()
+    .then((payload) => {
+      dispatch(isSuccess(payload));
+      dispatch(isFetching(false));
+    })
+    .catch((error) => {
+      dispatch(isErrored(error.response.data));
+      dispatch(isFetching(false));
+    });
+};
 
 export const searchDictionaries = searchItem => (dispatch) => {
   dispatch(isFetching(true));
