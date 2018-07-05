@@ -7,6 +7,8 @@
     "jsx-a11y/label-has-for":0,
     "react/jsx-closing-tag-location":0,
     "import/no-named-as-default":0,
+    "jsx-a11y/anchor-is-valid": 0,
+    "react/forbid-prop-types": 0,
     "class-methods-use-this": "off",
     "compilerOptions": { "target": "ES6", "module": "commonjs" }
   },
