@@ -390,6 +390,7 @@ nav {
   font-size: 1rem;
   color: #4f6196;
 }
+
 .add-btn:hover {
   border-bottom: thin solid #4f6196;
 }
@@ -399,6 +400,18 @@ nav {
   font-size: 0.9rem;
   color: #4f6196;
 }
+
 .modal-header {
   background-color: rgba(192, 189, 189, 0.733) !important;
+}
+
+.dashboard-alert{
+  background: #e9e9e9;
+  color: #000000!important;
+  text-align: center;
+}
+
+.search-filter {
+  padding-right: 5%;
+  float: right;
 }
