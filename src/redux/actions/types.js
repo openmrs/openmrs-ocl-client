@@ -23,3 +23,10 @@ export const CLEAR_DICTIONARY = '[dictionary] clear dictionary';
 export const FILTER_BY_SOURCES = '[concepts] filter concepts by sources';
 export const FILTER_BY_CLASS = '[concepts] filter concepts by class';
 export const POPULATE_SIDEBAR = '[concepts] populate sidebar';
+export const CREATE_NEW_NAMES = '[concepts] create_new_name';
+export const REMOVE_ONE_NAME = '[concepts] remove_one_name';
+export const ADD_NEW_DESCRIPTION = '[concepts] add_new_description';
+export const REMOVE_ONE_DESCRIPTION = '[concepts] remove_one_description';
+export const CLEAR_FORM_SELECTIONS = '[concepts] clear_form_selection';
+export const CREATE_NEW_CONCEPT = '[concepts] create_new_concept';
+

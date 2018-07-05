@@ -5,6 +5,11 @@ export const getDictionaryConcepts = (payload, type) => ({
   payload,
 });
 
+export const isSuccess = (payload, type) => ({
+  type,
+  payload,
+});
+
 export const isErrored = (payload, type) => ({
   type,
   payload,
