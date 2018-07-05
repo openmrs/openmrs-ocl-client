@@ -39,11 +39,9 @@ export const filterList = (item, list) => {
 };
 
 export const normalizeList = (item, list) => {
-  const listItem = countBy(list);
-  if (listItem[item] > 1) {
-    delete listItem[item];
+  const x = countBy(list);
+  if (x[item] > 1) {
+    delete x[item];
   }
-  return Object.keys(listItem);
+  return Object.keys(x);
 };
-
-export const filterNames = (item, list) => list.filter(listItem => listItem !== item);

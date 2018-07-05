@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import expect from 'expect';
-import Router from 'react-mock-router';
 
 import {
   DictionaryConcepts,
@@ -17,9 +16,6 @@ describe('Test suite for dictionary concepts components', () => {
           typeName: 'dev-col',
         },
       },
-      location: {
-        pathname: '/random/path',
-      },
       fetchDictionaryConcepts: jest.fn(),
       concepts: [concepts],
       filteredClass: ['Diagnosis'],
@@ -30,9 +26,7 @@ describe('Test suite for dictionary concepts components', () => {
       filterBySource: jest.fn(),
       filterByClass: jest.fn(),
     };
-    const wrapper = mount(<Router>
-      <DictionaryConcepts {...props} />
-    </Router>);
+    const wrapper = mount(<DictionaryConcepts {...props} />);
     expect(wrapper.find('h2.text-capitalize').text()).toEqual('dev-col Dictionary');
 
     expect(wrapper).toMatchSnapshot();
@@ -45,18 +39,13 @@ describe('Test suite for dictionary concepts components', () => {
           typeName: 'dev-col',
         },
       },
-      location: {
-        pathname: '/random/path',
-      },
       fetchDictionaryConcepts: jest.fn(),
       concepts: [concepts],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
     };
-    const wrapper = mount(<Router>
-      <DictionaryConcepts {...props} />
-    </Router>);
+    const wrapper = mount(<DictionaryConcepts {...props} />);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search-concept').simulate('change', event);
     wrapper.find('form').simulate('submit', {
@@ -70,18 +59,13 @@ describe('Test suite for dictionary concepts components', () => {
           typeName: 'dev-col',
         },
       },
-      location: {
-        pathname: '/random/path',
-      },
       fetchDictionaryConcepts: jest.fn(),
       concepts: [concepts],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
     };
-    const wrapper = mount(<Router>
-      <DictionaryConcepts {...props} />
-    </Router>);
+    const wrapper = mount(<DictionaryConcepts {...props} />);
     const event = { target: { name: 'CIEL', checked: true, value: 'ciel' } };
     wrapper.find('#CIEL').simulate('change', event);
     wrapper.find('#Diagnosis').simulate('change', event);
@@ -93,9 +77,6 @@ describe('Test suite for dictionary concepts components', () => {
         params: {
           typeName: 'dev-col',
         },
-      },
-      location: {
-        pathname: '/random/path',
       },
       fetchDictionaryConcepts: jest.fn(),
       concepts: [concepts],

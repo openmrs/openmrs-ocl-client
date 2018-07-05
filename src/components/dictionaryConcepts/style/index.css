@@ -114,6 +114,7 @@ body {
   -moz-border-radius: .4rem;
   -ms-border-radius: .4rem;
   -o-border-radius: .4rem;
+  overflow: hidden;
 }
 
 .custom-concept-list .table {
@@ -124,8 +125,9 @@ body {
 
 .custom-concept-list a,
 .dummy-link {
-  color: #4f6196;
+  color: #4f6196 !important;
   padding-right: .5rem;
+  cursor: not-allowed;
 }
 
 .custom-concept-list a:nth-last-of-type {
@@ -141,135 +143,4 @@ input:-webkit-autofill:active {
   -moz-transition: background-color 5000s ease-in-out 0s;
   -ms-transition: background-color 5000s ease-in-out 0s;
   -o-transition: background-color 5000s ease-in-out 0s;
-}
-
-.concept-form-header {
-  background: #4f6196;
-  padding: .5rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.concept-form-header .concept-header-text,
-.concept-back-button {
-  line-height: 1rem;
-  padding: 0;
-  padding-top: .5rem;
-  color: white;
-}
-
-.concept-form-header .concept-back-button {
-  padding-left: .8rem;
-  padding-right: .8rem;
-  border-radius: .2rem;
-  cursor: pointer;
-  -webkit-border-radius: .2rem;
-  -moz-border-radius: .2rem;
-  -ms-border-radius: .2rem;
-  -o-border-radius: .2rem;
-  transition: all 400ms ease-in-out;
-  -webkit-transition: all 400ms ease-in-out;
-  -moz-transition: all 400ms ease-in-out;
-  -ms-transition: all 400ms ease-in-out;
-  -o-transition: all 400ms ease-in-out;
-}
-
-.concept-form-header .concept-back-button:hover {
-  background: rgba(255, 255, 255, 0.247);
-}
-
-.concept-form-wrapper .form-wrapper {
-  padding: 0;
-  margin: 0;
-}
-
-.concept-form-wrapper .form-container {
-  height: auto;
-}
-
-.concept-form-wrapper .concept-form-body {
-  padding: 1rem;
-}
-
-.concept-form-wrapper .form-group {
-  width: auto;
-}
-
-.create-concept-header {
-  margin-top: 6rem;
-  text-align: left;
-}
-
-select.form-control {
-  height: 3rem !important;
-}
-
-.concept-form-table .form-control:not(textarea) {
-  height: 2.4rem !important;
-  background: #fafafa;
-}
-
-.concept-form-table-link {
-  vertical-align: middle;
-}
-
-.concept-form-body .custom-concept-list .table {
-  box-shadow: none;
-  border-style: hidden;
-  font-size: .8rem;
-}
-
-.concept-form-body .submit-button {
-  margin-bottom: 2rem;
-}
-
-.bg-blue {
-  background: #4f6196;
-  color: white;
-  transition: ease-in-out 400ms;
-  -webkit-transition: ease-in-out 400ms;
-  -moz-transition: ease-in-out 400ms;
-  -ms-transition: ease-in-out 400ms;
-  -o-transition: ease-in-out 400ms;
-}
-
-.bg-blue:hover {
-  background: #4f6dc7;
-}
-
-.add-more-names {
-  color: #4f6196;
-  text-decoration: none !important;
-  cursor: pointer !important;
-}
-
-.concept-language {
-  min-width: 10rem;
-}
-
-.custom-field {
-  margin-top: 2rem;
-  margin-left: 2rem;
-}
-
-.concept-form-body .form-group label,
-.section-header,
-.add-more-names {
-  font-size: .8rem;
-}
-
-.normal-cursor {
-  cursor: default !important;
-}
-
-.collection-name {
-  color: #4f6196;
-}
-
-.collection-name:hover {
-  border-bottom: thin solid #4f6196;
-}
-
-.small-text{
-  font-size: .7rem;
 }
