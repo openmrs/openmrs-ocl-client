@@ -1,15 +1,53 @@
+import uuid from 'uuid/v4';
+import { notify } from 'react-notify-toast';
+
 import {
   POPULATE_SIDEBAR,
   FILTER_BY_SOURCES,
   FILTER_BY_CLASS,
   FETCH_DICTIONARY_CONCEPT,
+  CREATE_NEW_NAMES,
+  REMOVE_ONE_NAME,
+  ADD_NEW_DESCRIPTION,
+  REMOVE_ONE_DESCRIPTION,
+  CLEAR_FORM_SELECTIONS,
+  CREATE_NEW_CONCEPT,
 } from '../types';
-import { isFetching, getDictionaryConcepts, isErrored } from '../globalActionCreators/index';
+import {
+  isFetching,
+  getDictionaryConcepts,
+  isErrored,
+  isSuccess,
+} from '../globalActionCreators/index';
 import instance from '../../../config/axiosConfig';
 
 export const populateSidenav = () => (dispatch, getState) => {
   const payload = getState().concepts.dictionaryConcepts;
   dispatch({ type: POPULATE_SIDEBAR, payload });
+};
+
+export const createNewName = () => (dispatch) => {
+  const payload = uuid();
+  dispatch({ type: CREATE_NEW_NAMES, payload });
+};
+
+export const removeNewName = id => (dispatch) => {
+  const payload = id;
+  dispatch({ type: REMOVE_ONE_NAME, payload });
+};
+
+export const addNewDescription = () => (dispatch) => {
+  const payload = uuid();
+  dispatch({ type: ADD_NEW_DESCRIPTION, payload });
+};
+
+export const removeDescription = id => (dispatch) => {
+  const payload = id;
+  dispatch({ type: REMOVE_ONE_DESCRIPTION, payload });
+};
+
+export const clearSelections = () => (dispatch) => {
+  dispatch({ type: CLEAR_FORM_SELECTIONS, payload: [] });
 };
 
 /* eslint-disable */
@@ -51,7 +89,7 @@ export const fetchDictionaryConcepts = (
     }
   } catch (error) {
     if (error.response) {
-      dispatch(isErrored(error.response.data));
+      dispatch(isErrored(error.response.data, FETCH_DICTIONARY_CONCEPT));
       dispatch(isFetching(false));
     }
   }
@@ -79,4 +117,20 @@ export const filterByClass = (
 ) => dispatch => {
   dispatch({ type: FILTER_BY_CLASS, payload: keyword });
   dispatch(fetchDictionaryConcepts(conceptType, conceptOwner, conceptName, query, filterType));
+};
+
+export const createNewConcept = (data, dataUrl) => async dispatch => {
+  dispatch(isFetching(true));
+  let url = dataUrl;
+  try {
+    const response = await instance.post(url, data);
+    dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
+    dispatch(isFetching(false));
+    notify.show('concept successfully created', 'success', 3000);
+  } catch (error) {
+    if (error.response) {
+      dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
+      dispatch(isFetching(false));
+    }
+  }
 };

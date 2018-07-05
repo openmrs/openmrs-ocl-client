@@ -10,7 +10,7 @@ import SideNav from '../components/Sidenav';
 import SearchBar from '../components/SearchBar';
 import ConceptTable from '../components/ConceptTable';
 import { conceptsProps } from '../proptypes';
-import { getTotal } from '../components/helperFunction';
+import { getTotal, getUsername } from '../components/helperFunction';
 
 import {
   fetchDictionaryConcepts,
@@ -24,6 +24,9 @@ export class DictionaryConcepts extends Component {
       params: PropTypes.shape({
         typeName: PropTypes.string,
       }),
+    }).isRequired,
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
     }).isRequired,
     fetchDictionaryConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
@@ -50,7 +53,6 @@ export class DictionaryConcepts extends Component {
         params: { collectionName, type, typeName },
       },
     } = this.props;
-
     this.setState({ collectionName, type, typeName });
   }
 
@@ -135,11 +137,13 @@ export class DictionaryConcepts extends Component {
       match: {
         params: { typeName },
       },
+      location: { pathname },
       concepts,
       filteredClass,
       filteredSources,
       loading,
     } = this.props;
+    const username = typeName === getUsername();
     const { conceptsCount, searchInput } = this.state;
     return (
       <div className="container-fluid custom-dictionary-concepts">
@@ -148,7 +152,7 @@ export class DictionaryConcepts extends Component {
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
           </div>
-          <ConceptDropdown />
+          {username && <ConceptDropdown pathName={pathname} />}
         </section>
 
         <section className="row mt-3">
