@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Tooltip from 'react-tooltip';
 
 export const DictionariesSearch = ({ onSearch, onSubmit, searchValue }) => (
-  <div className="container-fluid">
+  <div className="container-fluid dictionary-search">
     <div className="row justify-content-center">
       <div className="col-1" />
       <div className="col-sm-12 col-md-10  mt-2 col-12">
