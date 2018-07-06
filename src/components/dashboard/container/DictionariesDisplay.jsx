@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { connect } from 'react-redux';
 import '../styles/index.css';
 import {
@@ -74,62 +73,46 @@ export class DictionaryDisplay extends Component {
     }
   }
 
-  handleDictionaryFetch = (data) => {
-    this.props.fetchDictionary(data.url);
-  };
-  renderEndMessage() {
-    if (!this.props.isFetching) {
+    handleDictionaryFetch = (data) => {
+      this.props.fetchDictionary(data.url);
+    }
+
+    render() {
+      const { dictionaries, isFetching, organizations } = this.props;
+      const { searchInput, dictionaryViewOptions } = this.state;
       return (
-        <h6 className="pt-5">
-          You have seen all the {this.props.dictionaries.length}{' '}
-          dictionar(y)(ies) your search query returned.
-        </h6>
+        <div className="dashboard-wrapper">
+          <SideBar />
+          <UserDashboard
+            dictionaries={dictionaries}
+            organizations={organizations}
+            viewState={dictionaryViewOptions}
+          />
+          <div className="dashboard-head">
+            <div className="btn add-dictionaries" onClick={this.handleShow}>
+              Add Dictionary
+            </div>
+            <SearchDictionaries
+              onSearch={this.onSearch}
+              onSubmit={this.onSubmit}
+              searchValue={searchInput}
+              fetching={isFetching}
+            />
+            <div className="row justify-content-center">
+              <div className="offset-sm-1 col-10">
+                <ListDictionaries
+                  dictionaries={dictionaries}
+                  fetching={isFetching}
+                  fetchData={this.handleDictionaryFetch}
+                  dictionaryViewOptions={dictionaryViewOptions}
+                />
+              </div>
+            </div>
+          </div>
+          <AddDictionary show={this.state.show} handleHide={this.handleHide} />
+        </div>
       );
     }
-    return '';
-  }
-  render() {
-    const { dictionaries, isFetching, organizations } = this.props;
-    const { searchInput, dictionaryViewOptions } = this.state;
-    return (
-      <div className="dashboard-wrapper">
-        <SideBar />
-        <UserDashboard
-          dictionaries={dictionaries}
-          organizations={organizations}
-          viewState={dictionaryViewOptions}
-        />
-        <div className="dashboard-head">
-          <div className="btn add-dictionaries" onClick={this.handleShow}>
-              Add Dictionary
-          </div>
-          <SearchDictionaries
-            onSearch={this.onSearch}
-            onSubmit={this.onSubmit}
-            searchValue={searchInput}
-            fetching={isFetching}
-          />
-        </div>
-        <div className="row justify-content-center">
-          <div className="offset-sm-1 col-10">
-            <InfiniteScroll
-              dataLength={dictionaries.length}
-              loader={<h6>Loading...</h6>}
-              endMessage={this.renderEndMessage()}
-            >
-              <ListDictionaries
-                dictionaries={dictionaries}
-                fetching={isFetching}
-                fetchData={this.handleDictionaryFetch}
-                dictionaryViewOptions={dictionaryViewOptions}
-              />
-            </InfiniteScroll>
-          </div>
-        </div>
-        <AddDictionary show={this.state.show} handleHide={this.handleHide} />
-      </div>
-    );
-  }
 }
 
 export const mapStateToProps = state => ({
