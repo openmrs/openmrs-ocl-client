@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
-import SideNavigation from '../../components/dashboard/components/SideNavigation';
 import { AddDictionary } from '../../components/dashboard/components/dictionary/AddDictionary';
 
 const props = {
@@ -41,10 +40,13 @@ describe('Test suite for dictionary modal', () => {
 
   it('Opens and closes modal on trigger', () => {
     expect(wrapper.find('#cancel').simulate('click'));
-    const dictionaryWrapper = shallow(<SideNavigation {...props} />);
-    expect(dictionaryWrapper.instance().handleHide(preventDefault));
-    expect(dictionaryWrapper.instance().handleShow(preventDefault));
   });
+
+  it('Sets the state of the component to the value of the input elements on change', () => {
+    wrapper.find('#dictionary_name').simulate('change', { target: { value: 'CIEL', name: 'name' } });
+    expect(wrapper.state().data.name).toEqual('CIEL');
+  });
+
   it('Renders component that adds a dictionary', () => {
     const data = {
       dictionary: {

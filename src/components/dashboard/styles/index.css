@@ -405,9 +405,9 @@ nav {
   background-color: rgba(192, 189, 189, 0.733) !important;
 }
 
-.dashboard-alert{
+.dashboard-alert {
   background: #e9e9e9;
-  color: #000000!important;
+  color: #000000 !important;
   text-align: center;
 }
 
@@ -415,3 +415,25 @@ nav {
   padding-right: 5%;
   float: right;
 }
+.add-dictionaries {
+  border-color: green;
+  background-color: whitesmoke;
+  margin-top: 10px;
+  float: right;
+  margin-right: 80px; 
+  border-radius: 20px;
+  height: 2.5rem;
+}
+.add-dictionaries:hover {
+  background-color: #2b6d27;
+  color: white;
+}
+.dashboard-head{
+  display: inline;
+}
+.dictionary-search{
+  width: 100%;
+  margin-left: 30px;
+}
+
+
