@@ -39,4 +39,27 @@ describe('Test suite for specific concepts actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should return an error message from the db', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: 'could not complete this request',
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+      { type: FETCH_CONCEPTS, payload: 'could not complete this request' },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchConceptsActionTypes('malaria', 10, 1)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 });

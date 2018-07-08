@@ -33,8 +33,8 @@ export class SpecificConcept extends Component {
   }
 
   componentDidMount() {
-    const { organization, name } = this.props.match.params;
-    this.props.fetchConceptsActionTypes(organization, name);
+    const { organization, name, ownerType } = this.props.match.params;
+    this.props.fetchConceptsActionTypes(organization, name, ownerType);
   }
 
   onSearch(event) {
@@ -113,7 +113,6 @@ export class SpecificConcept extends Component {
                   concepts={this.props.concepts}
                   fetching={this.props.isFetching}
                 />
-
               </InfiniteScroll>
             </div>
           </div>
