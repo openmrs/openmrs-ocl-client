@@ -55,3 +55,10 @@
     /* margin-right: 58%; */
     margin-top: 13%;
 }
+#loader {
+    padding-top: 20%;
+}
+#descriptionCard {
+    width: 90%; 
+    margin-left: 4.55%;
+}

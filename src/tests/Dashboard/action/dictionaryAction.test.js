@@ -105,12 +105,14 @@ describe('Test suite for dictionary actions', () => {
         response: [dictionaries],
       });
     });
-    const expecteActions = [
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
       { type: FETCHING_DICTIONARY, payload: [dictionaries] },
+      { type: IS_FETCHING, payload: false },
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchDictionary('/users/chriskala/collections/over/')).then(() => {
-      expect(store.getActions()).toEqual(expecteActions);
+      expect(store.getActions()).toEqual(expectedActions);
     });
   });
 

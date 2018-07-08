@@ -69,10 +69,13 @@ export const searchDictionaries = searchItem => (dispatch) => {
     });
 };
 
-export const fetchDictionary = data => dispatch =>
-  api.dictionaries
+export const fetchDictionary = data => (dispatch) =>{
+  dispatch(isFetching(true));
+  return api.dictionaries
     .fetchDictionary(data)
     .then(
-      payload =>
-      dispatch(dictionaryIsSuccess(payload))
-    )
+      (payload) =>{
+      dispatch(dictionaryIsSuccess(payload));
+      dispatch(isFetching(false));
+    });
+  };

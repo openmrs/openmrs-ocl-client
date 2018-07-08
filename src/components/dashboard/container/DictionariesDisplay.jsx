@@ -3,11 +3,7 @@ import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../styles/index.css';
-import {
-  fetchDictionaries,
-  searchDictionaries,
-  fetchDictionary,
-} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchDictionaries, searchDictionaries } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
 import SideBar from '../components/SideNavigation';
 import ListDictionaries from '../components/dictionary/ListDictionaries';
@@ -24,7 +20,6 @@ export class DictionaryDisplay extends Component {
     isFetching: propTypes.bool.isRequired,
     searchDictionaries: propTypes.func.isRequired,
     clearDictionaries: propTypes.func.isRequired,
-    fetchDictionary: propTypes.func.isRequired,
     organizations: propTypes.arrayOf.isRequired,
   };
   constructor(props) {
@@ -66,53 +61,41 @@ export class DictionaryDisplay extends Component {
   handleHide = () => this.setState({ show: false });
   handleShow = () => this.setState({ show: true });
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const size = Object.keys(nextProps.dictionary).length;
-    {
-      size > 0 && this.props.history.push('/dictionary-details');
-    }
-  }
-
-    handleDictionaryFetch = (data) => {
-      this.props.fetchDictionary(data.url);
-    }
-
-    render() {
-      const { dictionaries, isFetching, organizations } = this.props;
-      const { searchInput, dictionaryViewOptions } = this.state;
-      return (
-        <div className="dashboard-wrapper">
-          <SideBar />
-          <UserDashboard
-            dictionaries={dictionaries}
-            organizations={organizations}
-            viewState={dictionaryViewOptions}
-          />
-          <div className="dashboard-head">
-            <div className="btn add-dictionaries" onClick={this.handleShow}>
+  render() {
+    const { dictionaries, isFetching, organizations } = this.props;
+    const { searchInput, dictionaryViewOptions } = this.state;
+    return (
+      <div className="dashboard-wrapper">
+        <SideBar />
+        <UserDashboard
+          dictionaries={dictionaries}
+          organizations={organizations}
+          viewState={dictionaryViewOptions}
+        />
+        <div className="dashboard-head">
+          <div className="btn add-dictionaries" onClick={this.handleShow}>
               Add Dictionary
-            </div>
-            <SearchDictionaries
-              onSearch={this.onSearch}
-              onSubmit={this.onSubmit}
-              searchValue={searchInput}
-              fetching={isFetching}
-            />
-            <div className="row justify-content-center">
-              <div className="offset-sm-1 col-10">
-                <ListDictionaries
-                  dictionaries={dictionaries}
-                  fetching={isFetching}
-                  fetchData={this.handleDictionaryFetch}
-                  dictionaryViewOptions={dictionaryViewOptions}
-                />
-              </div>
+          </div>
+          <SearchDictionaries
+            onSearch={this.onSearch}
+            onSubmit={this.onSubmit}
+            searchValue={searchInput}
+            fetching={isFetching}
+          />
+          <div className="row justify-content-center">
+            <div className="offset-sm-1 col-10">
+              <ListDictionaries
+                dictionaries={dictionaries}
+                fetching={isFetching}
+                dictionaryViewOptions={dictionaryViewOptions}
+              />
             </div>
           </div>
-          <AddDictionary show={this.state.show} handleHide={this.handleHide} />
         </div>
-      );
-    }
+        <AddDictionary show={this.state.show} handleHide={this.handleHide} />
+      </div>
+    );
+  }
 }
 
 export const mapStateToProps = state => ({
@@ -121,12 +104,8 @@ export const mapStateToProps = state => ({
   dictionary: state.dictionaries.dictionary,
   organizations: state.organizations.organizations,
 });
-export default connect(
-  mapStateToProps,
-  {
-    fetchDictionaries,
-    searchDictionaries,
-    clearDictionaries,
-    fetchDictionary,
-  },
-)(DictionaryDisplay);
+export default connect(mapStateToProps, {
+  fetchDictionaries,
+  searchDictionaries,
+  clearDictionaries,
+})(DictionaryDisplay);
