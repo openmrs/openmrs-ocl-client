@@ -15,6 +15,7 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
+          collectionName: 'dev-col',
         },
       },
       location: {
