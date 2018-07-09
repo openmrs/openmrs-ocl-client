@@ -437,3 +437,9 @@ nav {
 }
 
 
+.viewdetailslink{
+  color: #343434;
+}
+.viewdetailslink:hover{
+  color: #dedcdc;
+}

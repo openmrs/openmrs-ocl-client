@@ -14,7 +14,6 @@ const DictionaryCard = (dictionary) => {
       created_by,
       url,
     },
-    fetchData
   } = dictionary;
 
   const ownerType = owner_type === 'Organization' ? 'org' : 'user';
@@ -36,12 +35,14 @@ const DictionaryCard = (dictionary) => {
           </div>
           <div className="description col-12 text-left">
             <p>
-              <Link to={`/concepts${owner_url}${short_code}`} 
-              className="source-type" 
-                onClick={() => persistActiveconcept(active_concepts)}>
+              <Link
+                to={`/concepts${owner_url}${short_code}`}
+                className="source-type"
+                onClick={() => persistActiveconcept(active_concepts)}
+              >
                 Concepts: { active_concepts }
               </Link>
-              <br/>
+              <br />
               <a className="source-type" id="cardCapitalize">
                 Created By: { created_by }
               </a>
@@ -49,14 +50,18 @@ const DictionaryCard = (dictionary) => {
           </div>
         </div>
         <div className="source-card-footer">
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            id="viewDetails"
-            onClick={() => fetchData({ url })}
+          <Link
+            className="viewdetailslink"
+            to={`/dictionaryOverview${url}`}
           >
-            View Details
-          </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              id="viewDetails"
+            >
+          View Details
+            </button>
+          </Link>
         </div>
       </div>
     </div>
