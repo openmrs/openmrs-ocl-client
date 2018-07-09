@@ -30,7 +30,7 @@ const SourceCard = (source) => {
           </div>
           <div className="description col-12 text-left">
             <p>
-              <a href={`/dashboard/concepts/${owner}/${name}`} className="source-type">
+              <a href={`/dashboard/concepts/${owner_type}/${owner}/${name}`} className="source-type">
                 {active_concepts} concepts,
               </a>{' '}
               <a href={`https://www.openconceptlab.com${versions_url}`} className="source-type">

@@ -27,7 +27,7 @@ const App = () => (
           <Route exact path="/dashboard/sources" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
-          <Route exact path="/dashboard/concepts/:organization/:name" component={Authenticate(SpecificConcept)} />
+          <Route exact path="/dashboard/concepts/:ownerType/:organization/:name" component={Authenticate(SpecificConcept)} />
           <Route exact path="/concepts/:type/:typeName/:collectionName" component={Authenticate(DictionaryConcepts)} />
           <Route exact path="/dictionary-details" component={Authenticate(DictionaryOverview)} />
           <Route exact path="/concepts/:type/:typeName/:collectionName/new/:conceptType?" component={Authenticate(CreateConcept)} />

@@ -5,12 +5,16 @@ import { isErrored, fetchConcepts, isFetching } from './ConceptActionCreators';
 const fetchConceptsActionTypes = (
   owner,
   name,
+  ownerType,
   query = '',
   limit = 25,
   page = 1,
 ) => async (dispatch) => {
+  let url = `users/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}`;
   dispatch(isFetching(true));
-  const url = `orgs/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}`;
+  if (ownerType === 'Organization') {
+    url = `orgs/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}`;
+  }
   try {
     const response = await instance.get(url);
     dispatch(fetchConcepts(response.data));
