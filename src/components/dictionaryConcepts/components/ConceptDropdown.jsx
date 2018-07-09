@@ -15,7 +15,7 @@ const ConceptDropdown = props => (
         Add existing concepts
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a className="dropdown-item" href="/dashboard/concepts/hadijah315/ICD-10">
+        <a className="dropdown-item" href="/dashboard/concepts/Organization/CIEL/CIEL">
           Add CIEL concepts
         </a>
         <a className="dropdown-item" href="/dashboard/concepts">
