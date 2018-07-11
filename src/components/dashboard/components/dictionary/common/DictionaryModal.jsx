@@ -156,9 +156,9 @@ export class DictionaryModal extends React.Component {
                     <FormControl
                       type="text"
                       id="dictionary_name"
-                      placeholder="Dictionary name"
                       onChange={this.onChange}
                       name="name"
+                      placeholder="e.g Community Health Dictionary"
                       value={data.name}
                       required
                     />
@@ -190,16 +190,16 @@ export class DictionaryModal extends React.Component {
                     data-placement="top"
                     title="Short Code"
                   >
-                    Short Code: e.g Community-MCH, Only Alphanumeric Characters
-                    Allowed
+                    Short Code
                     {errors && <InlineError text={errors.id} />}
                     <FormControl
                       type="text"
                       id="dictionary_short_code"
-                      placeholder="Short Code"
                       name="id"
                       onChange={this.onChange}
                       value={data.id}
+                      placeholder="e.g Community-MCH, Only Alphanumeric Characters
+                      Allowed"
                       required
                     />
                   </FormGroup>
@@ -208,7 +208,6 @@ export class DictionaryModal extends React.Component {
                     <FormControl
                       componentClass="textarea"
                       id="dictionary_description"
-                      placeholder="Dictionary Description"
                       name="description"
                       onChange={this.onChange}
                       value={data.description}
