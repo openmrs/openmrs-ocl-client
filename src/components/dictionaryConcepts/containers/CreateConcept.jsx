@@ -43,6 +43,7 @@ export class CreateConcept extends Component {
       names: PropTypes.array,
       descriptions: PropTypes.array,
     }).isRequired,
+    addedConcept: PropTypes.array.isRequired,
   };
   constructor(props) {
     super(props);
@@ -77,8 +78,13 @@ export class CreateConcept extends Component {
         params: { collectionName, type, typeName },
       },
     } = this.props;
-    if (Object.keys(nextProps.newConcept).length) {
-      nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}`);
+    const { newConcept, addedConcept } = nextProps;
+    const isNewConcept = Object.keys(newConcept).length;
+    const isAddedConcept = addedConcept.length;
+    if (isNewConcept && isAddedConcept) {
+      setTimeout(() => {
+        nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}`);
+      }, 3000);
     }
   }
 
@@ -169,8 +175,7 @@ export class CreateConcept extends Component {
   addDataFromDescription(data) {
     const currentData = this.state.descriptions.filter(description => description.id === data.id);
     if (currentData.length) {
-      const newList = this.state.descriptions
-        .map(description => (description.id === data.id ? data : description));
+      const newList = this.state.descriptions.map(description => (description.id === data.id ? data : description));
       this.setState(() => ({
         descriptions: newList,
       }));
@@ -242,6 +247,7 @@ export const mapStateToProps = state => ({
   newName: state.concepts.newName,
   description: state.concepts.description,
   newConcept: state.concepts.newConcept,
+  addedConcept: state.concepts.addConceptToDictionary,
 });
 export default connect(
   mapStateToProps,

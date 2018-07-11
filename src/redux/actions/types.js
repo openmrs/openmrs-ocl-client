@@ -29,4 +29,5 @@ export const ADD_NEW_DESCRIPTION = '[concepts] add_new_description';
 export const REMOVE_ONE_DESCRIPTION = '[concepts] remove_one_description';
 export const CLEAR_FORM_SELECTIONS = '[concepts] clear_form_selection';
 export const CREATE_NEW_CONCEPT = '[concepts] create_new_concept';
+export const ADD_CONCEPT_TO_DICTIONARY = '[concepts] add_concept_to_dictionary';
 

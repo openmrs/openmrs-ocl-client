@@ -12,6 +12,7 @@ import {
   REMOVE_ONE_DESCRIPTION,
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
+  ADD_CONCEPT_TO_DICTIONARY,
 } from '../types';
 import {
   isFetching,
@@ -125,12 +126,31 @@ export const createNewConcept = (data, dataUrl) => async dispatch => {
   try {
     const response = await instance.post(url, data);
     dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
-    dispatch(isFetching(false));
+    dispatch(addConceptToDictionary(response.data.id, dataUrl));
     notify.show('concept successfully created', 'success', 3000);
   } catch (error) {
+    notify.show('concept could not be created', 'error', 3000);
     if (error.response) {
       dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
       dispatch(isFetching(false));
     }
+  }
+};
+
+export const addConceptToDictionary = (id, dataUrl) => async dispatch => {
+  const newConcept = `${dataUrl}${id}/`;
+  const urlConstruct = dataUrl.split('/');
+  const userType = urlConstruct[1];
+  const sourceName = urlConstruct[4];
+  const username = urlConstruct[2];
+  const data = { data: { expressions: [newConcept] } };
+  const url = `${userType}/${username}/collections/${sourceName}/references/`;
+  try {
+    const response = await instance.put(url, data);
+    dispatch(isSuccess(response.data, ADD_CONCEPT_TO_DICTIONARY));
+    dispatch(isFetching(false));
+    notify.show('concept successfully created', 'success', 3000);
+  } catch (error) {
+    notify.show('an error occurred', 'error', 3000);
   }
 };

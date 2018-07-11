@@ -17,6 +17,7 @@ const initialState = {
   newName: [],
   description: [],
   newConcept: {},
+  addConceptToDictionary: [],
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
