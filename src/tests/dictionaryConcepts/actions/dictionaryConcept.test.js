@@ -15,6 +15,7 @@ import {
   REMOVE_ONE_DESCRIPTION,
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
+  ADD_CONCEPT_TO_DICTIONARY,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -26,10 +27,12 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
+  addConceptToDictionary,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import concepts, { mockConceptStore, newConcept, newConceptData } from '../../__mocks__/concepts';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
+jest.mock('react-notify-toast');
 const mockStore = configureStore([thunk]);
 
 describe('Test suite for dictionary concept actions', () => {
@@ -96,7 +99,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: CREATE_NEW_CONCEPT, payload: newConcept },
-      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -123,6 +125,43 @@ describe('Test suite for dictionary concept actions', () => {
     const store = mockStore(mockConceptStore);
     const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
     return store.dispatch(createNewConcept(newConceptData, url)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle ADD_CONCEPT_TO_DICTIONARY', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: { added: true },
+      });
+    });
+
+    const expectedActions = [
+      { type: ADD_CONCEPT_TO_DICTIONARY, payload: { added: true } },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
+    return store.dispatch(addConceptToDictionary(newConceptData, url)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle error in ADD_CONCEPT_TO_DICTIONARY', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: 'bad request',
+      });
+    });
+
+    const expectedActions = [];
+
+    const store = mockStore(mockConceptStore);
+    const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
+    return store.dispatch(addConceptToDictionary(newConceptData, url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

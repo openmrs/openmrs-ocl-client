@@ -5,6 +5,7 @@ const instance = axios.create({
 });
 
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+instance.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded';
 
 instance.interceptors.request.use((config) => {
   // eslint-disable-next-line

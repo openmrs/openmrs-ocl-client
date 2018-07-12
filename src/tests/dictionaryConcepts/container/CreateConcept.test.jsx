@@ -100,6 +100,7 @@ describe('Test suite for dictionary concepts components', () => {
   it('should test componentWillReceiveProps and unmount', () => {
     const newProps = {
       newConcept,
+      addedConcept: [{ added: true }],
     };
     const wrapper = shallow(<CreateConcept {...props} />);
     wrapper.setState({ searchInput: 'ciel' });

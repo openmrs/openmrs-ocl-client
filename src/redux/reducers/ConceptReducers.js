@@ -13,6 +13,7 @@ import {
   REMOVE_ONE_DESCRIPTION,
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
+  ADD_CONCEPT_TO_DICTIONARY,
 } from '../actions/types';
 import { filterSources, filterClass, filterList, normalizeList, filterNames } from './util';
 
@@ -31,6 +32,7 @@ const initialState = {
   newName: [],
   description: [],
   newConcept: {},
+  addConceptToDictionary: [],
 };
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -54,6 +56,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case ADD_CONCEPT_TO_DICTIONARY:
+      return {
+        ...state,
+        addConceptToDictionary: action.payload,
       };
     case FILTER_BY_SOURCES:
       return {

@@ -12,6 +12,7 @@ import {
   REMOVE_ONE_DESCRIPTION,
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
+  ADD_CONCEPT_TO_DICTIONARY,
 } from '../../../redux/actions/types';
 
 let state;
@@ -32,6 +33,7 @@ beforeEach(() => {
     newName: ['456'],
     description: ['456'],
     newConcept: {},
+    addConceptToDictionary: [],
   };
   action = {};
 });
@@ -189,6 +191,20 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       newConcept: action.payload,
+    });
+  });
+  it('should handle ADD_CONCEPT_TO_DICTIONARY', () => {
+    action = {
+      type: ADD_CONCEPT_TO_DICTIONARY,
+      payload: { added: true },
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      addConceptToDictionary: action.payload,
     });
   });
 });
