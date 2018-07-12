@@ -31,3 +31,4 @@ export const CLEAR_FORM_SELECTIONS = '[concepts] clear_form_selection';
 export const CREATE_NEW_CONCEPT = '[concepts] create_new_concept';
 export const ADD_CONCEPT_TO_DICTIONARY = '[concepts] add_concept_to_dictionary';
 
+export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';

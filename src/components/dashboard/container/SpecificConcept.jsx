@@ -87,6 +87,9 @@ export class SpecificConcept extends Component {
     } = this.state;
     const { hasMore, concepts } = this.props;
     const { organization, name } = this.props.match.params;
+    const typeName = localStorage.getItem('typeName');
+    const dictionaryId = localStorage.getItem('dictionaryId');
+    const userType = localStorage.getItem('type');
     return (
       <div className="dashboard-wrapper">
         <SideBar />
@@ -99,8 +102,8 @@ export class SpecificConcept extends Component {
         <div className="container-fluid pt-3">
           <div className="row justify-content-center">
             <div className="col-10 offset-sm-1">
-              <Link to="/dashboard/dictionaries" id="dictionary-link">
-                <i className="fas fa-chevron-left" /> Back to Dictionaries
+              <Link to={`/concepts/${userType}/${typeName}/${dictionaryId}`} id="dictionary-link">
+                <i className="fas fa-chevron-left" /> Back to {dictionaryId} Dictionary
               </Link>
               <InfiniteScroll
                 dataLength={concepts.length}

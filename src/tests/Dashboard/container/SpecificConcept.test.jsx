@@ -1,14 +1,17 @@
 import React from 'react';
-import { mount , shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createMockStore } from 'redux-test-utils';
 import {
   SpecificConcept,
   mapStateToProps,
 } from '../../../components/dashboard/container/SpecificConcept';
 import concepts from '../../__mocks__/concepts';
+import Authenticated from '../../__mocks__/fakeStore';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
-
+const store = createMockStore(Authenticated);
 describe('Dashboard SpecificConcept Component', () => {
   it('should render without crashing', () => {
     const props = {
@@ -47,9 +50,9 @@ describe('Dashboard SpecificConcept Component', () => {
         },
       },
     };
-    const wrapper = mount(<MemoryRouter>
+    const wrapper = mount(<MemoryRouter><Provider store={store}>
       <SpecificConcept {...props} match={{ params }} />
-    </MemoryRouter>);
+    </Provider></MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -89,9 +92,9 @@ describe('Dashboard SpecificConcept Component', () => {
         },
       },
     };
-    const wrapper = mount(<MemoryRouter>
+    const wrapper = mount(<MemoryRouter><Provider store={store}>
       <SpecificConcept {...props} match={{ params }} />
-    </MemoryRouter>);
+    </Provider></MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'drug' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('.search-bar-wrapper').simulate('submit', {

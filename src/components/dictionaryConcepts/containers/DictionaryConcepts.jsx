@@ -23,6 +23,8 @@ export class DictionaryConcepts extends Component {
     match: PropTypes.shape({
       params: PropTypes.shape({
         typeName: PropTypes.string,
+        collectionName: PropTypes.string,
+        type: PropTypes.string,
       }),
     }).isRequired,
     location: PropTypes.shape({
@@ -53,6 +55,9 @@ export class DictionaryConcepts extends Component {
         params: { collectionName, type, typeName },
       },
     } = this.props;
+    localStorage.setItem('dictionaryId', this.props.match.params.collectionName);
+    localStorage.setItem('type', this.props.match.params.type);
+    localStorage.setItem('typeName', this.props.match.params.typeName);
     this.setState({ collectionName, type, typeName });
   }
 
