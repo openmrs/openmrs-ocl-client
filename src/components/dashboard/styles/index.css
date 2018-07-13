@@ -49,6 +49,7 @@ nav {
   height: 2rem;
   outline: none;
   box-shadow: none;
+  margin-right: 30%;
 }
 
 .search-bar-wrapper:hover {
@@ -59,8 +60,11 @@ nav {
   transition: all 400ms ease-in-out;
   background: rgb(233, 233, 233);
   border-radius: 10rem;
-  padding: 0.5rem;
-  z-index: 0;
+  padding: 0.3rem;
+  margin-right: 54%;
+  width: 110%;
+  margin-left: 2%;
+
 }
 
 .search-bar-wrapper i {
@@ -418,7 +422,7 @@ nav {
   float: right;
   margin-right: 80px; 
   border-radius: 20px;
-  height: 2.5rem;
+  
 }
 .add-dictionaries:hover {
   background-color: #2b6d27;
@@ -428,10 +432,9 @@ nav {
   display: inline;
 }
 .dictionary-search{
-  width: 100%;
-  margin-left: 30px;
+  width: 70%;
+  margin-left: 4%;
 }
-
 
 .viewdetailslink{
   color: #343434;
@@ -484,4 +487,18 @@ nav {
   border-left: solid 1px;
   border-right: solid 1px;
   border-color: #e9e9e942;
+}
+p{
+  font-size: 1.5em;
+}
+.public-dictionaries{
+  margin-top: 0.8rem;
+  margin-right: -4%;
+  float: left;
+  margin-left: 186px;
+}
+.public-search{
+  float:left;
+  margin-top: 1px;
+  align-content: center;
 }

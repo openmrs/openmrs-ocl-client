@@ -15,6 +15,7 @@ import DictionaryConcepts from './components/dictionaryConcepts/containers/Dicti
 import CreateConcept from './components/dictionaryConcepts/containers/CreateConcept';
 import NotFound from './components/NotFound';
 import DictionaryOverview from './components/dashboard/components/dictionary/DictionaryContainer';
+import OwnerDictionary from './components/dashboard/container/OwnerDictionary';
 
 const App = () => (
   <Provider store={store}>
@@ -23,10 +24,11 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Authenticate(Login)} />
-          <Route exact path="/dashboard" component={Authenticate(DictionaryDisplay)} />
+          <Route exact path="/dashboard" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/dashboard/sources" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
+          <Route exact path="/dashboard/userdictionaries" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/dashboard/concepts/:ownerType/:organization/:name" component={Authenticate(SpecificConcept)} />
           <Route exact path="/concepts/:type/:typeName/:collectionName" component={Authenticate(DictionaryConcepts)} />
           <Route exact path="/dictionaryOverview/:ownerType/:owner/:type/:name" component={Authenticate(DictionaryOverview)} />
