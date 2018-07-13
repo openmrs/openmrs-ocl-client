@@ -1,10 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './styles/dictionary-modal.css';
+import persistActiveconcept from './helperFunction';
 
 const DictionaryDetailCard = (dictionary) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
+      owner_url, short_code,
     },
   } = dictionary;
 
@@ -25,9 +28,15 @@ const DictionaryDetailCard = (dictionary) => {
           <div className="col-6" id="rightside-detail">
             <h3 className="genCon">Concept Details</h3>
             <p className="paragraph">Total Concepts: { active_concepts }</p>
-            <button type="button" className="btn btn-secondary" id="conceptB">
+            <Link
+              className="btn btn-secondary"
+              id="conceptB"
+              to={`/concepts${owner_url}${short_code}`}
+              // this is a temporary fix, it will be optimized while working on paginations
+              onClick={() => persistActiveconcept(active_concepts)}
+            >
                 Go to concepts
-            </button>
+            </Link>
           </div>
         </div>
         <div className="row"><h3 id="descHd">Description</h3></div>

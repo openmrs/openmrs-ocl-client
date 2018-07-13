@@ -135,7 +135,7 @@ export class DictionaryConcepts extends Component {
   render() {
     const {
       match: {
-        params: { typeName, collectionName },
+        params: { typeName },
       },
       location: { pathname },
       concepts,
@@ -147,7 +147,7 @@ export class DictionaryConcepts extends Component {
     const { conceptsCount, searchInput } = this.state;
     return (
       <div className="container-fluid custom-dictionary-concepts">
-        <Header typeName={collectionName} />
+        <Header locationPath={this.props.match.params} />
         <section className="row mt-2">
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
