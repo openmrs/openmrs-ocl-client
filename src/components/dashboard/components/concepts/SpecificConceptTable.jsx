@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import '../../styles/index.css';
 import AddConceptModal from './ConceptModal';
+import addExistingConcept from '../../../../redux/actions/concepts/addExistingConcepts/index';
 
-const SpecificConceptTable = (concept) => {
+const SpecificConceptTable = (props) => {
   const {
     concept: {
       id,
@@ -11,8 +14,15 @@ const SpecificConceptTable = (concept) => {
       display_name,
       source,
       owner,
+      url,
     },
-  } = concept;
+  } = props;
+  const handleAdd = () => {
+    const expressions = [url];
+    props.addExistingConcept({ data: { expressions } });
+    localStorage.setItem('conceptName', display_name);
+  };
+
   return (
     <tr className="concept-table">
       <td className="table1">{id}</td>
@@ -21,7 +31,7 @@ const SpecificConceptTable = (concept) => {
         {concept_class} / {datatype}
       </td>
       <td className="table3">
-        <a className="dummy-link"> Add </a> {' '}
+        <a href="#" onClick={() => handleAdd(props)} className="add-btn"> Add </a> {' '}
         <a href="!#" className="add-btn" data-toggle="modal" data-target={`#conceptPreview${id}`}>
           Preview
         </a>
@@ -37,4 +47,10 @@ const SpecificConceptTable = (concept) => {
   );
 };
 
-export default SpecificConceptTable;
+SpecificConceptTable.propTypes = {
+  addExistingConcept: PropTypes.func.isRequired,
+  concept: PropTypes.arrayOf(PropTypes.shape({
+    owner: PropTypes.string,
+  })).isRequired,
+};
+export default connect(null, { addExistingConcept })(SpecificConceptTable);
