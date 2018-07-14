@@ -5,12 +5,13 @@ import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import SpecificConceptTable from '../../../components/dashboard/components/concepts/SpecificConceptTable';
 import Authenticated from '../../__mocks__/fakeStore';
+import { existingConcept } from '../../__mocks__/concepts';
 
 const store = createMockStore(Authenticated);
 describe('Dashboard SpecificConceptTable Component', () => {
   it('should render without crashing', () => {
     const props = {
-      concept: {},
+      concept: existingConcept,
       addExistingConcept: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter>
@@ -23,7 +24,7 @@ describe('Dashboard SpecificConceptTable Component', () => {
   });
   it('calls the handleAdd function when the Add link is clicked', () => {
     const props = {
-      concept: {},
+      concept: existingConcept,
       addExistingConcept: jest.fn(() => {}),
     };
     const wrapper = mount(<MemoryRouter>

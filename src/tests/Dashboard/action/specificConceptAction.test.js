@@ -40,6 +40,28 @@ describe('Test suite for specific concepts actions', () => {
     });
   });
 
+  it('should return an array of concepts when ownerType is organization', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_CONCEPTS, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchConceptsActionTypes('hadijah', 'malaria', 'Organization', 10, 1)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('should return an error message from the db', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
