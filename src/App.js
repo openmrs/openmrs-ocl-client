@@ -19,6 +19,7 @@ import OwnerDictionary from './components/dashboard/container/OwnerDictionary';
 import GeneralSearchContainer from './components/GeneralSearch/GeneralSearchContainer';
 import UserDashboard from './components/userDasboard/container/UserDashboard';
 import LoginDetails from './components/login/container/LoginDetails';
+import AddBulkConcepts from './components/bulkConcepts/addBulkConcepts';
 
 const App = () => (
   <Provider store={store}>
@@ -34,6 +35,7 @@ const App = () => (
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
           <Route exact path="/dashboard/userdictionaries" component={Authenticate(OwnerDictionary)} />
+          <Route exact path="/bulkconcepts" component={Authenticate(AddBulkConcepts)} />
           <Route exact path="/dashboard/concepts/:ownerType/:organization/:name" component={Authenticate(SpecificConcept)} />
           <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(DictionaryConcepts)} />
           <Route exact path="/dictionaryOverview/:ownerType/:owner/:type/:name" component={Authenticate(DictionaryOverview)} />
