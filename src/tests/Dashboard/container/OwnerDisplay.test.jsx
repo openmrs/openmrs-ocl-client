@@ -1,17 +1,13 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import {
-  DictionaryDisplay,
-  mapStateToProps,
-} from '../../../components/dashboard/container/DictionariesDisplay';
+import { OwnerDictionary, mapStateToProps } from '../../../components/dashboard/container/OwnerDictionary';
 import dictionaries from '../../__mocks__/dictionaries';
 import organizations from '../../__mocks__/organizations';
 import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
-import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
-import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
+import OwnerListDictionaries from '../../../components/dashboard/components/dictionary/OwnerListDictionaries';
 
-
+jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryDisplay', () => {
   it('should render without any dictionary data', () => {
     const props = {
@@ -22,7 +18,7 @@ describe('DictionaryDisplay', () => {
     };
     const wrapper = (
       <MemoryRouter>
-        <DictionaryDisplay {...props} />
+        <OwnerDictionary {...props} />
       </MemoryRouter>
     );
     const rShallow = shallow(wrapper);
@@ -36,9 +32,8 @@ describe('DictionaryDisplay', () => {
       organizations: [organizations],
     };
     const wrapper = mount(<MemoryRouter>
-      <DictionaryDisplay {...props} />
+      <OwnerDictionary {...props} />
     </MemoryRouter>);
-
     expect(wrapper.find('.dashboard-wrapper')).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
   });
@@ -50,9 +45,8 @@ describe('DictionaryDisplay', () => {
       organizations: [],
     };
     const wrapper = shallow(<MemoryRouter>
-      <DictionaryDisplay {...props} />
+      <OwnerDictionary {...props} />
     </MemoryRouter>);
-
     expect(wrapper).toMatchSnapshot();
   });
   it('should test mapStateToProps', () => {
@@ -76,7 +70,7 @@ describe('DictionaryDisplay', () => {
       organizations: [organizations],
     };
     const wrapper = mount(<MemoryRouter>
-      <DictionaryDisplay {...props} />
+      <OwnerDictionary {...props} />
     </MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'openmrs' } };
     wrapper.find('#search').simulate('change', event);
@@ -93,23 +87,48 @@ describe('DictionaryDisplay', () => {
     const component = shallow(<DictionariesSearch {...properties} />);
     expect(component).toMatchSnapshot();
   });
+  it('It sets the state of the component show:true', () => {
+    const props = {
+      fetchDictionaries: jest.fn(),
+      dictionaries: [],
+      isFetching: false,
+      organizations: [organizations],
+    };
+    const wrapper = mount(<MemoryRouter>
+      <OwnerDictionary {...props} />
+    </MemoryRouter>);
+    wrapper.find('.add-dictionaries').simulate('click');
+    wrapper.setState({ show: true });
+    expect(wrapper.state().show).toEqual(true);
+  });
   describe(' wrapper components', () => {
     it('should render a list of dictionaries', () => {
       const length = jest.fn();
       const props = {
         dictionaries: length,
       };
-      const component = mount(<ListDictionaries {...props} />);
+      const component = mount(<OwnerListDictionaries {...props} />);
       expect(component).toMatchSnapshot();
+    });
+
+    it('returns the openmrs user dictionaries when it receives correct properties', () => {
+      const props = {
+        dictionaries: [dictionaries],
+        fetching: false,
+        fetchData: true,
+      };
+      const component = mount(<OwnerListDictionaries {...props} />);
+      expect(component.props().dictionaries[0].repository_type).toBe('OpenMRSDictionary');
     });
   });
 });
 describe('DictionaryCard', () => {
   it('should render with data', () => {
     const props = {
+      fetchDictionaries: jest.fn(),
       dictionary: [dictionaries],
     };
-    const wrapper = shallow(<DictionaryCard {...props} />);
+    const wrapper = shallow(<OwnerDictionary {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

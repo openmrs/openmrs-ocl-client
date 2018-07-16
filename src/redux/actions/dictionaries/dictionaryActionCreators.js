@@ -7,6 +7,7 @@ import {
   dictionaryIsSuccess,
   isErrored,
 } from './dictionaryActions';
+import { filterPayload } from '../../reducers/util';
 import api from './../../api';
 
 /* eslint-disable */
@@ -46,7 +47,8 @@ export const fetchDictionaries = () => (dispatch) => {
   return api.dictionaries
     .fetchingDictionaries()
     .then((payload) => {
-      dispatch(isSuccess(payload));
+      const result = filterPayload(payload);
+      dispatch(isSuccess(result));
       dispatch(isFetching(false));
     })
     .catch((error) => {

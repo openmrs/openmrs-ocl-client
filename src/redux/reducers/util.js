@@ -47,3 +47,14 @@ export const normalizeList = (item, list) => {
 };
 
 export const filterNames = (item, list) => list.filter(listItem => listItem !== item);
+
+export const filterPayload = (payload) => {
+  const filteredDictionaries = [];
+  payload.map((dictionary) => {
+    if (dictionary.repository_type === 'OpenMRSDictionary') {
+      return filteredDictionaries.push(dictionary);
+    }
+    return filteredDictionaries;
+  });
+  return filteredDictionaries;
+};
