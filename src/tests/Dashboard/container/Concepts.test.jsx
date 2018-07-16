@@ -1,14 +1,18 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createMockStore } from 'redux-test-utils';
+import Authenticated from '../../__mocks__/fakeStore';
 import {
   ConceptSearch,
   mapStateToProps,
 } from '../../../components/dashboard/container/Concepts';
 import concepts from '../../__mocks__/concepts';
-import { Router,MemoryRouter,BrowserRouter } from 'react-router-dom';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 
+const store = createMockStore(Authenticated);
 describe('Dashboard Concept Component', () => {
   it('should render without crashing', () => {
     const props = {
@@ -16,7 +20,11 @@ describe('Dashboard Concept Component', () => {
       concepts: [],
       isFetching: false,
     };
-    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -26,7 +34,11 @@ describe('Dashboard Concept Component', () => {
       concepts: [],
       isFetching: true,
     };
-    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -36,7 +48,11 @@ describe('Dashboard Concept Component', () => {
       concepts: [concepts],
       isFetching: true,
     };
-    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('.search-bar-wrapper').simulate('submit', {
@@ -57,8 +73,11 @@ describe('Dashboard Concept Component', () => {
       concepts: [concepts],
       isFetching: true,
     };
-    const wrapper = mount(<MemoryRouter><ConceptSearch {...props} /></MemoryRouter>);
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
 });
-

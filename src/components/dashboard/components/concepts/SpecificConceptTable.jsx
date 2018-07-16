@@ -42,6 +42,7 @@ const SpecificConceptTable = (props) => {
         concept_class={concept_class}
         source={source}
         owner={owner}
+        url={url}
         descriptions={props.concept.descriptions[0].description}
         locale={props.concept.descriptions[0].locale}
         names={props.concept.names[0].name_type}
