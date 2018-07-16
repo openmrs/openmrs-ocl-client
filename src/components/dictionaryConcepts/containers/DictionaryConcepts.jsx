@@ -10,12 +10,13 @@ import SideNav from '../components/Sidenav';
 import SearchBar from '../components/SearchBar';
 import ConceptTable from '../components/ConceptTable';
 import { conceptsProps } from '../proptypes';
-import { getTotal, getUsername } from '../components/helperFunction';
+import { getUsername } from '../components/helperFunction';
 
 import {
   fetchDictionaryConcepts,
   filterBySource,
   filterByClass,
+  paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 
 export class DictionaryConcepts extends Component {
@@ -37,60 +38,52 @@ export class DictionaryConcepts extends Component {
     loading: PropTypes.bool.isRequired,
     filterBySource: PropTypes.func.isRequired,
     filterByClass: PropTypes.func.isRequired,
+    paginateConcepts: PropTypes.func.isRequired,
+    totalConceptCount: PropTypes.number.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      conceptsCount: getTotal(),
+      conceptsCount: this.props.totalConceptCount,
       searchInput: '',
+      conceptLimit: 10,
+      conceptOffset: 0,
     };
     autoBind(this);
   }
 
   componentDidMount() {
     this.fetchConcepts();
+  }
+
+  componentWillReceiveProps(nextProps) {
     const {
       match: {
         params: { collectionName, type, typeName },
       },
-    } = this.props;
+    } = nextProps;
     localStorage.setItem('dictionaryId', this.props.match.params.collectionName);
     localStorage.setItem('type', this.props.match.params.type);
     localStorage.setItem('typeName', this.props.match.params.typeName);
-    this.setState({ collectionName, type, typeName });
+    this.setState({
+      collectionName,
+      type,
+      typeName,
+      conceptsCount: nextProps.totalConceptCount,
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.state.searchInput) {
-      this.setState({
-        conceptsCount: nextProps.concepts.length,
-      });
-    } else {
-      this.setState({
-        conceptsCount: getTotal(),
-      });
-    }
-  }
-
-  fetchConcepts(query = '', limit = 10, filterParams = null, filterName = null) {
+  fetchConcepts(query = '', limit = 0, filterParams = null, filterName = null) {
     const {
       match: {
         params: { collectionName, type, typeName },
       },
     } = this.props;
     if (filterParams) {
-      this.props.filterBySource(
-        filterName,
-        type,
-        typeName,
-        collectionName,
-        query,
-        filterParams,
-        limit,
-      );
+      this.props.filterBySource(filterName, type, typeName, collectionName, query, limit);
     }
-    this.props.fetchDictionaryConcepts(type, typeName, collectionName, query, filterParams, limit);
+    this.props.fetchDictionaryConcepts(type, typeName, collectionName, query, limit);
   }
 
   handleSearch(event) {
@@ -108,7 +101,6 @@ export class DictionaryConcepts extends Component {
         this.state.type,
         this.state.typeName,
         this.state.collectionName,
-        filterType,
       );
     }
     if (type === 'checkbox' && filterType === 'classes') {
@@ -117,7 +109,6 @@ export class DictionaryConcepts extends Component {
         this.state.type,
         this.state.typeName,
         this.state.collectionName,
-        filterType,
       );
     }
 
@@ -137,6 +128,21 @@ export class DictionaryConcepts extends Component {
     });
   }
 
+  fetchNextConcepts() {
+    this.props.paginateConcepts(null, this.state.conceptLimit + 10, this.state.conceptOffset + 10);
+    this.setState(state => ({
+      conceptOffset: state.conceptOffset + 10,
+      conceptLimit: state.conceptLimit + 10,
+    }));
+  }
+  fetchPrevConcepts() {
+    this.props.paginateConcepts(null, this.state.conceptLimit - 10, this.state.conceptOffset - 10);
+    this.setState(state => ({
+      conceptOffset: state.conceptOffset - 10,
+      conceptLimit: state.conceptLimit - 10,
+    }));
+  }
+
   render() {
     const {
       match: {
@@ -149,7 +155,9 @@ export class DictionaryConcepts extends Component {
       loading,
     } = this.props;
     const username = typeName === getUsername();
-    const { conceptsCount, searchInput } = this.state;
+    const {
+      conceptsCount, searchInput, conceptOffset, conceptLimit,
+    } = this.state;
     return (
       <div className="container-fluid custom-dictionary-concepts">
         <Header locationPath={this.props.match.params} />
@@ -169,11 +177,14 @@ export class DictionaryConcepts extends Component {
           />
           <div className="col-12 col-md-10">
             <SearchBar
-              conceptsCount={concepts.length}
+              conceptsCount={conceptLimit}
               totalConceptsCount={conceptsCount}
               handleSearch={this.handleSearch}
               searchValue={searchInput}
               submit={this.handleSubmit}
+              countStart={conceptOffset + 1}
+              next={this.fetchNextConcepts}
+              prev={this.fetchPrevConcepts}
             />
             <ConceptTable concepts={concepts} loading={loading} />
           </div>
@@ -184,7 +195,8 @@ export class DictionaryConcepts extends Component {
 }
 
 export const mapStateToProps = state => ({
-  concepts: state.concepts.dictionaryConcepts,
+  concepts: state.concepts.paginatedConcepts,
+  totalConceptCount: state.concepts.totalConceptCount,
   filteredClass: state.concepts.filteredClass,
   filteredSources: state.concepts.filteredSources,
   loading: state.concepts.loading,
@@ -193,5 +205,10 @@ export const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchDictionaryConcepts, filterBySource, filterByClass },
+  {
+    fetchDictionaryConcepts,
+    filterBySource,
+    filterByClass,
+    paginateConcepts,
+  },
 )(DictionaryConcepts);

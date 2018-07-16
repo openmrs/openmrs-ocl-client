@@ -16,6 +16,8 @@ import {
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
+  TOTAL_CONCEPT_COUNT,
+  FETCH_NEXT_CONCEPTS,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -28,8 +30,14 @@ import {
   clearSelections,
   createNewConcept,
   addConceptToDictionary,
+  paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import concepts, { mockConceptStore, newConcept, newConceptData } from '../../__mocks__/concepts';
+import concepts, {
+  mockConceptStore,
+  newConcept,
+  newConceptData,
+  multipleConceptsMockStore,
+} from '../../__mocks__/concepts';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -44,7 +52,7 @@ describe('Test suite for dictionary concept actions', () => {
     moxios.uninstall(instance);
   });
 
-  it('should return an array of concepts', () => {
+  it('should handle FETCH_DICTIONARY_CONCEPT', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -56,6 +64,8 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
+      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
       { type: IS_FETCHING, payload: false },
       { type: POPULATE_SIDEBAR, payload: [] },
     ];
@@ -194,6 +204,15 @@ describe('test suite for synchronous action creators', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: CREATE_NEW_NAMES, payload: 1 }];
     store.dispatch(createNewName());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+  it('should handle FETCH_NEXT_CONCEPTS', () => {
+    const expectedActions = [
+      { type: TOTAL_CONCEPT_COUNT, payload: 10 },
+      { type: FETCH_NEXT_CONCEPTS, payload: multipleConceptsMockStore.concepts.dictionaryConcepts },
+    ];
+    const store = mockStore(multipleConceptsMockStore);
+    store.dispatch(paginateConcepts(undefined, 10, 0));
     expect(store.getActions()).toEqual(expectedActions);
   });
   it('should handle REMOVE_ONE_NAME', () => {

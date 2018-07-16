@@ -30,5 +30,7 @@ export const REMOVE_ONE_DESCRIPTION = '[concepts] remove_one_description';
 export const CLEAR_FORM_SELECTIONS = '[concepts] clear_form_selection';
 export const CREATE_NEW_CONCEPT = '[concepts] create_new_concept';
 export const ADD_CONCEPT_TO_DICTIONARY = '[concepts] add_concept_to_dictionary';
+export const FETCH_NEXT_CONCEPTS = '[concepts] fetch_next_concepts';
+export const TOTAL_CONCEPT_COUNT = '[concepts] total_concept_count';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';

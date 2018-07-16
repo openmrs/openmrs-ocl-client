@@ -7,7 +7,7 @@ import {
   DictionaryConcepts,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
-import concepts from '../../__mocks__/concepts';
+import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 
 describe('Test suite for dictionary concepts components', () => {
   it('should render without breaking', () => {
@@ -16,6 +16,7 @@ describe('Test suite for dictionary concepts components', () => {
         params: {
           typeName: 'dev-col',
           collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -118,6 +119,7 @@ describe('Test suite for dictionary concepts components', () => {
       concepts: {
         loading: false,
         dictionaryConcepts: [],
+        paginatedConcepts: [],
         filteredSources: [],
         filteredClass: [],
       },
@@ -126,5 +128,29 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).filteredClass).toEqual([]);
     expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
+  });
+  it('should handle concept pagination', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts, ...multipleConceptsMockStore.concepts.dictionaryConcepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 11,
+    };
+    const wrapper = mount(<Router>
+      <DictionaryConcepts {...props} />
+    </Router>);
+    wrapper.find('#next').simulate('click');
+    wrapper.find('#previous').simulate('click');
   });
 });

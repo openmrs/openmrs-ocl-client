@@ -80,11 +80,32 @@ body {
 
 .paginate-count {
   position: absolute;
-  bottom: -11px;
-  right: -1px;
-  font-style: italic;
+  bottom: 0rem;
+  right: 2.5rem;
   font-size: 80%;
   padding-top: .4rem;
+}
+
+.paginate-controllers {
+  margin: 0 0 0 2rem;
+}
+
+.paginate-controllers .left-arrow {
+  margin: 0 1rem 0 0;
+}
+
+.paginate-controllers i {
+  cursor: pointer;
+  padding: .5rem .6rem;
+  border-radius: 50%;
+}
+
+.paginate-controllers i:hover {
+  background: rgb(240, 240, 240);
+}
+
+.disabled-pagination-button {
+  color: lightgray;
 }
 
 .search-container .concept-search-wrapper .fa-search {
@@ -108,7 +129,7 @@ body {
 }
 
 .custom-concept-list {
-  padding: 2rem 1rem 1rem;
+  padding: .3rem 1rem 1rem;
   border-radius: .4rem;
   -webkit-border-radius: .4rem;
   -moz-border-radius: .4rem;
@@ -270,6 +291,6 @@ select.form-control {
   border-bottom: thin solid #4f6196;
 }
 
-.small-text{
+.small-text {
   font-size: .7rem;
 }

@@ -14,6 +14,8 @@ import {
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
+  FETCH_NEXT_CONCEPTS,
+  TOTAL_CONCEPT_COUNT,
 } from '../actions/types';
 import { filterSources, filterClass, filterList, normalizeList, filterNames } from './util';
 
@@ -33,6 +35,8 @@ const initialState = {
   description: [],
   newConcept: {},
   addConceptToDictionary: [],
+  paginatedConcepts: [],
+  totalConceptCount: 0,
 };
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -56,6 +60,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case FETCH_NEXT_CONCEPTS:
+      return {
+        ...state,
+        paginatedConcepts: action.payload,
+      };
+    case TOTAL_CONCEPT_COUNT:
+      return {
+        ...state,
+        totalConceptCount: action.payload,
       };
     case ADD_CONCEPT_TO_DICTIONARY:
       return {

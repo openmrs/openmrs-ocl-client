@@ -75,7 +75,9 @@ export class CreateConcept extends Component {
   componentWillReceiveProps(nextProps) {
     const {
       match: {
-        params: { collectionName, type, typeName },
+        params: {
+          collectionName, type, typeName, dictionaryName,
+        },
       },
     } = this.props;
     const { newConcept, addedConcept } = nextProps;
@@ -83,7 +85,8 @@ export class CreateConcept extends Component {
     const isAddedConcept = addedConcept.length;
     if (isNewConcept && isAddedConcept) {
       setTimeout(() => {
-        nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}`);
+        notify.show('concept successfully created', 'success', 3000);
+        nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}`);
       }, 3000);
     }
   }
