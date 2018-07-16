@@ -10,10 +10,6 @@ nav {
   z-index: 2;
 }
 
-.fixed-top {
-  margin-bottom: 5rem;
-}
-
 .side-nav {
   height: 100%;
   min-width: 6%;
@@ -192,7 +188,7 @@ nav {
 }
 
 .dashboard-wrapper {
-  margin-top: 4rem;
+  margin-top: 2rem;
 }
 .title-wrapper {
   text-align: center;
@@ -442,4 +438,50 @@ nav {
 }
 .viewdetailslink:hover{
   color: #dedcdc;
+}
+
+#generalSearch{
+  width: 114%;
+  padding-top: 0%;
+  padding-bottom: 0.4%;
+  border-radius: 10rem;
+  border-color: #e9e9e942;
+  background-color:#494a4a42;
+  transition: all 400ms ease-in-out;
+}
+
+#generalSearch:hover, #generalSearch:focus {
+  border-color: #e9e9e9;
+  background-color: #e9e9e9;
+}
+
+#generalSearchForm{
+  width: 39%;
+  padding-left: 5%;
+}
+
+#navbarDropdown{
+  padding: 0rem 0rem;
+  color: white;
+}
+
+.navBarItems{
+  display: flex;
+}
+#navList{
+  margin-right: -13%;
+  width: 100%;
+}
+
+#navbarUser{
+  margin-left: 31%;
+}
+#navbarItemSource{
+  margin-left: 5%;
+  margin-right: 5%;
+  padding: 0rem 0rem;
+  color: white;
+  border-left: solid 1px;
+  border-right: solid 1px;
+  border-color: #e9e9e942;
 }

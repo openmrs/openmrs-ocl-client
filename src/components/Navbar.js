@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logoutAction } from '../redux/actions/auth/authActions';
+import GeneralSearch from './NavBar/GeneralSearch';
 
 export class Navbar extends Component {
   logoutUser = (event) => {
@@ -22,21 +23,53 @@ export class Navbar extends Component {
               OCL for OpenMRS
             </a>
           </strong>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
+          <GeneralSearch />
           <div className="collapse navbar-collapse " id="navbarNav">
             {this.props.loggedIn && (
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item nav-link dropdown">
+              <ul className="navbar-nav ml-auto" id="navList">
+                <div className="navBarItems">
+                  <li className="nav-item nav-link dropdown" id="navbarDropdown">
+                    <a
+                      className="nav-link text-white"
+                      href="/dashboard/dictionaries"
+                      id="navbarDropdown"
+                      role="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <strong>
+                        Dictionaries
+                      </strong>
+                    </a>
+                  </li>
+                  <li className="nav-item nav-link dropdown" id="navbarItemSource">
+                    <a
+                      className="nav-link text-white"
+                      href="/dashboard/sources"
+                      role="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <strong>
+                        Sources
+                      </strong>
+                    </a>
+                  </li>
+                  <li className="nav-item nav-link dropdown" id="navbarDropdown">
+                    <a
+                      className="nav-link text-white"
+                      href="/dashboard/concepts"
+                      role="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <strong>
+                      Concepts
+                      </strong>
+                    </a>
+                  </li>
+                </div>
+                <li className="nav-item nav-link dropdown" id="navbarUser">
                   <a
                     className="nav-link dropdown-toggle text-white"
                     href="!#"
@@ -51,7 +84,7 @@ export class Navbar extends Component {
                       {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
                     </strong>
                   </a>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div className="dropdown-menu" aria-labelledby="navbarDropdown" id="navbarDropdown">
                     <a className="dropdown-item nav-link" href="!#" onClick={this.logoutUser}>
                       <strong>
                         Logout <i className="fa fa-sign-out" />

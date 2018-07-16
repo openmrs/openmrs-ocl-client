@@ -10,13 +10,20 @@
 
 .nav-item.nav-link:hover {
   background-color: rgb(70, 65, 65);
+  padding-right: .5rem;
+  padding-left: .5rem;
 }
 .nav-link {
   line-height: 2.2 !important;
+  padding: 0rem 0rem;
+  padding-right: .5rem !important;
+  padding-left: .5rem !important;
 }
 .navbar {
-  padding: 0 1rem !important;
+  padding: 0 3rem !important;
   line-height: 2 !important;
+  height: 4.8%;
+  font-size: 77%;
 }
 
 @media only screen and (max-width: 992px) {
