@@ -22,7 +22,7 @@ const SpecificConceptTable = (props) => {
     props.addExistingConcept({ data: { expressions } });
     localStorage.setItem('conceptName', display_name);
   };
-
+  const replace = (key, value) => ((value == null) ? 'None' : value);
   return (
     <tr className="concept-table">
       <td className="table1">{id}</td>
@@ -42,6 +42,10 @@ const SpecificConceptTable = (props) => {
         concept_class={concept_class}
         source={source}
         owner={owner}
+        descriptions={props.concept.descriptions[0].description}
+        locale={props.concept.descriptions[0].locale}
+        names={props.concept.names[0].name_type}
+        mappings={replace(props.concept.mappings)}
       />
     </tr>
   );

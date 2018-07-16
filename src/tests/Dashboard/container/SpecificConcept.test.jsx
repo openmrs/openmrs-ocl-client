@@ -7,8 +7,8 @@ import {
   SpecificConcept,
   mapStateToProps,
 } from '../../../components/dashboard/container/SpecificConcept';
-import concepts from '../../__mocks__/concepts';
 import Authenticated from '../../__mocks__/fakeStore';
+import { existingConcept } from '../../__mocks__/concepts';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 const store = createMockStore(Authenticated);
@@ -39,7 +39,7 @@ describe('Dashboard SpecificConcept Component', () => {
   it('should render fetch specific concepts', () => {
     const props = {
       fetchConceptsActionTypes: jest.fn(),
-      concepts: [concepts],
+      concepts: [existingConcept],
       isFetching: true,
     };
     const params = {
@@ -80,7 +80,7 @@ describe('Dashboard SpecificConcept Component', () => {
   it('should search for a specific concept', () => {
     const props = {
       fetchConceptsActionTypes: jest.fn(),
-      concepts: [concepts],
+      concepts: [existingConcept],
       isFetching: true,
       clearConcepts: jest.fn(),
     };
