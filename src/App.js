@@ -16,6 +16,7 @@ import CreateConcept from './components/dictionaryConcepts/containers/CreateConc
 import NotFound from './components/NotFound';
 import DictionaryOverview from './components/dashboard/components/dictionary/DictionaryContainer';
 import OwnerDictionary from './components/dashboard/container/OwnerDictionary';
+import GeneralSearchContainer from './components/GeneralSearch/GeneralSearchContainer';
 
 const App = () => (
   <Provider store={store}>
@@ -33,6 +34,7 @@ const App = () => (
           <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName" component={Authenticate(DictionaryConcepts)} />
           <Route exact path="/dictionaryOverview/:ownerType/:owner/:type/:name" component={Authenticate(DictionaryOverview)} />
           <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/new/:conceptType?" component={Authenticate(CreateConcept)} />
+          <Route exact path="/search/:query?" component={Authenticate(GeneralSearchContainer)} />
           <Route component={NotFound} />
         </Switch>
       </div>

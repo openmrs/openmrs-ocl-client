@@ -502,3 +502,14 @@ p{
   margin-top: 1px;
   align-content: center;
 }
+#Noresults {
+  margin-top: 17rem!important;
+  margin-right: 13%;
+}
+#Noresults h5{
+  font-size: 2.25rem;
+}
+
+#generalSearch::placeholder{
+  color: #f5f5f594;
+}
