@@ -18,6 +18,8 @@ const initialState = {
   description: [],
   newConcept: {},
   addConceptToDictionary: [],
+  paginatedConcepts: [],
+  totalConceptCount: 0,
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {

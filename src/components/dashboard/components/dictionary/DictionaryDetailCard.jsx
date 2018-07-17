@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/dictionary-modal.css';
-import persistActiveconcept from './helperFunction';
 
 const DictionaryDetailCard = (dictionary) => {
   const {
@@ -31,9 +30,7 @@ const DictionaryDetailCard = (dictionary) => {
             <Link
               className="btn btn-secondary"
               id="conceptB"
-              to={`/concepts${owner_url}${short_code}`}
-              // this is a temporary fix, it will be optimized while working on paginations
-              onClick={() => persistActiveconcept(active_concepts)}
+              to={`/concepts${owner_url}${short_code}/${name}`}
             >
                 Go to concepts
             </Link>

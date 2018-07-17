@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import persistActiveconcept from './helperFunction';
 
 const DictionaryCard = (dictionary) => {
   const {
@@ -36,9 +35,8 @@ const DictionaryCard = (dictionary) => {
           <div className="description col-12 text-left">
             <p>
               <Link
-                to={`/concepts${owner_url}${short_code}`}
+                to={`/concepts${owner_url}${short_code}/${name}`}
                 className="source-type"
-                onClick={() => persistActiveconcept(active_concepts)}
               >
                 Concepts: { active_concepts }
               </Link>
