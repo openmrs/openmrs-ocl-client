@@ -34,3 +34,4 @@ export const FETCH_NEXT_CONCEPTS = '[concepts] fetch_next_concepts';
 export const TOTAL_CONCEPT_COUNT = '[concepts] total_concept_count';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
+export const SEARCH_RESULTS = '[searchResults] search';

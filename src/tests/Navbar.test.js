@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { StaticRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
 import Navbar from '../components/Navbar';
+import GeneralSearch from '../components/GeneralSearch/NavbarGeneralSearch';
 
 const initialState = {
   users: {
@@ -29,5 +30,11 @@ describe('Navbar Component', () => {
   it('renders logout function', () => {
     expect(wrapper.find('LogoutAction')).toBeTruthy();
     expect(wrapper).toMatchSnapshot();
+  });
+});
+describe('GeneralSearch', () => {
+  it('should render the GeneralSearch', () => {
+    const component = mount(<GeneralSearch />);
+    expect(component).toMatchSnapshot();
   });
 });
