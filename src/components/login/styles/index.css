@@ -40,3 +40,17 @@
   border-width: .1rem;
   vertical-align: middle;
 }
+
+.login-details{
+  margin-top:10px;
+  margin-left:280px;
+  margin-bottom: 10px;
+  width:60%;
+}
+
+.video{
+  padding: 10px;
+  width:100%;
+  height:460px;
+}
+
