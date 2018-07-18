@@ -17,6 +17,7 @@ import NotFound from './components/NotFound';
 import DictionaryOverview from './components/dashboard/components/dictionary/DictionaryContainer';
 import OwnerDictionary from './components/dashboard/container/OwnerDictionary';
 import GeneralSearchContainer from './components/GeneralSearch/GeneralSearchContainer';
+import UserDashboard from './components/userDasboard/container/UserDashboard';
 
 const App = () => (
   <Provider store={store}>
@@ -25,7 +26,7 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Authenticate(Login)} />
-          <Route exact path="/dashboard" component={Authenticate(OwnerDictionary)} />
+          <Route exact path="/dashboard" component={Authenticate(UserDashboard)} />
           <Route exact path="/dashboard/sources" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />

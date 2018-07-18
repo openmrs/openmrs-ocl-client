@@ -49,16 +49,10 @@ const DictionaryCard = (dictionary) => {
         </div>
         <div className="source-card-footer">
           <Link
-            className="viewdetailslink"
+            className="view-details-link"
             to={`/dictionaryOverview${url}`}
           >
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              id="viewDetails"
-            >
-          View Details
-            </button>
+            <span id="viewDetails">View Details</span>
           </Link>
         </div>
       </div>
