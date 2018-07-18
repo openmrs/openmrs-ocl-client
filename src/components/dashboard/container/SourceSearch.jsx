@@ -9,7 +9,6 @@ import { clearSources } from '../../../redux/actions/sources/sourcesActionCreato
 import { fetchingOrganizations } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import '../styles/index.css';
 
-import SideBar from '../components/SideNavigation';
 import SearchBar from '../components/SearchBar';
 import ListWrapper from '../components/ListWrapper';
 
@@ -102,7 +101,6 @@ export class SourceSearch extends Component {
     const { hasMore, sources, isFetching } = this.props;
     return (
       <div className="dashboard-wrapper">
-        <SideBar />
         <SearchBar onSearch={this.onSearch} onSubmit={this.onSubmit} searchValue={searchInput} />
         <div className="container-fluid">
           <div className="row justify-content-center">

@@ -49,7 +49,6 @@ nav {
   height: 2rem;
   outline: none;
   box-shadow: none;
-  margin-right: 30%;
 }
 
 .search-bar-wrapper:hover {
@@ -62,8 +61,9 @@ nav {
   border-radius: 10rem;
   padding: 0.3rem;
   margin-right: 54%;
-  width: 110%;
+  width: 100%;
   margin-left: 2%;
+  margin-left: -6%;
 
 }
 
@@ -192,7 +192,7 @@ nav {
 }
 
 .dashboard-wrapper {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
 .title-wrapper {
   text-align: center;
@@ -420,7 +420,7 @@ nav {
   background-color: whitesmoke;
   margin-top: 10px;
   float: right;
-  margin-right: 80px; 
+  margin-right: 37%;
   border-radius: 20px;
   
 }
@@ -495,7 +495,7 @@ p{
   margin-top: 0.8rem;
   margin-right: -4%;
   float: left;
-  margin-left: 186px;
+  margin-left: 103px;
 }
 .public-search{
   float:left;
@@ -512,4 +512,31 @@ p{
 
 #generalSearch::placeholder{
   color: #f5f5f594;
+}
+
+#container{
+  margin-left: -42px;
+  margin-right: -42px;
+}
+
+@media (min-width: 576px){
+.offset-sm-1 {
+  margin-left: 0.333333%;
+}
+}
+@media (min-width: 992px){
+.col-lg-7 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 58.333333%;
+    flex: 0 0 58.333333%;
+    max-width: 89.333333%;
+}}
+
+#userInfo{
+  margin-left: -9%;
+}
+
+#load {
+  width: 600px;
+  padding-left: 55%;
 }

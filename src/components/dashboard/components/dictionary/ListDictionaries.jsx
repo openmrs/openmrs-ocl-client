@@ -8,7 +8,7 @@ const ListDictionaries = ({
 }) => {
   if (fetching) {
     return (
-      <div className="text-center mt-3">
+      <div className="text-center mt-3" id="load">
         <Loader />
       </div>
     );
@@ -25,13 +25,6 @@ const ListDictionaries = ({
 
       </div>
 
-    );
-  }
-  if (fetching) {
-    return (
-      <div className="text-center mt-3">
-        <Loader />
-      </div>
     );
   }
   return (

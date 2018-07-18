@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import '../styles/index.css';
 import { fetchDictionaries, searchDictionaries } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
-import SideBar from '../components/SideNavigation';
 import OwnerListDictionaries from '../components/dictionary/OwnerListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import UserDashboard from '../components/dictionary/user/UserDashboard';
@@ -59,7 +58,6 @@ export class OwnerDictionary extends Component {
     const { searchInput } = this.state;
     return (
       <div className="dashboard-wrapper">
-        <SideBar />
         <UserDashboard
           dictionaries={dictionaries}
           organizations={organizations}

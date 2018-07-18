@@ -7,7 +7,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchConceptsActionTypes from '../../../redux/actions/concepts/specificConceptAction';
 import '../styles/index.css';
 
-import SideBar from '../components/SideNavigation';
 import { clearConcepts } from '../../../redux/actions/concepts/ConceptActionCreators';
 import SearchConcept from '../components/concepts/Search';
 import SpecificConceptList from '../components/concepts/SpecificConceptList';
@@ -92,7 +91,6 @@ export class SpecificConcept extends Component {
     const userType = localStorage.getItem('type');
     return (
       <div className="dashboard-wrapper">
-        <SideBar />
         <SearchConcept
           onSearch={this.onSearch}
           onSubmit={this.onSubmit}
