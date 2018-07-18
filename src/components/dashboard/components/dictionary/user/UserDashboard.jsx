@@ -6,7 +6,7 @@ const UserDashboard = ({ viewState, organizations }) => {
     <div className="container-fluid">
       <div className="row justify-content-center">
         <div className="col-1" />
-        <div className="col-sm-12 col-md-10  mt-2 col-12">
+        <div className="col-sm-12 col-md-10  mt-2 col-12" id="userInfo">
           <Alert className="dashboard-alert">
             <h6>
               Hello {localStorage.getItem('username')} 👋, you belong to{' '}

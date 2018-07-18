@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import fetchConceptsAction from '../../../redux/actions/concepts/index';
 import '../styles/index.css';
 
-import SideBar from '../components/SideNavigation';
 import SearchConcept from '../components/concepts/Search';
 import ConceptList from '../components/concepts/ConceptList';
 
@@ -52,7 +51,6 @@ export class ConceptSearch extends Component {
     } = this.state;
     return (
       <div className="dashboard-wrapper">
-        <SideBar />
         <SearchConcept
           onSearch={this.onSearch}
           onSubmit={this.onSubmit}

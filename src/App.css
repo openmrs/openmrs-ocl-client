@@ -3,6 +3,7 @@
 }
 .nav {
   background-color: rgba(0, 0, 0, 0.856) !important;
+  position: inherit;
 }
 .navbar-brand {
   color: white !important;

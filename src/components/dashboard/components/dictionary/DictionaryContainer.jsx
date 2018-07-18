@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import '../../styles/index.css';
 import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
-import SideBar from '../SideNavigation';
 import Loader from '../../../Loader';
 import { fetchDictionary } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 
@@ -36,7 +35,6 @@ export class DictionaryOverview extends Component {
     const { loader } = this.props;
     return (
       <div className="dashboard-wrapper">
-        <SideBar />
         {loader ? (
           <div className="text-center mt-3" id="loader">
             <Loader />
