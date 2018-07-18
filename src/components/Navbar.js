@@ -40,65 +40,64 @@ export class Navbar extends Component {
     return (
       <div>
         <Notification options={{ zIndex: 10000, top: '200px' }} />
-        <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light nav">
+        <nav className="navbar navbar-expand-lg navbar-light bg-dark">
           <strong>
             <a className="navbar-brand" href="/">
               OCL for OpenMRS
             </a>
           </strong>
-          {this.props.loggedIn && (
-          <GeneralSearch
-            onSearch={this.onSearch}
-            onSubmit={this.onSubmit}
-            searchValue={searchInput}
-          />
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarA"
+            aria-controls="navbarNavDropdown"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse " id="navbarA">
+            {this.props.loggedIn && (
+            <GeneralSearch
+              onSearch={this.onSearch}
+              onSubmit={this.onSubmit}
+              searchValue={searchInput}
+            />
           )}
-          <div className="collapse navbar-collapse " id="navbarNav">
             {this.props.loggedIn && (
               <ul className="navbar-nav ml-auto" id="navList">
-                <div className="navBarItems">
-                  <li className="nav-item nav-link dropdown" id="navbarDropdown">
-                    <a
-                      className="nav-link text-white"
-                      href="/dashboard/dictionaries"
-                      id="navbarDropdown"
-                      role="button"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <strong>
-                        Dictionaries
-                      </strong>
-                    </a>
-                  </li>
-                  <li className="nav-item nav-link dropdown" id="navbarItemSource">
-                    <a
-                      className="nav-link text-white"
-                      href="/dashboard/sources"
-                      role="button"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <strong>
-                        Sources
-                      </strong>
-                    </a>
-                  </li>
-                  <li className="nav-item nav-link dropdown" id="navbarDropdown">
-                    <a
-                      className="nav-link text-white"
-                      href="/dashboard/concepts"
-                      role="button"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      <strong>
-                      Concepts
-                      </strong>
-                    </a>
-                  </li>
-                </div>
-                <li className="nav-item nav-link dropdown" id="navbarUser">
+                <li className="nav-item nav-link" >
+                  <a
+                    className="nav-link text-white"
+                    href="/dashboard/dictionaries"
+                  >
+                    <strong>
+                      All Dictionaries
+                    </strong>
+                  </a>
+                </li>
+                <li className="nav-item nav-link" >
+                  <a
+                    className="nav-link text-white"
+                    href="/dashboard/sources"
+                  >
+                    <strong>
+                      Sources
+                    </strong>
+                  </a>
+                </li>
+                <li className="nav-item nav-link">
+                  <a
+                    className="nav-link text-white"
+                    href="/dashboard/concepts"
+                  >
+                    <strong>
+                    Concepts
+                    </strong>
+                  </a>
+                </li>
+                <li className="nav-item nav-link dropdown">
                   <a
                     className="nav-link dropdown-toggle text-white"
                     href="!#"
