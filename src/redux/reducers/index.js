@@ -5,6 +5,7 @@ import organizations from './dictionaryReducer';
 import concepts from './ConceptReducers';
 import dictionaries from './dictionaryReducers';
 import generalSearch from './generalSearchReducer';
+import user from './user';
 
 // combined reducer to give a global state
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   concepts,
   dictionaries,
   generalSearch,
+  user,
 });
 
 export default rootReducer;

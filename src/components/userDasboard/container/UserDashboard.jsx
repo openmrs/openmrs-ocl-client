@@ -1,0 +1,109 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import '../styles/user-dasboard-styles.css';
+import { fetchUserData, clearDictionaryData } from '../../../redux/actions/user';
+import { getUsername } from '../../dictionaryConcepts/components/helperFunction';
+import DashboardDetails from '../components/DashboardDetails';
+import CardWrapper from '../components/CardWrapper';
+import AddDictionary from '../../dashboard/components/dictionary/AddDictionary';
+
+export class UserDashboard extends Component {
+  static propTypes = {
+    fetchUserData: PropTypes.func.isRequired,
+    clearDictionaryData: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
+    orgDictionary: PropTypes.array.isRequired,
+    userDictionary: PropTypes.array.isRequired,
+    userOrganization: PropTypes.array.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string,
+      orgs: PropTypes.number,
+      public_collections: PropTypes.number,
+    }).isRequired,
+  };
+
+  state = {
+    show: false,
+  };
+
+  componentDidMount() {
+    const username = getUsername();
+    this.props.fetchUserData(username);
+  }
+
+  componentWillUnmount() {
+    this.props.clearDictionaryData();
+  }
+
+  handleHide = () => this.setState({ show: false });
+  handleShow = () => this.setState({ show: true });
+
+  render() {
+    const {
+      user: { name, orgs, public_collections },
+      userOrganization,
+      userDictionary,
+      orgDictionary,
+      loading,
+    } = this.props;
+    const dictionary = public_collections < 2 ? 'dictionary' : 'dictionaries';
+    return (
+      <div className="container-fluid mt-5">
+        <AddDictionary show={this.state.show} handleHide={this.handleHide} />
+        <div className="row justify-content-center">
+          <div className="col-11 user-info">
+            <div className="row">
+              <div className="greetings">
+                <h5>Welcome {name}</h5>
+              </div>
+            </div>
+            <div className="row">
+              <DashboardDetails
+                numberOfOrgs={orgs}
+                numberOfDictionary={public_collections}
+                organizations={userOrganization}
+              />
+            </div>
+          </div>
+          <div className="col-11 user-dictionary-wrapper">
+            <div className="row">
+              <div className="greetings col-12 d-flex justify-content-between">
+                <h3>Your {dictionary}</h3>
+                <h6 className="see-more-link">
+                  <button
+                    className="btn btn-success btn-sm"
+                    id="add-dictionary"
+                    onClick={this.handleShow}
+                  >
+                    <i className="fas fa-plus fa-fw" /> New Dictionary
+                  </button>
+                </h6>
+              </div>
+              <div className="line-divider" />
+            </div>
+            <div className="row justify-content-center">
+              <div className="col-11">
+                <CardWrapper dictionaries={userDictionary} fetching={loading} />
+                <CardWrapper dictionaries={orgDictionary} fetching={loading} org />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export const mapStateToProps = state => ({
+  user: state.user.user,
+  userDictionary: state.user.userDictionary,
+  orgDictionary: state.user.orgDictionary,
+  userOrganization: state.user.userOrganization,
+  loading: state.user.loading,
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchUserData, clearDictionaryData },
+)(UserDashboard);
