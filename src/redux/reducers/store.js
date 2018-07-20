@@ -1,4 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reduxThunk from 'redux-thunk';
 import logger from 'redux-logger';
 import rootReducer from './index';
@@ -30,7 +31,11 @@ if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
-const store = createStore(rootReducer, persistedState, applyMiddleware(...middlewares));
+const store = createStore(
+  rootReducer,
+  persistedState,
+  composeWithDevTools(applyMiddleware(...middlewares)),
+);
 
 store.subscribe(() => {
   saveState({
