@@ -123,11 +123,15 @@ describe('Test suite for dictionary concepts components', () => {
         filteredSources: [],
         filteredClass: [],
       },
+      dictionaries: {
+        dictionary: [],
+      },
     };
     expect(mapStateToProps(initialState).concepts).toEqual([]);
     expect(mapStateToProps(initialState).filteredClass).toEqual([]);
     expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
+    expect(mapStateToProps(initialState).dictionaries).toEqual([]);
   });
   it('should handle concept pagination', () => {
     const props = {

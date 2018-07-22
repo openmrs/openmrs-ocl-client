@@ -122,6 +122,7 @@ export class DictionaryModal extends React.Component {
                       name="supported_locales"
                       id="supported_locales"
                       placeholder="English"
+                      onChange={this.onChange}
                     >
                       {language &&
                       language.map(languages => (

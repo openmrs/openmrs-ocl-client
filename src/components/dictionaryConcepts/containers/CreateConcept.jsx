@@ -237,6 +237,7 @@ export class CreateConcept extends Component {
                 addDataFromRow={this.addDataFromRow}
                 addDataFromDescription={this.addDataFromDescription}
                 removeDataFromRow={this.removeDataFromRow}
+                pathName={this.props.match.params}
               />
             </div>
           </div>

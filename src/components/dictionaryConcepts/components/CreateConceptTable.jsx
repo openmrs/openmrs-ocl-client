@@ -6,9 +6,9 @@ const CreateConceptTable = props => (
   <table className="table table-striped table-bordered concept-form-table">
     <thead className="header text-white">
       <tr>
-        <th scope="col">Language</th>
-        <th scope="col">Type</th>
         <th scope="col">Name</th>
+        <th scope="col">Type</th>
+        <th scope="col">Language</th>
         <th scope="col">Preferred in locale</th>
         <th scope="col">Actions</th>
       </tr>

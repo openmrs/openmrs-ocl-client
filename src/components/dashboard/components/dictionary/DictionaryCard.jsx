@@ -12,6 +12,7 @@ const DictionaryCard = (dictionary) => {
       active_concepts,
       created_by,
       url,
+      supported_locales,
     },
   } = dictionary;
 
@@ -35,7 +36,7 @@ const DictionaryCard = (dictionary) => {
           <div className="description col-12 text-left">
             <p>
               <Link
-                to={`/concepts${owner_url}${short_code}/${name}`}
+                to={`/concepts${owner_url}${short_code}/${name}/${supported_locales}`}
                 className="source-type"
               >
                 Concepts: { active_concepts }
