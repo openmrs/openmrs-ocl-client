@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { notify } from 'react-notify-toast';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { loginAction } from '../../../redux/actions/auth/authActions';
 import SubmitButton from '../components/SubmitButton';
 import '../styles/index.css';
@@ -75,7 +75,7 @@ export class Login extends Component {
                 />
                 <small id="tokenHelp" className="form-text text-muted">
                   Copy your token from the{' '}
-                  <a href="https://openconceptlab.org" target="_blank" rel="noopener noreferrer">
+                  <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
                     traditional ocl
                   </a>
                 </small>
@@ -85,13 +85,15 @@ export class Login extends Component {
                 <small id="tokenHelp" className="form-text text-muted">
                   {"Don't"} have an account?{' '}
                   <a
-                    href="https://openconceptlab.org/accounts/signup/"
+                    href="https://qa.openconceptlab.org/accounts/signup/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     Sign up
-                  </a>
+                  </a><br />
+                  <Link to="/loginDetails" >Having Trouble with Login?</Link>
                 </small>
+
               </div>
             </form>
           </div>
