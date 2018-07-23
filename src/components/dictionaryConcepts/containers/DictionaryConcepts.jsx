@@ -26,6 +26,7 @@ export class DictionaryConcepts extends Component {
         typeName: PropTypes.string,
         collectionName: PropTypes.string,
         type: PropTypes.string,
+        dictionaryName: PropTypes.string,
       }),
     }).isRequired,
     location: PropTypes.shape({
@@ -60,12 +61,15 @@ export class DictionaryConcepts extends Component {
   componentWillReceiveProps(nextProps) {
     const {
       match: {
-        params: { collectionName, type, typeName },
+        params: {
+          collectionName, type, typeName,
+        },
       },
     } = nextProps;
     localStorage.setItem('dictionaryId', this.props.match.params.collectionName);
     localStorage.setItem('type', this.props.match.params.type);
     localStorage.setItem('typeName', this.props.match.params.typeName);
+    localStorage.setItem('dictionaryName', this.props.match.params.dictionaryName);
     this.setState({
       collectionName,
       type,
