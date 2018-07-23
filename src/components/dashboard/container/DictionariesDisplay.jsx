@@ -65,7 +65,7 @@ export class DictionaryDisplay extends Component {
             />
           </div>
           <div className="back">
-            <Link to="/dashboard/userdictionaries" >
+            <Link to="/dashboard" >
               <i className="fas fa-chevron-left" /> Back to my Dictionaries
             </Link>
           </div>
