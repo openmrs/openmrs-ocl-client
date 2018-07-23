@@ -459,8 +459,9 @@ nav {
 }
 
 #generalSearchForm{
-  width: 39%;
-  padding-left: 5%;
+  width: 62%;
+  padding-left: 14%;
+  margin-left: -16%;
 }
 
 #navbarDropdown{
@@ -471,13 +472,10 @@ nav {
 .navBarItems{
   display: flex;
 }
-#navList{
-  margin-right: -13%;
-  width: 100%;
-}
 
-#navbarUser{
-  margin-left: 31%;
+
+#navbarA{
+  padding-left: 9%;
 }
 #navbarItemSource{
   margin-left: 5%;
