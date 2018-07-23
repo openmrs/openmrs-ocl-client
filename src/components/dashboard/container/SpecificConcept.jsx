@@ -89,6 +89,7 @@ export class SpecificConcept extends Component {
     const typeName = localStorage.getItem('typeName');
     const dictionaryId = localStorage.getItem('dictionaryId');
     const userType = localStorage.getItem('type');
+    const dictionaryName = localStorage.getItem('dictionaryName');
     return (
       <div className="dashboard-wrapper">
         <SearchConcept
@@ -100,8 +101,8 @@ export class SpecificConcept extends Component {
         <div className="container-fluid pt-3">
           <div className="row justify-content-center">
             <div className="col-10 offset-sm-1">
-              <Link to={`/concepts/${userType}/${typeName}/${dictionaryId}`} id="dictionary-link">
-                <i className="fas fa-chevron-left" /> Back to {dictionaryId} Dictionary
+              <Link to={`/concepts/${userType}/${typeName}/${dictionaryId}/${dictionaryName}`} id="dictionary-link">
+                <i className="fas fa-chevron-left" /> Back to <strong>{dictionaryName}</strong> Dictionary
               </Link>
               <InfiniteScroll
                 dataLength={concepts.length}
