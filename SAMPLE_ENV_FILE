@@ -1,0 +1,11 @@
+create a .env file with the variables below to explore the app in dev mode
+
+REACT_APP_BASE_URL=https://api.qa.openconceptlab.org/
+REACT_APP_TRADITIONAL_OCL=https://qa.openconceptlab.org
+
+===========================================================================
+
+create a .env file with the variables below to explore the app in production mode
+
+REACT_APP_BASE_URL=https://api.openconceptlab.org/
+REACT_APP_TRADITIONAL_OCL=https://openconceptlab.org
