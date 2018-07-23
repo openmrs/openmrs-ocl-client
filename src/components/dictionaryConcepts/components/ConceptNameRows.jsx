@@ -11,19 +11,22 @@ class ConceptNameRows extends Component {
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
+    pathName: PropTypes.string.isRequired,
   };
   constructor(props) {
     super(props);
+    const defaultLocale = locale.find((currentLocale) => {
+      return currentLocale.value === props.pathName.language;
+    });
     this.state = {
       id: this.props.newRow,
       name: '',
-      locale: 'en',
+      locale: defaultLocale,
       locale_preferred: 'Yes',
       name_type: 'Fully Specified',
     };
     autoBind(this);
   }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.sendToTopComponent();
@@ -41,7 +44,7 @@ class ConceptNameRows extends Component {
 
   handleNameLocale(selectedOptions) {
     this.setState({
-      locale: selectedOptions.value,
+      locale: selectedOptions,
     });
     this.sendToTopComponent();
   }
@@ -58,15 +61,18 @@ class ConceptNameRows extends Component {
   render() {
     return (
       <tr>
-        <th scope="row" className="concept-language">
-          <Select
-            name="locale"
-            value={this.state.locale.value}
-            onChange={this.handleNameLocale}
-            options={locale}
+        <td>
+          <input
+            type="text"
+            className="form-control"
+            onChange={this.handleChange}
+            placeholder="eg. Malaria"
+            name="name"
+            value={this.state.name}
+            id="concept-name"
             required
           />
-        </th>
+        </td>
         <td>
           <select
             id="type"
@@ -80,18 +86,15 @@ class ConceptNameRows extends Component {
             <option>Fully Specified</option>
           </select>
         </td>
-        <td>
-          <input
-            type="text"
-            className="form-control"
-            onChange={this.handleChange}
-            placeholder="eg. Malaria"
-            name="name"
-            value={this.state.name}
-            id="concept-name"
+        <th scope="row" className="concept-language">
+          <Select
+            name="locale"
+            value={this.state.locale}
+            onChange={this.handleNameLocale}
+            options={locale}
             required
           />
-        </td>
+        </th>
         <td>
           <select
             id="locale_preferred"

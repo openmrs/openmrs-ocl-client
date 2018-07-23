@@ -294,3 +294,8 @@ select.form-control {
 .small-text {
   font-size: .7rem;
 }
+.datatypefield {
+  width: 41%;
+  font-size: .8rem;
+  padding-bottom: 1%;
+}

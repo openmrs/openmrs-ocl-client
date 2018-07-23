@@ -6,7 +6,7 @@ const DictionaryDetailCard = (dictionary) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
-      owner_url, short_code,
+      owner_url, short_code, supported_locales,
     },
   } = dictionary;
 
@@ -30,7 +30,7 @@ const DictionaryDetailCard = (dictionary) => {
             <Link
               className="btn btn-secondary"
               id="conceptB"
-              to={`/concepts${owner_url}${short_code}/${name}`}
+              to={`/concepts${owner_url}${short_code}/${name}/${supported_locales}`}
             >
                 Go to concepts
             </Link>

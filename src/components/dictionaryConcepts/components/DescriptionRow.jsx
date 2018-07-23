@@ -11,12 +11,16 @@ class DescriptionRow extends Component {
     addDataFromDescription: PropTypes.func.isRequired,
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
+    pathName: PropTypes.string.isRequired,
   }
   constructor(props) {
     super(props);
+    const defaultLocale = locale.find((currentLocale) => {
+      return currentLocale.value === props.pathName.language;
+    });
     this.state = {
       id: this.props.newRow,
-      locale: 'en',
+      locale: defaultLocale,
       description: '',
     };
     autoBind(this);
@@ -36,10 +40,9 @@ class DescriptionRow extends Component {
     this.setState(() => ({ [name]: value }));
     this.sendToTopComponent();
   }
-
   handleNameLocale(selectedOptions) {
     this.setState({
-      locale: selectedOptions.value,
+      locale: selectedOptions,
     });
     this.sendToTopComponent();
   }
@@ -56,16 +59,6 @@ class DescriptionRow extends Component {
   render() {
     return (
       <tr>
-        <th scope="row" className="concept-language">
-          <Select
-            name="locale"
-            id="description-locale"
-            value={this.state.locale.value}
-            onChange={this.handleNameLocale}
-            options={locale}
-            required
-          />
-        </th>
         <td>
           <textarea
             type="text"
@@ -77,6 +70,16 @@ class DescriptionRow extends Component {
             id="concept-description"
           />
         </td>
+        <th scope="row" className="concept-language">
+          <Select
+            name="locale"
+            id="description-locale"
+            value={this.state.locale}
+            onChange={this.handleNameLocale}
+            options={locale}
+            required
+          />
+        </th>
         <td>
           <a
             href="#!"

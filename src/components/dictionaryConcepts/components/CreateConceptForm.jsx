@@ -57,31 +57,31 @@ const CreateConceptForm = props => (
             </div>
           </div>
         )}
-        <div className="form-group col-5">
-          <label htmlFor="datatype">Datatype</label>
-          <select
-            id="datatype"
-            name="datatype"
-            required
-            value={props.state.datatype}
-            className="form-control "
-            onChange={props.handleChange}
-          >
-            <option value="n/a" />
-            <option>Numeric</option>
-            <option>Text</option>
-            <option>None</option>
-            <option>Document</option>
-            <option>Date</option>
-            <option>Time</option>
-            <option>Datetime</option>
-            <option>Boolean</option>
-            <option>Rule</option>
-            <option>Structured-Numeric</option>
-            <option>Complex</option>
-            <option>Coded</option>
-          </select>
-        </div>
+      </div>
+      <div className="datatypefield">
+        <label htmlFor="datatype">Datatype</label>
+        <select
+          id="datatype"
+          name="datatype"
+          required
+          value={props.state.datatype}
+          className="form-control "
+          onChange={props.handleChange}
+        >
+          <option>N/A</option>
+          <option>Numeric</option>
+          <option>Text</option>
+          <option>None</option>
+          <option>Document</option>
+          <option>Date</option>
+          <option>Time</option>
+          <option>Datetime</option>
+          <option>Boolean</option>
+          <option>Rule</option>
+          <option>Structured-Numeric</option>
+          <option>Complex</option>
+          <option>Coded</option>
+        </select>
       </div>
       <div className="form-group">
         <div className="row col-12 custom-concept-list">

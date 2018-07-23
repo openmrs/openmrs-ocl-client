@@ -205,6 +205,7 @@ export const mapStateToProps = state => ({
   filteredSources: state.concepts.filteredSources,
   loading: state.concepts.loading,
   filteredList: state.concepts.filteredList,
+  dictionaries: state.dictionaries.dictionary,
 });
 
 export default connect(
