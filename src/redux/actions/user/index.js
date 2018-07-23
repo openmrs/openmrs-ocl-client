@@ -10,7 +10,7 @@ import {
 import instance from '../../../config/axiosConfig';
 
 export const fetchUser = username => async (dispatch) => {
-  const url = `users/${username}`;
+  const url = `users/${username}/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, GET_USER));
@@ -20,7 +20,7 @@ export const fetchUser = username => async (dispatch) => {
 };
 
 export const fetchOrgDictionary = org => async (dispatch) => {
-  const url = `orgs/${org}/collections/?verbose=true&limit=30`;
+  const url = `orgs/${org}/collections/?verbose=true&limit=30/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_ORG_DICTIONARY));
@@ -30,7 +30,7 @@ export const fetchOrgDictionary = org => async (dispatch) => {
 };
 
 export const fetchUserOrganizations = username => async (dispatch) => {
-  const url = `users/${username}/orgs`;
+  const url = `users/${username}/orgs/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_USER_ORGANIZATION));
@@ -41,7 +41,7 @@ export const fetchUserOrganizations = username => async (dispatch) => {
 };
 
 export const fetchUserDictionary = username => async (dispatch) => {
-  const url = `users/${username}/collections/?verbose=true&limit=30`;
+  const url = `users/${username}/collections/?verbose=true&limit=30/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_USER_DICTIONARY));
