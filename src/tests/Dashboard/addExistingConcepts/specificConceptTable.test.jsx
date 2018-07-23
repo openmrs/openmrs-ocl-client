@@ -5,13 +5,13 @@ import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import SpecificConceptTable from '../../../components/dashboard/components/concepts/SpecificConceptTable';
 import Authenticated from '../../__mocks__/fakeStore';
-import { existingConcept } from '../../__mocks__/concepts';
+import { existingConcept, nullConceptDescription } from '../../__mocks__/concepts';
 
 const store = createMockStore(Authenticated);
 describe('Dashboard SpecificConceptTable Component', () => {
   it('should render without crashing', () => {
     const props = {
-      concept: existingConcept,
+      concept: nullConceptDescription,
       addExistingConcept: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter>

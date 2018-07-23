@@ -8,13 +8,7 @@ import addExistingConcept from '../../../../redux/actions/concepts/addExistingCo
 const SpecificConceptTable = (props) => {
   const {
     concept: {
-      id,
-      concept_class,
-      datatype,
-      display_name,
-      source,
-      owner,
-      url,
+      id, concept_class, datatype, display_name, source, owner, url,
     },
   } = props;
   const handleAdd = () => {
@@ -22,7 +16,6 @@ const SpecificConceptTable = (props) => {
     props.addExistingConcept({ data: { expressions } });
     localStorage.setItem('conceptName', display_name);
   };
-  const replace = (key, value) => ((value == null) ? 'None' : value);
   return (
     <tr className="concept-table">
       <td className="table1">{id}</td>
@@ -31,8 +24,16 @@ const SpecificConceptTable = (props) => {
         {concept_class} / {datatype}
       </td>
       <td className="table3">
-        <a href="#" onClick={() => handleAdd(props)} className="add-btn"> Add </a> {' '}
-        <a href="!#" className="add-btn" data-toggle="modal" data-target={`#conceptPreview${id}`}>
+        <a href="#" onClick={() => handleAdd(props)} className="add-btn">
+          {' '}
+          Add{' '}
+        </a>{' '}
+        <a
+          href="!#"
+          className="add-btn"
+          data-toggle="modal"
+          data-target={`#conceptPreview${id}`}
+        >
           Preview
         </a>
       </td>
@@ -43,10 +44,24 @@ const SpecificConceptTable = (props) => {
         source={source}
         owner={owner}
         url={url}
-        descriptions={props.concept.descriptions[0].description}
-        locale={props.concept.descriptions[0].locale}
-        names={props.concept.names[0].name_type}
-        mappings={replace(props.concept.mappings)}
+        descriptions={
+          props.concept.descriptions === null
+            ? 'None'
+            : props.concept.descriptions[0].description
+        }
+        locale={
+          props.concept.descriptions === null
+            ? 'None'
+            : props.concept.descriptions[0].locale
+        }
+        names={
+          props.concept.names === null
+            ? 'None'
+            : props.concept.names[0].name_type
+        }
+        mappings={
+          props.concept.mappings === null ? 'None' : props.concept.mappings
+        }
       />
     </tr>
   );
@@ -58,4 +73,7 @@ SpecificConceptTable.propTypes = {
     owner: PropTypes.string,
   })).isRequired,
 };
-export default connect(null, { addExistingConcept })(SpecificConceptTable);
+export default connect(
+  null,
+  { addExistingConcept },
+)(SpecificConceptTable);
