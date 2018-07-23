@@ -537,6 +537,11 @@ p{
 }
 
 #load {
-  width: 600px;
+  width: 900px;
   padding-left: 55%;
+}
+
+.back{
+  margin-right:3%;
+  margin-top:1rem;
 }

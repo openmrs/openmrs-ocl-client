@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import '../styles/index.css';
 import { fetchDictionaries, searchDictionaries } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
@@ -63,7 +64,11 @@ export class DictionaryDisplay extends Component {
               fetching={isFetching}
             />
           </div>
-
+          <div className="back">
+            <Link to="/dashboard/userdictionaries" >
+              <i className="fas fa-chevron-left" /> Back to my Dictionaries
+            </Link>
+          </div>
 
           <div className="row justify-content-center public-search" id="container">
             <div className="offset-sm-1 col-10">
