@@ -193,21 +193,22 @@ export class CreateConcept extends Component {
     const {
       match: {
         params: {
-          conceptType, collectionName, type, typeName,
+          conceptType, collectionName, dictionaryName,
         },
       },
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
+    const path = localStorage.getItem('dictionaryPathName');
     return (
-      <div className="container">
+      <div className="container create-custom-concept">
         <div className="row create-concept-header">
           <div className="col-lg-12">
             <div>
               <Link
-                to={`/concepts/${type}/${typeName}/${collectionName}`}
+                to={path}
                 className="collection-name small-text"
               >
-                <i className="fas fa-chevron-left" /> Go back to your dictionary
+                <i className="fas fa-chevron-left" /> Go back to {dictionaryName} dictionary
               </Link>
             </div>
             <h3>
