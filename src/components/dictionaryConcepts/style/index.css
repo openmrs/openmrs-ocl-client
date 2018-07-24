@@ -1,5 +1,6 @@
 .custom-dictionary-concepts {
   text-align: left;
+  margin-top: -3%;
 }
 
 body {
@@ -298,4 +299,7 @@ select.form-control {
   width: 41%;
   font-size: .8rem;
   padding-bottom: 1%;
+}
+.create-custom-concept {
+  margin-top: -5%;
 }

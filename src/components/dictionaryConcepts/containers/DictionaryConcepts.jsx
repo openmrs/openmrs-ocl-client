@@ -162,6 +162,7 @@ export class DictionaryConcepts extends Component {
     const {
       conceptsCount, searchInput, conceptOffset, conceptLimit,
     } = this.state;
+    localStorage.setItem('dictionaryPathName', pathname);
     return (
       <div className="container-fluid custom-dictionary-concepts">
         <Header locationPath={this.props.match.params} />
