@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) => {
   const nameOfOrganizations = organizations.map(organization => organization.name).join(',');
-  const dictionary = numberOfDictionary < 2 ? 'dictionary' : 'dictionaries';
+  const dictionary = numberOfDictionary === 1 ? 'dictionary' : 'dictionaries';
   if (numberOfOrgs === 1) {
     return (
       <div className="user-data">

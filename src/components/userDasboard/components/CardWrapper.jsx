@@ -22,7 +22,7 @@ const CardWrapper = ({ dictionaries, fetching, org }) => {
   }
   return (
     <div className="text-center mt-3 p-10">
-      {!org && <h6 className="p-20">No dictionary found</h6>}
+      {!org && <h6 className="p-20">No dictionaries found</h6>}
     </div>
   );
 };

@@ -47,7 +47,7 @@ export class UserDashboard extends Component {
       orgDictionary,
       loading,
     } = this.props;
-    const dictionary = public_collections < 2 ? 'dictionary' : 'dictionaries';
+    const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
     return (
       <div className="container-fluid mt-5">
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
