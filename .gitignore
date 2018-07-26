@@ -27,5 +27,3 @@ yarn.lock
 #test snapshots
 **/__snapshots__/**
 src/components/dashboard/container/ListContainer.jsx
-
-.env

@@ -6,7 +6,6 @@ import { withRouter, Link } from 'react-router-dom';
 import { loginAction } from '../../../redux/actions/auth/authActions';
 import SubmitButton from '../components/SubmitButton';
 import '../styles/index.css';
-import config from '../../../config';
 
 export class Login extends Component {
   state = {
@@ -76,7 +75,7 @@ export class Login extends Component {
                 />
                 <small id="tokenHelp" className="form-text text-muted">
                   Copy your token from the{' '}
-                  <a href={config.traditionalOCL} target="_blank" rel="noopener noreferrer">
+                  <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
                     traditional ocl
                   </a>
                 </small>
@@ -86,7 +85,7 @@ export class Login extends Component {
                 <small id="tokenHelp" className="form-text text-muted">
                   {"Don't"} have an account?{' '}
                   <a
-                    href={`${config.traditionalOCL}/accounts/signup/`}
+                    href="https://qa.openconceptlab.org/accounts/signup/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

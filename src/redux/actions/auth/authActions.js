@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { login, loginFailed, loginStarted, logout } from './authActionCreators';
-import config from '../../../config';
 
-const BASE_URL = config.apiBaseUrl;
+const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
 const loginAction = ({ username, token }) => async (dispatch) => {
   try {
