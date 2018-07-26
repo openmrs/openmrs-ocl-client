@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import config from '../../../config';
 
 const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) => {
   const nameOfOrganizations = organizations.map(organization => organization.name).join(',');
@@ -11,7 +10,7 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
       <div className="user-data">
         <p className="lead">
           You belong to {nameOfOrganizations} organization. This can be changed via{' '}
-          <a href={config.traditionalOCL} target="_blank" rel="noopener noreferrer">
+          <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
           </a>.
         </p>
@@ -28,7 +27,7 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
           {organizations.map(organization => (
             <span className="d-block lead org-name text-capitalize" key={organization.id}>
               <a
-                href={`${config.traditionalOCL}${organization.url}`}
+                href={`https://qa.openconceptlab.org${organization.url}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -37,7 +36,7 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
             </span>
           ))}{' '}
           This can be changed via{' '}
-          <a href={config.traditionalOCL} target="_blank" rel="noopener noreferrer">
+          <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
           </a>.
         </p>
@@ -51,7 +50,7 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
     <div className="user-data">
       <p className="lead">
         You do not belong to any organization. This can be changed via{' '}
-        <a href={config.traditionalOCL} target="_blank" rel="noopener noreferrer">
+        <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
           the traditional OCL
         </a>.
       </p>

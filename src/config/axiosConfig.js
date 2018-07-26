@@ -1,8 +1,7 @@
 import axios from 'axios';
-import urlConfig from './index';
 
 const instance = axios.create({
-  baseURL: urlConfig.apiBaseUrl,
+  baseURL: 'https://api.qa.openconceptlab.org/',
 });
 
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
