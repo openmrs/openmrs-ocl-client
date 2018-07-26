@@ -134,5 +134,28 @@ describe('Dashboard SpecificConcept Component', () => {
     expect(mapStateToProps(initialState).concepts).toEqual([]);
     expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
+
+  it('should handle change in path', () => {
+    const props = {
+      fetchConceptsActionTypes: jest.fn(),
+      concepts: [],
+      isFetching: true,
+    };
+
+    const params = {
+      match: {
+        params: {
+          organization: 'owner',
+          name: 'name',
+        },
+      },
+    };
+    const wrapper = mount(<SpecificConcept {...props} match={{ params }} />);
+    const pathName = 'dictionary';
+    const name = wrapper.instance().handlePath('/dashboard/concepts/', pathName);
+    expect(name).toEqual('dictionary');
+    const sourceName = wrapper.instance().handlePath('/dashboard/sources', pathName);
+    expect(sourceName).toEqual('sources');
+  });
 });
 

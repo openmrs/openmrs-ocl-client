@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import autoBind from 'react-autobind';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchConceptsActionTypes from '../../../redux/actions/concepts/specificConceptAction';
@@ -69,6 +68,16 @@ export class SpecificConcept extends Component {
     }));
   }
 
+  handlePath = (path, dictionaryName) => {
+    let pathName;
+    if (path.indexOf('/concepts/') > -1) {
+      pathName = dictionaryName;
+    } else if (path.indexOf('/sources') > -1) {
+      pathName = 'sources';
+    }
+    return pathName;
+  }
+
   renderEndMessage(concepts) {
     if (!this.props.isFetching) {
       return (
@@ -86,10 +95,8 @@ export class SpecificConcept extends Component {
     } = this.state;
     const { hasMore, concepts } = this.props;
     const { organization, name } = this.props.match.params;
-    const typeName = localStorage.getItem('typeName');
-    const dictionaryId = localStorage.getItem('dictionaryId');
-    const userType = localStorage.getItem('type');
     const dictionaryName = localStorage.getItem('dictionaryName');
+    const previousName = this.handlePath(document.referrer, dictionaryName);
     return (
       <div className="dashboard-wrapper">
         <SearchConcept
@@ -101,9 +108,9 @@ export class SpecificConcept extends Component {
         <div className="container-fluid pt-3">
           <div className="row justify-content-center">
             <div className="col-10 offset-sm-1">
-              <Link to={`/concepts/${userType}/${typeName}/${dictionaryId}/${dictionaryName}`} id="dictionary-link">
-                <i className="fas fa-chevron-left" /> Back to <strong>{dictionaryName}</strong> Dictionary
-              </Link>
+              <a href={document.referrer} id="dictionary-link">
+                <i className="fas fa-chevron-left" /> Back to <strong>{previousName}</strong>
+              </a>
               <InfiniteScroll
                 dataLength={concepts.length}
                 next={this.handleNextConcepts}
