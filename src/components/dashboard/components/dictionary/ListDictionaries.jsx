@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import Card from './DictionaryCard';
 import Loader from '../../../Loader';
 
-const ListDictionaries = ({
-  dictionaries, fetching, fetchData,
-}) => {
+const ListDictionaries = (props) => {
+  const { dictionaries, fetching, fetchData } = props;
   if (fetching) {
     return (
       <div className="text-center mt-3" id="load">
@@ -21,6 +20,7 @@ const ListDictionaries = ({
             dictionary={dictionary}
             key={dictionary.uuid}
             fetchData={fetchData}
+            {...props}
           />))}
 
       </div>

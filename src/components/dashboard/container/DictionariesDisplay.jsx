@@ -18,6 +18,9 @@ export class DictionaryDisplay extends Component {
     isFetching: propTypes.bool.isRequired,
     searchDictionaries: propTypes.func.isRequired,
     clearDictionaries: propTypes.func.isRequired,
+    history: propTypes.shape({
+      push: propTypes.func,
+    }).isRequired,
   };
   constructor(props) {
     super(props);
@@ -45,6 +48,10 @@ export class DictionaryDisplay extends Component {
       this.props.clearDictionaries();
       this.props.fetchDictionaries(value);
     }
+  }
+
+  gotoDictionary = (url) => {
+    this.props.history.push(url);
   }
 
   render() {
@@ -75,6 +82,7 @@ export class DictionaryDisplay extends Component {
               <ListDictionaries
                 dictionaries={dictionaries}
                 fetching={isFetching}
+                gotoDictionary={this.gotoDictionary}
               />
             </div>
           </div>

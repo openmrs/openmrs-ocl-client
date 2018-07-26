@@ -21,11 +21,17 @@ export class UserDashboard extends Component {
       orgs: PropTypes.number,
       public_collections: PropTypes.number,
     }).isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func,
+    }).isRequired,
   };
 
-  state = {
-    show: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false,
+    };
+  }
 
   componentDidMount() {
     const username = getUsername();
@@ -34,6 +40,10 @@ export class UserDashboard extends Component {
 
   componentWillUnmount() {
     this.props.clearDictionaryData();
+  }
+
+  gotoDictionary = (url) => {
+    this.props.history.push(url);
   }
 
   handleHide = () => this.setState({ show: false });
@@ -84,8 +94,17 @@ export class UserDashboard extends Component {
             </div>
             <div className="row justify-content-center">
               <div className="col-11">
-                <CardWrapper dictionaries={userDictionary} fetching={loading} />
-                <CardWrapper dictionaries={orgDictionary} fetching={loading} org />
+                <CardWrapper
+                  dictionaries={userDictionary}
+                  fetching={loading}
+                  gotoDictionary={this.gotoDictionary}
+                />
+                <CardWrapper
+                  dictionaries={orgDictionary}
+                  fetching={loading}
+                  org
+                  gotoDictionary={this.gotoDictionary}
+                />
               </div>
             </div>
           </div>

@@ -131,4 +131,37 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).orgDictionary).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
   });
+
+  it('Should handle click on dictionary card', () => {
+    const propsWithDictionary = {
+      fetchUserData: jest.fn(),
+      loading: false,
+      userDictionary: [dictionary],
+      orgDictionary: [],
+      clearDictionaryData: jest.fn(),
+      history: { push: jest.fn() },
+      userOrganization: [
+        {
+          id: 'Test',
+          name: 'Test org',
+          url: '/orgs/Test/',
+        },
+        {
+          id: 'Test2',
+          name: 'Test org 2',
+          url: '/orgs/Test2/',
+        },
+      ],
+      user: {
+        name: 'emasys nd',
+        orgs: 2,
+        public_collections: 1,
+      },
+    };
+    const wrapper = mount(<Router>
+      <UserDashboard {...propsWithDictionary} />
+    </Router>);
+    wrapper.find('.card-link').simulate('click');
+    expect(wrapper).toMatchSnapshot();
+  });
 });
