@@ -103,7 +103,7 @@ const CreateConceptForm = props => (
       </div>
       <div className="submit-button text-left">
         <button className="btn btn-sm mr-1 col-2 bg-blue" type="submit">
-          submit
+          Create
         </button>
         <button className="btn btn-sm btn-danger col-2" type="reset">
           Cancel
