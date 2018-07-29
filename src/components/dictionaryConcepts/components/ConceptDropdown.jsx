@@ -18,9 +18,9 @@ const ConceptDropdown = props => (
         <a className="dropdown-item" href="/dashboard/concepts/Organization/CIEL/CIEL">
           Add CIEL concepts
         </a>
-        <a className="dropdown-item" href="/dashboard/concepts">
+        <Link to="/bulkconcepts" className="dropdown-item" >
           Bulk add concepts
-        </a>
+        </Link>
       </div>
     </div>
 
