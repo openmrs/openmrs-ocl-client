@@ -193,7 +193,7 @@ export class CreateConcept extends Component {
     const {
       match: {
         params: {
-          conceptType, collectionName, dictionaryName,
+          conceptType, dictionaryName,
         },
       },
     } = this.props;
@@ -212,8 +212,7 @@ export class CreateConcept extends Component {
               </Link>
             </div>
             <h3>
-              Create a<span className="text-capitalize">{concept}</span> Concept <br />
-              <small className="text-muted">in source: {collectionName} custom concepts</small>
+              {dictionaryName}: Create a<span className="text-capitalize">{concept}</span> Concept <br />
             </h3>
           </div>
         </div>

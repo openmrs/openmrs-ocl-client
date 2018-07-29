@@ -43,7 +43,7 @@ describe('Test suite for dictionary concepts components', () => {
     const wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);
-    expect(wrapper.find('h3').text()).toEqual('Create a diagnosis Concept in source: dev-col custom concepts');
+    expect(wrapper.find('h3').text()).toEqual(': Create a diagnosis Concept ');
     expect(wrapper).toMatchSnapshot();
   });
 
