@@ -8,15 +8,13 @@ import {
   FETCH_USER_ORGANIZATION,
   GET_USER,
   IS_FETCHING,
-  FETCH_ORG_DICTIONARY,
   CLEAR_DICTIONARY,
 } from '../../../redux/actions/types';
 import {
   fetchUserData,
-  fetchUserDictionary,
+  fetchsUserDictionaries,
   fetchUser,
   fetchUserOrganizations,
-  fetchOrgDictionary,
   clearDictionaryData,
 } from '../../../redux/actions/user';
 import dictionary from '../../__mocks__/dictionaries';
@@ -60,7 +58,7 @@ describe('Test suite for user dashboard actions', () => {
     ];
 
     const store = mockStore({});
-    return store.dispatch(fetchUserDictionary('emasys')).then(() => {
+    return store.dispatch(fetchsUserDictionaries('chriskala')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -76,39 +74,7 @@ describe('Test suite for user dashboard actions', () => {
     const expectedActions = [];
 
     const store = mockStore({});
-    return store.dispatch(fetchUserDictionary('emasys')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('should handle FETCH_ORG_DICTIONARY', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [dictionary],
-      });
-    });
-
-    const expectedActions = [{ type: FETCH_ORG_DICTIONARY, payload: [dictionary] }];
-
-    const store = mockStore({});
-    return store.dispatch(fetchOrgDictionary('test-dev')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('should handle error in FETCH_ORG_DICTIONARY', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: 'an error occurred',
-      });
-    });
-
-    const expectedActions = [];
-
-    const store = mockStore({});
-    return store.dispatch(fetchOrgDictionary('test-dev')).then(() => {
+    return store.dispatch(fetchsUserDictionaries('chriskala')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

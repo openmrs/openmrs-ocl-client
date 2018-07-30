@@ -112,7 +112,6 @@ describe('Test suite for dictionary concepts components', () => {
       user: {
         userDictionary: [],
         userOrganization: [],
-        orgDictionary: [],
         loading: false,
         user: {
           name: '',
@@ -128,7 +127,6 @@ describe('Test suite for dictionary concepts components', () => {
     });
     expect(mapStateToProps(initialState).userDictionary).toEqual([]);
     expect(mapStateToProps(initialState).userOrganization).toEqual([]);
-    expect(mapStateToProps(initialState).orgDictionary).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
   });
 

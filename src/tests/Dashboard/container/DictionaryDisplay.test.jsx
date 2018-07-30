@@ -115,6 +115,17 @@ describe('DictionaryDisplay', () => {
       const component = mount(<ListDictionaries {...props} />);
       expect(component).toMatchSnapshot();
     });
+    it('returns the openmrs user dictionaries when it receives correct properties', () => {
+      const props = {
+        dictionaries: [dictionaries],
+        fetching: false,
+        fetchData: true,
+      };
+      const component = mount(<MemoryRouter>
+        <ListDictionaries {...props} />
+      </MemoryRouter>);
+      expect(component.props().children.props.dictionaries[0].repository_type).toBe('OpenMRSDictionary');
+    });
   });
 });
 describe('DictionaryCard', () => {

@@ -13,7 +13,6 @@ export class UserDashboard extends Component {
     fetchUserData: PropTypes.func.isRequired,
     clearDictionaryData: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    orgDictionary: PropTypes.array.isRequired,
     userDictionary: PropTypes.array.isRequired,
     userOrganization: PropTypes.array.isRequired,
     user: PropTypes.shape({
@@ -54,7 +53,6 @@ export class UserDashboard extends Component {
       user: { name, orgs, public_collections },
       userOrganization,
       userDictionary,
-      orgDictionary,
       loading,
     } = this.props;
     const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
@@ -99,12 +97,6 @@ export class UserDashboard extends Component {
                   fetching={loading}
                   gotoDictionary={this.gotoDictionary}
                 />
-                <CardWrapper
-                  dictionaries={orgDictionary}
-                  fetching={loading}
-                  org
-                  gotoDictionary={this.gotoDictionary}
-                />
               </div>
             </div>
           </div>
@@ -117,7 +109,6 @@ export class UserDashboard extends Component {
 export const mapStateToProps = state => ({
   user: state.user.user,
   userDictionary: state.user.userDictionary,
-  orgDictionary: state.user.orgDictionary,
   userOrganization: state.user.userOrganization,
   loading: state.user.loading,
 });

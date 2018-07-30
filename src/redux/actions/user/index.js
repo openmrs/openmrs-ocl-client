@@ -4,10 +4,10 @@ import {
   GET_USER,
   FETCH_USER_DICTIONARY,
   FETCH_USER_ORGANIZATION,
-  FETCH_ORG_DICTIONARY,
   CLEAR_DICTIONARY,
 } from '../types';
 import instance from '../../../config/axiosConfig';
+import { filterUserPayload } from '../../reducers/util';
 
 export const fetchUser = username => async (dispatch) => {
   const url = `users/${username}/`;
@@ -19,32 +19,22 @@ export const fetchUser = username => async (dispatch) => {
   }
 };
 
-export const fetchOrgDictionary = org => async (dispatch) => {
-  const url = `orgs/${org}/collections/?verbose=true&limit=30/`;
-  try {
-    const response = await instance.get(url);
-    dispatch(isSuccess(response.data, FETCH_ORG_DICTIONARY));
-  } catch (error) {
-    notify.show('an error occurred, reload the page', 'error', 3000);
-  }
-};
-
 export const fetchUserOrganizations = username => async (dispatch) => {
   const url = `users/${username}/orgs/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_USER_ORGANIZATION));
-    response.data.map(organization => dispatch(fetchOrgDictionary(organization.id)));
   } catch (error) {
     notify.show('an error occurred, reload the page', 'error', 3000);
   }
 };
 
-export const fetchUserDictionary = username => async (dispatch) => {
-  const url = `users/${username}/collections/?verbose=true&limit=30/`;
+export const fetchsUserDictionaries = username => async (dispatch) => {
+  const url = `collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
   try {
     const response = await instance.get(url);
-    dispatch(isSuccess(response.data, FETCH_USER_DICTIONARY));
+    const result = filterUserPayload(username, response.data);
+    dispatch(isSuccess(result, FETCH_USER_DICTIONARY));
     dispatch(isFetching(false));
   } catch (error) {
     notify.show('an error occurred, reload the page', 'error', 3000);
@@ -54,8 +44,8 @@ export const fetchUserDictionary = username => async (dispatch) => {
 export const fetchUserData = username => (dispatch) => {
   dispatch(isFetching(true));
   dispatch(fetchUser(username));
+  dispatch(fetchsUserDictionaries(username));
   dispatch(fetchUserOrganizations(username));
-  dispatch(fetchUserDictionary(username));
 };
 
 export const clearDictionaryData = () => (dispatch) => {
