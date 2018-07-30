@@ -11,7 +11,6 @@ import { DictionariesSearch } from '../../../components/dashboard/components/dic
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
 import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
 
-
 describe('DictionaryDisplay', () => {
   it('should render without any dictionary data', () => {
     const props = {
@@ -40,6 +39,20 @@ describe('DictionaryDisplay', () => {
     </MemoryRouter>);
 
     expect(wrapper.find('.dashboard-wrapper')).toHaveLength(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+  it('Should handle click on dictionary card', () => {
+    const props = {
+      fetchDictionaries: jest.fn(),
+      dictionaries: [dictionaries],
+      isFetching: false,
+      organizations: [organizations],
+      history: { push: jest.fn() },
+    };
+    const wrapper = mount(<MemoryRouter>
+      <DictionaryDisplay {...props} />
+    </MemoryRouter>);
+    wrapper.find('.card-link').simulate('click');
     expect(wrapper).toMatchSnapshot();
   });
   it('should render preloader spinner', () => {

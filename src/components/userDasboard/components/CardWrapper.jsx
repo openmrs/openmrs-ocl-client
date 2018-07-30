@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import DictionaryCard from '../../dashboard/components/dictionary/DictionaryCard';
 import Loader from '../../Loader';
 
-const CardWrapper = ({ dictionaries, fetching, org }) => {
+const CardWrapper = (props) => {
+  const { dictionaries, fetching, org } = props;
   if (dictionaries.length >= 1) {
     return (
       <div className="row justify-content-center">
         {dictionaries.map(dictionary => (
-          <DictionaryCard dictionary={dictionary} key={dictionary.uuid} />
+          <DictionaryCard dictionary={dictionary} key={dictionary.uuid} {...props} />
         ))}
       </div>
     );
