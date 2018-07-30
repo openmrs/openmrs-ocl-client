@@ -6,7 +6,6 @@ import {
   FETCH_USER_DICTIONARY,
   FETCH_USER_ORGANIZATION,
   IS_FETCHING,
-  FETCH_ORG_DICTIONARY,
   CLEAR_DICTIONARY,
 } from '../../../redux/actions/types';
 
@@ -97,21 +96,6 @@ describe('Test suite for user dashboard reducer', () => {
 
     deepFreeze(state);
     deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      orgDictionary: action.payload,
-    });
-  });
-  it('should handle FETCH_ORG_DICTIONARY', () => {
-    action = {
-      type: FETCH_ORG_DICTIONARY,
-      payload: [dictionary],
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
     expect(reducer(state, action)).toEqual({
       ...state,
       orgDictionary: action.payload,

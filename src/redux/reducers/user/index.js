@@ -3,13 +3,11 @@ import {
   FETCH_USER_DICTIONARY,
   FETCH_USER_ORGANIZATION,
   IS_FETCHING,
-  FETCH_ORG_DICTIONARY,
   CLEAR_DICTIONARY,
 } from '../../actions/types';
 
 const userInitialState = {
   userDictionary: [],
-  orgDictionary: [],
   userOrganization: [],
   loading: false,
   user: {
@@ -34,11 +32,6 @@ const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         orgDictionary: action.payload,
-      };
-    case FETCH_ORG_DICTIONARY:
-      return {
-        ...state,
-        orgDictionary: [...state.orgDictionary, ...action.payload],
       };
     case IS_FETCHING:
       return {

@@ -37,5 +37,4 @@ export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
 export const SEARCH_RESULTS = '[searchResults] search';
 export const GET_USER = '[user] get_user';
 export const FETCH_USER_DICTIONARY = '[dictionary] fetch_user_dictionary';
-export const FETCH_ORG_DICTIONARY = '[dictionary] fetch_org_dictionary';
 export const FETCH_USER_ORGANIZATION = '[user] fetch_user_organization';
