@@ -39,3 +39,5 @@ export const GET_USER = '[user] get_user';
 export const FETCH_USER_DICTIONARY = '[dictionary] fetch_user_dictionary';
 export const FETCH_ORG_DICTIONARY = '[dictionary] fetch_org_dictionary';
 export const FETCH_USER_ORGANIZATION = '[user] fetch_user_organization';
+
+export const FETCH_CIEL_CONCEPTS = '[concepts] fetch_ciel_concepts';
