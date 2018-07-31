@@ -1,0 +1,58 @@
+.pagination-container {
+  font-size: .6rem;
+  padding: 1rem 1rem 0;
+}
+.pagination-container .add-all-concepts-btn {
+  padding: .4rem;
+  border-radius: .2rem;
+  transition: all 400ms ease-in-out;
+}
+.pagination-container .add-all-concepts-btn:hover{
+  background: rgb(221, 220, 220);
+}
+
+.pagination-container .btn {
+  box-shadow: none;
+}
+
+.bg-gray {
+  background: gainsboro;
+  color: #4f6196;
+}
+
+.bg-gray:hover {
+  background: #4f6196;
+  color: white; 
+}
+
+.bulk-concept-wrapper .search-container {
+  padding-left: .8rem;
+}
+
+.bulk-concepts .sidenav-container {
+  padding: .5rem 2rem;
+}
+
+.bulk-concept-label {
+  font-size: 1rem;
+  margin-top: -.23rem;
+}
+
+.bulk-concepts .sidenav-header {
+  font-weight: 600;
+}
+
+.space-between {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bulk-concepts .paginate-controllers {
+    margin: 0 1.2rem 0 2rem;
+}
+
+.bulk-concepts .paginate-controllers i {
+  font-size: .8rem;
+  margin-top: .4rem;
+}

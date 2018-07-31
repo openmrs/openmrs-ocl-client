@@ -7,6 +7,7 @@ import dictionaries from './dictionaryReducers';
 import generalSearch from './generalSearchReducer';
 import user from './user';
 import cielConcepts from './bulkConcepts/index';
+import bulkConcepts from './bulkConceptReducer';
 
 // combined reducer to give a global state
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   generalSearch,
   user,
   cielConcepts,
+  bulkConcepts,
 });
 
 export default rootReducer;
