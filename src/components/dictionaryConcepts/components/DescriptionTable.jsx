@@ -12,7 +12,7 @@ const DescriptionTable = props => (
       </tr>
     </thead>
     <tbody>
-      {props.description.map(newRow => <DescriptionRow newRow={newRow} key={newRow} {...props} />)}
+      {props.description.map(newRow => <DescriptionRow newRow={newRow} key={newRow} {...props} />).reverse()}
     </tbody>
   </table>
 );
