@@ -97,7 +97,7 @@ export class DictionaryModal extends React.Component {
               <div className="row">
                 <div className="col-md-8">
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Preferred Sources{' '}
+                    Preferred Source{' '}
                     {errors && <InlineError text={errors.preffered_sources} />}
                     <FormControl
                       componentClass="select"
