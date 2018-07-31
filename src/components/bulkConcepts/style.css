@@ -12,10 +12,10 @@ legend.scheduler-border {
     padding:0 20px; 
     border-bottom:none;
 }
-.preffered-concepts{
+.prefered-concepts{
     border-style: groove;
     display: block;
-    height: 260px;
+    height: auto;
     margin-top: 10px;
 }
 .add-bulk-concepts{
