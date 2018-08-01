@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import DictionaryModal from '../dictionary/common/DictionaryModal';
-import { createDictionary, createDictionaryUser, fetchingOrganizations, fetchDictionaries } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { createDictionary, createDictionaryUser, fetchingOrganizations } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 
 export class AddDictionary extends React.Component {
   submit = data => (
     data.owner === 'Individual' ? this.props.createDictionaryUser(data).then(this.props.handleHide)
-      : this.props.createDictionary(data).then(this.props.handleHide)).then(this.props.fetchDictionaries())
+      : this.props.createDictionary(data).then(this.props.handleHide))
   render() {
     return (
       <DictionaryModal
@@ -32,5 +32,4 @@ export default connect(null, {
   createDictionary,
   createDictionaryUser,
   fetchingOrganizations,
-  fetchDictionaries
 })(AddDictionary);

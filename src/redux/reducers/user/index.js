@@ -4,6 +4,7 @@ import {
   FETCH_USER_ORGANIZATION,
   IS_FETCHING,
   CLEAR_DICTIONARY,
+  ADDING_DICTIONARY,
 } from '../../actions/types';
 
 const userInitialState = {
@@ -22,6 +23,11 @@ const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case ADDING_DICTIONARY:
+      return {
+        ...state,
+        userDictionary: state.userDictionary.concat(action.payload),
       };
     case FETCH_USER_DICTIONARY:
       return {
