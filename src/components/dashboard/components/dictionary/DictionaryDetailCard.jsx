@@ -9,6 +9,9 @@ const DictionaryDetailCard = (dictionary) => {
       owner_url, short_code, supported_locales,
     },
   } = dictionary;
+  const DATE_OPTIONS = {
+    weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
+  };
 
   return (<div className="dictionaryDetails">
     <div className="card">
@@ -21,8 +24,8 @@ const DictionaryDetailCard = (dictionary) => {
             <h3 className="genCon">General Details</h3>
             <p className="paragraph">Public Access: { public_access }</p>
             <p className="paragraph">Owner: { owner }({ owner_type })</p>
-            <p className="paragraph">Created On: { created_on }</p>
-            <p className="paragraph">Updated On: { updated_on }</p>
+            <p className="paragraph">Created On: { (new Date(created_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
+            <p className="paragraph">Updated On: { (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
           </div>
           <div className="col-6" id="rightside-detail">
             <h3 className="genCon">Concept Details</h3>
