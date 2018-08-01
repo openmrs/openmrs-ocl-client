@@ -20,7 +20,8 @@ class DescriptionRow extends Component {
     });
     this.state = {
       id: this.props.newRow,
-      locale: defaultLocale,
+      locale: defaultLocale.value,
+      locale_full: defaultLocale,
       description: '',
     };
     autoBind(this);
@@ -42,7 +43,7 @@ class DescriptionRow extends Component {
   }
   handleNameLocale(selectedOptions) {
     this.setState({
-      locale: selectedOptions,
+      locale_full: selectedOptions,
     });
     this.sendToTopComponent();
   }
@@ -72,9 +73,9 @@ class DescriptionRow extends Component {
         </td>
         <th scope="row" className="concept-language">
           <Select
-            name="locale"
+            name="locale_full"
             id="description-locale"
-            value={this.state.locale}
+            value={this.state.locale_full}
             onChange={this.handleNameLocale}
             options={locale}
             required

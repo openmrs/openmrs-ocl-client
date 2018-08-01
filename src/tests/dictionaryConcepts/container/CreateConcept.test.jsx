@@ -18,6 +18,7 @@ describe('Test suite for dictionary concepts components', () => {
         collectionName: 'dev-col',
         type: 'users',
         typeName: 'emasys',
+        language: 'en',
       },
     },
     history: {
