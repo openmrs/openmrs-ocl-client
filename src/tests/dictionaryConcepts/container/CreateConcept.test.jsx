@@ -60,7 +60,7 @@ describe('Test suite for dictionary concepts components', () => {
     });
     const conceptName = { target: { name: 'name', value: 'test concept' } };
     wrapper.find('#concept-name').simulate('change', conceptName);
-    const conceptDatatype = { target: { name: 'datatype', value: 'Text' } };
+    const conceptDatatype = { target: { name: 'datatype', value: '' } };
     wrapper.find('#datatype').simulate('change', conceptDatatype);
     wrapper.find('#toggleUUID').simulate('click');
     const uuid = { target: { name: 'id', value: '12345ft-007#' } };
@@ -103,10 +103,12 @@ describe('Test suite for dictionary concepts components', () => {
       newConcept,
       addedConcept: [{ added: true }],
     };
+    jest.useFakeTimers();
     const wrapper = shallow(<CreateConcept {...props} />);
     wrapper.setState({ searchInput: 'ciel' });
     wrapper.setProps(newProps);
     wrapper.unmount();
+    jest.runAllTimers();
   });
 
   it('should test mapStateToProps', () => {

@@ -68,10 +68,9 @@ const CreateConceptForm = props => (
           className="form-control "
           onChange={props.handleChange}
         >
-          <option>N/A</option>
           <option>Numeric</option>
           <option>Text</option>
-          <option>None</option>
+          <option selected>None</option>
           <option>Document</option>
           <option>Date</option>
           <option>Time</option>
