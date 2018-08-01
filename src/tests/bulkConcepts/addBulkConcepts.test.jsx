@@ -34,4 +34,18 @@ describe('Add Bulk Concepts', () => {
     </MemoryRouter>);
     wrapper.find('#ciel').at(0).simulate('click');
   });
+  it('calls the handleClick function when the Add all button is clicked', () => {
+    const props = {
+      fetchCielConcepts: jest.fn(),
+      addExistingBulkConcepts: jest.fn(),
+      cielConcepts: [],
+      isFetching: true,
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    wrapper.find('#btn-add-all').at(0).simulate('click');
+  });
 });

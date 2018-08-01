@@ -3,11 +3,12 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
-import { FETCH_CIEL_CONCEPTS, IS_FETCHING } from '../../../redux/actions/types';
-import fetchCielConcepts from '../../../redux/actions/bulkConcepts';
+import { FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
+import fetchCielConcepts, { addExistingBulkConcepts } from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
 
 const mockStore = configureStore([thunk]);
+jest.mock('react-notify-toast');
 
 describe('Test suite for ciel concepts actions', () => {
   beforeEach(() => {
@@ -58,7 +59,24 @@ describe('Test suite for ciel concepts actions', () => {
     return store.dispatch(fetchCielConcepts())
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
+  it('dispatches ADD_EXISTING_BULK_CONCEPTS  action type on respose from server', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{ data: { data: [{ added: true }] } }],
+      });
+    });
 
+    const returnedAction = [{
+      type: ADD_EXISTING_BULK_CONCEPTS,
+      payload: [{ data: { data: [{ added: true }] } }],
+    }];
+    const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
+    const store = mockStore({});
+    return store.dispatch(addExistingBulkConcepts(data))
+      .then(() => expect(store.getActions()).toEqual(returnedAction));
+  });
   it('dispatches an error message when a response is errored', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();

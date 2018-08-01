@@ -2,17 +2,22 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
-import fetchCielConcepts from '../../redux/actions/bulkConcepts';
+import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from '../bulkConcepts/bulkConceptList';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
     fetchCielConcepts: PropTypes.func.isRequired,
+    addExistingBulkConcepts: PropTypes.func.isRequired,
     cielConcepts: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
     })).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
+  handleAddAll=() => {
+    const expressions = this.props.cielConcepts.map(concept => concept.url);
+    this.props.addExistingBulkConcepts({ data: { expressions } });
+  }
   handleCielClick=() => {
     this.props.fetchCielConcepts();
   }
@@ -97,7 +102,7 @@ export class AddBulkConcepts extends Component {
               Back
             </button>
           </a>{' '}
-          <button type="button" className="btn btn-primary">
+          <button type="button" className="btn btn-primary" id="btn-add-all"onClick={this.handleAddAll}>
             <i className="fa fa-plus" /> Add All
           </button>
         </div>
@@ -112,5 +117,5 @@ export const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { fetchCielConcepts },
+  { fetchCielConcepts, addExistingBulkConcepts },
 )(AddBulkConcepts);
