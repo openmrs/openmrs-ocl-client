@@ -29,8 +29,14 @@ export class DictionaryModal extends React.Component {
   }
 
   onChange = (e) => {
+    const { organizations } = this.props;
+    const { owner } = this.state.data;
     this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value },
+      data: {
+        ...this.state.data,
+        owner: (organizations && organizations.length === 0) ? 'Individual' : owner,
+        [e.target.name]: e.target.value,
+      },
     });
   };
   onSubmit = (e) => {
@@ -175,7 +181,7 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.owner}
                     >
-                      <option value="" />
+                      { organizations && organizations.length !== 0 && <option value="" />}
                       <option value="Individual" style={{ textTransform: 'capitalize' }}> {localStorage.getItem('username')} (Yourself) </option>
                       {organizations &&
                         organizations.map(organization => (
