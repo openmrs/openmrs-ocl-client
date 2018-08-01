@@ -14,7 +14,7 @@ const CreateConceptTable = props => (
       </tr>
     </thead>
     <tbody>
-      {props.nameRows.map(newRow => <ConceptNameRows newRow={newRow} key={newRow} {...props} />)}
+      {props.nameRows.map(newRow => <ConceptNameRows newRow={newRow} key={newRow} {...props} />).reverse()}
     </tbody>
   </table>
 );
