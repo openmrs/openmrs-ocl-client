@@ -17,6 +17,7 @@ export class DictionaryModal extends React.Component {
         name: '',
         owner: '',
         description: '',
+        default_locale: 'en',
         supported_locales: 'en, es',
         repository_type: 'OpenMRSDictionary',
       },
@@ -68,8 +69,8 @@ export class DictionaryModal extends React.Component {
       errors.public_access =
         'Kindly select the Permissions for your dictionary';
     }
-    if (!data.supported_locales) {
-      errors.supported_locales = 'Kindly select your preferred locale';
+    if (!data.default_locale) {
+      errors.default_locale = 'Kindly select your preferred locale';
     }
     return errors;
   };
@@ -115,12 +116,12 @@ export class DictionaryModal extends React.Component {
 
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Language{''}
-                    {errors && <InlineError text={errors.supported_locales} />}
+                    {errors && <InlineError text={errors.default_locale} />}
                     <FormControl
                       componentClass="select"
                       type="text"
-                      name="supported_locales"
-                      id="supported_locales"
+                      name="default_locale"
+                      id="default_locale"
                       placeholder="English"
                       onChange={this.onChange}
                     >
