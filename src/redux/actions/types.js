@@ -40,3 +40,4 @@ export const FETCH_USER_DICTIONARY = '[dictionary] fetch_user_dictionary';
 export const FETCH_USER_ORGANIZATION = '[user] fetch_user_organization';
 export const FETCH_CIEL_CONCEPTS = '[concepts] fetch_ciel_concepts';
 export const FETCH_BULK_CONCEPTS = '[concept] fetch_bulk_concepts';
+export const ADD_EXISTING_BULK_CONCEPTS = '[concept] add_existing_bulk_concepts';
