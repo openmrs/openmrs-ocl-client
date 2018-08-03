@@ -5,6 +5,7 @@ import {
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
+  PREVIEW_CONCEPT,
 } from '../../../redux/actions/types';
 import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 
@@ -83,6 +84,20 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       bulkConcepts: action.payload,
+    });
+  });
+  it('should handle PREVIEW_CONCEPT', () => {
+    action = {
+      type: PREVIEW_CONCEPT,
+      payload: [concepts],
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      preview: action.payload,
     });
   });
 });

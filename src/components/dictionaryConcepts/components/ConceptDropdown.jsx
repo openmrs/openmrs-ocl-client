@@ -15,10 +15,10 @@ const ConceptDropdown = props => (
         Add existing concepts
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a className="dropdown-item" href="/dashboard/concepts/Organization/CIEL/CIEL">
+        <Link className="dropdown-item" to={`${props.pathName}/import`}>
           Add CIEL concepts
-        </a>
-        <Link to="/bulkconcepts" className="dropdown-item" >
+        </Link>
+        <Link to="/bulkconcepts" className="dropdown-item">
           Bulk add concepts
         </Link>
       </div>
