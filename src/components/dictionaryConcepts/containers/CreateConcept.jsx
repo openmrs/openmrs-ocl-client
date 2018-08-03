@@ -50,7 +50,7 @@ export class CreateConcept extends Component {
       notEditable: true,
       id: uuid(),
       concept_class: '',
-      datatype: '',
+      datatype: 'None',
       names: [],
       descriptions: [],
     };
