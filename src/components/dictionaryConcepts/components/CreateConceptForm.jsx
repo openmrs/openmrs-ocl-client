@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import { classes } from './helperFunction';
@@ -102,11 +103,16 @@ const CreateConceptForm = props => (
         </div>
       </div>
       <div className="submit-button text-left">
-        <button className="btn btn-sm mr-1 col-2 bg-blue" type="submit">
-          Create
-        </button>
-        <button className="btn btn-sm btn-danger col-2" type="reset">
+        <Link
+          to={props.path}
+          className="collection-name small-text"
+        >
+          <button className="btn btn-sm mr-1 col-2 btn-danger" type="reset">
           Cancel
+          </button>
+        </Link>
+        <button className="btn btn-sm bg-blue col-2" type="submit">
+          Create
         </button>
       </div>
     </div>
@@ -122,6 +128,7 @@ CreateConceptForm.propTypes = {
     id: PropTypes.string,
   }).isRequired,
   concept: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   toggleUUID: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import uuid from 'uuid/v4';
-import { Link } from 'react-router-dom';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
 import CreateConceptForm from '../components/CreateConceptForm';
@@ -203,14 +202,6 @@ export class CreateConcept extends Component {
       <div className="container create-custom-concept">
         <div className="row create-concept-header">
           <div className="col-lg-12">
-            <div>
-              <Link
-                to={path}
-                className="collection-name small-text"
-              >
-                <i className="fas fa-chevron-left" /> Go back to {dictionaryName} dictionary
-              </Link>
-            </div>
             <h3>
               {dictionaryName}: Create a<span className="text-capitalize">{concept}</span> Concept <br />
             </h3>
@@ -229,6 +220,7 @@ export class CreateConcept extends Component {
                 removeDescription={this.removeDescription}
                 toggleUUID={this.handleUUID}
                 concept={concept}
+                path={path}
                 state={this.state}
                 handleChange={this.handleChange}
                 handleSelections={this.handleNameLocale}
