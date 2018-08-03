@@ -259,6 +259,10 @@ export const mockConceptStore = {
     sourceList: [],
     classList: [],
   },
+  bulkConcepts: {
+    datatypeList: [],
+    classList: [],
+  },
 };
 
 export const newConcept = {

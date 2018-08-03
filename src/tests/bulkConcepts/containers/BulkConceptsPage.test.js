@@ -15,6 +15,9 @@ describe('Test suite for BulkConceptsPage component', () => {
       fetchBulkConcepts: jest.fn(),
       concepts: [],
       loading: true,
+      datatypes: [],
+      classes: [],
+      addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -28,6 +31,9 @@ describe('Test suite for BulkConceptsPage component', () => {
       fetchBulkConcepts: jest.fn(),
       concepts: [],
       loading: false,
+      datatypes: [],
+      classes: [],
+      addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -39,6 +45,9 @@ describe('Test suite for BulkConceptsPage component', () => {
       fetchBulkConcepts: jest.fn(),
       concepts: [concepts],
       loading: false,
+      datatypes: [],
+      classes: [],
+      addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -46,14 +55,34 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(wrapper.find('#table-body').text()).toBeTruthy();
   });
 
+  it('should filter search result', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concepts],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      addToFilterList: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const event = { target: { name: 'Diagnosis, classes', checked: true } };
+    const event2 = { target: { name: 'Diagnosis, datatype', checked: true } };
+    wrapper.find('#text').simulate('change', event2);
+    wrapper.find('#Diagnosis').simulate('change', event);
+  });
+
   it('should test mapStateToProps', () => {
     const initialState = {
       concepts: {
         loading: false,
       },
-      bulkConcepts: { bulkConcepts: [] },
+      bulkConcepts: { bulkConcepts: [], datatypes: [], classes: [] },
     };
     expect(mapStateToProps(initialState).concepts).toEqual([]);
+    expect(mapStateToProps(initialState).datatypes).toEqual([]);
+    expect(mapStateToProps(initialState).classes).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
   });
 });

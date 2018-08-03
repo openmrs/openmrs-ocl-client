@@ -7,7 +7,10 @@ import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
 import Paginations from '../component/Paginations';
-import { fetchBulkConcepts } from '../../../redux/actions/concepts/addBulkConcepts';
+import {
+  fetchBulkConcepts,
+  addToFilterList,
+} from '../../../redux/actions/concepts/addBulkConcepts';
 
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
@@ -16,19 +19,40 @@ export class BulkConceptsPage extends Component {
     fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
     loading: PropTypes.bool.isRequired,
+    datatypes: PropTypes.array.isRequired,
+    classes: PropTypes.array.isRequired,
+    addToFilterList: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      datatypeInput: '',
+      classInput: '',
+    };
   }
 
   componentDidMount() {
     this.props.fetchBulkConcepts();
   }
 
+  handleFilter = (event) => {
+    const {
+      target: { name },
+    } = event;
+    const targetName = name.split(',');
+    if (targetName[1] === 'datatype') {
+      this.props.addToFilterList(targetName[0], 'datatype');
+    } else {
+      this.props.addToFilterList(targetName[0], 'classes');
+    }
+  };
+
   render() {
-    const { concepts, loading } = this.props;
+    const {
+      concepts, loading, datatypes, classes,
+    } = this.props;
+    const { datatypeInput, classInput } = this.state;
     return (
       <div className="container custom-dictionary-concepts bulk-concepts mt-3">
         <section className="row">
@@ -37,7 +61,13 @@ export class BulkConceptsPage extends Component {
           </div>
         </section>
         <section className="row mt-3">
-          <SideNav />
+          <SideNav
+            datatypes={datatypes}
+            classes={classes}
+            dataTypeValue={datatypeInput}
+            classValue={classInput}
+            handleChange={this.handleFilter}
+          />
           <div className="col-10 col-md-9 bulk-concept-wrapper">
             <SearchBar />
             <Paginations totalConcepts={concepts.length} />
@@ -52,9 +82,11 @@ export class BulkConceptsPage extends Component {
 export const mapStateToProps = state => ({
   concepts: state.bulkConcepts.bulkConcepts,
   loading: state.concepts.loading,
+  datatypes: state.bulkConcepts.datatypes,
+  classes: state.bulkConcepts.classes,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchBulkConcepts },
+  { fetchBulkConcepts, addToFilterList },
 )(BulkConceptsPage);

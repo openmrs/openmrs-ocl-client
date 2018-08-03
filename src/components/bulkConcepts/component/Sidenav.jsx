@@ -1,28 +1,54 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import SideNavItems from './SideNavItems';
 
-const Sidenav = () => (
-  <div className="col-12 col-md-3">
-    <div className="sidenav-container">
-      <div className="row">
-        <h6 className="sidenav-header">Classes</h6>
-      </div>
-      <div className="custom-control custom-checkbox">
-        <input type="checkbox" className="custom-control-input" />
-        <label className="custom-control-label bulk-concept-label" htmlFor="test">
-          lorem
-        </label>
-      </div>
-      <div className="row mt-3">
-        <h6 className="sidenav-header">Datatype</h6>
-      </div>
-      <div className="custom-control custom-checkbox">
-        <input type="checkbox" className="custom-control-input" />
-        <label className="custom-control-label bulk-concept-label" htmlFor="test">
-          lorem
-        </label>
+const Sidenav = (props) => {
+  const {
+    classes, datatypes, datatypeInput, classInput, handleChange,
+  } = props;
+  return (
+    <div className="col-12 col-md-3">
+      <div className="sidenav-container">
+        <div className="row">
+          <h6 className="sidenav-header">Datatypes</h6>
+        </div>
+        {datatypes.map(datatype => (
+          <SideNavItems
+            listItem={datatype}
+            key={datatype}
+            filterType="datatype"
+            value={datatypeInput}
+            handleChange={handleChange}
+          />
+        ))}
+        <div className="row mt-3">
+          <h6 className="sidenav-header">Classes</h6>
+        </div>
+        {classes.map(classItem => (
+          <SideNavItems
+            listItem={classItem}
+            key={classItem}
+            filterType="classes"
+            value={classInput}
+            handleChange={handleChange}
+          />
+        ))}
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+Sidenav.propTypes = {
+  classes: PropTypes.array.isRequired,
+  datatypes: PropTypes.array.isRequired,
+  datatypeInput: PropTypes.string,
+  classInput: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
+};
+
+Sidenav.defaultProps = {
+  datatypeInput: '',
+  classInput: '',
+};
 
 export default Sidenav;
