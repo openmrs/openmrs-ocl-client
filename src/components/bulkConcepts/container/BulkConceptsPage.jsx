@@ -10,6 +10,8 @@ import Paginations from '../component/Paginations';
 import {
   fetchBulkConcepts,
   addToFilterList,
+  previewConcept,
+  addConcept,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
@@ -19,9 +21,22 @@ export class BulkConceptsPage extends Component {
     fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
     loading: PropTypes.bool.isRequired,
+    preview: PropTypes.shape({
+      url: PropTypes.string,
+      display_name: PropTypes.string,
+    }).isRequired,
+    addConcept: PropTypes.func.isRequired,
     datatypes: PropTypes.array.isRequired,
+    previewConcept: PropTypes.func.isRequired,
     classes: PropTypes.array.isRequired,
     addToFilterList: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        type: PropTypes.string,
+        typeName: PropTypes.string,
+        collectionName: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
   };
 
   constructor(props) {
@@ -50,7 +65,12 @@ export class BulkConceptsPage extends Component {
 
   render() {
     const {
-      concepts, loading, datatypes, classes,
+      concepts,
+      loading,
+      datatypes,
+      preview,
+      classes,
+      match: { params },
     } = this.props;
     const { datatypeInput, classInput } = this.state;
     return (
@@ -71,7 +91,14 @@ export class BulkConceptsPage extends Component {
           <div className="col-10 col-md-9 bulk-concept-wrapper">
             <SearchBar />
             <Paginations totalConcepts={concepts.length} />
-            <ConceptTable concepts={concepts} loading={loading} />
+            <ConceptTable
+              concepts={concepts}
+              loading={loading}
+              location={params}
+              preview={preview}
+              previewConcept={this.props.previewConcept}
+              addConcept={this.props.addConcept}
+            />
           </div>
         </section>
       </div>
@@ -84,9 +111,15 @@ export const mapStateToProps = state => ({
   loading: state.concepts.loading,
   datatypes: state.bulkConcepts.datatypes,
   classes: state.bulkConcepts.classes,
+  preview: state.bulkConcepts.preview,
 });
 
 export default connect(
   mapStateToProps,
-  { fetchBulkConcepts, addToFilterList },
+  {
+    fetchBulkConcepts,
+    addToFilterList,
+    previewConcept,
+    addConcept,
+  },
 )(BulkConceptsPage);

@@ -60,3 +60,28 @@
   padding: .85rem 1rem;
   transition: background-color 400ms ease-in-out;  
 }
+
+.pop-up-wrapper {
+  padding: 1rem;
+  height: auto;
+}
+
+.header-divider {
+  width: 2rem;
+  height: .3rem;
+  border-radius: 10rem;
+  background: #5c6273;
+}
+
+.pop-up-description {
+  background: #e8e9eb;
+  color: #2c2e35;
+  padding: .7rem;
+}
+
+.synonyms {
+  margin: 0;
+  margin-top: 1rem;
+  font-size: .8rem;
+    
+}
