@@ -20,8 +20,6 @@
 .paragraph{
     color: black;
     font-size: 20px;
-    padding-top: 0px;
-    margin-top: -2%;
 }
 #rightside-detail{
     border-left: solid 1px;
@@ -53,7 +51,18 @@
 }
 #conceptB{
     /* margin-right: 58%; */
-    margin-top: 13%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-right: 65%;
+    background-color: #506096;
+}
+#editB{
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-right: 65%;
+    background-color: #506096;
 }
 #loader {
     padding-top: 20%;
@@ -62,3 +71,84 @@
     width: 90%; 
     margin-left: 4.55%;
 }
+#versionCard {
+    margin-bottom: 5%;
+}
+#conceptsCard {
+    margin-bottom: 2%;
+}
+#desc {
+    text-align: left;
+    font-weight: 400;
+}
+#editLink {
+    margin-top: 2%;
+    margin-bottom: 5%;
+    margin-right: 65%;
+    font-size: 1.5em;
+}
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menu li {
+    padding: 20px;
+    margin-bottom: 20px;
+    color: #030303;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    text-align: left;
+}
+.menu li:hover {
+    background-color: #506096;
+}
+h3 {
+    font-weight: 900;
+    text-align: left;
+}
+p {
+    text-align: left;
+    font-weight: 400;
+    font-size: 1.25em !important;
+    margin-bottom: 0.5rem;
+}
+.points{
+    padding-left: 10%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #000000;
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+a {
+    text-decoration: none;
+}
+i {
+    padding-right: 1%;
+    size: 2em;
+}
+fieldset { 
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px solid #000000 !important;
+}
+legend {
+    padding: 0.2em 0.5em;
+    color: rgb(0, 0, 0);
+    text-align:left;
+    position: relative;
+    width: auto;
+  }
