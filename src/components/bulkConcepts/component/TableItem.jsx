@@ -4,7 +4,14 @@ import ActionButtons from '../component/ActionButtons';
 
 const TableItem = (props) => {
   const {
-    id, concept_class, datatype, display_name,
+    id,
+    concept_class,
+    datatype,
+    display_name,
+    addConcept,
+    params,
+    preview,
+    previewConcept,
   } = props;
   return (
     <tr>
@@ -13,7 +20,13 @@ const TableItem = (props) => {
       <td>{datatype}</td>
       <td>{id}</td>
       <td>
-        <ActionButtons />
+        <ActionButtons
+          addConcept={addConcept}
+          params={params}
+          id={id}
+          preview={preview}
+          previewConcept={previewConcept}
+        />
       </td>
     </tr>
   );
@@ -24,6 +37,17 @@ TableItem.propTypes = {
   concept_class: PropTypes.string.isRequired,
   datatype: PropTypes.string.isRequired,
   display_name: PropTypes.string.isRequired,
+  addConcept: PropTypes.func.isRequired,
+  params: PropTypes.shape({
+    type: PropTypes.string,
+    typeName: PropTypes.string,
+    collectionName: PropTypes.string,
+  }).isRequired,
+  preview: PropTypes.shape({
+    url: PropTypes.string,
+    display_name: PropTypes.string,
+  }).isRequired,
+  previewConcept: PropTypes.func.isRequired,
 };
 
 export default TableItem;
