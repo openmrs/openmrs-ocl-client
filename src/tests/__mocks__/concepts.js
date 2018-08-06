@@ -262,7 +262,6 @@ export const mockConceptStore = {
   bulkConcepts: {
     datatypeList: [],
     classList: [],
-    bulkConcepts: [{ id: 123 }],
   },
 };
 

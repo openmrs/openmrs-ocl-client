@@ -44,4 +44,3 @@ export const ADD_EXISTING_BULK_CONCEPTS = '[concept] add_existing_bulk_concepts'
 export const ADD_TO_DATATYPE_LIST = '[concept] add_to_datatype_list';
 export const ADD_TO_CLASS_LIST = '[concept] add_to_class_list';
 export const FETCH_FILTERED_CONCEPTS = '[concept] fetch_filtered_concepts';
-export const PREVIEW_CONCEPT = '[concept] preview_concept';

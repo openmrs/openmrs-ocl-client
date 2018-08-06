@@ -9,15 +9,11 @@ import {
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
-  PREVIEW_CONCEPT,
-  ADD_EXISTING_CONCEPTS,
 } from '../../../redux/actions/types';
 import {
   fetchBulkConcepts,
   addToFilterList,
   fetchFilteredConcepts,
-  previewConcept,
-  addConcept,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import concepts, { mockConceptStore } from '../../__mocks__/concepts';
 
@@ -71,25 +67,6 @@ describe('Test suite for addBulkConcepts async actions', () => {
     const store = mockStore({});
 
     return store.dispatch(fetchBulkConcepts()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('should handle ADD_EXISTING_CONCEPTS', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [concepts],
-      });
-    });
-
-    const expectedActions = [
-      { type: ADD_EXISTING_CONCEPTS, payload: [concepts] },
-    ];
-
-    const store = mockStore({});
-    const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    return store.dispatch(addConcept(params, 'data', 'lob dev')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -216,12 +193,6 @@ describe('test suite for addBulkConcepts synchronous action creators', () => {
       { payload: true, type: '[ui] toggle spinner' },
     ];
     store.dispatch(addToFilterList('drug', 'class'));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-  it('should handle PREVIEW_CONCEPT', () => {
-    const store = mockStore(mockConceptStore);
-    const expectedActions = [{ type: PREVIEW_CONCEPT, payload: { id: 123 } }];
-    store.dispatch(previewConcept(123));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
