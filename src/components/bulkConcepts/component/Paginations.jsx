@@ -6,8 +6,6 @@ const Paginations = props => (
     <div className="space-between">
       <p>
         Showing 1-{props.totalConcepts} of {props.totalConcepts} concepts
-        <button className="ml-2 btn btn-sm no-shadow bg-gray">Add all {props.totalConcepts}</button>
-        <button className="ml-2 btn btn-sm no-shadow bg-gray">Add all {props.totalConcepts}</button>
       </p>
       <span className="paginate-controllers">
         <i
