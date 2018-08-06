@@ -1,17 +1,13 @@
 import React from 'react';
-
 import { mount } from 'enzyme';
 import expect from 'expect';
 import Router from 'react-mock-router';
+
 import {
   BulkConceptsPage,
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
 import concepts from '../../__mocks__/concepts';
-
-jest.useFakeTimers();
-
-jest.mock('react-notify-toast');
 
 describe('Test suite for BulkConceptsPage component', () => {
   it('should render without breaking', () => {
@@ -21,7 +17,6 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: true,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
       addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
@@ -38,7 +33,6 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
       addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
@@ -53,7 +47,6 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
       addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
@@ -69,39 +62,15 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
       addToFilterList: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
     </Router>);
-    const event = { target: { name: 'Diagnosis, datatype', checked: true } };
+    const event = { target: { name: 'Diagnosis, classes', checked: true } };
     const event2 = { target: { name: 'Diagnosis, datatype', checked: true } };
     wrapper.find('#text').simulate('change', event2);
     wrapper.find('#Diagnosis').simulate('change', event);
-  });
-
-  it('should simulate clicks on action buttons', () => {
-    const props = {
-      fetchBulkConcepts: jest.fn(),
-      concepts: [concepts],
-      loading: false,
-      datatypes: ['text'],
-      classes: ['Diagnosis'],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
-      addToFilterList: jest.fn(),
-      preview: {
-        url: 'dsa',
-        display_name: 'asd',
-      },
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-    };
-    const wrapper = mount(<Router>
-      <BulkConceptsPage {...props} />
-    </Router>);
-    wrapper.find('#add-button').simulate('click');
-    jest.runAllTimers();
   });
 
   it('should test mapStateToProps', () => {
@@ -109,17 +78,11 @@ describe('Test suite for BulkConceptsPage component', () => {
       concepts: {
         loading: false,
       },
-      bulkConcepts: {
-        bulkConcepts: [],
-        datatypes: [],
-        classes: [],
-        preview: [],
-      },
+      bulkConcepts: { bulkConcepts: [], datatypes: [], classes: [] },
     };
     expect(mapStateToProps(initialState).concepts).toEqual([]);
     expect(mapStateToProps(initialState).datatypes).toEqual([]);
     expect(mapStateToProps(initialState).classes).toEqual([]);
-    expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
   });
 });

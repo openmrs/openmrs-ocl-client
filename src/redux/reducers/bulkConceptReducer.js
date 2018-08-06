@@ -3,7 +3,6 @@ import {
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
-  PREVIEW_CONCEPT,
 } from '../actions/types';
 import { getDatatypes, filterClass, normalizeList } from './util';
 
@@ -27,11 +26,6 @@ const bulkConcepts = (state = userInitialState, action) => {
       return {
         ...state,
         bulkConcepts: action.payload,
-      };
-    case PREVIEW_CONCEPT:
-      return {
-        ...state,
-        preview: action.payload,
       };
     case ADD_TO_DATATYPE_LIST:
       return {
