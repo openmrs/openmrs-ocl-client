@@ -44,6 +44,7 @@ export class BulkConceptsPage extends Component {
     this.state = {
       datatypeInput: '',
       classInput: '',
+      currentPage: 1,
     };
   }
 
@@ -63,6 +64,12 @@ export class BulkConceptsPage extends Component {
     }
   };
 
+  handleClick = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    this.setState({ currentPage: Number(id) });
+  }
+
   render() {
     const {
       concepts,
@@ -72,7 +79,16 @@ export class BulkConceptsPage extends Component {
       classes,
       match: { params },
     } = this.props;
-    const { datatypeInput, classInput } = this.state;
+    const { datatypeInput, classInput, currentPage } = this.state;
+
+    const conceptsPerPage = 10;
+    const indexOfLastConcept = currentPage * conceptsPerPage;
+    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
+    const currentConcepts = this.props.concepts.slice(indexOfFirstConcept, indexOfLastConcept);
+    const lastPage = Math.ceil(this.props.concepts.length / conceptsPerPage);
+    const lastConcept = indexOfFirstConcept + currentConcepts.length;
+    const firstConcept = indexOfLastConcept - 9;
+
     return (
       <div className="container custom-dictionary-concepts bulk-concepts mt-3">
         <section className="row">
@@ -90,9 +106,16 @@ export class BulkConceptsPage extends Component {
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper">
             <SearchBar />
-            <Paginations totalConcepts={concepts.length} />
+            <Paginations
+              concepts={lastConcept}
+              firstConceptIndex={firstConcept}
+              totalConcepts={concepts.length}
+              currentPage={currentPage}
+              handleClick={this.handleClick}
+              lastPage={lastPage}
+            />
             <ConceptTable
-              concepts={concepts}
+              concepts={currentConcepts}
               loading={loading}
               location={params}
               preview={preview}
