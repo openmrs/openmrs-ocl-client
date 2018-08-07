@@ -7,7 +7,7 @@ import {
   BulkConceptsPage,
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
-import concepts from '../../__mocks__/concepts';
+import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 
 jest.useFakeTimers();
 
@@ -121,5 +121,24 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(mapStateToProps(initialState).classes).toEqual([]);
     expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
+  });
+  it('should paginate concepts', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      concepts: multipleConceptsMockStore.concepts.dictionaryConcepts,
+      loading: false,
+      datatypes: [],
+      classes: [],
+      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      addToFilterList: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const event = { target: { id: 2 } };
+    wrapper.find('.nxt').simulate('click', {
+      preventDefault: () => {},
+      event,
+    });
   });
 });

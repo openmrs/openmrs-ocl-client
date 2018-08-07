@@ -208,11 +208,11 @@ describe('test suite for synchronous action creators', () => {
   });
   it('should handle FETCH_NEXT_CONCEPTS', () => {
     const expectedActions = [
-      { type: TOTAL_CONCEPT_COUNT, payload: 10 },
+      { type: TOTAL_CONCEPT_COUNT, payload: 11 },
       { type: FETCH_NEXT_CONCEPTS, payload: multipleConceptsMockStore.concepts.dictionaryConcepts },
     ];
     const store = mockStore(multipleConceptsMockStore);
-    store.dispatch(paginateConcepts(undefined, 10, 0));
+    store.dispatch(paginateConcepts(undefined, 11, 0));
     expect(store.getActions()).toEqual(expectedActions);
   });
   it('should handle REMOVE_ONE_NAME', () => {
