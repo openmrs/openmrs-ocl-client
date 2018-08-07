@@ -48,12 +48,12 @@
     "eject": "react-scripts eject",
     "test:bamboo": "react-scripts test --env=jsdom -u --ci --coverage --testResultsProcessor ./node_modules/jest-junit",
     "lint": "eslint ./src",
-    "coverage": "react-scripts test --env=jsdom --coverage"
+    "coverage": "react-scripts test --env=jsdom --coverage --watch"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
-    "eslint-plugin-json": "^1.2.0",
+    "eslint-plugin-json": "^1.2.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "jest-junit": "^4.0.0",

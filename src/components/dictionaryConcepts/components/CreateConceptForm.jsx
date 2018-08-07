@@ -52,9 +52,28 @@ const CreateConceptForm = props => (
           <div className="form-group col-md-5">
             <label htmlFor="class">Class</label>
             <div>
+              { (props.concept.toString().trim() === 'symptom-finding') &&
+              <React.Fragment>
+                <select
+                  id="class"
+                  name="concept_class"
+                  value={props.state.concept_class}
+                  className="form-control"
+                  required
+                  onChange={props.handleChange}
+                >
+                  <option key="Symptom-Finding">Symptom-Finding</option>
+                  <option key="Symptom">Symptom</option>
+                  <option key="Finding">Finding</option>
+
+                </select>
+              </React.Fragment>
+              }
+              {(props.concept.toString().trim() !== 'symptom-finding') && (
               <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
                 {props.concept}
               </span>
+              )}
             </div>
           </div>
         )}
