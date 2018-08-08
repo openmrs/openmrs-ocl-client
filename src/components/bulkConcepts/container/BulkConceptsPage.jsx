@@ -12,12 +12,14 @@ import {
   addToFilterList,
   previewConcept,
   addConcept,
+  fetchFilteredConcepts,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
 export class BulkConceptsPage extends Component {
   static propTypes = {
+    fetchFilteredConcepts: PropTypes.func.isRequired,
     fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
     loading: PropTypes.bool.isRequired,
@@ -45,6 +47,7 @@ export class BulkConceptsPage extends Component {
       datatypeInput: '',
       classInput: '',
       currentPage: 1,
+      searchInput: '',
     };
   }
 
@@ -68,7 +71,24 @@ export class BulkConceptsPage extends Component {
     e.preventDefault();
     const { id } = e.target;
     this.setState({ currentPage: Number(id) });
-  }
+  };
+  handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState(() => ({ searchInput: value }));
+    if (!value) {
+      this.props.fetchFilteredConcepts('CIEL');
+    }
+  };
+
+  handleSearch = (event) => {
+    event.preventDefault();
+    if (this.state.searchInput.trim()) {
+      const query = `q=${this.state.searchInput}`;
+      this.props.fetchFilteredConcepts('CIEL', query);
+    }
+  };
 
   render() {
     const {
@@ -79,7 +99,9 @@ export class BulkConceptsPage extends Component {
       classes,
       match: { params },
     } = this.props;
-    const { datatypeInput, classInput, currentPage } = this.state;
+    const {
+      datatypeInput, classInput, currentPage, searchInput,
+    } = this.state;
 
     const conceptsPerPage = 10;
     const indexOfLastConcept = currentPage * conceptsPerPage;
@@ -105,7 +127,11 @@ export class BulkConceptsPage extends Component {
             handleChange={this.handleFilter}
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper">
-            <SearchBar />
+            <SearchBar
+              handleSearch={this.handleSearch}
+              handleChange={this.handleChange}
+              inputValue={searchInput}
+            />
             <Paginations
               concepts={lastConcept}
               firstConceptIndex={firstConcept}
@@ -144,5 +170,6 @@ export default connect(
     addToFilterList,
     previewConcept,
     addConcept,
+    fetchFilteredConcepts,
   },
 )(BulkConceptsPage);

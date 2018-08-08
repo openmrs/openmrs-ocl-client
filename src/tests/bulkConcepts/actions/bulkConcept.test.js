@@ -79,12 +79,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: [concepts],
+        response: [{ concepts, ...{ added: true } }],
       });
     });
 
     const expectedActions = [
-      { type: ADD_EXISTING_CONCEPTS, payload: [concepts] },
+      { type: ADD_EXISTING_CONCEPTS, payload: [{ concepts, ...{ added: true } }] },
     ];
 
     const store = mockStore({});

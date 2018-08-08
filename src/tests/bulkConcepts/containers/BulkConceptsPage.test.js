@@ -62,6 +62,31 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(wrapper.find('#table-body').text()).toBeTruthy();
   });
 
+  it('should search for concepts', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      handleSearch: jest.fn(),
+      handleChange: jest.fn(),
+      inputValue: '',
+      concepts: [concepts],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      addToFilterList: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const event = { target: { name: 'searchInput', value: 'testing' } };
+    wrapper.find('#search-concept').simulate('change', event);
+    wrapper.find('#submit-search-form').simulate('submit');
+    // clear form to call an action to fetch all concepts again
+    const clearForm = { target: { name: 'searchInput', value: '' } };
+    wrapper.find('#search-concept').simulate('change', clearForm);
+  });
+
   it('should filter search result', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
