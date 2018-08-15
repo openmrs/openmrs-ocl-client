@@ -83,3 +83,5 @@ export const filterUserPayload = (user, payload) => {
   });
   return filteredDictionaries;
 };
+
+export const filterDescriptions = (item, list) => list.filter(listItem => listItem.uuid !== item);

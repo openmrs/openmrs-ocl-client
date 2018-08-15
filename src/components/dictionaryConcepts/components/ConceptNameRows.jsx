@@ -12,12 +12,12 @@ class ConceptNameRows extends Component {
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.string.isRequired,
+    existingConcept: PropTypes.object.isRequired,
   };
   constructor(props) {
     super(props);
-    const defaultLocale = locale.find((currentLocale) => {
-      return currentLocale.value === props.pathName.language;
-    });
+    const defaultLocale = locale.find(currentLocale =>
+      currentLocale.value === props.pathName.language);
     this.state = {
       id: this.props.newRow,
       name: '',
@@ -28,10 +28,29 @@ class ConceptNameRows extends Component {
     };
     autoBind(this);
   }
+
+  componentDidMount() {
+    if (this.props.existingConcept) {
+      this.updateState();
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.sendToTopComponent();
     }
+  }
+
+  updateState() {
+    const { newRow } = this.props;
+    this.setState({
+      ...this.state,
+      uuid: newRow.uuid,
+      name: newRow.name,
+      locale: newRow.locale || 'en',
+      name_type: newRow.name_type || 'Fully Specified',
+      locale_preferred: newRow.locale_preferred,
+    });
   }
 
   handleChange(event) {
@@ -45,7 +64,9 @@ class ConceptNameRows extends Component {
 
   handleNameLocale(selectedOptions) {
     this.setState({
+      locale: selectedOptions.value,
       locale_full: selectedOptions,
+    }, () => {
     });
     this.sendToTopComponent();
   }

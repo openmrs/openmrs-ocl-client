@@ -16,8 +16,18 @@ import {
   ADD_CONCEPT_TO_DICTIONARY,
   FETCH_NEXT_CONCEPTS,
   TOTAL_CONCEPT_COUNT,
+  FETCH_EXISTING_CONCEPT,
+  FETCH_EXISTING_CONCEPT_ERROR,
+  EDIT_CONCEPT_ADD_DESCRIPTION,
+  EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
+  CLEAR_PREVIOUS_CONCEPT,
+  EDIT_CONCEPT_CREATE_NEW_NAMES,
+  EDIT_CONCEPT_REMOVE_ONE_NAME,
 } from '../actions/types';
-import { filterSources, filterClass, filterList, normalizeList, filterNames } from './util';
+import {
+  filterSources, filterClass, filterList, normalizeList, filterNames,
+  filterDescriptions,
+} from './util';
 
 const initialState = {
   concepts: [],
@@ -37,6 +47,10 @@ const initialState = {
   addConceptToDictionary: [],
   paginatedConcepts: [],
   totalConceptCount: 0,
+  existingConcept: {
+    descriptions: [],
+    names: [],
+  },
 };
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -102,7 +116,7 @@ export default (state = initialState, action) => {
     case CREATE_NEW_NAMES:
       return {
         ...state,
-        newName: [action.payload, ...state.newName],
+        newName: [...state.newName, action.payload],
       };
     case REMOVE_ONE_NAME:
       return {
@@ -112,7 +126,7 @@ export default (state = initialState, action) => {
     case ADD_NEW_DESCRIPTION:
       return {
         ...state,
-        description: [action.payload, ...state.description],
+        description: [...state.description, action.payload],
       };
     case REMOVE_ONE_DESCRIPTION:
       return {
@@ -141,6 +155,61 @@ export default (state = initialState, action) => {
       return {
         ...state,
         concepts: [],
+      };
+    case FETCH_EXISTING_CONCEPT:
+      return {
+        ...state,
+        existingConcept: action.payload,
+      };
+    case CLEAR_PREVIOUS_CONCEPT:
+      return {
+        ...state,
+        existingConcept: {
+          descriptions: [],
+          names: [],
+        },
+      };
+    case EDIT_CONCEPT_ADD_DESCRIPTION:
+      return {
+        ...state,
+        existingConcept: {
+          ...state.existingConcept,
+          descriptions: [
+            ...state.existingConcept.descriptions,
+            { uuid: action.payload },
+          ],
+        },
+      };
+    case EDIT_CONCEPT_CREATE_NEW_NAMES:
+      return {
+        ...state,
+        existingConcept: {
+          ...state.existingConcept,
+          names: [
+            ...state.existingConcept.names,
+            { uuid: action.payload },
+          ],
+        },
+      };
+    case EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION:
+      return {
+        ...state,
+        existingConcept: {
+          ...state.existingConcept,
+          descriptions: filterDescriptions(action.payload, state.existingConcept.descriptions),
+        },
+      };
+    case EDIT_CONCEPT_REMOVE_ONE_NAME:
+      return {
+        ...state,
+        existingConcept: {
+          ...state.existingConcept,
+          names: filterDescriptions(action.payload, state.existingConcept.names),
+        },
+      };
+    case FETCH_EXISTING_CONCEPT_ERROR:
+      return {
+        ...state,
       };
     default:
       return state;

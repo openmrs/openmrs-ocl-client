@@ -15,6 +15,14 @@ import {
   ADD_CONCEPT_TO_DICTIONARY,
   FETCH_NEXT_CONCEPTS,
   TOTAL_CONCEPT_COUNT,
+  FETCH_EXISTING_CONCEPT,
+  FETCH_EXISTING_CONCEPT_ERROR,
+  UPDATE_CONCEPT,
+  EDIT_CONCEPT_ADD_DESCRIPTION,
+  EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
+  CLEAR_PREVIOUS_CONCEPT,
+  EDIT_CONCEPT_CREATE_NEW_NAMES,
+  EDIT_CONCEPT_REMOVE_ONE_NAME,
 } from '../types';
 import {
   isFetching,
@@ -65,6 +73,26 @@ export const addNewDescription = () => (dispatch) => {
 export const removeDescription = id => (dispatch) => {
   const payload = id;
   dispatch({ type: REMOVE_ONE_DESCRIPTION, payload });
+};
+
+export const createNewNameForEditConcept = () => (dispatch) => {
+  const payload = uuid();
+  dispatch({ type: EDIT_CONCEPT_CREATE_NEW_NAMES, payload });
+};
+
+export const removeNameForEditConcept = id => (dispatch) => {
+  const payload = id;
+  dispatch({ type: EDIT_CONCEPT_REMOVE_ONE_NAME, payload });
+};
+
+export const addDescriptionForEditConcept = () => (dispatch) => {
+  const payload = uuid();
+  dispatch({ type: EDIT_CONCEPT_ADD_DESCRIPTION, payload });
+};
+
+export const removeDescriptionForEditConcept = id => (dispatch) => {
+  const payload = id;
+  dispatch({ type: EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION, payload });
 };
 
 export const clearSelections = () => (dispatch) => {
@@ -163,4 +191,49 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
       dispatch(isFetching(false));
     }
   }
+};
+
+export const fetchExistingConcept = conceptUrl => async (dispatch) => {
+  dispatch(isFetching(true));
+  notify.show('Retrieving concept details, please wait...', 'warning', 2000);
+  const url = conceptUrl;
+  try {
+    const response = await instance.get(url);
+    dispatch(isSuccess(response.data, FETCH_EXISTING_CONCEPT));
+  } catch (error) {
+    notify.show('Could not retrieve concept details', 'error', 3000);
+    if (error.response) {
+      dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
+      dispatch(isFetching(false));
+    }
+  }
+};
+
+export const updateConcept = (conceptUrl, data, history) => async (dispatch) => {
+  dispatch(isFetching(true));
+  const url = conceptUrl;
+  try {
+    const response = await instance.put(url, data);
+    dispatch(isSuccess(response.data, UPDATE_CONCEPT));
+    notify.show('concept successfully updated', 'success', 3000);
+  } catch (error) {
+    if (error.response) {
+      notify.show(
+        `Could not update concept details, 
+      ${
+  Object.values(error.response.data).toString()
+} for ${
+  Object.keys(error.response.data).toString()
+}`,
+        'error', 3000,
+      );
+      dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
+      return dispatch(isFetching(false));
+    }
+  }
+  return history.goBack();
+};
+
+export const clearPreviousConcept = () => (dispatch) => {
+  dispatch({ type: CLEAR_PREVIOUS_CONCEPT });
 };
