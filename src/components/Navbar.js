@@ -4,31 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logoutAction } from '../redux/actions/auth/authActions';
-import GeneralSearch from './GeneralSearch/NavbarGeneralSearch';
-import { searchDictionaries, fetchDictionaries } from '../redux/actions/dictionaries/dictionaryActionCreators';
-import generalSearch from '../redux/actions/GeneralSearchActions/generalSearchActionCreators';
 
 export class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchInput: '',
-    };
-  }
-
-  onSubmit = (event) => {
-    event.preventDefault();
-    const { searchInput } = this.state;
-    this.props.generalSearch(searchInput);
-    this.props.history.push(`/search/${searchInput}`);
-  }
-
-  onSearch = (event) => {
-    const { value, name } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  }
   logoutUser = (event) => {
     event.preventDefault();
     this.props.logoutAction();
@@ -36,7 +13,6 @@ export class Navbar extends Component {
     notify.show('You Loggedout successfully', 'success', 3000);
   };
   render() {
-    const { searchInput } = this.state;
     return (
       <div>
         <Notification options={{ zIndex: 10000, top: '200px' }} />
@@ -58,13 +34,6 @@ export class Navbar extends Component {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse " id="navbarA">
-            {this.props.loggedIn && (
-            <GeneralSearch
-              onSearch={this.onSearch}
-              onSubmit={this.onSubmit}
-              searchValue={searchInput}
-            />
-          )}
             {this.props.loggedIn && (
               <ul className="navbar-nav ml-auto" id="navList">
                 <li className="nav-item nav-link" >
@@ -133,7 +102,6 @@ Navbar.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   user: PropTypes.shape({ username: PropTypes.string }),
   logoutAction: PropTypes.func.isRequired,
-  generalSearch: PropTypes.func.isRequired,
   history: PropTypes.shape({ url: PropTypes.string, push: PropTypes.func }).isRequired,
 };
 
@@ -151,8 +119,5 @@ export default connect(
   mapStateToProps,
   {
     logoutAction,
-    searchDictionaries,
-    fetchDictionaries,
-    generalSearch,
   },
 )(withRouter(Navbar));
