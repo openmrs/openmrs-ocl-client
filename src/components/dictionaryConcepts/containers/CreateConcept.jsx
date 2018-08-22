@@ -177,7 +177,8 @@ export class CreateConcept extends Component {
   addDataFromDescription(data) {
     const currentData = this.state.descriptions.filter(description => description.id === data.id);
     if (currentData.length) {
-      const newList = this.state.descriptions.map(description => (description.id === data.id ? data : description));
+      const newList = this.state.descriptions.map(description =>
+        (description.id === data.id ? data : description));
       this.setState(() => ({
         descriptions: newList,
       }));

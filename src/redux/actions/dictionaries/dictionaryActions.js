@@ -1,4 +1,14 @@
-import { ADDING_DICTIONARY, FETCHING_ORGANIZATIONS, ADDING_DICTIONARY_FAILURE, FETCHING_DICTIONARIES, IS_FETCHING, CLEAR_DICTIONARIES, FETCHING_DICTIONARY, CLEAR_DICTIONARY } from './../types';
+import {
+  ADDING_DICTIONARY,
+  FETCHING_ORGANIZATIONS,
+  ADDING_DICTIONARY_FAILURE,
+  FETCHING_DICTIONARIES,
+  IS_FETCHING,
+  CLEAR_DICTIONARIES,
+  FETCHING_DICTIONARY,
+  CLEAR_DICTIONARY,
+  EDIT_DICTIONARY_SUCCESS,
+} from './../types';
 
 export const addDictionary = response => ({
   type: ADDING_DICTIONARY,
@@ -43,4 +53,9 @@ export const dictionaryIsSuccess = payload => ({
 export const clearDictionary = () => ({
   type: CLEAR_DICTIONARY,
   payload: {},
+});
+
+export const editDictionarySuccess = response => ({
+  type: EDIT_DICTIONARY_SUCCESS,
+  payload: response,
 });

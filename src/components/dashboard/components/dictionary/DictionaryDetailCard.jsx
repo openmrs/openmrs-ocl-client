@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './styles/dictionary-modal.css';
 
-const DictionaryDetailCard = (dictionary) => {
+const DictionaryDetailCard = (props) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
       owner_url, short_code, default_locale,
     },
-  } = dictionary;
+    showEditModal,
+  } = props;
+  const username = localStorage.getItem('username');
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
@@ -26,13 +29,16 @@ const DictionaryDetailCard = (dictionary) => {
           <p className="paragraph">Owner: { owner }({ owner_type })</p>
           <p className="paragraph">Created On: { (new Date(created_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
           <p className="paragraph">Updated On: { (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
-          <Link
-            className="btn btn-secondary"
-            id="editB"
-            to="#"
-          >
-            { public_access }
-          </Link>
+          { owner === username &&
+            <Link
+              className="btn btn-secondary"
+              id="editB"
+              to="#"
+              onClick={showEditModal}
+            >
+            Edit
+            </Link>
+          }
         </fieldset>
         <fieldset>
           <legend>Concepts (HEAD version)</legend>
@@ -93,6 +99,11 @@ const DictionaryDetailCard = (dictionary) => {
     </div>
   </div>
   );
+};
+
+DictionaryDetailCard.propTypes = {
+  dictionary: PropTypes.object.isRequired,
+  showEditModal: PropTypes.object.isRequired,
 };
 
 export default DictionaryDetailCard;

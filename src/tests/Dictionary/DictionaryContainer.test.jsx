@@ -13,24 +13,7 @@ describe('DictionaryOverview', () => {
     const wrapper = <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>;
     expect(wrapper).toMatchSnapshot();
   });
-  it('should render with dictionary data', () => {
-    const props = {
-      dictionary: [dictionary],
-      match: {
-        params: {
-          ownerType: 'testing',
-          owner: 'tester',
-          type: 'collection',
-          name: 'chris',
-        },
-      },
-      fetchDictionary: jest.fn(),
-    };
-    const wrapper = mount(<MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>);
-    expect(wrapper.find('#headingDict')).toHaveLength(1);
-    expect(wrapper.find('.paragraph')).toHaveLength(5);
-    expect(wrapper).toMatchSnapshot();
-  });
+ 
   it('should render preloader spinner', () => {
     const props = {
       fetchDictionary: jest.fn(),

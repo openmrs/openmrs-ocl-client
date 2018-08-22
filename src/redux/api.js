@@ -18,6 +18,11 @@ export default {
         .then(() => {
           return instance.post('user/sources/', data);
         }),
+    
+    editDictionary: (url, data) =>
+      instance
+        .put(url, data)
+        .then(response => response.data),
 
     fetchingDictionaries: () =>
       instance

@@ -27,6 +27,29 @@ export class DictionaryModal extends React.Component {
 
   componentDidMount() {
     this.props.fetchingOrganizations();
+    const { isEditingDictionary } = this.props;
+    if (isEditingDictionary) {
+      const {
+        dictionary: {
+          id, preffered_source, public_access, name, owner, description,
+          default_locale, repository_type,
+        },
+      } = this.props;
+      this.setState({ //eslint-disable-line
+        data: {
+          id,
+          preffered_sources: preffered_source,
+          public_access,
+          name,
+          owner,
+          description,
+          default_locale,
+          supported_locales: 'en, es',
+          repository_type,
+        },
+        errors: {},
+      });
+    }
   }
 
   onChange = (e) => {
@@ -47,6 +70,11 @@ export class DictionaryModal extends React.Component {
     if (Object.keys(errors).length === 0) {
       this.props
         .submit(this.state.data)
+        .then((response) => {
+          if (response) {
+            this.props.modalhide();
+          }      
+        })
         .catch((error) => {
           if (error.response) {
             this.setState({
@@ -84,6 +112,8 @@ export class DictionaryModal extends React.Component {
   render() {
     const { data, errors } = this.state;
     const { organizations } = this.props;
+    const { dictionary } = this.props;
+    const { isEditingDictionary } = this.props;
     return (
       <div className="col-sm-5">
         <Modal
@@ -117,6 +147,12 @@ export class DictionaryModal extends React.Component {
                     >
                       <option value="" />
                       <option value="1">CIEL (default source)</option>
+                      {
+                        isEditingDictionary &&
+                        <option value={dictionary.preffered_source} selected>
+                          {dictionary.preffered_source}
+                        </option>
+                      }
                     </FormControl>
                   </FormGroup>
 
@@ -131,12 +167,15 @@ export class DictionaryModal extends React.Component {
                       placeholder="English"
                       onChange={this.onChange}
                     >
+                      {isEditingDictionary &&
+                        this.props.preSelectDefaultLocale()
+                      }
                       {language &&
                       language.map(languages => (
                         <option value={languages.value} key={languages.value}>
                           { languages.label }
                         </option>
-                      ))}
+                      ))}                
                     </FormControl>
                   </FormGroup>
 
@@ -153,8 +192,11 @@ export class DictionaryModal extends React.Component {
                       value={data.public_access}
                     >
                       <option value="" />
-                      <option value="View">Private </option>
+                      {(isEditingDictionary && dictionary.public_access === 'View') &&
+                      <option value="View" selected>Private </option>
+                      }
                       <option value="Edit"> Public </option>
+                      <option value="View">Private </option>
                     </FormControl>
                   </FormGroup>
 
@@ -182,6 +224,9 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.owner}
                     >
+                      {isEditingDictionary &&
+                      <option value={data.owner} selected>{data.owner}</option>
+                      }
                       { organizations && organizations.length !== 0 && <option value="" />}
                       <option value="Individual" style={{ textTransform: 'capitalize' }}> {localStorage.getItem('username')} (Yourself) </option>
                       {organizations &&
@@ -261,6 +306,7 @@ DictionaryModal.propTypes = {
   fetchingOrganizations: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   organizations: PropTypes.shape,
+  dictionary: PropTypes.object.isRequired,
 };
 
 DictionaryModal.defaultProps = {

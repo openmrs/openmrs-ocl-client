@@ -6,6 +6,7 @@ import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
 import { fetchDictionary } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import EditDictionary from './EditDictionary';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -20,6 +21,13 @@ export class DictionaryOverview extends Component {
     fetchDictionary: propTypes.func.isRequired,
     loader: propTypes.bool.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showEditModal: false,
+    };
+  }
   componentDidMount() {
     const {
       match: {
@@ -31,6 +39,10 @@ export class DictionaryOverview extends Component {
     const url = `/${ownerType}/${owner}/${type}/${name}/`;
     this.props.fetchDictionary(url);
   }
+
+  handleHide = () => this.setState({ showEditModal: false });
+  handleShow = () => this.setState({ showEditModal: true });
+
   render() {
     const { loader } = this.props;
     return (
@@ -42,6 +54,12 @@ export class DictionaryOverview extends Component {
       ) :
           <div className="dashboard-wrapper">
             <DictionaryDetailCard
+              dictionary={this.props.dictionary}
+              showEditModal={this.handleShow}
+            />
+            <EditDictionary
+              show={this.state.showEditModal}
+              handleHide={this.handleHide}
               dictionary={this.props.dictionary}
             />
           </div>
