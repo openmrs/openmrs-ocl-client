@@ -9,7 +9,7 @@ import '../styles/index.css';
 
 export class Login extends Component {
   state = {
-    token: '',
+    password: '',
     username: '',
   };
 
@@ -20,8 +20,8 @@ export class Login extends Component {
 
   handleLogin = (event) => {
     event.preventDefault();
-    const { username, token } = this.state;
-    this.props.loginAction({ username, token });
+    const { username, password } = this.state;
+    this.props.loginAction({ username, password });
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -29,7 +29,7 @@ export class Login extends Component {
     if (loading) return;
 
     if (loggedIn) {
-      notify.show(`loggedin successfully as ${this.state.username}`, 'success', 3000);
+      notify.show(`Logged in successfully as ${this.state.username}`, 'success', 3000);
       this.props.history.push('/dashboard');
       return;
     }
@@ -40,7 +40,7 @@ export class Login extends Component {
   }
 
   render() {
-    const { username, token } = this.state;
+    const { username, password } = this.state;
     const { loading } = this.props;
     const buttonTitle = loading ? 'Signing in...' : 'Sign in';
     return (
@@ -53,7 +53,7 @@ export class Login extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="OCL username"
+                  placeholder="OCL Username"
                   name="username"
                   id="username"
                   required
@@ -62,23 +62,18 @@ export class Login extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="token">Token</label>
+                <label htmlFor="password">Password</label>
                 <input
-                  type="text"
-                  id="token"
+                  type="password"
+                  id="password"
                   className="form-control"
-                  placeholder="OCL token"
-                  name="token"
+                  placeholder="OCL Password"
+                  name="password"
                   required
-                  value={token.trim()}
+                  value={password.trim()}
                   onChange={this.handleInput}
                 />
-                <small id="tokenHelp" className="form-text text-muted">
-                  Copy your token from the{' '}
-                  <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
-                    traditional ocl
-                  </a>
-                </small>
+
               </div>
               <SubmitButton buttonTitle={buttonTitle} disable={loading} />
               <div className="form-group text-center pt-3">
