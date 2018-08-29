@@ -6,6 +6,7 @@ import {
   isFetching,
   dictionaryIsSuccess,
   isErrored,
+  dictionaryConceptsIsSuccess,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
 import api from './../../api';
@@ -71,13 +72,28 @@ export const searchDictionaries = searchItem => (dispatch) => {
     });
 };
 
-export const fetchDictionary = data => (dispatch) =>{
+export const fetchDictionary = data => (dispatch) => {
   dispatch(isFetching(true));
   return api.dictionaries
     .fetchDictionary(data)
     .then(
-      (payload) =>{
+      (payload) => {
       dispatch(dictionaryIsSuccess(payload));
       dispatch(isFetching(false));
     });
   };
+
+export const fetchDictionaryConcepts = data => (dispatch) => {
+  dispatch(isFetching(true));
+  return api.dictionaries
+    .fetchDictionaryConcepts(data)
+    .then(
+      (payload) => {
+      dispatch(dictionaryConceptsIsSuccess(payload));
+      dispatch(isFetching(false));
+      })
+      .catch((error) => {
+        dispatch(isErrored(error.response.data));
+        dispatch(isFetching(false));
+      });
+};

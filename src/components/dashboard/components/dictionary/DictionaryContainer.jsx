@@ -5,7 +5,7 @@ import '../../styles/index.css';
 import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
-import { fetchDictionary } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchDictionary, fetchDictionaryConcepts } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -17,8 +17,10 @@ export class DictionaryOverview extends Component {
     dictionary: propTypes.arrayOf(propTypes.shape({
       dictionaryName: propTypes.string,
     })).isRequired,
+    dictionaryConcepts: propTypes.array.isRequired,
     fetchDictionary: propTypes.func.isRequired,
     loader: propTypes.bool.isRequired,
+    fetchDictionaryConcepts: propTypes.func.isRequired,
   };
   componentDidMount() {
     const {
@@ -29,10 +31,18 @@ export class DictionaryOverview extends Component {
       },
     } = this.props;
     const url = `/${ownerType}/${owner}/${type}/${name}/`;
+    const conceptsUrl = `/users/${owner}/collections/${name}/concepts/?q=&limit=0&page=1&verbose=true`;
     this.props.fetchDictionary(url);
+    this.props.fetchDictionaryConcepts(conceptsUrl);
   }
   render() {
     const { loader } = this.props;
+    const cielConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner === 'CIEL').length.toString();
+    const customConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner !== 'CIEL').length.toString();
+    const diagnosisConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'diagnosis').length.toString();
+    const procedureConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'procedure').length.toString();
+    const otherConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class !== 'diagnosis' && concept.concept_class !== 'procedure').length.toString();
+
     return (
       <div className="dashboard-wrapper">
         {loader ? (
@@ -43,6 +53,12 @@ export class DictionaryOverview extends Component {
           <div className="dashboard-wrapper">
             <DictionaryDetailCard
               dictionary={this.props.dictionary}
+              cielConcepts={cielConcepts}
+              customConcepts={customConcepts}
+              diagnosisConcepts={diagnosisConcepts}
+              procedureConcepts={procedureConcepts}
+              otherConcepts={otherConcepts}
+
             />
           </div>
       }
@@ -52,6 +68,13 @@ export class DictionaryOverview extends Component {
 }
 export const mapStateToProps = state => ({
   dictionary: state.dictionaries.dictionary,
+  dictionaryConcepts: state.concepts.dictionaryConcepts,
   loader: state.dictionaries.loading,
 });
-export default connect(mapStateToProps, { fetchDictionary })(DictionaryOverview);
+export default connect(
+  mapStateToProps,
+  {
+    fetchDictionaryConcepts,
+    fetchDictionary,
+  },
+)(DictionaryOverview);
