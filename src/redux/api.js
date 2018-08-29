@@ -33,6 +33,11 @@ export default {
       instance
         .get(`${data}`)
         .then(response => response.data),
+
+    fetchDictionaryConcepts: (data) =>
+      instance
+        .get(`${data}`)
+        .then(response => response.data),
   },
   organizations: {
     fetchOrganizations: () =>

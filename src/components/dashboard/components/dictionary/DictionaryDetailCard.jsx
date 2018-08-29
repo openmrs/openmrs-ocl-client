@@ -12,7 +12,6 @@ const DictionaryDetailCard = (dictionary) => {
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
-
   return (<div className="dictionaryDetails">
     <h1 id="headingDict" align="left">{ name } Dictionary</h1>
     <hr />
@@ -37,11 +36,12 @@ const DictionaryDetailCard = (dictionary) => {
         <fieldset>
           <legend>Concepts (HEAD version)</legend>
           <p className="paragraph">Total Concepts: { active_concepts }</p>
-          <p className="points">Custom Concepts: 5</p>
-          <p className="points">From CIEL: 1229</p>
+          <p className="points">Custom Concepts: {dictionary.customConcepts}</p>
+          <p className="points">From CIEL: {dictionary.cielConcepts}</p>
           <p>By class:</p>
-          <p className="points">Diagnoses: 1000</p>
-          <p className="points">Procedure: 124</p>
+          <p className="points">Diagnosis: {dictionary.diagnosisConcepts}</p>
+          <p className="points">Procedure: {dictionary.procedureConcepts}</p>
+          <p className="points">Others: {dictionary.otherConcepts}</p>
           <Link
             className="btn btn-secondary"
             id="conceptB"

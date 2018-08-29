@@ -5,7 +5,7 @@ import instance from '../../../config/axiosConfig';
 import {
   FETCHING_ORGANIZATIONS,
   ADDING_DICTIONARY, FETCHING_DICTIONARIES, IS_FETCHING, CLEAR_DICTIONARIES,
-  FETCHING_DICTIONARY, CLEAR_DICTIONARY,
+  FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCH_DICTIONARY_CONCEPT,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -19,8 +19,10 @@ import {
   fetchDictionaries,
   searchDictionaries,
   fetchDictionary,
+  fetchDictionaryConcepts,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
+import concepts from '../../__mocks__/concepts';
 
 const mockStore = configureStore([thunk]);
 
@@ -112,6 +114,25 @@ describe('Test suite for dictionary actions', () => {
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchDictionary('/users/chriskala/collections/over/')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should return concepts in a dictionary', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchDictionaryConcepts('/users/chriskala/collections/over/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

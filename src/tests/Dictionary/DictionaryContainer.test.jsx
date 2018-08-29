@@ -16,6 +16,7 @@ describe('DictionaryOverview', () => {
   it('should render with dictionary data', () => {
     const props = {
       dictionary: [dictionary],
+      dictionaryConcepts: [dictionary],
       match: {
         params: {
           ownerType: 'testing',
@@ -25,6 +26,7 @@ describe('DictionaryOverview', () => {
         },
       },
       fetchDictionary: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>);
     expect(wrapper.find('#headingDict')).toHaveLength(1);
