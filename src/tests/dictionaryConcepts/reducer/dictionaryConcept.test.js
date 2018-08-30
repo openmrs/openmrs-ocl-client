@@ -1,6 +1,6 @@
 import deepFreeze from 'deep-freeze';
 import reducer from '../../../redux/reducers/ConceptReducers';
-import concepts, { newConcept } from '../../__mocks__/concepts';
+import concepts, { newConcept, existingConcept } from '../../__mocks__/concepts';
 import {
   FETCH_DICTIONARY_CONCEPT,
   FILTER_BY_SOURCES,
@@ -15,6 +15,13 @@ import {
   ADD_CONCEPT_TO_DICTIONARY,
   FETCH_NEXT_CONCEPTS,
   TOTAL_CONCEPT_COUNT,
+  FETCH_EXISTING_CONCEPT,
+  FETCH_EXISTING_CONCEPT_ERROR,
+  EDIT_CONCEPT_ADD_DESCRIPTION,
+  EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
+  CLEAR_PREVIOUS_CONCEPT,
+  EDIT_CONCEPT_CREATE_NEW_NAMES,
+  EDIT_CONCEPT_REMOVE_ONE_NAME,
 } from '../../../redux/actions/types';
 
 let state;
@@ -36,6 +43,14 @@ beforeEach(() => {
     description: ['456'],
     newConcept: {},
     addConceptToDictionary: [],
+    existingConcept: {
+      descriptions: [{
+        uuid: '1234',
+      }],
+      names: [{
+        uuid: '5678',
+      }],
+    },
   };
   action = {};
 });
@@ -120,7 +135,7 @@ describe('Test suite for single dictionary concepts', () => {
 
     expect(reducer(state, action)).toEqual({
       ...state,
-      newName: ['123', '456'],
+      newName: ['456', '123'],
     });
   });
   it('should handle REMOVE_ONE_NAME', () => {
@@ -148,7 +163,7 @@ describe('Test suite for single dictionary concepts', () => {
 
     expect(reducer(state, action)).toEqual({
       ...state,
-      description: ['123', '456'],
+      description: ['456', '123'],
     });
   });
   it('should handle REMOVE_ONE_DESCRIPTION', () => {
@@ -235,6 +250,122 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       totalConceptCount: action.payload,
+    });
+  });
+  it('should handle FETCH_EXISTING_CONCEPT', () => {
+    action = {
+      type: FETCH_EXISTING_CONCEPT,
+      payload: existingConcept,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: action.payload,
+    });
+  });
+  it('should handle EDIT_CONCEPT_ADD_DESCRIPTION', () => {
+    action = {
+      type: EDIT_CONCEPT_ADD_DESCRIPTION,
+      payload: '1234-abcd-2345-cfgh',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: {
+        ...state.existingConcept,
+        descriptions: [
+          ...state.existingConcept.descriptions,
+          { uuid: action.payload },
+        ],
+      },
+    });
+  });
+  it('should handle FETCH_EXISTING_CONCEPT_ERROR', () => {
+    action = {
+      type: FETCH_EXISTING_CONCEPT_ERROR,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+    });
+  });
+  it('should handle EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION', () => {
+    action = {
+      type: EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
+      payload: '1234',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: {
+        ...state.existingConcept,
+        descriptions: [],
+      },
+    });
+  });
+  it('should handle CLEAR_PREVIOUS_CONCEPT', () => {
+    action = {
+      type: CLEAR_PREVIOUS_CONCEPT,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: {
+        descriptions: [],
+        names: [],
+      },
+    });
+  });
+  it('should handle EDIT_CONCEPT_CREATE_NEW_NAMES', () => {
+    action = {
+      type: EDIT_CONCEPT_CREATE_NEW_NAMES,
+      payload: 'wedfr-abcd-2345-cfgh',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: {
+        ...state.existingConcept,
+        names: [
+          ...state.existingConcept.names,
+          { uuid: action.payload },
+        ],
+      },
+    });
+  });
+  it('should handle EDIT_CONCEPT_REMOVE_ONE_NAME', () => {
+    action = {
+      type: EDIT_CONCEPT_REMOVE_ONE_NAME,
+      payload: '5678',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      existingConcept: {
+        ...state.existingConcept,
+        names: [],
+      },
     });
   });
 });

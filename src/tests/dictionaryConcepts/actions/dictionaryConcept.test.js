@@ -18,6 +18,14 @@ import {
   ADD_CONCEPT_TO_DICTIONARY,
   TOTAL_CONCEPT_COUNT,
   FETCH_NEXT_CONCEPTS,
+  FETCH_EXISTING_CONCEPT,
+  EDIT_CONCEPT_ADD_DESCRIPTION,
+  EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
+  CLEAR_PREVIOUS_CONCEPT,
+  EDIT_CONCEPT_CREATE_NEW_NAMES,
+  EDIT_CONCEPT_REMOVE_ONE_NAME,
+  UPDATE_CONCEPT,
+  FETCH_EXISTING_CONCEPT_ERROR,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -31,12 +39,20 @@ import {
   createNewConcept,
   addConceptToDictionary,
   paginateConcepts,
+  fetchExistingConcept,
+  addDescriptionForEditConcept,
+  removeDescriptionForEditConcept,
+  clearPreviousConcept,
+  createNewNameForEditConcept,
+  removeNameForEditConcept,
+  updateConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import concepts, {
   mockConceptStore,
   newConcept,
   newConceptData,
   multipleConceptsMockStore,
+  existingConcept,
 } from '../../__mocks__/concepts';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
@@ -175,7 +191,188 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle FETCH_EXISTING_CONCEPT', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: existingConcept,
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 });
+
+
+describe('Testing Edit concept actions ', () => {
+  beforeEach(() => {
+    moxios.install(instance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+  it('should handle FETCH_EXISTING_CONCEPT', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: existingConcept,
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle EDIT_CONCEPT_ADD_DESCRIPTION', () => {
+    const expectedActions = [
+      { type: EDIT_CONCEPT_ADD_DESCRIPTION, payload: 1 },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    store.dispatch(addDescriptionForEditConcept());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION', () => {
+    const expectedActions = [
+      { type: EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION, payload: 1 },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    store.dispatch(removeDescriptionForEditConcept(1));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle CLEAR_PREVIOUS_CONCEPT', () => {
+    const expectedActions = [
+      { type: CLEAR_PREVIOUS_CONCEPT },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    store.dispatch(clearPreviousConcept());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle EDIT_CONCEPT_CREATE_NEW_NAMES', () => {
+    const expectedActions = [
+      { type: EDIT_CONCEPT_CREATE_NEW_NAMES, payload: 1 },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    store.dispatch(createNewNameForEditConcept());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle EDIT_CONCEPT_REMOVE_ONE_NAME', () => {
+    const expectedActions = [
+      { type: EDIT_CONCEPT_REMOVE_ONE_NAME, payload: 1 },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    store.dispatch(removeNameForEditConcept(1));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle UPDATE_CONCEPT', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: existingConcept,
+      });
+    });
+
+    const history = {
+      goBack: () => '',
+    };
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: UPDATE_CONCEPT, payload: existingConcept },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle error in FETCH_EXISTING_CONCEPT_ERROR for update concept', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: 'bad request',
+      });
+    });
+
+    const history = {
+      goBack: () => '',
+    };
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_EXISTING_CONCEPT_ERROR, payload: 'bad request' },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle error in FETCH_EXISTING_CONCEPT_ERROR for fetching exing concepts', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: 'bad request',
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_EXISTING_CONCEPT_ERROR, payload: 'bad request' },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+});
+
 
 describe('test for search filter by class', () => {
   const store = mockStore(mockConceptStore);

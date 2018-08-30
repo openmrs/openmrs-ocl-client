@@ -14,13 +14,21 @@ const CreateConceptTable = props => (
       </tr>
     </thead>
     <tbody>
-      {props.nameRows.map(newRow => <ConceptNameRows newRow={newRow} key={newRow} {...props} />).reverse()}
+      {props.existingConcept ? props.existingConcept.names.map(newRow => (
+        <ConceptNameRows
+          newRow={newRow}
+          key={newRow.uuid}
+          {...props}
+        />))
+       : props.nameRows.map(newRow => <ConceptNameRows newRow={newRow} key={newRow} {...props} />)
+      }
     </tbody>
   </table>
 );
 
 CreateConceptTable.propTypes = {
   nameRows: PropTypes.array.isRequired,
+  existingConcept: PropTypes.object.isRequired,
 };
 
 export default CreateConceptTable;

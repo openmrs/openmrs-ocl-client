@@ -12,12 +12,12 @@ class DescriptionRow extends Component {
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.string.isRequired,
+    existingConcept: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
-    const defaultLocale = locale.find((currentLocale) => {
-      return currentLocale.value === props.pathName.language;
-    });
+    const defaultLocale = locale.find(currentLocale =>
+      currentLocale.value === props.pathName.language);
     this.state = {
       id: this.props.newRow,
       locale: defaultLocale.value,
@@ -27,10 +27,26 @@ class DescriptionRow extends Component {
     autoBind(this);
   }
 
+  componentDidMount() {
+    if (this.props.existingConcept) {
+      this.updateState();
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState !== this.state) {
       this.sendToTopComponent();
     }
+  }
+
+  updateState() {
+    const { newRow } = this.props;
+    this.setState({
+      ...this.state,
+      uuid: newRow.uuid,
+      locale: newRow.locale || 'en',
+      description: newRow.description,
+    });
   }
 
   handleChange(event) {
@@ -44,6 +60,7 @@ class DescriptionRow extends Component {
   handleNameLocale(selectedOptions) {
     this.setState({
       locale_full: selectedOptions,
+      locale: selectedOptions.value,
     });
     this.sendToTopComponent();
   }
@@ -64,11 +81,12 @@ class DescriptionRow extends Component {
           <textarea
             type="text"
             rows="3"
-            className="form-control"
+            className="form-control concept-description"
             onChange={this.handleChange}
             name="description"
             value={this.state.description}
             id="concept-description"
+            required
           />
         </td>
         <th scope="row" className="concept-language">

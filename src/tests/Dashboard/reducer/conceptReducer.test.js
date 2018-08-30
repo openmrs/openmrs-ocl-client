@@ -20,6 +20,10 @@ const initialState = {
   addConceptToDictionary: [],
   paginatedConcepts: [],
   totalConceptCount: 0,
+  existingConcept: {
+    descriptions: [],
+    names: [],
+  },
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {

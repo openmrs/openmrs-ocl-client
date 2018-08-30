@@ -130,7 +130,7 @@ const CreateConceptForm = props => (
           </button>
         </Link>
         <button className="btn btn-sm bg-blue col-2" type="submit">
-          Create
+          {props.isEditConcept ? 'Update' : 'Create'}
         </button>
       </div>
     </div>
@@ -151,5 +151,7 @@ CreateConceptForm.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   editable: PropTypes.bool.isRequired,
+  isEditConcept: PropTypes.bool.isRequired,
+  existingConcept: PropTypes.object.isRequired,
 };
 export default CreateConceptForm;
