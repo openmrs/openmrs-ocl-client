@@ -217,7 +217,7 @@ nav {
 .card-container {
   position: relative;
   font-family: 'Roboto', sans-serif;
-  min-height: 7rem;
+  height: 10rem;
   /* min-width: 20rem; */
   border-radius: 0.2rem 0.2rem 0 0;
   background: white;

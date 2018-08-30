@@ -19,6 +19,7 @@ export const FETCH_DICTIONARY_CONCEPT = '[concepts] fetch concepts of one dictio
 export const CLEAR_DICTIONARIES = '[dictionaries] clear dictionaries';
 export const FETCHING_DICTIONARY = '[dictionary] fetch dictionary';
 export const CLEAR_DICTIONARY = '[dictionary] clear dictionary';
+export const FETCHING_VERSIONS = '[dictionary] fetch versions of a dictionary';
 
 export const FILTER_BY_SOURCES = '[concepts] filter concepts by sources';
 export const FILTER_BY_CLASS = '[concepts] filter concepts by class';

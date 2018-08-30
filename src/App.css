@@ -78,3 +78,12 @@
 .card-link {
   cursor: pointer;
 }
+.ver-table{
+  color:#3498db;
+  margin: auto;
+}
+
+.version-msg{
+  text-align: center;
+  color: #0d1699;
+}
