@@ -1,17 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/dictionary-modal.css';
+import DictionaryVersionsTable from './DictionaryVersionsTable';
 
 const DictionaryDetailCard = (dictionary) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
       owner_url, short_code, default_locale,
-    },
+    }, versions,
   } = dictionary;
+
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
+
+  const releasedVersions = versions.filter(version => version.released === true);
+
   return (<div className="dictionaryDetails">
     <h1 id="headingDict" align="left">{ name } Dictionary</h1>
     <hr />
@@ -63,6 +68,7 @@ const DictionaryDetailCard = (dictionary) => {
       </form>
     </div>
     <h3 align="left">Released Version</h3>
+
     <div className="card" id="versionCard">
       <table>
         <tr>
@@ -71,24 +77,11 @@ const DictionaryDetailCard = (dictionary) => {
           <th>Released</th>
           <th>Actions</th>
         </tr>
-        <tr>
-          <td>3</td>
-          <td>1-Mar-2018</td>
-          <td>Yes</td>
-          <td><a href="a">Browse in OCL</a> <a href="#">Download</a> <a href="a">Subscription URL</a></td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td>1-Feb-2018</td>
-          <td>Yes</td>
-          <td><a href="a">Browse in OCL</a> <a href="#">Download</a> <a href="a">Subscription URL</a></td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>1-Jan-2018</td>
-          <td>Yes</td>
-          <td><a href="a">Browse in OCL</a> <a href="#">Download</a> <a href="a">Subscription URL</a></td>
-        </tr>
+
+        {releasedVersions.length >= 1 ?
+          releasedVersions.map(version => (
+            <DictionaryVersionsTable version={version} key={version.id} />
+    )) : <tr><td className="version-msg" colSpan="4">No released Versions</td></tr> }
       </table>
     </div>
   </div>

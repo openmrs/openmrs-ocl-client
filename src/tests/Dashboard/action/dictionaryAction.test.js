@@ -5,7 +5,8 @@ import instance from '../../../config/axiosConfig';
 import {
   FETCHING_ORGANIZATIONS,
   ADDING_DICTIONARY, FETCHING_DICTIONARIES, IS_FETCHING, CLEAR_DICTIONARIES,
-  FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCH_DICTIONARY_CONCEPT,
+  FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCHING_VERSIONS, FETCH_DICTIONARY_CONCEPT,
+
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -19,9 +20,11 @@ import {
   fetchDictionaries,
   searchDictionaries,
   fetchDictionary,
+  fetchVersions,
   fetchDictionaryConcepts,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
+import versions from '../../__mocks__/versions';
 import concepts from '../../__mocks__/concepts';
 
 const mockStore = configureStore([thunk]);
@@ -204,5 +207,22 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
   it('should show data when isSuccess is called', () => {
     expect(isSuccess(response)).toEqual(responseData);
     expect(isSuccess(response)).toBeTruthy();
+  });
+
+  it('should return a dictionary version', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [versions],
+      });
+    });
+    const expectedActions = [
+      { type: FETCHING_VERSIONS, payload: [versions] },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchVersions('/users/chriskala/collections/over/versions/')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 });

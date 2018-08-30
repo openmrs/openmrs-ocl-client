@@ -1,6 +1,8 @@
-import { FETCHING_DICTIONARIES, IS_FETCHING, FETCHING_DICTIONARY, CLEAR_DICTIONARY } from '../actions/types';
+import { FETCHING_DICTIONARIES, IS_FETCHING, FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCHING_VERSIONS } from '../actions/types';
 
-const initalState = { dictionaries: [], loading: false, dictionary: {} };
+const initalState = {
+  versions: [], dictionaries: [], loading: false, dictionary: {},
+};
 
 export default (state = initalState, action) => {
   switch (action.type) {
@@ -13,6 +15,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         loading: action.payload,
+      };
+    case FETCHING_VERSIONS:
+      return {
+        ...state,
+        versions: action.payload,
       };
     case FETCHING_DICTIONARY:
       return {
