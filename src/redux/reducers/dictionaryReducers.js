@@ -1,4 +1,11 @@
-import { FETCHING_DICTIONARIES, IS_FETCHING, FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCHING_VERSIONS } from '../actions/types';
+import {
+  FETCHING_DICTIONARIES,
+  IS_FETCHING,
+  FETCHING_DICTIONARY,
+  CLEAR_DICTIONARY,
+  FETCHING_VERSIONS,
+  EDIT_DICTIONARY_SUCCESS,
+} from '../actions/types';
 
 const initalState = {
   versions: [], dictionaries: [], loading: false, dictionary: {},
@@ -30,6 +37,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         dictionary: {},
+      };
+    case EDIT_DICTIONARY_SUCCESS:
+      return {
+        ...state,
+        dictionary: action.payload,
       };
     default:
       return state;

@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './styles/dictionary-modal.css';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 
-const DictionaryDetailCard = (dictionary) => {
+const DictionaryDetailCard = (props) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
       owner_url, short_code, default_locale,
-    }, versions,
-  } = dictionary;
-
+    }, versions, showEditModal, customConcepts, cielConcepts,
+    diagnosisConcepts, procedureConcepts, otherConcepts,
+  } = props;
+  const username = localStorage.getItem('username');
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
@@ -30,23 +32,26 @@ const DictionaryDetailCard = (dictionary) => {
           <p className="paragraph">Owner: { owner }({ owner_type })</p>
           <p className="paragraph">Created On: { (new Date(created_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
           <p className="paragraph">Updated On: { (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS) }</p>
-          <Link
-            className="btn btn-secondary"
-            id="editB"
-            to="#"
-          >
-            { public_access }
-          </Link>
+          { owner === username &&
+            <Link
+              className="btn btn-secondary"
+              id="editB"
+              to="#"
+              onClick={showEditModal}
+            >
+            Edit
+            </Link>
+          }
         </fieldset>
         <fieldset>
           <legend>Concepts (HEAD version)</legend>
           <p className="paragraph">Total Concepts: { active_concepts }</p>
-          <p className="points">Custom Concepts: {dictionary.customConcepts}</p>
-          <p className="points">From CIEL: {dictionary.cielConcepts}</p>
+          <p className="points">Custom Concepts: {customConcepts}</p>
+          <p className="points">From CIEL: {cielConcepts}</p>
           <p>By class:</p>
-          <p className="points">Diagnosis: {dictionary.diagnosisConcepts}</p>
-          <p className="points">Procedure: {dictionary.procedureConcepts}</p>
-          <p className="points">Others: {dictionary.otherConcepts}</p>
+          <p className="points">Diagnosis: {diagnosisConcepts}</p>
+          <p className="points">Procedure: {procedureConcepts}</p>
+          <p className="points">Others: {otherConcepts}</p>
           <Link
             className="btn btn-secondary"
             id="conceptB"
@@ -86,6 +91,17 @@ const DictionaryDetailCard = (dictionary) => {
     </div>
   </div>
   );
+};
+
+DictionaryDetailCard.propTypes = {
+  dictionary: PropTypes.object.isRequired,
+  showEditModal: PropTypes.object.isRequired,
+  customConcepts: PropTypes.string.isRequired,
+  cielConcepts: PropTypes.string.isRequired,
+  diagnosisConcepts: PropTypes.string.isRequired,
+  procedureConcepts: PropTypes.string.isRequired,
+  otherConcepts: PropTypes.string.isRequired,
+  versions: PropTypes.array.isRequired,
 };
 
 export default DictionaryDetailCard;
