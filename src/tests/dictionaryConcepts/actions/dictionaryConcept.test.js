@@ -214,7 +214,6 @@ describe('Test suite for dictionary concept actions', () => {
   });
 });
 
-
 describe('Testing Edit concept actions ', () => {
   beforeEach(() => {
     moxios.install(instance);

@@ -235,3 +235,4 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
 export const clearPreviousConcept = () => (dispatch) => {
   dispatch({ type: CLEAR_PREVIOUS_CONCEPT });
 };
+

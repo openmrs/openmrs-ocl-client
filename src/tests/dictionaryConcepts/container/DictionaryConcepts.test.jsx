@@ -10,11 +10,12 @@ import {
 import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 
 describe('Test suite for dictionary concepts components', () => {
-  it('should render without breaking', () => {
+  it('should render component without breaking', () => {
     const props = {
       match: {
         params: {
           typeName: 'dev-col',
+          type: 'orgs',
           collectionName: 'dev-col',
           dictionaryName: 'dev-col',
         },
@@ -31,6 +32,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptsCount: 1,
       filterBySource: jest.fn(),
       filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
     };
     const wrapper = mount(<Router>
       <DictionaryConcepts {...props} />
@@ -125,6 +127,9 @@ describe('Test suite for dictionary concepts components', () => {
       },
       dictionaries: {
         dictionary: [],
+      },
+      user: {
+        userIsMember: false,
       },
     };
     expect(mapStateToProps(initialState).concepts).toEqual([]);

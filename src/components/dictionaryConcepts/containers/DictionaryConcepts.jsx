@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import '../style/index.css';
-
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
@@ -11,13 +10,13 @@ import SearchBar from '../components/SearchBar';
 import ConceptTable from '../components/ConceptTable';
 import { conceptsProps } from '../proptypes';
 import { getUsername } from '../components/helperFunction';
-
 import {
   fetchDictionaryConcepts,
   filterBySource,
   filterByClass,
   paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
   static propTypes = {
@@ -41,6 +40,8 @@ export class DictionaryConcepts extends Component {
     filterByClass: PropTypes.func.isRequired,
     paginateConcepts: PropTypes.func.isRequired,
     totalConceptCount: PropTypes.number.isRequired,
+    fetchMemberStatus: PropTypes.func.isRequired,
+    userIsMember: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -56,6 +57,7 @@ export class DictionaryConcepts extends Component {
 
   componentDidMount() {
     this.fetchConcepts();
+    this.checkMembershipStatus(getUsername());
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -141,18 +143,37 @@ export class DictionaryConcepts extends Component {
     }));
   }
 
+  checkMembershipStatus(username) {
+    const {
+      match: {
+        params: {
+          type, typeName,
+        },
+      },
+    } = this.props;
+    if (type === 'orgs') {
+      const url = `/${type}/${typeName}/members/${username}/`;
+      this.props.fetchMemberStatus(url);
+    }
+  }
+
   render() {
     const {
       match: {
-        params: { typeName },
+        params: { type, typeName },
       },
       location: { pathname },
       concepts,
       filteredClass,
       filteredSources,
       loading,
+      userIsMember,
     } = this.props;
-    const username = typeName === getUsername();
+    const hasPermission = typeName === getUsername() || userIsMember;
+    const org = {
+      name: (type === 'orgs') ? typeName : '',
+      userIsMember,
+    };
     const {
       conceptsCount, searchInput, conceptOffset, conceptLimit,
     } = this.state;
@@ -164,7 +185,7 @@ export class DictionaryConcepts extends Component {
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
           </div>
-          {username && <ConceptDropdown pathName={pathname} />}
+          {hasPermission && <ConceptDropdown pathName={pathname} />}
         </section>
 
         <section className="row mt-3">
@@ -185,7 +206,11 @@ export class DictionaryConcepts extends Component {
               next={this.fetchNextConcepts}
               prev={this.fetchPrevConcepts}
             />
-            <ConceptTable concepts={concepts} loading={loading} />
+            <ConceptTable
+              concepts={concepts}
+              loading={loading}
+              org={org}
+            />
           </div>
         </section>
       </div>
@@ -201,6 +226,7 @@ export const mapStateToProps = state => ({
   loading: state.concepts.loading,
   filteredList: state.concepts.filteredList,
   dictionaries: state.dictionaries.dictionary,
+  userIsMember: state.user.userIsMember,
 });
 
 export default connect(
@@ -210,5 +236,6 @@ export default connect(
     filterBySource,
     filterByClass,
     paginateConcepts,
+    fetchMemberStatus,
   },
 )(DictionaryConcepts);

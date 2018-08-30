@@ -5,7 +5,7 @@ import Loader from '../../Loader';
 import RenderTable from './RenderTable';
 import { conceptsProps } from '../proptypes';
 
-const ConceptTable = ({ concepts, loading }) => {
+const ConceptTable = ({ concepts, loading, org }) => {
   if (loading) {
     return (
       <RenderTable
@@ -33,7 +33,9 @@ const ConceptTable = ({ concepts, loading }) => {
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody>{concepts.map(concept => <TableItem {...concept} key={concept.version} />)}</tbody>
+          <tbody>
+            {concepts.map(concept => <TableItem {...concept} key={concept.version} org={org} />)}
+          </tbody>
         </table>
       </div>
     );
@@ -54,6 +56,7 @@ const ConceptTable = ({ concepts, loading }) => {
 ConceptTable.propTypes = {
   concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
   loading: PropTypes.bool.isRequired,
+  org: PropTypes.object.isRequired,
 };
 
 export default ConceptTable;
