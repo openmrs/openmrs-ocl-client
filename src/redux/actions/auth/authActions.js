@@ -4,6 +4,7 @@ import { login, loginFailed, loginStarted, logout } from './authActionCreators';
 const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
 const loginAction = ({ username, password }) => async (dispatch) => {
+  let response;
   try {
     const data = {
       username,
@@ -15,20 +16,18 @@ const loginAction = ({ username, password }) => async (dispatch) => {
     const { token } = loginResponse.data;
     const headers = { Authorization: `Token ${token}` };
     dispatch(loginStarted());
-
     const url = `${BASE_URL}/users/${username}/`;
-    const response = await axios.post(url, null, { headers });
-    dispatch(login(response));
-
+    response = await axios.post(url, null, { headers });
     localStorage.setItem('token', `Token ${token}`);
     localStorage.setItem('username', `${username}`);
   } catch (error) {
     if (error.response) {
-      dispatch(loginFailed(error.response.data.detail));
+      return dispatch(loginFailed(error.response.data.detail));
     } else if (error.request) {
-      dispatch(loginFailed("Request can't be made"));
+      return dispatch(loginFailed('Request cannot be made'));
     }
   }
+  return dispatch(login(response));
 };
 
 const logoutAction = () => (dispatch) => {

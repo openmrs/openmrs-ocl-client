@@ -215,18 +215,16 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
   try {
     const response = await instance.put(url, data);
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
-    notify.show('concept successfully updated', 'success', 3000);
+    notify.show('Concept successfully updated', 'success', 3000);
   } catch (error) {
     if (error.response) {
-      notify.show(
-        `Could not update concept details, 
+      const { response } = error;
+      notify.show(`Could not update concept details,
       ${
-  Object.values(error.response.data).toString()
+  Object.keys(response.data).map(e => response.data[e]).toString()
 } for ${
   Object.keys(error.response.data).toString()
-}`,
-        'error', 3000,
-      );
+}`, 'error', 3000);
       dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
       return dispatch(isFetching(false));
     }

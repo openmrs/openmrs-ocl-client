@@ -12,7 +12,8 @@ const DescriptionTable = props => (
       </tr>
     </thead>
     <tbody>
-      {props.existingConcept ? props.existingConcept.descriptions.map(newRow => (
+      {props.existingConcept && props.existingConcept.descriptions
+      ? props.existingConcept.descriptions.map(newRow => (
         <DescriptionRow
           newRow={newRow}
           key={newRow.uuid}
