@@ -3,10 +3,16 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import instance from '../../../config/axiosConfig';
 import {
+  ADDING_DICTIONARY,
+  FETCHING_DICTIONARIES,
+  IS_FETCHING,
+  CLEAR_DICTIONARIES,
+  FETCHING_DICTIONARY,
+  CLEAR_DICTIONARY,
+  EDIT_DICTIONARY_SUCCESS,
+  FETCHING_VERSIONS,
+  FETCH_DICTIONARY_CONCEPT,
   FETCHING_ORGANIZATIONS,
-  ADDING_DICTIONARY, FETCHING_DICTIONARIES, IS_FETCHING, CLEAR_DICTIONARIES,
-  FETCHING_DICTIONARY, CLEAR_DICTIONARY, FETCHING_VERSIONS, FETCH_DICTIONARY_CONCEPT,
-
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -22,10 +28,13 @@ import {
   fetchDictionary,
   fetchVersions,
   fetchDictionaryConcepts,
+  editDictionary,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
 import concepts from '../../__mocks__/concepts';
+
+jest.mock('react-notify-toast');
 
 const mockStore = configureStore([thunk]);
 
@@ -179,6 +188,43 @@ describe('Test suite for dictionary actions', () => {
   });
   it('should return action type and payload', () => {
     expect(clearDictionary()).toEqual(responseDict);
+  });
+
+  it('should dispatch EDIT_DICTIONARY_SUCCESS on success response', () => {
+    const dictionary = dictionaries;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: dictionary,
+      });
+    });
+    const expectedActions = [
+      { type: EDIT_DICTIONARY_SUCCESS, payload: dictionary },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should dispatch nothing on edit dictionary failure response', () => {
+    const dictionary = dictionaries;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 400,
+        response: {
+          data: {
+            __all__: ['Bad Request'],
+          },
+        },
+      });
+    });
+    const expectedActions = [];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 });
 

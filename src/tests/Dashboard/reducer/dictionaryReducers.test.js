@@ -1,7 +1,15 @@
 import reducer from '../../../redux/reducers/dictionaryReducer';
 import dictionaryreducer from '../../../redux/reducers/dictionaryReducers';
 import userReducer from '../../../redux/reducers/user/index';
-import { FETCHING_ORGANIZATIONS, FETCHING_DICTIONARIES, IS_FETCHING, ADDING_DICTIONARY, FETCHING_DICTIONARY, FETCHING_VERSIONS } from '../../../redux/actions/types';
+import {
+  FETCHING_ORGANIZATIONS,
+  FETCHING_DICTIONARIES,
+  IS_FETCHING, ADDING_DICTIONARY,
+  FETCHING_DICTIONARY,
+  FETCHING_VERSIONS,
+  CLEAR_DICTIONARY,
+  EDIT_DICTIONARY_SUCCESS,
+} from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
 
@@ -29,6 +37,8 @@ const state = {
   dictionary: {},
   loading: false,
 };
+const dictionary = dictionaries;
+
 describe('Test suite for dictionaries reducers', () => {
   it('should return initial state', () => {
     expect(dictionaryreducer(undefined, {})).toEqual(state);
@@ -62,6 +72,32 @@ describe('Test suite for dictionaries reducers', () => {
       },
     )).toEqual({ dictionary: [dictionaries] });
   });
+  it('should clear a dictionary', () => {
+    expect(dictionaryreducer(
+      { dictionary },
+      {
+        type: CLEAR_DICTIONARY,
+      },
+    )).toEqual({ dictionary: {} });
+  });
+  it('should return new dictionary on edit success', () => {
+    expect(dictionaryreducer(
+      { dictionary: [] },
+      {
+        type: EDIT_DICTIONARY_SUCCESS,
+        payload: dictionary,
+      },
+    )).toEqual({ dictionary });
+  });
+});
+it('should handle FETCHING_VERSIONS', () => {
+  expect(dictionaryreducer(
+    { versions: [] },
+    {
+      type: FETCHING_VERSIONS,
+      payload: [versions],
+    },
+  )).toEqual({ versions: [versions] });
 });
 it('should handle FETCHING_VERSIONS', () => {
   expect(dictionaryreducer(

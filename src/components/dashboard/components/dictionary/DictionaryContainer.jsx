@@ -5,8 +5,8 @@ import '../../styles/index.css';
 import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
-
 import { fetchDictionary, fetchVersions, fetchDictionaryConcepts } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import EditDictionary from './EditDictionary';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -25,6 +25,13 @@ export class DictionaryOverview extends Component {
     fetchDictionaryConcepts: propTypes.func.isRequired,
     fetchVersions: propTypes.func.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      showEditModal: false,
+    };
+  }
   componentDidMount() {
     const {
       match: {
@@ -43,6 +50,10 @@ export class DictionaryOverview extends Component {
     const conceptsUrl = `/users/${owner}/collections/${name}/concepts/?q=&limit=0&page=1&verbose=true`;
     this.props.fetchDictionaryConcepts(conceptsUrl);
   }
+
+  handleHide = () => this.setState({ showEditModal: false });
+  handleShow = () => this.setState({ showEditModal: true });
+
   render() {
     const { loader } = this.props;
     const cielConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner === 'CIEL').length.toString();
@@ -67,6 +78,12 @@ export class DictionaryOverview extends Component {
               diagnosisConcepts={diagnosisConcepts}
               procedureConcepts={procedureConcepts}
               otherConcepts={otherConcepts}
+              showEditModal={this.handleShow}
+            />
+            <EditDictionary
+              show={this.state.showEditModal}
+              handleHide={this.handleHide}
+              dictionary={this.props.dictionary}
             />
           </div>
       }
