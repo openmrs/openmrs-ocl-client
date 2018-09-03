@@ -1,10 +1,12 @@
 import { notify } from 'react-notify-toast';
-import { isSuccess, isFetching } from '../globalActionCreators';
+import { isSuccess, isFetching, isErrored } from '../globalActionCreators';
 import {
   GET_USER,
   FETCH_USER_DICTIONARY,
   FETCH_USER_ORGANIZATION,
   CLEAR_DICTIONARY,
+  USER_IS_MEMBER,
+  USER_IS_NOT_MEMBER,
 } from '../types';
 import instance from '../../../config/axiosConfig';
 import { filterUserPayload } from '../../reducers/util';
@@ -50,4 +52,22 @@ export const fetchUserData = username => (dispatch) => {
 
 export const clearDictionaryData = () => (dispatch) => {
   dispatch({ type: CLEAR_DICTIONARY, payload: [] });
+};
+
+export const fetchMemberStatus = url => async (dispatch) => {
+  let response;
+  dispatch(isFetching(true));
+  try {
+    response = await instance.get(url);
+  } catch (error) {
+    if (error.response.status === 403 || error.response.status === 404) {
+      dispatch(isFetching(false));
+      return dispatch(isErrored(false, USER_IS_NOT_MEMBER));
+    }
+  }
+  if (response.data === '' && response.status === 204) {
+    dispatch(isFetching(false));
+    return dispatch(isSuccess(true, USER_IS_MEMBER));
+  }
+  return dispatch(isFetching(false));
 };

@@ -5,6 +5,8 @@ import {
   IS_FETCHING,
   CLEAR_DICTIONARY,
   ADDING_DICTIONARY,
+  USER_IS_MEMBER,
+  USER_IS_NOT_MEMBER,
 } from '../../actions/types';
 
 const userInitialState = {
@@ -16,6 +18,7 @@ const userInitialState = {
     orgs: 0,
     public_collections: 0,
   },
+  userIsMember: false,
 };
 const userReducer = (state = userInitialState, action) => {
   switch (action.type) {
@@ -48,6 +51,16 @@ const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         userOrganization: action.payload,
+      };
+    case USER_IS_MEMBER:
+      return {
+        ...state,
+        userIsMember: action.payload,
+      };
+    case USER_IS_NOT_MEMBER:
+      return {
+        ...state,
+        userIsMember: action.payload,
       };
     default:
       return state;

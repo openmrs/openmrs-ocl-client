@@ -9,6 +9,8 @@ import {
   GET_USER,
   IS_FETCHING,
   CLEAR_DICTIONARY,
+  USER_IS_MEMBER,
+  USER_IS_NOT_MEMBER,
 } from '../../../redux/actions/types';
 import {
   fetchUserData,
@@ -16,6 +18,7 @@ import {
   fetchUser,
   fetchUserOrganizations,
   clearDictionaryData,
+  fetchMemberStatus,
 } from '../../../redux/actions/user';
 import dictionary from '../../__mocks__/dictionaries';
 
@@ -149,6 +152,50 @@ describe('Test suite for user dashboard actions', () => {
 
     const store = mockStore({});
     return store.dispatch(fetchUser('emasys')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should dispatch USER_IS_MEMBER', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 204,
+        response: '',
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+      { type: USER_IS_MEMBER, payload: true },
+    ];
+
+    const store = mockStore({});
+    const url = '/orgs/EthiopiaNHDD/members/emmabaye';
+    return store.dispatch(fetchMemberStatus(url)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should dispatch USER_IS_NOT_MEMBER', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 404,
+        response: {
+          status: 404,
+        },
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+      { type: USER_IS_NOT_MEMBER, payload: false },
+    ];
+
+    const store = mockStore({});
+    const url = '/orgs/EthiopiaNHDD/members/emmabaye';
+    return store.dispatch(fetchMemberStatus(url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

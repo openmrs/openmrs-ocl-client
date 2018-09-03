@@ -6,9 +6,10 @@ import { getUsername } from './helperFunction';
 const TableItem = (props) => {
   const username = getUsername();
   const {
-    id, concept_class, datatype, source, owner, display_name, url
+    id, concept_class, datatype, source, owner, display_name, org,
   } = props;
-  const renderButtons = username === owner;
+  const renderButtons = username === owner || (owner === org.name && org.userIsMember);
+
   return (
     <tr>
       <th scope="row">{display_name}</th>
@@ -30,7 +31,7 @@ TableItem.propTypes = {
   source: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
   display_name: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
+  org: PropTypes.object.isRequired,
 };
 
 export default TableItem;

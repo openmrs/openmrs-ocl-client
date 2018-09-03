@@ -7,6 +7,8 @@ import {
   FETCH_USER_ORGANIZATION,
   IS_FETCHING,
   CLEAR_DICTIONARY,
+  USER_IS_MEMBER,
+  USER_IS_NOT_MEMBER,
 } from '../../../redux/actions/types';
 
 let state;
@@ -23,6 +25,7 @@ beforeEach(() => {
       orgs: 0,
       public_collections: 0,
     },
+    userIsMember: false,
   };
   action = {};
 });
@@ -99,6 +102,32 @@ describe('Test suite for user dashboard reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       orgDictionary: action.payload,
+    });
+  });
+  it('should handle USER_IS_MEMBER', () => {
+    action = {
+      type: USER_IS_MEMBER,
+      payload: true,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      userIsMember: true,
+    });
+  });
+  it('should handle USER_IS_NOT_MEMBER', () => {
+    action = {
+      type: USER_IS_NOT_MEMBER,
+      payload: false,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      userIsMember: false,
     });
   });
 });

@@ -34,6 +34,8 @@ export const CREATE_NEW_CONCEPT = '[concepts] create_new_concept';
 export const ADD_CONCEPT_TO_DICTIONARY = '[concepts] add_concept_to_dictionary';
 export const FETCH_NEXT_CONCEPTS = '[concepts] fetch_next_concepts';
 export const TOTAL_CONCEPT_COUNT = '[concepts] total_concept_count';
+export const USER_IS_MEMBER = '[user] user_is_member';
+export const USER_IS_NOT_MEMBER = '[user] user_is_not__member';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
 export const SEARCH_RESULTS = '[searchResults] search';
