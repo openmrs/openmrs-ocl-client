@@ -152,7 +152,6 @@ export class DictionaryConcepts extends Component {
       filteredSources,
       loading,
     } = this.props;
-    const username = typeName === getUsername();
     const {
       conceptsCount, searchInput, conceptOffset, conceptLimit,
     } = this.state;
@@ -164,7 +163,7 @@ export class DictionaryConcepts extends Component {
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
           </div>
-          {username && <ConceptDropdown pathName={pathname} />}
+          <ConceptDropdown pathName={pathname} />
         </section>
 
         <section className="row mt-3">
