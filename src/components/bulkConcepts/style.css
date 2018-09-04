@@ -54,3 +54,9 @@ legend.scheduler-border {
 .search-bar i {
     color: #757575;
   }
+.no-padding-top {
+    padding-top: 0px !important;
+}
+.card-link+.card-link {
+    margin-left: 0rem;
+}

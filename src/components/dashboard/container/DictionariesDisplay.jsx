@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../styles/index.css';
-import { fetchDictionaries, searchDictionaries } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  fetchDictionaries,
+  searchDictionaries,
+} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
 import ListDictionaries from '../components/dictionary/ListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
+import Paginations from '../components/DictionariesPaginations';
 
 export class DictionaryDisplay extends Component {
   static propTypes = {
@@ -26,6 +30,8 @@ export class DictionaryDisplay extends Component {
     super(props);
     this.state = {
       searchInput: '',
+      currentPage: 1,
+      limit: 24,
     };
     autoBind(this);
   }
@@ -52,15 +58,30 @@ export class DictionaryDisplay extends Component {
 
   gotoDictionary = (url) => {
     this.props.history.push(url);
-  }
-
+  };
+  handleNextPage = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    this.setState({ currentPage: Number(id) });
+  };
   render() {
+    const { currentPage, searchInput } = this.state;
     const { dictionaries, isFetching } = this.props;
-    const { searchInput } = this.state;
+    const dictionariesPerPage = this.state.limit;
+    const indexOfLastDictionary = currentPage * dictionariesPerPage;
+    const indexOfFirstConcept = indexOfLastDictionary - dictionariesPerPage;
+    const currentDictionaries = this.props.dictionaries.slice(
+      indexOfFirstConcept,
+      indexOfLastDictionary,
+    );
+    const lastPage = Math.ceil(this.props.dictionaries.length / dictionariesPerPage);
+    const lastDictionary = indexOfFirstConcept + currentDictionaries.length;
+    const firstDictionary = indexOfLastDictionary - (dictionariesPerPage - 1);
     return (
-      <div className="dashboard-wrapper">
-        <div className="dashboard-head">
-          <div className="search-dictionary">
+      <Fragment>
+        <div className="row">
+          <div className="col-md-12">
+            <br />
             <SearchDictionaries
               onSearch={this.onSearch}
               onSubmit={this.onSubmit}
@@ -68,22 +89,26 @@ export class DictionaryDisplay extends Component {
               fetching={isFetching}
             />
           </div>
-          <div className="back">
-            <Link to="/dashboard" >
+          <div className="col-md-12">
+            <Link to="/dashboard">
               <i className="fas fa-chevron-left" /> Back to my Dictionaries
             </Link>
           </div>
-          <div className="row justify-content-center public-search" id="container">
-            <div className="offset-sm-1 col-10">
-              <ListDictionaries
-                dictionaries={dictionaries}
-                fetching={isFetching}
-                gotoDictionary={this.gotoDictionary}
-              />
-            </div>
-          </div>
         </div>
-      </div>
+        <Paginations
+          dictionaries={lastDictionary}
+          firstDictionaryIndex={firstDictionary}
+          totalDictionaries={dictionaries.length}
+          currentPage={currentPage}
+          handleClick={this.handleNextPage}
+          lastPage={lastPage}
+        />
+        <ListDictionaries
+          dictionaries={currentDictionaries}
+          fetching={isFetching}
+          gotoDictionary={this.gotoDictionary}
+        />
+      </Fragment>
     );
   }
 }
@@ -94,8 +119,11 @@ export const mapStateToProps = state => ({
   dictionary: state.dictionaries.dictionary,
   organizations: state.organizations.organizations,
 });
-export default connect(mapStateToProps, {
-  fetchDictionaries,
-  searchDictionaries,
-  clearDictionaries,
-})(DictionaryDisplay);
+export default connect(
+  mapStateToProps,
+  {
+    fetchDictionaries,
+    searchDictionaries,
+    clearDictionaries,
+  },
+)(DictionaryDisplay);

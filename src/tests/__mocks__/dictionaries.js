@@ -1,4 +1,4 @@
-export default {
+const dictionary = {
   type: 'Collection',
   uuid: '5b23946bc38fb30049835b6a',
   id: 'main',
@@ -14,10 +14,7 @@ export default {
   custom_validation_schema: null,
   public_access: 'View',
   default_locale: 'en',
-  supported_locales: [
-    'en',
-    ' es',
-  ],
+  supported_locales: ['en', ' es'],
   website: null,
   url: '/users/chriskala/collections/main/',
   versions_url: '/users/chriskala/collections/main/versions/',
@@ -36,3 +33,19 @@ export default {
   active_concepts: 0,
   active_mappings: 0,
 };
+
+// Mock more dictionaries objects array
+export const mockDictionaries = () => {
+  const dictionaries = [];
+  let i = 0;
+  while (i <= 60) {
+    const dict = dictionary;
+    dict.id = i;
+    dict.uuid += String(i);
+    dictionaries.push(dict);
+    i += 1;
+  }
+  return dictionaries;
+};
+
+export default dictionary;
