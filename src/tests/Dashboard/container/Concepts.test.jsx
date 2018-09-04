@@ -4,11 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import Authenticated from '../../__mocks__/fakeStore';
-import {
-  ConceptSearch,
-  mapStateToProps,
-} from '../../../components/dashboard/container/Concepts';
-import concepts from '../../__mocks__/concepts';
+import { ConceptSearch, mapStateToProps } from '../../../components/dashboard/container/Concepts';
+import concepts, { getConcepts } from '../../__mocks__/concepts';
 
 jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
 
@@ -58,6 +55,35 @@ describe('Dashboard Concept Component', () => {
     wrapper.find('.search-bar-wrapper').simulate('submit', {
       preventDefault: () => {},
     });
+  });
+  it('should go to the next concepts page', () => {
+    const props = {
+      fetchConceptsAction: jest.fn(),
+      concepts: getConcepts(),
+      isFetching: true,
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
+    wrapper.find('.nxt').simulate('click');
+    expect(wrapper.find(ConceptSearch).instance().state.currentPage).toEqual(2);
+  });
+  it('should change the limit of concepts', () => {
+    const props = {
+      fetchConceptsAction: jest.fn(),
+      concepts: getConcepts(),
+      isFetching: false,
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <ConceptSearch {...props} />
+      </Provider>
+    </MemoryRouter>);
+    const event = { target: { value: 100 } };
+    wrapper.find('select').simulate('change', event);
+    expect(wrapper.find(ConceptSearch).instance().state.limit).toEqual(100);
   });
 
   it('should test mapStateToProps', () => {

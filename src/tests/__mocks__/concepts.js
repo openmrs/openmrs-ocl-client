@@ -1,4 +1,4 @@
-export default {
+export const concept = {
   id: '146869',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   concept_class: 'Diagnosis',
@@ -391,7 +391,8 @@ export const existingConcept = {
     {
       uuid: '453aa9941e824becaad4b374899e8bcb',
       external_id: null,
-      description: 'The proportion of women of reproductive age (15-49 years) who are not pregnant and are accepting a modern contraceptive method (new and repeat acceptors).  ',
+      description:
+        'The proportion of women of reproductive age (15-49 years) who are not pregnant and are accepting a modern contraceptive method (new and repeat acceptors).  ',
       locale: 'en',
       locale_preferred: true,
       description_type: null,
@@ -413,20 +414,24 @@ export const existingConcept = {
     'HMIS-Category-2': 'C1.1 Maternal and Child Health',
     'HMIS-Category-3': 'C.1.1 Maternal Health',
     'HMIS-Category-1': 'C1: Access to Health Service',
-    Interpretation: 'This indicator is directly related to operations: for contraception utilization (and prevalence) to increase, the numbers of both new and repeat acceptors should increase. Each acceptor is counted only once, the first time s/he receives contraceptive services in the fiscal year.\n“New acceptors” refers to the number of acceptors who receive family planning services from a recognized program for the first time irrespective of the method used. This is not the number of consultations. Each acceptor is enumerated once in the year, at the first consultation for contraception in the calendar year. \n“Repeat acceptors” refers to the number of acceptors who receive family planning services from a family planning program previously irrespective of the method used.  Long acting FP method users will also be counted as repeat every year including routine checkup for ongoing use of a long term method such as Norplant, IUD, etc.\nNew and repeat contraceptive acceptors are reported as two separate counts, so it is possible to calculate each rate separately as needed. Acceptor data reported from NGOs and other community-based non MOH sources can also be included in this calculation.',
+    Interpretation:
+      'This indicator is directly related to operations: for contraception utilization (and prevalence) to increase, the numbers of both new and repeat acceptors should increase. Each acceptor is counted only once, the first time s/he receives contraceptive services in the fiscal year.\n“New acceptors” refers to the number of acceptors who receive family planning services from a recognized program for the first time irrespective of the method used. This is not the number of consultations. Each acceptor is enumerated once in the year, at the first consultation for contraception in the calendar year. \n“Repeat acceptors” refers to the number of acceptors who receive family planning services from a family planning program previously irrespective of the method used.  Long acting FP method users will also be counted as repeat every year including routine checkup for ongoing use of a long term method such as Norplant, IUD, etc.\nNew and repeat contraceptive acceptors are reported as two separate counts, so it is possible to calculate each rate separately as needed. Acceptor data reported from NGOs and other community-based non MOH sources can also be included in this calculation.',
     'HMIS-Category-4': '',
     'Applicable Reporting Units': 'HP, HC/Clinic, Hospital, WorHO, ZHD/ScHO, RHB, FMOH',
     Numerator: 'Number of new and repeat acceptors',
     Denominator: 'Total number of women of reproductive age (15-49) who are not pregnant',
-    Disaggregation: 'By acceptors: New, repeat\nAge: 15-19, 20-24, 25-49 years\nBy  Methods: Pills, Injectables, Implants, IUD and Others',
+    Disaggregation:
+      'By acceptors: New, repeat\nAge: 15-19, 20-24, 25-49 years\nBy  Methods: Pills, Injectables, Implants, IUD and Others',
     'Reporting Frequency': 'Monthly',
     Multiplier: '100',
-    'Primary Sources': 'Family planning register; Service delivery tally (for HP), RH register (for primary private clinics), Pre-ART, ART registers',
+    'Primary Sources':
+      'Family planning register; Service delivery tally (for HP), RH register (for primary private clinics), Pre-ART, ART registers',
   },
   mappings: 'mappings',
   is_latest_version: true,
   locale: null,
-  version_url: '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/5824be62fc6b9000075d4981/',
+  version_url:
+    '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/5824be62fc6b9000075d4981/',
   url: '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/',
 };
 
@@ -459,3 +464,17 @@ export const nullConceptDescription = {
   version_url: '/orgs/OCL/sources/NameTypes/concepts/None/5821828444273a000717d00b/',
   url: '/orgs/OCL/sources/NameTypes/concepts/None/',
 };
+
+export const getConcepts = () => {
+  let i = 0;
+  const multipleConcepts = [];
+  while (i <= 100) {
+    const conceptDict = concept;
+    conceptDict.id = i;
+    conceptDict.uuid += String(i);
+    multipleConcepts.push(conceptDict);
+    i += 1;
+  }
+  return multipleConcepts;
+};
+export default concept;
