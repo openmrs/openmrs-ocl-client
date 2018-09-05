@@ -23,6 +23,8 @@ import {
   CLEAR_PREVIOUS_CONCEPT,
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
+  REMOVE_ONE_ANSWER_MAPPING,
+  ADD_NEW_ANSWER_MAPPING,
 } from '../types';
 import {
   isFetching,
@@ -93,6 +95,16 @@ export const addDescriptionForEditConcept = () => (dispatch) => {
 export const removeDescriptionForEditConcept = id => (dispatch) => {
   const payload = id;
   dispatch({ type: EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION, payload });
+};
+
+export const addNewAnswer = () => (dispatch) => {
+  const payload = uuid();
+  dispatch({ type: ADD_NEW_ANSWER_MAPPING, payload });
+};
+
+export const removeAnswer = id => (dispatch) => {
+  const payload = id;
+  dispatch({ type: REMOVE_ONE_ANSWER_MAPPING, payload });
 };
 
 export const clearSelections = () => (dispatch) => {

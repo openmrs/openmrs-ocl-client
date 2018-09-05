@@ -10,7 +10,6 @@ describe('Test suite for CreateConceptForm', () => {
       },
       addDescription: jest.fn(),
       handleNewName: jest.fn(),
-      concept: 'dummy',
       path: '',
       toggleUUID: jest.fn(),
       handleChange: jest.fn(),
@@ -18,12 +17,15 @@ describe('Test suite for CreateConceptForm', () => {
       editable: false,
       nameRows: [],
       description: [],
+      addAnswer: jest.fn(),
+      answer: [],
       match: {
         params: {
           conceptType: '',
           dictionaryName: '',
         },
       },
+      concept: 'Diagnosis',
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper).toMatchSnapshot();
@@ -44,6 +46,8 @@ describe('Test suite for CreateConceptForm', () => {
       editable: false,
       nameRows: [],
       description: [],
+      addAnswer: jest.fn(),
+      answer: [],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.set')).toHaveLength(1);
@@ -65,9 +69,34 @@ describe('Test suite for CreateConceptForm', () => {
       editable: false,
       nameRows: [],
       description: [],
+      addAnswer: jest.fn(),
+      answer: [],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.symptom-finding')).toHaveLength(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render form for question concept class', () => {
+    const props = {
+      state: {
+        id: '1',
+      },
+      concept: 'question',
+      addDescription: jest.fn(),
+      handleNewName: jest.fn(),
+      path: '',
+      toggleUUID: jest.fn(),
+      handleChange: jest.fn(),
+      handleSubmit: jest.fn(),
+      editable: false,
+      addAnswer: jest.fn(),
+      answer: [],
+      nameRows: [],
+      description: [],
+    };
+    const wrapper = shallow(<CreateConceptForm {...props} />);
+    expect(wrapper.find('.form-group.answer')).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
   });
 });

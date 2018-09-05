@@ -27,6 +27,8 @@ import {
   UPDATE_CONCEPT,
   FETCH_EXISTING_CONCEPT_ERROR,
   REMOVE_CONCEPT,
+  REMOVE_ONE_ANSWER_MAPPING,
+  ADD_NEW_ANSWER_MAPPING,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -47,6 +49,8 @@ import {
   createNewNameForEditConcept,
   removeNameForEditConcept,
   updateConcept,
+  addNewAnswer,
+  removeAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import concepts, {
@@ -484,6 +488,19 @@ describe('test suite for synchronous action creators', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: CLEAR_FORM_SELECTIONS, payload: [] }];
     store.dispatch(clearSelections());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+  it('should handle ADD_NEW_ANSWER_MAPPING', () => {
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{ type: ADD_NEW_ANSWER_MAPPING, payload: 1 }];
+    store.dispatch(addNewAnswer());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+  it('should handle REMOVE_ONE_ANSWER_MAPPING', () => {
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{ type: REMOVE_ONE_ANSWER_MAPPING, payload: '123y' }];
+    const id = '123y';
+    store.dispatch(removeAnswer(id));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

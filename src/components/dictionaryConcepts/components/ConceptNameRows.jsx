@@ -1,21 +1,12 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import Select from 'react-select';
-import 'react-select/dist/react-select';
 import PropTypes from 'prop-types';
 import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class ConceptNameRows extends Component {
   static propTypes = {
-    newRow: PropTypes.shape({
-      id: PropTypes.string,
-      uuid: PropTypes.string.isRequired,
-      name: PropTypes.string,
-      locale: PropTypes.string,
-      locale_full: PropTypes.string,
-      locale_preferred: PropTypes.bool,
-      name_type: PropTypes.string,
-    }),
+    newRow: PropTypes.object.isRequired,
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
@@ -24,6 +15,7 @@ class ConceptNameRows extends Component {
   };
 
   static defaultProps = {
+    // eslint-disable-next-line react/default-props-match-prop-types
     newRow: {
       id: '',
       name: '',

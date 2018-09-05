@@ -17,6 +17,8 @@ import {
   clearPreviousConcept,
   createNewNameForEditConcept,
   removeNameForEditConcept,
+  addNewAnswer,
+  removeAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 
 export class EditConcept extends Component {
@@ -45,6 +47,9 @@ export class EditConcept extends Component {
     removeNameForEditConcept: PropTypes.func.isRequired,
     existingConcept: PropTypes.object.isRequired,
     updateConcept: PropTypes.func.isRequired,
+    answer: PropTypes.array.isRequired,
+    addNewAnswer: PropTypes.func.isRequired,
+    removeAnswer: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -55,6 +60,7 @@ export class EditConcept extends Component {
       datatype: 'None',
       names: [],
       descriptions: [],
+      answers: [],
       isEditConcept: true,
     };
     this.conceptUrl = '';
@@ -114,6 +120,13 @@ export class EditConcept extends Component {
   removeDescription(event, descriptionRow) {
     event.preventDefault();
     this.props.removeDescriptionForEditConcept(descriptionRow.uuid);
+  }
+
+  addNewAnswer() {
+    this.props.addNewAnswer();
+  }
+  removeAnswer(id) {
+    this.props.removeAnswer(id);
   }
 
   handleUUID(event) {
@@ -184,6 +197,22 @@ export class EditConcept extends Component {
     }
   }
 
+  addDataFromAnswer(data) {
+    const currentAnswer = this.state.answers.filter(answer => answer.id === data.id);
+    if (currentAnswer.length) {
+      const newList = this.state.answers.map(answer => (
+        answer.id === data.id ? data : answer
+      ));
+      this.setState(() => ({
+        answers: newList,
+      }));
+    } else {
+      this.setState(prevState => ({
+        answers: [...prevState.answers, data],
+      }));
+    }
+  }
+
   render() {
     const {
       match: {
@@ -230,6 +259,10 @@ export class EditConcept extends Component {
                 pathName={this.props.match.params}
                 existingConcept={existingConcept}
                 isEditConcept={this.state.isEditConcept}
+                answer={this.props.answer}
+                addDataFromAnswer={this.addDataFromAnswer}
+                addAnswer={this.addNewAnswer}
+                removeAnswer={this.removeAnswer}
               />
               }
             </div>
@@ -246,6 +279,7 @@ export const mapStateToProps = state => ({
   newConcept: state.concepts.newConcept,
   addedConcept: state.concepts.addConceptToDictionary,
   existingConcept: state.concepts.existingConcept,
+  answer: state.concepts.answer,
 });
 export default connect(
   mapStateToProps,
@@ -262,5 +296,7 @@ export default connect(
     clearPreviousConcept,
     createNewNameForEditConcept,
     removeNameForEditConcept,
+    addNewAnswer,
+    removeAnswer,
   },
 )(EditConcept);

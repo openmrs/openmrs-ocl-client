@@ -18,6 +18,7 @@ const initialState = {
   description: [],
   newConcept: {},
   addConceptToDictionary: [],
+  answer: [],
   paginatedConcepts: [],
   totalConceptCount: 0,
   existingConcept: {
