@@ -13,11 +13,13 @@ export class EditDictionary extends React.Component {
     super(props);
     this.state = {
       defaultLocaleOption: '',
+      supportedLocalesOptions: [],
     };
   }
 
   componentDidMount() {
     this.preSelectDefaultLocale();
+    this.preSelectSupportedLocales();
   }
 
   preSelectDefaultLocale = () => {
@@ -28,10 +30,35 @@ export class EditDictionary extends React.Component {
           {languages[i].label}
         </option>);
         this.setState({
+          ...this.state,
           defaultLocaleOption: option,
         });
       }
     }
+    return null;
+  }
+
+  preSelectSupportedLocales = () => {
+    const {
+      dictionary: {
+        supported_locales,
+      },
+    } = this.props;
+    if (!supported_locales) {
+      return null;
+    }
+    const supportedLocalesOptions = [];
+    for (let i = 0; i < supported_locales.length; i += 1) {
+      for (let j = 0; j < languages.length; j += 1) {
+        if (supported_locales[i] === languages[j].value) {
+          supportedLocalesOptions.push(languages[j]);
+        }
+      }
+    }
+    this.setState({
+      ...this.state,
+      supportedLocalesOptions,
+    });
     return null;
   }
 
@@ -54,6 +81,7 @@ export class EditDictionary extends React.Component {
         dictionary={this.props.dictionary}
         defaultLocaleOption={this.state.defaultLocaleOption}
         isEditingDictionary
+        supportedLocalesOptions={this.state.supportedLocalesOptions}
       />
     );
   }
