@@ -106,6 +106,9 @@ class ConceptNameRows extends Component {
           >
             <option />
             <option>Fully Specified</option>
+            <option>Synonym</option>
+            <option>Search Term</option>
+
           </select>
         </td>
         <th scope="row" className="concept-language">
