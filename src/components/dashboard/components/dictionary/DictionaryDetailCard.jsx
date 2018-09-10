@@ -8,7 +8,7 @@ const DictionaryDetailCard = (props) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
-      owner_url, short_code, default_locale,
+      owner_url, short_code, default_locale, url,
     }, versions, showEditModal, customConcepts, cielConcepts,
     diagnosisConcepts, procedureConcepts, otherConcepts,
   } = props;
@@ -17,6 +17,7 @@ const DictionaryDetailCard = (props) => {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
 
+  const traditionalUrl = `https://qa.openconceptlab.org${url}`;
   const releasedVersions = versions.filter(version => version.released === true);
 
   return (<div className="dictionaryDetails">
@@ -65,7 +66,7 @@ const DictionaryDetailCard = (props) => {
         <fieldset>
           <legend>Actions</legend>
           <ul>
-            <li><a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
+            <li><a href={traditionalUrl} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
             <li><i className="far fa-copy" />Copy concepts from another dictionary</li>
             <li><i className="fas fa-cloud-upload-alt" />Release HEAD as new version</li>
           </ul>
