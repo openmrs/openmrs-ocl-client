@@ -1,47 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Tooltip from 'react-tooltip';
 
 export const DictionariesSearch = ({ onSearch, onSubmit, searchValue }) => (
-  <div className="container-fluid dictionary-search">
-    <div className="row justify-content-center">
-      <div className="col-1" />
-      <div className="col-sm-12 col-md-10  mt-2 col-12">
-        <form className="search-bar-wrapper" onSubmit={onSubmit}>
-          <i className="fas fa-search fa-fw mr-1 col-1" />
-          <input
-            type="search"
-            name="searchInput"
-            id="search"
-            value={searchValue}
-            onChange={onSearch}
-            className="search-bar col-5 col-sm-7 col-md-6 col-lg-7"
-            placeholder="Search for dictionaries"
-          />
-          <div className="dropdown d-inline d-md-none col-1 mini-source-btn">
-            <a
-              className="dropdown-toggle"
-              href="!#"
-              role="button"
-              id="concepts"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              data-tip="concepts"
-            >
-              <i className="fas fa-list fa-fw" />
-            </a>
-
-            <div className="dropdown-menu" aria-labelledby="concepts">
-              <a className="dropdown-item" href="!#">
-                Dictionaries
-              </a>
-            </div>
-          </div>
-        </form>
-      </div>
+  <div className="row justify-content-center search-container">
+    <div className="concept-search-wrapper col-12 col-md-5 col-sm-8">
+      <i className="fas fa-search fa-fw mr-1" />
+      <form id="submit-search-form" onSubmit={onSubmit}>
+        <input
+          type="search"
+          name="searchInput"
+          id="search"
+          value={searchValue}
+          onChange={onSearch}
+          className="concept-search"
+          placeholder="Search for Public dictionaries"
+        />
+      </form>
     </div>
-    <Tooltip place="bottom" type="dark" effect="float" />
   </div>
 );
 DictionariesSearch.propTypes = {

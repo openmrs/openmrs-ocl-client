@@ -87,7 +87,7 @@ describe('Dashboard Component', () => {
       preventDefault: () => {},
     });
 
-    wrapper.find('.search-bar-wrapper').simulate('submit', {
+    wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });
   });
