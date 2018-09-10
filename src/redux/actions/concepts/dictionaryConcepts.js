@@ -185,12 +185,19 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
     notify.show('creating concept, please wait...', 'warning', 3000);
   } catch (error) {
-    notify.show('concept could not be created, uuid must be unique', 'error', 3000);
     if (error.response) {
-      dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
+      const { response } = error;
+      notify.show(`An error occurred when creating a concept.
+ ${
+  Object.keys(response.data).map(e => response.data[e]).toString()
+} for ${
+  Object.keys(error.response.data).toString()
+}`, 'error', 3000);
       dispatch(isFetching(false));
+      return dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     }
   }
+  return dispatch(isFetching(false));
 };
 
 export const fetchExistingConcept = conceptUrl => async (dispatch) => {
