@@ -55,7 +55,7 @@ describe('Dashboard Concept Component', () => {
     </MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search').simulate('change', event);
-    wrapper.find('.search-bar-wrapper').simulate('submit', {
+    wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });
   });

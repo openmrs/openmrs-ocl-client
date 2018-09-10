@@ -60,9 +60,6 @@ export class DictionaryDisplay extends Component {
     return (
       <div className="dashboard-wrapper">
         <div className="dashboard-head">
-          <div className="public-dictionaries">
-            <p> Public Dictionaries </p>
-          </div>
           <div className="search-dictionary">
             <SearchDictionaries
               onSearch={this.onSearch}
@@ -76,7 +73,6 @@ export class DictionaryDisplay extends Component {
               <i className="fas fa-chevron-left" /> Back to my Dictionaries
             </Link>
           </div>
-
           <div className="row justify-content-center public-search" id="container">
             <div className="offset-sm-1 col-10">
               <ListDictionaries

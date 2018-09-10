@@ -97,7 +97,7 @@ describe('Dashboard SpecificConcept Component', () => {
     </Provider></MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'drug' } };
     wrapper.find('#search').simulate('change', event);
-    wrapper.find('.search-bar-wrapper').simulate('submit', {
+    wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });
   });
@@ -122,7 +122,7 @@ describe('Dashboard SpecificConcept Component', () => {
     </MemoryRouter>);
     const event = { target: { name: 'searchInput', value: '' } };
     wrapper.find('#search').simulate('change', event);
-    wrapper.find('.search-bar-wrapper').simulate('submit', {
+    wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });
   });
