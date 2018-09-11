@@ -13,11 +13,13 @@ const props = {
   submit: jest.fn(),
   organizations: [organizations],
   fetchingOrganizations: jest.fn(),
+  fetchSources: jest.fn(),
   createDictionary: jest.fn(),
   createDictionaryUser: jest.fn(),
   handleHide: jest.fn(),
   name: jest.fn(),
   dictionary,
+  sources: [],
 };
 
 describe('Test suite for dictionary modal', () => {

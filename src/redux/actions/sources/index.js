@@ -3,12 +3,12 @@ import { isErrored, isFetching, isSuccess } from './sourcesActionCreators';
 import { FETCH_SOURCES, SEARCH_SOURCES } from '../types';
 
 // eslint-disable-next-line
-export const fetchSources = (query = '', types = [], limit = 25, page = 1) => async dispatch => {
+export const fetchSources = (query = '', types = [], limit = 25, page = 1, sortAsc = 'bestmatch') => async dispatch => {
   dispatch(isFetching(true));
   let url = `sources/?q=${query}&limit=${limit}&page=${page}&verbose=true&sortAsc=bestmatch`;
   if (types.length >= 1) {
     const sourceType = types.join(',');
-    url = `sources/?q=${query}&sourceType=${sourceType}&limit=${limit}&page=${page}&verbose=true&sortAsc=bestmatch`;
+    url = `sources/?q=${query}&sourceType=${sourceType}&limit=${limit}&page=${page}&verbose=true&sortAsc=${sortAsc}`;
   }
   let actionType = FETCH_SOURCES;
   if (query) {

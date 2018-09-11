@@ -11,6 +11,9 @@ const store = createMockStore({
   organizations: {
     organizations: [],
   },
+  sources: {
+    sources: [],
+  },
 });
 jest.mock('../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryOverview', () => {
