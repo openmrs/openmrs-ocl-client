@@ -259,11 +259,12 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.public_access}
                     >
-                      {(isEditingDictionary && dictionary.public_access === 'View') &&
-                      <option value="View" selected>Private </option>
+                      <option value="" />
+                      {(isEditingDictionary && dictionary.public_access === 'None') &&
+                      <option value="None" selected>None </option>
                       }
-                      <option value="Edit">Public</option>
-                      <option value="View">Private</option>
+                      <option value="View">View</option>
+                      <option value="None">None</option>
                     </FormControl>
                   </FormGroup>
 
