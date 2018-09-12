@@ -19,7 +19,11 @@ describe('DictionaryOverview', () => {
       dictionary: [],
       versions: [],
     };
-    const wrapper = <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>;
+    const wrapper = (
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('should render with dictionary data for overview', () => {
@@ -40,10 +44,12 @@ describe('DictionaryOverview', () => {
       fetchDictionaryConcepts: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
-      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
     </Provider>);
     expect(wrapper.find('#headingDict')).toHaveLength(1);
-    expect(wrapper.find('.paragraph')).toHaveLength(5);
+    expect(wrapper.find('.paragraph')).toHaveLength(6);
     expect(wrapper.find('tr')).toHaveLength(2);
     expect(wrapper).toMatchSnapshot();
   });
@@ -68,7 +74,11 @@ describe('DictionaryOverview', () => {
       releaseHead: jest.fn(),
     };
 
-    const wrapper = mount(<Provider store={store}><MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleRelease');
     wrapper.instance().forceUpdate();
     wrapper.find('.fas.fa-cloud-upload-alt').simulate('click');
@@ -94,7 +104,11 @@ describe('DictionaryOverview', () => {
       fetchDictionaryConcepts: jest.fn(),
       releaseHead: jest.fn(),
     };
-    const wrapper = mount(<Provider store={store}><MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
     const newProps = {
       dictionary: [dictionary],
       versions: [HeadVersion],
@@ -133,7 +147,8 @@ describe('DictionaryOverview', () => {
     const wrapper = mount(<Provider store={store}>
       <MemoryRouter>
         <DictionaryOverview {...props} />
-      </MemoryRouter></Provider>);
+      </MemoryRouter>
+    </Provider>);
     expect(wrapper.find('.version-msg')).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
   });
@@ -152,7 +167,9 @@ describe('DictionaryOverview', () => {
         },
       },
     };
-    const wrapper = shallow(<MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>);
+    const wrapper = shallow(<MemoryRouter>
+      <DictionaryOverview {...props} />
+    </MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
 });
