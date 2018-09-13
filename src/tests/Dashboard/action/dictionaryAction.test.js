@@ -13,6 +13,7 @@ import {
   FETCHING_VERSIONS,
   FETCH_DICTIONARY_CONCEPT,
   FETCHING_ORGANIZATIONS,
+  RELEASING_HEAD_VERSION,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -28,10 +29,11 @@ import {
   fetchDictionary,
   fetchVersions,
   fetchDictionaryConcepts,
+  releaseHead,
   editDictionary,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
-import versions from '../../__mocks__/versions';
+import versions, { HeadVersion } from '../../__mocks__/versions';
 import concepts from '../../__mocks__/concepts';
 
 jest.mock('react-notify-toast');
@@ -268,6 +270,46 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchVersions('/users/chriskala/collections/over/versions/')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle release version', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [HeadVersion],
+      });
+    });
+    const expectedActions = [
+      {
+        type: RELEASING_HEAD_VERSION, payload: [HeadVersion],
+      },
+      {
+        payload: false, type: '[ui] toggle spinner',
+      },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(releaseHead('/users/nesh/collections/test/HEAD/')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle release version network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [
+      {
+        payload: false, type: '[ui] toggle spinner',
+      },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(releaseHead('/users/nesh/collections/test/HEAD/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

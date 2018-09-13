@@ -4,7 +4,7 @@ import './styles/dictionary-modal.css';
 const DictionaryVersionsTable = (version) => {
   const {
     version: {
-      version_external_id,
+      id,
       updated_on,
       version_url,
     },
@@ -15,7 +15,7 @@ const DictionaryVersionsTable = (version) => {
 
   return (
     <tr id="versiontable">
-      <td>{version_external_id}</td>
+      <td>{id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
       <td>Yes</td>
       <td><a href={version_url} >Browse in OCL</a> <a href="a">Subscription URL</a></td>

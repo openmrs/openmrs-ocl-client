@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { DictionaryOverview } from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
-import versions from '../__mocks__/versions';
+import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
 
 const store = createMockStore({
   organizations: {
@@ -45,6 +45,71 @@ describe('DictionaryOverview', () => {
     expect(wrapper.find('#headingDict')).toHaveLength(1);
     expect(wrapper.find('.paragraph')).toHaveLength(5);
     expect(wrapper.find('tr')).toHaveLength(2);
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should handle HEAD version release', () => {
+    const props = {
+      dictionary: [dictionary],
+      versions: [customVersion],
+      dictionaryConcepts: [dictionary],
+      isReleased: false,
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      releaseHead: jest.fn(),
+    };
+
+    const wrapper = mount(<Provider store={store}><MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleRelease');
+    wrapper.instance().forceUpdate();
+    wrapper.find('.fas.fa-cloud-upload-alt').simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle componentWillUpdate in HEAD version release', () => {
+    const props = {
+      dictionary: [dictionary],
+      versions: [customVersion],
+      dictionaryConcepts: [dictionary],
+      isReleased: false,
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      releaseHead: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}><MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const newProps = {
+      dictionary: [dictionary],
+      versions: [HeadVersion],
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      isReleased: true,
+      fetchVersions: jest.fn(),
+    };
+    wrapper.setProps(newProps);
     expect(wrapper).toMatchSnapshot();
   });
 

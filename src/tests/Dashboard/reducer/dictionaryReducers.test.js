@@ -9,6 +9,7 @@ import {
   FETCHING_VERSIONS,
   CLEAR_DICTIONARY,
   EDIT_DICTIONARY_SUCCESS,
+  RELEASING_HEAD_VERSION,
 } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
@@ -18,6 +19,7 @@ describe('Test suite for vote reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
+
   it('should handle FETCHING_ORGANIZATIONS', () => {
     expect(reducer(
       {},
@@ -36,6 +38,7 @@ const state = {
   versions: [],
   dictionary: {},
   loading: false,
+  isReleased: false,
 };
 const dictionary = dictionaries;
 
@@ -43,6 +46,7 @@ describe('Test suite for dictionaries reducers', () => {
   it('should return initial state', () => {
     expect(dictionaryreducer(undefined, {})).toEqual(state);
   });
+
   it('should handle FETCH_DICTIONARIES', () => {
     expect(dictionaryreducer(
       { dictionaries: [] },
@@ -72,6 +76,26 @@ describe('Test suite for dictionaries reducers', () => {
       },
     )).toEqual({ dictionary: [dictionaries] });
   });
+
+  it('should handle FETCHING_VERSIONS', () => {
+    expect(dictionaryreducer(
+      { versions: [] },
+      {
+        type: FETCHING_VERSIONS,
+        payload: [versions],
+      },
+    )).toEqual({ versions: [versions] });
+  });
+
+  it('should handle RELEASING_HEAD_VERSION', () => {
+    expect(dictionaryreducer(
+      { isReleased: false },
+      {
+        type: RELEASING_HEAD_VERSION,
+        payload: { released: true },
+      },
+    )).toEqual({ isReleased: true });
+  });
   it('should clear a dictionary', () => {
     expect(dictionaryreducer(
       { dictionary },
@@ -99,15 +123,7 @@ it('should handle FETCHING_VERSIONS', () => {
     },
   )).toEqual({ versions: [versions] });
 });
-it('should handle FETCHING_VERSIONS', () => {
-  expect(dictionaryreducer(
-    { versions: [] },
-    {
-      type: FETCHING_VERSIONS,
-      payload: [versions],
-    },
-  )).toEqual({ versions: [versions] });
-});
+
 describe('Test suite for dictionaries reducers', () => {
   it('should return inital state ADD_DICTIONARY', () => {
     expect(userReducer(

@@ -8,6 +8,7 @@ import {
   isErrored,
   fetchingVersions,
   dictionaryConceptsIsSuccess,
+  realisingHeadSuccess,
   editDictionarySuccess,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
@@ -109,6 +110,25 @@ export const fetchDictionaryConcepts = data => (dispatch) => {
       .catch((error) => {
         dispatch(isErrored(error.response.data));
         dispatch(isFetching(false));
+      });
+};
+
+export const releaseHead = (url, data) => (dispatch) => {
+  return api.dictionaries
+    .realisingHeadVersion(url, data)
+    .then(
+      (payload) => {
+        dispatch(realisingHeadSuccess(payload));
+        dispatch(isFetching(false));
+        notify.show(
+          'Head Version Successfully Released',
+          'success', 6000,
+        );
+      }
+    )
+    .catch(() => {
+      dispatch(isFetching(false));
+      notify.show("Network Error. Please try again later!", 'error', 6000);
       });
 };
   export const editDictionary = (url, data) => dispatch => {

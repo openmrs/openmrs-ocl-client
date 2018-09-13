@@ -87,3 +87,11 @@
   text-align: center;
   color: #0d1699;
 }
+
+.fa-cloud-upload-alt{
+  border-color: white;
+}
+
+#release-head {
+  font-family: 'Roboto', sans-serif;
+}
