@@ -42,12 +42,11 @@ export class DictionaryOverview extends Component {
     } = this.props;
 
     const url = `/${ownerType}/${owner}/${type}/${name}/`;
-
     const versionUrl = `/${ownerType}/${owner}/${type}/${name}/versions/?verbose=true`;
     this.props.fetchDictionary(url);
     this.props.fetchVersions(versionUrl);
 
-    const conceptsUrl = `/users/${owner}/collections/${name}/concepts/?q=&limit=0&page=1&verbose=true`;
+    const conceptsUrl = `/${ownerType}/${owner}/collections/${name}/concepts/?q=&limit=0&page=1&verbose=true`;
     this.props.fetchDictionaryConcepts(conceptsUrl);
   }
 
