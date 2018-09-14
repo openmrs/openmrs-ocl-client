@@ -5,7 +5,7 @@ import '../../styles/index.css';
 import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
-import { fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead, createVersion } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
 
 export class DictionaryOverview extends Component {
@@ -24,6 +24,8 @@ export class DictionaryOverview extends Component {
     loader: propTypes.bool.isRequired,
     fetchDictionaryConcepts: propTypes.func.isRequired,
     fetchVersions: propTypes.func.isRequired,
+    createVersion: propTypes.func.isRequired,
+    error: propTypes.array.isRequired,
     releaseHead: propTypes.func.isRequired,
     isReleased: propTypes.bool.isRequired,
   };
@@ -34,6 +36,9 @@ export class DictionaryOverview extends Component {
       showEditModal: false,
       showSubModal: false,
       url: '',
+      openVersionModal: false,
+      versionId: '',
+      versionDescription: '',
     };
   }
   componentDidMount() {
@@ -78,15 +83,49 @@ export class DictionaryOverview extends Component {
     const url = headVersionObj.version_url;
     this.props.releaseHead(url, data);
   }
+
   handleHide = () => this.setState({ showEditModal: false });
   handleShow = () => this.setState({ showEditModal: true });
 
   handleHideSub = () => this.setState({ showSubModal: false });
   handleShowSub = (url) => { this.setState({ showSubModal: true, url }); }
+  hideVersionModal = () => this.setState({ openVersionModal: false });
+  showVersionModal = () => this.setState({ openVersionModal: true });
+
+  handleChange = (e) => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  handleCreateVersion = (event) => {
+    event.preventDefault();
+    const {
+      match: {
+        params: {
+          ownerType, owner, type, name,
+        },
+      },
+    } = this.props;
+
+    const url = `/${ownerType}/${owner}/${type}/${name}/versions/`;
+    const data = {
+      id: this.state.versionId,
+      released: true,
+      description: this.state.versionDescription,
+    };
+
+    this.props
+      .createVersion(url, data)
+      .then(() => {
+        if (!this.props.error) {
+          this.hideVersionModal();
+        }
+      });
+  }
 
   render() {
     const { loader } = this.props;
-    const { url, showSubModal } = this.state;
+    const { url, showSubModal, versionId } = this.state;
     const cielConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner === 'CIEL').length.toString();
     const customConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner !== 'CIEL').length.toString();
     const diagnosisConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'diagnosis').length.toString();
@@ -94,6 +133,7 @@ export class DictionaryOverview extends Component {
     const otherConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class !== 'diagnosis' && concept.concept_class !== 'procedure').length.toString();
     const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
     const headVersionIdObj = Object.assign({}, headVersion);
+    const inputLength = versionId.length;
 
     return (
       <div className="dashboard-wrapper">
@@ -118,6 +158,14 @@ export class DictionaryOverview extends Component {
               showSubModal={this.handleShowSub}
               subModal={showSubModal}
               subUrl={url}
+              hideVersionModal={this.hideVersionModal}
+              showVersionModal={this.showVersionModal}
+              openVersionModal={this.state.openVersionModal}
+              handleChange={this.handleChange}
+              handleCreateVersion={this.handleCreateVersion}
+              versionId={this.state.versionId}
+              versionDescription={this.state.versionId}
+              inputLength={inputLength}
             />
             <EditDictionary
               show={this.state.showEditModal}
@@ -135,6 +183,7 @@ export const mapStateToProps = state => ({
   dictionaryConcepts: state.concepts.dictionaryConcepts,
   loader: state.dictionaries.loading,
   versions: state.dictionaries.versions,
+  error: state.dictionaries.error,
   isReleased: state.dictionaries.isReleased,
 });
 
@@ -144,6 +193,7 @@ export default connect(
     fetchDictionaryConcepts,
     fetchDictionary,
     fetchVersions,
+    createVersion,
     releaseHead,
   },
 )(DictionaryOverview);

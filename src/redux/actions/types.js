@@ -23,6 +23,8 @@ export const REMOVE_CONCEPT = '[concepts] remove concept';
 export const FETCHING_VERSIONS = '[dictionary] fetch versions of a dictionary';
 export const RELEASING_HEAD_VERSION = '[dictionary] releasing HEAD version of a dictionary';
 export const EDIT_DICTIONARY_SUCCESS = '[dictionary] edit dictionary success';
+export const CREATING_RELEASED_VERSION = '[dictionary] creating a released version of a dictionary';
+export const CREATING_RELEASED_VERSION_FAILED = '[dictionary] creating a released version of a dictionary failed';
 
 export const FILTER_BY_SOURCES = '[concepts] filter concepts by sources';
 export const FILTER_BY_CLASS = '[concepts] filter concepts by class';

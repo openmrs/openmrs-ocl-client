@@ -15,6 +15,8 @@ import {
   FETCHING_ORGANIZATIONS,
   RELEASING_HEAD_VERSION,
   REMOVE_CONCEPT,
+  CREATING_RELEASED_VERSION,
+  CREATING_RELEASED_VERSION_FAILED,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -33,6 +35,7 @@ import {
   fetchDictionaryConcepts,
   releaseHead,
   editDictionary,
+  createVersion,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
@@ -289,7 +292,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     });
   });
 
-  it('should handle release version', () => {
+  it('should handle release head version', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -325,6 +328,98 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(releaseHead('/users/nesh/collections/test/HEAD/')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle release of an existing version Id', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 409,
+        response: {
+          data: {
+            detail: 'V2.5 already exists',
+          },
+        },
+      });
+    });
+    const expectedActions = [
+      {
+        type: CREATING_RELEASED_VERSION_FAILED,
+        payload: true,
+      },
+    ];
+    const store = mockStore({ payload: {} });
+    const data = {
+      id: '2.5',
+      released: true,
+      description: 'Released',
+    };
+    const url = '/users/nesh/collections/test/HEAD/';
+    return store.dispatch(createVersion(url, data)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle release of a missing Id', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 409,
+        response: {
+          data: {
+            id: 'id cannot be missing',
+          },
+        },
+      });
+    });
+    const expectedActions = [
+      {
+        type: CREATING_RELEASED_VERSION_FAILED,
+        payload: true,
+      },
+    ];
+    const store = mockStore({ payload: {} });
+    const data = {
+      released: true,
+      description: 'Released',
+    };
+    const url = '/users/nesh/collections/test/HEAD/';
+    return store.dispatch(createVersion(url, data)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle release of a new version', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 201,
+        response: {
+          versions,
+        },
+      });
+    });
+    const expectedActions = [
+      {
+        type: CREATING_RELEASED_VERSION,
+        payload: {
+          versions,
+        },
+      },
+      {
+        type: CREATING_RELEASED_VERSION_FAILED,
+        payload: false,
+      },
+    ];
+    const store = mockStore({ payload: {} });
+    const data = {
+      released: true,
+      description: 'Released',
+    };
+    const url = '/users/nesh/collections/test/HEAD/';
+    return store.dispatch(createVersion(url, data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
