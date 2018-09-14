@@ -4,7 +4,7 @@ import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchingOrganizations, searchDictionaries } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import InlineError from '../messages/InlineError';
 import languages from './Languages';
 
@@ -22,6 +22,7 @@ export class DictionaryModal extends React.Component {
         default_locale: 'en',
         supported_locales: '',
         repository_type: 'OpenMRSDictionary',
+        conceptUrl: '',
       },
       errors: {},
       supportedLocalesOptions: [],
@@ -124,6 +125,21 @@ export class DictionaryModal extends React.Component {
      }
    }
    return supportedLocalesOptions;
+ }
+
+ searchInputValues = (val) => {
+   if (val.length > 0 && val[0] !== '*' && val[0] !== '.') {
+     this.props.searchDictionaries(val);
+   }
+ }
+
+ handleCopyDictionary = (item) => {
+   this.setState({
+     data: {
+       ...this.state.data,
+       conceptUrl: item.value,
+     },
+   });
  }
 
   validate = (data) => {
@@ -345,6 +361,20 @@ export class DictionaryModal extends React.Component {
                       value="OpenMRSDictionary"
                     />
                   </FormGroup>
+                  {!isEditingDictionary &&
+                  <FormGroup>
+                    {'Start by copying another dictionary'}
+                    <Select
+                      id="copy_dictionary"
+                      closeMenuOnSelect={false}
+                      isLoading={this.props.isLoadingDictionaries}
+                      options={[...this.props.userDictionaries, ...this.props.dictionaries]}
+                      onChange={val => this.handleCopyDictionary(val)}
+                      onInputChange={val => this.searchInputValues(val)}
+                      placeholder="Search public dictionaries"
+                    />
+                  </FormGroup>
+                  }
                 </div>
               </div>
             </form>
@@ -381,6 +411,10 @@ DictionaryModal.propTypes = {
   modalhide: PropTypes.func.isRequired,
   defaultLocaleOption: PropTypes.object.isRequired,
   isEditingDictionary: PropTypes.object.isRequired,
+  searchDictionaries: PropTypes.func.isRequired,
+  dictionaries: PropTypes.array.isRequired,
+  userDictionaries: PropTypes.array.isRequired,
+  isLoadingDictionaries: PropTypes.array.isRequired,
 };
 
 DictionaryModal.defaultProps = {
@@ -391,10 +425,12 @@ DictionaryModal.defaultProps = {
 
 function mapStateToProps(state) {
   return {
+    userDictionaries: state.user.userDictionary
+      .map(({ name, concepts_url }) => ({ label: name, value: concepts_url })),
     organizations: state.organizations.organizations,
   };
 }
 export default connect(
   mapStateToProps,
-  { fetchingOrganizations },
+  { fetchingOrganizations, searchDictionaries },
 )(DictionaryModal);

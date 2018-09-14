@@ -4,7 +4,8 @@ import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
 import { FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
-import fetchCielConcepts, { addExistingBulkConcepts } from '../../../redux/actions/bulkConcepts';
+import
+fetchCielConcepts, { addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
 
 const mockStore = configureStore([thunk]);
@@ -94,5 +95,27 @@ describe('Test suite for ciel concepts actions', () => {
     const store = mockStore({});
     return store.dispatch(fetchCielConcepts())
       .then(() => expect(store.getActions()).toEqual(returnedAction));
+  });
+
+  it('dispatches ADD_EXISTING_BULK_CONCEPTS  when adding dictionary reference', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: {
+          data: [],
+        },
+      });
+    });
+
+    const expectedAction = [];
+
+    const conceptUrl = '/orgs/WHO/sources/ICD-10/concepts/A15.2/';
+    const ownerUrl = '/orgs/WHO/';
+    const dictionaryId = 'ICD-10';
+    const store = mockStore({});
+
+    return store.dispatch(addDictionaryReference(conceptUrl, ownerUrl, dictionaryId))
+      .then(() => expect(store.getActions()).toEqual(expectedAction));
   });
 });

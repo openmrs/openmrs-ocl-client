@@ -15,6 +15,12 @@ const store = createMockStore({
   sources: {
     sources: [],
   },
+  user: {
+    userDictionary: [],
+  },
+  dictionaries: {
+    dictionaries: [],
+  },
 });
 
 jest.mock('../../components/dashboard/components/dictionary/AddDictionary');
