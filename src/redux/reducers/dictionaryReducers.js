@@ -5,10 +5,11 @@ import {
   CLEAR_DICTIONARY,
   FETCHING_VERSIONS,
   EDIT_DICTIONARY_SUCCESS,
+  RELEASING_HEAD_VERSION,
 } from '../actions/types';
 
 const initalState = {
-  versions: [], dictionaries: [], loading: false, dictionary: {},
+  versions: [], dictionaries: [], loading: false, dictionary: {}, isReleased: false,
 };
 
 export default (state = initalState, action) => {
@@ -32,6 +33,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         dictionary: action.payload,
+      };
+    case RELEASING_HEAD_VERSION:
+      return {
+        ...state,
+        isReleased: action.payload.released,
       };
     case CLEAR_DICTIONARY:
       return {

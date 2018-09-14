@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import './styles/dictionary-modal.css';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 
@@ -8,11 +8,13 @@ const DictionaryDetailCard = (props) => {
   const {
     dictionary: {
       name, created_on, updated_on, public_access, owner, owner_type, active_concepts, description,
-      owner_url, short_code, default_locale, url,
+      owner_url, short_code, default_locale, url
     }, versions, showEditModal, customConcepts, cielConcepts,
-    diagnosisConcepts, procedureConcepts, otherConcepts,
+    diagnosisConcepts, procedureConcepts, otherConcepts,  headVersion, handleRelease,
   } = props;
+
   const username = localStorage.getItem('username');
+
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric',
   };
@@ -68,7 +70,9 @@ const DictionaryDetailCard = (props) => {
           <ul>
             <li><a href={traditionalUrl} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
             <li><i className="far fa-copy" />Copy concepts from another dictionary</li>
-            <li><i className="fas fa-cloud-upload-alt" />Release HEAD as new version</li>
+            { owner === username && !headVersion.released ?
+              <li><button type="button" onClick={handleRelease} className="fas fa-cloud-upload-alt"><span id="release-head"> Release HEAD as new version</span></button></li>
+            : null}
           </ul>
         </fieldset>
       </form>
@@ -83,7 +87,6 @@ const DictionaryDetailCard = (props) => {
           <th>Released</th>
           <th>Actions</th>
         </tr>
-
         {releasedVersions.length >= 1 ?
           releasedVersions.map(version => (
             <DictionaryVersionsTable version={version} key={version.id} />
@@ -96,13 +99,15 @@ const DictionaryDetailCard = (props) => {
 
 DictionaryDetailCard.propTypes = {
   dictionary: PropTypes.object.isRequired,
+  versions: PropTypes.array.isRequired,
+  handleRelease: PropTypes.func.isRequired,
   showEditModal: PropTypes.object.isRequired,
   customConcepts: PropTypes.string.isRequired,
   cielConcepts: PropTypes.string.isRequired,
   diagnosisConcepts: PropTypes.string.isRequired,
   procedureConcepts: PropTypes.string.isRequired,
   otherConcepts: PropTypes.string.isRequired,
-  versions: PropTypes.array.isRequired,
+  headVersion: PropTypes.number.isRequired,
 };
 
 export default DictionaryDetailCard;

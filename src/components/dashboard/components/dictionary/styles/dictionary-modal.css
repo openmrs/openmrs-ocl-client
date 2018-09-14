@@ -100,7 +100,7 @@
     text-align: left;
 }
 .menu li:hover {
-    background-color: #506096;
+    background-color: rgb(155, 165, 197);
 }
 h3 {
     font-weight: 900;

@@ -48,6 +48,11 @@ export default {
       instance
         .get(`${data}`)
         .then(response => response.data),
+    
+    realisingHeadVersion: (url, data) =>
+      instance
+        .put(url, data)
+        .then(response => response.data),
   },
   organizations: {
     fetchOrganizations: () =>

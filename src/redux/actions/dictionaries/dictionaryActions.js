@@ -10,6 +10,7 @@ import {
   FETCHING_VERSIONS,
   FETCH_DICTIONARY_CONCEPT,
   EDIT_DICTIONARY_SUCCESS,
+  RELEASING_HEAD_VERSION,
 } from './../types';
 
 export const addDictionary = response => ({
@@ -64,6 +65,11 @@ export const clearDictionary = () => ({
 
 export const fetchingVersions = payload => ({
   type: FETCHING_VERSIONS,
+  payload,
+});
+
+export const realisingHeadSuccess = payload => ({
+  type: RELEASING_HEAD_VERSION,
   payload,
 });
 

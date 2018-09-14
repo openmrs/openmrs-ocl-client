@@ -5,7 +5,7 @@ import '../../styles/index.css';
 import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
-import { fetchDictionary, fetchVersions, fetchDictionaryConcepts } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
 
 export class DictionaryOverview extends Component {
@@ -24,6 +24,8 @@ export class DictionaryOverview extends Component {
     loader: propTypes.bool.isRequired,
     fetchDictionaryConcepts: propTypes.func.isRequired,
     fetchVersions: propTypes.func.isRequired,
+    releaseHead: propTypes.func.isRequired,
+    isReleased: propTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -50,6 +52,30 @@ export class DictionaryOverview extends Component {
     this.props.fetchDictionaryConcepts(conceptsUrl);
   }
 
+  componentWillUpdate(prevProps) {
+    const {
+      match: {
+        params: {
+          ownerType, owner, type, name,
+        },
+      },
+    } = this.props;
+    const versionUrl = `/${ownerType}/${owner}/${type}/${name}/versions/?verbose=true`;
+
+    if (prevProps.isReleased !== this.props.isReleased) {
+      this.props.fetchVersions(versionUrl);
+    }
+  }
+
+  handleRelease = () => {
+    const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
+    const headVersionObj = Object.assign({}, headVersion);
+    const data = {
+      released: true,
+    };
+    const url = headVersionObj.version_url;
+    this.props.releaseHead(url, data);
+  }
   handleHide = () => this.setState({ showEditModal: false });
   handleShow = () => this.setState({ showEditModal: true });
 
@@ -60,6 +86,8 @@ export class DictionaryOverview extends Component {
     const diagnosisConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'diagnosis').length.toString();
     const procedureConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'procedure').length.toString();
     const otherConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class !== 'diagnosis' && concept.concept_class !== 'procedure').length.toString();
+    const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
+    const headVersionIdObj = Object.assign({}, headVersion);
 
     return (
       <div className="dashboard-wrapper">
@@ -77,6 +105,8 @@ export class DictionaryOverview extends Component {
               diagnosisConcepts={diagnosisConcepts}
               procedureConcepts={procedureConcepts}
               otherConcepts={otherConcepts}
+              handleRelease={this.handleRelease}
+              headVersion={headVersionIdObj}
               showEditModal={this.handleShow}
             />
             <EditDictionary
@@ -95,12 +125,15 @@ export const mapStateToProps = state => ({
   dictionaryConcepts: state.concepts.dictionaryConcepts,
   loader: state.dictionaries.loading,
   versions: state.dictionaries.versions,
+  isReleased: state.dictionaries.isReleased,
 });
+
 export default connect(
   mapStateToProps,
   {
     fetchDictionaryConcepts,
     fetchDictionary,
     fetchVersions,
+    releaseHead,
   },
 )(DictionaryOverview);
