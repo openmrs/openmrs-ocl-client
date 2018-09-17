@@ -5,7 +5,7 @@ import {
   DictionaryDisplay,
   mapStateToProps,
 } from '../../../components/dashboard/container/DictionariesDisplay';
-import dictionaries from '../../__mocks__/dictionaries';
+import dictionaries, { mockDictionaries } from '../../__mocks__/dictionaries';
 import organizations from '../../__mocks__/organizations';
 import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
@@ -37,9 +37,20 @@ describe('DictionaryDisplay', () => {
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
     </MemoryRouter>);
-
-    expect(wrapper.find('.dashboard-wrapper')).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
+  });
+  it('should go to the next page', () => {
+    const props = {
+      fetchDictionaries: jest.fn(),
+      dictionaries: mockDictionaries(),
+      isFetching: false,
+      organizations: [organizations],
+    };
+    const wrapper = mount(<MemoryRouter>
+      <DictionaryDisplay {...props} />
+    </MemoryRouter>);
+    wrapper.find('.nxt').simulate('click');
+    expect(wrapper.find(DictionaryDisplay).instance().state.currentPage).toEqual(2);
   });
   it('Should handle click on dictionary card', () => {
     const props = {
@@ -65,7 +76,6 @@ describe('DictionaryDisplay', () => {
     const wrapper = shallow(<MemoryRouter>
       <DictionaryDisplay {...props} />
     </MemoryRouter>);
-
     expect(wrapper).toMatchSnapshot();
   });
   it('should test mapStateToProps', () => {
@@ -106,7 +116,7 @@ describe('DictionaryDisplay', () => {
     const component = shallow(<DictionariesSearch {...properties} />);
     expect(component).toMatchSnapshot();
   });
-  describe(' wrapper components', () => {
+  describe('wrapper components', () => {
     it('should render a list of dictionaries', () => {
       const length = jest.fn();
       const props = {

@@ -1,6 +1,5 @@
 .pagination-container {
-  font-size: .6rem;
-  padding: 1rem 1rem 0;
+  padding: 0 1rem;
 }
 .pagination-container .add-all-concepts-btn {
   padding: .4rem;

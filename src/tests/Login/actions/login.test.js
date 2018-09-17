@@ -68,8 +68,11 @@ describe('Test suite for login action', () => {
     });
 
     const expectedActions = [
-      { type: AUTHENTICATION_FAILED, payload: { errorMessage: 'Passwords did not match.' }, loading: false },
-    ];
+      {
+        type: AUTHENTICATION_FAILED,
+        payload: { errorMessage: 'Passwords did not match.' },
+        loading: false,
+      }];
 
     const store = mockStore();
 

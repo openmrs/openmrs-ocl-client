@@ -17,13 +17,13 @@ const DictionaryCard = (dictionary) => {
   const ownerType = owner_type === 'Organization' ? 'org' : 'user';
   return (
     <div
-      className="col-12 col-sm-6 col-md-4 col-lg-3 p-3 card-link"
+      className="col-12 col-sm-6 col-md-4 col-lg-3 p-3 card-link no-padding-top"
       role="presentation"
       onClick={() => gotoDictionary(`/dictionaryOverview${url}`)}
     >
       <div className="card-container" id="dictionary">
         <div className="source-card-body">
-          <div className="source-name col-12 mt-3" id="dictionaryHeader">
+          <div className="source-name col-12" id="dictionaryHeader">
             <a>
               <h6 className="text-left" id="cardCapitalize">
                 {name}
