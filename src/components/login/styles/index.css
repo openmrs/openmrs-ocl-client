@@ -1,13 +1,12 @@
 .form-container {
   display: flex;
   flex-direction: column;
-  height: 60vh;
+  height: 30vh;
   justify-content: center;
   align-items: center;
 }
 
 .form-wrapper {
-  margin-top: 5rem;
   padding: 1rem;
   padding-bottom: .5rem;
   background: white;
@@ -54,3 +53,16 @@
   height:460px;
 }
 
+.low-title{
+  text-align: center;
+  padding-bottom: 5px;
+}
+
+.low-title-msg{
+  text-align: center;
+  font-size: 1rem;
+}
+
+.login-title{
+  text-align: center;
+}
