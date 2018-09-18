@@ -5,7 +5,7 @@ import { isErrored, fetchConcepts, isFetching } from './ConceptActionCreators';
 const fetchConceptsAction = (
   query = '',
   names = [],
-  limit = 25,
+  limit = 500,
   page = 1,
 ) => async (dispatch) => {
   dispatch(isFetching(true));

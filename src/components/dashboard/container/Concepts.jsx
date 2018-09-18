@@ -7,6 +7,7 @@ import '../styles/index.css';
 
 import SearchConcept from '../components/concepts/Search';
 import ConceptList from '../components/concepts/ConceptList';
+import Paginations from '../../bulkConcepts/component/Paginations';
 
 export class ConceptSearch extends Component {
   static propTypes = {
@@ -21,6 +22,8 @@ export class ConceptSearch extends Component {
 
     this.state = {
       searchInput: '',
+      currentPage: 1,
+      limit: 50,
     };
     this.onSearch = this.onSearch.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -39,16 +42,28 @@ export class ConceptSearch extends Component {
       }
     });
   }
-
   onSubmit(event) {
     event.preventDefault();
     this.props.fetchConceptsAction(this.state.searchInput, 25, 1);
   }
-
+  handleClick = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    this.setState({ currentPage: Number(id) });
+  };
+  changeLimit = (value) => {
+    this.setState({ limit: value });
+  };
   render() {
-    const {
-      searchInput,
-    } = this.state;
+    const { searchInput } = this.state;
+    const { currentPage } = this.state;
+    const conceptsPerPage = this.state.limit;
+    const indexOfLastConcept = currentPage * conceptsPerPage;
+    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
+    const currentConcepts = this.props.concepts.slice(indexOfFirstConcept, indexOfLastConcept);
+    const lastPage = Math.ceil(this.props.concepts.length / conceptsPerPage);
+    const lastConcept = indexOfFirstConcept + currentConcepts.length;
+    const firstConcept = indexOfLastConcept - (conceptsPerPage - 1);
     return (
       <div className="dashboard-wrapper">
         <SearchConcept
@@ -62,11 +77,25 @@ export class ConceptSearch extends Component {
               <Link to="/dashboard/dictionaries" id="dictionary-link">
                 <i className="fas fa-chevron-left" /> Back to Dictionaries
               </Link>
-              <ConceptList concepts={this.props.concepts} fetching={this.props.isFetching} />
+              <div className="container">
+                <div className="row justify-content-end">
+                  <div className="col-6">
+                    <Paginations
+                      concepts={lastConcept}
+                      firstConceptIndex={firstConcept}
+                      totalConcepts={this.props.concepts.length}
+                      currentPage={currentPage}
+                      handleClick={this.handleClick}
+                      lastPage={lastPage}
+                      onChangeLimit={value => this.changeLimit(value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <ConceptList concepts={currentConcepts} fetching={this.props.isFetching} />
             </div>
           </div>
         </div>
-
       </div>
     );
   }
@@ -76,5 +105,7 @@ export const mapStateToProps = state => ({
   concepts: state.concepts.concepts,
   isFetching: state.concepts.loading,
 });
-
-export default connect(mapStateToProps, { fetchConceptsAction })(ConceptSearch);
+export default connect(
+  mapStateToProps,
+  { fetchConceptsAction },
+)(ConceptSearch);
