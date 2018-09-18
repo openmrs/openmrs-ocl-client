@@ -125,6 +125,7 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: CREATE_NEW_CONCEPT, payload: newConcept },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -144,8 +145,8 @@ describe('Test suite for dictionary concept actions', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: CREATE_NEW_CONCEPT, payload: 'bad request' },
       { type: IS_FETCHING, payload: false },
+      { type: CREATE_NEW_CONCEPT, payload: 'bad request' },
     ];
 
     const store = mockStore(mockConceptStore);
