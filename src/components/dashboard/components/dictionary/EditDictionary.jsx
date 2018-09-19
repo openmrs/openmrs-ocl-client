@@ -28,6 +28,7 @@ export class EditDictionary extends React.Component {
           {languages[i].label}
         </option>);
         this.setState({
+          ...this.state,
           defaultLocaleOption: option,
         });
       }

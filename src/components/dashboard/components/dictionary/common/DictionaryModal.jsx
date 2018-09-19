@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
+import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import InlineError from '../messages/InlineError';
-import language from './Languages';
+import languages from './Languages';
 
 export class DictionaryModal extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export class DictionaryModal extends React.Component {
         repository_type: 'OpenMRSDictionary',
       },
       errors: {},
+      supportedLocalesOptions: [],
     };
   }
   componentDidMount() {
@@ -29,6 +31,7 @@ export class DictionaryModal extends React.Component {
     const { isEditingDictionary } = this.props;
     if (isEditingDictionary) {
       this.populateFields();
+      this.preSelectSupportedLocales();
     }
   }
 
@@ -43,6 +46,7 @@ export class DictionaryModal extends React.Component {
       },
     });
   };
+
   onSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate(this.state.data);
@@ -62,6 +66,20 @@ export class DictionaryModal extends React.Component {
         });
     }
   };
+
+  handleChangeSupportedLocale = (arr) => {
+    const supported_locales = [];
+    for (let i = 0; i < arr.length; i += 1) {
+      supported_locales.push(arr[i].value);
+    }
+    this.setState({
+      data: {
+        ...this.state.data,
+        supported_locales: supported_locales.toString(),
+      },
+    });
+  };
+
   populateFields() {
     const {
       dictionary: {
@@ -69,6 +87,7 @@ export class DictionaryModal extends React.Component {
         default_locale, repository_type,
       },
     } = this.props;
+    const supportedLocalesOptions = this.preSelectSupportedLocales();
     this.setState({
       data: {
         id,
@@ -82,8 +101,29 @@ export class DictionaryModal extends React.Component {
         repository_type,
       },
       errors: {},
+      supportedLocalesOptions,
     });
   }
+
+ preSelectSupportedLocales = () => {
+   const {
+     dictionary: {
+       supported_locales,
+     },
+   } = this.props;
+   if (supported_locales === undefined) {
+     return null;
+   }
+   const supportedLocalesOptions = [];
+   for (let i = 0; i < supported_locales.length; i += 1) {
+     for (let j = 0; j < languages.length; j += 1) {
+       if (supported_locales[i] === languages[j].value) {
+         supportedLocalesOptions.push(languages[j]);
+       }
+     }
+   }
+   return supportedLocalesOptions;
+ }
 
   validate = (data) => {
     const errors = {};
@@ -111,13 +151,14 @@ export class DictionaryModal extends React.Component {
 
   render() {
     const { data, errors } = this.state;
-    const { organizations } = this.props;
-    const { dictionary } = this.props;
-    const { isEditingDictionary } = this.props;
+    const {
+      organizations, dictionary,
+      isEditingDictionary,
+    } = this.props;
     return (
       <div className="col-sm-5">
         <Modal
-          {...this.props}
+
           show={this.props.show}
           onHide={this.props.modalhide}
           dialogClassName="custom-modal"
@@ -170,14 +211,27 @@ export class DictionaryModal extends React.Component {
                       {isEditingDictionary &&
                         this.props.defaultLocaleOption
                       }
-                      {language &&
-                      language.map(languages => (
-                        <option value={languages.value} key={languages.value}>
-                          { languages.label }
+                      {languages &&
+                      languages.map(language => (
+                        <option value={language.value} key={language.value}>
+                          { language.label }
                         </option>
                       ))}
                     </FormControl>
                   </FormGroup>
+
+                  {'Other Languages'}
+                  <Select
+                    id="supported_locales"
+                    closeMenuOnSelect={false}
+                    defaultValue={
+                      isEditingDictionary ?
+                      this.state.supportedLocalesOptions :
+                      [languages[0]]}
+                    options={languages}
+                    isMulti
+                    onChange={this.handleChangeSupportedLocale}
+                  />
 
                   <FormGroup style={{ marginTop: '12px' }}>
                     Visibility{''}
@@ -305,8 +359,11 @@ DictionaryModal.propTypes = {
   buttonname: PropTypes.string,
   fetchingOrganizations: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
-  organizations: PropTypes.shape,
+  organizations: PropTypes.object.isRequired,
   dictionary: PropTypes.object.isRequired,
+  modalhide: PropTypes.func.isRequired,
+  defaultLocaleOption: PropTypes.object.isRequired,
+  isEditingDictionary: PropTypes.object.isRequired,
 };
 
 DictionaryModal.defaultProps = {

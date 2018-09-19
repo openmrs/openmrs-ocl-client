@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
+import dictionary from '../__mocks__/dictionaries';
 import { AddDictionary } from '../../components/dashboard/components/dictionary/AddDictionary';
 
 const props = {
@@ -16,6 +17,7 @@ const props = {
   createDictionaryUser: jest.fn(),
   handleHide: jest.fn(),
   name: jest.fn(),
+  dictionary,
 };
 
 describe('Test suite for dictionary modal', () => {
@@ -57,5 +59,17 @@ describe('Test suite for dictionary modal', () => {
     };
     const component = shallow(<AddDictionary {...props} {...preventDefault} {...data} />);
     expect(component).toMatchSnapshot();
+  });
+  it('it should handle change of supported locales option', () => {
+    const otherLanguagesSelect = wrapper.find('#supported_locales');
+    expect(otherLanguagesSelect.length).toEqual(1);
+    otherLanguagesSelect.simulate('change', [{ value: 'fr', label: 'French [fr]' }]);
+    expect(wrapper.state().data.supported_locales).toEqual('fr');
+  });
+
+  it('it should render when editing dictionary', () => {
+    props.isEditingDictionary = true;
+    const editDictionaryModal = shallow(<DictionaryModal {...props} />);
+    expect(editDictionaryModal).toMatchSnapshot();
   });
 });
