@@ -5,7 +5,9 @@ const Paginations = props => (
   <div className="row mt-2 pagination-container">
     <div className="space-between">
       <p>
+        <i>
         Showing {props.firstConceptIndex}-{props.concepts} of {props.totalConcepts} concepts
+        </i>
       </p>
       <span className="paginate-controllers">
         {props.currentPage > 1 ?

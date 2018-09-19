@@ -103,13 +103,13 @@ export class BulkConceptsPage extends Component {
       datatypeInput, classInput, currentPage, searchInput,
     } = this.state;
 
-    const conceptsPerPage = 10;
+    const conceptsPerPage = 20;
     const indexOfLastConcept = currentPage * conceptsPerPage;
     const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
     const currentConcepts = this.props.concepts.slice(indexOfFirstConcept, indexOfLastConcept);
     const lastPage = Math.ceil(this.props.concepts.length / conceptsPerPage);
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
-    const firstConcept = indexOfLastConcept - 9;
+    const firstConcept = indexOfLastConcept - 19;
     return (
       <div className="container custom-dictionary-concepts bulk-concepts">
         <section>
