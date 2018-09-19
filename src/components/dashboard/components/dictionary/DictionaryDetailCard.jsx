@@ -46,7 +46,7 @@ const DictionaryDetailCard = (props) => {
   const releasedVersions = versions.filter(version => version.released === true);
 
   return (
-    <div className="container">
+    <div className="dictionaryDetails">
       <section className="backLink">
         <Link
           to="/dashboard"
@@ -125,23 +125,6 @@ const DictionaryDetailCard = (props) => {
               Go to concepts
             </Link>
           </fieldset>
-          <fieldset>
-            <legend>Concepts (HEAD version)</legend>
-            <p className="paragraph">Total Concepts: {active_concepts}</p>
-            <p className="points">Custom Concepts: {customConcepts}</p>
-            <p className="points">From CIEL: {cielConcepts}</p>
-            <p>By class:</p>
-            <p className="points">Diagnosis: {diagnosisConcepts}</p>
-            <p className="points">Procedure: {procedureConcepts}</p>
-            <p className="points">Others: {otherConcepts}</p>
-            <Link
-              className="btn btn-secondary"
-              id="conceptB"
-              to={`/concepts${owner_url}${short_code}/${name}/${default_locale}`}
-            >
-              Go to concepts
-            </Link>
-          </fieldset>
         </form>
         <form className="col-6 menu" id="actionsCard">
           <fieldset>
@@ -152,10 +135,6 @@ const DictionaryDetailCard = (props) => {
                   <i className="fas fa-external-link-alt" />
                   Browse in traditional OCL
                 </a>
-              </li>
-              <li>
-                <i className="far fa-copy" />
-                Copy concepts from another dictionary
               </li>
               {owner === username && !headVersion.released ? (
                 <li>

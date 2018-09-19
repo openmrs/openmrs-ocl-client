@@ -49,7 +49,7 @@ describe('DictionaryOverview', () => {
       </MemoryRouter>
     </Provider>);
     expect(wrapper.find('#headingDict')).toHaveLength(1);
-    expect(wrapper.find('.paragraph')).toHaveLength(6);
+    expect(wrapper.find('.paragraph')).toHaveLength(5);
     expect(wrapper.find('tr')).toHaveLength(2);
     expect(wrapper).toMatchSnapshot();
   });

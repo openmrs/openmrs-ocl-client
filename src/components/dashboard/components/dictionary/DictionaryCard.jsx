@@ -17,7 +17,7 @@ const DictionaryCard = (dictionary) => {
   const ownerType = owner_type === 'Organization' ? 'org' : 'user';
   return (
     <div
-      className="col-12 col-sm-6 col-md-4 col-lg-3 p-3 card-link no-padding-top"
+      className="col-12 col-sm-6 col-md-4 col-lg-3 p-3 card-link"
       role="presentation"
       onClick={() => gotoDictionary(`/dictionaryOverview${url}`)}
     >
