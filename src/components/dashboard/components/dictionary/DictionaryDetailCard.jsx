@@ -47,6 +47,17 @@ const DictionaryDetailCard = (props) => {
 
   return (
     <div className="container">
+      <section className="backLink">
+        <Link
+          to="/dashboard"
+          className="backLinkText"
+        >
+          <span align="left">
+            <i className="fas fa-arrow-left" />
+            <i>Back to my dashboard</i>
+          </span>
+        </Link>
+      </section>
       <h1 id="headingDict" align="left">
         {name} Dictionary
       </h1>
@@ -66,7 +77,7 @@ const DictionaryDetailCard = (props) => {
                 <b>Description</b>: {description}
               </p>
             ) : (
-              <p>No Description</p>
+              <p><b>Description</b>: No Description</p>
             )}
             <p className="paragraph">
               <b>Owner:</b> {owner}({owner_type})

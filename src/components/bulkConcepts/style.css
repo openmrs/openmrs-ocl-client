@@ -21,7 +21,7 @@ legend.scheduler-border {
 .add-bulk-concepts{
     text-align: left!important;
     float: center;
-    padding: 50px; 
+    margin-top: -3%;
 }
 #search{
     border: none;

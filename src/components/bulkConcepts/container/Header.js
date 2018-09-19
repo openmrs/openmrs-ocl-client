@@ -4,23 +4,24 @@ import { Link } from 'react-router-dom';
 
 const Header = ({ locationPath }) => {
   const {
-    type, typeName, collectionName, dictionaryName,
+    type,
+    typeName,
+    collectionName,
+    dictionaryName,
+    language,
   } = locationPath;
   return (
     <section className="row concept-header">
       <div className="col-12">
         <div className="backLink">
           <Link
-            to={`/dictionaryOverview/${type}/${typeName}/collections/${collectionName}`}
+            to={`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}/`}
             className="collection-name small-text"
           >
             <i className="fas fa-arrow-left" />
-            <i>Go back to {dictionaryName} overview</i>
+            <i>Go back to {dictionaryName} concepts</i>
           </Link>
         </div>
-        <header>
-          <h2 className="text-capitalize">{dictionaryName} Dictionary</h2>
-        </header>
       </div>
     </section>
   );
@@ -31,6 +32,8 @@ Header.propTypes = {
     type: PropTypes.string.isRequired,
     typeName: PropTypes.string.isRequired,
     collectionName: PropTypes.string.isRequired,
+    language: PropTypes.string.isRequired,
+    dictionaryName: PropTypes.string.isRequired,
   }).isRequired,
 };
 export default Header;

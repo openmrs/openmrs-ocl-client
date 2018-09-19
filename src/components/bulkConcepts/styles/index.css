@@ -78,6 +78,19 @@
   padding: .7rem;
 }
 
+.backLinkText{
+  border-bottom: thin solid #4f6196;
+}
+
+.linkSection{
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+
+.link{
+  padding-bottom: 1rem;
+}
+
 .synonyms {
   margin: 0;
   margin-top: 1rem;

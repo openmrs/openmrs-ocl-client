@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from '../bulkConcepts/bulkConceptList';
+import Header from '../bulkConcepts/container/Header';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
@@ -12,6 +13,13 @@ export class AddBulkConcepts extends Component {
     cielConcepts: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
     })).isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        type: PropTypes.string,
+        typeName: PropTypes.string,
+        collectionName: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
   handleAddAll=() => {
@@ -26,9 +34,7 @@ export class AddBulkConcepts extends Component {
     const { cielConcepts } = this.props;
     return (
       <div className="container add-bulk-concepts">
-        <a href={document.referrer} id="dictionary-link">
-          <i className="fas fa-chevron-left" /> Back to {dictionaryName}
-        </a>
+        <Header locationPath={this.props.match.params} />
         <h3>
           <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
         </h3>

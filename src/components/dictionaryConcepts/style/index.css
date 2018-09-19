@@ -285,20 +285,16 @@ select.form-control {
 }
 
 .collection-name {
-  color: #4f6196;
-}
-
-.collection-name:hover {
   border-bottom: thin solid #4f6196;
 }
 
-.small-text {
-  font-size: .7rem;
-}
 .datatypefield {
   width: 41%;
   font-size: .8rem;
   padding-bottom: 1%;
+}
+.backLink{
+  padding-bottom: 1rem;
 }
 .create-custom-concept {
   margin-top: -5%;

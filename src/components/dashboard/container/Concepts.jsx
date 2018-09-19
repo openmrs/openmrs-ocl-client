@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchConceptsAction from '../../../redux/actions/concepts/index';
@@ -59,9 +58,6 @@ export class ConceptSearch extends Component {
         <div className="container-fluid pt-3">
           <div className="row justify-content-center">
             <div className="col-10 offset-sm-1">
-              <Link to="/dashboard/dictionaries" id="dictionary-link">
-                <i className="fas fa-chevron-left" /> Back to Dictionaries
-              </Link>
               <ConceptList concepts={this.props.concepts} fetching={this.props.isFetching} />
             </div>
           </div>

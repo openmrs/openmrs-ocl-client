@@ -7,6 +7,7 @@ import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
 import Paginations from '../component/Paginations';
+import Header from './Header';
 import {
   fetchBulkConcepts,
   addToFilterList,
@@ -89,7 +90,6 @@ export class BulkConceptsPage extends Component {
       this.props.fetchFilteredConcepts('CIEL', query);
     }
   };
-
   render() {
     const {
       concepts,
@@ -110,10 +110,10 @@ export class BulkConceptsPage extends Component {
     const lastPage = Math.ceil(this.props.concepts.length / conceptsPerPage);
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
     const firstConcept = indexOfLastConcept - 9;
-
     return (
-      <div className="container custom-dictionary-concepts bulk-concepts mt-3">
-        <section className="row">
+      <div className="container custom-dictionary-concepts bulk-concepts">
+        <section>
+          <Header locationPath={this.props.match.params} />
           <div className="col-12 pt-1">
             <h4>Add CIEL concepts</h4>
           </div>
