@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import '../styles/index.css';
 import {
   fetchDictionaries,
@@ -88,11 +87,6 @@ export class DictionaryDisplay extends Component {
               searchValue={searchInput}
               fetching={isFetching}
             />
-          </div>
-          <div className="col-md-12">
-            <Link to="/dashboard">
-              <i className="fas fa-chevron-left" /> Back to my Dictionaries
-            </Link>
           </div>
         </div>
         <Paginations

@@ -18,7 +18,7 @@ const ConceptDropdown = props => (
         <Link className="dropdown-item" to={`${props.pathName}/import`}>
           Add CIEL concepts
         </Link>
-        <Link to="/bulkconcepts" className="dropdown-item">
+        <Link to={`${props.pathName}/bulk`} className="dropdown-item">
           Bulk add concepts
         </Link>
       </div>

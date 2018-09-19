@@ -13,6 +13,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
+      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -26,6 +27,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
+      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -40,6 +42,7 @@ describe('Add Bulk Concepts', () => {
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
+      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>

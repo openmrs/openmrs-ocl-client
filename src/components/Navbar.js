@@ -39,6 +39,16 @@ export class Navbar extends Component {
                 <li className="nav-item nav-link" >
                   <a
                     className="nav-link text-white"
+                    href="/dashboard"
+                  >
+                    <strong>
+                      Dashboard
+                    </strong>
+                  </a>
+                </li>
+                <li className="nav-item nav-link" >
+                  <a
+                    className="nav-link text-white"
                     href="/dashboard/dictionaries"
                   >
                     <strong>

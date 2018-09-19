@@ -24,7 +24,7 @@ const SpecificConceptTable = (props) => {
         {concept_class} / {datatype}
       </td>
       <td className="table3">
-        <a href="#" onClick={() => handleAdd(props)} className="add-btn">
+        <a href="_blank" onClick={() => handleAdd(props)} className="add-btn">
           {' '}
           Add{' '}
         </a>{' '}
