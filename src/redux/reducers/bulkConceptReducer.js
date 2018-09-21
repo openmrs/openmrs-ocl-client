@@ -23,6 +23,7 @@ const bulkConcepts = (state = userInitialState, action) => {
         datatypes: getDatatypes(action.payload),
         classes: filterClass(action.payload),
       };
+
     case FETCH_FILTERED_CONCEPTS:
       return {
         ...state,

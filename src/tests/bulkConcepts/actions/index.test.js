@@ -78,6 +78,21 @@ describe('Test suite for ciel concepts actions', () => {
     return store.dispatch(addExistingBulkConcepts(data))
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
+
+  it('dispatches an error when adding bulk concepts', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 400,
+      });
+    });
+    const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
+    const store = mockStore({});
+    return store.dispatch(addExistingBulkConcepts(data))
+      .catch(() => expect(store.getActions()).toEqual(returnedAction));
+  });
+
+
   it('dispatches an error message when a response is errored', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();

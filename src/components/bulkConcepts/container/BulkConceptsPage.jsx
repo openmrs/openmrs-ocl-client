@@ -72,6 +72,7 @@ export class BulkConceptsPage extends Component {
     const { id } = e.target;
     this.setState({ currentPage: Number(id) });
   };
+
   handleChange = (event) => {
     const {
       target: { value },

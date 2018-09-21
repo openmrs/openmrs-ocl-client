@@ -5,7 +5,7 @@ import { FETCH_CIEL_CONCEPTS, ADD_EXISTING_BULK_CONCEPTS } from '../types';
 
 const fetchCielConcepts = () => async (dispatch) => {
   dispatch(isFetching(true));
-  const url = 'orgs/CIEL/sources/CIEL/concepts/';
+  const url = 'orgs/CIEL/sources/CIEL/concepts/?limit=0';
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_CIEL_CONCEPTS));
@@ -17,16 +17,20 @@ const fetchCielConcepts = () => async (dispatch) => {
 };
 export default fetchCielConcepts;
 
-export const addExistingBulkConcepts = data => async (dispatch) => {
-  const typeName = localStorage.getItem('typeName');
-  const dictionaryId = localStorage.getItem('dictionaryId');
-  const userType = localStorage.getItem('type');
-  const url = `${userType}/${typeName}/collections/${dictionaryId}/references/`;
-  const payload = await instance.put(url, data);
-  dispatch(isSuccess(payload.data, ADD_EXISTING_BULK_CONCEPTS));
-  const justAddedConcepts = payload.data.filter(concept => concept.added).length;
-  const alreadyAddedConcepts = payload.data.length - justAddedConcepts;
-  notify.show(`Added ${justAddedConcepts} concept(s) skipped ${alreadyAddedConcepts} that were already added`, 'success', 3000);
+export const addExistingBulkConcepts = conceptData => async (dispatch) => {
+  const { url, data } = conceptData;
+  try {
+    const payload = await instance.put(url, data);
+    dispatch(isSuccess(payload.data, ADD_EXISTING_BULK_CONCEPTS));
+    const existing = payload.data.filter(pay => pay.added === false);
+    if (existing.length > 0) {
+      notify.show(`Only ${payload.data.length - existing.length} of ${payload.data.length} concept(s) were added. Skipped ${existing.length} already added`, 'error', 3000);
+    } else {
+      notify.show(`${payload.data.length - existing.length} Concept(s) Added`, 'success', 3000);
+    }
+  } catch (error) {
+    notify.show(error, 'error', 3000);
+  }
 };
 
 export const addDictionaryReference = (conceptUrl, ownerUrl, dictionaryId) =>

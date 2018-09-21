@@ -2,37 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Paginations = props => (
+
   <div className="row mt-2 pagination-container">
-    <div className="space-between">
-      <p>
-        <i>
+    {props.totalConcepts > 1 ?
+      <div className="space-between">
+        <p>
         Showing {props.firstConceptIndex}-{props.concepts} of {props.totalConcepts} concepts
-        </i>
-      </p>
-      <span className="paginate-controllers">
-        {props.currentPage > 1 ?
-          <i
-            className="fas fa-angle-double-left prev"
-            role="presentation"
-            id={props.currentPage - 1}
-            onClick={props.handleClick}
-          /> : <i
-            className="fas fa-angle-double-left disabled"
-            role="presentation"
-          /> }
-        <span className="badge badge-light"><h6>{props.currentPage}</h6></span>
-        {props.currentPage < props.lastPage ?
-          <i
-            className="fas fa-angle-double-right nxt"
-            role="presentation"
-            id={props.currentPage + 1}
-            onClick={props.handleClick}
-          /> : <i
-            className="fas fa-angle-double-right disabled"
-            role="presentation"
-          /> }
-      </span>
-    </div>
+        </p>
+        <span className="paginate-controllers">
+          {props.currentPage > 1 ?
+            <i
+              className="fas fa-angle-double-left prev"
+              role="presentation"
+              id={props.currentPage - 1}
+              onClick={props.handleClick}
+            /> : <i
+              className="fas fa-angle-double-left disabled"
+              role="presentation"
+            /> }
+          <span className="badge badge-light"><h6>{props.currentPage}</h6></span>
+          {props.currentPage < props.lastPage ?
+            <i
+              className="fas fa-angle-double-right nxt"
+              role="presentation"
+              id={props.currentPage + 1}
+              onClick={props.handleClick}
+            /> : <i
+              className="fas fa-angle-double-right disabled"
+              role="presentation"
+            /> }
+        </span>
+      </div> : null}
   </div>
 );
 

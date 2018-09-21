@@ -65,5 +65,8 @@ const ConceptDropdown = props => (
 );
 ConceptDropdown.propTypes = {
   pathName: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  typeName: PropTypes.string.isRequired,
+  collectionName: PropTypes.string.isRequired,
 };
 export default ConceptDropdown;

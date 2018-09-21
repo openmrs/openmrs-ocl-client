@@ -1,36 +1,95 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from '../bulkConcepts/bulkConceptList';
+import Paginations from './component/Paginations';
 import Header from '../bulkConcepts/container/Header';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
-    fetchCielConcepts: PropTypes.func.isRequired,
-    addExistingBulkConcepts: PropTypes.func.isRequired,
-    cielConcepts: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string,
+    fetchCielConcepts: propTypes.func.isRequired,
+    addExistingBulkConcepts: propTypes.func.isRequired,
+    cielConcepts: propTypes.arrayOf(propTypes.shape({
+      id: propTypes.string,
     })).isRequired,
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        type: PropTypes.string,
-        typeName: PropTypes.string,
-        collectionName: PropTypes.string,
+    isFetching: propTypes.bool.isRequired,
+    match: propTypes.shape({
+      params: propTypes.shape({
+        type: propTypes.string,
+        typeName: propTypes.string,
+        collectionName: propTypes.string,
       }).isRequired,
     }).isRequired,
-    isFetching: PropTypes.bool.isRequired,
   };
-  handleAddAll=() => {
-    const expressions = this.props.cielConcepts.map(concept => concept.url);
-    this.props.addExistingBulkConcepts({ data: { expressions } });
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 1,
+      cielConcepts: [],
+    };
   }
+
+  handleAddAll = () => {
+    const {
+      match: {
+        params: {
+          type, typeName, collectionName,
+        },
+      },
+    } = this.props;
+    const url = `${type}/${typeName}/collections/${collectionName}/references/`;
+    const { cielConcepts } = this.state;
+    this.props.addExistingBulkConcepts({ url, data: { data: { expressions: cielConcepts } } });
+    setTimeout(() => {
+      window.history.back();
+    }, 2000);
+  }
+
   handleCielClick=() => {
     this.props.fetchCielConcepts();
   }
+
+  handleBack = () => {
+    window.history.back();
+  }
+
+  handleSelect = (e) => {
+    e.preventDefault();
+    const { value, checked } = e.target;
+
+    if (checked) {
+      this.setState({
+        cielConcepts: [value, ...this.state.cielConcepts],
+      });
+    } else {
+      const index = this.state.cielConcepts.indexOf(value);
+      this.setState({
+        cielConcepts: this.state.cielConcepts.filter((_, i) => i !== index),
+      });
+    }
+  }
+
+  handlePaginationClick = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    this.setState({ currentPage: Number(id) });
+  };
+
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
+    const { currentPage } = this.state;
     const { cielConcepts } = this.props;
+
+    const conceptsPerPage = 20;
+    const indexOfLastConcept = currentPage * conceptsPerPage;
+    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
+    const currentConcepts = cielConcepts.slice(indexOfFirstConcept, indexOfLastConcept);
+    const lastPage = Math.ceil(cielConcepts.length / conceptsPerPage);
+    const lastConcept = indexOfFirstConcept + currentConcepts.length;
+    const firstConcept = indexOfLastConcept - 19;
     return (
       <div className="container-fluid add-bulk-concepts">
         <Header locationPath={this.props.match.params} />
@@ -94,22 +153,36 @@ export class AddBulkConcepts extends Component {
           </div>
         </fieldset>
         <h4>Concept IDs to add</h4>
+        <Paginations
+          concepts={lastConcept}
+          firstConceptIndex={firstConcept}
+          totalConcepts={cielConcepts.length}
+          currentPage={currentPage}
+          handleClick={this.handlePaginationClick}
+          lastPage={lastPage}
+        />
         <div className="prefered-concepts">
           <BulkConceptList
-            cielConcepts={cielConcepts}
+            cielConcepts={currentConcepts}
             fetching={this.props.isFetching}
+            handleSelect={this.handleSelect}
           />
         </div>
         <br />
         <div className="add-all-btn">
           <a href={document.referrer}>
-            <button type="button" className="btn btn-secondary">
+            <button type="button" className="btn btn-secondary btn-bulk-cancel" onClick={this.handleBack}>
               Back
             </button>
           </a>{' '}
-          <button type="button" className="btn btn-primary" id="btn-add-all"onClick={this.handleAddAll}>
-            <i className="fa fa-plus" /> Add All
-          </button>
+          {this.state.cielConcepts.length === 0 ?
+            <button type="button" className="btn btn-primary" id="btn-add-all" disabled>
+              <i className="fa fa-plus" /> Add All Selected
+            </button> :
+            <button type="button" className="btn btn-primary btn-add-all" id="btn-add-all" onClick={this.handleAddAll}>
+              <i className="fa fa-plus" /> Add All Selected
+            </button>
+        }
         </div>
       </div>
     );
