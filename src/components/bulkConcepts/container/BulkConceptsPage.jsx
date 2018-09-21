@@ -61,10 +61,11 @@ export class BulkConceptsPage extends Component {
       target: { name },
     } = event;
     const targetName = name.split(',');
+    const query = `q=${this.state.searchInput}`;
     if (targetName[1] === 'datatype') {
-      this.props.addToFilterList(targetName[0], 'datatype');
+      this.props.addToFilterList(targetName[0], 'datatype', query);
     } else {
-      this.props.addToFilterList(targetName[0], 'classes');
+      this.props.addToFilterList(targetName[0], 'classes', query);
     }
   };
 

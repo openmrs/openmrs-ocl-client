@@ -95,20 +95,23 @@ export class DictionaryConcepts extends Component {
     const eventAction = event.target.type === 'checkbox' ? checked : value;
     const inputName = name.split(',')[0];
     const filterType = name.split(',')[1];
+    const { typeName, collectionName, searchInput } = this.state;
     if (type === 'checkbox' && filterType === 'source') {
       this.props.filterBySource(
         inputName,
         this.state.type,
-        this.state.typeName,
-        this.state.collectionName,
+        typeName,
+        collectionName,
+        searchInput,
       );
     }
     if (type === 'checkbox' && filterType === 'classes') {
       this.props.filterByClass(
         `"${inputName}"`,
         this.state.type,
-        this.state.typeName,
-        this.state.collectionName,
+        typeName,
+        collectionName,
+        searchInput,
       );
     }
 
