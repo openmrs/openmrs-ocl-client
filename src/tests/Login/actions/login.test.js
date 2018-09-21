@@ -33,7 +33,9 @@ describe('Test suite for login action', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response,
+        response: {
+          data: {},
+        },
       });
     });
 

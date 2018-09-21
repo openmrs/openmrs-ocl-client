@@ -4,6 +4,7 @@ import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { fetchSources } from '../../../../../redux/actions/sources/index';
 import InlineError from '../messages/InlineError';
 import languages from './Languages';
 
@@ -13,7 +14,7 @@ export class DictionaryModal extends React.Component {
     this.state = {
       data: {
         id: '',
-        preffered_sources: '',
+        preffered_source: '',
         public_access: '',
         name: '',
         owner: '',
@@ -28,6 +29,7 @@ export class DictionaryModal extends React.Component {
   }
   componentDidMount() {
     this.props.fetchingOrganizations();
+    this.props.fetchSources('', [], 0, 1, 'name');
     const { isEditingDictionary } = this.props;
     if (isEditingDictionary) {
       this.populateFields();
@@ -91,7 +93,7 @@ export class DictionaryModal extends React.Component {
     this.setState({
       data: {
         id,
-        preffered_sources: preffered_source,
+        preffered_source,
         public_access,
         name,
         owner,
@@ -133,8 +135,8 @@ export class DictionaryModal extends React.Component {
     if (!data.id) {
       errors.id = 'Short code cannot be empty';
     }
-    if (!data.preffered_sources) {
-      errors.preffered_sources = 'Kindly select the preferred source';
+    if (!data.preffered_source) {
+      errors.preffered_source = 'Kindly select the preferred source';
     }
     if (!data.owner) {
       errors.owner = 'Kindly select the Owner of the Dictionary';
@@ -153,8 +155,9 @@ export class DictionaryModal extends React.Component {
     const { data, errors } = this.state;
     const {
       organizations, dictionary,
-      isEditingDictionary,
+      isEditingDictionary, sources,
     } = this.props;
+    const publicSources = [...sources];
     return (
       <div className="col-sm-5">
         <Modal
@@ -180,19 +183,25 @@ export class DictionaryModal extends React.Component {
                     <FormControl
                       componentClass="select"
                       type="text"
-                      id="preferred_sources"
-                      name="preffered_sources"
+                      id="preferred_source"
+                      name="preffered_source"
                       placeholder="CIEL"
                       onChange={this.onChange}
                       value={data.preffered_sources}
                     >
                       <option value="" />
-                      <option value="1">CIEL (default source)</option>
+                      <option value="CIEL">CIEL (default source)</option>
+                      <option value="PIH">PIH</option>
                       {
                         isEditingDictionary &&
                         <option value={dictionary.preffered_source} selected>
                           {dictionary.preffered_source}
                         </option>
+                      }
+                      {
+                        publicSources.sort((a, b) => a.name > b.name).map(source => (
+                          <option value={source.id}>{source.name}</option>
+                        ))
                       }
                     </FormControl>
                   </FormGroup>
@@ -364,6 +373,8 @@ DictionaryModal.propTypes = {
   modalhide: PropTypes.func.isRequired,
   defaultLocaleOption: PropTypes.object.isRequired,
   isEditingDictionary: PropTypes.object.isRequired,
+  fetchSources: PropTypes.func.isRequired,
+  sources: PropTypes.array.isRequired,
 };
 
 DictionaryModal.defaultProps = {
@@ -375,9 +386,10 @@ DictionaryModal.defaultProps = {
 function mapStateToProps(state) {
   return {
     organizations: state.organizations.organizations,
+    sources: state.sources.sources,
   };
 }
 export default connect(
   mapStateToProps,
-  { fetchingOrganizations },
+  { fetchingOrganizations, fetchSources },
 )(DictionaryModal);
