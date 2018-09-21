@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { DictionaryOverview } from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
+import DictionaryDetailCard from '../../components/dashboard/components/dictionary/DictionaryDetailCard';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
 
 const store = createMockStore({
@@ -171,5 +172,39 @@ describe('DictionaryOverview', () => {
       <DictionaryOverview {...props} />
     </MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should handle opening of subscription modal', () => {
+    const props = {
+      dictionary: { dictionary },
+      versions: [versions, customVersion],
+      headVersion: [versions],
+      url: '',
+      dictionaryConcepts: [],
+      showEditModal: jest.fn(),
+      hideSubModal: jest.fn(),
+      showSubModal: jest.fn(),
+      handleRelease: jest.fn(),
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'chriskala',
+          type: 'collection',
+          name: 'chriskala',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+    };
+
+    const wrapper = mount(<Provider store={store}><MemoryRouter>
+      <DictionaryOverview {...props} />
+    </MemoryRouter></Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleShowSub');
+    wrapper.instance().forceUpdate();
+    expect(wrapper.find('.subscription-link').at(0).exists()).toBe(true);
+    wrapper.find('.subscription-link').at(0).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

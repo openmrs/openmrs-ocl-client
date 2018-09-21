@@ -32,6 +32,8 @@ export class DictionaryOverview extends Component {
     super(props);
     this.state = {
       showEditModal: false,
+      showSubModal: false,
+      url: '',
     };
   }
   componentDidMount() {
@@ -79,8 +81,12 @@ export class DictionaryOverview extends Component {
   handleHide = () => this.setState({ showEditModal: false });
   handleShow = () => this.setState({ showEditModal: true });
 
+  handleHideSub = () => this.setState({ showSubModal: false });
+  handleShowSub = (url) => { this.setState({ showSubModal: true, url }); }
+
   render() {
     const { loader } = this.props;
+    const { url, showSubModal } = this.state;
     const cielConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner === 'CIEL').length.toString();
     const customConcepts = this.props.dictionaryConcepts.filter(concept => concept.owner !== 'CIEL').length.toString();
     const diagnosisConcepts = this.props.dictionaryConcepts.filter(concept => concept.concept_class === 'diagnosis').length.toString();
@@ -108,6 +114,10 @@ export class DictionaryOverview extends Component {
               handleRelease={this.handleRelease}
               headVersion={headVersionIdObj}
               showEditModal={this.handleShow}
+              hideSubModal={this.handleHideSub}
+              showSubModal={this.handleShowSub}
+              subModal={showSubModal}
+              subUrl={url}
             />
             <EditDictionary
               show={this.state.showEditModal}

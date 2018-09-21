@@ -29,6 +29,10 @@ const DictionaryDetailCard = (props) => {
     otherConcepts,
     headVersion,
     handleRelease,
+    hideSubModal,
+    showSubModal,
+    subModal,
+    subUrl,
   } = props;
 
   const username = localStorage.getItem('username');
@@ -180,7 +184,14 @@ const DictionaryDetailCard = (props) => {
           </tr>
           {releasedVersions.length >= 1 ? (
             releasedVersions.map(version => (
-              <DictionaryVersionsTable version={version} key={version.id} />
+              <DictionaryVersionsTable
+                version={version}
+                key={version.id}
+                hide={hideSubModal}
+                showSubModal={showSubModal}
+                show={subModal}
+                url={subUrl}
+              />
             ))
           ) : (
             <tr>
@@ -206,6 +217,10 @@ DictionaryDetailCard.propTypes = {
   procedureConcepts: PropTypes.string.isRequired,
   otherConcepts: PropTypes.string.isRequired,
   headVersion: PropTypes.number.isRequired,
+  hideSubModal: PropTypes.func.isRequired,
+  showSubModal: PropTypes.func.isRequired,
+  subModal: PropTypes.bool.isRequired,
+  subUrl: PropTypes.string.isRequired,
 };
 
 export default DictionaryDetailCard;
