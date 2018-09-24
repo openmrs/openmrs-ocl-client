@@ -29,7 +29,6 @@ export class DictionaryModal extends React.Component {
   }
   componentDidMount() {
     this.props.fetchingOrganizations();
-    this.props.fetchSources('', [], 0, 1, 'name');
     const { isEditingDictionary } = this.props;
     if (isEditingDictionary) {
       this.populateFields();
@@ -373,7 +372,6 @@ DictionaryModal.propTypes = {
   modalhide: PropTypes.func.isRequired,
   defaultLocaleOption: PropTypes.object.isRequired,
   isEditingDictionary: PropTypes.object.isRequired,
-  fetchSources: PropTypes.func.isRequired,
   sources: PropTypes.array.isRequired,
 };
 

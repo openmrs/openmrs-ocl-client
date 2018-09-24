@@ -32,7 +32,7 @@ export const fetchUserOrganizations = username => async (dispatch) => {
 };
 
 export const fetchsUserDictionaries = username => async (dispatch) => {
-  const url = `collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
+  const url = `/users/${username}/collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
   try {
     const response = await instance.get(url);
     const result = filterUserPayload(username, response.data);
