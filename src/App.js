@@ -30,9 +30,9 @@ const App = () => (
         <Navbar />
         <Switch>
           <Route exact path="/" component={Authenticate(Login)} />
-          <Route exact path="/dashboard" component={Authenticate(UserDashboard)} />
+          <Route exact path="/home" component={Authenticate(UserDashboard)} />
           <Route exact path="/loginDetails" component={LoginDetails} />
-          <Route exact path="/dashboard" component={Authenticate(OwnerDictionary)} />
+          <Route exact path="/home" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/dashboard/sources" component={Authenticate(SourceSearch)} />
           <Route exact path="/dashboard/concepts" component={Authenticate(ConceptSearch)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
