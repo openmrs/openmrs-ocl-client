@@ -22,11 +22,8 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
       <CardBody title="Description" body={descriptions[0].description} />
       <CardBody title="Mappings" body={mapping} />
       <div className="buttons text-right mt-3">
-        <button className="btn btn-sm btn-danger no-shadow mr-2" onClick={closeModal}>
-          Close
-        </button>
         <button
-          className="btn btn-sm btn-success no-shadow"
+          className="btn btn-sm btn-success no-shadow mr-2"
           id="add-concept"
           onClick={() => {
             addConcept(url, display_name);
@@ -34,6 +31,9 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
           }}
         >
           Add
+        </button>
+        <button className="btn btn-sm btn-danger no-shadow" onClick={closeModal}>
+          Close
         </button>
       </div>
     </div>
