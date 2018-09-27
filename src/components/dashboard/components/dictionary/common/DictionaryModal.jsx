@@ -20,7 +20,7 @@ export class DictionaryModal extends React.Component {
         owner: '',
         description: '',
         default_locale: 'en',
-        supported_locales: 'en, es',
+        supported_locales: '',
         repository_type: 'OpenMRSDictionary',
       },
       errors: {},
@@ -98,7 +98,7 @@ export class DictionaryModal extends React.Component {
         owner,
         description,
         default_locale,
-        supported_locales: 'en, es',
+        supported_locales: '',
         repository_type,
       },
       errors: {},
@@ -112,7 +112,7 @@ export class DictionaryModal extends React.Component {
        supported_locales,
      },
    } = this.props;
-   if (supported_locales === undefined) {
+   if (supported_locales === undefined || supported_locales === null) {
      return null;
    }
    const supportedLocalesOptions = [];
@@ -146,6 +146,9 @@ export class DictionaryModal extends React.Component {
     }
     if (!data.default_locale) {
       errors.default_locale = 'Kindly select your preferred locale';
+    }
+    if (data.supported_locales.split(',').map(item => item.trim()).indexOf(data.default_locale) !== -1) {
+      errors.supported_locales = 'Preferred language must not be included in other languages';
     }
     return errors;
   };
@@ -229,14 +232,18 @@ export class DictionaryModal extends React.Component {
                   </FormGroup>
 
                   {'Other Languages'}
+                  {errors && <InlineError text={errors.supported_locales} />}
                   <Select
                     id="supported_locales"
                     closeMenuOnSelect={false}
                     defaultValue={
                       isEditingDictionary ?
                       this.state.supportedLocalesOptions :
-                      [languages[0]]}
-                    options={languages}
+                      []}
+                    options={
+                      languages.filter(language =>
+                        language.value !== this.state.data.default_locale)
+                    }
                     isMulti
                     onChange={this.handleChangeSupportedLocale}
                   />

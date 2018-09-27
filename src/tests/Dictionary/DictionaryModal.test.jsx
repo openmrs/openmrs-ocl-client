@@ -19,7 +19,7 @@ const props = {
   handleHide: jest.fn(),
   name: jest.fn(),
   dictionary,
-  sources: [],
+  sources: [{ name: 'source', id: '1' }],
 };
 
 describe('Test suite for dictionary modal', () => {
@@ -35,7 +35,7 @@ describe('Test suite for dictionary modal', () => {
   it('Test to find and click cancel and add dictionary buttons', () => {
     expect(wrapper.find('#cancel').simulate('click'));
     expect(wrapper.find('#addDictionary').simulate('click', preventDefault));
-    expect(wrapper.instance().validate(preventDefault));
+    expect(wrapper.instance().validate(wrapper.state().data));
   });
   it('Tests that the component changes state', () => {
     wrapper.setState({ errors: {} });
@@ -73,5 +73,14 @@ describe('Test suite for dictionary modal', () => {
     props.isEditingDictionary = true;
     const editDictionaryModal = shallow(<DictionaryModal {...props} />);
     expect(editDictionaryModal).toMatchSnapshot();
+  });
+
+  it('it should handle validations errors on submit', () => {
+    wrapper.setState({ data: { ...wrapper.state().data, default_locale: '', supported_locales: '' } });
+    const submitButtonWrapper = wrapper.find('#addDictionary');
+    expect(submitButtonWrapper.length).toEqual(1);
+    submitButtonWrapper.simulate('click', preventDefault);
+    expect(wrapper.state().errors.default_locale).toEqual('Kindly select your preferred locale');
+    expect(wrapper.state().errors.supported_locales).toEqual('Preferred language must not be included in other languages');
   });
 });
