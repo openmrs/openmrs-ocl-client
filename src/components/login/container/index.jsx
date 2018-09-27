@@ -3,6 +3,7 @@ import { notify } from 'react-notify-toast';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
+import Title from '../../Title';
 import { loginAction } from '../../../redux/actions/auth/authActions';
 import SubmitButton from '../components/SubmitButton';
 import '../styles/index.css';
@@ -46,6 +47,7 @@ export class Login extends Component {
     const buttonTitle = loading ? 'Logging in...' : 'Log in';
     return (
       <div className="container">
+        <Title title="Login" />
         <div className="row form-container">
           <div className="col-lg-5 col-md-9 col-sm-12">
             <p className="paragraphs">

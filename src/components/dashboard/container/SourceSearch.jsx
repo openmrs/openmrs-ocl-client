@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import Title from '../../Title';
 import { fetchSources } from '../../../redux/actions/sources/index';
 import { clearSources } from '../../../redux/actions/sources/sourcesActionCreators';
 import { fetchingOrganizations } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
@@ -101,6 +101,7 @@ export class SourceSearch extends Component {
     const { hasMore, sources, isFetching } = this.props;
     return (
       <div className="dashboard-wrapper">
+        <Title title="Sources" />
         <SearchBar onSearch={this.onSearch} onSubmit={this.onSubmit} searchValue={searchInput} />
         <div className="container-fluid">
           <div className="row justify-content-center">
