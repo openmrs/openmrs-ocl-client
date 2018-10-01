@@ -23,6 +23,7 @@ import {
   CLEAR_PREVIOUS_CONCEPT,
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
+  REMOVE_CONCEPT,
 } from '../actions/types';
 import {
   filterSources, filterClass, filterList, normalizeList, filterNames,
@@ -79,6 +80,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         paginatedConcepts: action.payload,
+      };
+    case REMOVE_CONCEPT:
+      return {
+        ...state,
+        paginatedConcepts: state.paginatedConcepts
+          .filter(concept => concept.version_url !== action.payload),
       };
     case TOTAL_CONCEPT_COUNT:
       return {

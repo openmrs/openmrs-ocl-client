@@ -38,6 +38,11 @@ export default {
       instance
         .get(`${data}`)
         .then(response => response.data),
+
+    removeDictionaryConcept: (data, type, owner, collectionId) =>
+      instance
+        .delete(`/${type}/${owner}/collections/${collectionId}/references/`, {data:data})
+        .then(response => response.data),
     
     fetchingVersions: (data) =>
       instance

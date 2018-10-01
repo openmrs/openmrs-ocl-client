@@ -1,5 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
+import { createMockStore } from 'redux-test-utils';
+import { Provider } from 'react-redux';
 import expect from 'expect';
 import Router from 'react-mock-router';
 
@@ -9,6 +11,11 @@ import {
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
 import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 
+const store = createMockStore({
+  organizations: {
+    organizations: [],
+  },
+});
 describe('Test suite for dictionary concepts components', () => {
   it('should render component without breaking', () => {
     const props = {
@@ -34,9 +41,9 @@ describe('Test suite for dictionary concepts components', () => {
       filterByClass: jest.fn(),
       fetchMemberStatus: jest.fn(),
     };
-    const wrapper = mount(<Router>
+    const wrapper = mount(<Provider store={store}><Router>
       <DictionaryConcepts {...props} />
-    </Router>);
+    </Router></Provider>);
     expect(wrapper.find('h2.text-capitalize').text()).toEqual('dev-col Dictionary');
 
     expect(wrapper).toMatchSnapshot();
@@ -63,10 +70,47 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const event = { target: { name: 'searchInput', value: 'ciel' } };
     wrapper.find('#search-concept').simulate('change', event);
-    wrapper.find('form').simulate('submit', {
+    wrapper.find('.searchConcepts').simulate('submit', {
       preventDefault: () => {},
     });
   });
+
+  it('should remove a dictionary concept', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          collectionName: 'coreconcepts',
+          type: 'users',
+          dictionaryName: 'coreconcepts',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      totalConceptCount: 11,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      paginateConcepts: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      userIsMember: jest.fn(),
+      removeDictionaryConcept: jest.fn(),
+    };
+
+    const wrapper = mount(<Provider store={store}><Router>
+      <DictionaryConcepts {...props} />
+    </Router></Provider>);
+    expect(wrapper).toBeDefined();
+    wrapper.find('.btn.btn-sm.mb-1.actionButtons').simulate('click');
+    wrapper.find('.btn.btn-danger').simulate('click');
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should filter search result', () => {
     const props = {
       match: {
@@ -83,9 +127,9 @@ describe('Test suite for dictionary concepts components', () => {
       filteredSources: ['CIEL'],
       loading: false,
     };
-    const wrapper = mount(<Router>
+    const wrapper = mount(<Provider store={store}><Router>
       <DictionaryConcepts {...props} />
-    </Router>);
+    </Router></Provider>);
     const event = { target: { name: 'CIEL', checked: true, value: 'ciel' } };
     wrapper.find('#CIEL').simulate('change', event);
     wrapper.find('#Diagnosis').simulate('change', event);

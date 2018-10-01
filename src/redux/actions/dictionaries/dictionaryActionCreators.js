@@ -6,6 +6,7 @@ import {
   isFetching,
   dictionaryIsSuccess,
   isErrored,
+  removeConcept,
   fetchingVersions,
   dictionaryConceptsIsSuccess,
   realisingHeadSuccess,
@@ -85,6 +86,23 @@ export const fetchDictionary = data => (dispatch) => {
       dispatch(isFetching(false));
     });
   };
+
+export const removeDictionaryConcept = (data, type, owner, collectionId) => dispatch => {
+  return api.dictionaries
+    .removeDictionaryConcept(data, type, owner, collectionId)
+    .then(
+      (payload) => { 
+      dispatch(removeConcept(data.references[0]));
+      notify.show(
+        'Successfully removed a concept from my dictionary',
+        'success', 1000
+      );
+    }
+    )
+    .catch(() => {
+      notify.show("Network Error. Please try again later!", 'error', 6000)
+      });
+    };
 
 export const fetchVersions = data => (dispatch) => {
   return api.dictionaries

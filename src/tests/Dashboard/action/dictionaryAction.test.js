@@ -14,6 +14,7 @@ import {
   FETCH_DICTIONARY_CONCEPT,
   FETCHING_ORGANIZATIONS,
   RELEASING_HEAD_VERSION,
+  REMOVE_CONCEPT,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -22,6 +23,7 @@ import {
   isErrored,
   isSuccess,
   clearDictionary,
+  removeConcept,
 } from '../../../redux/actions/dictionaries/dictionaryActions';
 import {
   fetchDictionaries,
@@ -58,6 +60,19 @@ describe('Test for successful organizations fetch', () => {
   });
   it('should return action type and payload after dictionary creation', () => {
     expect(addDictionary(response)).toEqual(createDictionary);
+  });
+});
+
+describe('Test for successfully removing a Concept from a dictionary', () => {
+  const response = '/url';
+
+  const removeDictionaryConcept = {
+    type: REMOVE_CONCEPT,
+    payload: response,
+  };
+
+  it('should return action type and payload after removing a concept', () => {
+    expect(removeConcept(response)).toEqual(removeDictionaryConcept);
   });
 });
 

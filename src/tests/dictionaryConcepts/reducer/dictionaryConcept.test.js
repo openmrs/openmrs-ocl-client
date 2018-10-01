@@ -1,6 +1,6 @@
 import deepFreeze from 'deep-freeze';
 import reducer from '../../../redux/reducers/ConceptReducers';
-import concepts, { newConcept, existingConcept } from '../../__mocks__/concepts';
+import concepts, { newConcept, existingConcept, paginatedConcepts } from '../../__mocks__/concepts';
 import {
   FETCH_DICTIONARY_CONCEPT,
   FILTER_BY_SOURCES,
@@ -22,6 +22,7 @@ import {
   CLEAR_PREVIOUS_CONCEPT,
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
+  REMOVE_CONCEPT,
 } from '../../../redux/actions/types';
 
 let state;
@@ -32,6 +33,7 @@ beforeEach(() => {
     concepts: [],
     loading: false,
     dictionaryConcepts: [],
+    paginatedConcepts: [paginatedConcepts.concepts],
     filteredSources: [],
     filteredClass: [],
     filteredList: [],
@@ -252,6 +254,23 @@ describe('Test suite for single dictionary concepts', () => {
       totalConceptCount: action.payload,
     });
   });
+
+  it('should handle REMOVE_CONCEPT', () => {
+    action = {
+      type: REMOVE_CONCEPT,
+      payload: '/URL',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      paginatedConcepts: state.paginatedConcepts
+        .filter(concept => concept.version_url !== action.payload),
+    });
+  });
+
   it('should handle FETCH_EXISTING_CONCEPT', () => {
     action = {
       type: FETCH_EXISTING_CONCEPT,

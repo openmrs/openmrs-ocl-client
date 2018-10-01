@@ -299,3 +299,8 @@ select.form-control {
 .create-custom-concept {
   margin-top: -5%;
 }
+
+#actionButtons {
+  background-color: Transparent;
+  cursor:pointer;
+}

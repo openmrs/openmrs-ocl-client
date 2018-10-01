@@ -5,7 +5,9 @@ import Loader from '../../Loader';
 import RenderTable from './RenderTable';
 import { conceptsProps } from '../proptypes';
 
-const ConceptTable = ({ concepts, loading, org }) => {
+const ConceptTable = ({
+  concepts, loading, org, locationPath, showDeleteModal, url, handleDelete,
+}) => {
   if (loading) {
     return (
       <RenderTable
@@ -34,7 +36,16 @@ const ConceptTable = ({ concepts, loading, org }) => {
             </tr>
           </thead>
           <tbody>
-            {concepts.map(concept => <TableItem {...concept} key={concept.version} org={org} />)}
+            {concepts.map(concept =>
+              (<TableItem
+                {...concept}
+                key={concept.version}
+                org={org}
+                locationPath={locationPath}
+                showDeleteModal={showDeleteModal}
+                url={url}
+                handleDelete={handleDelete}
+              />))}
           </tbody>
         </table>
       </div>
@@ -57,6 +68,10 @@ ConceptTable.propTypes = {
   concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
   loading: PropTypes.bool.isRequired,
   org: PropTypes.object.isRequired,
+  locationPath: PropTypes.object.isRequired,
+  showDeleteModal: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 export default ConceptTable;
