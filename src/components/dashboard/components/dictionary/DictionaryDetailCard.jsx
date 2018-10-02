@@ -53,13 +53,10 @@ const DictionaryDetailCard = (props) => {
     <div className="dictionaryDetails">
       <section className="backLink">
         <Link
-          to="/dashboard"
+          to="/home"
           className="backLinkText"
         >
-          <span align="left">
-            <i className="fas fa-arrow-left" />
-            <i>Back to my dashboard</i>
-          </span>
+          <i className="fas fa-arrow-left"> <span className="span-text">Go Back Home</span></i>
         </Link>
       </section>
       <h1 id="headingDict" align="left">

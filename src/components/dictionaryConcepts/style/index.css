@@ -284,8 +284,16 @@ select.form-control {
   cursor: default !important;
 }
 
-.collection-name {
-  border-bottom: thin solid #4f6196;
+.collection-name{
+  font-family: 'Roboto',sans-serif;
+}
+
+.collection-name:link{
+ text-decoration: none;
+}
+
+.collection-name:hover{
+  text-decoration: underline;
 }
 
 .datatypefield {
@@ -295,6 +303,9 @@ select.form-control {
 }
 .backLink{
   padding-bottom: 1rem;
+}
+.backLink:link{
+  text-decoration: none;
 }
 .create-custom-concept {
   margin-top: -5%;

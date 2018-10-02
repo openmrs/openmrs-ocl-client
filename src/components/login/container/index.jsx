@@ -26,11 +26,12 @@ export class Login extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { payload, loggedIn, loading } = nextProps;
+    const { push } = this.props.history;
     if (loading) return;
 
     if (loggedIn) {
       notify.show(`Logged in successfully as ${this.state.username}`, 'success', 3000);
-      this.props.history.push('/dashboard');
+      push('/home');
       return;
     }
 

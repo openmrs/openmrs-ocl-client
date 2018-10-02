@@ -14,8 +14,7 @@ const Header = ({ locationPath }) => {
             to={`/dictionaryOverview/${type}/${typeName}/collections/${collectionName}`}
             className="collection-name small-text"
           >
-            <i className="fas fa-arrow-left" />
-            <i>Go back to {dictionaryName} overview</i>
+            <i className="fas fa-arrow-left"> <span className="collection-name">Go back to {dictionaryName} overview</span></i>
           </Link>
         </div>
         <header>

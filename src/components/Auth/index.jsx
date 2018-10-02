@@ -23,12 +23,13 @@ export const AuthWrapper = (WrappedComponent) => {
     };
 
     componentWillMount() {
+      const { push } = this.props.history;
       if (!this.props.loggedIn) {
-        this.props.history.push('/');
+        push('/');
         return;
       }
       if (this.props.location.pathname === '/') {
-        this.props.history.push('/dashboard');
+        push('/home');
       }
     }
 
