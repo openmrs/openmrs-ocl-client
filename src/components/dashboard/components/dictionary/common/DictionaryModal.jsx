@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
+import ReactTooltip from 'react-tooltip';
 import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchSources } from '../../../../../redux/actions/sources/index';
 import InlineError from '../messages/InlineError';
@@ -315,8 +316,10 @@ export class DictionaryModal extends React.Component {
                       value={data.id}
                       placeholder="e.g Community-MCH, Only Alphanumeric Characters
                       Allowed"
+                      data-tip="Mnemonic used to identify the collection in the URL (usually an acronym e.g. Community-MCH)"
                       required
                     />
+                    <ReactTooltip place="top" effect="solid" />
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Description{' '}
