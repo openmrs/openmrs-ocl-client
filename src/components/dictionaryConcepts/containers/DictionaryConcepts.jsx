@@ -62,7 +62,7 @@ export class DictionaryConcepts extends Component {
   }
 
   componentDidMount() {
-    this.fetchConcepts();
+    setTimeout(this.fetchConcepts, 600);
     this.checkMembershipStatus(getUsername());
   }
 
