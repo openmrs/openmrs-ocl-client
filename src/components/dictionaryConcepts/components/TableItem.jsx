@@ -2,25 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ActionButtons from './ActionButtons';
 import { getUsername } from './helperFunction';
+import RemoveConcept from './RemoveConcept';
 
 const TableItem = (props) => {
   const username = getUsername();
   const {
-    id, concept_class, datatype, source, owner, display_name, org,
+    id,
+    concept_class,
+    datatype,
+    source,
+    owner,
+    display_name,
+    org,
+    locationPath,
+    handleDelete,
+    url,
   } = props;
   const renderButtons = username === owner || (owner === org.name && org.userIsMember);
-
   return (
-    <tr>
-      <th scope="row">{display_name}</th>
-      <td>{concept_class}</td>
-      <td>{datatype}</td>
-      <td>{source}</td>
-      <td>{id}</td>
-      <td>
-        <ActionButtons actionButtons={renderButtons} {...props} />
-      </td>
-    </tr>
+    <React.Fragment>
+      <tr>
+        <th scope="row">{display_name}</th>
+        <td>{concept_class}</td>
+        <td>{datatype}</td>
+        <td>{source}</td>
+        <td>{id}</td>
+        <td>
+          <ActionButtons actionButtons={renderButtons} {...props} />
+        </td>
+      </tr>
+      <RemoveConcept
+        collectionName={locationPath.collectionName}
+        conceptOwner={locationPath.typeName}
+        conceptUrl={url}
+        conceptType={locationPath.type}
+        handleDelete={handleDelete}
+      />
+    </React.Fragment>
   );
 };
 
@@ -32,6 +50,7 @@ TableItem.propTypes = {
   owner: PropTypes.string.isRequired,
   display_name: PropTypes.string.isRequired,
   org: PropTypes.object.isRequired,
+  locationPath: PropTypes.object.isRequired,
 };
 
 export default TableItem;

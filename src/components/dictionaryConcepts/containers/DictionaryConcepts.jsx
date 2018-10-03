@@ -16,6 +16,7 @@ import {
   filterByClass,
   paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
@@ -42,6 +43,7 @@ export class DictionaryConcepts extends Component {
     totalConceptCount: PropTypes.number.isRequired,
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.func.isRequired,
+    removeDictionaryConcept: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -51,6 +53,10 @@ export class DictionaryConcepts extends Component {
       searchInput: '',
       conceptLimit: 10,
       conceptOffset: 0,
+      versionUrl: '',
+      data: {
+        references: [],
+      },
     };
     autoBind(this);
   }
@@ -160,6 +166,14 @@ export class DictionaryConcepts extends Component {
     }
   }
 
+  handleDelete = () => {
+    const { data, collectionName, type } = this.state;
+    this.props
+      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
+  }
+
+  handleShowDelete = (url) => { this.setState({ data: { references: [url] }, versionUrl: url }); };
+
   render() {
     const {
       match: {
@@ -213,6 +227,10 @@ export class DictionaryConcepts extends Component {
               concepts={concepts}
               loading={loading}
               org={org}
+              locationPath={this.props.match.params}
+              showDeleteModal={this.handleShowDelete}
+              url={this.state.versionUrl}
+              handleDelete={this.handleDelete}
             />
           </div>
         </section>
@@ -240,5 +258,6 @@ export default connect(
     filterByClass,
     paginateConcepts,
     fetchMemberStatus,
+    removeDictionaryConcept,
   },
 )(DictionaryConcepts);

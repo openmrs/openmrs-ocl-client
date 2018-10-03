@@ -10,6 +10,7 @@ import {
   FETCHING_VERSIONS,
   FETCH_DICTIONARY_CONCEPT,
   EDIT_DICTIONARY_SUCCESS,
+  REMOVE_CONCEPT,
   RELEASING_HEAD_VERSION,
 } from './../types';
 
@@ -61,6 +62,11 @@ export const dictionaryConceptsIsSuccess = payload => ({
 export const clearDictionary = () => ({
   type: CLEAR_DICTIONARY,
   payload: {},
+});
+
+export const removeConcept = payload => ({
+  type: REMOVE_CONCEPT,
+  payload,
 });
 
 export const fetchingVersions = payload => ({

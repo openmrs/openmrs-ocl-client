@@ -26,6 +26,7 @@ import {
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   UPDATE_CONCEPT,
   FETCH_EXISTING_CONCEPT_ERROR,
+  REMOVE_CONCEPT,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -47,6 +48,7 @@ import {
   removeNameForEditConcept,
   updateConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import concepts, {
   mockConceptStore,
   newConcept,
@@ -134,6 +136,53 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle REMOVE_CONCEPT', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: newConcept.version_url,
+      });
+    });
+
+    const expectedActions = [
+      { type: REMOVE_CONCEPT, payload: newConcept.version_url },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    const collectionId = 'Tech';
+    return store.dispatch(removeDictionaryConcept(data, type, owner, collectionId)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle REMOVE_CONCEPT network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+        response: newConcept.version_url,
+      });
+    });
+
+    const expectedActions = [
+      { type: REMOVE_CONCEPT, payload: newConcept.version_url },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    const collectionId = 'Tech';
+    return store.dispatch(removeDictionaryConcept(data, type, owner, collectionId)).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('should handle error in CREATE_NEW_CONCEPT', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();

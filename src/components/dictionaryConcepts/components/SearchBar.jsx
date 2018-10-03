@@ -18,7 +18,7 @@ const SearchBar = ({
     <div className="row search-container">
       <div className="concept-search-wrapper col-12 col-md-5 col-sm-8">
         <i className="fa fa-search search-icons" aria-hidden="true" />
-        <form action="" onSubmit={submit}>
+        <form className="searchConcepts" action="" onSubmit={submit}>
           <input
             type="search"
             name="searchInput"

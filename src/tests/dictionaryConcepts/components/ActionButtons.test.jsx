@@ -6,12 +6,22 @@ const props = {
   actionButtons: true,
   id: '1',
   concept_class: 'drug',
-  url: '/url',
+  version_url: '/url',
+  showDeleteModal: jest.fn(),
 };
 
 describe('Test suite for ActionButton', () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<ActionButtons {...props} />);
+  });
+
   it('should render ActionButton Component', () => {
-    const wrapper = shallow(<ActionButtons {...props} />);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should call the showDeleteModal', () => {
+    wrapper.find('#retireConcept').simulate('click');
+    expect(props.showDeleteModal).toBeCalled();
   });
 });
