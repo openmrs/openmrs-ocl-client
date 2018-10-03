@@ -11,6 +11,8 @@ import {
   FETCH_DICTIONARY_CONCEPT,
   EDIT_DICTIONARY_SUCCESS,
   REMOVE_CONCEPT,
+  CREATING_RELEASED_VERSION,
+  CREATING_RELEASED_VERSION_FAILED,
   RELEASING_HEAD_VERSION,
 } from './../types';
 
@@ -82,4 +84,14 @@ export const realisingHeadSuccess = payload => ({
 export const editDictionarySuccess = response => ({
   type: EDIT_DICTIONARY_SUCCESS,
   payload: response,
+});
+
+export const creatingVersionsSuccess = payload => ({
+  type: CREATING_RELEASED_VERSION,
+  payload,
+});
+
+export const creatingVersionsError = payload => ({
+  type: CREATING_RELEASED_VERSION_FAILED,
+  payload,
 });

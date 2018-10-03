@@ -10,6 +10,8 @@ import {
   CLEAR_DICTIONARY,
   EDIT_DICTIONARY_SUCCESS,
   RELEASING_HEAD_VERSION,
+  CREATING_RELEASED_VERSION,
+  CREATING_RELEASED_VERSION_FAILED,
 } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
@@ -37,6 +39,7 @@ const state = {
   dictionaries: [],
   versions: [],
   dictionary: {},
+  error: [],
   loading: false,
   isReleased: false,
 };
@@ -96,6 +99,27 @@ describe('Test suite for dictionaries reducers', () => {
       },
     )).toEqual({ isReleased: true });
   });
+
+  it('should handle CREATING_RELEASED_VERSION', () => {
+    expect(dictionaryreducer(
+      { isReleased: false },
+      {
+        type: CREATING_RELEASED_VERSION,
+        payload: { released: true },
+      },
+    )).toEqual({ isReleased: true });
+  });
+
+  it('should handle CREATING_RELEASED_VERSION_FAILED', () => {
+    expect(dictionaryreducer(
+      { error: {} },
+      {
+        type: CREATING_RELEASED_VERSION_FAILED,
+        payload: { detatil: 'Duplicate Error' },
+      },
+    )).toEqual({ error: { detatil: 'Duplicate Error' } });
+  });
+
   it('should clear a dictionary', () => {
     expect(dictionaryreducer(
       { dictionary },
@@ -114,16 +138,6 @@ describe('Test suite for dictionaries reducers', () => {
     )).toEqual({ dictionary });
   });
 });
-it('should handle FETCHING_VERSIONS', () => {
-  expect(dictionaryreducer(
-    { versions: [] },
-    {
-      type: FETCHING_VERSIONS,
-      payload: [versions],
-    },
-  )).toEqual({ versions: [versions] });
-});
-
 describe('Test suite for dictionaries reducers', () => {
   it('should return inital state ADD_DICTIONARY', () => {
     expect(userReducer(

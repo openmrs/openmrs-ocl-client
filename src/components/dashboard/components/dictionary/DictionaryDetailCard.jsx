@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './styles/dictionary-modal.css';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
+import ReleaseVersionModal from '../dictionary/common/ReleaseVersionModal';
 
 const DictionaryDetailCard = (props) => {
   const {
@@ -33,6 +34,14 @@ const DictionaryDetailCard = (props) => {
     showSubModal,
     subModal,
     subUrl,
+    showVersionModal,
+    hideVersionModal,
+    openVersionModal,
+    handleCreateVersion,
+    handleChange,
+    versionId,
+    versionDescription,
+    inputLength,
   } = props;
 
   const username = localStorage.getItem('username');
@@ -90,7 +99,14 @@ const DictionaryDetailCard = (props) => {
               <b>Updated On</b>: {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
             {owner === username && (
-              <Link className="btn btn-secondary" id="editB" to="#" onClick={showEditModal}>
+              <Link
+                className="btn btn-secondary"
+                id="editB"
+                to="#"
+                onClick={showEditModal}
+                versionId={versionId}
+                versionDescription={versionDescription}
+              >
                 Edit
               </Link>
             )}
@@ -131,23 +147,28 @@ const DictionaryDetailCard = (props) => {
           <fieldset>
             <legend>Actions</legend>
             <ul>
-              <li>
-                <a href={traditionalUrl} target="_blank" rel="noopener noreferrer">
-                  <i className="fas fa-external-link-alt" />
-                  Browse in traditional OCL
-                </a>
-              </li>
-              {owner === username && !headVersion.released ? (
-                <li>
-                  <button type="button" onClick={handleRelease} className="fas fa-cloud-upload-alt">
-                    <span id="release-head"> Release HEAD as new version</span>
-                  </button>
-                </li>
-              ) : null}
+              <li><a href={traditionalUrl} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
+              <li><i className="far fa-copy" />Copy concepts from another dictionary</li>
+              { owner === username && !headVersion.released ?
+                <li><button type="button" onClick={handleRelease} className="fas fa-cloud-upload-alt head"><span id="release-head"> Release HEAD as new version</span></button></li>
+            : null}
+
+              { owner === username ?
+                <li><button type="button" onClick={showVersionModal} className="fas fa-cloud-upload-alt version"><span id="release-head"> Release a new version</span></button> </li>
+            : null}
             </ul>
           </fieldset>
         </form>
       </div>
+
+      <ReleaseVersionModal
+        show={openVersionModal}
+        click={hideVersionModal}
+        handleCreateVersion={handleCreateVersion}
+        handleChange={handleChange}
+        inputLength={inputLength}
+      />
+
       <h3 align="left">Released Version</h3>
 
       <div className="card" id="versionCard">
@@ -197,6 +218,14 @@ DictionaryDetailCard.propTypes = {
   showSubModal: PropTypes.func.isRequired,
   subModal: PropTypes.bool.isRequired,
   subUrl: PropTypes.string.isRequired,
+  showVersionModal: PropTypes.func.isRequired,
+  hideVersionModal: PropTypes.func.isRequired,
+  openVersionModal: PropTypes.func.isRequired,
+  handleCreateVersion: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  versionId: PropTypes.string.isRequired,
+  versionDescription: PropTypes.string.isRequired,
+  inputLength: PropTypes.number.isRequired,
 };
 
 export default DictionaryDetailCard;

@@ -16,6 +16,7 @@ const store = createMockStore({
     sources: [],
   },
 });
+
 jest.mock('../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryOverview', () => {
   it('should render without any data', () => {
@@ -85,7 +86,7 @@ describe('DictionaryOverview', () => {
     </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleRelease');
     wrapper.instance().forceUpdate();
-    wrapper.find('.fas.fa-cloud-upload-alt').simulate('click');
+    wrapper.find('.fas.fa-cloud-upload-alt.head').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
@@ -208,6 +209,85 @@ describe('DictionaryOverview', () => {
     wrapper.instance().forceUpdate();
     expect(wrapper.find('.subscription-link').at(0).exists()).toBe(true);
     wrapper.find('.subscription-link').at(0).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle a new version release', () => {
+    const props = {
+      dictionary: [dictionary],
+      versions: [customVersion],
+      dictionaryConcepts: [dictionary],
+      isReleased: false,
+      hideVersionModal: jest.fn(),
+      showVersionModal: jest.fn(),
+      error: false,
+      inputLength: 4,
+      match: {
+        params: {
+          ownerType: 'users',
+          owner: 'nesh',
+          type: 'collection',
+          name: 'test',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      releaseHead: jest.fn(),
+      createVersion: jest.fn(() => Promise.resolve(true)),
+    };
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        value: 'v2.0',
+        name: 'versionId',
+      },
+    };
+
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleCreateVersion');
+    wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
+    wrapper.find('#versionId').at(0).simulate('change', event);
+    wrapper.find('.btn-sm.btn-outline-info.version').at(0).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handleChange', () => {
+    const props = {
+      dictionary: [dictionary],
+      versions: [customVersion],
+      dictionaryConcepts: [dictionary],
+      isReleased: false,
+      hideVersionModal: jest.fn(),
+      showVersionModal: jest.fn(),
+      error: null,
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'chriskala',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      releaseHead: jest.fn(),
+      createVersion: jest.fn(),
+    };
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        value: 'v2.0',
+        name: 'versionId',
+      },
+    };
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleChange');
+    wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
+    wrapper.find('#versionId').at(0).simulate('change', event);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 });

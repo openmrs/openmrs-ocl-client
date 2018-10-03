@@ -11,6 +11,8 @@ import {
   dictionaryConceptsIsSuccess,
   realisingHeadSuccess,
   editDictionarySuccess,
+  creatingVersionsSuccess,
+  creatingVersionsError,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
 import api from './../../api';
@@ -162,5 +164,31 @@ export const releaseHead = (url, data) => (dispatch) => {
       .catch(error => {
         notify.show(`${error.response.data.__all__[0]}`, 'error', 6000);
       })
-    }
+};
+
+export const createVersion = (url, data) => (dispatch) => {
+  return api.dictionaries
+    .creatingVersion(url, data)
+    .then(
+      (payload) => {
+        dispatch(creatingVersionsSuccess(payload));
+        dispatch(creatingVersionsError(false));
+        notify.show(
+          `${payload.id} has successfully been released`,
+          'success', 6000,
+        );
+      })
+    .catch((error) => {
+      if(error.response.data.detail){
+        dispatch(creatingVersionsError(true));
+        notify.show(`${error.response.data.detail}`, 'error', 4000);
+      }
+      if(error.response.data.id){
+        dispatch(creatingVersionsError(true));
+        notify.show(`${error.response.data.id}`, 'error', 4000);
+      } else {
+        notify.show("Network Error. Please try again later!", 'error', 4000);
+      }
+    });
+};
 

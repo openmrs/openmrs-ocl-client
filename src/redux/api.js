@@ -53,6 +53,11 @@ export default {
       instance
         .get(`${data}`)
         .then(response => response.data),
+
+    creatingVersion: (url,data) => 
+      instance
+         .post(`${url}`, data)
+         .then(response => response.data),
     
     realisingHeadVersion: (url, data) =>
       instance
