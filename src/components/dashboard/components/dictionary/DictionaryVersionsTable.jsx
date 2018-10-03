@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './styles/dictionary-modal.css';
 import SubscriptionModal from '../dictionary/common/SubscriptionModal';
 
 const DictionaryVersionsTable = (version) => {

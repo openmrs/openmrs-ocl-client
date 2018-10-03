@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-eslint": "^8.2.3",
+    "bootstrap": "^4.1.3",
     "coveralls": "^3.0.1",
     "deep-freeze": "0.0.1",
     "enzyme": "^3.3.0",
@@ -43,13 +44,15 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm run build:css && react-scripts start",
+    "build": "npm run build:css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "test:bamboo": "react-scripts test --env=jsdom -u --ci --coverage --testResultsProcessor ./node_modules/jest-junit",
-    "lint": "eslint ./src",
-    "coverage": "react-scripts test --env=jsdom --coverage --watch"
+    "lint": "npm run build:css && eslint ./src",
+    "coverage": "react-scripts test --env=jsdom --coverage --watch",
+    "build:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --output-style compressed",
+    "watch:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/app.css --include-path ./node_modules src/styles -o src/styles --watch --recursive"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
@@ -58,6 +61,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "jest-junit": "^4.0.0",
+    "node-sass-chokidar": "^1.3.3",
     "react-addons-test-utils": "^15.6.2"
   },
   "jest": {

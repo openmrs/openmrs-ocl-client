@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../../styles/index.css';
-import './styles/dictionary-modal.css';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
 import { fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead, createVersion } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';

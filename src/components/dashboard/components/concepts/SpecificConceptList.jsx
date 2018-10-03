@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SpecificConceptTable from './SpecificConceptTable';
 import Loader from '../../../Loader';
-import '../../styles/index.css';
 
 const SpecificConceptList = ({ concepts, fetching }) => {
   if (concepts.length >= 1) {

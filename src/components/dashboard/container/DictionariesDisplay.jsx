@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../styles/index.css';
 import {
   fetchDictionaries,
   searchDictionaries,

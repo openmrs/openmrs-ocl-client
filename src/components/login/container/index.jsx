@@ -6,7 +6,6 @@ import { withRouter, Link } from 'react-router-dom';
 import Title from '../../Title';
 import { loginAction } from '../../../redux/actions/auth/authActions';
 import SubmitButton from '../components/SubmitButton';
-import '../styles/index.css';
 
 export class Login extends Component {
   state = {

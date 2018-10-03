@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../styles/user-dasboard-styles.css';
 import { fetchUserData, clearDictionaryData } from '../../../redux/actions/user';
 import { getUsername } from '../../dictionaryConcepts/components/helperFunction';
 import DashboardDetails from '../components/DashboardDetails';

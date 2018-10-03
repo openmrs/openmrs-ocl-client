@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../dashboard/styles/index.css';
 import ListSearchResults from './ListSearchResults';
 import generalSearch from '../../redux/actions/GeneralSearchActions/generalSearchActionCreators';
 
