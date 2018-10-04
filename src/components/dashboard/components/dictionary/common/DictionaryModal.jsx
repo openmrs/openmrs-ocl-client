@@ -5,7 +5,6 @@ import Select from 'react-select';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { fetchingOrganizations } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
-import { fetchSources } from '../../../../../redux/actions/sources/index';
 import InlineError from '../messages/InlineError';
 import languages from './Languages';
 
@@ -158,9 +157,9 @@ export class DictionaryModal extends React.Component {
     const { data, errors } = this.state;
     const {
       organizations, dictionary,
-      isEditingDictionary, sources,
+      isEditingDictionary,
     } = this.props;
-    const publicSources = [...sources];
+    const publicSources = [];
     return (
       <div className="col-sm-5">
         <Modal
@@ -382,7 +381,6 @@ DictionaryModal.propTypes = {
   modalhide: PropTypes.func.isRequired,
   defaultLocaleOption: PropTypes.object.isRequired,
   isEditingDictionary: PropTypes.object.isRequired,
-  sources: PropTypes.array.isRequired,
 };
 
 DictionaryModal.defaultProps = {
@@ -394,10 +392,9 @@ DictionaryModal.defaultProps = {
 function mapStateToProps(state) {
   return {
     organizations: state.organizations.organizations,
-    sources: state.sources.sources,
   };
 }
 export default connect(
   mapStateToProps,
-  { fetchingOrganizations, fetchSources },
+  { fetchingOrganizations },
 )(DictionaryModal);
