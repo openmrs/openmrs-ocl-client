@@ -402,7 +402,9 @@ DictionaryModal.propTypes = {
   buttonname: PropTypes.string,
   fetchingOrganizations: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
-  organizations: PropTypes.object.isRequired,
+  organizations: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string,
+  })).isRequired,
   dictionary: PropTypes.object.isRequired,
   modalhide: PropTypes.func.isRequired,
   defaultLocaleOption: PropTypes.object.isRequired,

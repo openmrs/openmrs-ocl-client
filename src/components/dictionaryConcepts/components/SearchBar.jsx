@@ -63,7 +63,7 @@ const SearchBar = ({
 
 SearchBar.propTypes = {
   conceptsCount: PropTypes.number.isRequired,
-  totalConceptsCount: PropTypes.string.isRequired,
+  totalConceptsCount: PropTypes.number.isRequired,
   handleSearch: PropTypes.func.isRequired,
   searchValue: PropTypes.string.isRequired,
   submit: PropTypes.func.isRequired,
