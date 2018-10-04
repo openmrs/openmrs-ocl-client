@@ -9,6 +9,7 @@ import OwnerListDictionaries from '../components/dictionary/OwnerListDictionarie
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import UserDashboard from '../components/dictionary/user/UserDashboard';
 import AddDictionary from '../components/dictionary/AddDictionary';
+import Title from '../../Title';
 
 export class OwnerDictionary extends Component {
   static propTypes = {
@@ -58,6 +59,7 @@ export class OwnerDictionary extends Component {
     const { searchInput } = this.state;
     return (
       <div className="dashboard-wrapper">
+        <Title title="Login" />
         <UserDashboard
           dictionaries={dictionaries}
           organizations={organizations}
@@ -65,7 +67,7 @@ export class OwnerDictionary extends Component {
         <p> Your dictionaries </p>
         <div className="dashboard-head">
           <div className="btn add-dictionaries" onClick={this.handleShow}>
-              Add Dictionary
+            Add Dictionary
           </div>
           <SearchDictionaries
             onSearch={this.onSearch}

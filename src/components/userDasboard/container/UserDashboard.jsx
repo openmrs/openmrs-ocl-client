@@ -7,6 +7,7 @@ import { getUsername } from '../../dictionaryConcepts/components/helperFunction'
 import DashboardDetails from '../components/DashboardDetails';
 import CardWrapper from '../components/CardWrapper';
 import AddDictionary from '../../dashboard/components/dictionary/AddDictionary';
+import Title from '../../Title';
 
 export class UserDashboard extends Component {
   static propTypes = {
@@ -58,6 +59,7 @@ export class UserDashboard extends Component {
     const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
     return (
       <div className="container-fluid mt-5">
+        <Title title="Home" />
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
         <div className="row justify-content-center">
           <div className="col-11 user-info">

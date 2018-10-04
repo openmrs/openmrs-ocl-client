@@ -11,6 +11,7 @@ import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionar
 import ListDictionaries from '../components/dictionary/ListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import Paginations from '../components/DictionariesPaginations';
+import Title from '../../Title';
 
 export class DictionaryDisplay extends Component {
   static propTypes = {
@@ -78,6 +79,7 @@ export class DictionaryDisplay extends Component {
     const firstDictionary = indexOfLastDictionary - (dictionariesPerPage - 1);
     return (
       <Fragment>
+        <Title title="Dictionaries" />
         <div className="row">
           <div className="col-md-12">
             <br />
