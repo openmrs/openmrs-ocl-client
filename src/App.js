@@ -30,16 +30,16 @@ const App = () => (
           <Route exact path="/home" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
           <Route exact path="/dashboard/userdictionaries" component={Authenticate(OwnerDictionary)} />
-          <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/bulk" component={Authenticate(AddBulkConcepts)} />
+          <Route exact path="/bulk/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(AddBulkConcepts)} />
           <Route
             exact
-            path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/import"
+            path="/import/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
             component={Authenticate(BulkConceptPage)}
           />
           <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(DictionaryConcepts)} />
           <Route exact path="/dictionaryOverview/:ownerType/:owner/:type/:name" component={Authenticate(DictionaryOverview)} />
-          <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/new/:conceptType?" component={Authenticate(CreateConcept)} />
-          <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/edit/:conceptId/:conceptType?" component={Authenticate(EditConcept)} />
+          <Route exact path="/new/:conceptType?/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/" component={Authenticate(CreateConcept)} />
+          <Route exact path="/edit/:conceptType?/:conceptId/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/" component={Authenticate(EditConcept)} />
           <Route exact path="/search/:query?" component={Authenticate(GeneralSearchContainer)} />
           <Route component={NotFound} />
         </Switch>

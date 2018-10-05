@@ -15,10 +15,10 @@ const ConceptDropdown = props => (
         Add existing concepts
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <Link className="dropdown-item" to={`${props.pathName}/import`}>
+        <Link className="dropdown-item" to={`/import${props.pathName}`}>
           Add CIEL concepts
         </Link>
-        <Link to={`${props.pathName}/bulk`} className="dropdown-item">
+        <Link to={`/bulk${props.pathName}`} className="dropdown-item">
           Bulk add concepts
         </Link>
       </div>
@@ -35,28 +35,28 @@ const ConceptDropdown = props => (
         Create new concept
       </button>
       <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <Link className="dropdown-item" to={`${props.pathName}/new/diagnosis`}>
+        <Link className="dropdown-item" to={`/new/diagnosis${props.pathName}`}>
           Create a Diagnosis concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/symptom-finding`}>
+        <Link className="dropdown-item" to={`/new/symptom-finding${props.pathName}`}>
           Create a Symptom/Finding concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/procedure`}>
+        <Link className="dropdown-item" to={`/new/procedure${props.pathName}`}>
           Create a Procedure concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/question`}>
+        <Link className="dropdown-item" to={`/new/question${props.pathName}`}>
           Create a Q-and-A concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/drug`}>
+        <Link className="dropdown-item" to={`/new/drug${props.pathName}`}>
           Create a Drug concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/test`}>
+        <Link className="dropdown-item" to={`/new/test${props.pathName}`}>
           Create a Test concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new/set`}>
+        <Link className="dropdown-item" to={`/new/set${props.pathName}`}>
           Create a Set of concept
         </Link>
-        <Link className="dropdown-item" to={`${props.pathName}/new`}>
+        <Link className="dropdown-item" to={`/new${props.pathName}`}>
           Create another kind of concept
         </Link>
       </div>
