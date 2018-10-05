@@ -316,6 +316,7 @@ export class DictionaryModal extends React.Component {
                       placeholder="e.g Community-MCH, Only Alphanumeric Characters
                       Allowed"
                       required
+                      disabled={isEditingDictionary !== true ? isEditingDictionary : true}
                     />
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
