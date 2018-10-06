@@ -325,6 +325,7 @@ export class DictionaryModal extends React.Component {
                       Allowed"
                       data-tip="Mnemonic used to identify the collection in the URL (usually an acronym e.g. Community-MCH)"
                       required
+                      disabled={isEditingDictionary !== true ? isEditingDictionary : true}
                     />
                     <ReactTooltip place="top" effect="solid" />
                   </FormGroup>
