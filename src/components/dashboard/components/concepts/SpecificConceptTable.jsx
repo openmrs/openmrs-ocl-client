@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import '../../styles/index.css';
 import AddConceptModal from './ConceptModal';
 import addExistingConcept from '../../../../redux/actions/concepts/addExistingConcepts/index';
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import '../styles/index.css';
 import { fetchDictionaries, searchDictionaries } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
 import OwnerListDictionaries from '../components/dictionary/OwnerListDictionaries';

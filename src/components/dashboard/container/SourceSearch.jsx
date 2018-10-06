@@ -7,7 +7,6 @@ import Title from '../../Title';
 import { fetchSources } from '../../../redux/actions/sources/index';
 import { clearSources } from '../../../redux/actions/sources/sourcesActionCreators';
 import { fetchingOrganizations } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
-import '../styles/index.css';
 
 import SearchBar from '../components/SearchBar';
 import ListWrapper from '../components/ListWrapper';

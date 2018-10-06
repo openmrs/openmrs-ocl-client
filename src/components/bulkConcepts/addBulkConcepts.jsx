@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import './style.css';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from '../bulkConcepts/bulkConceptList';
 import Header from '../bulkConcepts/container/Header';

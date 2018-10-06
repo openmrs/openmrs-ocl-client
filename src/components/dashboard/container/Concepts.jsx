@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import fetchConceptsAction from '../../../redux/actions/concepts/index';
-import '../styles/index.css';
-import Title from '../../Title';
-
 import SearchConcept from '../components/concepts/Search';
 import ConceptList from '../components/concepts/ConceptList';
+import Title from '../../Title';
 
 export class ConceptSearch extends Component {
   static propTypes = {

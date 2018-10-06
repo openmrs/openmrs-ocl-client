@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import fetchConceptsActionTypes from '../../../redux/actions/concepts/specificConceptAction';
-import '../styles/index.css';
 
 import { clearConcepts } from '../../../redux/actions/concepts/ConceptActionCreators';
 import SearchConcept from '../components/concepts/Search';

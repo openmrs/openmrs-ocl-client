@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
-import '../style/index.css';
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';

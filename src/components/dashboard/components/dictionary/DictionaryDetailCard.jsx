@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import './styles/dictionary-modal.css';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 import ReleaseVersionModal from '../dictionary/common/ReleaseVersionModal';
 

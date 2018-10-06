@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/index.css';
 import newVideo from '../styles/video/newInstructions.mp4';
 
 const LoginDetails = () => (
