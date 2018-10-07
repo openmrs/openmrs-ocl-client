@@ -188,11 +188,9 @@ export class DictionaryModal extends React.Component {
                       type="text"
                       id="preferred_source"
                       name="preffered_source"
-                      placeholder="CIEL"
                       onChange={this.onChange}
                       value={data.preffered_sources}
                     >
-                      <option value="" />
                       <option value="CIEL">CIEL (default source)</option>
                       <option value="PIH">PIH</option>
                       {
@@ -261,7 +259,6 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.public_access}
                     >
-                      <option value="" />
                       {(isEditingDictionary && dictionary.public_access === 'View') &&
                       <option value="View" selected>Private </option>
                       }
@@ -335,6 +332,7 @@ export class DictionaryModal extends React.Component {
                       componentClass="textarea"
                       id="dictionary_description"
                       name="description"
+                      placeholder="e.g Description of this dictionary"
                       onChange={this.onChange}
                       value={data.description}
                     />
