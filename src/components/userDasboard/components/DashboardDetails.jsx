@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) => {
   const nameOfOrganizations = organizations.map(organization => organization.name).join(',');
@@ -9,13 +8,12 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
     return (
       <div className="user-data">
         <p className="lead">
-          You belong to {nameOfOrganizations} organization. This can be changed via{' '}
-          <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
+          <span>
+            You belong to {nameOfOrganizations} organization. This can be changed via{' '}
+            <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
-          </a>.
-        </p>
-        <p className="lead">
-          You can <Link to="dashboard/dictionaries">view all OpenMRS public dictionaries</Link>.
+            </a>.
+          </span>
         </p>
       </div>
     );
@@ -23,9 +21,12 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
     return (
       <div className="user-data">
         <p className="lead">
-          You belong to {numberOfOrgs} organizations:{' '}
+          <span>
+            You belong to {numberOfOrgs} organizations:{' '}
+          </span>
+          <br />
           {organizations.map(organization => (
-            <span className="d-block lead org-name text-capitalize" key={organization.id}>
+            <span className="lead org-name text-capitalize" key={organization.id}>
               <a
                 href={`https://qa.openconceptlab.org${organization.url}`}
                 target="_blank"
@@ -35,29 +36,29 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
               </a>
             </span>
           ))}{' '}
+          <span className="d-block">
           This can be changed via{' '}
-          <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
+            <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
-          </a>.
-        </p>
-        <p className="lead">
-          You can <Link to="dashboard/dictionaries">view all OpenMRS public dictionaries</Link>.
+            </a>.
+          </span>
         </p>
       </div>
     );
   }
   return (
     <div className="user-data">
-      <p className="lead">
+      <span>
+        <p className="lead">
         You do not belong to any organization. This can be changed via{' '}
-        <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
+          <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
           the traditional OCL
-        </a>.
-      </p>
-      <p className="lead">
-        You currently have {numberOfDictionary} personal {dictionary}. You can{' '}
-        <Link to="dashboard/dictionaries">view all OpenMRS public dictionaries</Link>.
-      </p>
+          </a>.
+        </p>
+        <p className="lead">
+        You currently have {numberOfDictionary} personal {dictionary}.
+        </p>
+      </span>
     </div>
   );
 };
