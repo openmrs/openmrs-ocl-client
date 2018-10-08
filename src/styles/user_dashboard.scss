@@ -8,18 +8,23 @@
   font-size: 1rem;
 }
 
-.user-data .lead {
-  font-size: 1rem;
+.user-data span {
+  font-size: 0.9rem;
+}
+
+.lead {
+  font-size: 0.9rem;
 }
 
 .user-dictionary-wrapper {
   margin-top: 2rem;
+  margin-bottom: 2rem;
   box-shadow: 0px 2px 20px 15px #b1b1b114;
   padding: .5rem;
 }
 
 .user-data a {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: rgb(17, 88, 180);
   font-weight: 400;
 }
