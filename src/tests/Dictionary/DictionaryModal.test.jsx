@@ -10,7 +10,7 @@ const props = {
   buttonname: 'Add Dictionary',
   show: true,
   modalhide: jest.fn(),
-  submit: jest.fn(),
+  submit: jest.fn(() => Promise.resolve('success')),
   organizations: [organizations],
   fetchingOrganizations: jest.fn(),
   fetchSources: jest.fn(),
@@ -47,7 +47,9 @@ describe('Test suite for dictionary modal', () => {
   });
 
   it('Sets the state of the component to the value of the input elements on change', () => {
-    wrapper.find('#dictionary_name').simulate('change', { target: { value: 'CIEL', name: 'name' } });
+    wrapper
+      .find('#dictionary_name')
+      .simulate('change', { target: { value: 'CIEL', name: 'name' } });
     expect(wrapper.state().data.name).toEqual('CIEL');
   });
 
@@ -76,11 +78,34 @@ describe('Test suite for dictionary modal', () => {
   });
 
   it('it should handle validations errors on submit', () => {
-    wrapper.setState({ data: { ...wrapper.state().data, default_locale: '', supported_locales: '' } });
+    wrapper.setState({
+      data: { ...wrapper.state().data, default_locale: '', supported_locales: '' },
+    });
     const submitButtonWrapper = wrapper.find('#addDictionary');
     expect(submitButtonWrapper.length).toEqual(1);
     submitButtonWrapper.simulate('click', preventDefault);
     expect(wrapper.state().errors.default_locale).toEqual('Kindly select your preferred locale');
     expect(wrapper.state().errors.supported_locales).toEqual('Preferred language must not be included in other languages');
+  });
+
+  it('it should handle submit', async () => {
+    wrapper.setState({
+      data: {
+        ...wrapper.state().data,
+        id: '1',
+        preffered_source: 'CIEL',
+        public_access: 'None',
+        name: 'OpenMRSDictionary',
+        owner: 'OpenMRS',
+        description: 'OpenMRSDictionary',
+        default_locale: 'en',
+        supported_locales: 'us',
+        repository_type: 'OpenMRSDictionary',
+      },
+    });
+    const submitButtonWrapper = wrapper.find('#addDictionary');
+    const spy = jest.spyOn(wrapper.instance().props, 'modalhide');
+    submitButtonWrapper.simulate('click', preventDefault);
+    expect(spy).toHaveBeenCalled();
   });
 });
