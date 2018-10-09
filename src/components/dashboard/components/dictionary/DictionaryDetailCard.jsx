@@ -157,28 +157,16 @@ const DictionaryDetailCard = (props) => {
             : null}
             </ul>
           </fieldset>
-        </form>
-      </div>
-
-      <ReleaseVersionModal
-        show={openVersionModal}
-        click={hideVersionModal}
-        handleCreateVersion={handleCreateVersion}
-        handleChange={handleChange}
-        inputLength={inputLength}
-      />
-
-      <h3 align="left">Released Version</h3>
-
-      <div className="card" id="versionCard">
-        <table>
-          <tr>
-            <th>Version</th>
-            <th>Date</th>
-            <th>Released</th>
-            <th>Actions</th>
-          </tr>
-          {releasedVersions.length >= 1 ? (
+          <fieldset>
+            <legend>Released Version</legend>
+            <div className="card" id="versionCard">
+              <table>
+                <tr>
+                  <th>Version</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+                {releasedVersions.length >= 1 ? (
             releasedVersions.map(version => (
               <DictionaryVersionsTable
                 version={version}
@@ -196,8 +184,20 @@ const DictionaryDetailCard = (props) => {
               </td>
             </tr>
           )}
-        </table>
+              </table>
+            </div>
+          </fieldset>
+        </form>
       </div>
+
+      <ReleaseVersionModal
+        show={openVersionModal}
+        click={hideVersionModal}
+        handleCreateVersion={handleCreateVersion}
+        handleChange={handleChange}
+        inputLength={inputLength}
+      />
+
     </div>
   );
 };
