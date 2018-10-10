@@ -126,7 +126,7 @@ const CreateConceptForm = props => (
           <h6 className="text-left section-header">Names</h6>
           <CreateConceptTable {...props} />
           <a href="#!" className="text-left add-more-names" id="add-more-name" onClick={props.handleNewName}>
-            Add name/synonym in different language
+            Add another name...
           </a>
         </div>
       </div>
@@ -135,7 +135,7 @@ const CreateConceptForm = props => (
           <h6 className="text-left section-header">Descriptions</h6>
           <DescriptionTable {...props} />
           <a href="#!" className="text-left add-more-names" id="add-more-description" onClick={props.addDescription}>
-            Add description in a different language
+            Add another description...
           </a>
         </div>
       </div>
