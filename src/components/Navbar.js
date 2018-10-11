@@ -56,26 +56,6 @@ export class Navbar extends Component {
                     </strong>
                   </a>
                 </li>
-                <li className="nav-item nav-link" >
-                  <a
-                    className="nav-link text-white"
-                    href="/dashboard/sources"
-                  >
-                    <strong>
-                      Sources
-                    </strong>
-                  </a>
-                </li>
-                <li className="nav-item nav-link">
-                  <a
-                    className="nav-link text-white"
-                    href="/dashboard/concepts"
-                  >
-                    <strong>
-                    Concepts
-                    </strong>
-                  </a>
-                </li>
                 <li className="nav-item nav-link dropdown">
                   <a
                     className="nav-link dropdown-toggle text-white"
