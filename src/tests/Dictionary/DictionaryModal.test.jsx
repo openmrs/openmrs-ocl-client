@@ -79,11 +79,17 @@ describe('Test suite for dictionary modal', () => {
 
   it('it should handle validations errors on submit', () => {
     wrapper.setState({
-      data: { ...wrapper.state().data, default_locale: '', supported_locales: '' },
+      data: {
+        ...wrapper.state().data,
+        preferred_source: '',
+        default_locale: '',
+        supported_locales: '',
+      },
     });
     const submitButtonWrapper = wrapper.find('#addDictionary');
     expect(submitButtonWrapper.length).toEqual(1);
     submitButtonWrapper.simulate('click', preventDefault);
+    expect(wrapper.state().errors.preferred_source).toEqual('Kindly select the preferred source');
     expect(wrapper.state().errors.default_locale).toEqual('Kindly select your preferred locale');
     expect(wrapper.state().errors.supported_locales).toEqual('Preferred language must not be included in other languages');
   });
@@ -93,7 +99,7 @@ describe('Test suite for dictionary modal', () => {
       data: {
         ...wrapper.state().data,
         id: '1',
-        preffered_source: 'CIEL',
+        preferred_source: 'CIEL',
         public_access: 'None',
         name: 'OpenMRSDictionary',
         owner: 'OpenMRS',
