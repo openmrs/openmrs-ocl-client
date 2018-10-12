@@ -12,7 +12,7 @@ const ActionButtons = ({
       {actionButtons === true &&
       <Link
         className="btn btn-sm mb-1 actionButtons"
-        to={`${dictionaryPathName}/edit/${id}/${concept_class}`}
+        to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
       >
       Edit
       </Link>
