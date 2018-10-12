@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Notification, { notify } from 'react-notify-toast';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logoutAction } from '../redux/actions/auth/authActions';
@@ -37,24 +37,24 @@ export class Navbar extends Component {
             {this.props.loggedIn && (
               <ul className="navbar-nav ml-auto" id="navList">
                 <li className="nav-item nav-link" >
-                  <a
+                  <Link
                     className="nav-link text-white"
-                    href="/home"
+                    to="/home"
                   >
                     <strong>
                       Home
                     </strong>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item nav-link" >
-                  <a
+                  <Link
                     className="nav-link text-white"
-                    href="/dashboard/dictionaries"
+                    to="/dashboard/dictionaries"
                   >
                     <strong>
                       All Dictionaries
                     </strong>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item nav-link dropdown">
                   <a
@@ -72,11 +72,11 @@ export class Navbar extends Component {
                     </strong>
                   </a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown" id="navbarDropdown">
-                    <a className="dropdown-item nav-link" href="!#" onClick={this.logoutUser}>
+                    <Link className="dropdown-item nav-link" to="!#" onClick={this.logoutUser}>
                       <strong>
                         Logout <i className="fa fa-sign-out" />
                       </strong>
-                    </a>
+                    </Link>
                   </div>
                 </li>
               </ul>
