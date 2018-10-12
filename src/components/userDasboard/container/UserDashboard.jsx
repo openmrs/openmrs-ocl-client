@@ -57,11 +57,11 @@ export class UserDashboard extends Component {
     } = this.props;
     const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
     return (
-      <div className="container-fluid mt-5">
+      <div className="container">
         <Title title="Home" />
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
         <div className="row justify-content-center">
-          <div className="col-11 user-info">
+          <div className="col-12 user-info">
             <div className="row">
               <div className="greetings">
                 <h5>Welcome {name}</h5>
@@ -75,7 +75,9 @@ export class UserDashboard extends Component {
               />
             </div>
           </div>
-          <div className="col-11 user-dictionary-wrapper">
+        </div>
+        <div className="row">
+          <div className="col-12 user-dictionary-wrapper">
             <div className="row">
               <div className="greetings col-12 d-flex justify-content-between">
                 <h3>Your {dictionary}</h3>
@@ -92,7 +94,7 @@ export class UserDashboard extends Component {
               <div className="line-divider" />
             </div>
             <div className="row justify-content-center">
-              <div className="col-11">
+              <div className="col-12">
                 <CardWrapper
                   dictionaries={userDictionary}
                   fetching={loading}
