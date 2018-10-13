@@ -15,32 +15,41 @@ import {
   creatingVersionsError,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
+import { addDictionaryReference } from '../../actions/bulkConcepts';
 import api from './../../api';
 
 /* eslint-disable */
-export const createDictionary = data => dispatch =>
+export const createDictionary = data => async dispatch =>
   api.dictionaries
     .createDictionary(data)
-    .then(payload => dispatch(
-      addDictionary(payload),
-      notify.show(
-        'Successfully added dictionary to your organization',
-        'success', 6000,
-      ),
-    ))
+    .then((payload) => {
+      if (data.conceptUrl) {
+        dispatch(addDictionaryReference(data.conceptUrl, payload.data.owner_url, payload.data.id));
+      }
+      dispatch(
+        addDictionary(payload),
+        notify.show(
+          'Successfully added dictionary to your organization',
+          'success', 6000,
+        ),
+      )})
     .catch(error =>
       notify.show(`${error.response.data.__all__[0]}`, 'error', 6000));
 
 export const createDictionaryUser = data => dispatch =>
   api.dictionaries
     .createDictionaryUser(data)
-    .then(payload => dispatch(
-      addDictionary(payload),
-      notify.show(
-        'Successfully added your dictionary',
-        'success', 6000,
-      ),
-    ))
+    .then((payload) => {
+      if (data.conceptUrl) {
+        dispatch(addDictionaryReference(data.conceptUrl, payload.data.owner_url, payload.data.id));
+      }
+      dispatch(
+        addDictionary(payload),
+        notify.show(
+          'Successfully added your dictionary',
+          'success', 6000,
+        ),
+      )})
     .catch(error =>
       notify.show(`${error.response.data.__all__[0]}`, 'error', 6000));
 

@@ -56,8 +56,8 @@ describe('Test suite for user dashboard actions', () => {
     });
 
     const expectedActions = [
+      { type: IS_FETCHING, payload: true },
       { type: FETCH_USER_DICTIONARY, payload: [dictionary] },
-      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore({});
@@ -74,7 +74,10 @@ describe('Test suite for user dashboard actions', () => {
       });
     });
 
-    const expectedActions = [];
+    const expectedActions = [{
+      payload: true,
+      type: IS_FETCHING,
+    }];
 
     const store = mockStore({});
     return store.dispatch(fetchsUserDictionaries('chriskala')).then(() => {

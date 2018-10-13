@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
 import dictionary from '../__mocks__/dictionaries';
@@ -20,6 +20,9 @@ const props = {
   name: jest.fn(),
   dictionary,
   sources: [{ name: 'source', id: '1' }],
+  dictionaries: [],
+  userDictionaries: [],
+  searchDictionaries: jest.fn(),
 };
 
 describe('Test suite for dictionary modal', () => {
@@ -107,5 +110,16 @@ describe('Test suite for dictionary modal', () => {
     const spy = jest.spyOn(wrapper.instance().props, 'modalhide');
     submitButtonWrapper.simulate('click', preventDefault);
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('it should handle search input values', () => {
+    props.isEditingDictionary = false;
+    const wrapper2 = mount(<DictionaryModal {...props} />);
+    const spy = jest.spyOn(wrapper2.find('DictionaryModal').instance(), 'searchInputValues');
+    wrapper2.find('input#react-select-3-input')
+      .simulate('change');
+    expect(spy).toHaveBeenCalledTimes(1);
+    wrapper2.instance().searchInputValues('dictionary');
+    expect(props.searchDictionaries).toBeCalled();
   });
 });

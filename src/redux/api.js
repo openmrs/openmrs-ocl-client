@@ -5,18 +5,18 @@ export default {
     createDictionary: data =>
       instance
         .post(`orgs/${data.owner}/collections/`, data)
-        .then(response => response.data)
         /* eslint-disable */
-        .then(() => { 
-          return instance.post(`orgs/${data.owner}/sources/`, data);
+        .then((response) => { 
+          instance.post(`orgs/${data.owner}/sources/`, data);
+          return response;
         }),
 
     createDictionaryUser: data =>
       instance
         .post('user/collections/', data)
-        .then(response => response.data)
-        .then(() => {
-          return instance.post('user/sources/', data);
+        .then((response) => {
+          instance.post('user/sources/', data);
+          return response;
         }),
     
     editDictionary: (url, data) =>

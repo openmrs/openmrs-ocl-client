@@ -33,21 +33,22 @@ export const fetchUserOrganizations = username => async (dispatch) => {
 
 export const fetchsUserDictionaries = username => async (dispatch) => {
   const url = `/users/${username}/collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
+  dispatch(isFetching(true));
   try {
     const response = await instance.get(url);
     const result = filterUserPayload(username, response.data);
     dispatch(isSuccess(result, FETCH_USER_DICTIONARY));
-    dispatch(isFetching(false));
   } catch (error) {
     notify.show('an error occurred, reload the page', 'error', 3000);
   }
 };
 
-export const fetchUserData = username => (dispatch) => {
+export const fetchUserData = username => async (dispatch) => {
   dispatch(isFetching(true));
-  dispatch(fetchUser(username));
-  dispatch(fetchsUserDictionaries(username));
-  dispatch(fetchUserOrganizations(username));
+  await dispatch(fetchUser(username));
+  await dispatch(fetchsUserDictionaries(username));
+  await dispatch(fetchUserOrganizations(username));
+  dispatch(isFetching(false));
 };
 
 export const clearDictionaryData = () => (dispatch) => {

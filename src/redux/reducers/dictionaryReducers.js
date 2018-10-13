@@ -19,7 +19,7 @@ export default (state = initalState, action) => {
     case FETCHING_DICTIONARIES:
       return {
         ...state,
-        dictionaries: action.payload,
+        dictionaries: [...action.payload],
       };
     case IS_FETCHING:
       return {
