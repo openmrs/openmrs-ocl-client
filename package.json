@@ -52,7 +52,7 @@
     "lint": "npm run build:css && eslint ./src",
     "coverage": "react-scripts test --env=jsdom --coverage --watch",
     "build:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --output-style compressed",
-    "watch:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/app.css --include-path ./node_modules src/styles -o src/styles --watch --recursive"
+    "watch:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --watch --recursive"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^16.1.0",
