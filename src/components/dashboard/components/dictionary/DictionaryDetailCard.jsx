@@ -41,6 +41,7 @@ const DictionaryDetailCard = (props) => {
     versionId,
     versionDescription,
     inputLength,
+    download,
   } = props;
 
   const username = localStorage.getItem('username');
@@ -175,6 +176,7 @@ const DictionaryDetailCard = (props) => {
                 showSubModal={showSubModal}
                 show={subModal}
                 url={subUrl}
+                download={download}
               />
             ))
           ) : (
@@ -225,6 +227,7 @@ DictionaryDetailCard.propTypes = {
   versionId: PropTypes.string.isRequired,
   versionDescription: PropTypes.string.isRequired,
   inputLength: PropTypes.number.isRequired,
+  download: PropTypes.func.isRequired,
 };
 
 export default DictionaryDetailCard;
