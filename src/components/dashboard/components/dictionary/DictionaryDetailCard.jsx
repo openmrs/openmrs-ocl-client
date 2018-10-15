@@ -147,7 +147,6 @@ const DictionaryDetailCard = (props) => {
             <legend>Actions</legend>
             <ul>
               <li><a href={traditionalUrl} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
-              <li><i className="far fa-copy" />Copy concepts from another dictionary</li>
               { owner === username && !headVersion.released ?
                 <li><button type="button" onClick={handleRelease} className="fas fa-cloud-upload-alt head"><span id="release-head"> Release HEAD as new version</span></button></li>
             : null}
