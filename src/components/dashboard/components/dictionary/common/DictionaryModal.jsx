@@ -177,13 +177,12 @@ export class DictionaryModal extends React.Component {
     } = this.props;
     const publicSources = [];
     return (
-      <div className="col-sm-5">
+      <div>
         <Modal
-
           show={this.props.show}
           onHide={this.props.modalhide}
-          dialogClassName="custom-modal"
-          className="modal-fade"
+          dialogClassName="dictionary-custom-modal"
+          className="dictionary-modal-fade"
         >
           <Modal.Header>
             <Modal.Title className="modal-heading">
@@ -192,9 +191,9 @@ export class DictionaryModal extends React.Component {
           </Modal.Header>
           {errors && <InlineError text={this.errors} />}
           <Modal.Body>
-            <form style={{ marginLeft: '50px', marginRight: '-37%' }}>
-              <div className="row">
-                <div className="col-md-8">
+            <form>
+              <div>
+                <div>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Source{' '}
                     {errors && <InlineError text={errors.preffered_sources} />}
@@ -221,7 +220,6 @@ export class DictionaryModal extends React.Component {
                       }
                     </FormControl>
                   </FormGroup>
-
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Language{''}
                     {errors && <InlineError text={errors.default_locale} />}
@@ -244,7 +242,6 @@ export class DictionaryModal extends React.Component {
                       ))}
                     </FormControl>
                   </FormGroup>
-
                   {'Other Languages'}
                   {errors && <InlineError text={errors.supported_locales} />}
                   <Select
@@ -261,7 +258,6 @@ export class DictionaryModal extends React.Component {
                     isMulti
                     onChange={this.handleChangeSupportedLocale}
                   />
-
                   <FormGroup style={{ marginTop: '12px' }}>
                     Visibility{''}
                     {errors && <InlineError text={errors.public_access} />}
@@ -425,6 +421,8 @@ DictionaryModal.defaultProps = {
 
 function mapStateToProps(state) {
   return {
+    dictionaries: state.dictionaries.dictionaries
+      .map(({ name, concepts_url }) => ({ label: name, value: concepts_url })),
     userDictionaries: state.user.userDictionary
       .map(({ name, concepts_url }) => ({ label: name, value: concepts_url })),
     organizations: state.organizations.organizations,
