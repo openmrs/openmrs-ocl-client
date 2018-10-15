@@ -110,7 +110,7 @@ export class BulkConceptsPage extends Component {
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
     const firstConcept = indexOfLastConcept - 19;
     return (
-      <div className="container custom-dictionary-concepts bulk-concepts">
+      <div className="container-fluid bulk-concepts">
         <section>
           <Header locationPath={this.props.match.params} />
           <div className="col-12 pt-1">

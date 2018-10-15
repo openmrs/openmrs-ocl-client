@@ -17,7 +17,7 @@ const ListDictionaries = (props) => {
   if (dictionaries.length >= 1) {
     return (
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-content-center all-dictionaries">
           {dictionaries.map(dictionary => (
             <Card dictionary={dictionary} key={dictionary.uuid} {...props} />
           ))}

@@ -32,7 +32,7 @@ export class AddBulkConcepts extends Component {
     const dictionaryName = localStorage.getItem('dictionaryName');
     const { cielConcepts } = this.props;
     return (
-      <div className="container add-bulk-concepts">
+      <div className="container-fluid add-bulk-concepts">
         <Header locationPath={this.props.match.params} />
         <h3>
           <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
