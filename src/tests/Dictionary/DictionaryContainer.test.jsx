@@ -3,10 +3,12 @@ import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
+import sinon from 'sinon';
 import { DictionaryOverview } from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
 import DictionaryDetailCard from '../../components/dashboard/components/dictionary/DictionaryDetailCard';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
+import concepts from '../__mocks__/concepts';
 
 const store = createMockStore({
   organizations: {
@@ -25,6 +27,10 @@ const store = createMockStore({
 
 jest.mock('../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryOverview', () => {
+  beforeEach(() => {
+    window.URL.createObjectURL = sinon.stub().returns('/url');
+  });
+
   it('should render without any data', () => {
     const props = {
       dictionary: [],
@@ -215,6 +221,41 @@ describe('DictionaryOverview', () => {
     wrapper.instance().forceUpdate();
     expect(wrapper.find('.subscription-link').at(0).exists()).toBe(true);
     wrapper.find('.subscription-link').at(0).simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle downloading of dictionary concepts', () => {
+    const props = {
+      dictionary: { dictionary },
+      versions: [versions, customVersion],
+      headVersion: [versions],
+      url: '',
+      dictionaryConcepts: [concepts],
+      showEditModal: jest.fn(),
+      hideSubModal: jest.fn(),
+      showSubModal: jest.fn(),
+      handleRelease: jest.fn(),
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'mochu',
+          type: 'collection',
+          name: 'mochu',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      download: jest.fn(),
+    };
+
+    const wrapper = mount(<Provider store={store}><MemoryRouter>
+      <DictionaryOverview {...props} />
+    </MemoryRouter></Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'download');
+    wrapper.instance().forceUpdate();
+    expect(wrapper.find('.downloadConcepts').at(0).exists()).toBe(true);
+    wrapper.find('.downloadConcepts').at(0).simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
 

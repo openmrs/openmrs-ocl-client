@@ -5,6 +5,17 @@ export default {
   datatype: 'N/A',
   retired: false,
   source: 'CIEL',
+  descriptions: [
+    {
+      uuid: '453aa9941e824becaad4b374899e8bcb',
+      external_id: null,
+      description: 'The proportion of women of reproductive age (15-49 years) who are not pregnant and are accepting a modern contraceptive method (new and repeat acceptors).  ',
+      locale: 'en',
+      locale_preferred: true,
+      description_type: null,
+      type: 'ConceptDescription',
+    },
+  ],
   owner: 'CIEL',
   owner_type: 'Organization',
   owner_url: '/orgs/CIEL/',

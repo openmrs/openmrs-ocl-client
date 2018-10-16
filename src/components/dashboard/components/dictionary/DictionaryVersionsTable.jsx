@@ -8,7 +8,7 @@ const DictionaryVersionsTable = (version) => {
       id,
       updated_on,
       version_url,
-    }, hide, show, showSubModal, url,
+    }, hide, show, showSubModal, url, download,
   } = version;
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric',
@@ -17,7 +17,7 @@ const DictionaryVersionsTable = (version) => {
     <tr id="versiontable">
       <td>{id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
-      <td><a href={version_url}>Browse in OCL</a> <Link className="subscription-link" onClick={() => { showSubModal(version_url); }} to="#">Subscription URL</Link></td>
+      <td><a href={version_url}>Browse in OCL</a> <Link className="downloadConcepts" onClick={download} to="#">Download</Link> <Link className="subscription-link" onClick={() => { showSubModal(version_url); }} to="#">Subscription URL</Link></td>
       <SubscriptionModal
         show={show}
         click={hide}
