@@ -17,11 +17,9 @@ export class Navbar extends Component {
       <div>
         <Notification options={{ zIndex: 10000, top: '200px' }} />
         <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-          <strong>
-            <a className="navbar-brand" href="/">
+          <a className="nav-link navbar-brand" href="/">
               OCL for OpenMRS
-            </a>
-          </strong>
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -41,9 +39,7 @@ export class Navbar extends Component {
                     className="nav-link text-white"
                     to="/home"
                   >
-                    <strong>
                       Home
-                    </strong>
                   </Link>
                 </li>
                 <li className="nav-item nav-link" >
@@ -51,9 +47,7 @@ export class Navbar extends Component {
                     className="nav-link text-white"
                     to="/dashboard/dictionaries"
                   >
-                    <strong>
                       All Dictionaries
-                    </strong>
                   </Link>
                 </li>
                 <li className="nav-item nav-link dropdown">
@@ -66,17 +60,12 @@ export class Navbar extends Component {
                     aria-haspopup="true"
                     aria-expanded="false"
                   >
-                    <span className="fa fa-user">
-                      <strong>
-                        {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
-                      </strong>
-                    </span>
+                    <span className="fa fa-user" />
+                    {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
                   </a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown" id="navbarDropdown">
                     <Link className="dropdown-item nav-link" to="!#" onClick={this.logoutUser}>
-                      <strong>
                         Logout <i className="fa fa-sign-out" />
-                      </strong>
                     </Link>
                   </div>
                 </li>
