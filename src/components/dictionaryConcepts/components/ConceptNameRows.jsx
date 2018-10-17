@@ -7,11 +7,11 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class ConceptNameRows extends Component {
   static propTypes = {
-    newRow: PropTypes.func.isRequired,
+    newRow: PropTypes.string.isRequired,
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
-    pathName: PropTypes.string.isRequired,
+    pathName: PropTypes.object.isRequired,
     existingConcept: PropTypes.object.isRequired,
   };
   constructor(props) {

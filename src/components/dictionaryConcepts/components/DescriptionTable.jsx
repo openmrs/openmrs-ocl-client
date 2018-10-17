@@ -31,7 +31,7 @@ const DescriptionTable = props => (
 );
 
 DescriptionTable.propTypes = {
-  description: PropTypes.string.isRequired,
+  description: PropTypes.array.isRequired,
   existingConcept: PropTypes.object.isRequired,
 };
 export default DescriptionTable;

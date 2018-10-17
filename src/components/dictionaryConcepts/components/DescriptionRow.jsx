@@ -7,12 +7,12 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class DescriptionRow extends Component {
   static propTypes = {
-    newRow: PropTypes.string.isRequired,
+    newRow: PropTypes.object.isRequired,
     addDataFromDescription: PropTypes.func.isRequired,
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
-    pathName: PropTypes.string.isRequired,
-    existingConcept: PropTypes.func.isRequired,
+    pathName: PropTypes.object.isRequired,
+    existingConcept: PropTypes.object.isRequired,
   }
   constructor(props) {
     super(props);

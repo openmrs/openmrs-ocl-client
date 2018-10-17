@@ -41,7 +41,7 @@ export class DictionaryConcepts extends Component {
     paginateConcepts: PropTypes.func.isRequired,
     totalConceptCount: PropTypes.number.isRequired,
     fetchMemberStatus: PropTypes.func.isRequired,
-    userIsMember: PropTypes.func.isRequired,
+    userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
   };
 
