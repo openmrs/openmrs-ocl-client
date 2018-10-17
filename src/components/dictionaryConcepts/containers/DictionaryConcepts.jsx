@@ -50,7 +50,7 @@ export class DictionaryConcepts extends Component {
     this.state = {
       conceptsCount: this.props.totalConceptCount,
       searchInput: '',
-      conceptLimit: 10,
+      conceptLimit: 20,
       conceptOffset: 0,
       versionUrl: '',
       data: {
@@ -71,6 +71,10 @@ export class DictionaryConcepts extends Component {
         params: { collectionName, type, typeName },
       },
     } = nextProps;
+    localStorage.setItem('dictionaryId', this.props.match.params.collectionName);
+    localStorage.setItem('type', this.props.match.params.type);
+    localStorage.setItem('typeName', this.props.match.params.typeName);
+    localStorage.setItem('dictionaryName', this.props.match.params.dictionaryName);
     this.setState({
       collectionName,
       type,
@@ -137,17 +141,17 @@ export class DictionaryConcepts extends Component {
   }
 
   fetchNextConcepts() {
-    this.props.paginateConcepts(null, this.state.conceptLimit + 10, this.state.conceptOffset + 10);
+    this.props.paginateConcepts(null, this.state.conceptLimit + 20, this.state.conceptOffset + 20);
     this.setState(state => ({
-      conceptOffset: state.conceptOffset + 10,
-      conceptLimit: state.conceptLimit + 10,
+      conceptOffset: state.conceptOffset + 20,
+      conceptLimit: state.conceptLimit + 20,
     }));
   }
   fetchPrevConcepts() {
-    this.props.paginateConcepts(null, this.state.conceptLimit - 10, this.state.conceptOffset - 10);
+    this.props.paginateConcepts(null, this.state.conceptLimit - 20, this.state.conceptOffset - 20);
     this.setState(state => ({
-      conceptOffset: state.conceptOffset - 10,
-      conceptLimit: state.conceptLimit - 10,
+      conceptOffset: state.conceptOffset - 20,
+      conceptLimit: state.conceptLimit - 20,
     }));
   }
 
@@ -167,11 +171,17 @@ export class DictionaryConcepts extends Component {
 
   handleDelete = () => {
     const { data, collectionName, type } = this.state;
-    this.props
-      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
-  }
+    this.props.removeDictionaryConcept(
+      data,
+      type,
+      this.props.match.params.typeName,
+      collectionName,
+    );
+  };
 
-  handleShowDelete = (url) => { this.setState({ data: { references: [url] }, versionUrl: url }); };
+  handleShowDelete = (url) => {
+    this.setState({ data: { references: [url] }, versionUrl: url });
+  };
 
   render() {
     const {

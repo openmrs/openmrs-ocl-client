@@ -198,7 +198,7 @@ describe('Test suite for dictionary concepts components', () => {
       filteredSources: ['CIEL'],
       loading: false,
       paginateConcepts: jest.fn(),
-      totalConceptCount: 11,
+      totalConceptCount: 21,
     };
     const wrapper = mount(<Router>
       <DictionaryConcepts {...props} />
