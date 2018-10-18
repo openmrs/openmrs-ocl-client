@@ -4,6 +4,7 @@ import { login, loginFailed, loginStarted, logout } from './authActionCreators';
 const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
 const loginAction = ({ username, password }) => async (dispatch) => {
+  dispatch(loginStarted());
   let response;
   try {
     const data = {
@@ -15,7 +16,6 @@ const loginAction = ({ username, password }) => async (dispatch) => {
     const loginResponse = await axios.post(loginUrl, data);
     const { token } = loginResponse.data;
     const headers = { Authorization: `Token ${token}` };
-    dispatch(loginStarted());
     const url = `${BASE_URL}/users/${username}/`;
     response = await axios.post(url, null, { headers });
     localStorage.setItem('token', `Token ${token}`);
