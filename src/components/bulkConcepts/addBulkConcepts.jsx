@@ -94,7 +94,7 @@ export class AddBulkConcepts extends Component {
           </div>
         </fieldset>
         <h4>Concept IDs to add</h4>
-        <div className="prefered-concepts">
+        <div className="preffered-concepts">
           <BulkConceptList
             cielConcepts={cielConcepts}
             fetching={this.props.isFetching}

@@ -14,7 +14,7 @@ export class DictionaryModal extends React.Component {
     this.state = {
       data: {
         id: '',
-        preffered_source: '',
+        preferred_source: 'CIEL',
         public_access: '',
         name: '',
         owner: '',
@@ -85,7 +85,7 @@ export class DictionaryModal extends React.Component {
   populateFields() {
     const {
       dictionary: {
-        id, preffered_source, public_access, name, owner, description,
+        id, preferred_source, public_access, name, owner, description,
         default_locale, repository_type,
       },
     } = this.props;
@@ -93,7 +93,7 @@ export class DictionaryModal extends React.Component {
     this.setState({
       data: {
         id,
-        preffered_source,
+        preferred_source,
         public_access,
         name,
         owner,
@@ -150,8 +150,8 @@ export class DictionaryModal extends React.Component {
     if (!data.id) {
       errors.id = 'Short code cannot be empty';
     }
-    if (!data.preffered_source) {
-      errors.preffered_source = 'Kindly select the preferred source';
+    if (!data.preferred_source) {
+      errors.preferred_source = 'Kindly select the preferred source';
     }
     if (!data.owner) {
       errors.owner = 'Kindly select the Owner of the Dictionary';
@@ -196,21 +196,21 @@ export class DictionaryModal extends React.Component {
                 <div>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Source{' '}
-                    {errors && <InlineError text={errors.preffered_sources} />}
+                    {errors && <InlineError text={errors.preferred_source} />}
                     <FormControl
                       componentClass="select"
                       type="text"
                       id="preferred_source"
-                      name="preffered_source"
+                      name="preferred_source"
                       onChange={this.onChange}
-                      value={data.preffered_sources}
+                      value={data.preferred_source}
                     >
                       <option value="CIEL">CIEL (default source)</option>
                       <option value="PIH">PIH</option>
                       {
                         isEditingDictionary &&
-                        <option value={dictionary.preffered_source} selected>
-                          {dictionary.preffered_source}
+                        <option value={dictionary.preferred_source} selected>
+                          {dictionary.preferred_source}
                         </option>
                       }
                       {
