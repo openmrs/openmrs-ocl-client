@@ -5,7 +5,7 @@
 # openmrs-ocl-client
 
 > OCL client for OpenMRS is a web service that will allow OpenMRS users to manage their concepts on the web,
-> allow reusability of the existing concepts and allow one to create their concepts if they are not in exsitance.
+> allow reusability of the existing concepts and allow one to create their concepts if they are not in existence.
 
 ## Build
 ## Requirements
@@ -71,7 +71,7 @@ $ docker build -t openmrs/ocl-client:local .
 $ docker-compose -f docker/docker-compose.yml up -d
 
 - Navigate to your http://localhost:8081/
-Your should now see your app running :)
+You should now see your app running :)
 ```
 
 ### Running tests
