@@ -63,7 +63,7 @@ export class AddBulkConcepts extends Component {
                 value="option2"
               />
               <label className="form-check-label" htmlFor="exampleRadios2">
-                (Other preffered sources here)
+                (Other preferred sources here)
               </label>
             </div>{' '}
             <br />
@@ -94,7 +94,7 @@ export class AddBulkConcepts extends Component {
           </div>
         </fieldset>
         <h4>Concept IDs to add</h4>
-        <div className="preffered-concepts">
+        <div className="preferred-concepts">
           <BulkConceptList
             cielConcepts={cielConcepts}
             fetching={this.props.isFetching}
