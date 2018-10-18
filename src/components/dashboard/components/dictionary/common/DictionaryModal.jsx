@@ -330,9 +330,7 @@ export class DictionaryModal extends React.Component {
                       name="id"
                       onChange={this.onChange}
                       value={data.id}
-                      placeholder="e.g Community-MCH, Only Alphanumeric Characters
-                      Allowed"
-                      data-tip="Mnemonic used to identify the collection in the URL (usually an acronym e.g. Community-MCH)"
+                      placeholder="Mnemonic used to identify the collection in the URL (an acronym e.g. Community-MCH)"
                       required
                       disabled={isEditingDictionary !== true ? isEditingDictionary : true}
                     />
