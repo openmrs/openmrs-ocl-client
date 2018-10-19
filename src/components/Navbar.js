@@ -64,9 +64,11 @@ export class Navbar extends Component {
                     {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
                   </a>
                   <div className="dropdown-menu" aria-labelledby="navbarDropdown" id="navbarDropdown">
-                    <Link className="dropdown-item nav-link" to="!#" onClick={this.logoutUser}>
+                    <button className="dropdown-item nav-link" onClick={this.logoutUser}>
+                      <strong>
                         Logout <i className="fa fa-sign-out" />
-                    </Link>
+                      </strong>
+                    </button>
                   </div>
                 </li>
               </ul>
