@@ -140,17 +140,14 @@ const CreateConceptForm = props => (
         </div>
       </div>
       <div className="submit-button text-left">
-        <Link
-          to={props.path}
-          className="collection-name small-text"
-        >
-          <button className="btn btn-sm mr-1 col-2 btn-danger" type="reset">
-          Cancel
+        <button className="btn btn-sm bg-blue col-2 mr-1" type="submit">
+          {props.isEditConcept ? 'Update' : 'Create' }
+        </button>
+        <Link to={props.path} className="collection-name small-text">
+          <button className="btn btn-sm  col-2 btn-danger" type="reset">
+            Cancel
           </button>
         </Link>
-        <button className="btn btn-sm bg-blue col-2" type="submit">
-          {props.isEditConcept ? 'Update' : 'Create'}
-        </button>
       </div>
     </div>
   </form>
