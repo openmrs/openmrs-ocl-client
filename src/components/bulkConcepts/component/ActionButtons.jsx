@@ -7,7 +7,7 @@ import PreviewCard from './PreviewCard';
 export class ActionButtons extends Component {
   static propTypes = {
     previewConcept: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     params: PropTypes.shape({
       type: PropTypes.string,
       typeName: PropTypes.string,

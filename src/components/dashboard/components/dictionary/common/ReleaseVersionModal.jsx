@@ -77,9 +77,14 @@ ReleaseVersionModal.propTypes = {
   click: PropTypes.func.isRequired,
   handleCreateVersion: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  versionId: PropTypes.string.isRequired,
-  versionDescription: PropTypes.string.isRequired,
+  versionId: PropTypes.string,
+  versionDescription: PropTypes.string,
   inputLength: PropTypes.number.isRequired,
+};
+
+ReleaseVersionModal.defaultProps = {
+  versionId: '',
+  versionDescription: '',
 };
 
 export default ReleaseVersionModal;

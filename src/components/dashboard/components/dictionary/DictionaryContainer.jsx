@@ -13,9 +13,7 @@ export class DictionaryOverview extends Component {
         typeName: propTypes.string,
       }),
     }).isRequired,
-    dictionary: propTypes.objectOf(propTypes.shape({
-      dictionaryName: propTypes.string,
-    })).isRequired,
+    dictionary: propTypes.object.isRequired,
     dictionaryConcepts: propTypes.array.isRequired,
     versions: propTypes.array.isRequired,
     fetchDictionary: propTypes.func.isRequired,

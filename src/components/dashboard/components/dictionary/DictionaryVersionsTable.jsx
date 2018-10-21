@@ -18,11 +18,13 @@ const DictionaryVersionsTable = (version) => {
       <td>{id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
       <td><a href={version_url}>Browse in OCL</a> <Link className="downloadConcepts" onClick={download} to="#">Download</Link> <Link className="subscription-link" onClick={() => { showSubModal(version_url); }} to="#">Subscription URL</Link></td>
-      <SubscriptionModal
-        show={show}
-        click={hide}
-        url={url}
-      />
+      <td className="d-none">
+        <SubscriptionModal
+          show={show}
+          click={hide}
+          url={url}
+        />
+      </td>
     </tr>
   );
 };

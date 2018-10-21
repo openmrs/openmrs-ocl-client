@@ -5,7 +5,10 @@ const InlineError = ({ text }) => (
   <div><span id="inline-error"> {text} </span></div>
 );
 InlineError.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
+};
+InlineError.defaultProps = {
+  text: '',
 };
 
 export default InlineError;

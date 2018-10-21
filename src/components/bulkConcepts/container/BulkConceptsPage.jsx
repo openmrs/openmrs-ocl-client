@@ -25,7 +25,7 @@ export class BulkConceptsPage extends Component {
     preview: PropTypes.shape({
       url: PropTypes.string,
       display_name: PropTypes.string,
-    }).isRequired,
+    }),
     addConcept: PropTypes.func.isRequired,
     datatypes: PropTypes.array.isRequired,
     previewConcept: PropTypes.func.isRequired,
@@ -39,7 +39,9 @@ export class BulkConceptsPage extends Component {
       }).isRequired,
     }).isRequired,
   };
-
+  static defaultProps = {
+    preview: {},
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -129,7 +131,7 @@ export class BulkConceptsPage extends Component {
             <SearchBar
               handleSearch={this.handleSearch}
               handleChange={this.handleChange}
-              inputValue={searchInput}
+              searchInput={searchInput}
             />
             <Paginations
               concepts={lastConcept}
