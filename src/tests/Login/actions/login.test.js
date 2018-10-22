@@ -71,6 +71,10 @@ describe('Test suite for login action', () => {
 
     const expectedActions = [
       {
+        type: AUTHENTICATION_IN_PROGRESS,
+        loading: true,
+      },
+      {
         type: AUTHENTICATION_FAILED,
         payload: { errorMessage: 'Passwords did not match.' },
         loading: false,
