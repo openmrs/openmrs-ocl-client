@@ -4,7 +4,7 @@ import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
 
 const SubscriptionModal = (props) => {
   const { show, click, url } = props;
-  const subUrl = `https://openconceptlab.org/${url}`;
+  const subUrl = `https://qa.openconceptlab.org${url}`;
   return (
     <div className="modal-container">
       <Modal
