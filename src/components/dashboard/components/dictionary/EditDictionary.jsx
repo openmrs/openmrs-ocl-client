@@ -12,7 +12,7 @@ export class EditDictionary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      defaultLocaleOption: '',
+      defaultLocaleOption: {},
     };
   }
 

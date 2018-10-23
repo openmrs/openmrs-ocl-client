@@ -44,10 +44,10 @@ PreviewCard.propTypes = {
   closeModal: PropTypes.func.isRequired,
   addConcept: PropTypes.func.isRequired,
   concept: PropTypes.shape({
-    display_name: PropTypes.string.isRequired,
-    descriptions: PropTypes.array.isRequired,
+    display_name: PropTypes.string,
+    descriptions: PropTypes.array,
     mappings: PropTypes.any,
-    display_locale: PropTypes.string.isRequired,
+    display_locale: PropTypes.string,
   }).isRequired,
 };
 

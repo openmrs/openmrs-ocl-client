@@ -38,8 +38,6 @@ const DictionaryDetailCard = (props) => {
     openVersionModal,
     handleCreateVersion,
     handleChange,
-    versionId,
-    versionDescription,
     inputLength,
     download,
   } = props;
@@ -104,8 +102,6 @@ const DictionaryDetailCard = (props) => {
                 id="editB"
                 to="#"
                 onClick={showEditModal}
-                versionId={versionId}
-                versionDescription={versionDescription}
               >
                 Edit
               </Link>
@@ -161,30 +157,32 @@ const DictionaryDetailCard = (props) => {
             <legend>Released Version</legend>
             <div className="card" id="versionCard">
               <table>
-                <tr>
-                  <th>Version</th>
-                  <th>Date</th>
-                  <th>Actions</th>
-                </tr>
-                {releasedVersions.length >= 1 ? (
-            releasedVersions.map(version => (
-              <DictionaryVersionsTable
-                version={version}
-                key={version.id}
-                hide={hideSubModal}
-                showSubModal={showSubModal}
-                show={subModal}
-                url={subUrl}
-                download={download}
-              />
-            ))
-          ) : (
-            <tr>
-              <td className="version-msg" colSpan="4">
-                No released Versions
-              </td>
-            </tr>
-          )}
+                <tbody>
+                  <tr>
+                    <th>Version</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                  {releasedVersions.length >= 1 ? (
+                    releasedVersions.map(version => (
+                      <DictionaryVersionsTable
+                        version={version}
+                        key={version.id}
+                        hide={hideSubModal}
+                        showSubModal={showSubModal}
+                        show={subModal}
+                        url={subUrl}
+                        download={download}
+                      />
+                    ))
+                  ) : (
+                    <tr>
+                      <td className="version-msg" colSpan="4">
+                        No released Versions
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
               </table>
             </div>
           </fieldset>
@@ -223,8 +221,6 @@ DictionaryDetailCard.propTypes = {
   openVersionModal: PropTypes.bool.isRequired,
   handleCreateVersion: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
-  versionId: PropTypes.string.isRequired,
-  versionDescription: PropTypes.string.isRequired,
   inputLength: PropTypes.number.isRequired,
   download: PropTypes.func.isRequired,
 };

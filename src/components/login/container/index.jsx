@@ -49,10 +49,8 @@ export class Login extends Component {
         <Title title="Login" />
         <div className="row form-container">
           <div className="col-lg-5 col-md-9 col-sm-12">
-            <p className="paragraphs">
-              <h1 className="login-title">Open Concept Lab</h1>
-              <h4 className="low-title">for OpenMRS</h4>
-            </p>
+            <h1 className="login-title">Open Concept Lab</h1>
+            <h4 className="low-title">for OpenMRS</h4>
             <h6 className="low-title-msg">
               Use the shared Open Concept Lab to create OpenMRS dictionaries by mixing
               expert-defined content with your own custom concepts.
@@ -72,6 +70,7 @@ export class Login extends Component {
                     value={username.trim()}
                     onChange={this.handleInput}
                   />
+
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>

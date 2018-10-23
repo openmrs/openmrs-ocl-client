@@ -361,7 +361,6 @@ export class DictionaryModal extends React.Component {
                     <Select
                       id="copy_dictionary"
                       closeMenuOnSelect={false}
-                      isLoading={this.props.isLoadingDictionaries}
                       options={[...this.props.userDictionaries, ...this.props.dictionaries]}
                       onChange={val => this.handleCopyDictionary(val)}
                       onInputChange={val => this.searchInputValues(val)}
@@ -402,21 +401,24 @@ DictionaryModal.propTypes = {
   submit: PropTypes.func.isRequired,
   organizations: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
-  })).isRequired,
-  dictionary: PropTypes.object.isRequired,
+  })),
+  dictionary: PropTypes.object,
   modalhide: PropTypes.func.isRequired,
-  defaultLocaleOption: PropTypes.object.isRequired,
-  isEditingDictionary: PropTypes.object.isRequired,
+  defaultLocaleOption: PropTypes.object,
+  isEditingDictionary: PropTypes.bool,
   searchDictionaries: PropTypes.func.isRequired,
   dictionaries: PropTypes.array.isRequired,
   userDictionaries: PropTypes.array.isRequired,
-  isLoadingDictionaries: PropTypes.array.isRequired,
 };
 
 DictionaryModal.defaultProps = {
   title: 'Add Dictionary',
   show: false,
   buttonname: 'Add Dictionary',
+  organizations: [],
+  dictionary: {},
+  isEditingDictionary: false,
+  defaultLocaleOption: {},
 };
 
 function mapStateToProps(state) {
