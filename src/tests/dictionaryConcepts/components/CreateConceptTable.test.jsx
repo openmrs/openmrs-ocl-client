@@ -11,6 +11,12 @@ const props = {
     ],
   },
   nameRows: [],
+  pathName: {
+    language: 'en',
+  },
+  addDataFromRow: jest.fn(),
+  removeRow: jest.fn(),
+  removeDataFromRow: jest.fn(),
 };
 
 describe('Test suite for CreateConceptTable', () => {

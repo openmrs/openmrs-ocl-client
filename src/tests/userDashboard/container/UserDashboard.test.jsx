@@ -1,108 +1,187 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Router from 'react-mock-router';
-import {
-  mapStateToProps,
-  UserDashboard,
-} from '../../../components/userDasboard/container/UserDashboard';
+import { MemoryRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createMockStore } from 'redux-test-utils';
+import Authenticated from '../../__mocks__/fakeStore';
+import dictionary, { mockDictionaries } from '../../__mocks__/dictionaries';
+import UserDashboard, { mapStateToProps } from '../../../components/userDasboard/container/UserDashboard';
 
-import dictionary from '../../__mocks__/dictionaries';
-
-jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
-
-describe('Test suite for dictionary concepts components', () => {
-  const props = {
-    fetchUserData: jest.fn(),
-    loading: false,
+const storeObject = {
+  organizations: {
+    organizations: [],
+  },
+  sources: {
+    sources: [],
+  },
+  loading: false,
+  user: {
     userDictionary: [],
-    userOrganization: [],
-    orgDictionary: [],
-    clearDictionaryData: jest.fn(),
     user: {
       name: 'emasys nd',
-      orgs: '',
+      orgs: 0,
       public_collections: 0,
     },
-  };
+    userOrganization: [],
+    loading: false,
+  },
+  dictionaries: {
+    dictionaries: mockDictionaries,
+    loading: false,
+  },
+  history: { push: jest.fn() },
+};
+const store = createMockStore({
+  ...Authenticated,
+  ...storeObject,
+});
+const props = {
+  history: { push: jest.fn() },
+};
+describe('Test suite for dictionary concepts components', () => {
+  beforeEach(() => {
+    localStorage.setItem('username', 'chriskala');
+  });
   it('should render without breaking', () => {
-    const wrapper = mount(<Router>
-      <UserDashboard {...props} />
-    </Router>);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
     expect(wrapper.find('.greetings h5').text()).toEqual('Welcome emasys nd');
 
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should handle add dictionary button', () => {
-    const simulateLoading = {
+    const simulateLoading = createMockStore({
       fetchUserData: jest.fn(),
-      loading: true,
       userDictionary: [],
       userOrganization: [],
       orgDictionary: [],
       clearDictionaryData: jest.fn(),
       user: {
-        name: 'emasys nd',
-        orgs: '',
-        public_collections: 1,
+        user: {
+          name: 'emasys nd',
+          orgs: 1,
+          public_collections: 0,
+        },
+        userDictionary: [dictionary],
+        userOrganization: [],
+        loading: true,
       },
-    };
-    const propsWithOneOrg = {
+      history: { push: jest.fn() },
+      dictionaries: {
+        dictionaries: mockDictionaries,
+      },
+      ...storeObject,
+      ...Authenticated,
+    });
+    const propsWithOneOrg = createMockStore({
       fetchUserData: jest.fn(),
       loading: false,
+      orgDictionary: [],
+      clearDictionaryData: jest.fn(),
+      user: {
+        user: {
+          name: 'emasys nd',
+          orgs: 1,
+          public_collections: 0,
+          loading: false,
+        },
+        userOrganization: [
+          {
+            id: 'Test',
+            name: 'Test org',
+            url: '/orgs/Test/',
+          },
+        ],
+        userDictionary: [dictionary],
+        loading: false,
+      },
+      history: { push: jest.fn() },
+      dictionaries: [],
+      ...storeObject,
+      ...Authenticated,
+    });
+    const loadingWrapper = mount(<MemoryRouter>
+      <Provider store={simulateLoading}>
+        <UserDashboard {...props} />
+      </Provider>
+    </MemoryRouter>);
+    expect(loadingWrapper).toMatchSnapshot();
+    const wrapper = mount(<Provider store={propsWithOneOrg}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    wrapper.find('#add-dictionary').simulate('click');
+    expect(wrapper.find('UserDashboard').instance().state.show).toBe(true);
+  });
+  it('should render a loader', () => {
+    const propsWithDictionary = createMockStore({
+      ...storeObject,
+      ...Authenticated,
+      fetchUserData: jest.fn(),
+      loading: true,
       userDictionary: [dictionary],
       orgDictionary: [],
       clearDictionaryData: jest.fn(),
-      userOrganization: [
-        {
-          id: 'Test',
-          name: 'Test org',
-          url: '/orgs/Test/',
-        },
-      ],
       user: {
-        name: 'emasys nd',
-        orgs: 1,
-        public_collections: 1,
+        userDictionary: [],
+        user: {
+          name: 'emasys nd',
+          orgs: 1,
+          public_collections: 0,
+        },
+        userOrganization: [],
+        loading: true,
       },
-    };
-    let wrapper = mount(<Router>
-      <UserDashboard {...propsWithOneOrg} />
-    </Router>);
-    wrapper = mount(<Router>
-      <UserDashboard {...simulateLoading} />
-    </Router>);
-    wrapper.find('#add-dictionary').simulate('click');
+    });
+    const wrapper = mount(<Provider store={propsWithDictionary}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper.find('.loader')).toHaveLength(1);
+    expect(wrapper).toMatchSnapshot();
   });
   it('should render at least one dictionary card', () => {
-    const propsWithDictionary = {
+    const propsWithDictionary = createMockStore({
+      ...storeObject,
+      ...Authenticated,
       fetchUserData: jest.fn(),
       loading: false,
       userDictionary: [dictionary],
       orgDictionary: [],
       clearDictionaryData: jest.fn(),
-      userOrganization: [
-        {
-          id: 'Test',
-          name: 'Test org',
-          url: '/orgs/Test/',
-        },
-        {
-          id: 'Test2',
-          name: 'Test org 2',
-          url: '/orgs/Test2/',
-        },
-      ],
       user: {
-        name: 'emasys nd',
-        orgs: 2,
-        public_collections: 1,
+        userDictionary: [dictionary],
+        user: {
+          name: 'emasys nd',
+          orgs: 2,
+          public_collections: 0,
+        },
+        userOrganization: [
+          {
+            id: 'Test',
+            name: 'Test org',
+            url: '/orgs/Test/',
+          },
+          {
+            id: 'Test2',
+            name: 'Test org 2',
+            url: '/orgs/Test2/',
+          },
+        ],
+        loading: false,
       },
-    };
-    const wrapper = mount(<Router>
-      <UserDashboard {...propsWithDictionary} />
-    </Router>);
-
+    });
+    const wrapper = mount(<Provider store={propsWithDictionary}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
     expect(wrapper.find('#dictionaryHeader h6').text()).toEqual('ChrisMain4567');
     wrapper.unmount();
   });
@@ -131,35 +210,47 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('Should handle click on dictionary card', () => {
-    const propsWithDictionary = {
+    const propsWithDictionary = createMockStore({
+      ...storeObject,
+      ...Authenticated,
       fetchUserData: jest.fn(),
       loading: false,
       userDictionary: [dictionary],
       orgDictionary: [],
       clearDictionaryData: jest.fn(),
-      history: { push: jest.fn() },
-      userOrganization: [
-        {
-          id: 'Test',
-          name: 'Test org',
-          url: '/orgs/Test/',
-        },
-        {
-          id: 'Test2',
-          name: 'Test org 2',
-          url: '/orgs/Test2/',
-        },
-      ],
       user: {
-        name: 'emasys nd',
-        orgs: 2,
-        public_collections: 1,
+        userDictionary: [dictionary],
+        user: {
+          name: 'emasys nd',
+          orgs: 1,
+          public_collections: 0,
+        },
+        userOrganization: [
+          {
+            id: 'Test',
+            name: 'Test org',
+            url: '/orgs/Test/',
+          },
+          {
+            id: 'Test2',
+            name: 'Test org 2',
+            url: '/orgs/Test2/',
+          },
+        ],
+        loading: false,
       },
-    };
-    const wrapper = mount(<Router>
-      <UserDashboard {...propsWithDictionary} />
-    </Router>);
+    });
+    const wrapper = mount(<Provider store={propsWithDictionary}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    const spy = jest.spyOn(wrapper.find('UserDashboard').instance(), 'gotoDictionary');
+    wrapper
+      .find('UserDashboard')
+      .instance()
+      .forceUpdate();
     wrapper.find('.card-link').simulate('click');
-    expect(wrapper).toMatchSnapshot();
+    expect(spy).toBeCalled();
   });
 });

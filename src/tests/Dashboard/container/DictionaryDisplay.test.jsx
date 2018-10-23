@@ -18,6 +18,9 @@ describe('DictionaryDisplay', () => {
       dictionaries: [],
       isFetching: false,
       organizations: [organizations],
+      searchDictionaries: jest.fn(),
+      clearDictionaries: jest.fn(),
+      history: { push: jest.fn() },
     };
     const wrapper = (
       <MemoryRouter>
@@ -33,6 +36,9 @@ describe('DictionaryDisplay', () => {
       dictionaries: [dictionaries],
       isFetching: true,
       organizations: [organizations],
+      searchDictionaries: jest.fn(),
+      clearDictionaries: jest.fn(),
+      history: { push: jest.fn() },
     };
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
@@ -42,9 +48,12 @@ describe('DictionaryDisplay', () => {
   it('should go to the next page', () => {
     const props = {
       fetchDictionaries: jest.fn(),
-      dictionaries: mockDictionaries(),
+      dictionaries: mockDictionaries,
       isFetching: false,
       organizations: [organizations],
+      searchDictionaries: jest.fn(),
+      clearDictionaries: jest.fn(),
+      history: { push: jest.fn() },
     };
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
@@ -59,6 +68,8 @@ describe('DictionaryDisplay', () => {
       isFetching: false,
       organizations: [organizations],
       history: { push: jest.fn() },
+      searchDictionaries: jest.fn(),
+      clearDictionaries: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
@@ -72,6 +83,9 @@ describe('DictionaryDisplay', () => {
       dictionaries: [],
       isFetching: true,
       organizations: [],
+      searchDictionaries: jest.fn(),
+      clearDictionaries: jest.fn(),
+      history: { push: jest.fn() },
     };
     const wrapper = shallow(<MemoryRouter>
       <DictionaryDisplay {...props} />
@@ -97,6 +111,7 @@ describe('DictionaryDisplay', () => {
       onSearch: jest.fn(),
       onSubmit: jest.fn(),
       organizations: [organizations],
+      history: { push: jest.fn() },
     };
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
@@ -112,17 +127,20 @@ describe('DictionaryDisplay', () => {
       onSearch: jest.fn(),
       onsubmit: jest.fn(),
       searchValue: 'random search text',
+      onSubmit: jest.fn(),
     };
     const component = shallow(<DictionariesSearch {...properties} />);
     expect(component).toMatchSnapshot();
   });
   describe('wrapper components', () => {
     it('should render a list of dictionaries', () => {
-      const length = jest.fn();
       const props = {
-        dictionaries: length,
+        dictionaries: mockDictionaries,
+        fetching: false,
       };
-      const component = mount(<ListDictionaries {...props} />);
+      const component = mount(<MemoryRouter>
+        <ListDictionaries {...props} />
+      </MemoryRouter>);
       expect(component).toMatchSnapshot();
     });
     it('returns the openmrs user dictionaries when it receives correct properties', () => {

@@ -12,7 +12,7 @@ describe('Bulk Concepts List', () => {
   const props = {
     fetchCielConcepts: jest.fn(),
     cielConcepts: [existingConcept],
-    isFetching: false,
+    fetching: false,
   };
   it('Should render without crashing', () => {
     const wrapper = mount(<MemoryRouter>

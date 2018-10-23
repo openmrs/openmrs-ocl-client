@@ -30,14 +30,16 @@ const TableItem = (props) => {
         <td>
           <ActionButtons actionButtons={renderButtons} {...props} />
         </td>
+        <td className="hidden">
+          <RemoveConcept
+            collectionName={locationPath.collectionName}
+            conceptOwner={locationPath.typeName}
+            conceptUrl={url}
+            conceptType={locationPath.type}
+            handleDelete={handleDelete}
+          />
+        </td>
       </tr>
-      <RemoveConcept
-        collectionName={locationPath.collectionName}
-        conceptOwner={locationPath.typeName}
-        conceptUrl={url}
-        conceptType={locationPath.type}
-        handleDelete={handleDelete}
-      />
     </React.Fragment>
   );
 };

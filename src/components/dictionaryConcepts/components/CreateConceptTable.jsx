@@ -16,20 +16,40 @@ const CreateConceptTable = props => (
     <tbody>
       {props.existingConcept && props.existingConcept.names
         ? props.existingConcept.names.map(newRow => (
-          <ConceptNameRows
-            newRow={newRow}
-            key={newRow.uuid}
-            {...props}
-          />))
-       : props.nameRows.map(newRow => <ConceptNameRows newRow={newRow} key={newRow} {...props} />)
-      }
+          <ConceptNameRows newRow={newRow} key={newRow.uuid} {...props} />
+          ))
+        : props.nameRows.map(newRow => (
+          <ConceptNameRows newRow={{ uuid: newRow }} key={newRow} {...props} />
+          ))}
     </tbody>
   </table>
 );
 
 CreateConceptTable.propTypes = {
   nameRows: PropTypes.array.isRequired,
-  existingConcept: PropTypes.object.isRequired,
+  existingConcept: PropTypes.shape({
+    descriptions: PropTypes.arrayOf(PropTypes.shape({
+      uuid: PropTypes.string,
+      locale: PropTypes.string,
+      description: PropTypes.string,
+    })),
+    names: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+      uuid: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      locale: PropTypes.string,
+      locale_full: PropTypes.string,
+      locale_preferred: PropTypes.bool,
+      name_type: PropTypes.string,
+    })),
+  }),
+};
+
+CreateConceptTable.defaultProps = {
+  existingConcept: {
+    descriptions: [],
+    names: [],
+  },
 };
 
 export default CreateConceptTable;

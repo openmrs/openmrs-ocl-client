@@ -1,52 +1,125 @@
 import React from 'react';
+import moxios from 'moxios';
 import { mount, shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
-import { OwnerDictionary, mapStateToProps } from '../../../components/dashboard/container/OwnerDictionary';
-import dictionaries from '../../__mocks__/dictionaries';
+import { Provider } from 'react-redux';
+import { createMockStore } from 'redux-test-utils';
+import Authenticated from '../../__mocks__/fakeStore';
+import OwnerDictionary, { mapStateToProps } from '../../../components/dashboard/container/OwnerDictionary';
+import { mockDictionaries } from '../../__mocks__/dictionaries';
 import organizations from '../../__mocks__/organizations';
 import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
 import OwnerListDictionaries from '../../../components/dashboard/components/dictionary/OwnerListDictionaries';
 
-jest.mock('../../../components/dashboard/components/dictionary/AddDictionary');
+
+const store = createMockStore({
+  organizations: {
+    organizations: [],
+  },
+  sources: {
+    sources: [],
+  },
+  user: {
+    userDictionary: [],
+  },
+  dictionaries: {
+    dictionaries: mockDictionaries,
+    loading: false,
+  },
+  ...Authenticated,
+});
+
 describe('DictionaryDisplay', () => {
+  beforeEach(() => {
+    localStorage.setItem('username', 'chriskala');
+  });
   it('should render without any dictionary data', () => {
-    const props = {
+    const props = createMockStore({
       fetchDictionaries: jest.fn(),
-      dictionaries: [],
-      isFetching: false,
-      organizations: [organizations],
-    };
-    const wrapper = (
+      dictionaries: {
+        dictionaries: [],
+        loading: false,
+      },
+      organizations: {
+        organizations: [],
+      },
+      sources: {
+        sources: [],
+      },
+      user: {
+        userDictionary: [],
+      },
+      clearDictionaries: jest.fn(),
+      searchDictionaries: jest.fn(),
+      onSearch: jest.fn(),
+      onSubmit: jest.fn(),
+      ...Authenticated,
+    });
+    const wrapper = mount(<Provider store={props}>
       <MemoryRouter>
-        <OwnerDictionary {...props} />
+        <OwnerDictionary />
       </MemoryRouter>
-    );
-    const rShallow = shallow(wrapper);
-    expect(rShallow).toMatchSnapshot();
+    </Provider>);
+
+    expect(wrapper).toMatchSnapshot();
   });
   it('should render with dictionary data', () => {
-    const props = {
+    const props = createMockStore({
       fetchDictionaries: jest.fn(),
-      dictionaries: [dictionaries],
-      isFetching: true,
-      organizations: [organizations],
-    };
-    const wrapper = mount(<MemoryRouter>
-      <OwnerDictionary {...props} />
-    </MemoryRouter>);
+      dictionaries: {
+        dictionaries: mockDictionaries,
+        loading: false,
+      },
+      organizations: {
+        organizations: [],
+      },
+      sources: {
+        sources: [],
+      },
+      user: {
+        userDictionary: [],
+      },
+      clearDictionaries: jest.fn(),
+      searchDictionaries: jest.fn(),
+      onSearch: jest.fn(),
+      onSubmit: jest.fn(),
+      ...Authenticated,
+    });
+    const wrapper = mount(<Provider store={props}>
+      <MemoryRouter>
+        <OwnerDictionary />
+      </MemoryRouter>
+    </Provider>);
     expect(wrapper.find('.dashboard-wrapper')).toHaveLength(1);
     expect(wrapper).toMatchSnapshot();
   });
   it('should render preloader spinner', () => {
-    const props = {
+    const props = createMockStore({
       fetchDictionaries: jest.fn(),
-      dictionaries: [],
-      isFetching: true,
-      organizations: [],
-    };
-    const wrapper = shallow(<MemoryRouter>
-      <OwnerDictionary {...props} />
-    </MemoryRouter>);
+      dictionaries: {
+        dictionaries: mockDictionaries,
+        loading: true,
+      },
+      organizations: {
+        organizations: [],
+      },
+      sources: {
+        sources: [],
+      },
+      user: {
+        userDictionary: [],
+      },
+      clearDictionaries: jest.fn(),
+      searchDictionaries: jest.fn(),
+      onSearch: jest.fn(),
+      onSubmit: jest.fn(),
+      ...Authenticated,
+    });
+    const wrapper = mount(<Provider store={props}>
+      <MemoryRouter>
+        <OwnerDictionary />
+      </MemoryRouter>
+    </Provider>);
     expect(wrapper).toMatchSnapshot();
   });
   it('should test mapStateToProps', () => {
@@ -59,76 +132,125 @@ describe('DictionaryDisplay', () => {
     expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
   it('should search for a dictionary', () => {
-    const props = {
+    const props = createMockStore({
       fetchDictionaries: jest.fn(),
-      dictionaries: [],
-      isFetching: true,
+      dictionaries: {
+        dictionaries: mockDictionaries,
+        loading: false,
+      },
+      organizations: {
+        organizations: [],
+      },
+      sources: {
+        sources: [],
+      },
+      user: {
+        userDictionary: [],
+      },
       clearDictionaries: jest.fn(),
       searchDictionaries: jest.fn(),
       onSearch: jest.fn(),
       onSubmit: jest.fn(),
-      organizations: [organizations],
-    };
-    const wrapper = mount(<MemoryRouter>
-      <OwnerDictionary {...props} />
-    </MemoryRouter>);
+      ...Authenticated,
+    });
+    const wrapper = mount(<Provider store={props}>
+      <MemoryRouter>
+        <OwnerDictionary />
+      </MemoryRouter>
+    </Provider>);
     const event = { target: { name: 'searchInput', value: 'openmrs' } };
+    const spy = jest.spyOn(wrapper.find('OwnerDictionary').instance(), 'onSubmit');
     wrapper.find('#search').simulate('change', event);
+    wrapper
+      .find('OwnerDictionary')
+      .instance()
+      .forceUpdate();
     wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });
+    expect(spy).toHaveBeenCalled();
   });
   it('should render the Dictionary search component', () => {
     const properties = {
       onSearch: jest.fn(),
       onsubmit: jest.fn(),
       searchValue: 'random search text',
+      onSubmit: jest.fn(),
     };
-    const component = shallow(<DictionariesSearch {...properties} />);
+    const component = mount(<DictionariesSearch {...properties} />);
     expect(component).toMatchSnapshot();
   });
   it('It sets the state of the component show:true', () => {
-    const props = {
-      fetchDictionaries: jest.fn(),
-      dictionaries: [],
-      isFetching: false,
-      organizations: [organizations],
-    };
     const wrapper = mount(<MemoryRouter>
-      <OwnerDictionary {...props} />
+      <Provider store={store}>
+        <OwnerDictionary />
+      </Provider>
     </MemoryRouter>);
     wrapper.find('.add-dictionaries').simulate('click');
-    wrapper.setState({ show: true });
-    expect(wrapper.state().show).toEqual(true);
+    expect(wrapper.find('OwnerDictionary').instance().state.show).toEqual(true);
   });
   describe(' wrapper components', () => {
     it('should render a list of dictionaries', () => {
-      const length = jest.fn();
       const props = {
-        dictionaries: length,
+        dictionaries: mockDictionaries,
+        fetching: false,
+        organizations: [organizations],
+        searchDictionaries: jest.fn(),
+        clearDictionaries: jest.fn(),
+        OwnerDictionary: {},
       };
-      const component = mount(<OwnerListDictionaries {...props} />);
+      const component = mount(<MemoryRouter>
+        <OwnerListDictionaries {...props} />
+      </MemoryRouter>);
       expect(component).toMatchSnapshot();
     });
 
     it('returns the openmrs user dictionaries when it receives correct properties', () => {
       const props = {
-        dictionaries: [dictionaries],
+        dictionaries: mockDictionaries,
         fetching: false,
-        fetchData: true,
       };
-      const component = mount(<OwnerListDictionaries {...props} />);
-      expect(component.props().dictionaries[0].repository_type).toBe('OpenMRSDictionary');
+      const component = mount(<MemoryRouter>
+        <OwnerListDictionaries {...props} />
+      </MemoryRouter>);
+      expect(component.find('OwnerListDictionaries').props().dictionaries[0].repository_type).toBe('OpenMRSDictionary');
     });
   });
-});
-describe('DictionaryCard', () => {
   it('should render with data', () => {
-    const props = {
+    localStorage.setItem('username', 'chriskala');
+    const props = createMockStore({
       fetchDictionaries: jest.fn(),
-      dictionary: [dictionaries],
-    };
-    const wrapper = shallow(<OwnerDictionary {...props} />);
+      dictionaries: {
+        dictionaries: mockDictionaries,
+        loading: false,
+      },
+      organizations: {
+        organizations: [],
+      },
+      sources: {
+        sources: [],
+      },
+      user: {
+        userDictionary: [],
+      },
+      clearDictionaries: jest.fn(),
+      searchDictionaries: jest.fn(),
+      onSearch: jest.fn(),
+      onSubmit: jest.fn(),
+      ...Authenticated,
+    });
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: mockDictionaries,
+      });
+    });
+    const wrapper = shallow(<Provider store={props}>
+      <MemoryRouter>
+        <OwnerDictionary />
+      </MemoryRouter>
+    </Provider>).dive();
     expect(wrapper).toMatchSnapshot();
   });
 });

@@ -109,7 +109,7 @@ const CreateConceptForm = props => (
         >
           <option>Numeric</option>
           <option>Text</option>
-          <option selected>None</option>
+          <option>None</option>
           <option>Document</option>
           <option>Date</option>
           <option>Time</option>
@@ -167,7 +167,13 @@ CreateConceptForm.propTypes = {
   handleChange: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   editable: PropTypes.bool.isRequired,
-  isEditConcept: PropTypes.bool.isRequired,
-  existingConcept: PropTypes.object.isRequired,
+  isEditConcept: PropTypes.bool,
+  existingConcept: PropTypes.object,
 };
+
+CreateConceptForm.defaultProps = {
+  existingConcept: {},
+  isEditConcept: false,
+};
+
 export default CreateConceptForm;

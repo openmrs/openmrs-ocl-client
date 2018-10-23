@@ -33,8 +33,13 @@ describe('Navbar Component', () => {
   });
 });
 describe('GeneralSearch', () => {
+  const props = {
+    onSearch: jest.fn(),
+    onSubmit: jest.fn(),
+    searchValue: '',
+  };
   it('should render the GeneralSearch', () => {
-    const component = mount(<GeneralSearch />);
+    const component = mount(<GeneralSearch {...props} />);
     expect(component).toMatchSnapshot();
   });
 });

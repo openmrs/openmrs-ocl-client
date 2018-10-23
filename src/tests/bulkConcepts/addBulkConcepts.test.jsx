@@ -8,12 +8,24 @@ import { AddBulkConcepts } from '../../components/bulkConcepts/addBulkConcepts';
 
 const store = createMockStore(Authenticated);
 describe('Add Bulk Concepts', () => {
+  beforeEach(() => {
+    localStorage.setItem('dictionaryName', 'OpenMRS');
+  });
   it('Should render without crashing', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
-      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'mochu',
+          collectionName: 'andela',
+          language: 'en',
+          dictionaryName: 'WHO',
+        },
+      },
+      addExistingBulkConcepts: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -27,7 +39,16 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
-      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'mochu',
+          collectionName: 'andela',
+          language: 'en',
+          dictionaryName: 'WHO',
+        },
+      },
+      addExistingBulkConcepts: jest.fn(),
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -42,7 +63,15 @@ describe('Add Bulk Concepts', () => {
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
-      match: { params: { type: 'users', typeName: 'mochu', collectionName: 'andela' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'mochu',
+          collectionName: 'andela',
+          language: 'en',
+          dictionaryName: 'WHO',
+        },
+      },
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>

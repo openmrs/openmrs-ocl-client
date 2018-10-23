@@ -3,17 +3,31 @@ import Select from 'react-select';
 import 'react-select/dist/react-select';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class DescriptionRow extends Component {
   static propTypes = {
-    newRow: PropTypes.object.isRequired,
+    newRow: PropTypes.shape({
+      uuid: PropTypes.string,
+      locale: PropTypes.string,
+      description: PropTypes.string,
+    }),
     addDataFromDescription: PropTypes.func.isRequired,
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.object.isRequired,
     existingConcept: PropTypes.object.isRequired,
   }
+
+  static defaultProps = {
+    newRow: {
+      uuid: String(uuid()),
+      locale: 'en',
+      description: '',
+    },
+  }
+
   constructor(props) {
     super(props);
     const defaultLocale = locale.find(currentLocale =>

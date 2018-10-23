@@ -4,7 +4,7 @@ import Card from './DictionaryCard';
 import Loader from '../../../Loader';
 
 const OwnerListDictionaries = ({
-  dictionaries, fetching, fetchData,
+  dictionaries, fetching,
 }) => {
   if (fetching) {
     return (
@@ -20,7 +20,6 @@ const OwnerListDictionaries = ({
           <Card
             dictionary={dictionary}
             key={dictionary.uuid}
-            fetchData={fetchData}
           />
                         :
           <div />))}
@@ -40,6 +39,5 @@ OwnerListDictionaries.propTypes = {
   dictionaries: PropTypes.arrayOf(PropTypes.shape({
     dictionaryName: PropTypes.string,
   })).isRequired,
-  fetchData: PropTypes.func.isRequired,
 };
 export default OwnerListDictionaries;

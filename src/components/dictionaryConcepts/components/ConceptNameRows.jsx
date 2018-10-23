@@ -7,19 +7,39 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class ConceptNameRows extends Component {
   static propTypes = {
-    newRow: PropTypes.string.isRequired,
+    newRow: PropTypes.shape({
+      id: PropTypes.string,
+      uuid: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      locale: PropTypes.string,
+      locale_full: PropTypes.string,
+      locale_preferred: PropTypes.bool,
+      name_type: PropTypes.string,
+    }),
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.object.isRequired,
     existingConcept: PropTypes.object.isRequired,
   };
+
+  static defaultProps = {
+    newRow: {
+      id: '',
+      name: '',
+      locale: 'en',
+      locale_full: { value: 'en', label: 'English [en]' },
+      locale_preferred: true,
+      name_type: '',
+    },
+  };
+
   constructor(props) {
     super(props);
     const defaultLocale = locale.find(currentLocale =>
       currentLocale.value === props.pathName.language);
     this.state = {
-      id: this.props.newRow,
+      id: this.props.newRow.id,
       name: '',
       locale: defaultLocale.value,
       locale_full: defaultLocale,
@@ -43,13 +63,15 @@ class ConceptNameRows extends Component {
 
   updateState() {
     const { newRow } = this.props;
+    const defaultLocale = locale.find(currentLocale =>
+      currentLocale.value === this.props.pathName.language);
     this.setState({
       ...this.state,
-      uuid: newRow.uuid,
-      name: newRow.name,
-      locale: newRow.locale || 'en',
+      uuid: newRow.uuid || '',
+      name: newRow.name || '',
+      locale: newRow.locale || defaultLocale,
       name_type: newRow.name_type || 'Fully Specified',
-      locale_preferred: newRow.locale_preferred,
+      locale_preferred: newRow.locale_preferred || 'Yes',
     });
   }
 
@@ -108,7 +130,6 @@ class ConceptNameRows extends Component {
             <option>Fully Specified</option>
             <option>Synonym</option>
             <option>Search Term</option>
-
           </select>
         </td>
         <th scope="row" className="concept-language">
@@ -137,7 +158,7 @@ class ConceptNameRows extends Component {
             href="#!"
             className="concept-form-table-link"
             id="remove-name"
-            onClick={event => this.handleRemove(event, this.props.newRow)}
+            onClick={event => this.handleRemove(event, this.props.newRow.uuid)}
           >
             remove
           </a>

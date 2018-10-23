@@ -21,7 +21,6 @@ const DescriptionTable = props => (
         />))
        : props.description.map(newRow => (
          <DescriptionRow
-           newRow={newRow}
            key={newRow}
            {...props}
          />))

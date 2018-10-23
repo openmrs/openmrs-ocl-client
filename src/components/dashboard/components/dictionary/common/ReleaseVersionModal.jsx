@@ -10,7 +10,7 @@ const ReleaseVersionModal = (props) => {
     <div className="modal-container">
       <Modal
         isOpen={show}
-        onHide={click}
+        onClosed={click}
         centered
       >
         <ModalHeader className="modal-heading">
