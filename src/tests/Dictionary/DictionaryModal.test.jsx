@@ -87,13 +87,15 @@ describe('Test suite for dictionary modal', () => {
         preferred_source: '',
         default_locale: '',
         supported_locales: '',
+        public_access: '',
       },
     });
     const submitButtonWrapper = wrapper.find('#addDictionary');
     expect(submitButtonWrapper.length).toEqual(1);
     submitButtonWrapper.simulate('click', preventDefault);
-    expect(wrapper.state().errors.preferred_source).toEqual('Kindly select the preferred source');
-    expect(wrapper.state().errors.default_locale).toEqual('Kindly select your preferred locale');
+    expect(wrapper.state().errors.preferred_source).toEqual('Required');
+    expect(wrapper.state().errors.default_locale).toEqual('Required');
+    expect(wrapper.state().errors.public_access).toEqual('Required');
     expect(wrapper.state().errors.supported_locales).toEqual('Preferred language must not be included in other languages');
   });
 
