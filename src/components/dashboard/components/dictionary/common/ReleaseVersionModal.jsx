@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const ReleaseVersionModal = (props) => {
@@ -9,20 +9,18 @@ const ReleaseVersionModal = (props) => {
   return (
     <div className="modal-container">
       <Modal
-        show={show}
+        isOpen={show}
         onHide={click}
-        className="modal-fade"
+        centered
       >
-        <Modal.Header>
-          <Modal.Title className="modal-heading">
-              Release a new version
-          </Modal.Title>
-        </Modal.Header>
+        <ModalHeader className="modal-heading">
+          Release a new version
+        </ModalHeader>
 
-        <Modal.Body>
+        <ModalBody>
           <FormGroup>
             Version:
-            <FormControl
+            <Input
               type="text"
               id="versionId"
               name="versionId"
@@ -34,8 +32,8 @@ const ReleaseVersionModal = (props) => {
 
           <FormGroup style={{ marginTop: '12px' }}>
             Description(Optional):
-            <FormControl
-              componentClass="textarea"
+            <Input
+              type="textarea"
               id="versionDescription"
               name="versionDescription"
               value={versionDescription}
@@ -43,9 +41,9 @@ const ReleaseVersionModal = (props) => {
               placeholder="Version Description"
             />
           </FormGroup>
-        </Modal.Body>
+        </ModalBody>
 
-        <Modal.Footer>
+        <ModalFooter>
           {inputLength > 0 ?
             <Button
               className="btn-sm btn-outline-info version"
@@ -66,7 +64,7 @@ const ReleaseVersionModal = (props) => {
           >
               Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </div>
   );

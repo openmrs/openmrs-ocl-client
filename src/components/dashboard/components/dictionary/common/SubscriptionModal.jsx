@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
 
 const SubscriptionModal = (props) => {
   const { show, click, url } = props;
@@ -8,20 +8,17 @@ const SubscriptionModal = (props) => {
   return (
     <div className="modal-container">
       <Modal
-        show={show}
-        onHide={click}
-        dialogClassName="custom-modal"
-        className="modal-fade"
+        isOpen={show}
+        onClosed={click}
+        centered
       >
-        <Modal.Header>
-          <Modal.Title className="modal-heading">
+        <ModalHeader className="modal-heading">
               Subscription URL
-          </Modal.Title>
-        </Modal.Header>
+        </ModalHeader>
 
-        <Modal.Body>
+        <ModalBody>
           <FormGroup>
-            <FormControl
+            <Input
               type="text"
               id="subURL"
               name="subUrl"
@@ -29,9 +26,9 @@ const SubscriptionModal = (props) => {
               readOnly
             />
           </FormGroup>
-        </Modal.Body>
+        </ModalBody>
 
-        <Modal.Footer>
+        <ModalFooter>
           <Button
             className="btn-sm btn-outline-danger test-btn-cancel"
             id="sub-cancel"
@@ -39,7 +36,7 @@ const SubscriptionModal = (props) => {
           >
               Cancel
           </Button>
-        </Modal.Footer>
+        </ModalFooter>
       </Modal>
     </div>
   );
