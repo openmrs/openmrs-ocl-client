@@ -5,8 +5,27 @@
   justify-content: center;
   align-items: center;
 }
-
+.forms-container {
+  display: flex;
+  flex-direction: column;
+  height: 10vh;
+  justify-content: center;
+  align-items: center;
+}
+.signup{
+  padding-top: 10%; 
+}
+h1 {
+  font-size: 50px;
+}
+h4 {
+  font-size: 35px;
+}
+.paragraphs{
+  padding-top: 10%; 
+}
 .form-wrapper {
+  margin-top: 10rem;
   padding: 1rem;
   padding-bottom: .5rem;
   background: white;

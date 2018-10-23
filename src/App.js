@@ -17,6 +17,7 @@ import UserDashboard from './components/userDasboard/container/UserDashboard';
 import LoginDetails from './components/login/container/LoginDetails';
 import AddBulkConcepts from './components/bulkConcepts/addBulkConcepts';
 import BulkConceptPage from './components/bulkConcepts/container/BulkConceptsPage';
+import { Signup } from './components/Signup/components/container';
 
 const App = () => (
   <Provider store={store}>
@@ -28,6 +29,7 @@ const App = () => (
           <Route exact path="/home" component={Authenticate(UserDashboard)} />
           <Route exact path="/loginDetails" component={LoginDetails} />
           <Route exact path="/home" component={Authenticate(OwnerDictionary)} />
+          <Route exact path="/signup" component={Signup} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
           <Route exact path="/dashboard/userdictionaries" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/bulk/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(AddBulkConcepts)} />
