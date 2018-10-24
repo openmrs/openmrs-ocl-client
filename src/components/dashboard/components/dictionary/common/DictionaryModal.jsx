@@ -15,7 +15,7 @@ export class DictionaryModal extends React.Component {
       data: {
         id: '',
         preferred_source: 'CIEL',
-        public_access: '',
+        public_access: 'View',
         name: '',
         owner: '',
         description: '',
@@ -156,10 +156,6 @@ export class DictionaryModal extends React.Component {
     if (!data.owner) {
       errors.owner = 'Kindly select the Owner of the Dictionary';
     }
-    if (!data.public_access) {
-      errors.public_access =
-        'Kindly select the Permissions for your dictionary';
-    }
     if (!data.default_locale) {
       errors.default_locale = 'Kindly select your preferred locale';
     }
@@ -270,12 +266,8 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.public_access}
                     >
-                      <option value="" />
-                      {(isEditingDictionary && dictionary.public_access === 'None') &&
-                      <option value="None" selected>None </option>
-                      }
-                      <option value="View">View</option>
-                      <option value="None">None</option>
+                      <option value="View">Public</option>
+                      <option value="None">Private</option>
                     </FormControl>
                   </FormGroup>
 
