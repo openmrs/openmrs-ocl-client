@@ -145,19 +145,23 @@ export class DictionaryModal extends React.Component {
   validate = (data) => {
     const errors = {};
     if (!data.name) {
-      errors.name = 'Dictionary Name cannot be empty';
+      errors.name = 'Required';
     }
     if (!data.id) {
-      errors.id = 'Short code cannot be empty';
+      errors.id = 'Required';
     }
     if (!data.preferred_source) {
-      errors.preferred_source = 'Kindly select the preferred source';
+      errors.preferred_source = 'Required';
     }
     if (!data.owner) {
-      errors.owner = 'Kindly select the Owner of the Dictionary';
+      errors.owner = 'Required';
+    }
+    if (!data.public_access) {
+      errors.public_access =
+        'Required';
     }
     if (!data.default_locale) {
-      errors.default_locale = 'Kindly select your preferred locale';
+      errors.default_locale = 'Required';
     }
     if (data.supported_locales.split(',').map(item => item.trim()).indexOf(data.default_locale) !== -1) {
       errors.supported_locales = 'Preferred language must not be included in other languages';
@@ -191,7 +195,7 @@ export class DictionaryModal extends React.Component {
               <div>
                 <div>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Preferred Source{' '}
+                    Preferred Source <b className="text-danger">*</b>{' '}
                     {errors && <InlineError text={errors.preferred_source} />}
                     <FormControl
                       componentClass="select"
@@ -217,7 +221,7 @@ export class DictionaryModal extends React.Component {
                     </FormControl>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Preferred Language{''}
+                    Preferred Language <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.default_locale} />}
                     <FormControl
                       componentClass="select"
@@ -255,7 +259,7 @@ export class DictionaryModal extends React.Component {
                     onChange={this.handleChangeSupportedLocale}
                   />
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Visibility{''}
+                    Visibility <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.public_access} />}
                     <FormControl
                       componentClass="select"
@@ -272,7 +276,7 @@ export class DictionaryModal extends React.Component {
                   </FormGroup>
 
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Dictionary Name{''}
+                    Dictionary Name <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.name} />}
                     <FormControl
                       type="text"
@@ -285,7 +289,7 @@ export class DictionaryModal extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Owner {errors && <InlineError text={errors.owner} />}
+                    Owner <b className="text-danger">*</b>{errors && <InlineError text={errors.owner} />}
                     <FormControl
                       componentClass="select"
                       type="text"
@@ -314,7 +318,7 @@ export class DictionaryModal extends React.Component {
                     data-placement="top"
                     title="Short Code"
                   >
-                    Short Code
+                    Short Code <b className="text-danger">*</b>
                     {errors && <InlineError text={errors.id} />}
                     <FormControl
                       type="text"
