@@ -154,7 +154,7 @@ const DictionaryDetailCard = (props) => {
             </ul>
           </fieldset>
           <fieldset>
-            <legend>Released Version</legend>
+            <legend>{releasedVersions.length > 1 ? 'Versions' : 'Version'}</legend>
             <div className="card" id="versionCard">
               <table>
                 <tbody>
@@ -196,7 +196,6 @@ const DictionaryDetailCard = (props) => {
         handleChange={handleChange}
         inputLength={inputLength}
       />
-
     </div>
   );
 };

@@ -144,6 +144,31 @@ describe('DictionaryOverview', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should render dictionary versions', () => {
+    const props = {
+      dictionary: [dictionary],
+      versions: [HeadVersion, versions],
+      dictionaryConcepts: [],
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should not render dictionary versions', () => {
     const props = {
       dictionary: [dictionary],
