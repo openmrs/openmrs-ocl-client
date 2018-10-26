@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, FormGroup, FormControl } from 'react-bootstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
@@ -179,27 +179,23 @@ export class DictionaryModal extends React.Component {
     return (
       <div>
         <Modal
-          show={this.props.show}
-          onHide={this.props.modalhide}
-          dialogClassName="dictionary-custom-modal"
-          className="dictionary-modal-fade"
+          isOpen={this.props.show}
+          onClosed={this.props.modalhide}
+          className="modal-lg"
         >
-          <Modal.Header>
-            <Modal.Title className="modal-heading">
-              {this.props.title}
-            </Modal.Title>
-          </Modal.Header>
+          <ModalHeader className="modal-heading">
+            {this.props.title}
+          </ModalHeader>
           {errors && <InlineError text={this.errors} />}
-          <Modal.Body>
+          <ModalBody>
             <form>
               <div>
                 <div>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Source <b className="text-danger">*</b>{' '}
                     {errors && <InlineError text={errors.preferred_source} />}
-                    <FormControl
-                      componentClass="select"
-                      type="text"
+                    <Input
+                      type="select"
                       id="preferred_source"
                       name="preferred_source"
                       onChange={this.onChange}
@@ -218,14 +214,13 @@ export class DictionaryModal extends React.Component {
                           <option value={source.id}>{source.name}</option>
                         ))
                       }
-                    </FormControl>
+                    </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Language <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.default_locale} />}
-                    <FormControl
-                      componentClass="select"
-                      type="text"
+                    <Input
+                      type="select"
                       name="default_locale"
                       id="default_locale"
                       placeholder="English"
@@ -240,7 +235,7 @@ export class DictionaryModal extends React.Component {
                           { language.label }
                         </option>
                       ))}
-                    </FormControl>
+                    </Input>
                   </FormGroup>
                   {'Other Languages'}
                   {errors && <InlineError text={errors.supported_locales} />}
@@ -261,9 +256,8 @@ export class DictionaryModal extends React.Component {
                   <FormGroup style={{ marginTop: '12px' }}>
                     Visibility <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.public_access} />}
-                    <FormControl
-                      componentClass="select"
-                      type="text"
+                    <Input
+                      type="select"
                       id="public_access"
                       placeholder="Private"
                       name="public_access"
@@ -272,13 +266,13 @@ export class DictionaryModal extends React.Component {
                     >
                       <option value="View">Public</option>
                       <option value="None">Private</option>
-                    </FormControl>
+                    </Input>
                   </FormGroup>
 
                   <FormGroup style={{ marginTop: '12px' }}>
                     Dictionary Name <b className="text-danger">*</b>{''}
                     {errors && <InlineError text={errors.name} />}
-                    <FormControl
+                    <Input
                       type="text"
                       id="dictionary_name"
                       onChange={this.onChange}
@@ -290,7 +284,7 @@ export class DictionaryModal extends React.Component {
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Owner <b className="text-danger">*</b>{errors && <InlineError text={errors.owner} />}
-                    <FormControl
+                    <Input
                       componentClass="select"
                       type="text"
                       id="owner"
@@ -310,7 +304,7 @@ export class DictionaryModal extends React.Component {
                             {organization.id}{' '} (organization)
                           </option>
                         ))}
-                    </FormControl>
+                    </Input>
                   </FormGroup>
                   <FormGroup
                     style={{ marginTop: '12px' }}
@@ -320,7 +314,7 @@ export class DictionaryModal extends React.Component {
                   >
                     Short Code <b className="text-danger">*</b>
                     {errors && <InlineError text={errors.id} />}
-                    <FormControl
+                    <Input
                       type="text"
                       id="dictionary_short_code"
                       name="id"
@@ -334,8 +328,8 @@ export class DictionaryModal extends React.Component {
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Description{' '}
-                    <FormControl
-                      componentClass="textarea"
+                    <Input
+                      type="textarea"
                       id="dictionary_description"
                       name="description"
                       placeholder="e.g Description of this dictionary"
@@ -344,7 +338,7 @@ export class DictionaryModal extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup>
-                    <FormControl
+                    <Input
                       type="hidden"
                       id="repository_type"
                       name="repository_type"
@@ -367,8 +361,8 @@ export class DictionaryModal extends React.Component {
                 </div>
               </div>
             </form>
-          </Modal.Body>
-          <Modal.Footer>
+          </ModalBody>
+          <ModalFooter>
             <Button
               className="btn btn-outline-info"
               id="addDictionary"
@@ -383,7 +377,7 @@ export class DictionaryModal extends React.Component {
             >
               Cancel
             </Button>
-          </Modal.Footer>
+          </ModalFooter>
         </Modal>
       </div>
     );
