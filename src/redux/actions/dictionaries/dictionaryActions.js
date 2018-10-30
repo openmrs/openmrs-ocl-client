@@ -14,7 +14,7 @@ import {
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
   RELEASING_HEAD_VERSION,
-} from './../types';
+} from '../types';
 
 export const addDictionary = response => ({
   type: ADDING_DICTIONARY,

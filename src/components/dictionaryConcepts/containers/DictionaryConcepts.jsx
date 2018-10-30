@@ -15,7 +15,9 @@ import {
   filterByClass,
   paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  removeDictionaryConcept,
+} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
@@ -64,6 +66,14 @@ export class DictionaryConcepts extends Component {
     setTimeout(this.fetchConcepts, 600);
     this.checkMembershipStatus(getUsername());
   }
+
+  handleDelete = () => {
+    const { data, collectionName, type } = this.state;
+    this.props
+      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
+  }
+
+  handleShowDelete = (url) => { this.setState({ data: { references: [url] }, versionUrl: url }); };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const {
@@ -147,6 +157,7 @@ export class DictionaryConcepts extends Component {
       conceptLimit: state.conceptLimit + 10,
     }));
   }
+
   fetchPrevConcepts() {
     this.props.paginateConcepts(null, this.state.conceptLimit - 10, this.state.conceptOffset - 10);
     this.setState(state => ({
@@ -168,14 +179,6 @@ export class DictionaryConcepts extends Component {
       this.props.fetchMemberStatus(url);
     }
   }
-
-  handleDelete = () => {
-    const { data, collectionName, type } = this.state;
-    this.props
-      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
-  }
-
-  handleShowDelete = (url) => { this.setState({ data: { references: [url] }, versionUrl: url }); };
 
   render() {
     const {

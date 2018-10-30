@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { login, loginFailed, loginStarted, logout } from './authActionCreators';
+import {
+  login, loginFailed, loginStarted, logout,
+} from './authActionCreators';
 
 const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
@@ -23,7 +25,8 @@ const loginAction = ({ username, password }) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       return dispatch(loginFailed(error.response.data.detail));
-    } else if (error.request) {
+    }
+    if (error.request) {
       return dispatch(loginFailed('Request cannot be made'));
     }
   }

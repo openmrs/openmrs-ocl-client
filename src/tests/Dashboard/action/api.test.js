@@ -3,7 +3,9 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import instance from '../../../config/axiosConfig';
 import { FETCHING_ORGANIZATIONS, ADDING_DICTIONARY } from '../../../redux/actions/types';
-import { fetchingOrganizations, createDictionary, createDictionaryUser } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  fetchingOrganizations, createDictionary, createDictionaryUser,
+} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import organizations from '../../__mocks__/organizations';
 
 const mockStore = configureStore([thunk]);

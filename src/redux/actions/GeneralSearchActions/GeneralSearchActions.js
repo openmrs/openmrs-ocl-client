@@ -9,4 +9,3 @@ export const isFetching = payload => ({
   type: IS_FETCHING,
   payload,
 });
-

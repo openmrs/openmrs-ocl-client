@@ -18,7 +18,7 @@ const BulkConceptList = ({ cielConcepts, fetching }) => {
 
           {cielConcepts.map(concept => (
             <BulkConceptTable concept={concept} key={concept.id} />
-    ))}
+          ))}
         </tbody>
       </table>
     );

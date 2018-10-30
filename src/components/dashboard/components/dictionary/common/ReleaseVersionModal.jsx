@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
+import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input,
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const ReleaseVersionModal = (props) => {
@@ -44,19 +46,23 @@ const ReleaseVersionModal = (props) => {
         </ModalBody>
 
         <ModalFooter>
-          {inputLength > 0 ?
-            <Button
-              className="btn-sm btn-outline-info version"
-              id="addDictionary"
-              onClick={handleCreateVersion}
-            >
+          {inputLength > 0
+            ? (
+              <Button
+                className="btn-sm btn-outline-info version"
+                id="addDictionary"
+                onClick={handleCreateVersion}
+              >
                Release
-            </Button> : <Button
-              className="btn-sm btn-outline-info version-disabled"
-              disabled
-            >
+              </Button>
+            ) : (
+              <Button
+                className="btn-sm btn-outline-info version-disabled"
+                disabled
+              >
                Release
-            </Button>}
+              </Button>
+            )}
           <Button
             className="btn-sm btn-outline-danger test-btn-cancel"
             id="sub-cancel"

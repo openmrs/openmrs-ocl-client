@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+// eslint-disable-next-line max-len
 import CreateConceptTable from '../../../components/dictionaryConcepts/components/CreateConceptTable';
 
 const props = {

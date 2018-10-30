@@ -14,11 +14,24 @@ const Header = ({ locationPath }) => {
             to={`/dictionaryOverview/${type}/${typeName}/collections/${collectionName}`}
             className="collection-name small-text"
           >
-            <i className="fas fa-arrow-left"> <span className="collection-name">Go back to {dictionaryName} overview</span></i>
+            <i className="fas fa-arrow-left">
+              {' '}
+              <span className="collection-name">
+Go back to
+                {' '}
+                {dictionaryName}
+                {' '}
+overview
+              </span>
+            </i>
           </Link>
         </div>
         <header>
-          <h2 className="text-capitalize">{dictionaryName} Dictionary</h2>
+          <h2 className="text-capitalize">
+            {dictionaryName}
+            {' '}
+Dictionary
+          </h2>
         </header>
       </div>
     </section>

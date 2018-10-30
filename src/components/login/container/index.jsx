@@ -89,22 +89,27 @@ export class Login extends Component {
                 <SubmitButton buttonTitle={buttonTitle} disable={loading} />
                 <div className="form-group text-center pt-3">
                   <small id="tokenHelp" className="form-text text-muted">
-                    {"Don't"} have an account?{' '}
+                    {"Don't"}
+                    {' '}
+have an account?
+                    {' '}
                     <a
                       href="https://qa.openconceptlab.org/accounts/signup/"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                     Sign up
-                    </a><br />
+                    </a>
+                    <br />
                     <a
                       href="https://qa.openconceptlab.org"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                     Go to Traditional OCL
-                    </a><br />
-                    <Link to="/loginDetails" >Having Trouble with Login?</Link>
+                    </a>
+                    <br />
+                    <Link to="/loginDetails">Having Trouble with Login?</Link>
                   </small>
 
                 </div>

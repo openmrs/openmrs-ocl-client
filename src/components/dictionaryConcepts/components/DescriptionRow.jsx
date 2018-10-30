@@ -30,8 +30,9 @@ class DescriptionRow extends Component {
 
   constructor(props) {
     super(props);
-    const defaultLocale = locale.find(currentLocale =>
-      currentLocale.value === props.pathName.language);
+    const defaultLocale = locale.find(
+      currentLocale => currentLocale.value === props.pathName.language,
+    );
     this.state = {
       id: this.props.newRow,
       locale: defaultLocale.value,
@@ -71,6 +72,7 @@ class DescriptionRow extends Component {
     this.setState(() => ({ [name]: value }));
     this.sendToTopComponent();
   }
+
   handleNameLocale(selectedOptions) {
     this.setState({
       locale_full: selectedOptions,

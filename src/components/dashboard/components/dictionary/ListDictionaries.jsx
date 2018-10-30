@@ -28,11 +28,14 @@ const ListDictionaries = (props) => {
   return (
     <div className="text-center mt-3">
       <h5>
-        No Dictionaries Found{' '}
+        No Dictionaries Found
+        {' '}
         <span aria-label="sad-emoji" role="img">
           {' '}
-          😞{' '}
-        </span>{' '}
+          😞
+          {' '}
+        </span>
+        {' '}
       </h5>
     </div>
   );

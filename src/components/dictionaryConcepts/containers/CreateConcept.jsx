@@ -44,6 +44,7 @@ export class CreateConcept extends Component {
     }).isRequired,
     addedConcept: PropTypes.array.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -85,7 +86,9 @@ export class CreateConcept extends Component {
     if (isNewConcept && isAddedConcept) {
       setTimeout(() => {
         notify.show('concept successfully created', 'success', 3000);
-        nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}`);
+        nextProps.history.push(
+          `/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}`,
+        );
       }, 3000);
     }
   }
@@ -205,7 +208,13 @@ export class CreateConcept extends Component {
         <div className="row create-concept-header">
           <div className="col-lg-12">
             <h3>
-              {dictionaryName}: Create a<span className="text-capitalize">{concept}</span> Concept <br />
+              {dictionaryName}
+: Create a
+              <span className="text-capitalize">{concept}</span>
+              {' '}
+Concept
+              {' '}
+              <br />
             </h3>
           </div>
         </div>

@@ -46,6 +46,7 @@ export class EditConcept extends Component {
     existingConcept: PropTypes.object.isRequired,
     updateConcept: PropTypes.func.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -200,14 +201,21 @@ export class EditConcept extends Component {
         <div className="row create-concept-header">
           <div className="col-lg-12">
             <h3>
-              {dictionaryName}: Edit a<span className="text-capitalize">{concept}</span> Concept <br />
+              {dictionaryName}
+: Edit a
+              <span className="text-capitalize">{concept}</span>
+              {' '}
+Concept
+              {' '}
+              <br />
             </h3>
           </div>
         </div>
         <div className="concept-form-wrapper">
           <div className="row form-container">
             <div className="col-lg-12 col-md-10 col-sm-12">
-              { existingConcept &&
+              { existingConcept
+              && (
               <CreateConceptForm
                 handleNewName={this.handleNewName}
                 nameRows={this.props.newName}
@@ -231,6 +239,7 @@ export class EditConcept extends Component {
                 existingConcept={existingConcept}
                 isEditConcept={this.state.isEditConcept}
               />
+              )
               }
             </div>
           </div>

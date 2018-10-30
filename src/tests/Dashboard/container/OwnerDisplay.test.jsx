@@ -5,10 +5,14 @@ import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import Authenticated from '../../__mocks__/fakeStore';
-import OwnerDictionary, { mapStateToProps } from '../../../components/dashboard/container/OwnerDictionary';
+import OwnerDictionary,
+{ mapStateToProps } from '../../../components/dashboard/container/OwnerDictionary';
 import { mockDictionaries } from '../../__mocks__/dictionaries';
 import organizations from '../../__mocks__/organizations';
-import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
+import {
+  DictionariesSearch,
+} from '../../../components/dashboard/components/dictionary/DictionariesSearch';
+// eslint-disable-next-line max-len
 import OwnerListDictionaries from '../../../components/dashboard/components/dictionary/OwnerListDictionaries';
 
 
@@ -213,7 +217,9 @@ describe('DictionaryDisplay', () => {
       const component = mount(<MemoryRouter>
         <OwnerListDictionaries {...props} />
       </MemoryRouter>);
-      expect(component.find('OwnerListDictionaries').props().dictionaries[0].repository_type).toBe('OpenMRSDictionary');
+      expect(
+        component.find('OwnerListDictionaries').props().dictionaries[0].repository_type,
+      ).toBe('OpenMRSDictionary');
     });
   });
   it('should render with data', () => {

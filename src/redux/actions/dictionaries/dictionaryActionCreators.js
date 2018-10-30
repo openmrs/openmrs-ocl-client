@@ -15,8 +15,8 @@ import {
   creatingVersionsError,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
-import { addDictionaryReference } from '../../actions/bulkConcepts';
-import api from './../../api';
+import { addDictionaryReference } from '../bulkConcepts';
+import api from '../../api';
 
 /* eslint-disable */
 export const createDictionary = data => async dispatch =>

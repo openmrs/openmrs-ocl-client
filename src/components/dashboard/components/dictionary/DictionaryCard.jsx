@@ -31,16 +31,28 @@ const DictionaryCard = (dictionary) => {
             </a>
             <div className="float-created-at" id="dictionary-owner">
               <a className="source-owner-name">
-                {owner} <small>({ownerType})</small>
+                {owner}
+                {' '}
+                <small>
+(
+                  {ownerType}
+)
+                </small>
               </a>
             </div>
           </div>
           <div className="description col-12 text-left">
             <p>
-              <span className="source-type">Concepts: {active_concepts}</span>
+              <span className="source-type">
+Concepts:
+                {' '}
+                {active_concepts}
+              </span>
               <br />
               <a className="source-type" id="cardCapitalize">
-                Created By: {created_by}
+                Created By:
+                {' '}
+                {created_by}
               </a>
             </p>
           </div>

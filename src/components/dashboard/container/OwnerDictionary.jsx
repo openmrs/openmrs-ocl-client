@@ -47,6 +47,7 @@ export class OwnerDictionary extends Component {
       updated_by: propTypes.string,
     })).isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -77,6 +78,7 @@ export class OwnerDictionary extends Component {
   }
 
   handleHide = () => this.setState({ show: false });
+
   handleShow = () => this.setState({ show: true });
 
   render() {
@@ -91,7 +93,7 @@ export class OwnerDictionary extends Component {
         />
         <p> Your dictionaries </p>
         <div className="dashboard-head">
-          <button className="btn add-dictionaries" onClick={this.handleShow}>
+          <button type="submit" className="btn add-dictionaries" onClick={this.handleShow}>
             Add Dictionary
           </button>
           <SearchDictionaries
@@ -110,7 +112,9 @@ export class OwnerDictionary extends Component {
           </div>
         </div>
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
-        See <a href="/dashboard/dictionaries"> all Public Dictionaries</a>
+        See
+        {' '}
+        <a href="/dashboard/dictionaries"> all Public Dictionaries</a>
       </div>
     );
   }

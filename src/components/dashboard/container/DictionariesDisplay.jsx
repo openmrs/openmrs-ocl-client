@@ -25,6 +25,7 @@ export class DictionaryDisplay extends Component {
       push: propTypes.func,
     }).isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -58,11 +59,13 @@ export class DictionaryDisplay extends Component {
   gotoDictionary = (url) => {
     this.props.history.push(url);
   };
+
   handleNextPage = (e) => {
     e.preventDefault();
     const { id } = e.target;
     this.setState({ currentPage: Number(id) });
   };
+
   render() {
     const { currentPage, searchInput } = this.state;
     const { dictionaries, isFetching } = this.props;

@@ -3,9 +3,12 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
-import { FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
+import {
+  FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS,
+} from '../../../redux/actions/types';
 import
-fetchCielConcepts, { addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
+fetchCielConcepts,
+{ addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
 
 const mockStore = configureStore([thunk]);

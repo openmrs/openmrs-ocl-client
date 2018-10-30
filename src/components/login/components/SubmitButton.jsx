@@ -4,7 +4,8 @@ import Loader from '../../Loader';
 
 const SubmitButton = ({ buttonTitle, disable }) => (
   <button type="submit" className="btn btn-primary btn-block" disabled={disable}>
-    {buttonTitle}{' '}
+    {buttonTitle}
+    {' '}
     {buttonTitle === 'Logging in...' && (
       <span className="spinner float-right">
         <Loader />

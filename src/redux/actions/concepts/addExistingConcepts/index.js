@@ -14,7 +14,9 @@ const addExistingConceptsAction = data => async (dispatch) => {
   if (payload.data[0].added === true) {
     notify.show(`Concept ${conceptName} successfully added to your dictionary`, 'success', 3000);
   }
-  notify.show(`Concept ${conceptName} already exists in your dictionary, add a new one`, 'error', 3000);
+  notify.show(
+    `Concept ${conceptName} already exists in your dictionary, add a new one`,
+    'error', 3000,
+  );
 };
 export default addExistingConceptsAction;
-

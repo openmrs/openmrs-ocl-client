@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ActionButtons from '../component/ActionButtons';
+import ActionButtons from './ActionButtons';
 
 const TableItem = (props) => {
   const {

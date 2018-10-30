@@ -10,10 +10,14 @@ const fetchConceptsActionTypes = (
   limit = 25,
   page = 1,
 ) => async (dispatch) => {
-  let url = `users/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true`;
+  let url = `
+    users/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true
+  `;
   dispatch(isFetching(true));
   if (ownerType === 'Organization') {
-    url = `orgs/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true`;
+    url = `
+      orgs/${owner}/sources/${name}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true
+    `;
   }
   try {
     const response = await instance.get(url);

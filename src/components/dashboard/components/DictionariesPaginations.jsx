@@ -8,7 +8,16 @@ const Paginations = props => (
         <div className="row">
           <div className="col-md-6 text-left">
             <i>
-              Showing {props.firstDictionaryIndex}-{props.dictionaries} of {props.totalDictionaries}{' '}
+              Showing
+              {' '}
+              {props.firstDictionaryIndex}
+-
+              {props.dictionaries}
+              {' '}
+of
+              {' '}
+              {props.totalDictionaries}
+              {' '}
               dictionaries
             </i>
           </div>

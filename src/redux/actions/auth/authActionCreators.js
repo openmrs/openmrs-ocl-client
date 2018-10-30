@@ -34,4 +34,6 @@ const logoutFailed = errorMessage => ({
   payload: { errorMessage },
 });
 
-export { login, loginFailed, loginStarted, logout, logoutFailed };
+export {
+  login, loginFailed, loginStarted, logout, logoutFailed,
+};

@@ -57,7 +57,9 @@ describe('Test suite for specific concepts actions', () => {
 
     const store = mockStore({ payload: {} });
 
-    return store.dispatch(fetchConceptsActionTypes('hadijah', 'malaria', 'Organization', 10, 1)).then(() => {
+    return store.dispatch(
+      fetchConceptsActionTypes('hadijah', 'malaria', 'Organization', 10, 1),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

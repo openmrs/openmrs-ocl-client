@@ -17,18 +17,24 @@ const ListDictionaries = ({
     return (
       <div>
         <div className="row justify-content-center">
-          {dictionaries.map(dictionary =>
-            (<Card
+          {dictionaries.map(dictionary => (
+            <Card
               dictionary={dictionary}
               key={dictionary.uuid}
-            />))}
+            />
+          ))}
         </div>
       </div>
     );
   }
   return (
     <div className="text-center mt-3" id="Noresults">
-      <h5>No Results Found <span aria-label="sad-emoji" role="img"> 😞 </span> </h5>
+      <h5>
+No Results Found
+        {' '}
+        <span aria-label="sad-emoji" role="img"> 😞 </span>
+        {' '}
+      </h5>
     </div>
   );
 };

@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
 import Authenticated from '../../__mocks__/fakeStore';
 import dictionary, { mockDictionaries } from '../../__mocks__/dictionaries';
-import UserDashboard, { mapStateToProps } from '../../../components/userDasboard/container/UserDashboard';
+import UserDashboard, {
+  mapStateToProps,
+} from '../../../components/userDasboard/container/UserDashboard';
 
 const storeObject = {
   organizations: {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
+import {
+  DictionaryModal,
+} from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
 import dictionary from '../__mocks__/dictionaries';
 import { AddDictionary } from '../../components/dashboard/components/dictionary/AddDictionary';
@@ -96,7 +98,9 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.state().errors.preferred_source).toEqual('Required');
     expect(wrapper.state().errors.default_locale).toEqual('Required');
     expect(wrapper.state().errors.public_access).toEqual('Required');
-    expect(wrapper.state().errors.supported_locales).toEqual('Preferred language must not be included in other languages');
+    expect(
+      wrapper.state().errors.supported_locales,
+    ).toEqual('Preferred language must not be included in other languages');
   });
 
   it('it should handle submit', async () => {

@@ -4,7 +4,10 @@ import UserDashboard from '../../components/dashboard/components/dictionary/user
 
 describe('Tests functionality of User Dashbard Component', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<UserDashboard />);
+    const props = {
+      organizations: [],
+    };
+    const wrapper = shallow(<UserDashboard {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

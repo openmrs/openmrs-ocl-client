@@ -19,6 +19,7 @@ export class ActionButtons extends Component {
     }).isRequired,
     addConcept: PropTypes.func.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +30,7 @@ export class ActionButtons extends Component {
   openModal = () => {
     this.setState({ open: true });
   };
+
   closeModal = () => {
     this.setState({ open: false });
   };
@@ -58,6 +60,7 @@ export class ActionButtons extends Component {
     return (
       <React.Fragment>
         <button
+          type="submit"
           className="btn btn-sm mr-2 no-shadow bg-gray mb-1"
           id="add-button"
           onClick={() => this.addConceptButton()}
@@ -72,7 +75,11 @@ export class ActionButtons extends Component {
         >
           <Popup
             open={this.state.open}
-            trigger={<button className="btn btn-sm no-shadow bg-gray mb-1">Preview concept</button>}
+            trigger={(
+              <button type="submit" className="btn btn-sm no-shadow bg-gray mb-1">
+            Preview concept
+              </button>
+            )}
             position="left center"
             on="click"
             onClose={this.closeModal}

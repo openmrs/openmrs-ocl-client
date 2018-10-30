@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
-import ReleaseVersionModal from '../dictionary/common/ReleaseVersionModal';
+import ReleaseVersionModal from './common/ReleaseVersionModal';
 
 const DictionaryDetailCard = (props) => {
   const {
@@ -65,11 +65,16 @@ const DictionaryDetailCard = (props) => {
           to="/home"
           className="backLinkText"
         >
-          <i className="fas fa-arrow-left"> <span className="span-text">Go Back Home</span></i>
+          <i className="fas fa-arrow-left">
+            {' '}
+            <span className="span-text">Go Back Home</span>
+          </i>
         </Link>
       </section>
       <h1 id="headingDict" align="left">
-        {name} Dictionary
+        {name}
+        {' '}
+Dictionary
       </h1>
       <hr />
       <div className="row">
@@ -77,29 +82,51 @@ const DictionaryDetailCard = (props) => {
           <fieldset>
             <legend>General Details</legend>
             <p>
-              <b>Preferred Source</b>: CIEL
+              <b>Preferred Source</b>
+: CIEL
             </p>
             <p className="paragraph">
-              <b>Public Access</b>: {public_access}
+              <b>Public Access</b>
+:
+              {' '}
+              {public_access}
             </p>
             {description ? (
               <p id="desc">
-                <b>Description</b>: {description}
+                <b>Description</b>
+:
+                {' '}
+                {description}
               </p>
             ) : (
-              <p><b>Description</b>: No Description</p>
+              <p>
+                <b>Description</b>
+: No Description
+              </p>
             )}
             <p className="paragraph">
-              <b>Owner:</b> {owner}({owner_type})
+              <b>Owner:</b>
+              {' '}
+              {owner}
+(
+              {owner_type}
+)
             </p>
             <p className="paragraph">
-              <b>Created On</b>: {new Date(created_on).toLocaleDateString('en-US', DATE_OPTIONS)}
+              <b>Created On</b>
+:
+              {' '}
+              {new Date(created_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
             <p className="paragraph">
-              <b>Updated On</b>: {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
+              <b>Updated On</b>
+:
+              {' '}
+              {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
             {owner === username && (
               <button
+                type="submit"
                 className="btn btn-secondary"
                 id="editB"
                 onClick={showEditModal}
@@ -111,25 +138,44 @@ const DictionaryDetailCard = (props) => {
           <fieldset>
             <legend>Concepts (HEAD version)</legend>
             <p className="paragraph">
-              <b>Total Concepts</b>: {active_concepts}
+              <b>Total Concepts</b>
+:
+              {' '}
+              {active_concepts}
             </p>
             <p className="points">
-              <b>Custom Concepts</b>: {customConcepts}
+              <b>Custom Concepts</b>
+:
+              {' '}
+              {customConcepts}
             </p>
             <p className="points">
-              <b>From CIEL</b>: {cielConcepts}
+              <b>From CIEL</b>
+:
+              {' '}
+              {cielConcepts}
             </p>
             <p>
-              <b>By class</b>:
+              <b>By class</b>
+:
             </p>
             <p className="points">
-              <b>Diagnosis</b>: {diagnosisConcepts}
+              <b>Diagnosis</b>
+:
+              {' '}
+              {diagnosisConcepts}
             </p>
             <p className="points">
-              <b>Procedure</b>: {procedureConcepts}
+              <b>Procedure</b>
+:
+              {' '}
+              {procedureConcepts}
             </p>
             <p className="points">
-              <b>Others</b>: {otherConcepts}
+              <b>Others</b>
+:
+              {' '}
+              {otherConcepts}
             </p>
             <Link
               className="btn btn-secondary"
@@ -144,14 +190,40 @@ const DictionaryDetailCard = (props) => {
           <fieldset>
             <legend>Actions</legend>
             <ul>
-              <li><a href={traditionalUrl} target="_blank" rel="noopener noreferrer"><i className="fas fa-external-link-alt" />Browse in traditional OCL</a></li>
-              { owner === username && !headVersion.released ?
-                <li><button type="button" onClick={handleRelease} className="fas fa-cloud-upload-alt head"><span id="release-head"> Release HEAD as new version</span></button></li>
-            : null}
+              <li>
+                <a href={traditionalUrl} target="_blank" rel="noopener noreferrer">
+                  <i className="fas fa-external-link-alt" />
+Browse in traditional OCL
+                </a>
+              </li>
+              { owner === username && !headVersion.released
+                ? (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={handleRelease}
+                      className="fas fa-cloud-upload-alt head"
+                    >
+                      <span id="release-head"> Release HEAD as new version</span>
+                    </button>
+                  </li>
+                )
+                : null}
 
-              { owner === username ?
-                <li><button type="button" onClick={showVersionModal} className="fas fa-cloud-upload-alt version"><span id="release-head"> Release a new version</span></button> </li>
-            : null}
+              { owner === username
+                ? (
+                  <li>
+                    <button
+                      type="button"
+                      onClick={showVersionModal}
+                      className="fas fa-cloud-upload-alt version"
+                    >
+                      <span id="release-head"> Release a new version</span>
+                    </button>
+                    {' '}
+                  </li>
+                )
+                : null}
             </ul>
           </fieldset>
           <fieldset>
