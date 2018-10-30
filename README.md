@@ -80,6 +80,18 @@ To run tests
  $ npm test -- -u --coverage
 ```
 
+### Creating a Sass build
+```
+- To compile Sass to CSS each time you make a change to a file with a .scss file 
+  extension, run the command below.
+
+$ npm run build:css
+
+- For automated Sass compilation with styles hot reloading, run the command below
+
+$ npm run watch:css
+```
+
 ## How to contribute to this project?
  - Please read [OpenMRS wiki](https://wiki.openmrs.org/) for awareness on the code of conduct used in OpenMRS organization 
  - And to get you started with the project please use the OpenMRS-OCL [documentation](https://docs.google.com/document/d/1R_Fgr5SBl4xFNJgj6yMJNVY63b5H_OUqM55o1GFqFKs/edit#heading=h.rc908wooykzg)
