@@ -16,6 +16,7 @@ describe('Test suite for vote reducer', () => {
       },
     )).toEqual({
       cielConcepts: [],
+      loading: false,
     });
   });
 
@@ -28,6 +29,7 @@ describe('Test suite for vote reducer', () => {
       },
     )).toEqual({
       loading: false,
+      cielConcepts: [],
     });
   });
 });

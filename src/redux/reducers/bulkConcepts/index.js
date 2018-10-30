@@ -7,11 +7,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cielConcepts: action.payload,
+        loading: false,
       };
     case IS_FETCHING:
       return {
         ...state,
         loading: action.payload,
+        cielConcepts: [],
       };
     default:
       return state;

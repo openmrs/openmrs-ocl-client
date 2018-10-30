@@ -16,6 +16,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
+      fetchSearchCielConcepts: jest.fn(),
       match: {
         params: {
           type: 'users',
@@ -38,6 +39,7 @@ describe('Add Bulk Concepts', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
+      fetchSearchCielConcepts: jest.fn(),
       isFetching: true,
       match: {
         params: {
@@ -61,6 +63,7 @@ describe('Add Bulk Concepts', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
+      fetchSearchCielConcepts: jest.fn(),
       cielConcepts: [],
       isFetching: true,
       match: {
@@ -79,5 +82,53 @@ describe('Add Bulk Concepts', () => {
       </Provider>
     </MemoryRouter>);
     wrapper.find('#btn-add-all').at(0).simulate('click');
+  });
+  it('calls the searchEventListener function when the search concept input changes', () => {
+    const props = {
+      fetchCielConcepts: jest.fn(),
+      addExistingBulkConcepts: jest.fn(),
+      fetchSearchCielConcepts: jest.fn(),
+      cielConcepts: [],
+      isFetching: true,
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'mochu',
+          collectionName: 'andela',
+          language: 'en',
+          dictionaryName: 'WHO',
+        },
+      },
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    wrapper.find('#search').at(0).simulate('change');
+  });
+  it('calls the fetchSearchData function when the search concept form is submited', () => {
+    const props = {
+      fetchCielConcepts: jest.fn(),
+      addExistingBulkConcepts: jest.fn(),
+      fetchSearchCielConcepts: jest.fn(),
+      cielConcepts: [],
+      isFetching: true,
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'mochu',
+          collectionName: 'andela',
+          language: 'en',
+          dictionaryName: 'WHO',
+        },
+      },
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    wrapper.find('form').at(0).simulate('submit');
   });
 });

@@ -9,13 +9,24 @@ const fetchCielConcepts = () => async (dispatch) => {
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_CIEL_CONCEPTS));
-    dispatch(isFetching(false));
   } catch (error) {
     dispatch(isErrored(error.response.data, FETCH_CIEL_CONCEPTS));
     dispatch(isFetching(false));
   }
 };
 export default fetchCielConcepts;
+
+export const fetchSearchCielConcepts = data => async (dispatch) => {
+  dispatch(isFetching(true));
+  const url = `/concepts/?q=${data}`;
+  try {
+    const response = await instance.get(url);
+    dispatch(isSuccess(response.data, FETCH_CIEL_CONCEPTS));
+  } catch (error) {
+    dispatch(isErrored(error.response.data, FETCH_CIEL_CONCEPTS));
+    dispatch(isFetching(false));
+  }
+};
 
 export const addExistingBulkConcepts = data => async (dispatch) => {
   const typeName = localStorage.getItem('typeName');

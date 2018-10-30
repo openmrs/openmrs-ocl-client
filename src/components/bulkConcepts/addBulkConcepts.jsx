@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
+import fetchCielConcepts, { addExistingBulkConcepts, fetchSearchCielConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from '../bulkConcepts/bulkConceptList';
 import Header from '../bulkConcepts/container/Header';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
+    fetchSearchCielConcepts: PropTypes.func.isRequired,
     fetchCielConcepts: PropTypes.func.isRequired,
     addExistingBulkConcepts: PropTypes.func.isRequired,
     cielConcepts: PropTypes.arrayOf(PropTypes.shape({
@@ -21,12 +22,26 @@ export class AddBulkConcepts extends Component {
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
+  constructor() {
+    super();
+    this.state = {
+      searchConcepts: '',
+    };
+  }
   handleAddAll=() => {
     const expressions = this.props.cielConcepts.map(concept => concept.url);
     this.props.addExistingBulkConcepts({ data: { expressions } });
   }
   handleCielClick=() => {
     this.props.fetchCielConcepts();
+  }
+  searchEventListener = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+  fetchSearchData=(event) => {
+    event.preventDefault();
+    const { searchConcepts } = this.state;
+    this.props.fetchSearchCielConcepts(searchConcepts);
   }
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
@@ -79,7 +94,7 @@ export class AddBulkConcepts extends Component {
                 <label className="form-check-label" htmlFor="exampleRadios3">
                   Other:&nbsp;&nbsp;
                 </label>
-                <form className="form-inline search-bar">
+                <form onSubmit={this.fetchSearchData} method="post" className="form-inline search-bar">
                   <i className="fas fa-search" />
                   <input
                     className="form-control"
@@ -87,6 +102,9 @@ export class AddBulkConcepts extends Component {
                     type="search"
                     placeholder="search"
                     aria-label="Search"
+                    name="searchConcepts"
+                    required
+                    onChange={this.searchEventListener}
                   />
                 </form>
               </div>
@@ -122,5 +140,5 @@ export const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { fetchCielConcepts, addExistingBulkConcepts },
+  { fetchCielConcepts, addExistingBulkConcepts, fetchSearchCielConcepts },
 )(AddBulkConcepts);
