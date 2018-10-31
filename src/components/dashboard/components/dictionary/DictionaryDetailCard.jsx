@@ -160,7 +160,7 @@ const DictionaryDetailCard = (props) => {
                 <tbody>
                   <tr>
                     <th>Version</th>
-                    <th>Date</th>
+                    <th>Release Date</th>
                     <th>Actions</th>
                   </tr>
                   {releasedVersions.length >= 1 ? (
