@@ -56,9 +56,7 @@ export class DictionaryModal extends React.Component {
     if (Object.keys(errors).length === 0) {
       this.props
         .submit(this.state.data)
-        .then(() => {
-          this.props.modalhide();
-        })
+        .then(() => this.hideModal())
         .catch((error) => {
           if (error.response) {
             this.setState({
@@ -169,6 +167,26 @@ export class DictionaryModal extends React.Component {
     return errors;
   };
 
+  hideModal = () => {
+    this.setState({
+      data: {
+        id: '',
+        preferred_source: 'CIEL',
+        public_access: 'View',
+        name: '',
+        owner: '',
+        description: '',
+        default_locale: 'en',
+        supported_locales: '',
+        repository_type: 'OpenMRSDictionary',
+        conceptUrl: '',
+      },
+      errors: {},
+      supportedLocalesOptions: [],
+    });
+    this.props.modalhide();
+  }
+
   render() {
     const { data, errors } = this.state;
     const {
@@ -180,10 +198,11 @@ export class DictionaryModal extends React.Component {
       <div>
         <Modal
           isOpen={this.props.show}
-          onClosed={this.props.modalhide}
+          onClosed={this.hideModal}
           className="modal-lg"
+          backdrop="static"
         >
-          <ModalHeader className="modal-heading">
+          <ModalHeader className="modal-heading" toggle={this.hideModal}>
             {this.props.title}
           </ModalHeader>
           {errors && <InlineError text={this.errors} />}
@@ -373,7 +392,7 @@ export class DictionaryModal extends React.Component {
             <Button
               className="btn btn-outline-danger test-btn-cancel"
               id="cancel"
-              onClick={this.props.modalhide}
+              onClick={this.hideModal}
             >
               Cancel
             </Button>
