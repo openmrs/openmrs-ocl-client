@@ -224,7 +224,7 @@ export class DictionaryModal extends React.Component {
                       <option value="PIH">PIH</option>
                       {
                         isEditingDictionary &&
-                        <option value={dictionary.preferred_source} selected>
+                        <option value={dictionary.preferred_source} >
                           {dictionary.preferred_source}
                         </option>
                       }
@@ -244,10 +244,8 @@ export class DictionaryModal extends React.Component {
                       id="default_locale"
                       placeholder="English"
                       onChange={this.onChange}
+                      value={this.props.defaultLocaleOption}
                     >
-                      {isEditingDictionary &&
-                        this.props.defaultLocaleOption
-                      }
                       {languages &&
                       languages.map(language => (
                         <option value={language.value} key={language.value}>
@@ -304,8 +302,7 @@ export class DictionaryModal extends React.Component {
                   <FormGroup style={{ marginTop: '12px' }}>
                     Owner <b className="text-danger">*</b>{errors && <InlineError text={errors.owner} />}
                     <Input
-                      componentClass="select"
-                      type="text"
+                      type="select"
                       id="owner"
                       placeholder="Individual"
                       name="owner"
@@ -313,7 +310,7 @@ export class DictionaryModal extends React.Component {
                       value={data.owner}
                     >
                       {isEditingDictionary &&
-                      <option value={data.owner} selected>{data.owner}</option>
+                      <option value={data.owner} >{data.owner}</option>
                       }
                       { organizations && organizations.length !== 0 && <option value="" />}
                       <option value="Individual" style={{ textTransform: 'capitalize' }}> {localStorage.getItem('username')} (Yourself) </option>

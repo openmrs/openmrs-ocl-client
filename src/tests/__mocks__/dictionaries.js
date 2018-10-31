@@ -35,17 +35,15 @@ const dictionary = {
 };
 
 // Mock more dictionaries objects array
-export const mockDictionaries = () => {
+export const mockDictionaries = (() => {
   const dictionaries = [];
   let i = 0;
   while (i <= 60) {
-    const dict = dictionary;
-    dict.id = i;
-    dict.uuid += String(i);
-    dictionaries.push(dict);
+    const newDictionary = { ...dictionary, id: i, uuid: String(i) };
+    dictionaries.push(newDictionary);
     i += 1;
   }
   return dictionaries;
-};
+})();
 
 export default dictionary;

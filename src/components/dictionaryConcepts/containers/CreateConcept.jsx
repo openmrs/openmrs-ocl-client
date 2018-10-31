@@ -48,7 +48,7 @@ export class CreateConcept extends Component {
     super(props);
     this.state = {
       notEditable: true,
-      id: uuid(),
+      id: String(uuid()),
       concept_class: '',
       datatype: 'None',
       names: [],

@@ -97,14 +97,13 @@ const DictionaryDetailCard = (props) => {
               <b>Updated On</b>: {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
             {owner === username && (
-              <Link
+              <button
                 className="btn btn-secondary"
                 id="editB"
-                to="#"
                 onClick={showEditModal}
               >
                 Edit
-              </Link>
+              </button>
             )}
           </fieldset>
           <fieldset>

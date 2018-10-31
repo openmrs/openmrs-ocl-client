@@ -15,4 +15,17 @@ describe('Sign up Component', () => {
   it('should render without crashing', () => {
     expect(wrapper).toMatchSnapshot();
   });
+  it('should handle text input', () => {
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        value: 'user',
+        name: 'firstname',
+      },
+    };
+    const spy = jest.spyOn(wrapper.find('Signup').instance(), 'handleInput');
+    wrapper.instance().forceUpdate();
+    wrapper.find('#firstName').simulate('change', event);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });

@@ -3,14 +3,25 @@ import Adapter from 'enzyme-adapter-react-16';
 
 configure({ adapter: new Adapter() });
 
-const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
-};
+const localStorageMock = (() => {
+  let store = {};
+  return {
+    getItem: key => store[key] || null,
+    setItem: (key, value) => {
+      store[key] = value.toString();
+    },
+    removeItem: key => delete store[key],
+    clear: () => {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
 
 const uuid = { v4: jest.fn(() => 1) };
 global.uuid = uuid;
-global.localStorage = localStorageMock;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;

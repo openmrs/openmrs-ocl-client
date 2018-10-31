@@ -101,9 +101,9 @@ export class EditConcept extends Component {
     event.preventDefault();
   }
 
-  removeNewName(event, nameRow) {
+  removeNewName(event, uuid) {
     event.preventDefault();
-    this.props.removeNameForEditConcept(nameRow.uuid);
+    this.props.removeNameForEditConcept(uuid);
   }
 
   addNewDescription(event) {

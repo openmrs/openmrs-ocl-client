@@ -24,7 +24,7 @@ export class EditDictionary extends React.Component {
     const { dictionary } = this.props;
     for (let i = 0; i < languages.length; i += 1) {
       if (languages[i].value === dictionary.default_locale) {
-        const option = (<option value={languages[i].value} selected>
+        const option = (<option value={languages[i].value} >
           {languages[i].label}
         </option>);
         this.setState({

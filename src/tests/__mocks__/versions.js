@@ -10,7 +10,7 @@ export default {
   url: '/users/chriskala/collections/over/',
 };
 export const customVersion = {
-  id: 'HEAD',
+  id: '1',
   released: false,
   retired: false,
   description: 'test',
@@ -22,7 +22,7 @@ export const customVersion = {
 };
 
 export const HeadVersion = {
-  id: 'HEAD',
+  id: '2',
   released: true,
   retired: false,
   description: 'test',

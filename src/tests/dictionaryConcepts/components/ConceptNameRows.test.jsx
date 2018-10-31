@@ -5,7 +5,14 @@ import ConceptNameRows from '../../../components/dictionaryConcepts/components/C
 const props = {
   pathName: {
     language: 'en',
-  }
+  },
+  addDataFromRow: jest.fn(),
+  removeRow: jest.fn(),
+  removeDataFromRow: jest.fn(),
+  existingConcept: {},
+  newRow: {
+    uuid: '123',
+  },
 };
 
 describe('Test suite for ConceptNameRows ', () => {

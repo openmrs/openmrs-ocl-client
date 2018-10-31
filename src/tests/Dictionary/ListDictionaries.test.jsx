@@ -1,7 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
 import ListDictionaries from '../../components/dashboard/components/dictionary/ListDictionaries';
-import dictionaries from '../__mocks__/dictionaries';
+import { mockDictionaries } from '../__mocks__/dictionaries';
 
 describe('Test ListDictionary component', () => {
   it('should render without any dictionary data', () => {
@@ -15,10 +16,12 @@ describe('Test ListDictionary component', () => {
 
   it('should render with dictionary data', () => {
     const props = {
-      dictionaries,
+      dictionaries: mockDictionaries,
       fetching: false,
     };
-    const wrapper = mount(<ListDictionaries {...props} />);
+    const wrapper = mount(<MemoryRouter>
+      <ListDictionaries {...props} />
+    </MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
 

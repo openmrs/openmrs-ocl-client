@@ -12,6 +12,12 @@ const props = {
     ],
   },
   description: [],
+  pathName: {
+    language: 'en',
+  },
+  addDataFromDescription: jest.fn(),
+  removeDescription: jest.fn(),
+  removeDataFromRow: jest.fn(),
 };
 
 describe('Test suite for DescriptionTable', () => {
@@ -20,7 +26,7 @@ describe('Test suite for DescriptionTable', () => {
     expect(wrapper).toMatchSnapshot();
   });
   it('should render CreateConceptTable Component for undefined existingConcepts', () => {
-    props.existingConcept = undefined;
+    props.existingConcept = {};
     const wrapper = shallow(<DescriptionTable {...props} />);
     expect(wrapper).toMatchSnapshot();
   });

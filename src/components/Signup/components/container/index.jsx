@@ -11,6 +11,10 @@ export class Signup extends Component {
     password: '',
     confirmPassword: '',
   };
+  handleInput = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
   render() {
     const {
       firstName, lastName, email, username, password, confirmPassword,
@@ -18,10 +22,8 @@ export class Signup extends Component {
     return (
       <div className="container">
         <div className="col-md-6 m-auto">
-          <p className="paragraphs">
-            <h1>Open Concept Lab</h1>
-            <h4>for OpenMRS</h4>
-          </p>
+          <h1>Open Concept Lab</h1>
+          <h4>for OpenMRS</h4>
           <p>
             Use the shared Open Concept Lab to create OpenMRS dictionaries by mixing expert-defined
             content with your own custom concepts.
@@ -38,6 +40,7 @@ export class Signup extends Component {
                 id="firstName"
                 required
                 value={firstName}
+                onChange={this.handleInput}
               />
               <p className="paragraph">Last Name</p>
               <input
@@ -48,6 +51,7 @@ export class Signup extends Component {
                 id="lastname"
                 required
                 value={lastName}
+                onChange={this.handleInput}
               />
               <p className="paragraph">Email</p>
               <input
@@ -58,6 +62,7 @@ export class Signup extends Component {
                 id="email"
                 required
                 value={email}
+                onChange={this.handleInput}
               />
               <p className="paragraph">Username</p>
               <input
@@ -68,6 +73,7 @@ export class Signup extends Component {
                 id="userName"
                 required
                 value={username}
+                onChange={this.handleInput}
               />
               <p className="paragraph">Password</p>
               <input
@@ -78,6 +84,7 @@ export class Signup extends Component {
                 name="password"
                 required
                 value={password}
+                onChange={this.handleInput}
               />
               <div className="form-group">
                 <p className="paragraph"> Confirm Password</p>
@@ -89,6 +96,7 @@ export class Signup extends Component {
                   name="confirmpassword"
                   required
                   value={confirmPassword}
+                  onChange={this.handleInput}
                 />
               </div>
               <div className="row">

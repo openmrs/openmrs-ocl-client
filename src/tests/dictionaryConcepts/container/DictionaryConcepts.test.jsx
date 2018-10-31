@@ -40,6 +40,10 @@ describe('Test suite for dictionary concepts components', () => {
       filterBySource: jest.fn(),
       filterByClass: jest.fn(),
       fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}><Router>
       <DictionaryConcepts {...props} />
@@ -54,6 +58,9 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -64,6 +71,15 @@ describe('Test suite for dictionary concepts components', () => {
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
+      totalConceptsCount: jest.fn(),
+      conceptCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <DictionaryConcepts {...props} />
@@ -80,9 +96,9 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
-          collectionName: 'coreconcepts',
-          type: 'users',
-          dictionaryName: 'coreconcepts',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -98,7 +114,7 @@ describe('Test suite for dictionary concepts components', () => {
       filterByClass: jest.fn(),
       paginateConcepts: jest.fn(),
       fetchMemberStatus: jest.fn(),
-      userIsMember: jest.fn(),
+      userIsMember: true,
       removeDictionaryConcept: jest.fn(),
     };
 
@@ -116,6 +132,9 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -126,6 +145,13 @@ describe('Test suite for dictionary concepts components', () => {
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}><Router>
       <DictionaryConcepts {...props} />
@@ -140,6 +166,9 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -150,6 +179,13 @@ describe('Test suite for dictionary concepts components', () => {
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
     };
     const app = shallow(<DictionaryConcepts {...props} />);
     const newProps = {
@@ -162,6 +198,14 @@ describe('Test suite for dictionary concepts components', () => {
 
   it('should test mapStateToProps', () => {
     const initialState = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
       concepts: {
         loading: false,
         dictionaryConcepts: [],
@@ -187,6 +231,9 @@ describe('Test suite for dictionary concepts components', () => {
       match: {
         params: {
           typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
         },
       },
       location: {
@@ -199,6 +246,11 @@ describe('Test suite for dictionary concepts components', () => {
       loading: false,
       paginateConcepts: jest.fn(),
       totalConceptCount: 11,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <DictionaryConcepts {...props} />

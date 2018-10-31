@@ -21,8 +21,19 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: true,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -38,8 +49,20 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -53,8 +76,19 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -73,8 +107,18 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -94,8 +138,19 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -113,7 +168,15 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
       preview: {
         url: 'dsa',
@@ -121,6 +184,7 @@ describe('Test suite for BulkConceptsPage component', () => {
       },
       addConcept: jest.fn(),
       previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
@@ -154,8 +218,19 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: [],
       classes: [],
-      match: { params: { type: 'users', typeName: 'emasys', collectionName: 'dev-org' } },
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
       addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />

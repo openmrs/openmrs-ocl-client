@@ -10,10 +10,6 @@ import { newConcept } from '../../__mocks__/concepts';
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
 jest.mock('react-notify-toast');
 
-global.localStorage = {
-  getItem: () => '/',
-};
-
 describe('Test suite for dictionary concepts components', () => {
   const props = {
     match: {
@@ -43,8 +39,13 @@ describe('Test suite for dictionary concepts components', () => {
       names: [],
       descriptions: [],
     },
+    addedConcept: [{ added: true }],
+    state: {
+      id: '1',
+    },
   };
   it('should render without breaking', () => {
+    localStorage.setItem('dictionaryPathName', '/dictionary/url');
     const wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);

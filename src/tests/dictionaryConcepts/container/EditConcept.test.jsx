@@ -10,9 +10,7 @@ import { newConcept, existingConcept } from '../../__mocks__/concepts';
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
 jest.mock('react-notify-toast');
 
-global.localStorage = {
-  getItem: () => '/',
-};
+localStorage.setItem('dictionaryPathName', '/');
 
 describe('Test suite for dictionary concepts components', () => {
   const props = {
@@ -23,6 +21,8 @@ describe('Test suite for dictionary concepts components', () => {
         type: 'users',
         typeName: 'emmabaye',
         language: 'en',
+        conceptId: '1',
+        name: '',
       },
     },
     history: {
@@ -43,9 +43,11 @@ describe('Test suite for dictionary concepts components', () => {
     existingConcept: {
       names: [{
         uuid: '1234',
+        name: 'dummy',
       }],
       descriptions: [{
         uuid: '1234',
+        name: 'dummy',
       }],
     },
   };
