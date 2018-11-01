@@ -8,7 +8,7 @@ import {
   DictionaryConcepts,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
-import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
+import concepts from '../../__mocks__/concepts';
 
 const store = createMockStore({
   organizations: {
@@ -30,7 +30,7 @@ describe('Test suite for dictionary concepts components', () => {
         pathname: '/random/path',
       },
       fetchDictionaryConcepts: jest.fn(),
-      concepts: [concepts],
+      concepts: [],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,
@@ -54,7 +54,7 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('should search for concepts', () => {
+  it('should render a loader', () => {
     const props = {
       match: {
         params: {
@@ -68,12 +68,12 @@ describe('Test suite for dictionary concepts components', () => {
         pathname: '/random/path',
       },
       fetchDictionaryConcepts: jest.fn(),
-      concepts: [concepts],
+      concepts: [],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
-      loading: false,
-      totalConceptsCount: jest.fn(),
-      conceptCount: 1,
+      loading: true,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
       filterBySource: jest.fn(),
       filterByClass: jest.fn(),
       fetchMemberStatus: jest.fn(),
@@ -82,14 +82,12 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
     };
-    const wrapper = mount(<Router>
-      <DictionaryConcepts {...props} />
-    </Router>);
-    const event = { target: { name: 'searchInput', value: 'ciel' } };
-    wrapper.find('#search-concept').simulate('change', event);
-    wrapper.find('.searchConcepts').simulate('submit', {
-      preventDefault: () => {},
-    });
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    expect(wrapper.find('Loader')).toHaveLength(1);
   });
 
   it('should remove a dictionary concept', () => {
@@ -227,9 +225,65 @@ describe('Test suite for dictionary concepts components', () => {
         <DictionaryConcepts {...props} />
       </Router>
     </Provider>);
-    const event = { target: { name: 'CIEL', checked: true, value: 'ciel' } };
-    wrapper.find('#CIEL').simulate('change', event);
-    wrapper.find('#Diagnosis').simulate('change', event);
+    const sourceEvent = {
+      target: {
+        name: 'CIEL,source', checked: true, value: 'ciel', type: 'checkbox',
+      },
+    };
+    const classesEvent = {
+      target: {
+        name: 'diagnosis,classes', checked: true, value: 'diagnosis', type: 'checkbox',
+      },
+    };
+    const dictionaryConceptsWrapper = wrapper.find('DictionaryConcepts').instance();
+    const spy = jest.spyOn(dictionaryConceptsWrapper, 'handleSearch');
+    dictionaryConceptsWrapper.forceUpdate();
+    wrapper.find('#CIEL').simulate('change', sourceEvent);
+    wrapper.find('#Diagnosis').simulate('change', classesEvent);
+    expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should filter concepts in the table', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    const event = {
+      target: {
+        value: 'malaria',
+      },
+    };
+    const dictionaryConceptsWrapper = wrapper.find('DictionaryConcepts').instance();
+    const spy = jest.spyOn(dictionaryConceptsWrapper, 'filterCaseInsensitive');
+    dictionaryConceptsWrapper.forceUpdate();
+    wrapper.find('ReactTable').find('input').at(0).simulate('change', event);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should test componentWillReceiveProps', () => {
@@ -296,37 +350,5 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
     expect(mapStateToProps(initialState).dictionaries).toEqual([]);
-  });
-  it('should handle concept pagination', () => {
-    const props = {
-      match: {
-        params: {
-          typeName: 'dev-col',
-          type: 'orgs',
-          collectionName: 'dev-col',
-          dictionaryName: 'dev-col',
-        },
-      },
-      location: {
-        pathname: '/random/path',
-      },
-      fetchDictionaryConcepts: jest.fn(),
-      concepts: [concepts, ...multipleConceptsMockStore.concepts.dictionaryConcepts],
-      filteredClass: ['Diagnosis'],
-      filteredSources: ['CIEL'],
-      loading: false,
-      paginateConcepts: jest.fn(),
-      totalConceptCount: 11,
-      filterBySource: jest.fn(),
-      filterByClass: jest.fn(),
-      fetchMemberStatus: jest.fn(),
-      userIsMember: true,
-      removeDictionaryConcept: jest.fn(),
-    };
-    const wrapper = mount(<Router>
-      <DictionaryConcepts {...props} />
-    </Router>);
-    wrapper.find('#next').simulate('click');
-    wrapper.find('#previous').simulate('click');
   });
 });

@@ -1,69 +1,103 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TableItem from './TableItem';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import ActionButtons from './ActionButtons';
 import Loader from '../../Loader';
-import RenderTable from './RenderTable';
 import { conceptsProps } from '../proptypes';
+import { getUsername } from './helperFunction';
+import RemoveConcept from './RemoveConcept';
+
+const username = getUsername();
 
 const ConceptTable = ({
-  concepts, loading, org, locationPath, showDeleteModal, url,
-  handleDelete, openDeleteModal, closeDeleteModal,
+  concepts,
+  loading,
+  org,
+  locationPath,
+  showDeleteModal,
+  url,
+  handleDelete,
+  conceptLimit,
+  closeDeleteModal,
+  openDeleteModal,
+  filterConcept,
 }) => {
-  if (loading) {
-    return (
-      <RenderTable
-        render={() => (
-          <tr>
-            <th scope="row" colSpan="6" className="text-center">
-              <Loader />
-            </th>
-          </tr>
-        )}
-      />
-    );
-  }
+  const filter = { filterMethod: filterConcept, filterAll: true };
   if (concepts.length > 0) {
     return (
       <div className="row col-12 custom-concept-list">
-        <table className="table table-striped table-bordered">
-          <thead className="header text-white">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Class</th>
-              <th scope="col">Datatype</th>
-              <th scope="col">Source</th>
-              <th scope="col">ID</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {concepts.map(concept => (
-              <TableItem
-                {...concept}
-                key={concept.version}
-                org={org}
-                locationPath={locationPath}
-                showDeleteModal={showDeleteModal}
-                url={url}
-                handleDelete={handleDelete}
-                openDeleteModal={openDeleteModal}
-                closeDeleteModal={closeDeleteModal}
-              />))}
-          </tbody>
-        </table>
+        <RemoveConcept
+          collectionName={locationPath.collectionName}
+          conceptOwner={locationPath.typeName}
+          conceptUrl={url}
+          conceptType={locationPath.type}
+          handleDelete={handleDelete}
+          openDeleteModal={openDeleteModal}
+          closeDeleteModal={closeDeleteModal}
+        />
+        <ReactTable
+          data={concepts}
+          loading={loading}
+          defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
+          filterable
+          noDataText="No ceoncept!"
+          minRows={0}
+          columns={[
+            {
+              Header: 'Name',
+              accessor: 'display_name',
+              minWidth: 500,
+              ...filter,
+            },
+            {
+              Header: 'Class',
+              accessor: 'concept_class',
+              ...filter,
+            },
+            {
+              Header: 'Datatype',
+              accessor: 'datatype',
+              ...filter,
+            },
+            {
+              Header: 'Source',
+              accessor: 'source',
+              ...filter,
+            },
+            {
+              Header: 'ID',
+              accessor: 'id',
+              ...filter,
+            },
+            {
+              Header: 'Action',
+              filterable: false,
+              width: 150,
+              Cell: ({ original: concept }) => {
+                const props = {
+                  showDeleteModal,
+                  handleDelete,
+                };
+                const renderButtons = username === concept.owner || (
+                  concept.owner === org.name && org.userIsMember
+                );
+                return <ActionButtons actionButtons={renderButtons} {...concept} {...props} />;
+              },
+            },
+          ]}
+          className="-striped -highlight"
+        />
       </div>
     );
   }
+  if (!loading && concepts.length <= 0) {
+    return <div>No concepts found</div>;
+  }
   return (
-    <RenderTable
-      render={() => (
-        <tr>
-          <th scope="row" colSpan="6" className="text-center">
-            No concepts found
-          </th>
-        </tr>
-      )}
-    />
+    <div className="mt-200 text-center">
+      <Loader />
+    </div>
   );
 };
 
@@ -75,10 +109,11 @@ ConceptTable.propTypes = {
   showDeleteModal: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   url: PropTypes.string,
+  conceptLimit: PropTypes.number.isRequired,
   openDeleteModal: PropTypes.bool,
   closeDeleteModal: PropTypes.func.isRequired,
+  filterConcept: PropTypes.func.isRequired,
 };
-
 ConceptTable.defaultProps = {
   openDeleteModal: false,
   url: '',
