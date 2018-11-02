@@ -1,63 +1,33 @@
 import React from 'react';
+import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const removeConcept = (props) => {
-  const { handleDelete } = props;
+  const { handleDelete, openDeleteModal, closeDeleteModal } = props;
   return (
     <div>
-      <div
-        className="container modal fade"
-        id="removeConceptModal"
-        tabIndex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="container modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <p className="modal-title" id="exampleModalLabel">
-                  Are you sure you want to Remove this Concept?
-              </p>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div>
-              <form>
-                <div className="modal-footer" type="submit">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    data-dismiss="modal"
-                  >
-                  Cancel
-                  </button>
-                  <button
-                    type="button"
-                    data-dismiss="modal"
-                    className="btn btn-danger"
-                    onClick={handleDelete}
-                  >
-                  Remove Concept
-                  </button>
-                </div>
-              </form>
-            </div>
-
-          </div>
-        </div>
-      </div>
+      <Button color="danger" onClick={closeDeleteModal}>Label</Button>
+      <Modal isOpen={openDeleteModal} toggle={closeDeleteModal}>
+        <ModalHeader toggle={closeDeleteModal}>
+        Are you sure you want to Remove this Concept?
+        </ModalHeader>
+        <ModalFooter>
+          <Button color="danger" onClick={handleDelete}>Remove concept</Button>{' '}
+          <Button color="secondary" onClick={closeDeleteModal}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
+
 removeConcept.propTypes = {
   handleDelete: PropTypes.func.isRequired,
+  closeDeleteModal: PropTypes.func.isRequired,
+  openDeleteModal: PropTypes.bool,
+};
+
+removeConcept.defaultProps = {
+  openDeleteModal: false,
 };
 
 export default removeConcept;

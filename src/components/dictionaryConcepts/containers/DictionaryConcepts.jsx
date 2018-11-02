@@ -15,9 +15,7 @@ import {
   filterByClass,
   paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import {
-  removeDictionaryConcept,
-} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
@@ -58,6 +56,7 @@ export class DictionaryConcepts extends Component {
       data: {
         references: [],
       },
+      openDeleteModal: false,
     };
     autoBind(this);
   }
@@ -66,14 +65,6 @@ export class DictionaryConcepts extends Component {
     setTimeout(this.fetchConcepts, 600);
     this.checkMembershipStatus(getUsername());
   }
-
-  handleDelete = () => {
-    const { data, collectionName, type } = this.state;
-    this.props
-      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
-  }
-
-  handleShowDelete = (url) => { this.setState({ data: { references: [url] }, versionUrl: url }); };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const {
@@ -180,6 +171,20 @@ export class DictionaryConcepts extends Component {
     }
   }
 
+  handleDelete = () => {
+    const { data, collectionName, type } = this.state;
+    this.props
+      .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
+  }
+
+  handleShowDelete = (url) => {
+    this.setState({ data: { references: [url] }, versionUrl: url, openDeleteModal: true });
+  };
+
+  closeDeleteModal = () => {
+    this.setState({ openDeleteModal: false });
+  }
+
   render() {
     const {
       match: {
@@ -198,7 +203,7 @@ export class DictionaryConcepts extends Component {
       userIsMember,
     };
     const {
-      conceptsCount, searchInput, conceptOffset, conceptLimit,
+      conceptsCount, searchInput, conceptOffset, conceptLimit, openDeleteModal,
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
     return (
@@ -237,6 +242,8 @@ export class DictionaryConcepts extends Component {
               showDeleteModal={this.handleShowDelete}
               url={this.state.versionUrl}
               handleDelete={this.handleDelete}
+              openDeleteModal={openDeleteModal}
+              closeDeleteModal={this.closeDeleteModal}
             />
           </div>
         </section>

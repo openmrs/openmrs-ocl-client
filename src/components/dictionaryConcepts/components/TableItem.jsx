@@ -17,6 +17,8 @@ const TableItem = (props) => {
     locationPath,
     handleDelete,
     url,
+    openDeleteModal,
+    closeDeleteModal,
   } = props;
   const renderButtons = username === owner || (owner === org.name && org.userIsMember);
   return (
@@ -37,6 +39,8 @@ const TableItem = (props) => {
             conceptUrl={url}
             conceptType={locationPath.type}
             handleDelete={handleDelete}
+            openDeleteModal={openDeleteModal}
+            closeDeleteModal={closeDeleteModal}
           />
         </td>
       </tr>
