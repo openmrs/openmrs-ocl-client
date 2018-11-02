@@ -207,7 +207,7 @@ export class DictionaryOverview extends Component {
               handleChange={this.handleChange}
               handleCreateVersion={this.handleCreateVersion}
               versionId={this.state.versionId}
-              versionDescription={this.state.versionId}
+              versionDescription={this.state.versionDescription}
               inputLength={inputLength}
               download={this.download}
             />

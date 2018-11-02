@@ -38,6 +38,8 @@ const DictionaryDetailCard = (props) => {
     openVersionModal,
     handleCreateVersion,
     handleChange,
+    versionDescription,
+    versionId,
     inputLength,
     download,
   } = props;
@@ -193,6 +195,8 @@ const DictionaryDetailCard = (props) => {
         click={hideVersionModal}
         handleCreateVersion={handleCreateVersion}
         handleChange={handleChange}
+        versionId={versionId}
+        versionDescription={versionDescription}
         inputLength={inputLength}
       />
     </div>
@@ -221,6 +225,8 @@ DictionaryDetailCard.propTypes = {
   handleChange: PropTypes.func.isRequired,
   inputLength: PropTypes.number.isRequired,
   download: PropTypes.func.isRequired,
+  versionDescription: PropTypes.string.isRequired,
+  versionId: PropTypes.string.isRequired,
 };
 
 export default DictionaryDetailCard;
