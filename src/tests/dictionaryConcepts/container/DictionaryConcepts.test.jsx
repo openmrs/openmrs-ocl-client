@@ -127,8 +127,74 @@ describe('Test suite for dictionary concepts components', () => {
     </Provider>);
     expect(wrapper).toBeDefined();
     wrapper.find('.btn.btn-sm.mb-1.actionButtons').simulate('click');
-    wrapper.find('.btn.btn-danger').simulate('click');
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should change open and close delete modal', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    wrapper.setState({ versionUrl: 'url' });
+    wrapper.update();
+    const instance = wrapper.instance();
+    instance.handleShowDelete();
+    expect(wrapper.state().openDeleteModal).toBe(true);
+    instance.closeDeleteModal();
+    expect(wrapper.state().openDeleteModal).toBe(false);
+  });
+
+  it('it should call the handle delete function', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    const instance = wrapper.instance();
+    expect(instance.handleDelete()).toEqual(undefined);
   });
 
   it('should filter search result', () => {

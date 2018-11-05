@@ -21,8 +21,6 @@ const ActionButtons = ({
         type="button"
         className="btn btn-sm mb-1 actionButtons"
         id="retireConcept"
-        data-toggle="modal"
-        data-target="#removeConceptModal"
         onClick={() => { showDeleteModal(version_url); }}
       >
       Remove

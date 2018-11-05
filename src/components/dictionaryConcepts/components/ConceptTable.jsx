@@ -6,7 +6,8 @@ import RenderTable from './RenderTable';
 import { conceptsProps } from '../proptypes';
 
 const ConceptTable = ({
-  concepts, loading, org, locationPath, showDeleteModal, url, handleDelete,
+  concepts, loading, org, locationPath, showDeleteModal, url,
+  handleDelete, openDeleteModal, closeDeleteModal,
 }) => {
   if (loading) {
     return (
@@ -45,8 +46,9 @@ const ConceptTable = ({
                 showDeleteModal={showDeleteModal}
                 url={url}
                 handleDelete={handleDelete}
-              />
-            ))}
+                openDeleteModal={openDeleteModal}
+                closeDeleteModal={closeDeleteModal}
+              />))}
           </tbody>
         </table>
       </div>
@@ -72,7 +74,14 @@ ConceptTable.propTypes = {
   locationPath: PropTypes.object.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
+  url: PropTypes.string,
+  openDeleteModal: PropTypes.bool,
+  closeDeleteModal: PropTypes.func.isRequired,
+};
+
+ConceptTable.defaultProps = {
+  openDeleteModal: false,
+  url: '',
 };
 
 export default ConceptTable;
