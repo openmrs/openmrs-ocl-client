@@ -32,7 +32,15 @@ const SearchBar = ({
       </div>
       <div className="search-pagination col-12">
         <span className="paginate-count">
-          {countStart} - {displayedConcepts} of {totalConceptsCount}
+          {countStart}
+          {' '}
+-
+          {' '}
+          {displayedConcepts}
+          {' '}
+of
+          {' '}
+          {totalConceptsCount}
           <span className="paginate-controllers">
             {!togglePrevPaginationButton && (
               <i

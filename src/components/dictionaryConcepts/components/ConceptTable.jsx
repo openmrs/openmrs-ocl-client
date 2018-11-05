@@ -36,8 +36,8 @@ const ConceptTable = ({
             </tr>
           </thead>
           <tbody>
-            {concepts.map(concept =>
-              (<TableItem
+            {concepts.map(concept => (
+              <TableItem
                 {...concept}
                 key={concept.version}
                 org={org}
@@ -45,7 +45,8 @@ const ConceptTable = ({
                 showDeleteModal={showDeleteModal}
                 url={url}
                 handleDelete={handleDelete}
-              />))}
+              />
+            ))}
           </tbody>
         </table>
       </div>

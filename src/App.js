@@ -31,18 +31,48 @@ const App = () => (
           <Route exact path="/home" component={Authenticate(OwnerDictionary)} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
-          <Route exact path="/dashboard/userdictionaries" component={Authenticate(OwnerDictionary)} />
-          <Route exact path="/bulk/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(AddBulkConcepts)} />
+          <Route
+            exact
+            path="/dashboard/userdictionaries"
+            component={Authenticate(OwnerDictionary)}
+          />
+          <Route
+            exact
+            path="/bulk/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
+            component={Authenticate(AddBulkConcepts)}
+          />
           <Route
             exact
             path="/import/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
             component={Authenticate(BulkConceptPage)}
           />
-          <Route exact path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language" component={Authenticate(DictionaryConcepts)} />
-          <Route exact path="/dictionaryOverview/:ownerType/:owner/:type/:name" component={Authenticate(DictionaryOverview)} />
-          <Route exact path="/new/:conceptType?/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/" component={Authenticate(CreateConcept)} />
-          <Route exact path="/edit/:conceptType?/:conceptId/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/" component={Authenticate(EditConcept)} />
-          <Route exact path="/search/:query?" component={Authenticate(GeneralSearchContainer)} />
+          <Route
+            exact
+            path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
+            component={Authenticate(DictionaryConcepts)}
+          />
+          <Route
+            exact
+            path="/dictionaryOverview/:ownerType/:owner/:type/:name"
+            component={Authenticate(DictionaryOverview)}
+          />
+          <Route
+            exact
+            // eslint-disable-next-line max-len
+            path="/new/:conceptType?/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/"
+            component={Authenticate(CreateConcept)}
+          />
+          <Route
+            exact
+            // eslint-disable-next-line max-len
+            path="/edit/:conceptType?/:conceptId/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/"
+            component={Authenticate(EditConcept)}
+          />
+          <Route
+            exact
+            path="/search/:query?"
+            component={Authenticate(GeneralSearchContainer)}
+          />
           <Route component={NotFound} />
         </Switch>
       </div>

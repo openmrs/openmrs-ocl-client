@@ -16,20 +16,26 @@ const OwnerListDictionaries = ({
   if (dictionaries.length >= 1) {
     return (
       <div className="row justify-content-center">
-        {dictionaries.map(dictionary => (dictionary.created_by === localStorage.getItem('username') ?
-          <Card
-            dictionary={dictionary}
-            key={dictionary.uuid}
-          />
-                        :
-          <div />))}
+        {dictionaries.map(dictionary => (dictionary.created_by === localStorage.getItem('username')
+          ? (
+            <Card
+              dictionary={dictionary}
+              key={dictionary.uuid}
+            />
+          )
+          : <div />))}
       </div>
     );
   }
 
   return (
     <div className="text-center mt-3">
-      <h5>No Dictionaries Found <span aria-label="sad-emoji" role="img"> 😞 </span> </h5>
+      <h5>
+No Dictionaries Found
+        {' '}
+        <span aria-label="sad-emoji" role="img"> 😞 </span>
+        {' '}
+      </h5>
     </div>
   );
 };

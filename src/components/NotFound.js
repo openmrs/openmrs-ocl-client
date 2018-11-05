@@ -8,7 +8,8 @@ const NotFound = () => (
       <div className="error-actions">
         <a href="/" className="btn btn-primary btn-lg btn-not-found">
           <span className="fa fa-home" />
-              Take me back home{' '}
+              Take me back home
+          {' '}
         </a>
       </div>
 

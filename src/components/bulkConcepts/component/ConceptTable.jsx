@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Loader from '../../Loader';
 import RenderTable from '../../dictionaryConcepts/components/RenderTable';
-import TableItem from '../component/TableItem';
+import TableItem from './TableItem';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
 const ConceptTable = ({

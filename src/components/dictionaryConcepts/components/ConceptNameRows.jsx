@@ -36,8 +36,9 @@ class ConceptNameRows extends Component {
 
   constructor(props) {
     super(props);
-    const defaultLocale = locale.find(currentLocale =>
-      currentLocale.value === props.pathName.language);
+    const defaultLocale = locale.find(
+      currentLocale => currentLocale.value === props.pathName.language,
+    );
     this.state = {
       id: this.props.newRow.id,
       name: '',
@@ -63,8 +64,9 @@ class ConceptNameRows extends Component {
 
   updateState() {
     const { newRow } = this.props;
-    const defaultLocale = locale.find(currentLocale =>
-      currentLocale.value === this.props.pathName.language);
+    const defaultLocale = locale.find(
+      currentLocale => currentLocale.value === this.props.pathName.language,
+    );
     this.setState({
       ...this.state,
       uuid: newRow.uuid || '',

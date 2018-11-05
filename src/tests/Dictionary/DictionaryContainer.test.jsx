@@ -4,7 +4,9 @@ import { createMockStore } from 'redux-test-utils';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
-import { DictionaryOverview } from '../../components/dashboard/components/dictionary/DictionaryContainer';
+import {
+  DictionaryOverview,
+} from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
 import concepts from '../__mocks__/concepts';
@@ -286,11 +288,15 @@ describe('DictionaryOverview', () => {
       loader: false,
     };
 
-    const wrapper = mount(<Provider store={store}><MemoryRouter>
-      <DictionaryOverview {...props} />
-    </MemoryRouter></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleShowSub');
-    const spyOnHandleHideSub = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleHideSub');
+    const spyOnHandleHideSub = jest.spyOn(
+      wrapper.find('DictionaryOverview').instance(), 'handleHideSub',
+    );
     wrapper.instance().forceUpdate();
     expect(wrapper.find('.subscription-link').at(0).exists()).toBe(true);
     wrapper.find('.subscription-link').at(0).simulate('click');
@@ -329,9 +335,11 @@ describe('DictionaryOverview', () => {
       loader: false,
     };
 
-    const wrapper = mount(<Provider store={store}><MemoryRouter>
-      <DictionaryOverview {...props} />
-    </MemoryRouter></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'download');
     wrapper.instance().forceUpdate();
     expect(wrapper.find('.downloadConcepts').at(0).exists()).toBe(true);
@@ -373,7 +381,8 @@ describe('DictionaryOverview', () => {
     };
     localStorage.setItem('username', dictionary.owner);
     const wrapper = mount(<Provider store={store}>
-      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
+    </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleCreateVersion');
     wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
     wrapper.find('#versionId').at(0).simulate('change', event);
@@ -414,7 +423,8 @@ describe('DictionaryOverview', () => {
     };
     localStorage.setItem('username', dictionary.owner);
     const wrapper = mount(<Provider store={store}>
-      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter></Provider>);
+      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
+    </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleChange');
     wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
     wrapper.find('#versionId').at(0).simulate('change', event);

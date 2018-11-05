@@ -9,20 +9,32 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
       <div className="user-data">
         <p className="lead">
           <span>
-            You belong to {nameOfOrganizations} organization. This can be changed via{' '}
+            You belong to
+            {' '}
+            {nameOfOrganizations}
+            {' '}
+organization. This can be changed via
+            {' '}
             <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
-            </a>.
+            </a>
+.
           </span>
         </p>
       </div>
     );
-  } else if (numberOfOrgs > 1) {
+  }
+  if (numberOfOrgs > 1) {
     return (
       <div className="user-data">
         <p className="lead">
           <span>
-            You belong to {numberOfOrgs} organizations:{' '}
+            You belong to
+            {' '}
+            {numberOfOrgs}
+            {' '}
+organizations:
+            {' '}
           </span>
           <br />
           {organizations.map(organization => (
@@ -32,15 +44,20 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="fas fa-arrow-circle-right fa-fw" /> {organization.name}
+                <i className="fas fa-arrow-circle-right fa-fw" />
+                {' '}
+                {organization.name}
               </a>
             </span>
-          ))}{' '}
+          ))}
+          {' '}
           <span className="d-block">
-          This can be changed via{' '}
+          This can be changed via
+            {' '}
             <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
             the traditional OCL
-            </a>.
+            </a>
+.
           </span>
         </p>
       </div>
@@ -50,13 +67,22 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
     <div className="user-data">
       <span>
         <p className="lead">
-        You do not belong to any organization. This can be changed via{' '}
+        You do not belong to any organization. This can be changed via
+          {' '}
           <a href="https://qa.openconceptlab.org/" target="_blank" rel="noopener noreferrer">
           the traditional OCL
-          </a>.
+          </a>
+.
         </p>
         <p className="lead">
-        You currently have {numberOfDictionary} personal {dictionary}.
+        You currently have
+          {' '}
+          {numberOfDictionary}
+          {' '}
+personal
+          {' '}
+          {dictionary}
+.
         </p>
       </span>
     </div>

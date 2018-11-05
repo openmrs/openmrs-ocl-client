@@ -105,7 +105,9 @@ describe('Test suite for dictionary actions', () => {
 
     const store = mockStore({ payload: {} });
 
-    return store.dispatch(fetchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true')).then(() => {
+    return store.dispatch(
+      fetchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true'),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -126,7 +128,9 @@ describe('Test suite for dictionary actions', () => {
 
     const store = mockStore({ payload: {} });
 
-    return store.dispatch(fetchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true')).then(() => {
+    return store.dispatch(
+      fetchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true'),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -164,7 +168,9 @@ describe('Test suite for dictionary actions', () => {
       { type: IS_FETCHING, payload: false },
     ];
     const store = mockStore({ payload: {} });
-    return store.dispatch(fetchDictionaryConcepts('/users/chriskala/collections/over/')).then(() => {
+    return store.dispatch(
+      fetchDictionaryConcepts('/users/chriskala/collections/over/'),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -185,7 +191,9 @@ describe('Test suite for dictionary actions', () => {
     ];
 
     const store = mockStore({ payload: {} });
-    return store.dispatch(searchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true')).then(() => {
+    return store.dispatch(
+      searchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true'),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -202,7 +210,9 @@ describe('Test suite for dictionary actions', () => {
       { type: IS_FETCHING, payload: true },
     ];
     const store = mockStore({ payload: {} });
-    return store.dispatch(searchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true')).then(() => {
+    return store.dispatch(
+      searchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true'),
+    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

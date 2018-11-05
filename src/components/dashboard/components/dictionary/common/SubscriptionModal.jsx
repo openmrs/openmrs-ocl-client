@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
+import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input,
+} from 'reactstrap';
 
 const SubscriptionModal = (props) => {
   const { show, click, url } = props;

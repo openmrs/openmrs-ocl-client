@@ -17,6 +17,7 @@ export class GeneralSearchContainer extends Component {
     generalSearch: propTypes.func.isRequired,
     loading: propTypes.bool.isRequired,
   }
+
   componentDidMount() {
     const {
       match: {
@@ -27,6 +28,7 @@ export class GeneralSearchContainer extends Component {
     } = this.props;
     this.props.generalSearch(query);
   }
+
   render() {
     const { dictionaries, loading } = this.props;
     return (

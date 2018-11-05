@@ -39,9 +39,11 @@ export class BulkConceptsPage extends Component {
       }).isRequired,
     }).isRequired,
   };
+
   static defaultProps = {
     preview: {},
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -74,6 +76,7 @@ export class BulkConceptsPage extends Component {
     const { id } = e.target;
     this.setState({ currentPage: Number(id) });
   };
+
   handleChange = (event) => {
     const {
       target: { value },
@@ -91,6 +94,7 @@ export class BulkConceptsPage extends Component {
       this.props.fetchFilteredConcepts('CIEL', query);
     }
   };
+
   render() {
     const {
       concepts,

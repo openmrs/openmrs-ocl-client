@@ -45,9 +45,11 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
     };
-    const wrapper = mount(<Provider store={store}><Router>
-      <DictionaryConcepts {...props} />
-    </Router></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
     expect(wrapper.find('h2.text-capitalize').text()).toEqual('dev-col Dictionary');
 
     expect(wrapper).toMatchSnapshot();
@@ -118,9 +120,11 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
     };
 
-    const wrapper = mount(<Provider store={store}><Router>
-      <DictionaryConcepts {...props} />
-    </Router></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
     expect(wrapper).toBeDefined();
     wrapper.find('.btn.btn-sm.mb-1.actionButtons').simulate('click');
     wrapper.find('.btn.btn-danger').simulate('click');
@@ -153,9 +157,11 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
     };
-    const wrapper = mount(<Provider store={store}><Router>
-      <DictionaryConcepts {...props} />
-    </Router></Provider>);
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
     const event = { target: { name: 'CIEL', checked: true, value: 'ciel' } };
     wrapper.find('#CIEL').simulate('change', event);
     wrapper.find('#Diagnosis').simulate('change', event);

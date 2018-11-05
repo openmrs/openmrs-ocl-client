@@ -1,5 +1,10 @@
 import reducer from '../../../redux/reducers/ConceptReducers';
-import { FETCH_CONCEPTS, IS_FETCHING, SEARCH_CONCEPTS, CLEAR_CONCEPTS } from '../../../redux/actions/types';
+import {
+  FETCH_CONCEPTS,
+  IS_FETCHING,
+  SEARCH_CONCEPTS,
+  CLEAR_CONCEPTS,
+} from '../../../redux/actions/types';
 import concepts from '../../__mocks__/concepts';
 
 const initialState = {
@@ -30,53 +35,66 @@ describe('Test suite for concepts reducer', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
-  it('should handle setting redux state key concepts to list of concepts and hasMore to false on dispatching actiontype FETCH_CONCEPTS', () => {
-    expect(reducer(
-      { concepts: [] },
-      {
-        type: FETCH_CONCEPTS,
-        payload: [concepts],
-      },
-    )).toEqual({
-      concepts: [concepts],
-      hasMore: false,
-    });
-  });
+  it(
+    // eslint-disable-next-line max-len
+    'should handle setting redux state key concepts to list of concepts and hasMore to false on dispatching actiontype FETCH_CONCEPTS',
+    () => {
+      expect(reducer(
+        { concepts: [] },
+        {
+          type: FETCH_CONCEPTS,
+          payload: [concepts],
+        },
+      )).toEqual({
+        concepts: [concepts],
+        hasMore: false,
+      });
+    },
+  );
 
-  it('should handle setting redux state key loading to false on dispatching actiontype IS_FETCHING', () => {
-    expect(reducer(
-      {},
-      {
-        type: IS_FETCHING,
-        payload: false,
-      },
-    )).toEqual({
-      loading: false,
-    });
-  });
+  it(
+    // eslint-disable-next-line max-len
+    'should handle setting redux state key loading to false on dispatching actiontype IS_FETCHING', () => {
+      expect(reducer(
+        {},
+        {
+          type: IS_FETCHING,
+          payload: false,
+        },
+      )).toEqual({
+        loading: false,
+      });
+    },
+  );
 
-  it('should handle setting redux state key loading and hasMore to false on dispatching actiontype SEARCH_CONCEPTS', () => {
-    expect(reducer(
-      {},
-      {
-        type: SEARCH_CONCEPTS,
-        payload: false,
-      },
-    )).toEqual({
-      loading: false,
-      hasMore: false,
-    });
-  });
+  it(
+    // eslint-disable-next-line max-len
+    'should handle setting redux state key loading and hasMore to false on dispatching actiontype SEARCH_CONCEPTS', () => {
+      expect(reducer(
+        {},
+        {
+          type: SEARCH_CONCEPTS,
+          payload: false,
+        },
+      )).toEqual({
+        loading: false,
+        hasMore: false,
+      });
+    },
+  );
 
-  it('should handle setting redux state key concepts to list of concepts on dispatching actiontype CLEAR_CONCEPTS', () => {
-    expect(reducer(
-      { concepts: [] },
-      {
-        type: CLEAR_CONCEPTS,
-        payload: false,
-      },
-    )).toEqual({
-      concepts: [],
-    });
-  });
+  it(
+    // eslint-disable-next-line max-len
+    'should handle setting redux state key concepts to list of concepts on dispatching actiontype CLEAR_CONCEPTS', () => {
+      expect(reducer(
+        { concepts: [] },
+        {
+          type: CLEAR_CONCEPTS,
+          payload: false,
+        },
+      )).toEqual({
+        concepts: [],
+      });
+    },
+  );
 });

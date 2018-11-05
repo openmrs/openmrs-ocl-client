@@ -9,14 +9,14 @@ const ActionButtons = ({
 
   return (
     <React.Fragment>
-      {actionButtons === true &&
+      {actionButtons === true && (
       <Link
         className="btn btn-sm mb-1 actionButtons"
         to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
       >
       Edit
       </Link>
-      }
+      )}
       <button
         type="button"
         className="btn btn-sm mb-1 actionButtons"

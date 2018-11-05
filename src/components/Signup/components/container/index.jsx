@@ -11,10 +11,12 @@ export class Signup extends Component {
     password: '',
     confirmPassword: '',
   };
+
   handleInput = (event) => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
+
   render() {
     const {
       firstName, lastName, email, username, password, confirmPassword,
@@ -114,7 +116,8 @@ export class Signup extends Component {
               </div>
             </fieldset>
             <div className="container text-right pt-3">
-              Or Sign Up on{' '}
+              Or Sign Up on
+              {' '}
               <a href="https://qa.openconceptlab.org/accounts/signup/">Traditional OCL</a>
             </div>
           </form>

@@ -3,6 +3,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import instance from '../../../../config/axiosConfig';
 import { ADD_EXISTING_CONCEPTS } from '../../../../redux/actions/types';
+// eslint-disable-next-line max-len
 import addExistingConceptsAction from '../../../../redux/actions/concepts/addExistingConcepts/index';
 
 const mockStore = configureStore([thunk]);
@@ -79,4 +80,3 @@ describe('Test suite for sources actions', () => {
     });
   });
 });
-

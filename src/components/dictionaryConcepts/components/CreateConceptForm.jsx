@@ -26,7 +26,12 @@ const CreateConceptForm = props => (
           </small>
         </div>
         <div className="form-group col-md-3 custom-field">
-          <button className="btn btn-sm btn-light" id="toggleUUID" onClick={props.toggleUUID}>
+          <button
+            type="submit"
+            className="btn btn-sm btn-light"
+            id="toggleUUID"
+            onClick={props.toggleUUID}
+          >
             click here to manually enter
           </button>
         </div>
@@ -52,7 +57,8 @@ const CreateConceptForm = props => (
           <div className="form-group col-md-5">
             <label htmlFor="class">Class</label>
             <div>
-              { (props.concept.toString().trim() === 'symptom-finding') &&
+              { (props.concept.toString().trim() === 'symptom-finding')
+              && (
               <React.Fragment>
                 <select
                   id="class"
@@ -68,9 +74,11 @@ const CreateConceptForm = props => (
 
                 </select>
               </React.Fragment>
+              )
               }
 
-              { (props.concept.toString().trim() === 'set') &&
+              { (props.concept.toString().trim() === 'set')
+              && (
               <React.Fragment>
                 <select
                   id="class"
@@ -86,12 +94,15 @@ const CreateConceptForm = props => (
 
                 </select>
               </React.Fragment>
+              )
               }
 
-              {(props.concept.toString().trim() !== 'symptom-finding' && props.concept.toString().trim() !== 'set') && (
-              <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
-                {props.concept}
-              </span>
+              {(
+                props.concept.toString().trim() !== 'symptom-finding'
+                && props.concept.toString().trim() !== 'set') && (
+                <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
+                  {props.concept}
+                </span>
               )}
             </div>
           </div>
@@ -125,7 +136,12 @@ const CreateConceptForm = props => (
         <div className="row col-12 custom-concept-list">
           <h6 className="text-left section-header">Names</h6>
           <CreateConceptTable {...props} />
-          <a href="#!" className="text-left add-more-names" id="add-more-name" onClick={props.handleNewName}>
+          <a
+            href="#!"
+            className="text-left add-more-names"
+            id="add-more-name"
+            onClick={props.handleNewName}
+          >
             Add another name...
           </a>
         </div>
@@ -134,7 +150,12 @@ const CreateConceptForm = props => (
         <div className="row col-12 custom-concept-list">
           <h6 className="text-left section-header">Descriptions</h6>
           <DescriptionTable {...props} />
-          <a href="#!" className="text-left add-more-names" id="add-more-description" onClick={props.addDescription}>
+          <a
+            href="#!"
+            className="text-left add-more-names"
+            id="add-more-description"
+            onClick={props.addDescription}
+          >
             Add another description...
           </a>
         </div>
@@ -144,7 +165,7 @@ const CreateConceptForm = props => (
           {props.isEditConcept ? 'Update' : 'Create' }
         </button>
         <Link to={props.path} className="collection-name small-text">
-          <button className="btn btn-sm  col-2 btn-danger" type="reset">
+          <button className="btn btn-sm  col-2 btn-danger" type="submit">
             Cancel
           </button>
         </Link>

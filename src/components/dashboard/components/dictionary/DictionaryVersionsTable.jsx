@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SubscriptionModal from '../dictionary/common/SubscriptionModal';
+import SubscriptionModal from './common/SubscriptionModal';
 
 const DictionaryVersionsTable = (version) => {
   const {
@@ -17,7 +17,19 @@ const DictionaryVersionsTable = (version) => {
     <tr id="versiontable">
       <td>{id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
-      <td><button type="button"><a href={version_url}>Browse in OCL</a></button><button type="button"><Link className="downloadConcepts" onClick={download} to="#">Download</Link></button><button type="button"><Link className="subscription-link" onClick={() => { showSubModal(version_url); }} to="#">Subscription URL</Link></button></td>
+      <td>
+        <a href={version_url}>Browse in OCL</a>
+        {' '}
+        <Link className="downloadConcepts" onClick={download} to="#">Download</Link>
+        {' '}
+        <Link
+          className="subscription-link"
+          onClick={() => { showSubModal(version_url); }}
+          to="#"
+        >
+          Subscription URL
+        </Link>
+      </td>
       <td className="d-none">
         <SubscriptionModal
           show={show}

@@ -4,7 +4,12 @@ import { Helmet } from 'react-helmet';
 
 const Title = props => (
   <Helmet>
-    <title>{props.title}{props.title ? ' - ' : ''} OCL client</title>
+    <title>
+      {props.title}
+      {props.title ? ' - ' : ''}
+      {' '}
+OCL client
+    </title>
   </Helmet>
 );
 

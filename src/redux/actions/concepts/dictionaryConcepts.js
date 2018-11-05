@@ -108,18 +108,31 @@ export const fetchDictionaryConcepts = (
   page = 1,
 ) => async (dispatch, getState) => {
   dispatch(isFetching(true));
-  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true`;
+  let url = `
+    ${conceptType}/${conceptOwner}/collections/${conceptName}
+    /concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true
+  `;
   const filterBySource = getState().concepts.filteredBySource;
   const filterByClass = getState().concepts.filteredByClass;
 
   if (filterBySource.length > 0 && filterByClass.length > 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&source=${filterBySource.join(',')}&conceptClass=${filterByClass.join(',')}`;
+    url = `
+      ${conceptType}/${conceptOwner}/collections/${conceptName}
+      /concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&
+      source=${filterBySource.join(',')}&conceptClass=${filterByClass.join(',')}
+    `;
   }
   if (filterBySource.length > 0 && filterByClass.length === 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&source=${filterBySource.join(',')}`;
+    url = `
+      ${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/
+      ?q=${query}&limit=${limit}&page=${page}&verbose=true&source=${filterBySource.join(',')}
+    `;
   }
   if (filterBySource.length === 0 && filterByClass.length > 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&conceptClass=${filterByClass.join(',')}`;
+    url = `
+      ${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/
+      ?q=${query}&limit=${limit}&page=${page}&verbose=true&conceptClass=${filterByClass.join(',')}
+    `;
   }
   try {
     const response = await instance.get(url);
@@ -242,4 +255,3 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
 export const clearPreviousConcept = () => (dispatch) => {
   dispatch({ type: CLEAR_PREVIOUS_CONCEPT });
 };
-

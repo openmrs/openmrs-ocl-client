@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
-import BulkConceptList from '../bulkConcepts/bulkConceptList';
-import Header from '../bulkConcepts/container/Header';
+import BulkConceptList from './bulkConceptList';
+import Header from './container/Header';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
@@ -21,13 +21,16 @@ export class AddBulkConcepts extends Component {
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
+
   handleAddAll=() => {
     const expressions = this.props.cielConcepts.map(concept => concept.url);
     this.props.addExistingBulkConcepts({ data: { expressions } });
   }
+
   handleCielClick=() => {
     this.props.fetchCielConcepts();
   }
+
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
     const { cielConcepts } = this.props;
@@ -35,7 +38,12 @@ export class AddBulkConcepts extends Component {
       <div className="container-fluid add-bulk-concepts">
         <Header locationPath={this.props.match.params} />
         <h3>
-          <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
+          <strong>
+            {dictionaryName}
+            {' '}
+Dictionary
+          </strong>
+: Bulk Add Concepts
         </h3>
         <fieldset className="scheduler-border">
           <legend className="scheduler-border">Select a source</legend>
@@ -65,7 +73,8 @@ export class AddBulkConcepts extends Component {
               <label className="form-check-label" htmlFor="exampleRadios2">
                 (Other preferred sources here)
               </label>
-            </div>{' '}
+            </div>
+            {' '}
             <br />
             <div id="other-search">
               <div className="form-check">
@@ -106,9 +115,17 @@ export class AddBulkConcepts extends Component {
             <button type="button" className="btn btn-secondary">
               Back
             </button>
-          </a>{' '}
-          <button type="button" className="btn btn-primary" id="btn-add-all"onClick={this.handleAddAll}>
-            <i className="fa fa-plus" /> Add All
+          </a>
+          {' '}
+          <button
+            type="button"
+            className="btn btn-primary"
+            id="btn-add-all"
+            onClick={this.handleAddAll}
+          >
+            <i className="fa fa-plus" />
+            {' '}
+Add All
           </button>
         </div>
       </div>

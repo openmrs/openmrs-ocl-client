@@ -12,6 +12,7 @@ export class Navbar extends Component {
     this.props.history.push('/');
     notify.show('You Loggedout successfully', 'success', 3000);
   };
+
   render() {
     return (
       <div>
@@ -34,7 +35,7 @@ export class Navbar extends Component {
           <div className="collapse navbar-collapse " id="navbarA">
             {this.props.loggedIn && (
               <ul className="navbar-nav ml-auto" id="navList">
-                <li className="nav-item nav-link" >
+                <li className="nav-item nav-link">
                   <Link
                     className="nav-link text-white"
                     to="/home"
@@ -42,7 +43,7 @@ export class Navbar extends Component {
                       Home
                   </Link>
                 </li>
-                <li className="nav-item nav-link" >
+                <li className="nav-item nav-link">
                   <Link
                     className="nav-link text-white"
                     to="/dashboard/dictionaries"
@@ -61,12 +62,24 @@ export class Navbar extends Component {
                     aria-expanded="false"
                   >
                     <span className="fa fa-user" />
-                    {''} {localStorage.getItem('username') || this.props.user.username} {''}{' '}
+                    {' '}
+                    {localStorage.getItem('username') || this.props.user.username}
+                    {' '}
                   </a>
-                  <div className="dropdown-menu" aria-labelledby="navbarDropdown" id="navbarDropdown">
-                    <button className="dropdown-item nav-link" onClick={this.logoutUser}>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                    id="navbarDropdown"
+                  >
+                    <button
+                      type="submit"
+                      className="dropdown-item nav-link"
+                      onClick={this.logoutUser}
+                    >
                       <strong>
-                        Logout <i className="fa fa-sign-out" />
+                        Logout
+                        {' '}
+                        <i className="fa fa-sign-out" />
                       </strong>
                     </button>
                   </div>

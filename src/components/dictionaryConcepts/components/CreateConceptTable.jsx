@@ -17,10 +17,10 @@ const CreateConceptTable = props => (
       {props.existingConcept && props.existingConcept.names
         ? props.existingConcept.names.map(newRow => (
           <ConceptNameRows newRow={newRow} key={newRow.uuid} {...props} />
-          ))
+        ))
         : props.nameRows.map(newRow => (
           <ConceptNameRows newRow={{ uuid: newRow }} key={newRow} {...props} />
-          ))}
+        ))}
     </tbody>
   </table>
 );

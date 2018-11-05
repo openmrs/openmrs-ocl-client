@@ -7,7 +7,9 @@ import {
 } from '../../../components/dashboard/container/DictionariesDisplay';
 import dictionaries, { mockDictionaries } from '../../__mocks__/dictionaries';
 import organizations from '../../__mocks__/organizations';
-import { DictionariesSearch } from '../../../components/dashboard/components/dictionary/DictionariesSearch';
+import {
+  DictionariesSearch,
+} from '../../../components/dashboard/components/dictionary/DictionariesSearch';
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
 import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
 
@@ -152,7 +154,9 @@ describe('DictionaryDisplay', () => {
       const component = mount(<MemoryRouter>
         <ListDictionaries {...props} />
       </MemoryRouter>);
-      expect(component.props().children.props.dictionaries[0].repository_type).toBe('OpenMRSDictionary');
+      expect(
+        component.props().children.props.dictionaries[0].repository_type,
+      ).toBe('OpenMRSDictionary');
     });
   });
 });

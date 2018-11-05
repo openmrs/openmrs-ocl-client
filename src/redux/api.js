@@ -1,11 +1,10 @@
-import instance from './../config/axiosConfig';
+import instance from '../config/axiosConfig';
 
 export default {
   dictionaries: {
-    createDictionary: data =>
-      instance
-        .post(`orgs/${data.owner}/collections/`, data)
-        /* eslint-disable */
+    createDictionary: data => instance
+      .post(`orgs/${data.owner}/collections/`, data)
+    /* eslint-disable */
         .then((response) => { 
           instance.post(`orgs/${data.owner}/sources/`, data);
           return response;

@@ -48,7 +48,9 @@ import {
   removeNameForEditConcept,
   updateConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  removeDictionaryConcept,
+} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import concepts, {
   mockConceptStore,
   newConcept,

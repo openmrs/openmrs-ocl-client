@@ -61,4 +61,3 @@ removeConcept.propTypes = {
 };
 
 export default removeConcept;
-

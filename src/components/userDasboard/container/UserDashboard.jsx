@@ -46,6 +46,7 @@ export class UserDashboard extends Component {
   }
 
   handleHide = () => this.setState({ show: false });
+
   handleShow = () => this.setState({ show: true });
 
   render() {
@@ -64,7 +65,11 @@ export class UserDashboard extends Component {
           <div className="col-12 user-info">
             <div className="row">
               <div className="greetings">
-                <h5>Welcome {name}</h5>
+                <h5>
+Welcome
+                  {' '}
+                  {name}
+                </h5>
               </div>
             </div>
             <div className="row">
@@ -80,14 +85,21 @@ export class UserDashboard extends Component {
           <div className="col-12 user-dictionary-wrapper">
             <div className="row">
               <div className="greetings col-12 d-flex justify-content-between">
-                <h3>Your {dictionary}</h3>
+                <h3>
+Your
+                  {' '}
+                  {dictionary}
+                </h3>
                 <h6 className="see-more-link">
                   <button
+                    type="submit"
                     className="btn btn-success btn-sm"
                     id="add-dictionary"
                     onClick={this.handleShow}
                   >
-                    <i className="fas fa-plus fa-fw" /> New Dictionary
+                    <i className="fas fa-plus fa-fw" />
+                    {' '}
+New Dictionary
                   </button>
                 </h6>
               </div>

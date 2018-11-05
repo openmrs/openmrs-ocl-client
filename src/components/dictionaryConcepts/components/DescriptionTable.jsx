@@ -13,17 +13,17 @@ const DescriptionTable = props => (
     </thead>
     <tbody>
       {props.existingConcept && props.existingConcept.descriptions
-      ? props.existingConcept.descriptions.map(newRow => (
-        <DescriptionRow
-          newRow={newRow}
-          key={newRow.uuid}
-          {...props}
-        />))
-       : props.description.map(newRow => (
-         <DescriptionRow
-           key={newRow}
-           {...props}
-         />))
+        ? props.existingConcept.descriptions.map(newRow => (
+          <DescriptionRow
+            newRow={newRow}
+            key={newRow.uuid}
+            {...props}
+          />))
+        : props.description.map(newRow => (
+          <DescriptionRow
+            key={newRow}
+            {...props}
+          />))
       }
     </tbody>
   </table>

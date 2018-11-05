@@ -9,7 +9,8 @@ const LoginDetails = () => (
         <strong>What to ensure</strong>
       </div>
       <div className="card-body">
-        Ensure you have an account from the traditional OCL. After that,{' '}
+        Ensure you have an account from the traditional OCL. After that,
+        {' '}
         <a href="https://qa.openconceptlab.org/accounts/login/">
           Login into the traditional OCL
         </a>
@@ -22,7 +23,8 @@ const LoginDetails = () => (
         <strong>Get started with this short recording</strong>
       </div>
       <div className="card-body" />
-      <video controls muted src={newVideo} className="video" /><br />
+      <video controls muted src={newVideo} className="video" />
+      <br />
       <Link to="/">Ready to Login now?</Link>
     </div>
   </div>

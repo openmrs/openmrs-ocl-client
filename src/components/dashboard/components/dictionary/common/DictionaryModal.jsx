@@ -1,10 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input } from 'reactstrap';
+import {
+  Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input,
+} from 'reactstrap';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import { fetchingOrganizations, searchDictionaries } from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  fetchingOrganizations,
+  searchDictionaries,
+} from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import InlineError from '../messages/InlineError';
 import languages from './Languages';
 
@@ -28,6 +33,7 @@ export class DictionaryModal extends React.Component {
       supportedLocalesOptions: [],
     };
   }
+
   componentDidMount() {
     this.props.fetchingOrganizations();
     const { isEditingDictionary } = this.props;
@@ -80,31 +86,6 @@ export class DictionaryModal extends React.Component {
     });
   };
 
-  populateFields() {
-    const {
-      dictionary: {
-        id, preferred_source, public_access, name, owner, description,
-        default_locale, repository_type,
-      },
-    } = this.props;
-    const supportedLocalesOptions = this.preSelectSupportedLocales();
-    this.setState({
-      data: {
-        id,
-        preferred_source,
-        public_access,
-        name,
-        owner,
-        description,
-        default_locale,
-        supported_locales: '',
-        repository_type,
-      },
-      errors: {},
-      supportedLocalesOptions,
-    });
-  }
-
  preSelectSupportedLocales = () => {
    const {
      dictionary: {
@@ -155,13 +136,15 @@ export class DictionaryModal extends React.Component {
       errors.owner = 'Required';
     }
     if (!data.public_access) {
-      errors.public_access =
-        'Required';
+      errors.public_access = 'Required';
     }
     if (!data.default_locale) {
       errors.default_locale = 'Required';
     }
-    if (data.supported_locales.split(',').map(item => item.trim()).indexOf(data.default_locale) !== -1) {
+    if (
+      data.supported_locales.split(',').map(
+        item => item.trim(),
+      ).indexOf(data.default_locale) !== -1) {
       errors.supported_locales = 'Preferred language must not be included in other languages';
     }
     return errors;
@@ -185,6 +168,31 @@ export class DictionaryModal extends React.Component {
       supportedLocalesOptions: [],
     });
     this.props.modalhide();
+  }
+
+  populateFields() {
+    const {
+      dictionary: {
+        id, preferred_source, public_access, name, owner, description,
+        default_locale, repository_type,
+      },
+    } = this.props;
+    const supportedLocalesOptions = this.preSelectSupportedLocales();
+    this.setState({
+      data: {
+        id,
+        preferred_source,
+        public_access,
+        name,
+        owner,
+        description,
+        default_locale,
+        supported_locales: '',
+        repository_type,
+      },
+      errors: {},
+      supportedLocalesOptions,
+    });
   }
 
   render() {
@@ -211,7 +219,10 @@ export class DictionaryModal extends React.Component {
               <div>
                 <div>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Preferred Source <b className="text-danger">*</b>{' '}
+                    Preferred Source
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {' '}
                     {errors && <InlineError text={errors.preferred_source} />}
                     <Input
                       type="select"
@@ -223,10 +234,12 @@ export class DictionaryModal extends React.Component {
                       <option value="CIEL">CIEL (default source)</option>
                       <option value="PIH">PIH</option>
                       {
-                        isEditingDictionary &&
-                        <option value={dictionary.preferred_source} >
+                        isEditingDictionary
+                        && (
+                        <option value={dictionary.preferred_source}>
                           {dictionary.preferred_source}
                         </option>
+                        )
                       }
                       {
                         publicSources.sort((a, b) => a.name > b.name).map(source => (
@@ -236,7 +249,10 @@ export class DictionaryModal extends React.Component {
                     </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Preferred Language <b className="text-danger">*</b>{''}
+                    Preferred Language
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {''}
                     {errors && <InlineError text={errors.default_locale} />}
                     <Input
                       type="select"
@@ -246,8 +262,8 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={this.props.defaultLocaleOption}
                     >
-                      {languages &&
-                      languages.map(language => (
+                      {languages
+                      && languages.map(language => (
                         <option value={language.value} key={language.value}>
                           { language.label }
                         </option>
@@ -260,18 +276,22 @@ export class DictionaryModal extends React.Component {
                     id="supported_locales"
                     closeMenuOnSelect={false}
                     defaultValue={
-                      isEditingDictionary ?
-                      this.state.supportedLocalesOptions :
-                      []}
+                      isEditingDictionary
+                        ? this.state.supportedLocalesOptions
+                        : []}
                     options={
-                      languages.filter(language =>
-                        language.value !== this.state.data.default_locale)
+                      languages.filter(
+                        language => language.value !== this.state.data.default_locale,
+                      )
                     }
                     isMulti
                     onChange={this.handleChangeSupportedLocale}
                   />
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Visibility <b className="text-danger">*</b>{''}
+                    Visibility
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {''}
                     {errors && <InlineError text={errors.public_access} />}
                     <Input
                       type="select"
@@ -287,7 +307,10 @@ export class DictionaryModal extends React.Component {
                   </FormGroup>
 
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Dictionary Name <b className="text-danger">*</b>{''}
+                    Dictionary Name
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {''}
                     {errors && <InlineError text={errors.name} />}
                     <Input
                       type="text"
@@ -300,7 +323,10 @@ export class DictionaryModal extends React.Component {
                     />
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Owner <b className="text-danger">*</b>{errors && <InlineError text={errors.owner} />}
+                    Owner
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {errors && <InlineError text={errors.owner} />}
                     <Input
                       type="select"
                       id="owner"
@@ -309,15 +335,24 @@ export class DictionaryModal extends React.Component {
                       onChange={this.onChange}
                       value={data.owner}
                     >
-                      {isEditingDictionary &&
-                      <option value={data.owner} >{data.owner}</option>
+                      {isEditingDictionary
+                      && <option value={data.owner}>{data.owner}</option>
                       }
                       { organizations && organizations.length !== 0 && <option value="" />}
-                      <option value="Individual" style={{ textTransform: 'capitalize' }}> {localStorage.getItem('username')} (Yourself) </option>
-                      {organizations &&
-                        organizations.map(organization => (
+                      <option value="Individual" style={{ textTransform: 'capitalize' }}>
+                        {' '}
+                        {localStorage.getItem('username')}
+                        {' '}
+(Yourself)
+                        {' '}
+                      </option>
+                      {organizations
+                        && organizations.map(organization => (
                           <option value={organization.id} key={organization.id}>
-                            {organization.id}{' '} (organization)
+                            {organization.id}
+                            {' '}
+                            {' '}
+(organization)
                           </option>
                         ))}
                     </Input>
@@ -328,7 +363,9 @@ export class DictionaryModal extends React.Component {
                     data-placement="top"
                     title="Short Code"
                   >
-                    Short Code <b className="text-danger">*</b>
+                    Short Code
+                    {' '}
+                    <b className="text-danger">*</b>
                     {errors && <InlineError text={errors.id} />}
                     <Input
                       type="text"
@@ -336,14 +373,18 @@ export class DictionaryModal extends React.Component {
                       name="id"
                       onChange={this.onChange}
                       value={data.id}
-                      placeholder="Mnemonic used to identify the collection in the URL (an acronym e.g. Community-MCH)"
+                      placeholder="
+                      Mnemonic used to identify the collection
+                       in the URL (an acronym e.g. Community-MCH)
+                      "
                       required
                       disabled={isEditingDictionary !== true ? isEditingDictionary : true}
                     />
                     <ReactTooltip place="top" effect="solid" />
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
-                    Description{' '}
+                    Description
+                    {' '}
                     <Input
                       type="textarea"
                       id="dictionary_description"
@@ -361,7 +402,8 @@ export class DictionaryModal extends React.Component {
                       value="OpenMRSDictionary"
                     />
                   </FormGroup>
-                  {!isEditingDictionary &&
+                  {!isEditingDictionary
+                  && (
                   <FormGroup>
                     {'Start by copying another dictionary'}
                     <Select
@@ -373,6 +415,7 @@ export class DictionaryModal extends React.Component {
                       placeholder="Search public dictionaries"
                     />
                   </FormGroup>
+                  )
                   }
                 </div>
               </div>
@@ -384,7 +427,8 @@ export class DictionaryModal extends React.Component {
               id="addDictionary"
               onClick={this.onSubmit}
             >
-              {this.props.buttonname}{' '}
+              {this.props.buttonname}
+              {' '}
             </Button>
             <Button
               className="btn btn-outline-danger test-btn-cancel"

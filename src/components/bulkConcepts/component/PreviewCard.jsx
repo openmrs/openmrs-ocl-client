@@ -13,7 +13,8 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
       <h6>{id}</h6>
       <div className="header-divider" />
       <p className="synonyms">
-        Name{' '}
+        Name
+        {' '}
         <small>
           <em className="float-right">{display_locale}</em>
         </small>
@@ -23,6 +24,7 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
       <CardBody title="Mappings" body={mapping} />
       <div className="buttons text-right mt-3">
         <button
+          type="submit"
           className="btn btn-sm btn-success no-shadow mr-2"
           id="add-concept"
           onClick={() => {
@@ -32,7 +34,7 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
         >
           Add
         </button>
-        <button className="btn btn-sm btn-danger no-shadow" onClick={closeModal}>
+        <button type="submit" className="btn btn-sm btn-danger no-shadow" onClick={closeModal}>
           Close
         </button>
       </div>
