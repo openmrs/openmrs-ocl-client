@@ -17,7 +17,7 @@
     "jsx-a11y/label-has-associated-control": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "compilerOptions": { "target": "ES6", "module": "commonjs" },
-    "max-len": ["error", { "code": 100, "ignoreStrings": true }]
+    "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }]
   },
   "parser": "babel-eslint"
 }
