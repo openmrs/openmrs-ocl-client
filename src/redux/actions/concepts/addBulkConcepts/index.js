@@ -35,22 +35,13 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '') => async (
   let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true`;
 
   if (datatypeList.length > 0 && classList.length > 0) {
-    url = `
-      orgs/${source}/sources/${source}/concepts/?${query}
-      &limit=0&verbose=true&datatype=${datatypeList.join(',')}&conceptClass=${classList.join(',')}
-    `;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&datatype=${datatypeList.join(',')}&conceptClass=${classList.join(',')}`;
   }
   if (datatypeList.length > 0 && classList.length === 0) {
-    url = `
-      orgs/${source}/sources/${source}/concepts/?${query}
-      &limit=0&verbose=true&datatype=${datatypeList.join(',')}
-    `;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&datatype=${datatypeList.join(',')}`;
   }
   if (datatypeList.length === 0 && classList.length > 0) {
-    url = `
-      orgs/${source}/sources/${source}/concepts/?${query}
-      &limit=0&verbose=true&conceptClass=${classList.join(',')}
-    `;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&conceptClass=${classList.join(',')}`;
   }
 
   try {
