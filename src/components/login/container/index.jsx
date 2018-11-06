@@ -13,17 +13,6 @@ export class Login extends Component {
     username: '',
   };
 
-  handleInput = (event) => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-
-  handleLogin = (event) => {
-    event.preventDefault();
-    const { username, password } = this.state;
-    this.props.loginAction({ username, password });
-  };
-
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { payload, loggedIn, loading } = nextProps;
     const { push } = this.props.history;
@@ -39,7 +28,15 @@ export class Login extends Component {
       notify.show(payload.errorMessage, 'error', 3000);
     }
   }
-
+  handleInput = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+  handleLogin = (event) => {
+    event.preventDefault();
+    const { username, password } = this.state;
+    this.props.loginAction({ username, password });
+  };
   render() {
     const { username, password } = this.state;
     const { loading } = this.props;
@@ -84,7 +81,7 @@ export class Login extends Component {
                     value={password.trim()}
                     onChange={this.handleInput}
                   />
-
+   
                 </div>
                 <SubmitButton buttonTitle={buttonTitle} disable={loading} />
                 <div className="form-group text-center pt-3">
