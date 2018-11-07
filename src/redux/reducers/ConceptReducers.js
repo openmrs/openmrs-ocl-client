@@ -24,6 +24,8 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_CONCEPT,
+  ADD_NEW_ANSWER_MAPPING,
+  REMOVE_ONE_ANSWER_MAPPING,
 } from '../actions/types';
 import {
   filterSources, filterClass, filterList, normalizeList, filterNames,
@@ -44,6 +46,7 @@ const initialState = {
   hasMore: false,
   newName: [],
   description: [],
+  answer: [],
   newConcept: {},
   addConceptToDictionary: [],
   paginatedConcepts: [],
@@ -139,6 +142,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         description: filterNames(action.payload, state.description),
+      };
+    case ADD_NEW_ANSWER_MAPPING:
+      return {
+        ...state,
+        answer: [...state.answer, action.payload],
+      };
+    case REMOVE_ONE_ANSWER_MAPPING:
+      return {
+        ...state,
+        answer: filterNames(action.payload, state.answer),
       };
     case CLEAR_FORM_SELECTIONS:
       return {

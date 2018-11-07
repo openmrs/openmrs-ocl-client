@@ -12,6 +12,8 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
+  addNewAnswer,
+  removeAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 
 export class CreateConcept extends Component {
@@ -43,6 +45,9 @@ export class CreateConcept extends Component {
       descriptions: PropTypes.array,
     }).isRequired,
     addedConcept: PropTypes.array.isRequired,
+    addNewAnswer: PropTypes.func.isRequired,
+    removeAnswer: PropTypes.func.isRequired,
+    answer: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -54,6 +59,7 @@ export class CreateConcept extends Component {
       datatype: 'None',
       names: [],
       descriptions: [],
+      answers: [],
     };
 
     autoBind(this);
@@ -68,6 +74,7 @@ export class CreateConcept extends Component {
     const concept = conceptType || '';
     this.props.createNewName();
     this.props.addNewDescription();
+    this.props.addNewAnswer();
     // eslint-disable-next-line
     this.setState({ concept_class: concept });
   }
@@ -115,6 +122,13 @@ export class CreateConcept extends Component {
   removeDescription(event, id) {
     event.preventDefault();
     this.props.removeDescription(id);
+  }
+
+  addNewAnswer() {
+    this.props.addNewAnswer();
+  }
+  removeAnswer(id) {
+    this.props.removeAnswer(id);
   }
 
   handleUUID(event) {
@@ -193,6 +207,22 @@ export class CreateConcept extends Component {
     }
   }
 
+  addDataFromAnswer(data) {
+    const currentAnswer = this.state.answers.filter(answer => answer.id === data.id);
+    if (currentAnswer.length) {
+      const newList = this.state.answers.map(answer => (
+        answer.id === data.id ? data : answer
+      ));
+      this.setState(() => ({
+        answers: newList,
+      }));
+    } else {
+      this.setState(prevState => ({
+        answers: [...prevState.answers, data],
+      }));
+    }
+  }
+
   render() {
     const {
       match: {
@@ -241,6 +271,10 @@ Concept
                 addDataFromDescription={this.addDataFromDescription}
                 removeDataFromRow={this.removeDataFromRow}
                 pathName={this.props.match.params}
+                addAnswer={this.addNewAnswer}
+                answer={this.props.answer}
+                addDataFromAnswer={this.addDataFromAnswer}
+                removeAnswer={this.removeAnswer}
               />
             </div>
           </div>
@@ -255,6 +289,7 @@ export const mapStateToProps = state => ({
   description: state.concepts.description,
   newConcept: state.concepts.newConcept,
   addedConcept: state.concepts.addConceptToDictionary,
+  answer: state.concepts.answer,
 });
 export default connect(
   mapStateToProps,
@@ -265,5 +300,7 @@ export default connect(
     removeDescription,
     clearSelections,
     createNewConcept,
+    addNewAnswer,
+    removeAnswer,
   },
 )(CreateConcept);

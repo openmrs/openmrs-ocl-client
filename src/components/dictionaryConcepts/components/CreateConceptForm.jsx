@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
+import AnswersTable from './AnswersTable';
 import { classes } from './helperFunction';
 
 const CreateConceptForm = props => (
@@ -132,6 +133,19 @@ const CreateConceptForm = props => (
           <option>Coded</option>
         </select>
       </div>
+
+      {props.concept.toString().trim() === 'question' ?
+        <div className="form-group answer">
+          <div className="row col-12 custom-concept-list">
+            <h6 className="text-left section-header">Answers</h6>
+            <AnswersTable {...props} />
+            <a href="#!" className="text-left add-more-answers" id="add-more-answers" onClick={props.addAnswer}>
+            Add a new answer mapping
+            </a>
+          </div>
+        </div>
+      : null}
+
       <div className="form-group">
         <div className="row col-12 custom-concept-list">
           <h6 className="text-left section-header">Names</h6>
@@ -190,6 +204,8 @@ CreateConceptForm.propTypes = {
   editable: PropTypes.bool.isRequired,
   isEditConcept: PropTypes.bool,
   existingConcept: PropTypes.object,
+  addAnswer: PropTypes.func.isRequired,
+  answer: PropTypes.array.isRequired,
 };
 
 CreateConceptForm.defaultProps = {

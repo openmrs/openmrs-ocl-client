@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
-import 'react-select/dist/react-select';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';

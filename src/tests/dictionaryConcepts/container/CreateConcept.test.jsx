@@ -14,7 +14,7 @@ describe('Test suite for dictionary concepts components', () => {
   const props = {
     match: {
       params: {
-        conceptType: 'diagnosis',
+        conceptType: 'question',
         collectionName: 'dev-col',
         type: 'users',
         typeName: 'emasys',
@@ -24,17 +24,22 @@ describe('Test suite for dictionary concepts components', () => {
     history: {
       push: jest.fn(),
     },
+    existingConcept: [],
     createNewName: jest.fn(),
+    answer: [12343],
     addNewDescription: jest.fn(),
     clearSelections: jest.fn(),
     removeNewName: jest.fn(),
     removeDescription: jest.fn(),
     createNewConcept: jest.fn(),
+    addNewAnswer: jest.fn(),
+    removeAnswer: jest.fn(),
+    addDataFromAnswer: jest.fn(),
     newName: ['1'],
     description: ['1'],
     newConcept: {
       id: '1',
-      concept_class: 'diagnosis',
+      concept_class: 'question',
       datatype: 'Text',
       names: [],
       descriptions: [],
@@ -49,7 +54,7 @@ describe('Test suite for dictionary concepts components', () => {
     const wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);
-    expect(wrapper.find('h3').text()).toEqual(': Create a diagnosis Concept ');
+    expect(wrapper.find('h3').text()).toEqual(': Create a question Concept ');
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -97,6 +102,7 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.find('#remove-description').simulate('click');
     wrapper.find('#remove-name').simulate('click');
     wrapper.find('#concept-description').simulate('change', conceptDescription);
+    wrapper.find('.text-left.add-more-answers').simulate('click');
     wrapper.find('#createConceptForm').simulate('submit', {
       preventDefault: () => {},
     });
@@ -114,6 +120,34 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.setProps(newProps);
     wrapper.unmount();
     jest.runAllTimers();
+  });
+
+
+  it('should handle add-more-answers', () => {
+    const wrapper = mount(<Router>
+      <CreateConcept {...props} />
+    </Router>);
+    wrapper.find('.add-more-answers').simulate('click');
+    expect(props.addNewAnswer).toHaveBeenCalled();
+  });
+
+  it('should handle remove-answers', () => {
+    const wrapper = mount(<Router>
+      <CreateConcept {...props} />
+    </Router>);
+    wrapper.find('.concept-form-table-link.answer').simulate('click');
+    expect(props.removeAnswer).toHaveBeenCalled();
+  });
+
+  it('should handle add data from answer', () => {
+    const wrapper = mount(<Router>
+      <CreateConcept {...props} />
+    </Router>);
+
+    const spy = jest.spyOn(wrapper.find('CreateConcept').instance(), 'addDataFromAnswer');
+    const conceptAnswer = { target: { name: 'answer', value: 'test concept' } };
+    wrapper.find('#concept-answer').simulate('change', conceptAnswer);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should test mapStateToProps', () => {
