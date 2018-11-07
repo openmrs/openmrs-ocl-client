@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import expect from 'expect';
 import Router from 'react-mock-router';
 
 import PreviewCard from '../../../components/bulkConcepts/component/PreviewCard';

@@ -2,7 +2,6 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createMockStore } from 'redux-test-utils';
 import { Provider } from 'react-redux';
-import expect from 'expect';
 import Router from 'react-mock-router';
 
 import {
