@@ -9,7 +9,7 @@ const CreateConceptTable = props => (
         <th scope="col">Name</th>
         <th scope="col">Type</th>
         <th scope="col">Language</th>
-        <th scope="col">Preferred in locale</th>
+        <th scope="col">Preferred in language</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
