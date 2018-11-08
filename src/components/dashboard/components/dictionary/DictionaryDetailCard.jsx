@@ -196,31 +196,21 @@ Dictionary
 Browse in traditional OCL
                 </a>
               </li>
-              { owner === username && !headVersion.released
-                ? (
-                  <li>
-                    <button
-                      type="button"
-                      onClick={handleRelease}
-                      className="fas fa-cloud-upload-alt head"
-                    >
-                      <span id="release-head"> Release HEAD as new version</span>
-                    </button>
-                  </li>
-                )
-                : null}
-
               { owner === username
                 ? (
                   <li>
                     <button
                       type="button"
-                      onClick={showVersionModal}
-                      className="fas fa-cloud-upload-alt version"
+                      onClick={!headVersion.released ? handleRelease : showVersionModal}
+                      className="fas fa-cloud-upload-alt head"
+                      id="releaseVersion"
                     >
-                      <span id="release-head"> Release a new version</span>
+                      <span id="release-head">
+                        &nbsp;Release&nbsp;
+                        {!headVersion.released ? 'latest ' : null}
+                        version
+                      </span>
                     </button>
-                    {' '}
                   </li>
                 )
                 : null}

@@ -50,7 +50,7 @@ const ReleaseVersionModal = (props) => {
             ? (
               <Button
                 className="btn-sm btn-outline-info version"
-                id="addDictionary"
+                id="saveReleaseVersion"
                 onClick={handleCreateVersion}
               >
                Release

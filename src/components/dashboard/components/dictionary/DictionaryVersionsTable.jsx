@@ -15,7 +15,7 @@ const DictionaryVersionsTable = (version) => {
   };
   return (
     <tr id="versiontable">
-      <td>{id}</td>
+      <td>{id === 'HEAD' ? 'Latest' : id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
       <td>
         <a href={version_url}>Browse in OCL</a>
