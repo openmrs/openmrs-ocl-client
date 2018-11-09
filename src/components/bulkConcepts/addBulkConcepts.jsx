@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from './bulkConceptList';
 import Header from './container/Header';
+import Paginations from './component/Paginations';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
@@ -21,29 +22,62 @@ export class AddBulkConcepts extends Component {
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
-
-  handleAddAll=() => {
-    const expressions = this.props.cielConcepts.map(concept => concept.url);
-    this.props.addExistingBulkConcepts({ data: { expressions } });
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentPage: 1,
+      cielConcepts: [],
+    };
   }
 
-  handleCielClick=() => {
+  handleAddAll = () => {
+    const {
+      match: {
+        params: { type, typeName, collectionName },
+      },
+    } = this.props;
+    const url = `${type}/${typeName}/collections/${collectionName}/references/`;
+    const { cielConcepts } = this.state;
+    this.props.addExistingBulkConcepts({ url, data: { data: { expressions: cielConcepts } } });
+    window.history.back();
+  };
+  handleCielClick = () => {
     this.props.fetchCielConcepts();
-  }
-
+  };
+  handleSelect = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      this.setState({
+        cielConcepts: [value, ...this.state.cielConcepts],
+      });
+    } else {
+      const index = this.state.cielConcepts.indexOf(value);
+      this.setState({
+        cielConcepts: this.state.cielConcepts.filter((_, i) => i !== index),
+      });
+    }
+  };
+  handlePaginationClick = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    this.setState({ currentPage: Number(id) });
+  };
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
     const { cielConcepts } = this.props;
+    const { currentPage } = this.state;
+    const conceptsPerPage = 20;
+    const indexOfLastConcept = currentPage * conceptsPerPage;
+    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
+    const currentConcepts = cielConcepts.slice(indexOfFirstConcept, indexOfLastConcept);
+    const lastPage = Math.ceil(cielConcepts.length / conceptsPerPage);
+    const lastConcept = indexOfFirstConcept + currentConcepts.length;
+    const firstConcept = indexOfLastConcept - 19;
     return (
       <div className="container-fluid add-bulk-concepts">
         <Header locationPath={this.props.match.params} />
         <h3>
-          <strong>
-            {dictionaryName}
-            {' '}
-Dictionary
-          </strong>
-: Bulk Add Concepts
+          <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
         </h3>
         <fieldset className="scheduler-border">
           <legend className="scheduler-border">Select a source</legend>
@@ -73,8 +107,7 @@ Dictionary
               <label className="form-check-label" htmlFor="exampleRadios2">
                 (Other preferred sources here)
               </label>
-            </div>
-            {' '}
+            </div>{' '}
             <br />
             <div id="other-search">
               <div className="form-check">
@@ -103,10 +136,19 @@ Dictionary
           </div>
         </fieldset>
         <h4>Concept IDs to add</h4>
+        <Paginations
+          concepts={lastConcept}
+          firstConceptIndex={firstConcept}
+          totalConcepts={cielConcepts.length}
+          currentPage={currentPage}
+          handleClick={this.handlePaginationClick}
+          lastPage={lastPage}
+        />
         <div className="preferred-concepts">
           <BulkConceptList
-            cielConcepts={cielConcepts}
+            cielConcepts={currentConcepts}
             fetching={this.props.isFetching}
+            handleSelect={this.handleSelect}
           />
         </div>
         <br />
@@ -115,18 +157,21 @@ Dictionary
             <button type="button" className="btn btn-secondary">
               Back
             </button>
-          </a>
-          {' '}
-          <button
-            type="button"
-            className="btn btn-primary"
-            id="btn-add-all"
-            onClick={this.handleAddAll}
-          >
-            <i className="fa fa-plus" />
-            {' '}
-Add All
-          </button>
+          </a>{' '}
+          {this.state.cielConcepts.length === 0 ? (
+            <button type="button" className="btn btn-primary" id="btn-add-all" disabled>
+              <i className="fa fa-plus" /> Add All Selected
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary btn-add-all"
+              id="btn-add-all"
+              onClick={this.handleAddAll}
+            >
+              <i className="fa fa-plus" /> Add All Selected
+            </button>
+          )}
         </div>
       </div>
     );

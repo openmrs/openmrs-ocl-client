@@ -188,7 +188,9 @@ export class DictionaryConcepts extends Component {
   render() {
     const {
       match: {
-        params: { type, typeName },
+        params: {
+          type, typeName, dictionaryName, collectionName,
+        },
       },
       location: { pathname },
       concepts,
@@ -213,7 +215,13 @@ export class DictionaryConcepts extends Component {
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
           </div>
-          {hasPermission && <ConceptDropdown pathName={pathname} />}
+          {hasPermission && <ConceptDropdown
+            pathName={pathname}
+            type={type}
+            typeName={typeName}
+            dictionaryName={dictionaryName}
+            collectionName={collectionName}
+          />}
         </section>
 
         <section className="row mt-3">

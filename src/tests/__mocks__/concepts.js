@@ -1,5 +1,5 @@
 export default {
-  id: '146869',
+  id: '1468667',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   concept_class: 'Diagnosis',
   datatype: 'N/A',
@@ -56,7 +56,7 @@ export const mockConcepts = (() => {
   const concepts = [];
   let i = 0;
   while (i < 30) {
-    const newConcept = { ...concept, version: String(i) };
+    const newConcept = { ...concept, id: String(i), version: String(i) };
     concepts.push(newConcept);
     i += 1;
   }

@@ -3,9 +3,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
-import {
-  FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS,
-} from '../../../redux/actions/types';
+import { FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
 import
 fetchCielConcepts,
 { addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
@@ -121,4 +119,16 @@ describe('Test suite for ciel concepts actions', () => {
     return store.dispatch(addDictionaryReference(conceptUrl, ownerUrl, dictionaryId))
       .then(() => expect(store.getActions()).toEqual(expectedAction));
   });
+});
+it('dispatches an error when adding bulk concepts', () => {
+  moxios.wait(() => {
+    const request = moxios.requests.mostRecent();
+    request.reject({
+      status: 400,
+    });
+  });
+  const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
+  const store = mockStore({});
+  return store.dispatch(addExistingBulkConcepts(data))
+    .catch(() => expect(store.getActions()).toEqual(returnedAction));
 });
