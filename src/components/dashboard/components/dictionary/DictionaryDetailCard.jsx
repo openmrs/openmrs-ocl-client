@@ -126,7 +126,7 @@ Dictionary
             </p>
             {owner === username && (
               <button
-                type="submit"
+                type="button"
                 className="btn btn-secondary"
                 id="editB"
                 onClick={showEditModal}
