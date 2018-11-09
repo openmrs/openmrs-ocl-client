@@ -48,7 +48,7 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "jest-junit": "^5.2.0",
+    "jest-junit": "^4.0.0",
     "moxios": "^0.4.0",
     "node-sass-chokidar": "^1.3.3",
     "react-mock-router": "^1.0.15",
