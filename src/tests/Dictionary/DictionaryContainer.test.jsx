@@ -350,9 +350,9 @@ describe('DictionaryOverview', () => {
   it('should handle a new version release', () => {
     const props = {
       dictionary,
-      versions: [customVersion],
+      versions: [{ released: true, ...versions, customVersion }],
       dictionaryConcepts: [dictionary],
-      isReleased: false,
+      isReleased: true,
       hideVersionModal: jest.fn(),
       showVersionModal: jest.fn(),
       error: [],
@@ -384,16 +384,16 @@ describe('DictionaryOverview', () => {
       <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
     </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleCreateVersion');
-    wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
-    wrapper.find('#versionId').at(0).simulate('change', event);
-    wrapper.find('.btn-sm.btn-outline-info.version').at(0).simulate('click');
+    wrapper.find('#releaseVersion').simulate('click');
+    wrapper.find('Input #versionId').simulate('change', event);
+    wrapper.find('Button #saveReleaseVersion').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it('should handleChange', () => {
     const props = {
       dictionary,
-      versions: [customVersion],
+      versions: [{ released: true, ...versions, customVersion }],
       dictionaryConcepts: [dictionary],
       isReleased: false,
       hideVersionModal: jest.fn(),
@@ -426,8 +426,8 @@ describe('DictionaryOverview', () => {
       <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
     </Provider>);
     const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'handleChange');
-    wrapper.find('.fas.fa-cloud-upload-alt.version').simulate('click');
-    wrapper.find('#versionId').at(0).simulate('change', event);
+    wrapper.find('#releaseVersion').simulate('click');
+    wrapper.find('Input #versionId').simulate('change', event);
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
