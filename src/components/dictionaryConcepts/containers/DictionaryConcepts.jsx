@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
+import matchSorter from 'match-sorter';
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
-import SearchBar from '../components/SearchBar';
 import ConceptTable from '../components/ConceptTable';
 import { conceptsProps } from '../proptypes';
 import { getUsername } from '../components/helperFunction';
@@ -38,8 +38,6 @@ export class DictionaryConcepts extends Component {
     loading: PropTypes.bool.isRequired,
     filterBySource: PropTypes.func.isRequired,
     filterByClass: PropTypes.func.isRequired,
-    paginateConcepts: PropTypes.func.isRequired,
-    totalConceptCount: PropTypes.number.isRequired,
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
@@ -48,10 +46,8 @@ export class DictionaryConcepts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      conceptsCount: this.props.totalConceptCount,
       searchInput: '',
       conceptLimit: 10,
-      conceptOffset: 0,
       versionUrl: '',
       data: {
         references: [],
@@ -80,7 +76,6 @@ export class DictionaryConcepts extends Component {
       collectionName,
       type,
       typeName,
-      conceptsCount: nextProps.totalConceptCount,
     });
   }
 
@@ -90,9 +85,6 @@ export class DictionaryConcepts extends Component {
         params: { collectionName, type, typeName },
       },
     } = this.props;
-    if (filterParams) {
-      this.props.filterBySource(filterName, type, typeName, collectionName, query, limit);
-    }
     this.props.fetchDictionaryConcepts(type, typeName, collectionName, query, limit);
   }
 
@@ -128,33 +120,6 @@ export class DictionaryConcepts extends Component {
     this.setState({
       [inputName]: eventAction,
     });
-    if (value.length < 1) {
-      this.fetchConcepts();
-    }
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.fetchConcepts(this.state.searchInput, this.state.conceptsCount);
-    this.setState({
-      conceptsCount: this.props.concepts.length,
-    });
-  }
-
-  fetchNextConcepts() {
-    this.props.paginateConcepts(null, this.state.conceptLimit + 10, this.state.conceptOffset + 10);
-    this.setState(state => ({
-      conceptOffset: state.conceptOffset + 10,
-      conceptLimit: state.conceptLimit + 10,
-    }));
-  }
-
-  fetchPrevConcepts() {
-    this.props.paginateConcepts(null, this.state.conceptLimit - 10, this.state.conceptOffset - 10);
-    this.setState(state => ({
-      conceptOffset: state.conceptOffset - 10,
-      conceptLimit: state.conceptLimit - 10,
-    }));
   }
 
   checkMembershipStatus(username) {
@@ -185,6 +150,11 @@ export class DictionaryConcepts extends Component {
     this.setState({ openDeleteModal: false });
   }
 
+  filterCaseInsensitive = (filter, rows) => {
+    const id = filter.pivotId || filter.id;
+    return matchSorter(rows, filter.value, { keys: [id] });
+  };
+
   render() {
     const {
       match: {
@@ -203,7 +173,8 @@ export class DictionaryConcepts extends Component {
       userIsMember,
     };
     const {
-      conceptsCount, searchInput, conceptOffset, conceptLimit, openDeleteModal,
+      conceptLimit,
+      openDeleteModal,
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
     return (
@@ -224,19 +195,10 @@ export class DictionaryConcepts extends Component {
             handleChange={this.handleSearch}
           />
           <div className="col-12 col-md-10">
-            <SearchBar
-              conceptsCount={conceptLimit}
-              totalConceptsCount={conceptsCount}
-              handleSearch={this.handleSearch}
-              searchValue={searchInput}
-              submit={this.handleSubmit}
-              countStart={conceptOffset + 1}
-              next={this.fetchNextConcepts}
-              prev={this.fetchPrevConcepts}
-            />
             <ConceptTable
               concepts={concepts}
               loading={loading}
+              conceptLimit={conceptLimit}
               org={org}
               locationPath={this.props.match.params}
               showDeleteModal={this.handleShowDelete}
@@ -244,6 +206,7 @@ export class DictionaryConcepts extends Component {
               handleDelete={this.handleDelete}
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
+              filterConcept={this.filterCaseInsensitive}
             />
           </div>
         </section>
@@ -253,7 +216,7 @@ export class DictionaryConcepts extends Component {
 }
 
 export const mapStateToProps = state => ({
-  concepts: state.concepts.paginatedConcepts,
+  concepts: state.concepts.dictionaryConcepts,
   totalConceptCount: state.concepts.totalConceptCount,
   filteredClass: state.concepts.filteredClass,
   filteredSources: state.concepts.filteredSources,

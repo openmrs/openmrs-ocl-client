@@ -6,7 +6,6 @@ const removeConcept = (props) => {
   const { handleDelete, openDeleteModal, closeDeleteModal } = props;
   return (
     <div>
-      <Button color="danger" onClick={closeDeleteModal}>Label</Button>
       <Modal isOpen={openDeleteModal} toggle={closeDeleteModal}>
         <ModalHeader toggle={closeDeleteModal}>
         Are you sure you want to Remove this Concept?
