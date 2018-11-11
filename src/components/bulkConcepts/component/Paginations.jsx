@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const Paginations = props => (
   <div className="row mt-2 pagination-container">
-    <div className="space-between">
-      <p>
-        <i>
+    {props.totalConcepts > 1 ?
+      <div className="space-between">
+        <p>
         Showing
           {' '}
           {props.firstConceptIndex}
@@ -17,10 +17,9 @@ of
           {props.totalConcepts}
           {' '}
 concepts
-        </i>
-      </p>
-      <span className="paginate-controllers">
-        {props.currentPage > 1
+        </p>
+        <span className="paginate-controllers">
+          {props.currentPage > 1
           ? (
             <i
               className="fas fa-angle-double-left prev"
@@ -34,8 +33,8 @@ concepts
               role="presentation"
             />
           ) }
-        <span className="badge badge-light"><h6>{props.currentPage}</h6></span>
-        {props.currentPage < props.lastPage
+          <span className="badge badge-light"><h6>{props.currentPage}</h6></span>
+          {props.currentPage < props.lastPage
           ? (
             <i
               className="fas fa-angle-double-right nxt"
@@ -49,8 +48,8 @@ concepts
               role="presentation"
             />
           ) }
-      </span>
-    </div>
+        </span>
+      </div> : null}
   </div>
 );
 
