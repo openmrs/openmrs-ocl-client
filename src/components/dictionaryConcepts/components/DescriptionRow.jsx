@@ -55,10 +55,14 @@ class DescriptionRow extends Component {
 
   updateState() {
     const { newRow } = this.props;
+    const defaultLocale = locale.find(
+      currentLocale => currentLocale.value === newRow.locale,
+    );
     this.setState({
       ...this.state,
       uuid: newRow.uuid,
       locale: newRow.locale || 'en',
+      locale_full: defaultLocale,
       description: newRow.description,
     });
   }
