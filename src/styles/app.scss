@@ -50,6 +50,31 @@
   display: inline-block;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  background-color: #f5f5f5;
+}
+.site-footer {
+  margin-top: 50px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.site-footer-links ul {
+  padding-left: 0;
+}
+
+.site-footer-links li {
+  display: inline;
+  padding: 5px;
+  font-size: 10pt;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

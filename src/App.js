@@ -18,6 +18,7 @@ import LoginDetails from './components/login/container/LoginDetails';
 import AddBulkConcepts from './components/bulkConcepts/addBulkConcepts';
 import BulkConceptPage from './components/bulkConcepts/container/BulkConceptsPage';
 import { Signup } from './components/Signup/components/container';
+import Footer from './components/Footer';
 
 const App = () => (
   <Provider store={store}>
@@ -75,6 +76,7 @@ const App = () => (
           />
           <Route component={NotFound} />
         </Switch>
+        <Footer />
       </div>
     </BrowserRouter>
   </Provider>
