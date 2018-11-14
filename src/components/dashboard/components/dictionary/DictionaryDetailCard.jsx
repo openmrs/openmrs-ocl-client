@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 import ReleaseVersionModal from './common/ReleaseVersionModal';
+import SubscriptionModal from './common/SubscriptionModal';
 
 const DictionaryDetailCard = (props) => {
   const {
@@ -231,10 +232,7 @@ Browse in traditional OCL
                       <DictionaryVersionsTable
                         version={version}
                         key={version.id}
-                        hide={hideSubModal}
                         showSubModal={showSubModal}
-                        show={subModal}
-                        url={subUrl}
                         download={download}
                       />
                     ))
@@ -260,6 +258,11 @@ Browse in traditional OCL
         versionId={versionId}
         versionDescription={versionDescription}
         inputLength={inputLength}
+      />
+      <SubscriptionModal
+        show={subModal}
+        click={hideSubModal}
+        url={subUrl}
       />
     </div>
   );
