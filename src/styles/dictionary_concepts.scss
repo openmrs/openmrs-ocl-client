@@ -12,11 +12,6 @@
   padding-left: 5%;
 }
 
-.all-dictionaries {
-  margin-right: -8%;
-  margin-left: -8%;
-}
-
 body {
   background: rgba(230, 230, 230, 0.12);
 }
@@ -239,6 +234,10 @@ input:-webkit-autofill:active {
 .concept-form-table .form-control:not(textarea) {
   height: 2.4rem !important;
   background: #fafafa;
+}
+
+#concept-description {
+  padding-top: 0px !important;
 }
 
 .concept-form-table-link {
