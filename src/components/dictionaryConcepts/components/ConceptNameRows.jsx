@@ -6,7 +6,7 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class ConceptNameRows extends Component {
   static propTypes = {
-    newRow: PropTypes.object.isRequired,
+    newRow: PropTypes.object,
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,

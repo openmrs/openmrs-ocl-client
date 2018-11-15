@@ -47,7 +47,7 @@ const ConceptTable = ({
             {
               Header: 'Name',
               accessor: 'display_name',
-              minWidth: 500,
+              minWidth: 300,
               ...filter,
             },
             {
@@ -73,7 +73,7 @@ const ConceptTable = ({
             {
               Header: 'Action',
               filterable: false,
-              width: 150,
+              width: 250,
               Cell: ({ original: concept }) => {
                 const props = {
                   showDeleteModal,

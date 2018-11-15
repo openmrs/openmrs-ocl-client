@@ -18,7 +18,8 @@
     "jsx-a11y/no-static-element-interactions": 0,
     "compilerOptions": { "target": "ES6", "module": "commonjs" },
     "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "react/prefer-stateless-function": 0
   },
   "parser": "babel-eslint"
 }
