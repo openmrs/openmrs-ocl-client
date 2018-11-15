@@ -74,7 +74,7 @@ export class AddBulkConcepts extends Component {
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
     const firstConcept = indexOfLastConcept - 19;
     return (
-      <div className="container-fluid add-bulk-concepts">
+      <div className="container-fluid add-bulk-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
         <h3>
           <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts

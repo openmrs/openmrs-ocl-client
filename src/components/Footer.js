@@ -2,7 +2,7 @@ import React from 'react';
 
 const footer = () => (
   <div className="footer">
-    <div className="site-footer">
+    <div className="site-footer custom-max-width">
       <ul className="site-footer-links float-left">
         <li>
             &copy;

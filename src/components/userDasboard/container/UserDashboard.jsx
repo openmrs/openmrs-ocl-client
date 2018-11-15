@@ -58,7 +58,7 @@ export class UserDashboard extends Component {
     } = this.props;
     const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
     return (
-      <div className="container">
+      <div className="container custom-max-width">
         <Title title="Home" />
         <AddDictionary show={this.state.show} handleHide={this.handleHide} />
         <div className="row justify-content-center">

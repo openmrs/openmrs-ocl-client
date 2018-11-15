@@ -180,7 +180,7 @@ export class DictionaryConcepts extends Component {
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
     return (
-      <div className="container-fluid custom-dictionary-concepts">
+      <div className="container-fluid custom-dictionary-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
         <section className="row mt-2">
           <div className="col-12 col-md-2 pt-1">
@@ -202,7 +202,7 @@ export class DictionaryConcepts extends Component {
             filteredSources={filteredSources}
             handleChange={this.handleSearch}
           />
-          <div className="col-12 col-md-10">
+          <div className="col-12 col-md-10 custom-full-width">
             <ConceptTable
               concepts={concepts}
               loading={loading}

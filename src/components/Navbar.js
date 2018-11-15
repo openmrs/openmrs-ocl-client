@@ -15,9 +15,9 @@ export class Navbar extends Component {
 
   render() {
     return (
-      <div>
+      <div className="custom-bg-dark">
         <Notification options={{ zIndex: 10000, top: '200px' }} />
-        <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+        <nav className="navbar navbar-expand-lg navbar-light bg-dark custom-max-width">
           <a className="nav-link navbar-brand" href="/">
               OCL for OpenMRS
           </a>

@@ -79,7 +79,7 @@ Dictionary
       </h1>
       <hr />
       <div className="row">
-        <form className="col-md-6" id="conceptsCard">
+        <form className="col-md-6 custom-full-width" id="conceptsCard">
           <fieldset>
             <legend>General Details</legend>
             <p>

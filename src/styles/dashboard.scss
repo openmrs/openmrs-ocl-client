@@ -193,6 +193,8 @@ nav {
 
 .dashboard-wrapper {
   margin-top: 0.5rem;
+  padding-bottom: 30px; 
+
 }
 .title-wrapper {
   text-align: center;
@@ -550,4 +552,11 @@ p{
 
 .fas{
   color:#3359db;
+}
+
+@media only screen and (max-width: 992px) { 
+  fieldset{
+    min-width: 320px;
+    margin-bottom: .7rem;
+  }
 }
