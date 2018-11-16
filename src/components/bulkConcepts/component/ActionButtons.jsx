@@ -61,7 +61,7 @@ export class ActionButtons extends Component {
       <React.Fragment>
         <button
           type="submit"
-          className="btn btn-sm mr-2 no-shadow bg-gray mb-1"
+          className="btn btn-sm mb-1 actionaButtons"
           id="add-button"
           onClick={() => this.addConceptButton()}
         >
@@ -76,7 +76,7 @@ export class ActionButtons extends Component {
           <Popup
             open={this.state.open}
             trigger={(
-              <button type="submit" className="btn btn-sm no-shadow bg-gray mb-1">
+              <button type="submit" className="btn btn-sm mb-1 actionaButtons">
             Preview concept
               </button>
             )}

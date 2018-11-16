@@ -16,10 +16,12 @@ describe('Test suite for BulkConceptsPage component', () => {
   it('should render without breaking', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
       concepts: [],
       loading: true,
       datatypes: [],
       classes: [],
+      conceptLimit: 10,
       match: {
         params: {
           type: 'users',
@@ -44,6 +46,7 @@ describe('Test suite for BulkConceptsPage component', () => {
   it('should render without concepts', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
       concepts: [],
       loading: false,
       datatypes: [],
@@ -71,6 +74,7 @@ describe('Test suite for BulkConceptsPage component', () => {
   it('should render with at least one concept', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
       concepts: [concepts],
       loading: false,
       datatypes: [],
@@ -92,13 +96,14 @@ describe('Test suite for BulkConceptsPage component', () => {
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
     </Router>);
-    expect(wrapper.find('#table-body').text()).toBeTruthy();
+    expect(wrapper.find('.rt-tbody').text()).toBeTruthy();
   });
 
   it('should search for concepts', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
       fetchFilteredConcepts: jest.fn(),
+      filterConcept: jest.fn(),
       handleSearch: jest.fn(),
       handleChange: jest.fn(),
       inputValue: '',
@@ -133,6 +138,7 @@ describe('Test suite for BulkConceptsPage component', () => {
   it('should filter search result', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
       concepts: [concepts],
       loading: false,
       datatypes: ['text'],
@@ -158,6 +164,43 @@ describe('Test suite for BulkConceptsPage component', () => {
     const event2 = { target: { name: 'Diagnosis, datatype', checked: true } };
     wrapper.find('#text').simulate('change', event2);
     wrapper.find('#Diagnosis').simulate('change', event);
+  });
+
+  it('should filter concepts in the table', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
+      concepts: [concepts],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const event = {
+      target: {
+        value: 'malaria',
+      },
+    };
+    const bulkConceptsWrapper = wrapper.find('BulkConceptsPage').instance();
+    const spy = jest.spyOn(bulkConceptsWrapper, 'filterCaseInsensitive');
+    bulkConceptsWrapper.forceUpdate();
+    wrapper.find('ReactTable').find('input').at(0).simulate('change', event);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should simulate clicks on action buttons', () => {
@@ -230,6 +273,7 @@ describe('Test suite for BulkConceptsPage component', () => {
       addConcept: jest.fn(),
       previewConcept: jest.fn(),
       fetchFilteredConcepts: jest.fn(),
+      filterConcept: jest.fn(),
     };
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />

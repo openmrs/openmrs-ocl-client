@@ -1,29 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BulkConceptTable from './bulkConceptTable';
+import ReactTable from 'react-table';
 import Loader from '../Loader';
 
-const BulkConceptList = ({ cielConcepts, fetching, handleSelect }) => {
+const BulkConceptList = ({
+  cielConcepts,
+  fetching,
+  handleSelect,
+  conceptLimit,
+  filterConcept,
+}) => {
+  const filter = { filterMethod: filterConcept, filterAll: true };
   if (cielConcepts.length >= 1) {
     return (
-      <table className="table table-bordered table-striped">
-        <thead className="header text-white">
-          <tr>
-            <th scope="col">Select</th>
-            <th scope="col">Name</th>
-            <th scope="col">Datatype</th>
-            <th scope="col">Source</th>
-            <th scope="col">ID</th>
-          </tr>
-
-        </thead>
-        <tbody>
-
-          {cielConcepts.map(concept => (
-            <BulkConceptTable concept={concept} key={concept.id} handleSelect={handleSelect} />
-          ))}
-        </tbody>
-      </table>
+      <ReactTable
+        data={cielConcepts}
+        loading={fetching}
+        defaultPageSize={cielConcepts.length <= conceptLimit ? cielConcepts.length : conceptLimit}
+        filterable
+        noDataText="No concept!"
+        minRows={0}
+        columns={[
+          {
+            Header: 'Select',
+            accessor: 'select',
+            filterable: false,
+            minWidth: 300,
+            Cell: ({ original: concept }) => (
+              <div className="custom-control custom-checkbox">
+                <input
+                  type="checkbox"
+                  className="table-check"
+                  value={concept.url}
+                  onChange={handleSelect}
+                />
+              </div>
+            ),
+          },
+          {
+            Header: 'Name',
+            accessor: 'display_name',
+            minWidth: 300,
+            ...filter,
+          },
+          {
+            Header: 'Datatype',
+            accessor: 'datatype',
+            ...filter,
+          },
+          {
+            Header: 'Source',
+            accessor: 'source',
+            ...filter,
+          },
+          {
+            Header: 'ID',
+            accessor: 'id',
+            ...filter,
+          },
+        ]}
+        className="-striped -highlight"
+      />
     );
   }
   if (fetching) {
@@ -45,5 +82,9 @@ BulkConceptList.propTypes = {
     name: PropTypes.string,
   })).isRequired,
   handleSelect: PropTypes.func.isRequired,
+  conceptLimit: PropTypes.number.isRequired,
+  filterConcept: PropTypes.func.isRequired,
+
+
 };
 export default BulkConceptList;

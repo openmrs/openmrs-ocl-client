@@ -11,9 +11,11 @@ const store = createMockStore(Authenticated);
 describe('Bulk Concepts List', () => {
   const props = {
     fetchCielConcepts: jest.fn(),
+    filterConcept: jest.fn(),
     handleSelect: jest.fn(),
     cielConcepts: [existingConcept],
     fetching: false,
+    conceptLimit: 10,
   };
   it('Should render without crashing', () => {
     const wrapper = mount(<MemoryRouter>
