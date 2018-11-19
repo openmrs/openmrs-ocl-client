@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SubscriptionModal from './common/SubscriptionModal';
 
 const DictionaryVersionsTable = (version) => {
   const {
@@ -8,7 +7,7 @@ const DictionaryVersionsTable = (version) => {
       id,
       updated_on,
       version_url,
-    }, hide, show, showSubModal, url, download,
+    }, showSubModal, download,
   } = version;
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric',
@@ -29,13 +28,6 @@ const DictionaryVersionsTable = (version) => {
         >
           Subscription URL
         </Link>
-      </td>
-      <td className="d-none">
-        <SubscriptionModal
-          show={show}
-          click={hide}
-          url={url}
-        />
       </td>
     </tr>
   );
