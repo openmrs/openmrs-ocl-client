@@ -111,6 +111,24 @@ describe('Test suite for dictionary actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle fetch dictionaries network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [
+      { payload: true, type: IS_FETCHING },
+      { payload: false, type: IS_FETCHING },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('should return an error message from the db', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -171,6 +189,23 @@ describe('Test suite for dictionary actions', () => {
     return store.dispatch(
       fetchDictionaryConcepts('/users/chriskala/collections/over/'),
     ).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle fetch dictionary concepts network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [
+      { payload: true, type: IS_FETCHING },
+      { payload: false, type: IS_FETCHING },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchDictionaryConcepts('/users/chriskala/collections/over/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

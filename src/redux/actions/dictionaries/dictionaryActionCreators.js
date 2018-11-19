@@ -18,6 +18,9 @@ import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
 import api from '../../api';
 
+const showNetworkError = () => (
+  notify.show('Network Error. Please try again later!', 'error', 6000));
+
 /* eslint-disable */
 export const createDictionary = data => async dispatch =>
   api.dictionaries
@@ -68,7 +71,8 @@ export const fetchDictionaries = () => (dispatch) => {
       dispatch(isFetching(false));
     })
     .catch((error) => {
-      dispatch(isErrored(error.response.data));
+      error.response ? dispatch(isErrored(error.response.data)):
+      showNetworkError();
       dispatch(isFetching(false));
     });
 };
@@ -102,7 +106,7 @@ export const removeDictionaryConcept = (data, type, owner, collectionId) => disp
   return api.dictionaries
     .removeDictionaryConcept(data, type, owner, collectionId)
     .then(
-      (payload) => { 
+      (payload) => {
       dispatch(removeConcept(data.references[0]));
       notify.show(
         'Successfully removed a concept from my dictionary',
@@ -137,7 +141,8 @@ export const fetchDictionaryConcepts = data => (dispatch) => {
       dispatch(isFetching(false));
       })
       .catch((error) => {
-        dispatch(isErrored(error.response.data));
+        error.response ? dispatch(isErrored(error.response.data)):
+        showNetworkError();
         dispatch(isFetching(false));
       });
 };
