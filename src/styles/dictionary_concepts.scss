@@ -1,8 +1,9 @@
 .custom-dictionary-concepts {
   text-align: left;
   margin-top: -3%;
-  padding-right: 8%;
-  margin-left: 4%;
+  padding-right: 4%;
+  padding-left: 4%;
+  width: auto;
 }
 
 .form-style {
@@ -41,7 +42,7 @@ body {
 }
 
 .concept-btn {
-  margin-right: 1rem;
+  margin: .5rem;
 }
 
 .concept-dropdown .btn {
@@ -49,7 +50,6 @@ body {
 }
 
 .sidenav-container {
-  width: 80%;
   background: white;
   padding: .5rem .7rem;
   box-shadow: 0 4px 15px 1px #00000012;
@@ -338,4 +338,38 @@ input:-webkit-autofill:active {
   text-decoration: none !important;
   cursor: pointer !important;
   font-size: .8rem;
+}
+
+.custom-table-width {
+  width: 100% !important;
+}
+
+@media only screen and (max-width : 992px) {
+
+  .bulk-concepts {
+    padding-right: 2%;
+    padding-left: 2%;
+
+  }
+
+  .search-container .concept-search-wrapper form {
+    display: inline;
+    padding: 0;
+    margin: 0;
+  }
+
+  .custom-full-width {
+    flex: 0 0 100%;
+    max-width: 100% !important;
+  }
+
+  .custom-concept-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .custom-side-padding {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }

@@ -197,7 +197,7 @@ export class DictionaryOverview extends Component {
     const inputLength = versionId.length;
 
     return (
-      <div className="dashboard-wrapper">
+      <div className="dashboard-wrapper custom-max-width">
         {loader ? (
           <div className="text-center mt-3" id="loader">
             <Loader />

@@ -7,7 +7,7 @@ const Sidenav = (props) => {
     classes, datatypes, datatypeInput, classInput, handleChange,
   } = props;
   return (
-    <div className="col-12 col-md-3">
+    <div className="col-12 col-md-3 custom-full-width">
       <div className="sidenav-container">
         <div className="row">
           <h6 className="sidenav-header">Datatypes</h6>

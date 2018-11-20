@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SideNavItem from './SideNavItem';
 
 const Sidenav = ({ filteredClass, filteredSources, handleChange }) => (
-  <div className="col-12 col-md-2">
+  <div className="col-12 col-md-2 custom-full-width">
     <div className="sidenav-container">
       <div className="row">
         <h6 className="sidenav-header">Sources</h6>

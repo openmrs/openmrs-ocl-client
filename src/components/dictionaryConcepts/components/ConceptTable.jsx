@@ -47,7 +47,7 @@ const ConceptTable = ({
             {
               Header: 'Name',
               accessor: 'display_name',
-              minWidth: 300,
+              minWidth: 100,
               ...filter,
             },
             {
@@ -86,7 +86,7 @@ const ConceptTable = ({
               },
             },
           ]}
-          className="-striped -highlight"
+          className="-striped -highlight custom-table-width"
         />
       </div>
     );

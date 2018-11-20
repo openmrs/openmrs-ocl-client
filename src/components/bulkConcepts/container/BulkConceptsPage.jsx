@@ -116,7 +116,7 @@ export class BulkConceptsPage extends Component {
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
     const firstConcept = indexOfLastConcept - 19;
     return (
-      <div className="container-fluid bulk-concepts">
+      <div className="container-fluid bulk-concepts custom-max-width">
         <section>
           <Header locationPath={this.props.match.params} />
           <div className="col-12 pt-1">
@@ -131,7 +131,7 @@ export class BulkConceptsPage extends Component {
             classValue={classInput}
             handleChange={this.handleFilter}
           />
-          <div className="col-10 col-md-9 bulk-concept-wrapper">
+          <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
             <SearchBar
               handleSearch={this.handleSearch}
               handleChange={this.handleChange}

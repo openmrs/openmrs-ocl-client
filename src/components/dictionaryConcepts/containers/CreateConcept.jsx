@@ -248,7 +248,7 @@ Concept
         </div>
         <div className="concept-form-wrapper">
           <div className="row form-container">
-            <div className="col-lg-12 col-md-10 col-sm-12">
+            <div className="col-lg-12 custom-side-padding">
               <CreateConceptForm
                 handleNewName={this.handleNewName}
                 nameRows={this.props.newName}
