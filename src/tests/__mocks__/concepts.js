@@ -24,12 +24,33 @@ export default {
   display_name: 'Bronze Diabetes',
   display_locale: 'en',
   version: '5835c0e2955c3c0007e5fb79',
-  mappings: null,
+  mappings: [
+    {
+      type: 'Mapping',
+      uuid: '8d492ee0-c2cc-11de-8d13-0010c6dffd0f',
+      external_id: 'a9d93ffjjen9dnfekd9',
+      map_type: 'Same As',
+      from_source_owner: 'Regenstrief',
+      from_source_owner_type: 'Organization',
+      from_source_name: 'loinc2',
+      from_concept_code: '32700-7',
+      from_concept_name: 'Malarial Smear',
+      from_source_url: '/orgs/Regenstrief/sources/loinc2/',
+      from_concept_url: '/orgs/Regenstrief/sources/loinc2/concepts/32700-7/',
+      to_source_owner_type: 'Organization',
+      to_source_name: 'ICPC-2',
+      to_concept_code: 'A73',
+      to_concept_name: 'Malaria',
+      to_source_url: '/orgs/WHO/sources/ICPC-2/',
+      source: 'loinc2',
+    },
+  ],
   is_latest_version: true,
   locale: null,
   version_url:
     '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
   url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
+  source_url: 'users/username/sources/WHO1',
 };
 
 export const concept2 = {
@@ -85,7 +106,8 @@ const concept = {
   updated_on: '2018-03-13T11:27:02.447',
   version_url:
     '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
-  url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
+  url: '/orgs/CIEL/sources/CIEL/concepts/246869/',
+  source_url: 'users/username/sources/WHO1',
 };
 export const mockConcepts = (() => {
   const concepts = [];

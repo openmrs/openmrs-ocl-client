@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ExternalMapping from '../../../components/dictionaryConcepts/components/ExternalMapping';
+import concept from '../../__mocks__/concepts';
 
 let wrapper;
 let props;
@@ -8,11 +9,12 @@ let props;
 describe('render MappingModal', () => {
   beforeEach(() => {
     props = {
-      map_type: '',
-      term: '',
-      source_url: '',
-      code: '',
+      mapType: '',
+      conceptUrl: '',
+      concept,
       handleChange: jest.fn(),
+      handleAsyncSelect: jest.fn(),
+      onChange: jest.fn(),
     };
     wrapper = shallow(<ExternalMapping {...props} />);
   });
@@ -27,7 +29,7 @@ describe('render MappingModal', () => {
         value: 'test',
       },
     };
-    wrapper.find('#map_type').simulate('change', event);
+    wrapper.find('#mapType').simulate('change', event);
     expect(props.handleChange).toHaveBeenCalled();
   });
 });

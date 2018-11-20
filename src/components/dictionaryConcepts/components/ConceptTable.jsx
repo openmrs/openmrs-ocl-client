@@ -7,6 +7,7 @@ import Loader from '../../Loader';
 import { conceptsProps } from '../proptypes';
 import { getUsername } from './helperFunction';
 import RemoveConcept from './RemoveConcept';
+import MappingModal from './MappingModal';
 
 const username = getUsername();
 
@@ -17,11 +18,16 @@ const ConceptTable = ({
   locationPath,
   showDeleteModal,
   url,
+  conceptDetails,
   handleDelete,
   conceptLimit,
   closeDeleteModal,
   openDeleteModal,
   filterConcept,
+  showMappingModal,
+  handleHideMappingModal,
+  handleShowMappingModal,
+  createConceptMapping,
 }) => {
   const filter = { filterMethod: filterConcept, filterAll: true };
   if (concepts.length > 0) {
@@ -35,6 +41,12 @@ const ConceptTable = ({
           handleDelete={handleDelete}
           openDeleteModal={openDeleteModal}
           closeDeleteModal={closeDeleteModal}
+        />
+        <MappingModal
+          showModal={showMappingModal}
+          handleHideModal={handleHideMappingModal}
+          concept={conceptDetails}
+          createConceptMapping={createConceptMapping}
         />
         <ReactTable
           data={concepts}
@@ -73,7 +85,13 @@ const ConceptTable = ({
                 const renderButtons = username === concept.owner || (
                   concept.owner === org.name && org.userIsMember
                 );
-                return <ActionButtons actionButtons={renderButtons} {...concept} {...props} />;
+                return (
+                  <ActionButtons
+                    actionButtons={renderButtons}
+                    handleShowMappingModal={handleShowMappingModal}
+                    concept={concept}
+                    {...props}
+                  />);
               },
             },
           ]}
@@ -100,10 +118,15 @@ ConceptTable.propTypes = {
   showDeleteModal: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   url: PropTypes.string,
+  conceptDetails: PropTypes.shape(conceptsProps).isRequired,
   conceptLimit: PropTypes.number.isRequired,
   openDeleteModal: PropTypes.bool,
   closeDeleteModal: PropTypes.func.isRequired,
   filterConcept: PropTypes.func.isRequired,
+  showMappingModal: PropTypes.bool.isRequired,
+  handleHideMappingModal: PropTypes.func.isRequired,
+  handleShowMappingModal: PropTypes.func.isRequired,
+  createConceptMapping: PropTypes.func.isRequired,
 };
 ConceptTable.defaultProps = {
   openDeleteModal: false,

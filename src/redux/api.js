@@ -62,11 +62,16 @@ export default {
       instance
         .put(url, data)
         .then(response => response.data),
+
+    createConceptMapping: (url, data) =>
+      instance
+        .post(url, data)
+        .then(response => response.data),
   },
   organizations: {
     fetchOrganizations: () =>
       instance
         .get(`users/${localStorage.username}/orgs/`)
         .then(response => response.data),
-  },
+  }
 };

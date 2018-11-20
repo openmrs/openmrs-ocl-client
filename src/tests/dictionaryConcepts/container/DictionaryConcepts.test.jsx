@@ -46,6 +46,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -85,6 +86,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -119,6 +121,7 @@ describe('Test suite for dictionary concepts components', () => {
       fetchMemberStatus: jest.fn(),
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
 
     const wrapper = mount(<Provider store={store}>
@@ -156,6 +159,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ versionUrl: 'url' });
@@ -192,6 +196,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
@@ -223,6 +228,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -272,6 +278,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -315,6 +322,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
     };
     const app = shallow(<DictionaryConcepts {...props} />);
     const newProps = {
@@ -354,5 +362,76 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
     expect(mapStateToProps(initialState).dictionaries).toEqual([]);
+  });
+
+  it('should handle show/hide of the create concept mapping modal', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    wrapper.instance().handleShowMappingModal(concepts);
+    wrapper.update();
+    expect(wrapper.instance().state.showMappingModal).toBe(true);
+    wrapper.instance().handleHideMappingModal();
+    expect(wrapper.instance().state.showMappingModal).toBe(false);
+  });
+
+  it('should hide modal after creating concept and refetch dictionary concept', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      createConceptMapping: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    wrapper.instance().handleShowMappingModal(concepts);
+    wrapper.update();
+    wrapper.instance().setState({ showMappingModal: true });
+    const spy = jest.spyOn(wrapper.instance(), 'fetchConcepts');
+    wrapper.instance().handleHideMappingModal(true);
+    expect(spy).toHaveBeenCalled();
   });
 });

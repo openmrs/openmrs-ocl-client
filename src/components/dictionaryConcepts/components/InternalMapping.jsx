@@ -1,58 +1,66 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup } from 'reactstrap';
+import { FormGroup, Input } from 'reactstrap';
+import AsyncSelect from './AsyncSelect';
+import { conceptsProps } from '../proptypes';
 
-class InternalMapping extends Component {
-  handleChange = (event) => {
-    this.props.handleChange(event);
-  };
+const InternalMapping = (props) => {
+  const {
+    mapType, concept, handleChange, handleAsyncSelect, errors,
+  } = props;
+  const conceptSearchUrl = `${concept.source_url}concepts/`;
 
-  render() {
-    const { map_type, concept_url } = this.props;
-    return (
-      <div>
-        <form>
-          <div>
-            <FormGroup className="form-style">
-              Type
-              <select
-                name="map_type"
-                value={map_type}
-                className="form-control"
-                onChange={this.handleChange}
-                id="map_type"
-                required
-              >
-                <option>Same as</option>
-                <option>Narrower than</option>
-              </select>
-            </FormGroup>
-          </div>
-          <div>
-            <FormGroup className="form-style">
-              Concept
-              <select
-                name="concept_url"
-                value={concept_url}
-                className="form-control"
-                onChange={this.handleChange}
-                required
-              >
-                <option>Lobratus</option>
-                <option>Potus</option>
-              </select>
-            </FormGroup>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <FormGroup className="form-style">
+        Concept source concept
+        <Input type="text" value={concept.display_name} readOnly />
+      </FormGroup>
+      <FormGroup className="form-style">
+        Concept map type
+        <b className="text-muted">&nbsp;*</b>
+        <Input
+          name="mapType"
+          value={mapType}
+          onChange={handleChange}
+          id="mapType"
+          placeholder="Concept map type ... ex: Same"
+          autoComplete="off"
+          required
+        />
+        <small className="form-text text-danger">{errors.mapType}</small>
+      </FormGroup>
+      <FormGroup className="form-style">
+        Map to
+        <b className="text-muted">&nbsp;*</b>
+        <AsyncSelect
+          name="toConceptUrl"
+          placeholder="Concept to map to(Concept within simular dictionary)..."
+          valueKey="url"
+          labelKey="display_name"
+          sourceUrl={conceptSearchUrl}
+          ignoreValue={concept.url}
+          onChange={handleAsyncSelect}
+        />
+        <small className="form-text text-danger">{errors.toConceptUrl}</small>
+      </FormGroup>
+    </Fragment>
+  );
+};
 
 InternalMapping.propTypes = {
-  map_type: PropTypes.string.isRequired,
-  concept_url: PropTypes.string.isRequired,
+  mapType: PropTypes.string.isRequired,
+  concept: PropTypes.shape(conceptsProps).isRequired,
   handleChange: PropTypes.func.isRequired,
+  handleAsyncSelect: PropTypes.func.isRequired,
+  errors: PropTypes.shape({
+    mapType: PropTypes.string,
+    toConceptUrl: PropTypes.string,
+  }),
+};
+
+InternalMapping.defaultProps = {
+  errors: {},
 };
 
 export default InternalMapping;

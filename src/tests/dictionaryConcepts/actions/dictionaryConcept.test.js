@@ -29,6 +29,8 @@ import {
   REMOVE_CONCEPT,
   REMOVE_ONE_ANSWER_MAPPING,
   ADD_NEW_ANSWER_MAPPING,
+  CREATE_MAPPING,
+  CREATE_MAPPING_ERROR,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -51,6 +53,8 @@ import {
   updateConcept,
   addNewAnswer,
   removeAnswer,
+  createConceptMapping,
+  getAsyncSelectDetails,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -267,6 +271,70 @@ describe('Test suite for dictionary concept actions', () => {
     return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
+  });
+  it('should handle concept mapping creation', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: {
+          data: 'concept',
+        },
+      });
+    });
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{ type: CREATE_MAPPING }];
+    const data = {
+      toConceptUrl: '/concept-url',
+      map_type: 'same',
+      source_url: concepts.source_url,
+    };
+    return store.dispatch(createConceptMapping(data)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle concept mapping creation error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: {
+          details: 'Mapping should be unique',
+        },
+      });
+    });
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{ type: CREATE_MAPPING_ERROR }];
+    const data = {
+      toConceptUrl: '/concept-url',
+      map_type: 'same',
+      source_url: concepts.source_url,
+    };
+    return store.dispatch(createConceptMapping(data)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should retrieve async select details', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: concepts,
+      });
+    });
+    const result = await getAsyncSelectDetails('/url/');
+    expect(result.data).toEqual(concepts);
+  });
+  it('should handle retrieve async select details error', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 599,
+        response: 'Network error',
+      });
+    });
+    const result = await getAsyncSelectDetails('/url/');
+    expect(result).toEqual(false);
   });
 });
 

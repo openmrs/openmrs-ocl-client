@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import AddMapping from './AddMapping';
+import { conceptsProps } from '../proptypes';
 import ViewConceptMappings from './ViewConceptMappings';
 
 const ActionButtons = ({
-  actionButtons, id, concept_class, showDeleteModal, version_url, mappings, source, mappingLimit, display_name,
+  actionButtons, showDeleteModal, handleShowMappingModal, concept,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
   if (actionButtons === true) {
     showExtra = true;
   }
+
+  const { id, concept_class, version_url } = concept;
 
   return (
     <React.Fragment>
@@ -23,13 +25,20 @@ const ActionButtons = ({
           >
           Edit
           </Link>
-          <AddMapping />
+          <button
+            type="button"
+            onClick={() => handleShowMappingModal(concept)}
+            className="btn btn-sm mb-1 actionButtons"
+            id="mapConcept"
+          >
+            Add mapping
+          </button>
           {
-          mappings && (
+          concept.mappings && (
           <ViewConceptMappings
-            mappings={mappings}
-            displayName={display_name}
-            mappingLimit={mappingLimit}
+            mappings={concept.mappings}
+            displayName={concept.display_name}
+            mappingLimit={concept.mappingLimit}
           />
 
           )
@@ -50,10 +59,9 @@ const ActionButtons = ({
 
 ActionButtons.propTypes = {
   actionButtons: PropTypes.bool.isRequired,
-  id: PropTypes.string.isRequired,
-  concept_class: PropTypes.string.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
-  version_url: PropTypes.string.isRequired,
+  concept: PropTypes.shape(conceptsProps).isRequired,
+  handleShowMappingModal: PropTypes.func.isRequired,
 };
 
 export default ActionButtons;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import concept from '../../__mocks__/concepts';
 import InternalMapping from '../../../components/dictionaryConcepts/components/InternalMapping';
 
 let wrapper;
@@ -8,9 +9,12 @@ let props;
 describe('render MappingModal', () => {
   beforeEach(() => {
     props = {
-      map_type: '',
-      concept_url: '',
+      mapType: '',
+      conceptUrl: '',
+      concept,
       handleChange: jest.fn(),
+      handleAsyncSelect: jest.fn(),
+      onChange: jest.fn(),
     };
     wrapper = shallow(<InternalMapping {...props} />);
   });
@@ -25,7 +29,7 @@ describe('render MappingModal', () => {
         value: 'test',
       },
     };
-    wrapper.find('#map_type').simulate('change', event);
+    wrapper.find('#mapType').simulate('change', event);
     expect(props.handleChange).toHaveBeenCalled();
   });
 });

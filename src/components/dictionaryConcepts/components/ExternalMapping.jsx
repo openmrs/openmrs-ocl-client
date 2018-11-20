@@ -1,93 +1,84 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Input } from 'reactstrap';
+import AsyncSelect from './AsyncSelect';
+import { conceptsProps } from '../proptypes';
 
-class ExternalMapping extends Component {
-  handleChange = (event) => {
-    this.props.handleChange(event);
-  };
+const ExternalMapping = (props) => {
+  const {
+    mapType, concept, handleChange, handleAsyncSelect, errors, toDictionaryUrl,
+  } = props;
+  const dictionarySearchUrl = `users/${concept.owner}/sources/`;
+  const conceptSearchUrl = `${toDictionaryUrl}concepts/`;
 
-  render() {
-    const {
-      map_type,
-      term,
-      source_url,
-      code,
-    } = this.props;
-
-    return (
-      <div>
-        <form>
-          <div>
-            <FormGroup className="form-style">
-              Type
-              <select
-                name="map_type"
-                value={map_type}
-                className="form-control"
-                onChange={this.handleChange}
-                id="map_type"
-                required
-              >
-                <option>Same as</option>
-                <option>Narrower than</option>
-              </select>
-            </FormGroup>
-          </div>
-          <div>
-            <FormGroup className="form-style">
-              Concept
-              <Input
-                type="text"
-                className="form-control answer"
-                placeholder="eg. /orgs/Regenstrief/sources/loinc2/concepts/32700-7/"
-                name="source_url"
-                value={source_url}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-          </div>
-          <div>
-            <FormGroup className="form-style">
-              Code
-              <Input
-                type="text"
-                className="form-control answer"
-                placeholder="eg. jgug-fgtgtg-rfrg"
-                name="code"
-                value={code}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-          </div>
-          <div>
-            <FormGroup className="form-style">
-              Term
-              <Input
-                type="text"
-                className="form-control answer"
-                placeholder="eg. Malaria"
-                name="term"
-                value={term}
-                onChange={this.handleChange}
-                required
-              />
-            </FormGroup>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <Fragment>
+      <FormGroup className="form-style">
+        Mapping source concept
+        <Input type="text" value={concept.display_name} readOnly />
+      </FormGroup>
+      <FormGroup className="form-style">
+        Concept map type
+        <b className="text-muted">&nbsp;*</b>
+        <Input
+          type="text"
+          className="form-control answer"
+          placeholder="Concept map type ex: Same"
+          name="mapType"
+          value={mapType}
+          onChange={handleChange}
+          autoComplete="off"
+          id="mapType"
+          required
+        />
+        <small className="form-text text-danger">{errors.mapType}</small>
+      </FormGroup>
+      <FormGroup className="form-style">
+        Destination dictionary
+        <AsyncSelect
+          name="toDictionaryUrl"
+          placeholder="Mapping destination dictionary ..."
+          valueKey="url"
+          labelKey="name"
+          sourceUrl={dictionarySearchUrl}
+          ignoreValue={dictionarySearchUrl}
+          onChange={handleAsyncSelect}
+        />
+        <small className="form-text text-danger">{errors.toDictionaryUrl}</small>
+      </FormGroup>
+      <FormGroup className="form-style">
+        Destination concept
+        <AsyncSelect
+          name="toConceptUrl"
+          placeholder="Mapping destination concept ..."
+          valueKey="id"
+          labelKey="display_name"
+          sourceUrl={conceptSearchUrl}
+          ignoreValue={concept.source_url}
+          onChange={handleAsyncSelect}
+          disabled={!toDictionaryUrl && true}
+        />
+        <small className="form-text text-danger">{errors.toConceptUrl}</small>
+      </FormGroup>
+    </Fragment>
+  );
+};
 
 ExternalMapping.propTypes = {
-  map_type: PropTypes.string.isRequired,
-  term: PropTypes.string.isRequired,
-  source_url: PropTypes.string.isRequired,
-  code: PropTypes.string.isRequired,
+  mapType: PropTypes.string.isRequired,
+  concept: PropTypes.shape(conceptsProps).isRequired,
   handleChange: PropTypes.func.isRequired,
+  handleAsyncSelect: PropTypes.func.isRequired,
+  errors: PropTypes.shape({
+    mapType: PropTypes.string,
+    toConceptUrl: PropTypes.string,
+  }),
+  toDictionaryUrl: PropTypes.string,
+};
+
+ExternalMapping.defaultProps = {
+  errors: {},
+  toDictionaryUrl: '',
 };
 
 export default ExternalMapping;

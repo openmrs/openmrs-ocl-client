@@ -25,6 +25,8 @@ import {
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_ONE_ANSWER_MAPPING,
   ADD_NEW_ANSWER_MAPPING,
+  CREATE_MAPPING,
+  CREATE_MAPPING_ERROR,
 } from '../types';
 import {
   isFetching,
@@ -33,6 +35,7 @@ import {
   isSuccess,
 } from '../globalActionCreators/index';
 import instance from '../../../config/axiosConfig';
+import api from '../../api';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
   let conceptList = concepts;
@@ -199,12 +202,14 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   } catch (error) {
     if (error.response) {
       const { response } = error;
-      notify.show(`An error occurred when creating a concept.
- ${
-  Object.keys(response.data).map(e => response.data[e]).toString()
-} for ${
-  Object.keys(error.response.data).toString()
-}`, 'error', 3000);
+      notify.show(
+        `An error occurred when creating a concept.
+ ${Object.keys(response.data)
+    .map(e => response.data[e])
+    .toString()} for ${Object.keys(error.response.data).toString()}`,
+        'error',
+        3000,
+      );
       dispatch(isFetching(false));
       return dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     }
@@ -253,4 +258,43 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
 
 export const clearPreviousConcept = () => (dispatch) => {
   dispatch({ type: CLEAR_PREVIOUS_CONCEPT });
+};
+
+export const createConceptMapping = data => (dispatch) => {
+  const createMappingUrl = `${data.source_url}/mappings/`;
+  const params = data;
+  delete params.source_url;
+  return api.dictionaries
+    .createConceptMapping(createMappingUrl, params)
+    .then(() => {
+      dispatch({ type: CREATE_MAPPING });
+      notify.show('Concept mapping was successfully created', 'success', 3000);
+    })
+    .catch((error) => {
+      dispatch({ type: CREATE_MAPPING_ERROR });
+      let responseMessage = 'Something went wrong';
+      if (error.response) {
+        const { response } = error;
+        responseMessage = `An error occurred when creating a concept.${Object.keys(response.data)
+          .map(e => response.data[e])
+          .toString()} for ${Object.keys(error.response.data).toString()}`;
+      }
+      return notify.show(responseMessage, 'error', 3000);
+    });
+};
+
+export const getAsyncSelectDetails = async (url) => {
+  try {
+    return await instance.get(url);
+  } catch (error) {
+    let responseMessage = 'Something went wrong';
+    if (error.response) {
+      const { response } = error;
+      responseMessage = `An error occurred searching. ${Object.keys(response.data)
+        .map(e => response.data[e])
+        .toString()} for ${Object.keys(error.response.data).toString()}`;
+    }
+    notify.show(responseMessage, 'error', 3000);
+    return false;
+  }
 };

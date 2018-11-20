@@ -14,6 +14,7 @@ import {
   filterBySource,
   filterByClass,
   paginateConcepts,
+  createConceptMapping,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
@@ -41,6 +42,7 @@ export class DictionaryConcepts extends Component {
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
+    createConceptMapping: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -53,6 +55,8 @@ export class DictionaryConcepts extends Component {
         references: [],
       },
       openDeleteModal: false,
+      showMappingModal: false,
+      concept: {},
     };
     autoBind(this);
   }
@@ -78,6 +82,22 @@ export class DictionaryConcepts extends Component {
       typeName,
     });
   }
+
+  handleShowMappingModal = (concept) => {
+    this.setState({
+      showMappingModal: true,
+      concept,
+    });
+  };
+
+  handleHideMappingModal = (saved = false) => {
+    this.setState({
+      showMappingModal: false,
+    });
+    if (saved) {
+      this.fetchConcepts();
+    }
+  };
 
   fetchConcepts(query = '', limit = 0, filterParams = null, filterName = null) {
     const {
@@ -168,6 +188,7 @@ export class DictionaryConcepts extends Component {
       filteredSources,
       loading,
       userIsMember,
+      createConceptMapping: mapConcept,
     } = this.props;
     const hasPermission = typeName === getUsername() || userIsMember;
     const org = {
@@ -177,6 +198,8 @@ export class DictionaryConcepts extends Component {
     const {
       conceptLimit,
       openDeleteModal,
+      showMappingModal,
+      concept,
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
     return (
@@ -211,10 +234,15 @@ export class DictionaryConcepts extends Component {
               locationPath={this.props.match.params}
               showDeleteModal={this.handleShowDelete}
               url={this.state.versionUrl}
+              conceptDetails={concept}
               handleDelete={this.handleDelete}
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
               filterConcept={this.filterCaseInsensitive}
+              showMappingModal={showMappingModal}
+              handleShowMappingModal={this.handleShowMappingModal}
+              handleHideMappingModal={this.handleHideMappingModal}
+              createConceptMapping={mapConcept}
             />
           </div>
         </section>
@@ -243,5 +271,6 @@ export default connect(
     paginateConcepts,
     fetchMemberStatus,
     removeDictionaryConcept,
+    createConceptMapping,
   },
 )(DictionaryConcepts);
