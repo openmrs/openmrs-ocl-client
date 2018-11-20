@@ -1,7 +1,8 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { StaticRouter } from 'react-router-dom';
 import configureStore from 'redux-mock-store';
+import { NavbarToggler } from 'reactstrap';
 import Navbar from '../components/Navbar';
 import GeneralSearch from '../components/GeneralSearch/NavbarGeneralSearch';
 
@@ -31,7 +32,35 @@ describe('Navbar Component', () => {
     expect(wrapper.find('LogoutAction')).toBeTruthy();
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should toggle state isOpen value on button click', () => {
+    const props = {
+      loggedIn: true,
+      history: { push: jest.fn() },
+      logoutAction: jest.fn(),
+    };
+    wrapper = shallow(<Navbar.WrappedComponent store={store} {...props} />);
+    const toggleBtn = wrapper.find(NavbarToggler);
+    toggleBtn.simulate('click');
+    expect(wrapper.state().isOpen).toBe(true);
+  });
 });
+
+describe('Toggle function', () => {
+  it('should toggle the dropdown', () => {
+    const props = {
+      loggedIn: true,
+      history: { push: jest.fn() },
+      logoutAction: jest.fn(),
+    };
+    wrapper = shallow(<Navbar.WrappedComponent store={store} {...props} />);
+    const instance = wrapper.instance();
+    expect(wrapper.state().isOpen).toBe(false);
+    instance.toggle();
+    expect(wrapper.state().isOpen).toBe(true);
+  });
+});
+
 describe('GeneralSearch', () => {
   const props = {
     onSearch: jest.fn(),
