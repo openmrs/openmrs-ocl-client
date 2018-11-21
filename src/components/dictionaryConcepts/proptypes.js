@@ -14,7 +14,12 @@ export const conceptsProps = {
   display_name: PropTypes.string,
   display_locale: PropTypes.string,
   version: PropTypes.string,
-  mappings: PropTypes.string,
+  mappings: PropTypes.arrayOf(PropTypes.shape({
+    from_concept_name: PropTypes.string,
+    to_concept_name: PropTypes.string,
+    map_type: PropTypes.string,
+    source: PropTypes.string,
+  })),
   is_latest_version: PropTypes.bool,
   locale: PropTypes.string,
   version_url: PropTypes.string,

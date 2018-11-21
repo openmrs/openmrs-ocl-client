@@ -73,11 +73,12 @@ const ConceptTable = ({
             {
               Header: 'Action',
               filterable: false,
-              width: 250,
+              width: 350,
               Cell: ({ original: concept }) => {
                 const props = {
                   showDeleteModal,
                   handleDelete,
+                  mappingLimit: conceptLimit,
                 };
                 const renderButtons = username === concept.owner || (
                   concept.owner === org.name && org.userIsMember

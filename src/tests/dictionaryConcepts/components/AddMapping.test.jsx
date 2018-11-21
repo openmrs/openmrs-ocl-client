@@ -5,9 +5,7 @@ import AddMapping from '../../../components/dictionaryConcepts/components/AddMap
 let wrapper;
 
 describe('render MappingModal', () => {
-  beforeEach(() => {
-    wrapper = shallow(<AddMapping />);
-  });
+  beforeEach(() => { wrapper = shallow(<AddMapping />); });
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
   });
