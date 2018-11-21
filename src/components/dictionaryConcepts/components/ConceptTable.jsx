@@ -41,7 +41,7 @@ const ConceptTable = ({
           loading={loading}
           defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
           filterable
-          noDataText="No ceoncept!"
+          noDataText="No concept!"
           minRows={0}
           columns={[
             {

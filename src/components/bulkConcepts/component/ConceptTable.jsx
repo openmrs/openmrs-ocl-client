@@ -1,52 +1,76 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReactTable from 'react-table';
 import Loader from '../../Loader';
 import RenderTable from '../../dictionaryConcepts/components/RenderTable';
-import TableItem from './TableItem';
+import ActionButtons from './ActionButtons';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
 const ConceptTable = ({
-  concepts, loading, location, preview, previewConcept, addConcept,
+  concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, filterConcept,
 }) => {
   if (loading) {
     return (
-      <RenderTable
-        render={() => (
-          <tr>
-            <th scope="row" colSpan="6" className="text-center">
-              <Loader />
-            </th>
-          </tr>
-        )}
-      />
+      <div className="mt-200 text-center">
+        <Loader />
+      </div>
     );
   }
+  const filter = { filterMethod: filterConcept, filterAll: true };
   if (concepts.length > 0) {
     return (
       <div className="row col-12 custom-concept-list">
-        <table className="table table-striped table-bordered">
-          <thead className="header text-white">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Class</th>
-              <th scope="col">Datatype</th>
-              <th scope="col">ID</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="table-body">
-            {concepts.map(concept => (
-              <TableItem
-                {...concept}
-                key={concept.version}
-                params={location}
-                preview={preview}
-                previewConcept={previewConcept}
-                addConcept={addConcept}
-              />
-            ))}
-          </tbody>
-        </table>
+        <ReactTable
+          data={concepts}
+          loading={loading}
+          defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
+          filterable
+          noDataText="No concept!"
+          minRows={0}
+          columns={[
+            {
+              Header: 'Name',
+              accessor: 'display_name',
+              minWidth: 300,
+              ...filter,
+            },
+            {
+              Header: 'Class',
+              accessor: 'concept_class',
+              ...filter,
+            },
+            {
+              Header: 'Datatype',
+              accessor: 'datatype',
+              ...filter,
+            },
+            {
+              Header: 'Source',
+              accessor: 'source',
+              ...filter,
+            },
+            {
+              Header: 'ID',
+              accessor: 'id',
+              ...filter,
+            },
+            {
+              Header: 'Action',
+              filterable: false,
+              width: 250,
+              Cell: ({ original: concept }) => (
+                <ActionButtons
+                  preview={preview}
+                  previewConcept={previewConcept}
+                  addConcept={addConcept}
+                  params={location}
+                  {...concept}
+                />
+              ),
+            },
+          ]}
+          className="-striped -highlight"
+        />
       </div>
     );
   }
@@ -76,7 +100,9 @@ ConceptTable.propTypes = {
     display_name: PropTypes.string,
   }).isRequired,
   addConcept: PropTypes.func.isRequired,
+  filterConcept: PropTypes.func.isRequired,
   previewConcept: PropTypes.func.isRequired,
+  conceptLimit: PropTypes.number.isRequired,
 };
 
 export default ConceptTable;

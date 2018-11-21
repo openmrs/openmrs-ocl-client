@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import matchSorter from 'match-sorter';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from './bulkConceptList';
 import Header from './container/Header';
@@ -22,11 +23,13 @@ export class AddBulkConcepts extends Component {
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
   };
+
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
       cielConcepts: [],
+      conceptLimit: 10,
     };
   }
 
@@ -62,10 +65,16 @@ export class AddBulkConcepts extends Component {
     const { id } = e.target;
     this.setState({ currentPage: Number(id) });
   };
+
+  filterCaseInsensitive = (filter, rows) => {
+    const id = filter.pivotId || filter.id;
+    return matchSorter(rows, filter.value, { keys: [id] });
+  };
+
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
     const { cielConcepts } = this.props;
-    const { currentPage } = this.state;
+    const { currentPage, conceptLimit } = this.state;
     const conceptsPerPage = 20;
     const indexOfLastConcept = currentPage * conceptsPerPage;
     const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
@@ -149,6 +158,8 @@ export class AddBulkConcepts extends Component {
             cielConcepts={currentConcepts}
             fetching={this.props.isFetching}
             handleSelect={this.handleSelect}
+            filterConcept={this.filterCaseInsensitive}
+            conceptLimit={conceptLimit}
           />
         </div>
         <br />

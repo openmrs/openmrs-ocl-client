@@ -172,3 +172,30 @@ it('it calls hanldlePaginationClick', () => {
   wrapper.find('.fas.fa-angle-double-right.nxt').at(0).simulate('click');
   expect(spy).toHaveBeenCalledTimes(1);
 });
+
+it('should filter concepts in the table', () => {
+  const props = {
+    fetchCielConcepts: jest.fn(),
+    addExistingBulkConcepts: jest.fn(),
+    cielConcepts: mockConcepts,
+    isFetching: true,
+    match,
+    datatypes: ['text'],
+    classes: ['Diagnosis'],
+  };
+  const wrapper = mount(<MemoryRouter>
+    <Provider store={store}>
+      <AddBulkConcepts {...props} />
+    </Provider>
+  </MemoryRouter>);
+  const event = {
+    target: {
+      value: 'malaria',
+    },
+  };
+  const addBulkConceptsWrapper = wrapper.find('AddBulkConcepts').instance();
+  const spy = jest.spyOn(addBulkConceptsWrapper, 'filterCaseInsensitive');
+  addBulkConceptsWrapper.forceUpdate();
+  wrapper.find('ReactTable').find('input').at(0).simulate('change', event);
+  expect(spy).toHaveBeenCalled();
+});

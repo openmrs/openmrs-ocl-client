@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import matchSorter from 'match-sorter';
 import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
@@ -51,6 +52,7 @@ export class BulkConceptsPage extends Component {
       classInput: '',
       currentPage: 1,
       searchInput: '',
+      conceptLimit: 10,
     };
   }
 
@@ -95,6 +97,12 @@ export class BulkConceptsPage extends Component {
     }
   };
 
+  filterCaseInsensitive = (filter, rows) => {
+    const id = filter.pivotId || filter.id;
+    return matchSorter(rows, filter.value, { keys: [id] });
+  };
+
+
   render() {
     const {
       concepts,
@@ -105,7 +113,7 @@ export class BulkConceptsPage extends Component {
       match: { params },
     } = this.props;
     const {
-      datatypeInput, classInput, currentPage, searchInput,
+      datatypeInput, classInput, currentPage, searchInput, conceptLimit,
     } = this.state;
 
     const conceptsPerPage = 20;
@@ -152,6 +160,8 @@ export class BulkConceptsPage extends Component {
               preview={preview}
               previewConcept={this.props.previewConcept}
               addConcept={this.props.addConcept}
+              filterConcept={this.filterCaseInsensitive}
+              conceptLimit={conceptLimit}
             />
           </div>
         </section>
