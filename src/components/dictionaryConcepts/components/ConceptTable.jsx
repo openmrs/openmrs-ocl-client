@@ -56,18 +56,8 @@ const ConceptTable = ({
               ...filter,
             },
             {
-              Header: 'Datatype',
-              accessor: 'datatype',
-              ...filter,
-            },
-            {
               Header: 'Source',
               accessor: 'source',
-              ...filter,
-            },
-            {
-              Header: 'ID',
-              accessor: 'id',
               ...filter,
             },
             {
