@@ -120,7 +120,7 @@ export const fetchDictionaryConcepts = (
   page = 1,
 ) => async (dispatch, getState) => {
   dispatch(isFetching(true));
-  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true`;
+  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?includeMappings=true&q=${query}&limit=${limit}&page=${page}&verbose=true`;
   const filterBySource = getState().concepts.filteredBySource;
   const filterByClass = getState().concepts.filteredByClass;
 
