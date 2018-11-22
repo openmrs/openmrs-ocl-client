@@ -36,13 +36,13 @@ class ExternalMapping extends Component {
           </div>
           <div>
             <FormGroup className="form-style">
-              Concept
+              To concept
               <Input
                 type="text"
                 className="form-control answer"
                 placeholder="eg. /orgs/Regenstrief/sources/loinc2/concepts/32700-7/"
-                name="source_url"
-                value={source_url}
+                name="to_concept_url"
+                defaultValue={source_url}
                 onChange={this.handleChange}
                 required
               />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import MappingModal from '../../../components/dictionaryConcepts/components/MappingModal';
+import { MappingModal } from '../../../components/dictionaryConcepts/components/MappingModal';
 
 let wrapper;
 let props;
@@ -9,7 +9,16 @@ describe('render MappingModal', () => {
   beforeEach(() => {
     props = {
       modal: false,
+      to_concept_url: '',
+      to_concept_name: '',
+      url: '',
+      map_type: '',
+      concept_url: '',
+      source: '',
+      concepts: [],
       handleToggle: jest.fn(),
+      editMapping: jest.fn(),
+
     };
     wrapper = shallow(<MappingModal {...props} />);
   });
@@ -26,6 +35,11 @@ describe('render MappingModal', () => {
     };
     wrapper.find('#type').simulate('change', event);
     expect(wrapper.state().type).toBe('test');
+  });
+
+  it('should call submitMapping onclick', () => {
+    wrapper.find('#mappingSubmit').simulate('click');
+    expect(wrapper.state().type).toBe('Internal Mapping');
   });
 
   it('should handle change', () => {

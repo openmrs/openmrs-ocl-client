@@ -7,15 +7,18 @@ import {
 import InternalMapping from './InternalMapping';
 import ExternalMapping from './ExternalMapping';
 
-class MappingModal extends Component {
+export class MappingModal extends Component {
   constructor(props) {
     super(props);
+    const { to_concept_url, map_type, url } = props;
     this.state = {
       type: 'Internal Mapping',
-      map_type: '',
+      to_concept_url,
+      url,
+      map_type,
       concept_url: '',
       term: '',
-      source_url: '',
+      source_url: to_concept_url,
       code: '',
     };
   }
@@ -37,11 +40,20 @@ class MappingModal extends Component {
     });
   };
 
+  submitMapping = () => {
+    const { to_concept_url, url, map_type } = this.state;
+    const { source, editMapping } = this.props;
+    editMapping(url, { to_concept_url, map_type }, source);
+  }
+
   render() {
-    const { handleToggle, modal } = this.props;
     const {
-      type, map_type, concept_url, term, source_url, code,
+      handleToggle, modal, to_concept_url, to_concept_name, concepts,
+    } = this.props;
+    const {
+      type, map_type, concept_url, term, code,
     } = this.state;
+
     return (
       <div>
         <Modal isOpen={modal}>
@@ -63,22 +75,25 @@ class MappingModal extends Component {
                 handleChange={this.handleChange}
                 map_type={map_type}
                 concept_url={concept_url}
+                to_concept_url={to_concept_url}
+                to_concept_name={to_concept_name}
+                concepts={concepts}
               />
             ) : (
               <ExternalMapping
                 handleChange={this.handleChange}
                 map_type={map_type}
                 term={term}
-                source_url={source_url}
+                source_url={to_concept_url}
                 code={code}
               />
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color="primary">Save</Button>
+            <Button color="primary" id="mappingSubmit" onClick={this.submitMapping}>Save</Button>
             {' '}
             <Button color="secondary" onClick={handleToggle}>
-              Cancel
+              Close
             </Button>
           </ModalFooter>
         </Modal>
@@ -88,8 +103,25 @@ class MappingModal extends Component {
 }
 
 MappingModal.propTypes = {
+  to_concept_name: PropTypes.string,
+  to_concept_url: PropTypes.string,
+  source: PropTypes.string,
+  url: PropTypes.string,
+  map_type: PropTypes.string,
+  concepts: PropTypes.array,
   modal: PropTypes.bool.isRequired,
   handleToggle: PropTypes.func.isRequired,
+  editMapping: PropTypes.func,
+};
+
+MappingModal.defaultProps = {
+  to_concept_name: '',
+  to_concept_url: '',
+  source: '',
+  url: '',
+  map_type: '',
+  concepts: [],
+  editMapping: () => {},
 };
 
 export default MappingModal;

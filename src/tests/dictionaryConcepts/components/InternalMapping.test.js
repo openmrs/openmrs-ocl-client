@@ -10,6 +10,14 @@ describe('render MappingModal', () => {
     props = {
       map_type: '',
       concept_url: '',
+      to_concept_url: '',
+      to_concept_name: '',
+      url: '',
+      concepts: [{
+        id: 1,
+        url: '',
+        display_name: '',
+      }],
       handleChange: jest.fn(),
     };
     wrapper = shallow(<InternalMapping {...props} />);

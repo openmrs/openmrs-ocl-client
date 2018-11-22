@@ -8,7 +8,9 @@ class InternalMapping extends Component {
   };
 
   render() {
-    const { map_type, concept_url } = this.props;
+    const {
+      map_type, concept_url, to_concept_url, to_concept_name, concepts,
+    } = this.props;
     return (
       <div>
         <form>
@@ -17,12 +19,13 @@ class InternalMapping extends Component {
               Type
               <select
                 name="map_type"
-                value={map_type}
+                defaultValue={map_type}
                 className="form-control"
                 onChange={this.handleChange}
                 id="map_type"
                 required
               >
+                {map_type && <option>{map_type}</option>}
                 <option>Same as</option>
                 <option>Narrower than</option>
               </select>
@@ -30,16 +33,20 @@ class InternalMapping extends Component {
           </div>
           <div>
             <FormGroup className="form-style">
-              Concept
+              To concept
               <select
-                name="concept_url"
-                value={concept_url}
+                name="to_concept_url"
+                defaultValue={concept_url}
                 className="form-control"
                 onChange={this.handleChange}
                 required
               >
-                <option>Lobratus</option>
-                <option>Potus</option>
+                {to_concept_name && <option value={to_concept_url}>{to_concept_name}</option>}
+                {concepts.map((concept) => {
+                  return (
+                    <option key={concept.id} value={concept.url}>{concept.display_name}</option>
+                  );
+                })}
               </select>
             </FormGroup>
           </div>
@@ -50,9 +57,20 @@ class InternalMapping extends Component {
 }
 
 InternalMapping.propTypes = {
-  map_type: PropTypes.string.isRequired,
-  concept_url: PropTypes.string.isRequired,
+  map_type: PropTypes.string,
+  concept_url: PropTypes.string,
+  to_concept_url: PropTypes.string,
+  to_concept_name: PropTypes.string,
+  concepts: PropTypes.array,
   handleChange: PropTypes.func.isRequired,
+};
+
+InternalMapping.defaultProps = {
+  to_concept_name: '',
+  to_concept_url: '',
+  concept_url: '',
+  map_type: '',
+  concepts: [],
 };
 
 export default InternalMapping;

@@ -23,13 +23,16 @@ const ActionButtons = ({
           >
           Edit
           </Link>
-          <AddMapping />
+          <AddMapping
+            buttonName="Add mapping"
+          />
           {
           mappings && (
           <ViewConceptMappings
             mappings={mappings}
             displayName={display_name}
             mappingLimit={mappingLimit}
+            source={source}
           />
 
           )
