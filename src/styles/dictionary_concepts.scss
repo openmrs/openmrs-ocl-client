@@ -6,19 +6,16 @@
   width: auto;
 }
 
-.form-style {
-  margin-top: 12px;
-}
-
-.action-btn-style {
-  margin-left: 12px;
-}
-
 .bulk-concepts {
   text-align: left;
   margin-top: -3%;
   padding-right: 4%;
   padding-left: 5%;
+}
+
+.all-dictionaries {
+  margin-right: -8%;
+  margin-left: -8%;
 }
 
 body {
@@ -31,6 +28,8 @@ body {
   -moz-border-radius: 2rem;
   -ms-border-radius: 2rem;
   -o-border-radius: 2rem;
+  background-color: white;
+  color: black;
 }
 
 .concept-header {
@@ -242,10 +241,6 @@ input:-webkit-autofill:active {
 .concept-form-table .form-control:not(textarea) {
   height: 2.4rem !important;
   background: #fafafa;
-}
-
-#concept-description {
-  padding-top: 0px !important;
 }
 
 .concept-form-table-link {

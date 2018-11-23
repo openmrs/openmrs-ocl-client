@@ -3,9 +3,25 @@ import Notification, { notify } from 'react-notify-toast';
 import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+  Collapse,
+  Navbar as Navigation,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
 import { logoutAction } from '../redux/actions/auth/authActions';
 
 export class Navbar extends Component {
+    state = {
+      isOpen: false,
+    };
+
   logoutUser = (event) => {
     event.preventDefault();
     this.props.logoutAction();
@@ -13,81 +29,55 @@ export class Navbar extends Component {
     notify.show('You Loggedout successfully', 'success', 3000);
   };
 
+  toggle = () => {
+    this.setState(prevState => ({
+      isOpen: !prevState.isOpen,
+    }));
+  }
+
   render() {
+    const { isOpen } = this.state;
+    const { loggedIn } = this.props;
     return (
       <div className="custom-bg-dark">
         <Notification options={{ zIndex: 10000, top: '200px' }} />
-        <nav className="navbar navbar-expand-lg navbar-light bg-dark custom-max-width">
-          <a className="nav-link navbar-brand" href="/">
-              OCL for OpenMRS
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarA"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-          <div className="collapse navbar-collapse " id="navbarA">
-            {this.props.loggedIn && (
-              <ul className="navbar-nav ml-auto" id="navList">
-                <li className="nav-item nav-link">
-                  <Link
-                    className="nav-link text-white"
-                    to="/home"
-                  >
-                      Home
-                  </Link>
-                </li>
-                <li className="nav-item nav-link">
-                  <Link
-                    className="nav-link text-white"
-                    to="/dashboard/dictionaries"
-                  >
-                      All Dictionaries
-                  </Link>
-                </li>
-                <li className="nav-item nav-link dropdown">
-                  <a
-                    className="nav-link dropdown-toggle text-white"
-                    href="!#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
+        <Navigation color="light" light expand="md" className="custom-max-width">
+          <NavbarBrand href="/">OCL for OpenMRS</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          {loggedIn && (
+            <Collapse isOpen={isOpen} navbar>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <Link className="nav-link text-white" to="/home">Home</Link>
+                </NavItem>
+                <NavItem>
+                  <Link className="nav-link text-white" to="/dashboard/dictionaries">All Dictionaries</Link>
+                </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+                  <DropdownToggle nav caret className="text-white">
                     <span className="fa fa-user" />
-                    {' '}
+                  &nbsp;
                     {localStorage.getItem('username') || this.props.user.username}
-                    {' '}
-                  </a>
-                  <div
-                    className="dropdown-menu"
-                    aria-labelledby="navbarDropdown"
-                    id="navbarDropdown"
-                  >
-                    <button
-                      type="submit"
-                      className="dropdown-item nav-link"
-                      onClick={this.logoutUser}
-                    >
-                      <strong>
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem>
+                      <a
+                        type="submit"
+                        className="dropdown-item nav-link"
+                        onClick={this.logoutUser}
+                      >
+                        <strong>
                         Logout
-                        {' '}
-                        <i className="fa fa-sign-out" />
-                      </strong>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            )}
-          </div>
-        </nav>
+                          {' '}
+                          <i className="fa fa-sign-out" />
+                        </strong>
+                      </a>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Nav>
+            </Collapse>)}
+        </Navigation>
       </div>
     );
   }
