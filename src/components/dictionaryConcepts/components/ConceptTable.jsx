@@ -22,6 +22,8 @@ const ConceptTable = ({
   closeDeleteModal,
   openDeleteModal,
   filterConcept,
+  showDeleteMappingModal,
+  handleDeleteMapping,
 }) => {
   const filter = { filterMethod: filterConcept, filterAll: true };
   if (concepts.length > 0) {
@@ -68,7 +70,9 @@ const ConceptTable = ({
                 const props = {
                   showDeleteModal,
                   handleDelete,
+                  handleDeleteMapping,
                   mappingLimit: conceptLimit,
+                  showDeleteMappingModal,
                 };
                 const renderButtons = username === concept.owner || (
                   concept.owner === org.name && org.userIsMember
@@ -104,6 +108,8 @@ ConceptTable.propTypes = {
   openDeleteModal: PropTypes.bool,
   closeDeleteModal: PropTypes.func.isRequired,
   filterConcept: PropTypes.func.isRequired,
+  handleDeleteMapping: PropTypes.func.isRequired,
+  showDeleteMappingModal: PropTypes.func.isRequired,
 };
 ConceptTable.defaultProps = {
   openDeleteModal: false,

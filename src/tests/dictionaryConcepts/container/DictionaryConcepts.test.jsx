@@ -46,6 +46,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -85,6 +86,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -119,6 +121,7 @@ describe('Test suite for dictionary concepts components', () => {
       fetchMemberStatus: jest.fn(),
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
 
     const wrapper = mount(<Provider store={store}>
@@ -156,6 +159,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ versionUrl: 'url' });
@@ -165,6 +169,42 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper.state().openDeleteModal).toBe(true);
     instance.closeDeleteModal();
     expect(wrapper.state().openDeleteModal).toBe(false);
+  });
+
+  it('should change open delete mappings modal', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      url: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/',
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    wrapper.setState({ data: { references: [props.url] } });
+    wrapper.update();
+    const instance = wrapper.instance();
+    instance.handleShowDeleteMapping(props.url);
+    expect((wrapper.state().data) === { references: [props.url] });
   });
 
   it('it should call the handle delete function', () => {
@@ -192,10 +232,46 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
     expect(instance.handleDelete()).toEqual(undefined);
+  });
+
+  it('it should call the handle delete mapping function', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [concepts],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+      handleToggle: jest.fn(),
+      showDeleteMappingModal: jest.fn(),
+      handleDeleteMapping: jest.fn(),
+    };
+    const wrapper = shallow(<DictionaryConcepts {...props} />);
+    const instance = wrapper.instance();
+    expect(instance.handleDeleteMapping()).toEqual(undefined);
   });
 
   it('should filter search result', () => {
@@ -223,6 +299,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -272,6 +349,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -315,6 +393,7 @@ describe('Test suite for dictionary concepts components', () => {
       totalConceptCount: 20,
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
     };
     const app = shallow(<DictionaryConcepts {...props} />);
     const newProps = {

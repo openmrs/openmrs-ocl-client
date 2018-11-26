@@ -15,7 +15,7 @@ import {
   filterByClass,
   paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
@@ -41,6 +41,7 @@ export class DictionaryConcepts extends Component {
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
+    removeConceptMappingAction: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -150,6 +151,18 @@ export class DictionaryConcepts extends Component {
     this.setState({ openDeleteModal: false });
   }
 
+  handleDeleteMapping = () => {
+    const { data } = this.state;
+    const { removeConceptMappingAction } = this.props;
+    removeConceptMappingAction(data);
+  }
+
+  handleShowDeleteMapping = (url) => {
+    this.setState({
+      data: { references: [url] },
+    });
+  };
+
   filterCaseInsensitive = (filter, rows) => {
     const id = filter.pivotId || filter.id;
     return matchSorter(rows, filter.value, { keys: [id] });
@@ -210,8 +223,10 @@ export class DictionaryConcepts extends Component {
               org={org}
               locationPath={this.props.match.params}
               showDeleteModal={this.handleShowDelete}
+              showDeleteMappingModal={this.handleShowDeleteMapping}
               url={this.state.versionUrl}
               handleDelete={this.handleDelete}
+              handleDeleteMapping={this.handleDeleteMapping}
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
               filterConcept={this.filterCaseInsensitive}
@@ -243,5 +258,6 @@ export default connect(
     paginateConcepts,
     fetchMemberStatus,
     removeDictionaryConcept,
+    removeConceptMappingAction: removeConceptMapping,
   },
 )(DictionaryConcepts);

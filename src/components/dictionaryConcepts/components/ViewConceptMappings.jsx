@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ViewMappingsModal from './ViewMappingsModal';
 
 class ViewConceptMappings extends Component {
@@ -15,7 +16,9 @@ class ViewConceptMappings extends Component {
 
   render() {
     const { modal } = this.state;
-    const { mappings, displayName, source } = this.props;
+    const {
+      mappings, displayName, showDeleteMappingModal, handleDeleteMapping, source,
+    } = this.props;
     return (
       <React.Fragment>
         <button
@@ -24,11 +27,25 @@ class ViewConceptMappings extends Component {
           onClick={this.handleToggle}
         >
           View mappings
-          <ViewMappingsModal mappings={mappings} source={source} displayName={displayName} modal={modal} handleToggle={this.handleToggle} />
+          <ViewMappingsModal
+            mappings={mappings}
+            displayName={displayName}
+            source={source}
+            modal={modal}
+            handleDeleteMapping={handleDeleteMapping}
+            handleToggle={this.handleToggle}
+            showDeleteMappingModal={showDeleteMappingModal}
+          />
         </button>
       </React.Fragment>
     );
   }
 }
+
+ViewConceptMappings.propTypes = {
+  displayName: PropTypes.string.isRequired,
+  handleDeleteMapping: PropTypes.func.isRequired,
+  showDeleteMappingModal: PropTypes.func.isRequired,
+};
 
 export default ViewConceptMappings;

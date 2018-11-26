@@ -1,22 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ViewConceptMappings from '../../../components/dictionaryConcepts/components/ViewConceptMappings';
+import RemoveMappings from '../../../components/dictionaryConcepts/components/RemoveMappings';
 
 let wrapper;
 let props;
 
-describe('render ViewConceptMappings', () => {
+describe('render RemoveMappings', () => {
   beforeEach(() => {
     props = {
       modal: false,
       handleToggle: jest.fn(),
       showDeleteMappingModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
-      mappings: [],
+      mappings: [{ url: 'jengkjeng' }],
       mappingLimit: 10,
-      displayName: '',
+      url: '',
+      retired: false,
     };
-    wrapper = shallow(<ViewConceptMappings {...props} />);
+    wrapper = shallow(<RemoveMappings {...props} />);
   });
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
