@@ -12,6 +12,7 @@ import {
   EDIT_DICTIONARY_SUCCESS,
   FETCHING_VERSIONS,
   FETCH_DICTIONARY_CONCEPT,
+  FETCH_DICTIONARY_MAPPINGS,
   FETCHING_ORGANIZATIONS,
   RELEASING_HEAD_VERSION,
   REMOVE_CONCEPT,
@@ -33,6 +34,7 @@ import {
   fetchDictionary,
   fetchVersions,
   fetchDictionaryConcepts,
+  fetchDictionaryMappings,
   releaseHead,
   editDictionary,
   createVersion,
@@ -257,6 +259,55 @@ describe('Test suite for dictionary actions', () => {
     return store.dispatch(
       editMapping('/users/chriskala/sources/858738987555379984/mappings/5bfeac11bdfb8801a1702953/', MappingToEdit, '858738987555379984'),
     ).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should return mappings in a dictionary', () => {
+    const mappings = {
+      to_concept_name: 'random_name',
+      from_concept_name: 'random_name',
+      map_type: 'Map As Type',
+      source: 'random source',
+    };
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{
+          to_concept_name: 'random_name',
+          from_concept_name: 'random_name',
+          map_type: 'Map As Type',
+          source: 'random source',
+        }],
+      });
+    });
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_MAPPINGS, payload: [mappings] },
+      { type: IS_FETCHING, payload: false },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(
+      fetchDictionaryMappings('/users/sources/CM/mappings/'),
+    ).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle fetch dictionary mappings network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [
+      { payload: true, type: IS_FETCHING },
+      { payload: false, type: IS_FETCHING },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchDictionaryMappings('/users/sources/CM/mappings/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

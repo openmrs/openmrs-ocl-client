@@ -13,7 +13,7 @@ import {
   fetchDictionaryConcepts,
   filterBySource,
   filterByClass,
-  paginateConcepts,
+paginateConcepts,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { removeDictionaryConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
@@ -72,6 +72,7 @@ export class DictionaryConcepts extends Component {
     localStorage.setItem('type', this.props.match.params.type);
     localStorage.setItem('typeName', this.props.match.params.typeName);
     localStorage.setItem('dictionaryName', this.props.match.params.dictionaryName);
+    localStorage.setItem('params', this.props.match.params);
     this.setState({
       collectionName,
       type,

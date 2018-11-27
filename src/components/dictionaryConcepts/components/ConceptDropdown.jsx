@@ -76,6 +76,15 @@ const ConceptDropdown = props => (
         </DropdownMenu>
       </UncontrolledDropdown>
     </div>
+
+    <div className="btn-group concept-btn">
+      <Link className="dropdown-item" to={`/mappings/${props.collectionName}`}>
+                <button className="btn btn-sm btn-secondary rounded-edge custom-dictionary-mappings" type="submit">
+                  View Mappings
+                </button>
+      </Link>
+    </div>
+
   </div>
 );
 ConceptDropdown.propTypes = {

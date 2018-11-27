@@ -6,6 +6,7 @@ import {
   FETCHING_DICTIONARIES,
   IS_FETCHING, ADDING_DICTIONARY,
   FETCHING_DICTIONARY,
+  FETCH_DICTIONARY_MAPPINGS,
   FETCHING_VERSIONS,
   CLEAR_DICTIONARY,
   EDIT_DICTIONARY_SUCCESS,
@@ -16,7 +17,10 @@ import {
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
 
-const initialState = {};
+const initialState = {
+  loading: false,
+  mappings: [],
+};
 describe('Test suite for vote reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
@@ -31,6 +35,18 @@ describe('Test suite for vote reducer', () => {
       },
     )).toEqual({
       organizations: {},
+    });
+  });
+
+  it('should handle FETCH_DICTIONARY_MAPPINGS', () => {
+    expect(reducer(
+      {},
+      {
+        type: FETCH_DICTIONARY_MAPPINGS,
+        payload: {},
+      },
+    )).toEqual({
+      mappings: {},
     });
   });
 });

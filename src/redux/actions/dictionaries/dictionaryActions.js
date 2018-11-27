@@ -9,6 +9,7 @@ import {
   CLEAR_DICTIONARY,
   FETCHING_VERSIONS,
   FETCH_DICTIONARY_CONCEPT,
+  FETCH_DICTIONARY_MAPPINGS,
   EDIT_DICTIONARY_SUCCESS,
   REMOVE_CONCEPT,
   CREATING_RELEASED_VERSION,
@@ -58,6 +59,11 @@ export const dictionaryIsSuccess = payload => ({
 
 export const dictionaryConceptsIsSuccess = payload => ({
   type: FETCH_DICTIONARY_CONCEPT,
+  payload,
+});
+
+export const dictionaryMappingsIsSuccess = payload => ({
+  type: FETCH_DICTIONARY_MAPPINGS,
   payload,
 });
 

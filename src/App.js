@@ -7,6 +7,7 @@ import Login from './components/login/container';
 import Authenticate from './components/Auth';
 import DictionaryDisplay from './components/dashboard/container/DictionariesDisplay';
 import DictionaryConcepts from './components/dictionaryConcepts/containers/DictionaryConcepts';
+import DictionaryMappings from './components/dictionaryConcepts/containers/DictionaryMappings';
 import CreateConcept from './components/dictionaryConcepts/containers/CreateConcept';
 import EditConcept from './components/dictionaryConcepts/containers/EditConcept';
 import NotFound from './components/NotFound';
@@ -52,6 +53,11 @@ const App = () => (
               exact
               path="/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
               component={Authenticate(DictionaryConcepts)}
+            />
+            <Route
+              exact
+              path="/mappings/:type"
+              component={Authenticate(DictionaryMappings)}
             />
             <Route
               exact

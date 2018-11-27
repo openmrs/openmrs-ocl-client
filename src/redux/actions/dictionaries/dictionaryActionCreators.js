@@ -9,6 +9,7 @@ import {
   removeConcept,
   fetchingVersions,
   dictionaryConceptsIsSuccess,
+  dictionaryMappingsIsSuccess,
   realisingHeadSuccess,
   editDictionarySuccess,
   creatingVersionsSuccess,
@@ -146,6 +147,23 @@ export const fetchDictionaryConcepts = data => (dispatch) => {
         dispatch(isFetching(false));
       });
 };
+
+export const fetchDictionaryMappings  = data => (dispatch) => {
+  dispatch(isFetching(true));
+  return api.dictionaries
+    .fetchDictionaryMappings(data)
+    .then(
+      (payload) => {
+      dispatch(dictionaryMappingsIsSuccess(payload));
+      dispatch(isFetching(false));
+      })
+      .catch((error) => {
+        error.response ? dispatch(isErrored(error.response.data)):
+        showNetworkError();
+        dispatch(isFetching(false));
+      });
+};
+
 
 export const releaseHead = (url, data) => (dispatch) => {
   return api.dictionaries

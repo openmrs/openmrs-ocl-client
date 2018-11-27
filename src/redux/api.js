@@ -53,6 +53,12 @@ export default {
         .get(`${data}`)
         .then(response => response.data),
 
+    fetchDictionaryMappings: (data) =>
+      instance
+        .get(`/user/sources/${data}/mappings/`)
+        .then(response => response.data),
+
+
     creatingVersion: (url,data) => 
       instance
          .post(`${url}`, data)
