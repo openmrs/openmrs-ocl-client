@@ -59,19 +59,17 @@ export class Navbar extends Component {
                   &nbsp;
                     {localStorage.getItem('username') || this.props.user.username}
                   </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem>
-                      <a
-                        type="submit"
-                        className="dropdown-item nav-link"
-                        onClick={this.logoutUser}
-                      >
-                        <strong>
-                        Logout
-                          {' '}
-                          <i className="fa fa-sign-out" />
-                        </strong>
-                      </a>
+                  <DropdownMenu className="text-center" right>
+                    <DropdownItem
+                      type="submit"
+                      className="dropdown-item nav-link"
+                      onClick={this.logoutUser}
+                    >
+                      <strong>
+                      Logout
+                        {' '}
+                        <i className="fa fa-sign-out-alt" />
+                      </strong>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
