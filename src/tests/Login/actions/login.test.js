@@ -2,7 +2,6 @@ import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import instance from '../../../config/axiosConfig';
 import {
   AUTHENTICATED,
   AUTHENTICATION_IN_PROGRESS,
@@ -16,14 +15,14 @@ const mockStore = configureStore([thunk]);
 
 describe('Test suite for login action', () => {
   beforeEach(() => {
-    moxios.install(instance);
+    moxios.install();
   });
 
   afterEach(() => {
-    moxios.uninstall(instance);
+    moxios.uninstall();
   });
 
-  it('should handle login', () => {
+  it('should handle login', async () => {
     const data = {
       username: 'testuser',
       password: '12345678',
@@ -50,12 +49,10 @@ describe('Test suite for login action', () => {
       expect(store.getActions()[0].type).toEqual(expectedActions[0].type);
       expect(store.getActions()[0].loading).toEqual(expectedActions[0].loading);
       expect(store.getActions()[1].type).toEqual(expectedActions[1].type);
-      expect(store.getActions()[1].payload.username).toEqual(expectedActions[1].payload.username);
-      expect(store.getActions()[1].payload.email).toEqual(expectedActions[1].payload.email);
     });
   });
 
-  it('should handle invalid password', () => {
+  it('should handle invalid password', async () => {
     const data = {
       username: 'testuser',
       password: '1234567',
@@ -65,7 +62,9 @@ describe('Test suite for login action', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 401,
-        response,
+        response: {
+          detail: 'Passwords did not match.',
+        },
       });
     });
 
@@ -81,9 +80,10 @@ describe('Test suite for login action', () => {
       }];
 
     const store = mockStore();
-
-    return store.dispatch(loginAction(data)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    return store
+      .dispatch(loginAction(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
   });
 });
