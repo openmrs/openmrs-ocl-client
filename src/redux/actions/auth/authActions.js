@@ -5,32 +5,25 @@ import {
 
 const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
-const loginAction = ({ username, password }) => async (dispatch) => {
+const loginAction = ({ username, password }) => (dispatch) => {
   dispatch(loginStarted());
-  let response;
-  try {
-    const data = {
-      username,
-      password,
-    };
+  const data = {
+    username,
+    password,
+  };
 
-    const loginUrl = `${BASE_URL}/users/login/`;
-    const loginResponse = await axios.post(loginUrl, data);
-    const { token } = loginResponse.data;
-    const headers = { Authorization: `Token ${token}` };
-    const url = `${BASE_URL}/users/${username}/`;
-    response = await axios.post(url, null, { headers });
+  const loginUrl = `${BASE_URL}/users/login/`;
+  return axios.post(loginUrl, data).then((response) => {
+    const { token } = response.data;
     localStorage.setItem('token', `Token ${token}`);
     localStorage.setItem('username', `${username}`);
-  } catch (error) {
+    return dispatch(login(response));
+  }).catch((error) => {
     if (error.response) {
       return dispatch(loginFailed(error.response.data.detail));
     }
-    if (error.request) {
-      return dispatch(loginFailed('Request cannot be made'));
-    }
-  }
-  return dispatch(login(response));
+    return dispatch(loginFailed('Request cannot be made'));
+  });
 };
 
 const logoutAction = () => (dispatch) => {
