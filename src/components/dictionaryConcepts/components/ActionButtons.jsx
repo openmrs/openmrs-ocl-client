@@ -18,7 +18,7 @@ const ActionButtons = ({
       {showExtra && (
         <React.Fragment>
           <Link
-            className="btn btn-sm mb-1 actionButtons"
+            className="edit-button-link btn btn-sm mb-1 actionButtons"
             to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
           >
           Edit
