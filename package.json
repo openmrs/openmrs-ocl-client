@@ -62,7 +62,8 @@
     "collectCoverageFrom": [
       "**/src/**/*.{js,jsx}",
       "!**/store.js",
-      "!*/setupTests.js"
+      "!*/setupTests.js",
+      "!src/index.js"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
