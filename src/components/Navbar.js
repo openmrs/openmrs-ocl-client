@@ -64,6 +64,7 @@ export class Navbar extends Component {
                       type="submit"
                       className="dropdown-item nav-link"
                       onClick={this.logoutUser}
+                      id="logout-user"
                     >
                       <strong>
                       Logout

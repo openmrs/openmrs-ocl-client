@@ -11,7 +11,7 @@ import TestComponent from '../__mocks__/FakeComponent';
 let store = createMockStore(authenticated);
 const props = {
   history: { push: jest.fn() },
-  location: { push: jest.fn() },
+  location: { pathname: '/' },
 };
 
 describe('higher-order component', () => {

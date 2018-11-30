@@ -129,6 +129,7 @@ class ConceptNameRows extends Component {
         </td>
         <th scope="row" className="concept-language">
           <Select
+            id="locale_full"
             name="locale_full"
             value={this.state.locale_full}
             onChange={this.handleNameLocale}

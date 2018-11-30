@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
-import { GeneralSearchContainer } from '../../components/GeneralSearch/GeneralSearchContainer';
+import { mapStateToProps, GeneralSearchContainer } from '../../components/GeneralSearch/GeneralSearchContainer';
 import dictionaries from '../__mocks__/dictionaries';
 
 describe('GeneralSearchContainer', () => {
@@ -61,5 +61,16 @@ describe('GeneralSearchContainer', () => {
     };
     const wrapper = mount(<MemoryRouter><GeneralSearchContainer {...props} /></MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should test mapStateToProps', () => {
+    const initialState = {
+      generalSearch: {
+        dictionaries: ['1'],
+        loading: true,
+      },
+    };
+    expect(mapStateToProps(initialState).dictionaries).toEqual(['1']);
+    expect(mapStateToProps(initialState).loading).toEqual(true);
   });
 });

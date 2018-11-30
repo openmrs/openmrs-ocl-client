@@ -114,12 +114,15 @@ describe('DictionaryDisplay', () => {
       onSubmit: jest.fn(),
       organizations: [organizations],
       history: { push: jest.fn() },
+      searchValue: '',
     };
     const wrapper = mount(<MemoryRouter>
       <DictionaryDisplay {...props} />
     </MemoryRouter>);
     const event = { target: { name: 'searchInput', value: 'openmrs' } };
+    const event2 = { target: { name: 'searchInput', value: '', type: 'checkbox' } };
     wrapper.find('#search').simulate('change', event);
+    wrapper.find('#search').simulate('change', event2);
     wrapper.find('#submit-search-form').simulate('submit', {
       preventDefault: () => {},
     });

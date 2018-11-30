@@ -15,6 +15,9 @@ const store = createMockStore({
     organizations: [],
   },
 });
+
+jest.useFakeTimers();
+
 describe('Test suite for dictionary concepts components', () => {
   it('should render component without breaking', () => {
     const props = {
@@ -50,6 +53,7 @@ describe('Test suite for dictionary concepts components', () => {
       </Router>
     </Provider>);
     expect(wrapper.find('h2.text-capitalize').text()).toEqual('dev-col Dictionary');
+    jest.runAllTimers();
 
     expect(wrapper).toMatchSnapshot();
   });

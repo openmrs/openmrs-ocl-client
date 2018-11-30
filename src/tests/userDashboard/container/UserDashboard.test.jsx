@@ -55,6 +55,17 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should handle hide function', () => {
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+
+    wrapper.find('UserDashboard').instance().handleHide();
+    expect(wrapper.find('UserDashboard').instance().state.show).toEqual(false);
+  });
+
   it('should handle add dictionary button', () => {
     const simulateLoading = createMockStore({
       fetchUserData: jest.fn(),

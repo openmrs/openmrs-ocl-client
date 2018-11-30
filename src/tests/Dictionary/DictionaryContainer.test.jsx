@@ -6,6 +6,7 @@ import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import {
   DictionaryOverview,
+  mapStateToProps,
 } from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
@@ -54,6 +55,38 @@ describe('DictionaryOverview', () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should render loader', () => {
+    const props = {
+      dictionary,
+      versions: [versions],
+      dictionaryConcepts: [dictionary],
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      loader: true,
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      createVersion: jest.fn(() => Promise.resolve(true)),
+      error: [],
+      releaseHead: jest.fn(),
+      isReleased: false,
+    };
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
+
+    expect(wrapper.length).toEqual(1);
+  });
+
   it('should render with dictionary data for overview', () => {
     const props = {
       dictionary,
@@ -149,25 +182,10 @@ describe('DictionaryOverview', () => {
         <DictionaryOverview {...props} />
       </MemoryRouter>
     </Provider>);
-    const newProps = {
-      dictionary,
-      versions: [HeadVersion],
-      match: {
-        params: {
-          ownerType: 'testing',
-          owner: 'tester',
-          type: 'collection',
-          name: 'chris',
-        },
-      },
-      isReleased: true,
-      fetchVersions: jest.fn(),
-      createVersion: jest.fn(() => Promise.resolve(true)),
-      error: [],
-      releaseHead: jest.fn(),
-    };
-    wrapper.setProps(newProps);
-    expect(wrapper).toMatchSnapshot();
+
+    const prevProp = wrapper.props();
+    wrapper.find(DictionaryOverview).instance().componentWillUpdate(prevProp);
+    expect(props.fetchVersions).toHaveBeenCalled();
   });
 
   it('should render dictionary versions', () => {
@@ -347,7 +365,7 @@ describe('DictionaryOverview', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle a new version release', () => {
+  it('should handle a new version release', async (done) => {
     const props = {
       dictionary,
       versions: [{ released: true, ...versions, customVersion }],
@@ -355,7 +373,7 @@ describe('DictionaryOverview', () => {
       isReleased: true,
       hideVersionModal: jest.fn(),
       showVersionModal: jest.fn(),
-      error: [],
+      error: null,
       inputLength: 4,
       match: {
         params: {
@@ -369,7 +387,7 @@ describe('DictionaryOverview', () => {
       fetchVersions: jest.fn(),
       fetchDictionaryConcepts: jest.fn(),
       releaseHead: jest.fn(),
-      createVersion: jest.fn(() => Promise.resolve(true)),
+      createVersion: jest.fn().mockImplementation(() => Promise.resolve()),
       loader: false,
     };
     const event = {
@@ -388,6 +406,8 @@ describe('DictionaryOverview', () => {
     wrapper.find('Input #versionId').simulate('change', event);
     wrapper.find('Button #saveReleaseVersion').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
+    await expect(props.createVersion).toHaveBeenCalled();
+    done();
   });
 
   it('should handleChange', () => {
@@ -465,5 +485,56 @@ describe('DictionaryOverview', () => {
     wrapper.find('button#cancel').simulate('click');
     expect(spyOnHandleShow).toHaveBeenCalled();
     expect(spyOnHandleHide).toHaveBeenCalled();
+  });
+
+  it('should handle hideVersionModal', () => {
+    const props = {
+      dictionary,
+      versions: [],
+      dictionaryConcepts: [],
+      match: {
+        params: {
+          ownerType: 'testing',
+          owner: 'tester',
+          type: 'collection',
+          name: 'chris',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      loader: false,
+      releaseHead: jest.fn(),
+      createVersion: jest.fn(),
+      error: [],
+      isReleased: true,
+    };
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
+
+    const state = wrapper.find(DictionaryOverview).state().showEditModal;
+
+    wrapper.find(DictionaryOverview).instance().hideVersionModal();
+
+    expect(state).toBe(false);
+  });
+
+  it('should test mapStateToProps', () => {
+    const initialState = {
+      concepts: {
+        loading: false,
+        dictionaryConcepts: [],
+        paginatedConcepts: [],
+        filteredSources: [],
+        filteredClass: [],
+      },
+      dictionaries: {
+        dictionary,
+      },
+    };
+    expect(mapStateToProps(initialState).dictionaryConcepts).toEqual([]);
   });
 });

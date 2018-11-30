@@ -31,6 +31,41 @@ export default {
     '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
   url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
 };
+
+export const concept2 = {
+  id: '1468667',
+  external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+  concept_class: 'Diagnosis',
+  datatype: 'N/A',
+  retired: false,
+  source: 'CIEL',
+  descriptions: [
+    {
+      uuid: '453aa9941e824becaad4b374899e8bcb',
+      external_id: null,
+      description:
+        // eslint-disable-next-line max-len
+        'The proportion of women of reproductive age (15-49 years) who are not pregnant and are accepting a modern contraceptive method (new and repeat acceptors).  ',
+      locale: 'en',
+      locale_preferred: true,
+      description_type: null,
+      type: 'ConceptDescription',
+    },
+  ],
+  owner: 'CIEL',
+  owner_type: 'Organization',
+  owner_url: '/orgs/CIEL/',
+  display_name: 'Bronze Diabetes',
+  display_locale: 'en',
+  version: '5835c0e2955c3c0007e5fb79',
+  mappings: null,
+  is_latest_version: true,
+  locale: null,
+  version_url:
+    '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
+  url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
+};
+
 const concept = {
   id: '146869',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',

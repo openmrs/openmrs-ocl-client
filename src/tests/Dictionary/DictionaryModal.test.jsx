@@ -5,7 +5,6 @@ import {
 } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
 import dictionary from '../__mocks__/dictionaries';
-import { AddDictionary } from '../../components/dashboard/components/dictionary/AddDictionary';
 
 const props = {
   title: 'Add Dictionary',
@@ -13,7 +12,7 @@ const props = {
   show: true,
   modalhide: jest.fn(),
   submit: jest.fn(() => Promise.resolve('success')),
-  organizations: [organizations],
+  organizations: [],
   fetchingOrganizations: jest.fn(),
   fetchSources: jest.fn(),
   createDictionary: jest.fn(),
@@ -30,8 +29,6 @@ const props = {
 describe('Test suite for dictionary modal', () => {
   const wrapper = shallow(<DictionaryModal {...props} />);
   const preventDefault = { preventDefault: jest.fn() };
-  const toUpperCase = { toUpperCase: jest.fn() };
-  const then = { then: jest.fn() };
 
   it('should take a snapshot', () => {
     expect(wrapper).toMatchSnapshot();
@@ -58,17 +55,18 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.state().data.name).toEqual('CIEL');
   });
 
-  it('Renders component that adds a dictionary', () => {
-    const data = {
-      dictionary: {
-        name: toUpperCase,
-        submit: then,
-        then: jest.fn(),
-      },
+  it('Sets state to owner on change', () => {
+    const newProps = {
+      ...props,
+      organizations: [organizations],
     };
-    const component = shallow(<AddDictionary {...props} {...preventDefault} {...data} />);
-    expect(component).toMatchSnapshot();
+    const wrap = shallow(<DictionaryModal {...newProps} />);
+    wrap
+      .find('#dictionary_name')
+      .simulate('change', { target: { value: 'CIEL', name: 'name' } });
+    expect(wrap.state().data.name).toEqual('CIEL');
   });
+
   it('it should handle change of supported locales option', () => {
     const otherLanguagesSelect = wrapper.find('#supported_locales');
     expect(otherLanguagesSelect.length).toEqual(1);
@@ -124,6 +122,73 @@ describe('Test suite for dictionary modal', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('it should handle submit for an individual alone', async () => {
+    wrapper.setState({
+      data: {
+        ...wrapper.state().data,
+        id: '1',
+        preferred_source: 'CIEL',
+        public_access: 'None',
+        name: 'OpenMRSDictionary',
+        owner: 'indiviual',
+        description: 'OpenMRSDictionary',
+        default_locale: 'en',
+        supported_locales: 'us',
+        repository_type: 'OpenMRSDictionary',
+      },
+    });
+    const submitButtonWrapper = wrapper.find('#addDictionary');
+    const spy = jest.spyOn(wrapper.instance().props, 'modalhide');
+    submitButtonWrapper.simulate('click', preventDefault);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('it should handle submit error response', async () => {
+    const error = {
+      response: {},
+    };
+
+    const newProps = {
+      title: 'Add Dictionary',
+      buttonname: 'Add Dictionary',
+      show: true,
+      modalhide: jest.fn(),
+      submit: jest.fn().mockImplementation(() => Promise.reject(error)),
+      organizations: [],
+      fetchingOrganizations: jest.fn(),
+      fetchSources: jest.fn(),
+      createDictionary: jest.fn(),
+      createDictionaryUser: jest.fn(),
+      handleHide: jest.fn(),
+      name: jest.fn(),
+      dictionary,
+      sources: [{ name: 'source', id: '1' }],
+      dictionaries: [],
+      userDictionaries: [],
+      searchDictionaries: jest.fn(),
+    };
+    const wrapper3 = shallow(<DictionaryModal {...newProps} />);
+
+    wrapper3.setState({
+      data: {
+        ...wrapper3.state().data,
+        id: '1',
+        preferred_source: 'CIEL',
+        public_access: 'None',
+        name: 'OpenMRSDictionary',
+        owner: 'indiviual',
+        description: 'OpenMRSDictionary',
+        default_locale: 'en',
+        supported_locales: 'us',
+        repository_type: 'OpenMRSDictionary',
+      },
+      errors: {},
+    });
+
+    await wrapper3.instance().onSubmit(preventDefault);
+    expect(wrapper3.instance().state.errors).toEqual({});
+  });
+
   it('it should handle search input values', () => {
     props.isEditingDictionary = false;
     const wrapper2 = mount(<DictionaryModal {...props} />);
@@ -133,5 +198,12 @@ describe('Test suite for dictionary modal', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     wrapper2.instance().searchInputValues('dictionary');
     expect(props.searchDictionaries).toBeCalled();
+  });
+
+  it('it should handle dictionary copying', () => {
+    const item = {
+      value: '123',
+    };
+    wrapper.find('#copy_dictionary').simulate('change', item);
   });
 });

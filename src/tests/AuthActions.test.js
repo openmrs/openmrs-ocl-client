@@ -1,5 +1,9 @@
-import { AUTHENTICATED, LOGGED_OUT } from '../redux/actions/types';
-import { login, logout } from '../redux/actions/auth/authActionCreators';
+import {
+  AUTHENTICATED, LOGGED_OUT, LOGOUT_FAILED,
+} from '../redux/actions/types';
+import {
+  login, logout, logoutFailed,
+} from '../redux/actions/auth/authActionCreators';
 
 describe('Login', () => {
   const response = {
@@ -26,5 +30,18 @@ describe('Logout', () => {
   };
   it('should return action type and payload', () => {
     expect(logout(response)).toEqual(responseData);
+  });
+});
+
+describe('Login failed', () => {
+  const response = {
+    data: {},
+  };
+  const responseData = {
+    type: LOGOUT_FAILED,
+    payload: { errorMessage: { data: {} } },
+  };
+  it('should return action type and payload', () => {
+    expect(logoutFailed(response)).toEqual(responseData);
   });
 });

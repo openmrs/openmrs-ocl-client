@@ -1,6 +1,8 @@
 import deepFreeze from 'deep-freeze';
 import reducer from '../../../redux/reducers/ConceptReducers';
-import concepts, { newConcept, existingConcept, paginatedConcepts } from '../../__mocks__/concepts';
+import concepts, {
+  concept2, newConcept, existingConcept, paginatedConcepts,
+} from '../../__mocks__/concepts';
 import {
   FETCH_DICTIONARY_CONCEPT,
   FILTER_BY_SOURCES,
@@ -117,7 +119,7 @@ describe('Test suite for single dictionary concepts', () => {
   it('should handle sidebar items', () => {
     action = {
       type: POPULATE_SIDEBAR,
-      payload: [concepts],
+      payload: [concepts, concept2],
     };
 
     deepFreeze(state);
