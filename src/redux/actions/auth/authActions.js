@@ -20,9 +20,16 @@ const loginAction = ({ username, password }) => (dispatch) => {
     return dispatch(login(response));
   }).catch((error) => {
     if (error.response) {
-      return dispatch(loginFailed(error.response.data.detail));
+      let errorMessage = error.response.data.detail;
+      if (errorMessage === 'Not found.') {
+        errorMessage = 'No such user was found.';
+      }
+      if (errorMessage === 'Passwords did not match.') {
+        errorMessage = 'Either the username or password you provided is incorrect.';
+      }
+      return dispatch(loginFailed(errorMessage));
     }
-    return dispatch(loginFailed('Request cannot be made'));
+    return dispatch(loginFailed('Please check your internet connection.'));
   });
 };
 

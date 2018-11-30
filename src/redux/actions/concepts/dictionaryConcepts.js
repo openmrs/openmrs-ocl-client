@@ -184,7 +184,7 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
     dispatch(isSuccess(response.data, ADD_CONCEPT_TO_DICTIONARY));
     dispatch(isFetching(false));
   } catch (error) {
-    notify.show('an error occurred', 'error', 3000);
+    notify.show('An error occurred', 'error', 3000);
   }
 };
 

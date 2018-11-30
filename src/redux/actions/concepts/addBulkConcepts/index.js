@@ -19,7 +19,7 @@ export const fetchBulkConcepts = (source = 'CIEL') => async (dispatch) => {
     dispatch(isFetching(false));
   } catch (error) {
     dispatch(isFetching(false));
-    notify.show('an error occurred, reload your browser', 'error', 3000);
+    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
@@ -50,7 +50,7 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '') => async (
     dispatch(isFetching(false));
   } catch (error) {
     dispatch(isFetching(false));
-    notify.show('an error occurred, reload your browser', 'error', 3000);
+    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
