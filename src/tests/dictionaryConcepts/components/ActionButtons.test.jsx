@@ -39,10 +39,10 @@ describe('Test suite for ActionButton', () => {
   });
 
   it('should render ActionButton Component', () => {
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.length).toEqual(1);
   });
 
-  it('should call the showDeleteModal', () => {
+  it('should call the showDeleteModal and fetchPreview', () => {
     wrapper.find('#retireConcept').simulate('click');
     expect(props.showDeleteModal).toBeCalled();
   });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Router from 'react-mock-router';
+import { notify } from 'react-notify-toast';
 import {
   EditConcept,
   mapStateToProps,
@@ -60,6 +61,7 @@ describe('Test suite for dictionary concepts components', () => {
       <EditConcept {...props} />
     </Router>);
     expect(wrapper.find('h3').text()).toEqual(': Edit a question Concept ');
+    wrapper.unmount();
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -125,6 +127,17 @@ describe('Test suite for dictionary concepts components', () => {
     expect(props.removeAnswer).toHaveBeenCalled();
   });
 
+  it('should handle handleUUID', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const event = {
+      preventDefault: jest.fn(),
+    };
+    wrapper.find(EditConcept).instance().handleUUID(event);
+    expect(wrapper.find(EditConcept).instance().state.notEditable).toEqual(false);
+  });
+
   it('should handle add data from answer', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
@@ -144,6 +157,45 @@ describe('Test suite for dictionary concepts components', () => {
     });
     expect(props.updateConcept).toHaveBeenCalled();
   });
+
+  it('it should handle submit event with invalid uuid', () => {
+    jest.mock('react-notify-toast');
+    notify.show = jest.fn();
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+
+    wrapper.find(EditConcept).instance().setState({
+      id: '',
+    });
+
+    const submitForm = wrapper.find('#createConceptForm');
+    submitForm.simulate('submit', {
+      preventDefault: () => {},
+    });
+
+    expect(notify.show).toHaveBeenCalledWith('enter a valid uuid', 'error', 3000);
+  });
+
+  it('it should handle submit event with invalid datatype', () => {
+    jest.mock('react-notify-toast');
+    notify.show = jest.fn();
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+
+    wrapper.find(EditConcept).instance().setState({
+      datatype: '',
+    });
+
+    const submitForm = wrapper.find('#createConceptForm');
+    submitForm.simulate('submit', {
+      preventDefault: () => {},
+    });
+
+    expect(notify.show).toHaveBeenCalledWith('choose a datatype', 'error', 3000);
+  });
+
   it('should test mapStateToProps', () => {
     const initialState = {
       concepts: {

@@ -7,7 +7,7 @@ import {
   FETCH_FILTERED_CONCEPTS,
   PREVIEW_CONCEPT,
 } from '../../../redux/actions/types';
-import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
+import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
 
 let state;
 let action;
@@ -31,7 +31,7 @@ describe('Test suite for bulkConcepts reducer', () => {
   it('should handle FETCH_BULK_CONCEPTS', () => {
     action = {
       type: FETCH_BULK_CONCEPTS,
-      payload: [concepts],
+      payload: [concepts, concept2],
     };
 
     deepFreeze(state);

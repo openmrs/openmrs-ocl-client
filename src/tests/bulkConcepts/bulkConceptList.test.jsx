@@ -25,4 +25,30 @@ describe('Bulk Concepts List', () => {
     </MemoryRouter>);
     expect(wrapper).toMatchSnapshot();
   });
+  it('should render when there is no concept', () => {
+    const newProps = {
+      ...props,
+      cielConcepts: [],
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <BulkConceptList {...newProps} />
+      </Provider>
+    </MemoryRouter>);
+    expect(wrapper.length).toEqual(1);
+  });
+
+  it('should render loader', () => {
+    const newProps = {
+      ...props,
+      fetching: true,
+      cielConcepts: [],
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <BulkConceptList {...newProps} />
+      </Provider>
+    </MemoryRouter>);
+    expect(wrapper.length).toEqual(1);
+  });
 });

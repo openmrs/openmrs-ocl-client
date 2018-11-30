@@ -20,4 +20,12 @@ describe('Test suite for ConceptNameRows ', () => {
     const wrapper = shallow(<ConceptNameRows {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should render on change handleNameLocale', () => {
+    const wrapper = shallow(<ConceptNameRows {...props} />);
+    const selectedOptions = {
+      value: '',
+    };
+    wrapper.find('#locale_full').simulate('change', selectedOptions);
+  });
 });

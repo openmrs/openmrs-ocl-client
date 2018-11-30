@@ -6,8 +6,9 @@ import {
   AUTHENTICATED,
   AUTHENTICATION_IN_PROGRESS,
   AUTHENTICATION_FAILED,
+  LOGGED_OUT,
 } from '../../../redux/actions/types';
-import { loginAction } from '../../../redux/actions/auth/authActions';
+import { loginAction, logoutAction } from '../../../redux/actions/auth/authActions';
 import users from '../../__mocks__/users';
 
 jest.mock('react-notify-toast');
@@ -85,5 +86,23 @@ describe('Test suite for login action', () => {
       .then(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+  });
+
+  it('should handle logout error', () => {
+    const expectedActions = [
+      {
+        type: AUTHENTICATION_IN_PROGRESS,
+        loading: true,
+      },
+      {
+        type: LOGGED_OUT,
+        payload: {},
+      }];
+
+    const store = mockStore();
+
+    store.dispatch(logoutAction());
+
+    expect(store.getActions()).toEqual(expectedActions);
   });
 });

@@ -163,6 +163,9 @@ describe('DictionaryDisplay', () => {
       </MemoryRouter>
     </Provider>);
     const event = { target: { name: 'searchInput', value: 'openmrs' } };
+    const event2 = { target: { name: 'searchInput', value: '', type: 'checkbox' } };
+    wrapper.find('#search').simulate('change', event);
+    wrapper.find('#search').simulate('change', event2);
     const spy = jest.spyOn(wrapper.find('OwnerDictionary').instance(), 'onSubmit');
     wrapper.find('#search').simulate('change', event);
     wrapper
@@ -193,6 +196,23 @@ describe('DictionaryDisplay', () => {
     wrapper.find('.add-dictionaries').simulate('click');
     expect(wrapper.find('OwnerDictionary').instance().state.show).toEqual(true);
   });
+
+  it('It sets the state of the component show:false', () => {
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <OwnerDictionary />
+      </Provider>
+    </MemoryRouter>);
+
+    wrapper.find('OwnerDictionary').instance().setState({
+      show: true,
+    });
+
+    wrapper.find('OwnerDictionary').instance().handleHide();
+    const showState = wrapper.find('OwnerDictionary').instance().state.show;
+    expect(showState).toEqual(false);
+  });
+
   describe(' wrapper components', () => {
     it('should render a list of dictionaries', () => {
       const props = {

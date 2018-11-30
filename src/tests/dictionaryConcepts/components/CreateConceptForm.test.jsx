@@ -25,7 +25,7 @@ describe('Test suite for CreateConceptForm', () => {
           dictionaryName: '',
         },
       },
-      concept: 'Diagnosis',
+      concept: '',
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper).toMatchSnapshot();
@@ -94,6 +94,7 @@ describe('Test suite for CreateConceptForm', () => {
       answer: [],
       nameRows: [],
       description: [],
+      isEditConcept: true,
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('.form-group.answer')).toHaveLength(1);

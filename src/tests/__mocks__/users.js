@@ -1,9 +1,9 @@
 export default {
   type: 'User',
   uuid: '5b719ec5e5fc3e00c8ba5084',
-  username: 'testuser',
-  name: 'Nesh Test',
-  email: 'kmunene@ymail.com',
+  username: 'admin',
+  name: 'Ian Duncan',
+  email: 'admin@openconceptlab.org',
   company: null,
   location: null,
   preferred_locale: null,
