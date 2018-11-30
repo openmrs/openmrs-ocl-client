@@ -35,8 +35,8 @@ export class ActionButtons extends Component {
     this.setState({ open: false });
   };
 
-  fetchPreview = () => {
-    this.props.previewConcept(this.props.id);
+  fetchPreview = (id) => {
+    this.props.previewConcept(id);
     this.openModal();
   };
 
@@ -46,13 +46,13 @@ export class ActionButtons extends Component {
     this.props.addConcept(params, data, name);
   };
 
-  addConceptButton = () => {
+  addConceptButton = (id, url, display_name) => {
     notify.show('Adding...', 'warning', 800);
 
-    this.fetchPreview(this.props.id);
+    this.fetchPreview(id);
     this.closeModal();
     setTimeout(() => {
-      this.addConcept(this.props.preview.url, this.props.preview.display_name);
+      this.addConcept(url, display_name);
     }, 1000);
   };
 
@@ -63,7 +63,12 @@ export class ActionButtons extends Component {
           type="submit"
           className="btn btn-sm mb-1 actionaButtons"
           id="add-button"
-          onClick={() => this.addConceptButton()}
+          onClick={() => this.addConceptButton(
+            this.props.id,
+            this.props.preview.url,
+            this.props.preview.display_name,
+          )
+          }
         >
           Add concept
         </button>

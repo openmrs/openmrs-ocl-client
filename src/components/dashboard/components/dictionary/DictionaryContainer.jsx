@@ -23,9 +23,13 @@ export class DictionaryOverview extends Component {
     fetchDictionaryConcepts: propTypes.func.isRequired,
     fetchVersions: propTypes.func.isRequired,
     createVersion: propTypes.func.isRequired,
-    error: propTypes.array.isRequired,
+    error: propTypes.array,
     releaseHead: propTypes.func.isRequired,
     isReleased: propTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    error: null,
   };
 
   constructor(props) {
