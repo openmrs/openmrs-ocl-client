@@ -68,7 +68,7 @@ class ExternalMapping extends Component {
               <Input
                 type="text"
                 className="form-control answer"
-                placeholder="eg. Malariae"
+                placeholder="eg. Malaria"
                 name="term"
                 value={term}
                 onChange={this.handleChange}
