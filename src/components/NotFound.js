@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NotFound = () => (
   <div className="not-found">
@@ -6,11 +7,11 @@ const NotFound = () => (
       <h2 className="error-template">Oops!, Page Not Found</h2>
 
       <div className="error-actions">
-        <a href="/" className="btn btn-primary btn-lg btn-not-found">
+        <Link to="/" className="btn btn-primary btn-lg btn-not-found">
           <span className="fa fa-home" />
               Take me back home
           {' '}
-        </a>
+        </Link>
       </div>
 
     </div>
