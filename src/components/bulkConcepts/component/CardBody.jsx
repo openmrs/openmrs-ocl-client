@@ -10,7 +10,7 @@ const CardBody = ({ title, body }) => (
 
 CardBody.propTypes = {
   title: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
+  body: PropTypes.any.isRequired,
 };
 
 export default CardBody;

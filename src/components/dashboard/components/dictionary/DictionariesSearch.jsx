@@ -19,9 +19,13 @@ export const DictionariesSearch = ({ onSearch, onSubmit, searchValue }) => (
     </div>
   </div>
 );
+DictionariesSearch.defaultProps = {
+  searchValue: '',
+};
+
 DictionariesSearch.propTypes = {
   onSearch: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  searchValue: PropTypes.string.isRequired,
+  searchValue: PropTypes.string,
 };
 export default DictionariesSearch;
