@@ -54,17 +54,13 @@ export class BulkConceptsPage extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.fetchBulkConcepts();
-  }
-
   handleFilter = (event) => {
     const {
       target: { name },
     } = event;
     const targetName = name.split(',');
     const query = `q=${this.state.searchInput}`;
-    if (targetName[1] === 'datatype') {
+    if ((targetName[1]).trim() === 'datatype') {
       this.props.addToFilterList(targetName[0], 'datatype', query);
     } else {
       this.props.addToFilterList(targetName[0], 'classes', query);
@@ -76,18 +72,17 @@ export class BulkConceptsPage extends Component {
       target: { value },
     } = event;
     this.setState(() => ({ searchInput: value }));
-    if (!value) {
-      this.props.fetchFilteredConcepts('CIEL');
-    }
   };
+
+  fetchAll = () => {
+    this.props.fetchBulkConcepts();
+  }
 
   handleSearch = (event) => {
     event.preventDefault();
     const { searchInput } = this.state;
-    if (searchInput.trim() !== searchInput) {
-      const query = `q=${this.state.searchInput}`;
-      this.props.fetchFilteredConcepts('CIEL', query);
-    }
+    const query = `q=${searchInput.trim()}`;
+    this.props.fetchFilteredConcepts('CIEL', query);
   };
 
   filterCaseInsensitive = (filter, rows) => {
@@ -126,6 +121,7 @@ export class BulkConceptsPage extends Component {
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
             <SearchBar
+              fetchAll={this.fetchAll}
               handleSearch={this.handleSearch}
               handleChange={this.handleChange}
               searchInput={searchInput}

@@ -168,8 +168,11 @@ describe('Test suite for BulkConceptsPage component', () => {
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
     </Router>);
-    const event = { target: { name: 'Diagnosis, datatype', checked: true } };
+    let event = { target: { name: 'Diagnosis, datatype', checked: true } };
     wrapper.find('#Diagnosis').simulate('change', event);
+    event = { target: { name: 'Diagnosis, classes', checked: true } };
+    wrapper.find('#Diagnosis').simulate('change', event);
+    expect(wrapper.find('BulkConceptsPage').props().addToFilterList).toHaveBeenCalledTimes(2);
   });
 
   it('should filter concepts in the table', () => {
@@ -258,5 +261,40 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(mapStateToProps(initialState).classes).toEqual([]);
     expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
+  });
+  it('should show all concepts', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      filterConcept: jest.fn(),
+      handleSearch: jest.fn(),
+      handleChange: jest.fn(),
+      inputValue: '',
+      concepts: [concepts],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const instance = wrapper.find('BulkConceptsPage').instance();
+    const spy = jest.spyOn(instance, 'fetchAll');
+    instance.forceUpdate();
+    const showAllBtn = wrapper.find('Button');
+    showAllBtn.simulate('click');
+    expect(spy).toHaveBeenCalled();
   });
 });
