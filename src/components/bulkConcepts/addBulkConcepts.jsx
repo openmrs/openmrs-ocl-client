@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import matchSorter from 'match-sorter';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
@@ -22,6 +23,7 @@ export class AddBulkConcepts extends Component {
       }).isRequired,
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
+    language: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -82,6 +84,7 @@ export class AddBulkConcepts extends Component {
     const lastPage = Math.ceil(cielConcepts.length / conceptsPerPage);
     const lastConcept = indexOfFirstConcept + currentConcepts.length;
     const firstConcept = indexOfLastConcept - 19;
+    const { type, typeName, collectionName, language } = this.props.match.params;
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
@@ -164,11 +167,13 @@ export class AddBulkConcepts extends Component {
         </div>
         <br />
         <div className="add-all-btn">
-          <a href={document.referrer}>
-            <button type="button" className="btn btn-secondary">
-              Back
-            </button>
-          </a>{' '}
+          <Link
+            to={`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}/`}
+            className="btn btn-secondary"
+          >
+          Go back
+          </Link>
+          {' '}
           {this.state.cielConcepts.length === 0 ? (
             <button type="button" className="btn btn-primary" id="btn-add-all" disabled>
               <i className="fa fa-plus" /> Add All Selected
