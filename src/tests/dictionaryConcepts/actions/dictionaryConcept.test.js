@@ -100,6 +100,84 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle FETCH_DICTIONARY_CONCEPT_WITH_SOURCE_FILTERS', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
+      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    mockConceptStore.concepts.filteredBySource = ['CIEL'];
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle FETCH_DICTIONARY_CONCEPT_WITH_CLASS_FILTERS', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
+      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    mockConceptStore.concepts.filteredBySource = [];
+    mockConceptStore.concepts.filteredByClass = ['procedure'];
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle FETCH_DICTIONARY_CONCEPT_WITH_CLASS_AND_SOURCE_FILTERS', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
+      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    mockConceptStore.concepts.filteredBySource = ['CIEL'];
+    mockConceptStore.concepts.filteredByClass = ['procedure'];
+    const store = mockStore({ ...mockConceptStore, filteredByClass: ['procedure'] });
+
+    return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('should handle error in FETCH_DICTIONARY_CONCEPT', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
