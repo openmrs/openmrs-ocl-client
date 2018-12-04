@@ -19,7 +19,7 @@ import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
 import api from '../../api';
 
-const showNetworkError = () => (
+export const showNetworkError = () => (
   notify.show('Network Error. Please try again later!', 'error', 6000));
 
 /* eslint-disable */
@@ -35,10 +35,12 @@ export const createDictionary = data => async dispatch =>
         notify.show(
           'Successfully added dictionary to your organization',
           'success', 6000,
-        ),
+        ), 
       )})
-    .catch(error =>
-      notify.show(`${error.response.data.__all__[0]}`, 'error', 6000));
+    .catch(error => {
+      error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000):
+      showNetworkError();
+    });
 
 export const createDictionaryUser = data => dispatch =>
   api.dictionaries
@@ -54,8 +56,10 @@ export const createDictionaryUser = data => dispatch =>
           'success', 6000,
         ),
       )})
-    .catch(error =>
-      notify.show(`${error.response.data.__all__[0]}`, 'error', 6000));
+    .catch(error => {
+      error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) : 
+      showNetworkError();
+    });
 
 export const fetchingOrganizations = () => dispatch =>
   api.organizations
@@ -196,7 +200,8 @@ export const releaseHead = (url, data) => (dispatch) => {
         return dispatch(editDictionarySuccess(payload));
       })
       .catch(error => {
-        notify.show(`${error.response.data.__all__[0]}`, 'error', 6000);
+        error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) :
+        showNetworkError();
       })
 };
 

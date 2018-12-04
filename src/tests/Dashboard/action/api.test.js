@@ -81,6 +81,57 @@ describe('Test suite for dictionary actions', () => {
       });
   });
 
+  it('should display an error for organization when trying to dispatch ADD_DICTIONARY when offline', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+
+    const expectedActions = [];
+
+    const store = mockStore({});
+
+    const data = {
+     conceptUrl: '/concept-url',
+    }
+
+    return store
+      .dispatch(createDictionary(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it('should dispatch ADD_DICTIONARY error for organization', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: {
+          __all__: [
+            'could not create dictionary'
+          ],
+        }
+      });
+    });
+
+    const expectedActions = [];
+
+    const store = mockStore({});
+
+    const data = {
+     conceptUrl: '/concept-url',
+    }
+
+    return store
+      .dispatch(createDictionary(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
   it('should dispatch ADD_DICTIONARY for user', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -95,6 +146,57 @@ describe('Test suite for dictionary actions', () => {
     const expectedActions = [
       { type: ADDING_DICTIONARY, payload: {data: {}} },
     ];
+
+    const store = mockStore({});
+
+    const data = {
+     conceptUrl: '/concept-url',
+    }
+
+    return store
+      .dispatch(createDictionaryUser(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it('should display an error for user when trying to dispatch ADD_DICTIONARY when offline', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+
+    const expectedActions = [];
+
+    const store = mockStore({});
+
+    const data = {
+     conceptUrl: '/concept-url',
+    }
+
+    return store
+      .dispatch(createDictionaryUser(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it('should dispatch ADD_DICTIONARY error for user', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: {
+          __all__: [
+            'could not create dictionary'
+          ],
+        }
+      });
+    });
+
+    const expectedActions = [];
 
     const store = mockStore({});
 

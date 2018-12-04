@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   login, loginFailed, loginStarted, logout,
 } from './authActionCreators';
+import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
 
 const BASE_URL = 'https://api.qa.openconceptlab.org/';
 
@@ -19,17 +20,17 @@ const loginAction = ({ username, password }) => (dispatch) => {
     localStorage.setItem('username', `${username}`);
     return dispatch(login(response));
   }).catch((error) => {
-    if (error.response) {
-      let errorMessage = error.response.data.detail;
-      if (errorMessage === 'Not found.') {
-        errorMessage = 'No such user was found.';
-      }
-      if (errorMessage === 'Passwords did not match.') {
-        errorMessage = 'Either the username or password you provided is incorrect.';
-      }
-      return dispatch(loginFailed(errorMessage));
+    if (error.response === undefined) {
+      return showNetworkError();
     }
-    return dispatch(loginFailed('Please check your internet connection.'));
+    let errorMessage = error.response.data.detail;
+    if (errorMessage === 'Not found.') {
+      errorMessage = 'No such user was found.';
+    }
+    if (errorMessage === 'Passwords did not match.') {
+      errorMessage = 'Either the username or password you provided is incorrect.';
+    }
+    return dispatch(loginFailed(errorMessage));
   });
 };
 

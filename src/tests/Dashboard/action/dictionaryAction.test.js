@@ -342,6 +342,21 @@ describe('Test suite for dictionary actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should display error message when offline', () => {
+    const dictionary = dictionaries;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
 });
 
 describe('Test for successful dictionaries fetch, failure and refresh', () => {
