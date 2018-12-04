@@ -15,7 +15,7 @@ class ViewConceptMappings extends Component {
 
   render() {
     const { modal } = this.state;
-    const { mappings, displayName } = this.props;
+    const { mappings, displayName, source } = this.props;
     return (
       <React.Fragment>
         <button
@@ -24,7 +24,7 @@ class ViewConceptMappings extends Component {
           onClick={this.handleToggle}
         >
           View mappings
-          <ViewMappingsModal mappings={mappings} displayName={displayName} modal={modal} handleToggle={this.handleToggle} />
+          <ViewMappingsModal mappings={mappings} source={source} displayName={displayName} modal={modal} handleToggle={this.handleToggle} />
         </button>
       </React.Fragment>
     );

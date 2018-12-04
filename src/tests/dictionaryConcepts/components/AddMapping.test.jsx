@@ -5,7 +5,16 @@ import AddMapping from '../../../components/dictionaryConcepts/components/AddMap
 let wrapper;
 
 describe('render MappingModal', () => {
-  beforeEach(() => { wrapper = shallow(<AddMapping />); });
+  const props = {
+    to_concept_name: '',
+    to_concept_url: '',
+    source: '',
+    url: '',
+    map_type: '',
+    concepts: [],
+    editMapping: jest.fn(),
+  };
+  beforeEach(() => { wrapper = shallow(<AddMapping {...props} />); });
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
   });
