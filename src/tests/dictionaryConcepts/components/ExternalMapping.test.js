@@ -8,10 +8,11 @@ let props;
 describe('render MappingModal', () => {
   beforeEach(() => {
     props = {
-      map_type: '',
-      term: '',
+      map_type: 'same as',
       source_url: '',
-      code: '',
+      to_source_url: '',
+      to_concept_name: '',
+      to_concept_code: '',
       handleChange: jest.fn(),
     };
     wrapper = shallow(<ExternalMapping {...props} />);

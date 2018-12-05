@@ -8,6 +8,7 @@ const props = {
   id: '1',
   concept_class: 'drug',
   version_url: '/url',
+  displayName: ' ',
   showDeleteModal: jest.fn(),
   handleDeleteMapping: jest.fn(),
   showDeleteMappingModal: jest.fn(),

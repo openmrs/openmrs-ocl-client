@@ -61,6 +61,19 @@ describe('render ViewMappingsModal', () => {
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
   });
+  it('should render with a set mapping limit', () => {
+    const newProps = {
+      ...props,
+      mappings: [{}, {}, {}],
+      mappingLimit: 2,
+    };
+    wrapper = mount(
+      <Provider store={store}>
+        <ViewMappingsModal.WrappedComponent store={store} {...newProps} />
+      </Provider>,
+    );
+    expect(wrapper.length).toEqual(1);
+  });
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
   });

@@ -10,9 +10,9 @@ class ExternalMapping extends Component {
   render() {
     const {
       map_type,
-      term,
-      source_url,
-      code,
+      to_concept_name,
+      to_source_url,
+      to_concept_code,
     } = this.props;
 
     return (
@@ -23,12 +23,13 @@ class ExternalMapping extends Component {
               Type
               <select
                 name="map_type"
-                value={map_type}
+                defaultValue={map_type}
                 className="form-control"
                 onChange={this.handleChange}
                 id="map_type"
                 required
               >
+                {map_type && <option>{map_type}</option>}
                 <option>Same as</option>
                 <option>Narrower than</option>
               </select>
@@ -36,13 +37,13 @@ class ExternalMapping extends Component {
           </div>
           <div>
             <FormGroup className="form-style">
-              To concept
+              To source
               <Input
                 type="text"
                 className="form-control answer"
                 placeholder="eg. /orgs/Regenstrief/sources/loinc2/concepts/32700-7/"
-                name="to_concept_url"
-                defaultValue={source_url}
+                name="to_source_url"
+                defaultValue={to_source_url}
                 onChange={this.handleChange}
                 required
               />
@@ -55,8 +56,8 @@ class ExternalMapping extends Component {
                 type="text"
                 className="form-control answer"
                 placeholder="eg. jgug-fgtgtg-rfrg"
-                name="code"
-                value={code}
+                name="to_concept_code"
+                defaultValue={to_concept_code}
                 onChange={this.handleChange}
                 required
               />
@@ -69,8 +70,8 @@ class ExternalMapping extends Component {
                 type="text"
                 className="form-control answer"
                 placeholder="eg. Malaria"
-                name="term"
-                value={term}
+                name="to_concept_name"
+                defaultValue={to_concept_name}
                 onChange={this.handleChange}
                 required
               />
@@ -84,9 +85,9 @@ class ExternalMapping extends Component {
 
 ExternalMapping.propTypes = {
   map_type: PropTypes.string.isRequired,
-  term: PropTypes.string.isRequired,
-  source_url: PropTypes.string.isRequired,
-  code: PropTypes.string.isRequired,
+  to_concept_name: PropTypes.string.isRequired,
+  to_source_url: PropTypes.string.isRequired,
+  to_concept_code: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
 };
 
