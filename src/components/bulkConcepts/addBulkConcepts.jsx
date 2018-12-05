@@ -123,13 +123,6 @@ export class AddBulkConcepts extends Component {
             <br />
             <div id="other-search">
               <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="exampleRadios"
-                  id="exampleRadios3"
-                  value="option3"
-                />
                 <label className="form-check-label" htmlFor="exampleRadios3">
                   Other:&nbsp;&nbsp;
                 </label>
