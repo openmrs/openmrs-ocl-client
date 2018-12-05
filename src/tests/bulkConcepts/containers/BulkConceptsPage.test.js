@@ -69,7 +69,7 @@ describe('Test suite for BulkConceptsPage component', () => {
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
     </Router>);
-    expect(wrapper.find('#emptyConcept').text()).toEqual('No concepts found');
+    expect(wrapper.find('.rt-noData').text()).toEqual('No concepts found!');
   });
 
   it('should search for concepts', () => {
