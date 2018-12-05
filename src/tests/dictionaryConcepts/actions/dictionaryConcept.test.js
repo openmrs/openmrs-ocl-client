@@ -92,8 +92,8 @@ describe('Test suite for dictionary concept actions', () => {
       { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
       { type: TOTAL_CONCEPT_COUNT, payload: 1 },
       { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
-      { type: IS_FETCHING, payload: false },
       { type: POPULATE_SIDEBAR, payload: [] },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -334,8 +334,8 @@ describe('Test suite for dictionary concept actions', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: IS_FETCHING, payload: false },
       { type: CREATE_NEW_CONCEPT, payload: 'bad request' },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -373,7 +373,7 @@ describe('Test suite for dictionary concept actions', () => {
       });
     });
 
-    const expectedActions = [];
+    const expectedActions = [{ type: IS_FETCHING, payload: false }];
 
     const store = mockStore(mockConceptStore);
     const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
@@ -394,6 +394,7 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -424,6 +425,7 @@ describe('Testing Edit concept actions ', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);

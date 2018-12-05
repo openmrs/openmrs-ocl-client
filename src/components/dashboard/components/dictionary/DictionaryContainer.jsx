@@ -228,6 +228,7 @@ export class DictionaryOverview extends Component {
                 showVersionModal={this.showVersionModal}
                 openVersionModal={this.state.openVersionModal}
                 handleChange={this.handleChange}
+                disableButton={loader}
                 handleCreateVersion={this.handleCreateVersion}
                 versionId={this.state.versionId}
                 versionDescription={this.state.versionDescription}

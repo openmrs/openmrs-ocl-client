@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 const ReleaseVersionModal = (props) => {
   const {
-    show, click, handleCreateVersion, handleChange, versionId, versionDescription, inputLength,
+    show, click, handleCreateVersion, handleChange, versionId, versionDescription, inputLength, disableButton,
   } = props;
   return (
     <div className="modal-container">
@@ -46,23 +46,15 @@ const ReleaseVersionModal = (props) => {
         </ModalBody>
 
         <ModalFooter>
-          {inputLength > 0
-            ? (
-              <Button
-                className="btn-sm btn-outline-info version"
-                id="saveReleaseVersion"
-                onClick={handleCreateVersion}
-              >
-               Release
-              </Button>
-            ) : (
-              <Button
-                className="btn-sm btn-outline-info version-disabled"
-                disabled
-              >
-               Release
-              </Button>
-            )}
+          <Button
+            className="btn-sm btn-outline-info version"
+            id="saveReleaseVersion"
+            onClick={handleCreateVersion}
+            disabled={inputLength === 0 || disableButton}
+          >
+            Release
+          </Button>
+
           <Button
             className="btn-sm btn-outline-danger test-btn-cancel"
             id="sub-cancel"
@@ -84,6 +76,7 @@ ReleaseVersionModal.propTypes = {
   versionId: PropTypes.string,
   versionDescription: PropTypes.string,
   inputLength: PropTypes.number.isRequired,
+  disableButton: PropTypes.bool.isRequired,
 };
 
 ReleaseVersionModal.defaultProps = {

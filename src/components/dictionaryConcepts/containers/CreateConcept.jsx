@@ -48,6 +48,7 @@ export class CreateConcept extends Component {
     addNewAnswer: PropTypes.func.isRequired,
     removeAnswer: PropTypes.func.isRequired,
     answer: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -228,6 +229,7 @@ export class CreateConcept extends Component {
           conceptType, dictionaryName,
         },
       },
+      loading,
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
@@ -262,6 +264,7 @@ Concept
                 path={path}
                 state={this.state}
                 handleChange={this.handleChange}
+                disableButton={loading}
                 handleSelections={this.handleNameLocale}
                 handleDescription={this.handleDescriptionLocale}
                 handleSubmit={this.handleSubmit}
@@ -288,6 +291,7 @@ export const mapStateToProps = state => ({
   newConcept: state.concepts.newConcept,
   addedConcept: state.concepts.addConceptToDictionary,
   answer: state.concepts.answer,
+  loading: state.concepts.loading,
 });
 export default connect(
   mapStateToProps,

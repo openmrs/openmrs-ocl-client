@@ -137,16 +137,15 @@ export const fetchDictionaryConcepts = (
     const response = await instance.get(url);
     dispatch(getDictionaryConcepts(response.data, FETCH_DICTIONARY_CONCEPT));
     dispatch(paginateConcepts(response.data));
-    dispatch(isFetching(false));
     if (query === '' && filterByClass.length === 0 && filterBySource.length === 0) {
       dispatch(populateSidenav());
     }
   } catch (error) {
     if (error.response) {
       dispatch(isErrored(error.response.data, FETCH_DICTIONARY_CONCEPT));
-      dispatch(isFetching(false));
     }
   }
+  dispatch(isFetching(false));
 };
 
 export const filterBySource = (
@@ -182,10 +181,10 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   try {
     const response = await instance.put(url, data);
     dispatch(isSuccess(response.data, ADD_CONCEPT_TO_DICTIONARY));
-    dispatch(isFetching(false));
   } catch (error) {
     notify.show('an error occurred', 'error', 3000);
   }
+  dispatch(isFetching(false));
 };
 
 export const createNewConcept = (data, dataUrl) => async (dispatch) => {
@@ -205,8 +204,7 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
 } for ${
   Object.keys(error.response.data).toString()
 }`, 'error', 3000);
-      dispatch(isFetching(false));
-      return dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
+      dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     }
   }
   return dispatch(isFetching(false));
@@ -223,9 +221,9 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
     notify.show('Could not retrieve concept details', 'error', 3000);
     if (error.response) {
       dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
-      dispatch(isFetching(false));
     }
   }
+  dispatch(isFetching(false));
 };
 
 export const updateConcept = (conceptUrl, data, history) => async (dispatch) => {
@@ -245,8 +243,8 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
   Object.keys(error.response.data).toString()
 }`, 'error', 3000);
       dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
-      return dispatch(isFetching(false));
     }
+    dispatch(isFetching(false));
   }
   return history.goBack();
 };
