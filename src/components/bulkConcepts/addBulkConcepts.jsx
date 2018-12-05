@@ -105,19 +105,6 @@ export class AddBulkConcepts extends Component {
               </label>
             </div>
             <br />
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios2"
-                value="option2"
-              />
-              <label className="form-check-label" htmlFor="exampleRadios2">
-                (Other preferred sources here)
-              </label>
-            </div>{' '}
-            <br />
             <div id="other-search">
               <div className="form-check">
                 <input
