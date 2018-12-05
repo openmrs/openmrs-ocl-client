@@ -28,6 +28,7 @@ describe('Add Bulk Concepts', () => {
       isFetching: true,
       match,
       addExistingBulkConcepts: jest.fn(),
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -43,6 +44,7 @@ describe('Add Bulk Concepts', () => {
       isFetching: true,
       match,
       addExistingBulkConcepts: jest.fn(),
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -58,6 +60,7 @@ describe('Add Bulk Concepts', () => {
       cielConcepts: [],
       isFetching: true,
       match,
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -75,6 +78,7 @@ describe('Add Bulk Concepts', () => {
       cielConcepts: mockConcepts,
       isFetching: true,
       match,
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -101,6 +105,7 @@ describe('Add Bulk Concepts', () => {
       cielConcepts: mockConcepts,
       isFetching: true,
       match,
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -134,6 +139,7 @@ describe('Add Bulk Concepts', () => {
       cielConcepts: mockConcepts,
       isFetching: true,
       match,
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -160,6 +166,7 @@ describe('Add Bulk Concepts', () => {
       cielConcepts: mockConcepts,
       isFetching: true,
       match,
+      language: 'en',
     };
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -192,6 +199,7 @@ it('should filter concepts in the table', () => {
     match,
     datatypes: ['text'],
     classes: ['Diagnosis'],
+    language: 'en',
   };
   const wrapper = mount(<MemoryRouter>
     <Provider store={store}>
