@@ -24,7 +24,6 @@ export class DictionaryOverview extends Component {
     fetchVersions: propTypes.func.isRequired,
     createVersion: propTypes.func.isRequired,
     error: propTypes.array,
-    releaseHead: propTypes.func.isRequired,
     isReleased: propTypes.bool.isRequired,
   };
 
@@ -75,16 +74,6 @@ export class DictionaryOverview extends Component {
     if (prevProps.isReleased !== this.props.isReleased) {
       this.props.fetchVersions(versionUrl);
     }
-  }
-
-  handleRelease = () => {
-    const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
-    const headVersionObj = Object.assign({}, headVersion);
-    const data = {
-      released: true,
-    };
-    const url = headVersionObj.version_url;
-    this.props.releaseHead(url, data);
   }
 
   handleHide = () => this.setState({ showEditModal: false });
@@ -217,7 +206,6 @@ export class DictionaryOverview extends Component {
                 diagnosisConcepts={diagnosisConcepts}
                 procedureConcepts={procedureConcepts}
                 otherConcepts={otherConcepts}
-                handleRelease={this.handleRelease}
                 headVersion={headVersionIdObj}
                 showEditModal={this.handleShow}
                 hideSubModal={this.handleHideSub}

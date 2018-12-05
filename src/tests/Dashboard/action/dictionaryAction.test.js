@@ -405,7 +405,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
       },
     ];
     const store = mockStore({ payload: {} });
-    return store.dispatch(releaseHead('/users/nesh/collections/test/HEAD/')).then(() => {
+    return store.dispatch(releaseHead('/users/nesh/collections/test/1.0/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -423,7 +423,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
       },
     ];
     const store = mockStore({ payload: {} });
-    return store.dispatch(releaseHead('/users/nesh/collections/test/HEAD/')).then(() => {
+    return store.dispatch(releaseHead('/users/nesh/collections/test/1.0/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -452,7 +452,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
       released: true,
       description: 'Released',
     };
-    const url = '/users/nesh/collections/test/HEAD/';
+    const url = '/users/nesh/collections/test/1.0/';
     return store.dispatch(createVersion(url, data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -481,7 +481,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
       released: true,
       description: 'Released',
     };
-    const url = '/users/nesh/collections/test/HEAD/';
+    const url = '/users/nesh/collections/test/1.0/';
     return store.dispatch(createVersion(url, data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
@@ -514,7 +514,7 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
       released: true,
       description: 'Released',
     };
-    const url = '/users/nesh/collections/test/HEAD/';
+    const url = '/users/nesh/collections/test/1.0/';
     return store.dispatch(createVersion(url, data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });

@@ -227,6 +227,7 @@ export const createVersion = (url, data) => (dispatch) => {
           `${payload.id} has successfully been released`,
           'success', 6000,
         );
+        dispatch(fetchVersions(url));
       })
     .catch((error) => {
       if(error.response.data.detail){

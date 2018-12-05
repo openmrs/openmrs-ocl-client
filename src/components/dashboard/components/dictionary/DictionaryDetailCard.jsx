@@ -28,8 +28,6 @@ const DictionaryDetailCard = (props) => {
     diagnosisConcepts,
     procedureConcepts,
     otherConcepts,
-    headVersion,
-    handleRelease,
     hideSubModal,
     showSubModal,
     subModal,
@@ -203,14 +201,12 @@ Browse in traditional OCL
                   <li>
                     <button
                       type="button"
-                      onClick={!headVersion.released ? handleRelease : showVersionModal}
+                      onClick={showVersionModal}
                       className="fas fa-cloud-upload-alt head"
                       id="releaseVersion"
                     >
                       <span id="release-head">
-                        &nbsp;Release&nbsp;
-                        {!headVersion.released ? 'latest ' : null}
-                        version
+                        &nbsp;Release&nbsp;latest&nbsp;version
                       </span>
                     </button>
                   </li>
@@ -273,14 +269,12 @@ Browse in traditional OCL
 DictionaryDetailCard.propTypes = {
   dictionary: PropTypes.object.isRequired,
   versions: PropTypes.array.isRequired,
-  handleRelease: PropTypes.func.isRequired,
   showEditModal: PropTypes.func.isRequired,
   customConcepts: PropTypes.string.isRequired,
   cielConcepts: PropTypes.string.isRequired,
   diagnosisConcepts: PropTypes.string.isRequired,
   procedureConcepts: PropTypes.string.isRequired,
   otherConcepts: PropTypes.string.isRequired,
-  headVersion: PropTypes.object.isRequired,
   hideSubModal: PropTypes.func.isRequired,
   showSubModal: PropTypes.func.isRequired,
   subModal: PropTypes.bool.isRequired,
