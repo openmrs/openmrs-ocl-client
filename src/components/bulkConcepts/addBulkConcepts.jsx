@@ -6,7 +6,6 @@ import matchSorter from 'match-sorter';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from './bulkConceptList';
 import Header from './container/Header';
-import Paginations from './component/Paginations';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
@@ -29,7 +28,6 @@ export class AddBulkConcepts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 1,
       cielConcepts: [],
       conceptLimit: 10,
     };
@@ -62,11 +60,6 @@ export class AddBulkConcepts extends Component {
       });
     }
   };
-  handlePaginationClick = (e) => {
-    e.preventDefault();
-    const { id } = e.target;
-    this.setState({ currentPage: Number(id) });
-  };
 
   filterCaseInsensitive = (filter, rows) => {
     const id = filter.pivotId || filter.id;
@@ -75,16 +68,14 @@ export class AddBulkConcepts extends Component {
 
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
-    const { cielConcepts } = this.props;
-    const { currentPage, conceptLimit } = this.state;
-    const conceptsPerPage = 20;
-    const indexOfLastConcept = currentPage * conceptsPerPage;
-    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
-    const currentConcepts = cielConcepts.slice(indexOfFirstConcept, indexOfLastConcept);
-    const lastPage = Math.ceil(cielConcepts.length / conceptsPerPage);
-    const lastConcept = indexOfFirstConcept + currentConcepts.length;
-    const firstConcept = indexOfLastConcept - 19;
-    const { type, typeName, collectionName, language } = this.props.match.params;
+    const {
+      match: {
+        params: { type, typeName, collectionName },
+      },
+      cielConcepts,
+      language,
+    } = this.props;
+    const { conceptLimit } = this.state;
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
@@ -148,17 +139,9 @@ export class AddBulkConcepts extends Component {
           </div>
         </fieldset>
         <h4>Concept IDs to add</h4>
-        <Paginations
-          concepts={lastConcept}
-          firstConceptIndex={firstConcept}
-          totalConcepts={cielConcepts.length}
-          currentPage={currentPage}
-          handleClick={this.handlePaginationClick}
-          lastPage={lastPage}
-        />
         <div className="preferred-concepts">
           <BulkConceptList
-            cielConcepts={currentConcepts}
+            cielConcepts={cielConcepts}
             fetching={this.props.isFetching}
             handleSelect={this.handleSelect}
             filterConcept={this.filterCaseInsensitive}

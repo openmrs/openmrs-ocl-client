@@ -84,7 +84,5 @@ BulkConceptList.propTypes = {
   handleSelect: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
   filterConcept: PropTypes.func.isRequired,
-
-
 };
 export default BulkConceptList;

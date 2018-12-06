@@ -13,6 +13,7 @@ describe('render MappingModal', () => {
     map_type: '',
     concepts: [],
     editMapping: jest.fn(),
+    buttonName: '',
   };
   beforeEach(() => { wrapper = shallow(<AddMapping {...props} />); });
   it('should render without breaking', () => {
@@ -22,5 +23,20 @@ describe('render MappingModal', () => {
   it('should handle type change', () => {
     wrapper.find('.actionButtons').simulate('click');
     expect(wrapper.state().modal).toBe(true);
+  });
+
+  it('should test componentWillReceiveProps', () => {
+    const newProps = {
+      ...props,
+      to_concept_name: 'newone',
+    };
+    wrapper.setProps(newProps);
+  });
+
+  it('should test componentWillReceiveProps with same prop values', () => {
+    const newProps = {
+      ...props,
+    };
+    wrapper.setProps(newProps);
   });
 });

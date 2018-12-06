@@ -5,7 +5,6 @@ import matchSorter from 'match-sorter';
 import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
-import Paginations from '../component/Paginations';
 import Header from './Header';
 import {
   fetchBulkConcepts,
@@ -50,7 +49,6 @@ export class BulkConceptsPage extends Component {
     this.state = {
       datatypeInput: '',
       classInput: '',
-      currentPage: 1,
       searchInput: '',
       conceptLimit: 10,
     };
@@ -73,12 +71,6 @@ export class BulkConceptsPage extends Component {
     }
   };
 
-  handleClick = (e) => {
-    e.preventDefault();
-    const { id } = e.target;
-    this.setState({ currentPage: Number(id) });
-  };
-
   handleChange = (event) => {
     const {
       target: { value },
@@ -91,7 +83,8 @@ export class BulkConceptsPage extends Component {
 
   handleSearch = (event) => {
     event.preventDefault();
-    if (this.state.searchInput.trim()) {
+    const { searchInput } = this.state;
+    if (searchInput.trim() !== searchInput) {
       const query = `q=${this.state.searchInput}`;
       this.props.fetchFilteredConcepts('CIEL', query);
     }
@@ -113,16 +106,8 @@ export class BulkConceptsPage extends Component {
       match: { params },
     } = this.props;
     const {
-      datatypeInput, classInput, currentPage, searchInput, conceptLimit,
+      datatypeInput, classInput, searchInput, conceptLimit,
     } = this.state;
-
-    const conceptsPerPage = 20;
-    const indexOfLastConcept = currentPage * conceptsPerPage;
-    const indexOfFirstConcept = indexOfLastConcept - conceptsPerPage;
-    const currentConcepts = this.props.concepts.slice(indexOfFirstConcept, indexOfLastConcept);
-    const lastPage = Math.ceil(this.props.concepts.length / conceptsPerPage);
-    const lastConcept = indexOfFirstConcept + currentConcepts.length;
-    const firstConcept = indexOfLastConcept - 19;
     return (
       <div className="container-fluid bulk-concepts custom-max-width">
         <section>
@@ -145,16 +130,8 @@ export class BulkConceptsPage extends Component {
               handleChange={this.handleChange}
               searchInput={searchInput}
             />
-            <Paginations
-              concepts={lastConcept}
-              firstConceptIndex={firstConcept}
-              totalConcepts={concepts.length}
-              currentPage={currentPage}
-              handleClick={this.handleClick}
-              lastPage={lastPage}
-            />
             <ConceptTable
-              concepts={currentConcepts}
+              concepts={concepts}
               loading={loading}
               location={params}
               preview={preview}
