@@ -59,7 +59,7 @@ const BulkConceptList = ({
             ...filter,
           },
         ]}
-        className="-striped -highlight"
+        className="-striped -highlight custom-table-min-height"
       />
     );
   }

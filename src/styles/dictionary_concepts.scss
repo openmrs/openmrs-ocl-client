@@ -339,6 +339,10 @@ input:-webkit-autofill:active {
   width: 100% !important;
 }
 
+.custom-table-min-height {
+  min-height: 50vh;
+}
+
 @media only screen and (max-width : 992px) {
 
   .bulk-concepts {

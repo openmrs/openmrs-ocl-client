@@ -69,7 +69,7 @@ export const ViewMappingsModal = ({
                 ),
               },
             ]}
-            className="-striped -highlight custom-table-width"
+            className="-striped -highlight custom-table-width custom-table-min-height"
           />
         </div>
       </ModalBody>
