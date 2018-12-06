@@ -6,7 +6,7 @@ import {
   BulkConceptsPage,
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
-import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
+import concepts from '../../__mocks__/concepts';
 
 jest.useFakeTimers();
 
@@ -71,33 +71,6 @@ describe('Test suite for BulkConceptsPage component', () => {
     </Router>);
     expect(wrapper.find('#emptyConcept').text()).toEqual('No concepts found');
   });
-  it('should render with at least one concept', () => {
-    const props = {
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [concepts],
-      loading: false,
-      datatypes: [],
-      classes: [],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-    };
-    const wrapper = mount(<Router>
-      <BulkConceptsPage {...props} />
-    </Router>);
-    expect(wrapper.find('.rt-tbody').text()).toBeTruthy();
-  });
 
   it('should search for concepts', () => {
     const props = {
@@ -127,10 +100,14 @@ describe('Test suite for BulkConceptsPage component', () => {
     const wrapper = mount(<Router>
       <BulkConceptsPage {...props} />
     </Router>);
-    const event = { target: { name: 'searchInput', value: 'testing' } };
+    const event = { target: { name: 'searchInput', value: '   testing' } };
     wrapper.find('#search-concept').simulate('change', event);
     wrapper.find('#submit-search-form').simulate('submit');
-    // clear form to call an action to fetch all concepts again
+
+    const event2 = { target: { name: 'searchInput', value: 'testing' } };
+    wrapper.find('#search-concept').simulate('change', event2);
+    wrapper.find('#submit-search-form').simulate('submit');
+
     const clearForm = { target: { name: 'searchInput', value: '' } };
     wrapper.find('#search-concept').simulate('change', clearForm);
   });
@@ -252,36 +229,5 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(mapStateToProps(initialState).classes).toEqual([]);
     expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
-  });
-  it('should paginate concepts', () => {
-    const props = {
-      fetchBulkConcepts: jest.fn(),
-      concepts: multipleConceptsMockStore.concepts.dictionaryConcepts,
-      loading: false,
-      datatypes: [],
-      classes: [],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-    };
-    const wrapper = mount(<Router>
-      <BulkConceptsPage {...props} />
-    </Router>);
-    const event = { target: { id: 2 } };
-    wrapper.find('.nxt').simulate('click', {
-      preventDefault: () => {},
-      event,
-    });
   });
 });

@@ -159,26 +159,6 @@ describe('Add Bulk Concepts', () => {
     wrapper.find('#btn-add-all').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
   });
-  it('it calls hanldlePaginationClick', () => {
-    const props = {
-      fetchCielConcepts: jest.fn(),
-      addExistingBulkConcepts: jest.fn(),
-      cielConcepts: mockConcepts,
-      isFetching: true,
-      match,
-      language: 'en',
-    };
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const spy = jest.spyOn(wrapper.find('AddBulkConcepts').instance(), 'handlePaginationClick');
-    wrapper.instance().forceUpdate();
-    wrapper.find('#ciel').at(0).simulate('click');
-    wrapper.find('.fas.fa-angle-double-right.nxt').at(0).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
 
   it('should test mapStateToProps', () => {
     const initialState = {
