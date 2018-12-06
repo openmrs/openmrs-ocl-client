@@ -36,7 +36,7 @@ const SubscriptionModal = (props) => {
             id="sub-cancel"
             onClick={click}
           >
-              Cancel
+             Close
           </Button>
         </ModalFooter>
       </Modal>
