@@ -51,27 +51,6 @@
   display: inline-block;
 }
 
-.footer {
-  width: 100%;
-  border-top: 1px solid #e5e5e5;
-  background-color: #f5f5f5;
-}
-.site-footer {
-  padding-top: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
-}
-
-.site-footer-links ul {
-  padding-left: 0;
-}
-
-.site-footer-links li {
-  display: inline;
-  padding: 5px;
-  font-size: 10pt;
-}
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
