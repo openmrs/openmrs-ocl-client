@@ -34,7 +34,7 @@ export const ViewMappingsModal = ({
             defaultPageSize={mappings.length <= mappingLimit ? mappings.length : mappingLimit}
             filterable
             noDataText="No mappings!"
-            minRows={0}
+            minRows={2}
             columns={[
               {
                 Header: 'From Concept Name',
@@ -79,7 +79,7 @@ export const ViewMappingsModal = ({
                 ),
               },
             ]}
-            className="-striped -highlight custom-table-width custom-table-min-height"
+            className="-striped -highlight custom-table-width"
           />
         </div>
       </ModalBody>
