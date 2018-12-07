@@ -8,4 +8,4 @@ script:
   - npm test -- -u --coverage
 
 after_success:
-  - coveralls < coverage/lcov.info
+  - coveralls -v < coverage/lcov.info
