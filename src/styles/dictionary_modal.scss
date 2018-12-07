@@ -160,3 +160,8 @@ legend {
   #inline-error{
       color: #cc0000;
   }
+
+button:disabled{
+    cursor: not-allowed;
+    background: #e9ecef !important;
+}

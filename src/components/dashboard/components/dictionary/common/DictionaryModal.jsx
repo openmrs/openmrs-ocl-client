@@ -31,6 +31,7 @@ export class DictionaryModal extends React.Component {
       },
       errors: {},
       supportedLocalesOptions: [],
+      disableButton: false,
     };
   }
 
@@ -150,6 +151,11 @@ export class DictionaryModal extends React.Component {
     return errors;
   };
 
+  addDictionary = (e) => {
+    this.setState({ disableButton: true });
+    this.onSubmit(e);
+  }
+
   hideModal = () => {
     this.setState({
       data: {
@@ -196,7 +202,7 @@ export class DictionaryModal extends React.Component {
   }
 
   render() {
-    const { data, errors } = this.state;
+    const { data, errors, disableButton } = this.state;
     const {
       organizations, dictionary,
       isEditingDictionary,
@@ -425,7 +431,8 @@ export class DictionaryModal extends React.Component {
             <Button
               className="btn btn-outline-info"
               id="addDictionary"
-              onClick={this.onSubmit}
+              onClick={this.addDictionary}
+              disabled={disableButton}
             >
               {this.props.buttonname}
               {' '}
@@ -434,6 +441,7 @@ export class DictionaryModal extends React.Component {
               className="btn btn-outline-danger test-btn-cancel"
               id="cancel"
               onClick={this.hideModal}
+              disabled={disableButton}
             >
               Cancel
             </Button>

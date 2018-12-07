@@ -74,7 +74,9 @@ export class AddBulkConcepts extends Component {
       },
       cielConcepts,
       language,
+      isFetching,
     } = this.props;
+    const disableButton = ((this.state.cielConcepts.length === 0) || isFetching);
     const { conceptLimit } = this.state;
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
@@ -145,7 +147,7 @@ export class AddBulkConcepts extends Component {
           </Link>
           {' '}
           {this.state.cielConcepts.length === 0 ? (
-            <button type="button" className="btn btn-primary" id="btn-add-all" disabled>
+            <button type="button" className="btn btn-primary" id="btn-add-all" disabled={disableButton}>
               <i className="fa fa-plus" /> Add All Selected
             </button>
           ) : (
@@ -154,6 +156,7 @@ export class AddBulkConcepts extends Component {
               className="btn btn-primary btn-add-all"
               id="btn-add-all"
               onClick={this.handleAddAll}
+              disabled={disableButton}
             >
               <i className="fa fa-plus" /> Add All Selected
             </button>

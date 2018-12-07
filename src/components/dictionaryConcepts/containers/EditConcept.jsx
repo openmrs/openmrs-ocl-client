@@ -50,6 +50,7 @@ export class EditConcept extends Component {
     answer: PropTypes.array.isRequired,
     addNewAnswer: PropTypes.func.isRequired,
     removeAnswer: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -222,6 +223,7 @@ export class EditConcept extends Component {
         },
       },
       existingConcept,
+      loading,
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
@@ -268,6 +270,7 @@ Concept
                 existingConcept={existingConcept}
                 isEditConcept={this.state.isEditConcept}
                 answer={this.props.answer}
+                disableButton={loading}
                 addDataFromAnswer={this.addDataFromAnswer}
                 addAnswer={this.addNewAnswer}
                 removeAnswer={this.removeAnswer}
@@ -289,6 +292,7 @@ export const mapStateToProps = state => ({
   addedConcept: state.concepts.addConceptToDictionary,
   existingConcept: state.concepts.existingConcept,
   answer: state.concepts.answer,
+  loading: state.concepts.loading,
 });
 export default connect(
   mapStateToProps,

@@ -44,6 +44,7 @@ describe('Test suite for dictionary concepts components', () => {
     newName: ['1'],
     description: ['1'],
     answer: ['78'],
+    loading: false,
     existingConcept: {
       names: [{
         uuid: '1234',
@@ -203,6 +204,7 @@ describe('Test suite for dictionary concepts components', () => {
         description: ['1'],
         newConcept,
         existingConcept,
+        disableButton: false,
       },
     };
     expect(mapStateToProps(initialState).description).toEqual(['1']);

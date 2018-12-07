@@ -19,6 +19,7 @@ describe('Test suite for CreateConceptForm', () => {
       description: [],
       addAnswer: jest.fn(),
       answer: [],
+      disableButton: false,
       match: {
         params: {
           conceptType: '',
@@ -48,6 +49,7 @@ describe('Test suite for CreateConceptForm', () => {
       description: [],
       addAnswer: jest.fn(),
       answer: [],
+      disableButton: false,
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.set')).toHaveLength(1);
@@ -71,6 +73,7 @@ describe('Test suite for CreateConceptForm', () => {
       description: [],
       addAnswer: jest.fn(),
       answer: [],
+      disableButton: false,
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.symptom-finding')).toHaveLength(1);
@@ -95,6 +98,7 @@ describe('Test suite for CreateConceptForm', () => {
       nameRows: [],
       description: [],
       isEditConcept: true,
+      disableButton: false,
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('.form-group.answer')).toHaveLength(1);

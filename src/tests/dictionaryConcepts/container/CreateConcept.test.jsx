@@ -37,6 +37,7 @@ describe('Test suite for dictionary concepts components', () => {
     addDataFromAnswer: jest.fn(),
     newName: ['1'],
     description: ['1'],
+    loading: false,
     newConcept: {
       id: '1',
       concept_class: 'question',

@@ -25,7 +25,7 @@ describe('Add Bulk Concepts', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
-      isFetching: true,
+      isFetching: false,
       match,
       addExistingBulkConcepts: jest.fn(),
       language: 'en',
@@ -41,7 +41,7 @@ describe('Add Bulk Concepts', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       cielConcepts: [],
-      isFetching: true,
+      isFetching: false,
       match,
       addExistingBulkConcepts: jest.fn(),
       language: 'en',
@@ -58,7 +58,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: [],
-      isFetching: true,
+      isFetching: false,
       match,
       language: 'en',
     };
@@ -76,7 +76,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: mockConcepts,
-      isFetching: true,
+      isFetching: false,
       match,
       language: 'en',
     };
@@ -103,7 +103,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: mockConcepts,
-      isFetching: true,
+      isFetching: false,
       match,
       language: 'en',
     };
@@ -137,7 +137,7 @@ describe('Add Bulk Concepts', () => {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
       cielConcepts: mockConcepts,
-      isFetching: true,
+      isFetching: false,
       match,
       language: 'en',
     };
@@ -175,7 +175,7 @@ it('should filter concepts in the table', () => {
     fetchCielConcepts: jest.fn(),
     addExistingBulkConcepts: jest.fn(),
     cielConcepts: mockConcepts,
-    isFetching: true,
+    isFetching: false,
     match,
     datatypes: ['text'],
     classes: ['Diagnosis'],

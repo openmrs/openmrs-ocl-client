@@ -175,11 +175,11 @@ const CreateConceptForm = props => (
         </div>
       </div>
       <div className="submit-button text-left">
-        <button className="btn btn-sm bg-blue col-2 mr-1" type="submit">
+        <button className="btn btn-sm bg-blue col-2 mr-1" type="submit" disabled={props.disableButton}>
           {props.isEditConcept ? 'Update' : 'Create' }
         </button>
         <Link to={props.path} className="collection-name small-text">
-          <button className="btn btn-sm  col-2 btn-danger" type="submit">
+          <button className="btn btn-sm  col-2 btn-danger" type="submit" disabled={props.disableButton}>
             Cancel
           </button>
         </Link>
@@ -200,6 +200,7 @@ CreateConceptForm.propTypes = {
   path: PropTypes.string.isRequired,
   toggleUUID: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
+  disableButton: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   editable: PropTypes.bool.isRequired,
   isEditConcept: PropTypes.bool,

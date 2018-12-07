@@ -35,6 +35,7 @@ const ConceptTable = ({
           conceptUrl={url}
           conceptType={locationPath.type}
           handleDelete={handleDelete}
+          disableButton={loading}
           openDeleteModal={openDeleteModal}
           closeDeleteModal={closeDeleteModal}
         />

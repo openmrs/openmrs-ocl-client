@@ -24,6 +24,7 @@ export class ActionButtons extends Component {
     super(props);
     this.state = {
       open: false,
+      disableButton: false,
     };
   }
 
@@ -47,6 +48,7 @@ export class ActionButtons extends Component {
   };
 
   addConceptButton = (id, url, display_name) => {
+    this.setState({ disableButton: true });
     notify.show('Adding...', 'warning', 800);
 
     this.fetchPreview(id);
@@ -57,6 +59,7 @@ export class ActionButtons extends Component {
   };
 
   render() {
+    const { disableButton } = this.state;
     return (
       <React.Fragment>
         <button
@@ -69,6 +72,7 @@ export class ActionButtons extends Component {
             this.props.preview.display_name,
           )
           }
+          disabled={disableButton}
         >
           Add concept
         </button>
