@@ -42,7 +42,12 @@ export default {
       instance
         .delete(`/${type}/${owner}/collections/${collectionId}/references/`, {data:data})
         .then(response => response.data),
-    
+
+    removeConceptMapping: (data) =>
+      instance
+        .delete(data.references[0], { data: data })
+        .then(response => response.data),
+
     fetchingVersions: (data) =>
       instance
       .get(`${data}`)

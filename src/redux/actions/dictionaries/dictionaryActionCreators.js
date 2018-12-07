@@ -7,6 +7,7 @@ import {
   dictionaryIsSuccess,
   isErrored,
   removeConcept,
+  removeMapping,
   fetchingVersions,
   dictionaryConceptsIsSuccess,
   realisingHeadSuccess,
@@ -118,6 +119,25 @@ export const removeDictionaryConcept = (data, type, owner, collectionId) => disp
       notify.show("Network Error. Please try again later!", 'error', 6000)
       });
     };
+
+export const removeConceptMapping = (data, source) => dispatch => {
+  return api.dictionaries
+    .removeConceptMapping(data)
+    .then(
+      () => {
+        dispatch(removeMapping(data.references[0]));
+        notify.show(
+          'Successfully removed mapping from concept',
+          'success', 1000
+          );
+        const ConceptsToFetch = `/users/${localStorage.getItem('username')}/sources/${localStorage.getItem('dictionaryId')}/concepts/?includeMappings=true&q=&limit=0&page=1&verbose=true`
+          dispatch(fetchDictionaryConcepts(ConceptsToFetch));
+      }
+    )
+    .catch((error) => {
+      notify.show("Network Error. Please try again later!",'error', 6000)
+    });
+};
 
 export const fetchVersions = data => (dispatch) => {
   return api.dictionaries

@@ -29,6 +29,7 @@ import {
   REMOVE_CONCEPT,
   REMOVE_ONE_ANSWER_MAPPING,
   ADD_NEW_ANSWER_MAPPING,
+  REMOVE_MAPPING,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -54,6 +55,7 @@ import {
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
+  removeConceptMapping,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import concepts, {
   mockConceptStore,
@@ -226,7 +228,7 @@ describe('Test suite for dictionary concept actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: newConcept.version_url,
+        response: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/',
       });
     });
 
@@ -240,6 +242,60 @@ describe('Test suite for dictionary concept actions', () => {
     const owner = 'alexmochu';
     const collectionId = 'Tech';
     return store.dispatch(removeDictionaryConcept(data, type, owner, collectionId)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle REMOVE_MAPPINGS', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 201,
+        response: [],
+      });
+    });
+
+    const expectedActions = [
+      {
+        type: REMOVE_MAPPING,
+        payload: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/',
+      },
+      {
+        payload: true,
+        type: '[ui] toggle spinner',
+      },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    return store.dispatch(removeConceptMapping(data, type, owner)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle REMOVE_MAPPING network error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+        response: {
+          data: { detail: 'Cannot remove mapping' },
+        },
+      });
+    });
+
+    const expectedActions = [
+      { type: REMOVE_MAPPING, payload: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/' },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    const collectionId = 'Tech';
+    return store.dispatch(removeConceptMapping(data, type, owner, collectionId)).catch(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

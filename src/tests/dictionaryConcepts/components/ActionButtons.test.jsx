@@ -9,6 +9,9 @@ const props = {
   concept_class: 'drug',
   version_url: '/url',
   showDeleteModal: jest.fn(),
+  handleDeleteMapping: jest.fn(),
+  showDeleteMappingModal: jest.fn(),
+  display_name: '',
   mappings: [
     {
       "type": "Mapping",

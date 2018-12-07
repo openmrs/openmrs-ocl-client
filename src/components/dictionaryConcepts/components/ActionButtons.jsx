@@ -5,7 +5,7 @@ import AddMapping from './AddMapping';
 import ViewConceptMappings from './ViewConceptMappings';
 
 const ActionButtons = ({
-  actionButtons, id, concept_class, showDeleteModal, version_url, mappings, source, mappingLimit, display_name,
+  actionButtons, id, concept_class, showDeleteModal, version_url, mappings, source, mappingLimit, display_name, showDeleteMappingModal, handleDeleteMapping,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -33,6 +33,8 @@ const ActionButtons = ({
             displayName={display_name}
             mappingLimit={mappingLimit}
             source={source}
+            showDeleteMappingModal={showDeleteMappingModal}
+            handleDeleteMapping={handleDeleteMapping}
           />
 
           )
@@ -57,6 +59,9 @@ ActionButtons.propTypes = {
   concept_class: PropTypes.string.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
   version_url: PropTypes.string.isRequired,
+  handleDeleteMapping: PropTypes.func.isRequired,
+  showDeleteMappingModal: PropTypes.func.isRequired,
+  display_name: PropTypes.string.isRequired,
 };
 
 export default ActionButtons;

@@ -11,6 +11,7 @@ import {
   FETCH_DICTIONARY_CONCEPT,
   EDIT_DICTIONARY_SUCCESS,
   REMOVE_CONCEPT,
+  REMOVE_MAPPING,
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
   RELEASING_HEAD_VERSION,
@@ -68,6 +69,11 @@ export const clearDictionary = () => ({
 
 export const removeConcept = payload => ({
   type: REMOVE_CONCEPT,
+  payload,
+});
+
+export const removeMapping = payload => ({
+  type: REMOVE_MAPPING,
   payload,
 });
 

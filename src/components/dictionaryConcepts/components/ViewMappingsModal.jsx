@@ -8,6 +8,7 @@ import {
 import { conceptsProps } from '../proptypes';
 import AddMapping from './AddMapping';
 import { editMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import RemoveMappings from './RemoveMappings';
 
 export const ViewMappingsModal = ({
   handleToggle,
@@ -18,6 +19,8 @@ export const ViewMappingsModal = ({
   source,
   editMapping,
   concepts,
+  handleDeleteMapping,
+  showDeleteMappingModal,
 }) => (
   <div className="col-9">
     <Modal isOpen={modal} className="modal-lg">
@@ -55,17 +58,24 @@ export const ViewMappingsModal = ({
                 id: 'row',
                 filterable: false,
                 sortable: false,
-                Cell: row => (
-                  <AddMapping
-                    buttonName="Edit mapping"
-                    to_concept_url={mappings[row.index].to_concept_url}
-                    url={mappings[row.index].url}
-                    map_type={mappings[row.index].map_type}
-                    to_concept_name={mappings[row.index].to_concept_name}
-                    source={source}
-                    editMapping={editMapping}
-                    concepts={concepts}
-                  />
+                Cell: ({ original: mapping }) => (
+                  <React.Fragment>
+                    <AddMapping
+                      buttonName="Edit"
+                      to_concept_url={mapping.to_concept_url}
+                      url={mapping.url}
+                      map_type={mapping.map_type}
+                      to_concept_name={mapping.to_concept_name}
+                      source={source}
+                      editMapping={editMapping}
+                      concepts={concepts}
+                    />
+                    <RemoveMappings
+                      showDeleteMappingModal={showDeleteMappingModal}
+                      handleDeleteMapping={handleDeleteMapping}
+                      {...mapping}
+                    />
+                  </React.Fragment>
                 ),
               },
             ]}
@@ -86,6 +96,8 @@ ViewMappingsModal.propTypes = {
   modal: PropTypes.bool.isRequired,
   handleToggle: PropTypes.func.isRequired,
   mappings: conceptsProps.mappings.isRequired,
+  showDeleteMappingModal: PropTypes.func.isRequired,
+  handleDeleteMapping: PropTypes.func.isRequired,
 };
 
 export const mapStateToProps = state => ({
