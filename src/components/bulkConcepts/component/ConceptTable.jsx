@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import Loader from '../../Loader';
-import RenderTable from '../../dictionaryConcepts/components/RenderTable';
 import ActionButtons from './ActionButtons';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
@@ -17,7 +16,6 @@ const ConceptTable = ({
     );
   }
   const filter = { filterMethod: filterConcept, filterAll: true };
-  if (concepts.length > 0) {
     return (
       <div className="row col-12 custom-concept-list">
         <ReactTable
@@ -25,7 +23,7 @@ const ConceptTable = ({
           loading={loading}
           defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
           filterable
-          noDataText="No concept!"
+          noDataText="No concepts found!"
           minRows={0}
           columns={[
             {
@@ -73,18 +71,6 @@ const ConceptTable = ({
         />
       </div>
     );
-  }
-  return (
-    <RenderTable
-      render={() => (
-        <tr>
-          <th scope="row" colSpan="6" className="text-center" id="emptyConcept">
-            No concepts found
-          </th>
-        </tr>
-      )}
-    />
-  );
 };
 
 ConceptTable.propTypes = {
