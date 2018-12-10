@@ -17,7 +17,7 @@ export const fetchUser = username => async (dispatch) => {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, GET_USER));
   } catch (error) {
-    notify.show('an error occurred, reload the page', 'error', 3000);
+    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
@@ -27,7 +27,7 @@ export const fetchUserOrganizations = username => async (dispatch) => {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_USER_ORGANIZATION));
   } catch (error) {
-    notify.show('an error occurred, reload the page', 'error', 3000);
+    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
@@ -39,7 +39,7 @@ export const fetchsUserDictionaries = username => async (dispatch) => {
     const result = filterUserPayload(username, response.data);
     dispatch(isSuccess(result, FETCH_USER_DICTIONARY));
   } catch (error) {
-    notify.show('an error occurred, reload the page', 'error', 3000);
+    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 

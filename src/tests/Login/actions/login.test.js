@@ -14,6 +14,11 @@ import users from '../../__mocks__/users';
 jest.mock('react-notify-toast');
 const mockStore = configureStore([thunk]);
 
+const data = {
+  username: 'testuser',
+  password: '12345678',
+};
+
 describe('Test suite for login action', () => {
   beforeEach(() => {
     moxios.install();
@@ -24,11 +29,6 @@ describe('Test suite for login action', () => {
   });
 
   it('should handle login', async () => {
-    const data = {
-      username: 'testuser',
-      password: '12345678',
-    };
-
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -53,12 +53,7 @@ describe('Test suite for login action', () => {
     });
   });
 
-  it('should handle invalid password', async () => {
-    const data = {
-      username: 'testuser',
-      password: '1234567',
-    };
-
+  it('should handle invalid password for admin', async () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -76,7 +71,64 @@ describe('Test suite for login action', () => {
       },
       {
         type: AUTHENTICATION_FAILED,
-        payload: { errorMessage: 'Passwords did not match.' },
+        payload: { errorMessage: 'Either the username or password you provided is incorrect.' },
+        loading: false,
+      }];
+
+    const store = mockStore();
+    return store
+      .dispatch(loginAction(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it('should handle invalid credentials for non-admin users', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: {
+          detail: 'Not found.',
+        },
+      });
+    });
+
+    const expectedActions = [
+      {
+        type: AUTHENTICATION_IN_PROGRESS,
+        loading: true,
+      },
+      {
+        type: AUTHENTICATION_FAILED,
+        payload: { errorMessage: 'No such user was found.' },
+        loading: false,
+      }];
+
+    const store = mockStore();
+    return store
+      .dispatch(loginAction(data))
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it('should handle no internet connection', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        response: undefined,
+      });
+    });
+
+    const expectedActions = [
+      {
+        type: AUTHENTICATION_IN_PROGRESS,
+        loading: true,
+      },
+      {
+        type: AUTHENTICATION_FAILED,
+        payload: { errorMessage: 'Please check your internet connection.' },
         loading: false,
       }];
 
