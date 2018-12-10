@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import matchSorter from 'match-sorter';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import BulkConceptList from './bulkConceptList';
 import Header from './container/Header';
@@ -33,37 +32,8 @@ export class AddBulkConcepts extends Component {
     };
   }
 
-  handleAddAll = () => {
-    const {
-      match: {
-        params: { type, typeName, collectionName },
-      },
-    } = this.props;
-    const url = `${type}/${typeName}/collections/${collectionName}/references/`;
-    const { cielConcepts } = this.state;
-    this.props.addExistingBulkConcepts({ url, data: { data: { expressions: cielConcepts } } });
-    window.history.back();
-  };
   handleCielClick = () => {
     this.props.fetchCielConcepts();
-  };
-  handleSelect = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      this.setState({
-        cielConcepts: [value, ...this.state.cielConcepts],
-      });
-    } else {
-      const index = this.state.cielConcepts.indexOf(value);
-      this.setState({
-        cielConcepts: this.state.cielConcepts.filter((_, i) => i !== index),
-      });
-    }
-  };
-
-  filterCaseInsensitive = (filter, rows) => {
-    const id = filter.pivotId || filter.id;
-    return matchSorter(rows, filter.value, { keys: [id] });
   };
 
   render() {
@@ -84,8 +54,8 @@ export class AddBulkConcepts extends Component {
         <h3>
           <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
         </h3>
-        <fieldset className="scheduler-border">
-          <legend className="scheduler-border">Select a source</legend>
+        <div className="scheduler-border">
+          <h3>Select a source</h3>
           <div className="select-box">
             <div className="form-check">
               <input
@@ -126,31 +96,30 @@ export class AddBulkConcepts extends Component {
               </div>
             </div>
           </div>
-        </fieldset>
-        <h4>Concept IDs to add</h4>
-        <div className="preferred-concepts">
-          <BulkConceptList
-            cielConcepts={cielConcepts}
-            fetching={this.props.isFetching}
-            handleSelect={this.handleSelect}
-            filterConcept={this.filterCaseInsensitive}
-            conceptLimit={conceptLimit}
-          />
-        </div>
-        <br />
-        <div className="add-all-btn">
-          <Link
-            to={`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}/`}
-            className="btn btn-secondary"
-          >
-          Go back
-          </Link>
-          {' '}
-          {this.state.cielConcepts.length === 0 ? (
+          <h3>Concept IDs to add</h3>
+          <div className="preferred-concepts">
+            <BulkConceptList
+              cielConcepts={cielConcepts}
+              fetching={this.props.isFetching}
+              handleSelect={this.handleSelect}
+              filterConcept={this.filterCaseInsensitive}
+              conceptLimit={conceptLimit}
+            />
+          </div>
+          <br />
+          <div className="add-all-btn">
+            <Link
+              to={`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}/`}
+              className="btn btn-secondary"
+            >
+              Cancel
+            </Link>
+            {' '}
+            {this.state.cielConcepts.length === 0 ? (
             <button type="button" className="btn btn-primary" id="btn-add-all" disabled={disableButton}>
-              <i className="fa fa-plus" /> Add All Selected
+              <i className="fa fa-plus" /> Add
             </button>
-          ) : (
+            ) : (
             <button
               type="button"
               className="btn btn-primary btn-add-all"
@@ -158,9 +127,10 @@ export class AddBulkConcepts extends Component {
               onClick={this.handleAddAll}
               disabled={disableButton}
             >
-              <i className="fa fa-plus" /> Add All Selected
+              <i className="fa fa-plus" /> Add
             </button>
-          )}
+            )}
+          </div>
         </div>
       </div>
     );

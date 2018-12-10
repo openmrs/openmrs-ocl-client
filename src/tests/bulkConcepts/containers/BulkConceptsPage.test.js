@@ -143,6 +143,35 @@ describe('Test suite for BulkConceptsPage component', () => {
     wrapper.find('#Diagnosis').simulate('change', event);
   });
 
+  it('should filter search result with datatype', () => {
+    const props = {
+      fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
+      concepts: [concepts],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <BulkConceptsPage {...props} />
+    </Router>);
+    const event = { target: { name: 'Diagnosis, datatype', checked: true } };
+    wrapper.find('#Diagnosis').simulate('change', event);
+  });
+
   it('should filter concepts in the table', () => {
     const props = {
       fetchBulkConcepts: jest.fn(),
