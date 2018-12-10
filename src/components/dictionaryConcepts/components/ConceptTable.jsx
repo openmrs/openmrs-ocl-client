@@ -45,7 +45,7 @@ const ConceptTable = ({
           defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
           filterable
           noDataText="No concept!"
-          minRows={0}
+          minRows={2}
           columns={[
             {
               Header: 'Name',
@@ -82,7 +82,7 @@ const ConceptTable = ({
               },
             },
           ]}
-          className="-striped -highlight custom-table-width custom-table-min-height"
+          className="-striped -highlight custom-table-width"
         />
       </div>
     );
