@@ -8,7 +8,7 @@ import {
   DictionaryConcepts,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
-import concepts from '../../__mocks__/concepts';
+import concepts, { concept3 } from '../../__mocks__/concepts';
 
 const store = createMockStore({
   organizations: {
@@ -110,7 +110,7 @@ describe('Test suite for dictionary concepts components', () => {
       fetchDictionaryConcepts: jest.fn(),
       concepts: [concepts],
       filteredClass: ['Diagnosis'],
-      filteredSources: ['CIEL'],
+      filteredSources: ['1234567876'],
       loading: false,
       totalConceptCount: 11,
       filterBySource: jest.fn(),
@@ -145,7 +145,7 @@ describe('Test suite for dictionary concepts components', () => {
         pathname: '/random/path',
       },
       fetchDictionaryConcepts: jest.fn(),
-      concepts: [concepts],
+      concepts: [concept3],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
       loading: false,

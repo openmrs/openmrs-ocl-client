@@ -66,6 +66,11 @@ export const concept2 = {
   url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
 };
 
+export const concept3 = {
+  ...concept2,
+  source: '12345678',
+};
+
 const concept = {
   id: '146869',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
