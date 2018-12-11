@@ -4,18 +4,17 @@ import ViewMappingsModal from './ViewMappingsModal';
 
 class ViewConceptMappings extends Component {
     state = {
-      modal: false,
+      editModalIsOpen: false,
     };
 
-  handleToggle = () => {
-    const { modal } = this.state;
+  handleToggle = (toggleValue) => {
     this.setState({
-      modal: !modal,
+      editModalIsOpen: toggleValue,
     });
   };
 
   render() {
-    const { modal } = this.state;
+    const { editModalIsOpen } = this.state;
     const {
       mappings, displayName, showDeleteMappingModal, handleDeleteMapping, source,
     } = this.props;
@@ -24,17 +23,17 @@ class ViewConceptMappings extends Component {
         <button
           type="button"
           className="btn btn-sm mb-1 actionButtons"
-          onClick={this.handleToggle}
+          onClick={() => this.handleToggle(true)}
         >
           View mappings
           <ViewMappingsModal
             mappings={mappings}
             displayName={displayName}
             source={source}
-            modal={modal}
             handleDeleteMapping={handleDeleteMapping}
-            handleToggle={this.handleToggle}
             showDeleteMappingModal={showDeleteMappingModal}
+            modal={editModalIsOpen}
+            handleToggle={this.handleToggle}
           />
         </button>
       </React.Fragment>
@@ -46,6 +45,13 @@ ViewConceptMappings.propTypes = {
   displayName: PropTypes.string.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
+  source: PropTypes.string,
+  mappings: PropTypes.array,
+};
+
+ViewConceptMappings.defaultProps = {
+  source: '',
+  mappings: [],
 };
 
 export default ViewConceptMappings;

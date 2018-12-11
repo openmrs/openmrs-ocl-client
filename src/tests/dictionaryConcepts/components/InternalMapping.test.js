@@ -8,10 +8,10 @@ let props;
 describe('render MappingModal', () => {
   beforeEach(() => {
     props = {
-      map_type: '',
+      map_type: 'same as',
       concept_url: '',
       to_concept_url: '',
-      to_concept_name: '',
+      to_concept_name: 'Malaria',
       url: '',
       concepts: [{
         id: 1,

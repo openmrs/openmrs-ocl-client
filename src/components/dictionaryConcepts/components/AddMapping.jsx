@@ -11,30 +11,30 @@ class AddMapping extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    const { to_concept_name } = this.props;
-    if (newProps.to_concept_name !== to_concept_name) {
+    const { mappings } = this.props;
+    if (newProps.mappings !== mappings) {
       this.handleToggle();
     }
   }
 
-  handleToggle = () => {
-    const { modal } = this.state;
+  handleToggle = (value) => {
     this.setState({
-      modal: !modal,
+      modal: value,
     });
   };
 
   render() {
     const { modal } = this.state;
     const {
-      buttonName, to_concept_url, url, map_type, to_concept_name, source, editMapping, concepts,
+      buttonName, to_concept_url, url, map_type, to_concept_name,
+      source, editMapping, concepts, to_concept_code, to_source_url,
     } = this.props;
     return (
       <React.Fragment>
         <button
           type="button"
           className="btn btn-sm mb-1 actionButtons"
-          onClick={this.handleToggle}
+          onClick={() => this.handleToggle(true)}
         >
           {buttonName}
           <MappingModal
@@ -47,6 +47,8 @@ class AddMapping extends Component {
             source={source}
             editMapping={editMapping}
             concepts={concepts}
+            to_concept_code={to_concept_code}
+            to_source_url={to_source_url}
           />
         </button>
       </React.Fragment>
@@ -60,9 +62,12 @@ AddMapping.propTypes = {
   source: PropTypes.string,
   url: PropTypes.string,
   map_type: PropTypes.string,
+  to_concept_code: PropTypes.string,
+  to_source_url: PropTypes.string,
   buttonName: PropTypes.string.isRequired,
   concepts: PropTypes.array,
   editMapping: PropTypes.func,
+  mappings: PropTypes.array,
 };
 
 AddMapping.defaultProps = {
@@ -71,7 +76,10 @@ AddMapping.defaultProps = {
   source: '',
   url: '',
   map_type: '',
+  to_concept_code: '',
+  to_source_url: '',
   concepts: [],
+  mappings: [],
   editMapping: () => {},
 };
 

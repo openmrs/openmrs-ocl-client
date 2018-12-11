@@ -8,13 +8,13 @@ let props;
 describe('render ViewConceptMappings', () => {
   beforeEach(() => {
     props = {
-      modal: false,
+      editModalIsOpen: false,
       handleToggle: jest.fn(),
       showDeleteMappingModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
       mappings: [],
-      mappingLimit: 10,
       displayName: '',
+      mappingLimit: 10,
     };
     wrapper = shallow(<ViewConceptMappings {...props} />);
   });
@@ -23,11 +23,11 @@ describe('render ViewConceptMappings', () => {
   });
 
   it('should set modal to false by default', () => {
-    expect(wrapper.state().modal).toBe(false);
+    expect(wrapper.state().editModalIsOpen).toBe(false);
   });
 
   it('should handle modal toggle', () => {
     wrapper.find('.actionButtons').simulate('click');
-    expect(wrapper.state().modal).toBe(true);
+    expect(wrapper.state().editModalIsOpen).toBe(true);
   });
 });

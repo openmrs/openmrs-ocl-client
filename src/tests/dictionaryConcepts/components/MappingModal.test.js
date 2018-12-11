@@ -10,7 +10,7 @@ describe('render MappingModal', () => {
     props = {
       modal: false,
       to_concept_url: '',
-      to_concept_name: '',
+      to_concept_name: ' ',
       url: '',
       map_type: '',
       concept_url: '',
@@ -23,6 +23,16 @@ describe('render MappingModal', () => {
     wrapper = shallow(<MappingModal {...props} />);
   });
   it('should render without breaking', () => {
+    expect(wrapper.length).toEqual(1);
+  });
+
+  it('should render with to_concept_url === null', () => {
+    props = {
+      ...props,
+      to_concept_url: null,
+    };
+
+    wrapper = shallow(<MappingModal {...props} />);
     expect(wrapper.length).toEqual(1);
   });
 
@@ -40,6 +50,11 @@ describe('render MappingModal', () => {
   it('should call submitMapping onclick', () => {
     wrapper.find('#mappingSubmit').simulate('click');
     expect(wrapper.state().type).toBe('Internal Mapping');
+  });
+
+  it('should close handleToggle onclick', () => {
+    wrapper.find('#CloseModal').simulate('click');
+    expect(props.handleToggle).toBeCalled();
   });
 
   it('should handle change', () => {

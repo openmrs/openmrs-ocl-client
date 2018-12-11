@@ -11,9 +11,11 @@ describe('render MappingModal', () => {
     source: '',
     url: '',
     map_type: '',
-    concepts: [],
-    editMapping: jest.fn(),
     buttonName: '',
+    concepts: [],
+    modal: true,
+    editMapping: jest.fn(),
+    mappings: [],
   };
   beforeEach(() => { wrapper = shallow(<AddMapping {...props} />); });
   it('should render without breaking', () => {
@@ -28,7 +30,7 @@ describe('render MappingModal', () => {
   it('should test componentWillReceiveProps', () => {
     const newProps = {
       ...props,
-      to_concept_name: 'newone',
+      mappings: [{}],
     };
     wrapper.setProps(newProps);
   });
