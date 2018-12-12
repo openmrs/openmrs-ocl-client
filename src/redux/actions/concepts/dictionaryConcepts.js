@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
 import { notify } from 'react-notify-toast';
+import axios from 'axios';
 import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
 
 import {
@@ -24,8 +25,9 @@ import {
   CLEAR_PREVIOUS_CONCEPT,
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
-  REMOVE_ONE_ANSWER_MAPPING,
-  ADD_NEW_ANSWER_MAPPING,
+  QUERY_POSSIBLE_ANSWER_CONCEPTS,
+  ADD_SELECTED_ANSWERS,
+  CHANGE_ANSWER_MAPPING,
 } from '../types';
 import {
   isFetching,
@@ -33,6 +35,7 @@ import {
   isErrored,
   isSuccess,
 } from '../globalActionCreators/index';
+
 import instance from '../../../config/axiosConfig';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
@@ -96,16 +99,6 @@ export const addDescriptionForEditConcept = () => (dispatch) => {
 export const removeDescriptionForEditConcept = id => (dispatch) => {
   const payload = id;
   dispatch({ type: EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION, payload });
-};
-
-export const addNewAnswer = () => (dispatch) => {
-  const payload = uuid();
-  dispatch({ type: ADD_NEW_ANSWER_MAPPING, payload });
-};
-
-export const removeAnswer = id => (dispatch) => {
-  const payload = id;
-  dispatch({ type: REMOVE_ONE_ANSWER_MAPPING, payload });
 };
 
 export const clearSelections = () => (dispatch) => {
@@ -172,6 +165,53 @@ export const filterByClass = (
   dispatch(fetchDictionaryConcepts(conceptType, conceptOwner, conceptName, query));
 };
 
+export const queryPossibleAnswers = query => async (dispatch) => {
+  const url = `concepts/?q=${query}&limit=0`;
+  try {
+    const response = await instance.get(url);
+    dispatch({
+      type: QUERY_POSSIBLE_ANSWER_CONCEPTS,
+      payload: response.data,
+    });
+  } catch (error) {
+    notify.show('There is something wrong with your connection', 'error', 3000);
+  }
+};
+
+export const addSelectedAnswersToState = answers => (dispatch) => {
+  dispatch({ type: ADD_SELECTED_ANSWERS, payload: answers });
+};
+
+export const changeSelectedAnswer = data => (dispatch) => {
+  dispatch({ type: CHANGE_ANSWER_MAPPING, payload: data });
+};
+
+export const addAnswerMappingToConcept = async (url, source, answers) => {
+  const user = localStorage.getItem('username');
+  const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
+  const INTERNAL_MAPPING = 'Internal';
+  const answerMappings = answers.map(answer => (answer.map_scope === INTERNAL_MAPPING ? {
+    map_type: answer.map_type,
+    from_concept_url: url,
+    to_concept_url: answer.url,
+  }
+    : {
+      map_type: answer.map_type,
+      from_concept_url: url,
+      to_source_url: answer.url,
+      to_concept_code: answer.id,
+      to_concept_name: answer.display_name,
+    }));
+
+  const promises = answerMappings.map(mapping => instance.post(mappingUrl, mapping));
+
+  try {
+    await axios.all(promises);
+  } catch (error) {
+    notify.show('An error occurred while adding your answer mappings', 'error', 3000);
+  }
+};
+
 export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   const newConcept = `${dataUrl}${id}/`;
   const urlConstruct = dataUrl.split('/');
@@ -197,6 +237,8 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
     const response = await instance.post(url, data);
     dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
+    notify.show('creating concept, please wait...', 'warning', 3000);
+    await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
   } catch (error) {
     if (error.response) {
       const { response } = error;

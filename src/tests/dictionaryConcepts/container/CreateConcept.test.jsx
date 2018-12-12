@@ -24,6 +24,7 @@ describe('Test suite for dictionary concepts components', () => {
     history: {
       push: jest.fn(),
     },
+    path: '/',
     existingConcept: [],
     createNewName: jest.fn(),
     answer: [12343],
@@ -32,9 +33,6 @@ describe('Test suite for dictionary concepts components', () => {
     removeNewName: jest.fn(),
     removeDescription: jest.fn(),
     createNewConcept: jest.fn(),
-    addNewAnswer: jest.fn(),
-    removeAnswer: jest.fn(),
-    addDataFromAnswer: jest.fn(),
     newName: ['1'],
     description: ['1'],
     loading: false,
@@ -49,20 +47,30 @@ describe('Test suite for dictionary concepts components', () => {
     state: {
       id: '1',
     },
+    queryResults: [{
+      id: 'test ID', url: 'answer/url', owner: 'answer owner', display_name: 'display name',
+    }],
+    selectedAnswers: [{ id: 'test ID', map_type: 'Same as' }],
+    getPossibleAnswers: jest.fn(),
+    addSelectedAnswers: jest.fn(),
+    changeAnswer: jest.fn(),
   };
-  it('should render without breaking', () => {
-    localStorage.setItem('dictionaryPathName', '/dictionary/url');
-    const wrapper = mount(<Router>
+
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);
+  });
+
+  it('should render without breaking', () => {
+    localStorage.setItem('dictionaryPathName', '/dictionary/url');
     expect(wrapper.find('h3').text()).toEqual(': Create a question Concept ');
     expect(wrapper).toMatchSnapshot();
   });
 
   it('should handle form completion and submission with invalid/incomplete data', () => {
-    const wrapper = mount(<Router>
-      <CreateConcept {...props} />
-    </Router>);
     wrapper.find('#toggleUUID').simulate('click');
     const event = { target: { name: 'id', value: '12345ft-007' } };
     wrapper.find('#uuid').simulate('change', event);
@@ -88,9 +96,6 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should handle form completion and submission with correct data', () => {
-    const wrapper = mount(<Router>
-      <CreateConcept {...props} />
-    </Router>);
     const conceptName = { target: { name: 'name', value: 'test concept' } };
     wrapper.find('#concept-name').simulate('change', conceptName);
     const conceptDatatype = { target: { name: 'datatype', value: 'Text' } };
@@ -103,7 +108,6 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.find('#remove-description').simulate('click');
     wrapper.find('#remove-name').simulate('click');
     wrapper.find('#concept-description').simulate('change', conceptDescription);
-    wrapper.find('.text-left.add-more-answers').simulate('click');
     wrapper.find('#createConceptForm').simulate('submit', {
       preventDefault: () => {},
     });
@@ -116,39 +120,11 @@ describe('Test suite for dictionary concepts components', () => {
       addedConcept: [{ added: true }],
     };
     jest.useFakeTimers();
-    const wrapper = shallow(<CreateConcept {...props} />);
+    wrapper = shallow(<CreateConcept {...props} />);
     wrapper.setState({ searchInput: 'ciel' });
     wrapper.setProps(newProps);
     wrapper.unmount();
     jest.runAllTimers();
-  });
-
-
-  it('should handle add-more-answers', () => {
-    const wrapper = mount(<Router>
-      <CreateConcept {...props} />
-    </Router>);
-    wrapper.find('.add-more-answers').simulate('click');
-    expect(props.addNewAnswer).toHaveBeenCalled();
-  });
-
-  it('should handle remove-answers', () => {
-    const wrapper = mount(<Router>
-      <CreateConcept {...props} />
-    </Router>);
-    wrapper.find('.concept-form-table-link.answer').simulate('click');
-    expect(props.removeAnswer).toHaveBeenCalled();
-  });
-
-  it('should handle add data from answer', () => {
-    const wrapper = mount(<Router>
-      <CreateConcept {...props} />
-    </Router>);
-
-    const spy = jest.spyOn(wrapper.find('CreateConcept').instance(), 'addDataFromAnswer');
-    const conceptAnswer = { target: { name: 'answer', value: 'test concept' } };
-    wrapper.find('#concept-answer').simulate('change', conceptAnswer);
-    expect(spy).toHaveBeenCalled();
   });
 
   it('should test mapStateToProps', () => {
@@ -162,5 +138,43 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).description).toEqual(['1']);
     expect(mapStateToProps(initialState).newConcept).toEqual(newConcept);
     expect(mapStateToProps(initialState).newName).toEqual(['1']);
+  });
+
+  it('should update the state with answers', () => {
+    wrapper = wrapper.find('CreateConcept');
+    const instance = wrapper.instance();
+    instance.handleAsyncSelectChange([{ answer: 'test answer' }]);
+    expect(wrapper.state().answers).toEqual([{ answer: 'test answer' }]);
+  });
+
+  it('should return options after query', () => {
+    const options = [{
+      id: 'test ID',
+      display_name: 'display name',
+      label: 'answer owner: display name',
+      map_scope: 'Internal',
+      map_type: 'Same as',
+      owner: 'answer owner',
+      url: 'answer/url',
+      value: 'answer/url',
+    }];
+
+    wrapper = wrapper.find('CreateConcept');
+    const instance = wrapper.instance();
+    expect(instance.queryAnswers('test query')).toEqual(options);
+  });
+
+  it(' should update the state with new answer details', () => {
+    wrapper = wrapper.find('CreateConcept');
+    const instance = wrapper.instance();
+    expect(wrapper.state().answers).toEqual([]);
+    const event = {
+      target: {
+        name: 'map_type',
+        value: 'Same as',
+      },
+    };
+    instance.handleAnswerChange(event, 'test ID');
+    expect(wrapper.state().answers[0].map_type).toEqual('Same as');
   });
 });

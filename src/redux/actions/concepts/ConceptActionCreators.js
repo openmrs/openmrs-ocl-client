@@ -1,4 +1,6 @@
-import { IS_FETCHING, FETCH_CONCEPTS, CLEAR_CONCEPTS } from '../types';
+import {
+  IS_FETCHING, FETCH_CONCEPTS, CLEAR_CONCEPTS,
+} from '../types';
 
 const fetchConcepts = payload => ({
   type: FETCH_CONCEPTS,
@@ -18,4 +20,8 @@ export const clearConcepts = () => ({
   payload: [],
 });
 
-export { fetchConcepts, isFetching, isErrored };
+export {
+  fetchConcepts,
+  isFetching,
+  isErrored,
+};

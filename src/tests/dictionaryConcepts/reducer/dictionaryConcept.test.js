@@ -25,8 +25,6 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_CONCEPT,
-  ADD_NEW_ANSWER_MAPPING,
-  REMOVE_ONE_ANSWER_MAPPING,
 } from '../../../redux/actions/types';
 
 let state;
@@ -393,36 +391,6 @@ describe('Test suite for single dictionary concepts', () => {
         ...state.existingConcept,
         names: [],
       },
-    });
-  });
-
-  it('should handle ADD_NEW_ANSWER_MAPPING', () => {
-    action = {
-      type: ADD_NEW_ANSWER_MAPPING,
-      payload: '123',
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      answer: ['123y', '123'],
-    });
-  });
-
-  it('should handle REMOVE_ONE_ANSWER_MAPPING', () => {
-    action = {
-      type: REMOVE_ONE_ANSWER_MAPPING,
-      payload: '123',
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      answer: ['123y'],
     });
   });
 });

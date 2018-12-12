@@ -12,8 +12,9 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
-  addNewAnswer,
-  removeAnswer,
+  queryPossibleAnswers,
+  addSelectedAnswersToState,
+  changeSelectedAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 
 export class CreateConcept extends Component {
@@ -45,10 +46,12 @@ export class CreateConcept extends Component {
       descriptions: PropTypes.array,
     }).isRequired,
     addedConcept: PropTypes.array.isRequired,
-    addNewAnswer: PropTypes.func.isRequired,
-    removeAnswer: PropTypes.func.isRequired,
-    answer: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
+    getPossibleAnswers: PropTypes.func.isRequired,
+    queryResults: PropTypes.array.isRequired,
+    addSelectedAnswers: PropTypes.func.isRequired,
+    selectedAnswers: PropTypes.array.isRequired,
+    changeAnswer: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -75,7 +78,6 @@ export class CreateConcept extends Component {
     const concept = conceptType || '';
     this.props.createNewName();
     this.props.addNewDescription();
-    this.props.addNewAnswer();
     // eslint-disable-next-line
     this.setState({ concept_class: concept });
   }
@@ -103,6 +105,32 @@ export class CreateConcept extends Component {
     this.props.clearSelections();
   }
 
+  handleAsyncSelectChange = (answers) => {
+    const { addSelectedAnswers } = this.props;
+    addSelectedAnswers(answers);
+    this.setState({ answers });
+  }
+
+  queryAnswers = (query) => {
+    const { queryResults, getPossibleAnswers } = this.props;
+    const defaults = { map_type: 'Same as', map_scope: 'Internal' };
+    getPossibleAnswers(query);
+    const options = queryResults.map(concept => ({
+      ...concept,
+      ...defaults,
+      value: `${concept.url}`,
+      label: `${concept.owner}: ${concept.display_name}`,
+    }));
+    return options;
+  }
+
+  handleAnswerChange = (event, id) => {
+    const { changeAnswer, selectedAnswers } = this.props;
+    const obj = { id, [event.target.name]: event.target.value };
+    changeAnswer(obj);
+    this.setState({ answers: selectedAnswers });
+  }
+
   handleNewName(event) {
     this.props.createNewName();
     event.preventDefault();
@@ -123,13 +151,6 @@ export class CreateConcept extends Component {
     this.props.removeDescription(id);
   }
 
-  addNewAnswer() {
-    this.props.addNewAnswer();
-  }
-  removeAnswer(id) {
-    this.props.removeAnswer(id);
-  }
-
   handleUUID(event) {
     event.preventDefault();
     this.setState(prevState => ({
@@ -145,13 +166,13 @@ export class CreateConcept extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const {
       match: {
         params: { collectionName, type, typeName },
       },
     } = this.props;
     const url = `/${type}/${typeName}/sources/${collectionName}/concepts/`;
-    event.preventDefault();
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
       this.props.createNewConcept(this.state, url);
@@ -206,22 +227,6 @@ export class CreateConcept extends Component {
     }
   }
 
-  addDataFromAnswer(data) {
-    const currentAnswer = this.state.answers.filter(answer => answer.id === data.id);
-    if (currentAnswer.length) {
-      const newList = this.state.answers.map(answer => (
-        answer.id === data.id ? data : answer
-      ));
-      this.setState(() => ({
-        answers: newList,
-      }));
-    } else {
-      this.setState(prevState => ({
-        answers: [...prevState.answers, data],
-      }));
-    }
-  }
-
   render() {
     const {
       match: {
@@ -230,6 +235,7 @@ export class CreateConcept extends Component {
         },
       },
       loading,
+      selectedAnswers,
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
@@ -272,10 +278,10 @@ Concept
                 addDataFromDescription={this.addDataFromDescription}
                 removeDataFromRow={this.removeDataFromRow}
                 pathName={this.props.match.params}
-                addAnswer={this.addNewAnswer}
-                answer={this.props.answer}
-                addDataFromAnswer={this.addDataFromAnswer}
-                removeAnswer={this.removeAnswer}
+                handleAsyncSelectChange={this.handleAsyncSelectChange}
+                queryAnswers={this.queryAnswers}
+                selectedAnswers={selectedAnswers}
+                handleAnswerChange={this.handleAnswerChange}
               />
             </div>
           </div>
@@ -290,8 +296,10 @@ export const mapStateToProps = state => ({
   description: state.concepts.description,
   newConcept: state.concepts.newConcept,
   addedConcept: state.concepts.addConceptToDictionary,
-  answer: state.concepts.answer,
   loading: state.concepts.loading,
+  queryResults: state.concepts.queryResults,
+  selectedAnswers: state.concepts.selectedAnswers,
+
 });
 export default connect(
   mapStateToProps,
@@ -302,7 +310,8 @@ export default connect(
     removeDescription,
     clearSelections,
     createNewConcept,
-    addNewAnswer,
-    removeAnswer,
+    getPossibleAnswers: queryPossibleAnswers,
+    addSelectedAnswers: addSelectedAnswersToState,
+    changeAnswer: changeSelectedAnswer,
   },
 )(CreateConcept);

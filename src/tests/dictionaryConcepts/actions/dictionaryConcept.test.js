@@ -27,9 +27,10 @@ import {
   UPDATE_CONCEPT,
   FETCH_EXISTING_CONCEPT_ERROR,
   REMOVE_CONCEPT,
-  REMOVE_ONE_ANSWER_MAPPING,
-  ADD_NEW_ANSWER_MAPPING,
   REMOVE_MAPPING,
+  QUERY_POSSIBLE_ANSWER_CONCEPTS,
+  ADD_SELECTED_ANSWERS,
+  CHANGE_ANSWER_MAPPING,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -50,8 +51,10 @@ import {
   createNewNameForEditConcept,
   removeNameForEditConcept,
   updateConcept,
-  addNewAnswer,
-  removeAnswer,
+  queryPossibleAnswers,
+  addSelectedAnswersToState,
+  changeSelectedAnswer,
+  addAnswerMappingToConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -201,11 +204,20 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
   it('should handle CREATE_NEW_CONCEPT', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
-        status: 200,
+        status: 201,
+        response: newConcept,
+      });
+    });
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 201,
         response: newConcept,
       });
     });
@@ -588,6 +600,14 @@ describe('test for search filter by source', () => {
 });
 
 describe('test suite for synchronous action creators', () => {
+  beforeEach(() => {
+    moxios.install(instance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+
   it('should handle CREATE_NEW_NAMES', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: CREATE_NEW_NAMES, payload: 1 }];
@@ -628,17 +648,144 @@ describe('test suite for synchronous action creators', () => {
     store.dispatch(clearSelections());
     expect(store.getActions()).toEqual(expectedActions);
   });
-  it('should handle ADD_NEW_ANSWER_MAPPING', () => {
+
+  it('should handle ADD_SELECTED_ANSWERS', () => {
+    const expectedActions = [
+      { type: ADD_SELECTED_ANSWERS, payload: [{}] },
+    ];
     const store = mockStore(mockConceptStore);
-    const expectedActions = [{ type: ADD_NEW_ANSWER_MAPPING, payload: 1 }];
-    store.dispatch(addNewAnswer());
+    store.dispatch(addSelectedAnswersToState([{}]));
     expect(store.getActions()).toEqual(expectedActions);
   });
-  it('should handle REMOVE_ONE_ANSWER_MAPPING', () => {
+
+  it('should handle CHANGE_ANSWER_MAPPING ', () => {
+    const expectedActions = [
+      { type: CHANGE_ANSWER_MAPPING, payload: [{}] },
+    ];
     const store = mockStore(mockConceptStore);
-    const expectedActions = [{ type: REMOVE_ONE_ANSWER_MAPPING, payload: '123y' }];
-    const id = '123y';
-    store.dispatch(removeAnswer(id));
+    store.dispatch(changeSelectedAnswer([{}]));
     expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle QUERY_POSSIBLE_ANSWER_CONCEPTS', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{ type: 'concept' }],
+      });
+    });
+
+    const expectedActions = [
+      { type: QUERY_POSSIBLE_ANSWER_CONCEPTS, payload: [{ type: 'concept' }] },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    return store.dispatch(queryPossibleAnswers('test')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+});
+
+describe('Add answer mappings to concept', () => {
+  beforeEach(() => {
+    moxios.install();
+  });
+
+  afterEach(() => {
+    moxios.uninstall();
+  });
+
+  it('should add all chosen answer mappings', async () => {
+    const mappingData = [
+      {
+        url: 'some/test.url',
+        map_scope: 'Internal',
+        map_type: 'Same as',
+        to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+        to_concept_name: 'CIEL: MALARIAL SMEAR',
+        to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
+      },
+      {
+        url: 'some/test.url',
+        map_scope: 'EXternal',
+        map_type: 'Narrower than',
+        to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+        to_concept_name: 'CIEL: MALARIAL SMEAR',
+        to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
+      },
+    ];
+
+    const expected = [{
+      data: {
+        created_at: '2018-12-17T13:32:26.644',
+        created_by: 'admin',
+        external_id: null,
+        extras: null,
+        from_concept_code: 'd06c3088-29e4-495a-9a67-62f41e2ab28f',
+        from_concept_name: 'jfjf',
+        from_concept_url: '/url/test/',
+        from_source_name: '2197623860455254',
+        from_source_owner: 'admin',
+        from_source_owner_type: 'User',
+        from_source_url: null,
+        id: '5c17ebba389b5a0050817d89',
+        map_type: 'Same as',
+        owner: 'admin',
+        owner_type: 'User',
+        retired: false,
+        source: '2197623860455254',
+        to_concept_code: '1366',
+        to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+        to_concept_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+        to_source_name: 'CIEL',
+        to_source_owner: 'CIEL',
+        to_source_owner_type: 'Organization',
+        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        type: 'Mapping',
+        updated_at: '2018-12-17T13:32:26.769',
+        updated_by: 'admin',
+        url: '/users/admin/sources/2197623',
+      },
+    },
+    {
+      data: {
+        created_at: '2018-12-17T13:32:26.644',
+        created_by: 'admin',
+        external_id: null,
+        extras: null,
+        from_concept_code: 'd06c3088-29e4-495a-9a67-62f41e2ab28f',
+        from_concept_name: 'jfjf',
+        from_concept_url: '/url/test/',
+        from_source_name: '2197623860455254',
+        from_source_owner: 'admin',
+        from_source_owner_type: 'User',
+        from_source_url: null,
+        id: '5c17ebba389b5a0050817d89',
+        map_type: 'Narrower than',
+        owner: 'admin',
+        owner_type: 'User',
+        retired: false,
+        source: '2197623860455254',
+        to_concept_code: '1366',
+        to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+        to_concept_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+        to_source_name: 'CIEL',
+        to_source_owner: 'CIEL',
+        to_source_owner_type: 'Organization',
+        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        type: 'Mapping',
+        updated_at: '2018-12-17T13:32:26.769',
+        updated_by: 'admin',
+        url: '/users/admin/sources/2197623',
+      },
+    },
+    ];
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 201, response: expected });
+    });
+    await addAnswerMappingToConcept('/url/test/', '2434435454545', mappingData);
   });
 });

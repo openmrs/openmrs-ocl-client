@@ -6,39 +6,43 @@ import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import { classes } from './helperFunction';
 
-const CreateConceptForm = props => (
-  <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
-    <div className="concept-form-body">
-      <div className="form-row">
-        <div className="form-group col-md-7">
-          <label htmlFor="uuid">UUID</label>
-          <input
-            type="text"
-            className="form-control"
-            readOnly={props.editable}
-            onChange={props.handleChange}
-            value={props.state.id}
-            name="id"
-            id="uuid"
-            required
-          />
-          <small className="form-text text-muted">
+const CreateConceptForm = (props) => {
+  const {
+    concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
+  } = props;
+  return (
+    <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
+      <div className="concept-form-body">
+        <div className="form-row">
+          <div className="form-group col-md-7">
+            <label htmlFor="uuid">UUID</label>
+            <input
+              type="text"
+              className="form-control"
+              readOnly={props.editable}
+              onChange={props.handleChange}
+              value={props.state.id}
+              name="id"
+              id="uuid"
+              required
+            />
+            <small className="form-text text-muted">
             Only alphanumeric characters, hyphens, periods, and underscores are allowed.
-          </small>
-        </div>
-        <div className="form-group col-md-3 custom-field">
-          <button
-            type="submit"
-            className="btn btn-sm btn-light"
-            id="toggleUUID"
-            onClick={props.toggleUUID}
-          >
+            </small>
+          </div>
+          <div className="form-group col-md-3 custom-field">
+            <button
+              type="submit"
+              className="btn btn-sm btn-light"
+              id="toggleUUID"
+              onClick={props.toggleUUID}
+            >
             click here to manually enter
-          </button>
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="form-row">
-        {!props.concept && (
+        <div className="form-row">
+          {!props.concept && (
           <div className="form-group col-md-5">
             <label htmlFor="class">Class</label>
             <select
@@ -53,8 +57,8 @@ const CreateConceptForm = props => (
               {classes.map(option => <option key={option}>{option}</option>)}
             </select>
           </div>
-        )}
-        {props.concept && (
+          )}
+          {props.concept && (
           <div className="form-group col-md-5">
             <label htmlFor="class">Class</label>
             <div>
@@ -107,86 +111,89 @@ const CreateConceptForm = props => (
               )}
             </div>
           </div>
-        )}
-      </div>
-      <div className="datatypefield">
-        <label htmlFor="datatype">Datatype</label>
-        <select
-          id="datatype"
-          name="datatype"
-          required
-          value={props.state.datatype}
-          className="form-control "
-          onChange={props.handleChange}
-        >
-          <option>Numeric</option>
-          <option>Text</option>
-          <option>None</option>
-          <option>Document</option>
-          <option>Date</option>
-          <option>Time</option>
-          <option>Datetime</option>
-          <option>Boolean</option>
-          <option>Rule</option>
-          <option>Structured-Numeric</option>
-          <option>Complex</option>
-          <option>Coded</option>
-        </select>
-      </div>
+          )}
+        </div>
+        <div className="datatypefield">
+          <label htmlFor="datatype">Datatype</label>
+          <select
+            id="datatype"
+            name="datatype"
+            required
+            value={props.state.datatype}
+            className="form-control "
+            onChange={props.handleChange}
+          >
+            <option>Numeric</option>
+            <option>Text</option>
+            <option>None</option>
+            <option>Document</option>
+            <option>Date</option>
+            <option>Time</option>
+            <option>Datetime</option>
+            <option>Boolean</option>
+            <option>Rule</option>
+            <option>Structured-Numeric</option>
+            <option>Complex</option>
+            <option>Coded</option>
+          </select>
+        </div>
 
-      {props.concept.toString().trim() === 'question' ?
-        <div className="form-group answer">
+        {concept.toString().trim() === 'question' ? (
+          <div className="form-group answer">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Answers</h6>
+              <AnswersTable
+                handleAsyncSelectChange={handleAsyncSelectChange}
+                queryAnswers={queryAnswers}
+                selectedAnswers={selectedAnswers}
+                handleAnswerChange={handleAnswerChange}
+              />
+            </div>
+          </div>
+        ) : null }
+
+        <div className="form-group">
           <div className="row col-12 custom-concept-list">
-            <h6 className="text-left section-header">Answers</h6>
-            <AnswersTable {...props} />
-            <a href="#!" className="text-left add-more-answers" id="add-more-answers" onClick={props.addAnswer}>
-            Add a new answer mapping
+            <h6 className="text-left section-header">Names</h6>
+            <CreateConceptTable {...props} />
+            <a
+              href="#!"
+              className="text-left add-more-names"
+              id="add-more-name"
+              onClick={props.handleNewName}
+            >
+            Add another name...
             </a>
           </div>
         </div>
-      : null}
-
-      <div className="form-group">
-        <div className="row col-12 custom-concept-list">
-          <h6 className="text-left section-header">Names</h6>
-          <CreateConceptTable {...props} />
-          <a
-            href="#!"
-            className="text-left add-more-names"
-            id="add-more-name"
-            onClick={props.handleNewName}
-          >
-            Add another name...
-          </a>
-        </div>
-      </div>
-      <div className="form-group">
-        <div className="row col-12 custom-concept-list">
-          <h6 className="text-left section-header">Descriptions</h6>
-          <DescriptionTable {...props} />
-          <a
-            href="#!"
-            className="text-left add-more-names"
-            id="add-more-description"
-            onClick={props.addDescription}
-          >
+        <div className="form-group">
+          <div className="row col-12 custom-concept-list">
+            <h6 className="text-left section-header">Descriptions</h6>
+            <DescriptionTable {...props} />
+            <a
+              href="#!"
+              className="text-left add-more-names"
+              id="add-more-description"
+              onClick={props.addDescription}
+            >
             Add another description...
-          </a>
+            </a>
+          </div>
+        </div>
+        <div className="submit-button text-left">
+          <button className="btn btn-sm bg-blue col-2 mr-1" type="submit" disabled={props.disableButton}>
+            {props.isEditConcept ? 'Update' : 'Create' }
+          </button>
+          <Link to={props.path} className="collection-name small-text">
+            <button className="btn btn-sm  col-2 btn-danger" type="submit" disabled={props.disableButton}>
+            Cancel
+            </button>
+          </Link>
         </div>
       </div>
-      <div className="submit-button text-left">
-        <button className="btn btn-sm bg-blue col-2 mr-1" type="submit" disabled={props.disableButton}>
-          {props.isEditConcept ? 'Update' : 'Create' }
-        </button>
-        <Link to={props.path} className="collection-name small-text">
-          <button className="btn btn-sm  col-2 btn-danger" type="submit" disabled={props.disableButton}>
-            Cancel
-          </button>
-        </Link>
-      </div>
-    </div>
-  </form>
-);
+    </form>
+  );
+};
 
 CreateConceptForm.propTypes = {
   addDescription: PropTypes.func.isRequired,
@@ -197,7 +204,7 @@ CreateConceptForm.propTypes = {
     id: PropTypes.string,
   }).isRequired,
   concept: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
+  path: PropTypes.string,
   toggleUUID: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   disableButton: PropTypes.bool.isRequired,
@@ -205,13 +212,18 @@ CreateConceptForm.propTypes = {
   editable: PropTypes.bool.isRequired,
   isEditConcept: PropTypes.bool,
   existingConcept: PropTypes.object,
-  addAnswer: PropTypes.func.isRequired,
-  answer: PropTypes.array.isRequired,
+  handleAsyncSelectChange: PropTypes.func,
+  queryAnswers: PropTypes.func,
+  selectedAnswers: PropTypes.array,
 };
 
 CreateConceptForm.defaultProps = {
+  path: '',
   existingConcept: {},
   isEditConcept: false,
+  handleAsyncSelectChange: () => {},
+  queryAnswers: () => {},
+  selectedAnswers: [],
 };
 
 export default CreateConceptForm;

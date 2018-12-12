@@ -2,14 +2,16 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import AnswersTable from
   '../../../components/dictionaryConcepts/components/AnswersTable';
-import answers from '../../__mocks__/answers';
+import selectedAnswers from '../../__mocks__/answers';
 
 const props = {
-  answer: answers,
+  selectedAnswers,
   addDataFromAnswer: jest.fn(),
   removeAnswer: jest.fn(),
   removeDataFromRow: jest.fn(),
   existingConcept: {},
+  handleAsyncSelectChange: jest.fn(),
+  queryAnswers: jest.fn(),
 };
 
 describe('Test suite for AnswersTable', () => {

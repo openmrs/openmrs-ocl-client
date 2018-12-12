@@ -24,8 +24,9 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_CONCEPT,
-  ADD_NEW_ANSWER_MAPPING,
-  REMOVE_ONE_ANSWER_MAPPING,
+  QUERY_POSSIBLE_ANSWER_CONCEPTS,
+  ADD_SELECTED_ANSWERS,
+  CHANGE_ANSWER_MAPPING,
 } from '../actions/types';
 import {
   filterSources, filterClass, filterList, normalizeList, filterNames,
@@ -46,7 +47,6 @@ const initialState = {
   hasMore: false,
   newName: [],
   description: [],
-  answer: [],
   newConcept: {},
   addConceptToDictionary: [],
   paginatedConcepts: [],
@@ -55,7 +55,14 @@ const initialState = {
     descriptions: [],
     names: [],
   },
+  queryResults: [],
+  selectedAnswers: [],
 };
+
+const answerFilter = (answers, id) => answers.filter(answer => answer.id === id)[0];
+
+const changedAnswerIndex = (answers, id) => answers.findIndex(answer => answer.id === id);
+
 export default (state = initialState, action) => {
   const calculatePayload = () => {
     if (action.payload.length === 25) {
@@ -145,16 +152,6 @@ export default (state = initialState, action) => {
         ...state,
         description: filterNames(action.payload, state.description),
       };
-    case ADD_NEW_ANSWER_MAPPING:
-      return {
-        ...state,
-        answer: [...state.answer, action.payload],
-      };
-    case REMOVE_ONE_ANSWER_MAPPING:
-      return {
-        ...state,
-        answer: filterNames(action.payload, state.answer),
-      };
     case CLEAR_FORM_SELECTIONS:
       return {
         ...state,
@@ -232,6 +229,30 @@ export default (state = initialState, action) => {
     case FETCH_EXISTING_CONCEPT_ERROR:
       return {
         ...state,
+      };
+    case QUERY_POSSIBLE_ANSWER_CONCEPTS:
+      return {
+        ...state,
+        queryResults: [...action.payload],
+      };
+    case ADD_SELECTED_ANSWERS:
+      return {
+        ...state,
+        selectedAnswers: [...action.payload],
+      };
+    case CHANGE_ANSWER_MAPPING:
+      // eslint-disable-next-line no-case-declarations
+      const currentAnswer = answerFilter(state.selectedAnswers, action.payload.id);
+      // eslint-disable-next-line no-case-declarations
+      const newCurrentAnswer = Object.assign(currentAnswer, action.payload);
+      // eslint-disable-next-line no-case-declarations
+      const newSelectedAnswers = state.selectedAnswers;
+      // eslint-disable-next-line no-case-declarations
+      const changedIndex = changedAnswerIndex(state.selectedAnswers, action.payload.id);
+      newSelectedAnswers[changedIndex] = newCurrentAnswer;
+      return {
+        ...state,
+        selectedAnswers: [...newSelectedAnswers],
       };
     default:
       return state;

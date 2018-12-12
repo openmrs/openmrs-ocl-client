@@ -1,7 +1,7 @@
 export default [{
-  from_concept_url: '/orgs/Columbia/sources/CIEL/concepts/161426/',
+  id: 'testID1',
+  display_name: 'test display name 1',
 }, {
-
-  from_concept_url: '/orgs/Columbia/sources/CIEL/concepts/161426566/',
-
+  id: 'testID1',
+  display_name: 'test display name 1',
 }];
