@@ -113,11 +113,11 @@ describe('Test suite for login action', () => {
       });
   });
 
-  it('should handle no internet connection', async () => {
+  it('should handle login attempt when offline', async () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.respondWith({
-        response: undefined,
+      request.reject({
+        status: 599,
       });
     });
 
@@ -125,11 +125,6 @@ describe('Test suite for login action', () => {
       {
         type: AUTHENTICATION_IN_PROGRESS,
         loading: true,
-      },
-      {
-        type: AUTHENTICATION_FAILED,
-        payload: { errorMessage: 'Please check your internet connection.' },
-        loading: false,
       }];
 
     const store = mockStore();

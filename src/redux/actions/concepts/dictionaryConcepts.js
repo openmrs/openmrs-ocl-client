@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
 import { notify } from 'react-notify-toast';
+import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
 
 import {
   POPULATE_SIDEBAR,
@@ -141,9 +142,10 @@ export const fetchDictionaryConcepts = (
       dispatch(populateSidenav());
     }
   } catch (error) {
-    if (error.response) {
+    if (error.response !== undefined) {
       dispatch(isErrored(error.response.data, FETCH_DICTIONARY_CONCEPT));
     }
+    showNetworkError();
   }
   dispatch(isFetching(false));
 };
