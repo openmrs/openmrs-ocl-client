@@ -36,7 +36,7 @@ beforeEach(() => {
   state = {
     concepts: [],
     loading: false,
-    dictionaryConcepts: [],
+    dictionaryConcepts: [paginatedConcepts.concepts],
     paginatedConcepts: [paginatedConcepts.concepts],
     filteredSources: [],
     filteredClass: [],
@@ -273,6 +273,8 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       paginatedConcepts: state.paginatedConcepts
+        .filter(concept => concept.version_url !== action.payload),
+      dictionaryConcepts: state.dictionaryConcepts
         .filter(concept => concept.version_url !== action.payload),
     });
   });

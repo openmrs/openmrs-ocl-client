@@ -141,6 +141,7 @@ export class DictionaryConcepts extends Component {
     const { data, collectionName, type } = this.state;
     this.props
       .removeDictionaryConcept(data, type, this.props.match.params.typeName, collectionName);
+    this.closeDeleteModal();
   }
 
   handleShowDelete = (url) => {

@@ -89,6 +89,8 @@ export default (state = initialState, action) => {
         ...state,
         paginatedConcepts: state.paginatedConcepts
           .filter(concept => concept.version_url !== action.payload),
+        dictionaryConcepts: state.dictionaryConcepts
+          .filter(concept => concept.version_url !== action.payload),
       };
     case TOTAL_CONCEPT_COUNT:
       return {
