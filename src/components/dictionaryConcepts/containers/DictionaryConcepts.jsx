@@ -169,6 +169,23 @@ export class DictionaryConcepts extends Component {
     return matchSorter(rows, filter.value, { keys: [id] });
   };
 
+  handleConcepts = (concepts) => {
+    const newConcepts = [];
+    concepts.forEach((concept) => {
+      if (concept.source !== 'CIEL') {
+        const newConcept = {
+          ...concept,
+          source: 'Custom',
+        };
+        newConcepts.push(newConcept);
+      }
+      if (concept.source === 'CIEL') {
+        newConcepts.push(concept);
+      }
+    });
+    return newConcepts;
+  }
+
   render() {
     const {
       match: {
@@ -183,6 +200,8 @@ export class DictionaryConcepts extends Component {
       loading,
       userIsMember,
     } = this.props;
+
+    const myConcepts = this.handleConcepts(concepts);
     const hasPermission = typeName === getUsername() || userIsMember;
     const org = {
       name: (type === 'orgs') ? typeName : '',
@@ -218,7 +237,7 @@ export class DictionaryConcepts extends Component {
           />
           <div className="col-12 col-md-10 custom-full-width">
             <ConceptTable
-              concepts={concepts}
+              concepts={myConcepts}
               loading={loading}
               conceptLimit={conceptLimit}
               org={org}

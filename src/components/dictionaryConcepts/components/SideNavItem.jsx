@@ -12,7 +12,7 @@ const SideNavItem = ({ item, handleChange, filterType }) => (
       onChange={handleChange}
     />
     <label className="custom-control-label" htmlFor={item}>
-      {item}
+      {filterType === 'source' && item !== 'CIEL' ? 'Custom' : item}
     </label>
   </div>
 );
