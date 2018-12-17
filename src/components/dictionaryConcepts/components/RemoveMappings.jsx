@@ -54,7 +54,11 @@ RemoveMappings.propTypes = {
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
-  retired: PropTypes.bool.isRequired,
+  retired: PropTypes.bool,
+};
+
+RemoveMappings.defaultProps = {
+  retired: false,
 };
 
 export default RemoveMappings;

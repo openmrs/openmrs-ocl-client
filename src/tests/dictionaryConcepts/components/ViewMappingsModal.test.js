@@ -64,7 +64,13 @@ describe('render ViewMappingsModal', () => {
   it('should render with a set mapping limit', () => {
     const newProps = {
       ...props,
-      mappings: [{}, {}, {}],
+      mappings: [{
+        url: '',
+      }, {
+        url: '',
+      }, {
+        url: '',
+      }],
       mappingLimit: 2,
     };
     wrapper = mount(
