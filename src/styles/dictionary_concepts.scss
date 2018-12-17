@@ -125,6 +125,16 @@ body {
   color: lightgray;
 }
 
+.-pagination .-btn:not([disabled]){
+  color: #303438;
+  background: rgba(108, 117, 125, 0.5);
+}
+
+.-pagination .-btn:not([disabled]):hover{
+  color: #fff;
+  background: #6c757d !important;
+}
+
 .search-container .concept-search-wrapper .fa-search {
   font-size: .8rem;
   padding-right: .7rem;
