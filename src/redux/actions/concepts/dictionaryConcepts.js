@@ -193,10 +193,10 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = dataUrl;
   try {
+    notify.show('creating concept, please wait...', 'warning', 1000);
     const response = await instance.post(url, data);
     dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
-    notify.show('creating concept, please wait...', 'warning', 3000);
   } catch (error) {
     if (error.response) {
       const { response } = error;

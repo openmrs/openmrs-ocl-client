@@ -93,9 +93,9 @@ export class CreateConcept extends Component {
     const isAddedConcept = addedConcept.length;
     if (isNewConcept && isAddedConcept) {
       setTimeout(() => {
-        notify.show('concept successfully created', 'success', 3000);
         nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}`);
-      }, 3000);
+        notify.show('concept successfully created', 'success', 3000);
+      }, 10);
     }
   }
 
