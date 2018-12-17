@@ -138,7 +138,9 @@
   font-size: .8rem;
   transition: background-color 400ms ease-in-out;
 }
-
+.popup-content {
+  width: 30rem !important;
+}
 .pop-up-wrapper {
   padding: 1rem;
   height: auto;
@@ -154,7 +156,8 @@
 .pop-up-description {
   background: #e8e9eb;
   color: #2c2e35;
-  padding: .7rem;
+  padding: .4rem;
+  font-size: .9rem;
   white-space: normal;
 }
 
@@ -180,9 +183,19 @@
 }
 
 .synonyms {
-  margin: 0;
-  margin-top: 1rem;
-  font-size: .8rem;
+  margin: .5rem 0 0 0;
+  font-size: .9rem !important;
+}
+
+.card-version{
+  display: block;
+  float: right;
+  max-width: 18rem;
+}
+
+.card-version small em {
+  float: left;
+  font-weight: 300;
 }
 
 .form-check{
@@ -195,4 +208,31 @@
   width: 70%;
   list-style: none;
   z-index: 999;
+}
+
+.preview-row{
+  padding: 0 1rem;
+  div{
+    width: 50%
+  }
+}
+
+.mapping-preview{
+  font-size: .9rem;
+  font-weight: 200;
+  border: #e8e9eb solid 2px;
+  .rt-table{
+    text-align: justify;
+    .rt-thead{
+      font-weight: 600;
+    }
+    .rt-td, .rt-th{
+      border-right: 1px solid #bbb;
+    }
+  }
+}
+
+.preview-modal {
+  max-height: 40rem;
+  overflow: auto;
 }
