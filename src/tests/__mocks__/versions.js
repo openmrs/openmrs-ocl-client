@@ -1,12 +1,12 @@
 export default {
-  id: 'HEAD',
+  id: '1.0',
   released: true,
   retired: false,
   owner: 'chriskala',
   version_external_id: '1.6',
   owner_type: 'User',
   owner_url: '/users/chriskala/',
-  version_url: '/users/chriskala/collections/over/HEAD/',
+  version_url: '/users/chriskala/collections/over/1.0/',
   url: '/users/chriskala/collections/over/',
 };
 export const customVersion = {
