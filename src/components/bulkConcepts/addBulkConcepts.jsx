@@ -8,8 +8,9 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
-import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
+import fetchCielConcepts, { addExistingBulkConcepts, isConceptValid } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
+import ResultModal from './component/addBulkConceptResultModal';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
@@ -33,7 +34,14 @@ export class AddBulkConcepts extends Component {
     super(props);
     this.state = {
       conceptIds: '',
+      openResultModal: false,
     };
+    this.invalidConceptIds = [];
+    this.sourceUrl = 'orgs/CIEL/sources/CIEL/concepts/';
+  }
+
+  componentDidMount() {
+    this.props.fetchCielConcepts();
   }
 
   handleSelected = (selected) => {
@@ -49,9 +57,42 @@ export class AddBulkConcepts extends Component {
     this.setState({ conceptIds: e.target.value });
   }
 
+  handleAddAll = async () => {
+    const {
+      match: {
+        params: { type, typeName, collectionName },
+      },
+    } = this.props;
+    const url = `${type}/${typeName}/collections/${collectionName}/references/`;
+    const { conceptIds } = this.state;
+    const conceptIdList = conceptIds.split(/[\s,\r\n]+/);
+
+    if (conceptIdList[0]) {
+      this.invalidConceptIds = [];
+
+      const validConcepts = await conceptIdList.reduce(async (accumulator, id) => {
+        const validity = await isConceptValid({ url: `${this.sourceUrl}${id}/` });
+        if (validity[0]) {
+          (await accumulator).push(`/${this.sourceUrl}${id}/`);
+        } else {
+          this.invalidConceptIds.push(id);
+        }
+        return accumulator;
+      }, Promise.resolve([]));
+
+      this.props.addExistingBulkConcepts({ url, data: { data: { expressions: validConcepts } } });
+      this.setState({ conceptIds: '', openResultModal: this.invalidConceptIds.length > 0 });
+    }
+  }
+
+  closeResultModal = () => {
+    this.invalidConceptIds = [];
+    this.setState({ openResultModal: false });
+  }
+
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
-    const { conceptIds } = this.state;
+    const { conceptIds, openResultModal } = this.state;
     const {
       match: {
         params: { type, typeName, collectionName },
@@ -59,9 +100,16 @@ export class AddBulkConcepts extends Component {
       cielConcepts,
       language,
     } = this.props;
+
     const disableButton = (conceptIds.length < 1);
+
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
+        <ResultModal
+          openModal={openResultModal}
+          closeModal={this.closeResultModal}
+          ids={this.invalidConceptIds}
+        />
         <Header locationPath={this.props.match.params} />
         <h3>
           <strong>
@@ -83,6 +131,7 @@ Dictionary
                 id="ciel"
                 value="option1"
                 onClick={this.handleCielClick}
+                defaultChecked
               />
               <label className="form-check-label" htmlFor="exampleRadios1">
                 CIEL

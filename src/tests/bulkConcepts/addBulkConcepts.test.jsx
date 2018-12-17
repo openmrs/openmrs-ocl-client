@@ -1,11 +1,13 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import moxios from 'moxios';
 import { createMockStore } from 'redux-test-utils';
 import Authenticated from '../__mocks__/fakeStore';
 import { AddBulkConcepts } from '../../components/bulkConcepts/addBulkConcepts';
 import { mockConcepts } from '../__mocks__/concepts';
+import configInstance from '../../config/axiosConfig';
 
 const store = createMockStore(Authenticated);
 const match = {
@@ -29,6 +31,11 @@ describe('Add Bulk Concepts', () => {
 
   beforeEach(() => {
     localStorage.setItem('dictionaryName', 'OpenMRS');
+    moxios.install(configInstance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(configInstance);
   });
 
   it('Should render without crashing', () => {
@@ -121,5 +128,46 @@ describe('Add Bulk Concepts', () => {
     txtInput.simulate('change', { target: { value: '8,8,89' } });
     txtInput.simulate('keydown', { key: 'Enter' });
     expect(bulkWrapper.state.conceptIds).toEqual('8,8,89');
+  });
+
+  it('should call addExistingBulkConcepts on handleAll click', () => {
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    const component = wrapper.find('AddBulkConcepts').instance();
+    const spy = jest.spyOn(component, 'handleAddAll');
+    component.forceUpdate();
+    const addAllButton = wrapper.find('#btn-add-all').at(0);
+    component.handleAddAll();
+
+    moxios.stubRequest('https://api.qa.openconceptlab.org/orgs/CIEL/sources/CIEL/concepts/1/', {
+      status: 200,
+      response: { id: 1, retired: false, name: 'something random' },
+    });
+    moxios.stubRequest('https://api.qa.openconceptlab.org/orgs/CIEL/sources/CIEL/concepts/44/', {
+      status: 404,
+      response: { error: 'not done' },
+    });
+
+    component.handleSelected({ id: '1, 44' });
+    addAllButton.simulate('click');
+
+    moxios.wait(() => {
+      expect(spy).toHaveBeenCalled();
+    });
+    wrapper.unmount();
+  });
+
+  it('handleaAdAll close resultModal on close', () => {
+    const wrapper = shallow(
+      <AddBulkConcepts {...props} />,
+    );
+    wrapper.setState({ openResultModal: true });
+    expect(wrapper.state().openResultModal).toBe(true);
+    const instance = wrapper.instance();
+    instance.closeResultModal();
+    expect(wrapper.state().openResultModal).toBe(false);
   });
 });

@@ -105,6 +105,7 @@ it('dispatches an error when adding bulk concepts', () => {
       status: 400,
     });
   });
+  const returnedAction = [];
   const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
   const store = mockStore({});
   return store.dispatch(addExistingBulkConcepts(data))
