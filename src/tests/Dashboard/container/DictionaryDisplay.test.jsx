@@ -171,4 +171,22 @@ describe('DictionaryCard', () => {
     const wrapper = shallow(<DictionaryCard {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
+  it('should render with owner type user', () => {
+    const props = {
+      dictionary: [dictionaries],
+    };
+    const wrapper = shallow(<DictionaryCard {...props} />);
+    const ownerWrapper = wrapper.find('small');
+    expect(ownerWrapper.text()).toBe('(user)');
+  });
+  it('should render with owner type org', () => {
+    const props = {
+      dictionary: {
+        owner_type: 'Organization',
+      },
+    };
+    const wrapper = shallow(<DictionaryCard {...props} />);
+    const ownerWrapper = wrapper.find('small');
+    expect(ownerWrapper.text()).toBe('(org)');
+  });
 });

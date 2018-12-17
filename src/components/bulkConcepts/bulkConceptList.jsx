@@ -1,66 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from 'react-table';
+import {
+  Form,
+  FormGroup,
+  Input,
+} from 'reactstrap';
 import Loader from '../Loader';
 
 const BulkConceptList = ({
   cielConcepts,
   fetching,
-  handleSelect,
-  conceptLimit,
-  filterConcept,
 }) => {
-  const filter = { filterMethod: filterConcept, filterAll: true };
   if (cielConcepts.length >= 1) {
     return (
-      <ReactTable
-        data={cielConcepts}
-        loading={fetching}
-        defaultPageSize={cielConcepts.length <= conceptLimit ? cielConcepts.length : conceptLimit}
-        filterable
-        noDataText="No concept!"
-        minRows={2}
-        columns={[
-          {
-            Header: 'Select',
-            accessor: 'select',
-            filterable: false,
-            minWidth: 300,
-            Cell: ({ original: concept }) => (
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="table-check"
-                  value={concept.url}
-                  onChange={handleSelect}
-                />
-              </div>
-            ),
-          },
-          {
-            Header: 'Name',
-            accessor: 'display_name',
-            minWidth: 300,
-            ...filter,
-          },
-          {
-            Header: 'Datatype',
-            accessor: 'datatype',
-            ...filter,
-          },
-          {
-            Header: 'Source',
-            accessor: 'source',
-            ...filter,
-          },
-          {
-            Header: 'ID',
-            accessor: 'id',
-            ...filter,
-          },
-        ]}
-        className="-striped -highlight"
-      />
+      <Form className="bulkForm">
+        <FormGroup>
+          <Input type="textarea" name="text" id="exampleText" rows="10" />
+        </FormGroup>
+      </Form>
     );
   }
   if (fetching) {
@@ -81,8 +38,5 @@ BulkConceptList.propTypes = {
   cielConcepts: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
   })).isRequired,
-  handleSelect: PropTypes.func.isRequired,
-  conceptLimit: PropTypes.number.isRequired,
-  filterConcept: PropTypes.func.isRequired,
 };
 export default BulkConceptList;

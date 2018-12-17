@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
@@ -69,95 +69,22 @@ describe('Add Bulk Concepts', () => {
     </MemoryRouter>);
     wrapper.find('#btn-add-all').at(0).simulate('click');
   });
-
-
-  it('hanldleSelect is called and add concept', () => {
+  it('enables the Add all button when a concept is selected', () => {
     const props = {
       fetchCielConcepts: jest.fn(),
       addExistingBulkConcepts: jest.fn(),
-      cielConcepts: mockConcepts,
+      cielConcepts: [],
       isFetching: false,
       match,
       language: 'en',
     };
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const event = {
-      preventDefault: jest.fn(),
-      target: {
-        value: ['/users/michy/collections/test/concepts/'],
-        checked: true,
-      },
-    };
-    const spy = jest.spyOn(wrapper.find('AddBulkConcepts').instance(), 'handleSelect');
-    wrapper.instance().forceUpdate();
-    wrapper.find('#ciel').at(0).simulate('click');
-    wrapper.find('.table-check').at(0).simulate('change', event);
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-  it('hanldleSelect is called and remove a concept', () => {
-    const props = {
-      fetchCielConcepts: jest.fn(),
-      addExistingBulkConcepts: jest.fn(),
-      cielConcepts: mockConcepts,
-      isFetching: false,
-      match,
-      language: 'en',
-    };
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const event = {
-      preventDefault: jest.fn(),
-      target: {
-        value: ['/users/michy/collections/test/concepts/'],
-        checked: false,
-      },
-    };
-    const spy = jest.spyOn(wrapper.find('AddBulkConcepts').instance(), 'handleSelect');
-    wrapper.instance().forceUpdate();
-    wrapper.find('#ciel').at(0).simulate('click');
-    wrapper.find('.table-check').at(0).simulate('change', {
-      preventDefault: jest.fn(),
-      target: {
-        value: ['/users/michy/collections/test/concepts/'],
-        checked: true,
-      },
+    const wrapper = shallow(<AddBulkConcepts {...props} />);
+    wrapper.setState({
+      cielConcepts: [{
+        'concept-url': 'random',
+      }],
     });
-    wrapper.find('.table-check').at(0).simulate('change', event);
-    expect(spy).toHaveBeenCalled();
-  });
-  it('it should call hanldleAddAll and add a concept', () => {
-    const props = {
-      fetchCielConcepts: jest.fn(),
-      addExistingBulkConcepts: jest.fn(),
-      cielConcepts: mockConcepts,
-      isFetching: false,
-      match,
-      language: 'en',
-    };
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const event = {
-      target: {
-        value: ['/users/michy/collections/test/concepts/'],
-        checked: true,
-      },
-    };
-    const spy = jest.spyOn(wrapper.find('AddBulkConcepts').instance(), 'handleAddAll');
-    wrapper.instance().forceUpdate();
-    wrapper.find('#ciel').at(0).simulate('click');
-    wrapper.find('.table-check').at(0).simulate('change', event);
-    wrapper.find('#btn-add-all').simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(wrapper.find('.btn-add-all').length).toBe(1);
   });
 
   it('should test mapStateToProps', () => {
@@ -168,32 +95,4 @@ describe('Add Bulk Concepts', () => {
     };
     expect(mapStateToProps(initialState).cielConcepts).toEqual(['1']);
   });
-});
-
-it('should filter concepts in the table', () => {
-  const props = {
-    fetchCielConcepts: jest.fn(),
-    addExistingBulkConcepts: jest.fn(),
-    cielConcepts: mockConcepts,
-    isFetching: false,
-    match,
-    datatypes: ['text'],
-    classes: ['Diagnosis'],
-    language: 'en',
-  };
-  const wrapper = mount(<MemoryRouter>
-    <Provider store={store}>
-      <AddBulkConcepts {...props} />
-    </Provider>
-  </MemoryRouter>);
-  const event = {
-    target: {
-      value: 'malaria',
-    },
-  };
-  const addBulkConceptsWrapper = wrapper.find('AddBulkConcepts').instance();
-  const spy = jest.spyOn(addBulkConceptsWrapper, 'filterCaseInsensitive');
-  addBulkConceptsWrapper.forceUpdate();
-  wrapper.find('ReactTable').find('input').at(0).simulate('change', event);
-  expect(spy).toHaveBeenCalled();
 });
