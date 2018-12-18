@@ -19,15 +19,14 @@ class RemoveMappings extends Component {
     const { url, retired, handleDeleteMapping, showDeleteMappingModal } = this.props;
     return (
       <React.Fragment>
-        { !retired ? (
+        { !retired && (
           <button
             type="button"
             className="btn btn-sm mb-1 actionButtons"
             onClick={() => {
               this.handleToggle();
               showDeleteMappingModal(url);
-            }
-        }
+            }}
           >
           Remove
             <RemoveMappingsModal
@@ -36,14 +35,7 @@ class RemoveMappings extends Component {
               handleDeleteMapping={handleDeleteMapping}
               url={url}
             />
-          </button>) : (
-            <button
-              type="button"
-              className="btn btn-sm mb-1 actionButtons disabled"
-            >
-              Retired
-            </button>
-        )
+          </button>)
       }
       </React.Fragment>
     );
