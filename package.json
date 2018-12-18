@@ -32,7 +32,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "test:bamboo": "react-scripts test --env=jsdom -u --ci --coverage --testResultsProcessor ./node_modules/jest-junit",
-    "lint": "npm run build:css && eslint ./src",
+    "lint": "npm run build:css && eslint src/**/*.js src/**/*.jsx",
     "coverage": "react-scripts test --env=jsdom --coverage --watch",
     "build:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --output-style compressed",
     "watch:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --watch --recursive"

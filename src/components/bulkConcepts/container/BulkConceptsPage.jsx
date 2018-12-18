@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import matchSorter from 'match-sorter';
 import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';

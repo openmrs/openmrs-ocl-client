@@ -64,7 +64,12 @@ export class AddBulkConcepts extends Component {
       <div className="container-fluid add-bulk-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
         <h3>
-          <strong>{dictionaryName} Dictionary</strong>: Bulk Add Concepts
+          <strong>
+            {dictionaryName}
+            {' '}
+Dictionary
+          </strong>
+: Bulk Add Concepts
         </h3>
         <div className="scheduler-border">
           <h3>Select a source</h3>
@@ -124,9 +129,10 @@ export class AddBulkConcepts extends Component {
                     </div>
                     <div className="search-ul">
                       {isOpen ? (
-                        <ul {...getMenuProps()} id="search-ul"> 
+                        <ul {...getMenuProps()} id="search-ul">
                           {
-                          cielConcepts.filter(item => !inputValue.trim() || item.display_name.toLowerCase()
+                          cielConcepts.filter(item => !inputValue.trim()
+                          || item.display_name.toLowerCase()
                             .includes(inputValue.toLowerCase())).slice(1, 10).map((item, index) => (
                               <li
                                 {...getItemProps({
@@ -135,7 +141,7 @@ export class AddBulkConcepts extends Component {
                                   item,
                                   style: {
                                     backgroundColor:
-                                      highlightedIndex === index ? 'lightgray' : 'white',
+                                    highlightedIndex === index ? 'lightgray' : 'white',
                                     padding: '5px 10px 1px',
                                   },
                                 })}

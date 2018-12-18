@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 
 const answerRow = (props) => {
   const { display_name, handleAnswerChange, id } = props;
@@ -41,5 +43,17 @@ const answerRow = (props) => {
 
   );
 };
+
+answerRow.propTypes = {
+  display_name: PropTypes.string,
+  handleAnswerChange: PropTypes.func.isRequired,
+  id: PropTypes.string,
+};
+
+answerRow.defaultProps = {
+  display_name: '',
+  id: '',
+};
+
 
 export default answerRow;

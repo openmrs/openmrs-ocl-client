@@ -41,7 +41,11 @@ AnswersTable.propTypes = {
   handleAsyncSelectChange: PropTypes.func.isRequired,
   queryAnswers: PropTypes.func.isRequired,
   selectedAnswers: PropTypes.array.isRequired,
-  handleAnswerChange: PropTypes.func.isRequired,
+  handleAnswerChange: PropTypes.func,
+};
+
+AnswersTable.defaultProps = {
+  handleAnswerChange: () => {},
 };
 
 export default AnswersTable;

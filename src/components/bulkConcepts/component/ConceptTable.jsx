@@ -16,57 +16,58 @@ const ConceptTable = ({
     );
   }
   return (
-      <div className="row col-12 custom-concept-list">
-        <ReactTable
-          data={concepts}
-          loading={loading}
-          defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
-          noDataText="No concepts found!"
-          minRows={2}
-          columns={[
-            {
-              Header: 'Name',
-              accessor: 'display_name',
-              minWidth: 300,
-            },
-            {
-              Header: 'Class',
-              accessor: 'concept_class',
-            },
-            {
-              Header: 'Datatype',
-              accessor: 'datatype',
-            },
-            {
-              Header: 'Source',
-              accessor: 'source',
-            },
-            {
-              Header: 'ID',
-              accessor: 'id',
-            },
-            {
-              Header: 'Action',
-              width: 250,
-              Cell: ({ original: concept }) => (
-                <ActionButtons
-                  preview={preview}
-                  previewConcept={previewConcept}
-                  addConcept={addConcept}
-                  params={location}
-                  {...concept}
-                />
-              ),
-            },
-          ]}
-          className="-striped -highlight"
-        />
-      </div>
+    <div className="row col-12 custom-concept-list">
+      <ReactTable
+        data={concepts}
+        loading={loading}
+        defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
+        noDataText="No concepts found!"
+        minRows={2}
+        columns={[
+          {
+            Header: 'Name',
+            accessor: 'display_name',
+            minWidth: 300,
+          },
+          {
+            Header: 'Class',
+            accessor: 'concept_class',
+          },
+          {
+            Header: 'Datatype',
+            accessor: 'datatype',
+          },
+          {
+            Header: 'Source',
+            accessor: 'source',
+          },
+          {
+            Header: 'ID',
+            accessor: 'id',
+          },
+          {
+            Header: 'Action',
+            width: 250,
+            Cell: ({ original: concept }) => (
+              <ActionButtons
+                preview={preview}
+                previewConcept={previewConcept}
+                addConcept={addConcept}
+                params={location}
+                {...concept}
+              />
+            ),
+          },
+        ]}
+        className="-striped -highlight"
+      />
+    </div>
   );
 };
 
 ConceptTable.propTypes = {
   concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
+  original: PropTypes.object,
   loading: PropTypes.bool.isRequired,
   location: PropTypes.shape({
     type: PropTypes.string,
@@ -80,6 +81,9 @@ ConceptTable.propTypes = {
   addConcept: PropTypes.func.isRequired,
   previewConcept: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
+};
+ConceptTable.defaultProps = {
+  original: {},
 };
 
 export default ConceptTable;
