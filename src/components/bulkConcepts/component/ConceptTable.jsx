@@ -16,7 +16,7 @@ const ConceptTable = ({
     );
   }
   const filter = { filterMethod: filterConcept, filterAll: true };
-    return (
+  return (
       <div className="row col-12 custom-concept-list">
         <ReactTable
           data={concepts}
@@ -70,7 +70,7 @@ const ConceptTable = ({
           className="-striped -highlight"
         />
       </div>
-    );
+  );
 };
 
 ConceptTable.propTypes = {

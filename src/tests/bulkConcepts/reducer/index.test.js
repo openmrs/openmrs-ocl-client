@@ -84,6 +84,8 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       bulkConcepts: action.payload,
+      classes: [undefined],
+      datatypes: [undefined],
     });
   });
   it('should handle PREVIEW_CONCEPT', () => {

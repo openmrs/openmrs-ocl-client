@@ -27,6 +27,8 @@ const bulkConcepts = (state = userInitialState, action) => {
       return {
         ...state,
         bulkConcepts: action.payload,
+        datatypes: getDatatypes(action.payload),
+        classes: filterClass(action.payload),
       };
     case PREVIEW_CONCEPT:
       return {
