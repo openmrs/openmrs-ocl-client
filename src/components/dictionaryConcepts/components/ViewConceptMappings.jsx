@@ -13,11 +13,22 @@ class ViewConceptMappings extends Component {
     });
   };
 
+  handleMappings = (mappings) => {
+    const newMappings = [];
+    mappings.forEach((mapping) => {
+      if (mapping.retired === false) {
+        newMappings.push(mapping);
+      }
+    });
+    return newMappings;
+  }
+
   render() {
     const { editModalIsOpen } = this.state;
     const {
       mappings, displayName, showDeleteMappingModal, handleDeleteMapping, source,
     } = this.props;
+    const activeMappings = this.handleMappings(mappings);
     return (
       <React.Fragment>
         <button
@@ -27,7 +38,7 @@ class ViewConceptMappings extends Component {
         >
           View mappings
           <ViewMappingsModal
-            mappings={mappings}
+            mappings={activeMappings}
             displayName={displayName}
             source={source}
             handleDeleteMapping={handleDeleteMapping}

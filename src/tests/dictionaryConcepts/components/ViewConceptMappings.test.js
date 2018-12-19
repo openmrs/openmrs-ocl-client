@@ -12,7 +12,12 @@ describe('render ViewConceptMappings', () => {
       handleToggle: jest.fn(),
       showDeleteMappingModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
-      mappings: [],
+      mappings: [{
+        retired: false,
+      },
+      {
+        retired: true,
+      }],
       displayName: '',
       mappingLimit: 10,
     };
