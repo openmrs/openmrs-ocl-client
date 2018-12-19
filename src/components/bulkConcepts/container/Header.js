@@ -19,6 +19,7 @@ const Header = ({ locationPath }) => {
             className="collection-name small-text"
           >
             <i className="fas fa-arrow-left">
+              &nbsp;
               <span className="collection-name">
               Go back to
                 {' '}
