@@ -4,6 +4,9 @@ import {
   IS_FETCHING,
   SEARCH_CONCEPTS,
   CLEAR_CONCEPTS,
+  QUERY_POSSIBLE_ANSWER_CONCEPTS,
+  ADD_SELECTED_ANSWERS,
+  CHANGE_ANSWER_MAPPING,
 } from '../../../redux/actions/types';
 import concepts from '../../__mocks__/concepts';
 
@@ -23,13 +26,14 @@ const initialState = {
   description: [],
   newConcept: {},
   addConceptToDictionary: [],
-  answer: [],
   paginatedConcepts: [],
   totalConceptCount: 0,
   existingConcept: {
     descriptions: [],
     names: [],
   },
+  queryResults: [],
+  selectedAnswers: [],
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
@@ -98,4 +102,26 @@ describe('Test suite for concepts reducer', () => {
       });
     },
   );
+
+  it('should add the concepts query results to redux state', () => {
+    const payload = [{ concept: 'test' }];
+    const newState = reducer(initialState, { type: QUERY_POSSIBLE_ANSWER_CONCEPTS, payload });
+    expect(newState.queryResults).toEqual(payload);
+  });
+
+  it('should add the selected answers to redux state', () => {
+    const payload = [{ answer: 'test' }];
+    const newState = reducer(initialState, { type: ADD_SELECTED_ANSWERS, payload });
+    expect(newState.selectedAnswers).toEqual(payload);
+  });
+
+  it('should add change the answer mapping details and update redux state', () => {
+    const changedState = {
+      ...initialState,
+      selectedAnswers: [{ id: 'testID', map_type: 'Internal' }],
+    };
+    const payload = { id: 'testID', map_type: 'External' };
+    const newState = reducer(changedState, { type: CHANGE_ANSWER_MAPPING, payload });
+    expect(newState.selectedAnswers[0].map_type).toEqual('External');
+  });
 });

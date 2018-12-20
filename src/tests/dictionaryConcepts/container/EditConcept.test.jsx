@@ -112,22 +112,6 @@ describe('Test suite for dictionary concepts components', () => {
     expect(props.removeNameForEditConcept).toHaveBeenCalled();
   });
 
-  it('should handle add-more-answers', () => {
-    const wrapper = mount(<Router>
-      <EditConcept {...props} />
-    </Router>);
-    wrapper.find('.add-more-answers').simulate('click');
-    expect(props.addNewAnswer).toHaveBeenCalled();
-  });
-
-  it('should handle remove-answers', () => {
-    const wrapper = mount(<Router>
-      <EditConcept {...props} />
-    </Router>);
-    wrapper.find('.concept-form-table-link.answer').simulate('click');
-    expect(props.removeAnswer).toHaveBeenCalled();
-  });
-
   it('should handle handleUUID', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
@@ -137,14 +121,6 @@ describe('Test suite for dictionary concepts components', () => {
     };
     wrapper.find(EditConcept).instance().handleUUID(event);
     expect(wrapper.find(EditConcept).instance().state.notEditable).toEqual(false);
-  });
-
-  it('should handle add data from answer', () => {
-    const wrapper = mount(<Router>
-      <EditConcept {...props} />
-    </Router>);
-    const conceptAnswer = { target: { name: 'answer', value: 'test concept' } };
-    wrapper.find('#concept-answer').simulate('change', conceptAnswer);
   });
 
   it('it should handle submit event', () => {
