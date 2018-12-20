@@ -7,6 +7,7 @@ import {
   fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead, createVersion,
 } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
+import GeneralModel from './common/GeneralModal';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -40,6 +41,7 @@ export class DictionaryOverview extends Component {
       openVersionModal: false,
       versionId: '',
       versionDescription: '',
+      openGeneralModal: false,
     };
   }
 
@@ -87,6 +89,8 @@ export class DictionaryOverview extends Component {
   hideVersionModal = () => this.setState({ openVersionModal: false });
 
   showVersionModal = () => this.setState({ openVersionModal: true });
+
+  hideGeneralModal = () => this.setState({ openGeneralModal: false });
 
   handleChange = (e) => {
     const { name, value } = e.target;
@@ -140,8 +144,7 @@ export class DictionaryOverview extends Component {
     this.downloadConcept(csvData);
   }
 
-  handleCreateVersion = (event) => {
-    event.preventDefault();
+  confirmRelease = () => {
     const {
       match: {
         params: {
@@ -156,19 +159,26 @@ export class DictionaryOverview extends Component {
       released: true,
       description: this.state.versionDescription,
     };
-
     this.props
       .createVersion(url, data)
       .then(() => {
         if (!this.props.error) {
-          this.hideVersionModal();
+          this.hideGeneralModal();
         }
       });
   }
 
+  handleCreateVersion = (event) => {
+    event.preventDefault();
+    this.hideVersionModal();
+    this.setState({ openGeneralModal: true });
+  }
+
   render() {
     const { loader } = this.props;
-    const { url, showSubModal, versionId } = this.state;
+    const {
+      url, showSubModal, versionId, openGeneralModal,
+    } = this.state;
     const cielConcepts = this.props.dictionaryConcepts.filter(
       concept => concept.owner === 'CIEL',
     ).length.toString();
@@ -227,6 +237,15 @@ export class DictionaryOverview extends Component {
                 show={this.state.showEditModal}
                 handleHide={this.handleHide}
                 dictionary={this.props.dictionary}
+              />
+              <GeneralModel
+                title="Confirm Release?"
+                content="If you click 'Confirm', this version will be released"
+                show={openGeneralModal}
+                confirm_button="Confirm"
+                cancel_button="Cancel"
+                hide={this.hideGeneralModal}
+                select_confirm={this.confirmRelease}
               />
             </div>
           )
