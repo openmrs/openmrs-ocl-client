@@ -21,11 +21,9 @@ const ConceptTable = ({
   conceptLimit,
   closeDeleteModal,
   openDeleteModal,
-  filterConcept,
   showDeleteMappingModal,
   handleDeleteMapping,
 }) => {
-  const filter = { filterMethod: filterConcept, filterAll: true };
   if (concepts.length > 0) {
     return (
       <div className="row col-12 custom-concept-list">
@@ -43,7 +41,6 @@ const ConceptTable = ({
           data={concepts}
           loading={loading}
           defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
-          filterable
           noDataText="No concept!"
           minRows={2}
           columns={[
@@ -51,21 +48,17 @@ const ConceptTable = ({
               Header: 'Name',
               accessor: 'display_name',
               minWidth: 100,
-              ...filter,
             },
             {
               Header: 'Class',
               accessor: 'concept_class',
-              ...filter,
             },
             {
               Header: 'Source',
               accessor: 'source',
-              ...filter,
             },
             {
               Header: 'Action',
-              filterable: false,
               width: 350,
               Cell: ({ original: concept }) => {
                 const props = {
@@ -108,7 +101,6 @@ ConceptTable.propTypes = {
   conceptLimit: PropTypes.number.isRequired,
   openDeleteModal: PropTypes.bool,
   closeDeleteModal: PropTypes.func.isRequired,
-  filterConcept: PropTypes.func.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
 };

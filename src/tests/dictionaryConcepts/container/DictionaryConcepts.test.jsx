@@ -59,6 +59,46 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should render component without breaking when the type is not specified', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: '',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    expect(wrapper.find('h2.text-capitalize').text()).toEqual('dev-col Dictionary');
+    jest.runAllTimers();
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should render a loader', () => {
     const props = {
       match: {
@@ -322,50 +362,6 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.find('#CIEL').simulate('change', sourceEvent);
     wrapper.find('#Diagnosis').simulate('change', classesEvent);
     expect(spy).toHaveBeenCalledTimes(2);
-  });
-
-  it('should filter concepts in the table', () => {
-    const props = {
-      match: {
-        params: {
-          typeName: 'dev-col',
-          type: 'orgs',
-          collectionName: 'dev-col',
-          dictionaryName: 'dev-col',
-        },
-      },
-      location: {
-        pathname: '/random/path',
-      },
-      fetchDictionaryConcepts: jest.fn(),
-      concepts: [concepts],
-      filteredClass: ['Diagnosis'],
-      filteredSources: ['CIEL'],
-      loading: false,
-      filterBySource: jest.fn(),
-      filterByClass: jest.fn(),
-      fetchMemberStatus: jest.fn(),
-      paginateConcepts: jest.fn(),
-      totalConceptCount: 20,
-      userIsMember: true,
-      removeDictionaryConcept: jest.fn(),
-      removeConceptMappingAction: jest.fn(),
-    };
-    const wrapper = mount(<Provider store={store}>
-      <Router>
-        <DictionaryConcepts {...props} />
-      </Router>
-    </Provider>);
-    const event = {
-      target: {
-        value: 'malaria',
-      },
-    };
-    const dictionaryConceptsWrapper = wrapper.find('DictionaryConcepts').instance();
-    const spy = jest.spyOn(dictionaryConceptsWrapper, 'filterCaseInsensitive');
-    dictionaryConceptsWrapper.forceUpdate();
-    wrapper.find('ReactTable').find('input').at(0).simulate('change', event);
-    expect(spy).toHaveBeenCalled();
   });
 
   it('should test componentWillReceiveProps', () => {
