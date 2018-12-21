@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import AddMapping from './AddMapping';
 import ViewConceptMappings from './ViewConceptMappings';
 
 const ActionButtons = ({
@@ -23,9 +22,6 @@ const ActionButtons = ({
           >
           Edit
           </Link>
-          <AddMapping
-            buttonName="Add mapping"
-          />
           {
           mappings && (
           <ViewConceptMappings
@@ -43,7 +39,7 @@ const ActionButtons = ({
       )}
       <button
         type="button"
-        className="btn btn-sm mb-1 actionButtons action-btn-style float-right"
+        className="btn btn-sm mb-1 actionButtons action-btn-style"
         id="retireConcept"
         onClick={() => { showDeleteModal(version_url); }}
       >
