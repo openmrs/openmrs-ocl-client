@@ -8,6 +8,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
   const props = {
     closeModal: jest.fn(),
     addConcept: jest.fn(),
+    open: jest.fn(),
     concept: {
       display_name: 'lob dev',
       descriptions: [{ description: '' }],
@@ -41,8 +42,15 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
     const wrapper = mount(<Router>
       <PreviewCard {...props} />
     </Router>);
-
-    wrapper.find('button.mr-2').simulate('click');
+    wrapper.find('Button#addConcept').simulate('click');
     expect(props.addConcept).toBeCalled();
+  });
+
+  it('should call closeModal function when the close button is clicked', () => {
+    const wrapper = mount(<Router>
+      <PreviewCard {...props} />
+    </Router>);
+    wrapper.find('Button#previewModalCloseBtn').simulate('click');
+    expect(props.closeModal).toBeCalled();
   });
 });
