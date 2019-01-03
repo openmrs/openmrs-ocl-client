@@ -152,7 +152,10 @@ export class DictionaryModal extends React.Component {
   };
 
   addDictionary = (e) => {
-    this.setState({ disableButton: true });
+    const errors = this.validate(this.state.data);
+    if (Object.keys(errors).length === 0) {
+      this.setState({ disableButton: true });
+    }
     this.onSubmit(e);
   }
 
@@ -172,6 +175,7 @@ export class DictionaryModal extends React.Component {
       },
       errors: {},
       supportedLocalesOptions: [],
+      disableButton: false,
     });
     this.props.modalhide();
   }
