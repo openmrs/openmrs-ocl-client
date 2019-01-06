@@ -184,3 +184,15 @@
   margin-top: 1rem;
   font-size: .8rem;
 }
+
+.form-check{
+  position: relative;
+}
+
+#search-ul{
+  position: absolute;
+  margin-top: 10px;
+  width: 70%;
+  list-style: none;
+  z-index: 999;
+}

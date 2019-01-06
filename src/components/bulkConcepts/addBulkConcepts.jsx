@@ -2,8 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Downshift from 'downshift';
+import {
+  Form,
+  FormGroup,
+  Input,
+} from 'reactstrap';
 import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
-import BulkConceptList from './bulkConceptList';
 import Header from './container/Header';
 
 export class AddBulkConcepts extends Component {
@@ -27,27 +32,34 @@ export class AddBulkConcepts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cielConcepts: [],
-      conceptLimit: 10,
+      conceptIds: '',
     };
+  }
+
+  handleSelected = (selected) => {
+    const { conceptIds } = this.state;
+    this.setState({ conceptIds: conceptIds ? `${conceptIds}, ${selected.id}` : selected.id });
   }
 
   handleCielClick = () => {
     this.props.fetchCielConcepts();
   };
 
+  textChange = (e) => {
+    this.setState({ conceptIds: e.target.value });
+  }
+
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
+    const { conceptIds } = this.state;
     const {
       match: {
         params: { type, typeName, collectionName },
       },
       cielConcepts,
       language,
-      isFetching,
     } = this.props;
-    const disableButton = ((this.state.cielConcepts.length === 0) || isFetching);
-    const { conceptLimit } = this.state;
+    const disableButton = (conceptIds.length < 1);
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
@@ -57,6 +69,7 @@ export class AddBulkConcepts extends Component {
         <div className="scheduler-border">
           <h3>Select a source</h3>
           <div className="select-box">
+
             <div className="form-check">
               <input
                 className="form-check-input"
@@ -71,40 +84,81 @@ export class AddBulkConcepts extends Component {
               </label>
             </div>
             <br />
-            <div id="other-search">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="exampleRadios"
-                  id="exampleRadios3"
-                  value="option3"
-                />
-                <label className="form-check-label" htmlFor="exampleRadios3">
-                  Other:&nbsp;&nbsp;
-                </label>
-                <form className="form-inline search-bar">
-                  <i className="fas fa-search" />
-                  <input
-                    className="form-control"
-                    id="search"
-                    type="search"
-                    placeholder="search"
-                    aria-label="Search"
-                  />
-                </form>
-              </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col-md-6">
+              <h3>Concept IDs to add</h3>
+            </div>
+            <div className="col-md-6 pull-right">
+              <Downshift
+                id="searchInput"
+                onChange={selected => this.handleSelected(selected)}
+                itemToString={item => item && item.display_name}
+              >
+                {({
+                  getInputProps,
+                  getItemProps,
+                  getMenuProps,
+                  highlightedIndex,
+                  isOpen,
+                  inputValue,
+                }) => (
+                  <div>
+                    <div id="other-search">
+                      <div className="form-check">
+                        Quick search &nbsp;&nbsp;
+                        <form className="form-inline search-bar">
+                          <i className="fas fa-search" />
+                          <input
+                            {
+                            ...getInputProps()
+                            }
+                            className="form-control search"
+                            id="search"
+                            placeholder="search"
+                            aria-label="Search"
+                          />
+                        </form>
+                      </div>
+                    </div>
+                    <div className="search-ul">
+                      {isOpen ? (
+                        <ul {...getMenuProps()} id="search-ul"> 
+                          {
+                          cielConcepts.filter(item => !inputValue.trim() || item.display_name.toLowerCase()
+                            .includes(inputValue.toLowerCase())).slice(1, 10).map((item, index) => (
+                              <li
+                                {...getItemProps({
+                                  key: item.id,
+                                  index,
+                                  item,
+                                  style: {
+                                    backgroundColor:
+                                      highlightedIndex === index ? 'lightgray' : 'white',
+                                    padding: '5px 10px 1px',
+                                  },
+                                })}
+                              >
+                                {item.display_name}
+                              </li>
+                          ))
+                        }
+                        </ul>
+                      )
+                        : null}
+                    </div>
+                  </div>
+                )}
+              </Downshift>
             </div>
           </div>
-          <h3>Concept IDs to add</h3>
           <div className="preferred-concepts">
-            <BulkConceptList
-              cielConcepts={cielConcepts}
-              fetching={this.props.isFetching}
-              handleSelect={this.handleSelect}
-              filterConcept={this.filterCaseInsensitive}
-              conceptLimit={conceptLimit}
-            />
+            <Form className="bulkForm">
+              <FormGroup>
+                <Input type="textarea" name="text" id="idsText" value={conceptIds} rows="10" onChange={this.textChange} />
+              </FormGroup>
+            </Form>
           </div>
           <br />
           <div className="add-all-btn">
@@ -115,11 +169,7 @@ export class AddBulkConcepts extends Component {
               Cancel
             </Link>
             {' '}
-            {this.state.cielConcepts.length === 0 ? (
-            <button type="button" className="btn btn-primary" id="btn-add-all" disabled={disableButton}>
-              <i className="fa fa-plus" /> Add
-            </button>
-            ) : (
+
             <button
               type="button"
               className="btn btn-primary btn-add-all"
@@ -127,9 +177,11 @@ export class AddBulkConcepts extends Component {
               onClick={this.handleAddAll}
               disabled={disableButton}
             >
-              <i className="fa fa-plus" /> Add
+              <i className="fa fa-plus" />
+              {' '}
+              Add
             </button>
-            )}
+
           </div>
         </div>
       </div>

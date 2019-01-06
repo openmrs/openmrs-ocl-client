@@ -44,7 +44,8 @@ export class Navbar extends Component {
         <Navigation color="light" light expand="md" className="custom-max-width">
           <NavbarBrand href="/">OCL for OpenMRS</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
-          {loggedIn && (
+          {
+          loggedIn && (
             <Collapse isOpen={isOpen} navbar>
               <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -75,7 +76,9 @@ export class Navbar extends Component {
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </Nav>
-            </Collapse>)}
+            </Collapse>
+          )
+            }
         </Navigation>
       </div>
     );
