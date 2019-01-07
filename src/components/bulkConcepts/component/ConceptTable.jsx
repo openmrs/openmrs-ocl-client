@@ -6,7 +6,7 @@ import ActionButtons from './ActionButtons';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
 const ConceptTable = ({
-  concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, filterConcept,
+  concepts, loading, location, preview, previewConcept, addConcept, conceptLimit,
 }) => {
   if (loading) {
     return (
@@ -15,14 +15,12 @@ const ConceptTable = ({
       </div>
     );
   }
-  const filter = { filterMethod: filterConcept, filterAll: true };
   return (
       <div className="row col-12 custom-concept-list">
         <ReactTable
           data={concepts}
           loading={loading}
           defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
-          filterable
           noDataText="No concepts found!"
           minRows={2}
           columns={[
@@ -30,31 +28,25 @@ const ConceptTable = ({
               Header: 'Name',
               accessor: 'display_name',
               minWidth: 300,
-              ...filter,
             },
             {
               Header: 'Class',
               accessor: 'concept_class',
-              ...filter,
             },
             {
               Header: 'Datatype',
               accessor: 'datatype',
-              ...filter,
             },
             {
               Header: 'Source',
               accessor: 'source',
-              ...filter,
             },
             {
               Header: 'ID',
               accessor: 'id',
-              ...filter,
             },
             {
               Header: 'Action',
-              filterable: false,
               width: 250,
               Cell: ({ original: concept }) => (
                 <ActionButtons
@@ -86,7 +78,6 @@ ConceptTable.propTypes = {
     display_name: PropTypes.string,
   }).isRequired,
   addConcept: PropTypes.func.isRequired,
-  filterConcept: PropTypes.func.isRequired,
   previewConcept: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
 };

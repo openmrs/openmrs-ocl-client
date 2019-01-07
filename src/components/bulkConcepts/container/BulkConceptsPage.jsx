@@ -85,12 +85,6 @@ export class BulkConceptsPage extends Component {
     this.props.fetchFilteredConcepts('CIEL', query);
   };
 
-  filterCaseInsensitive = (filter, rows) => {
-    const id = filter.pivotId || filter.id;
-    return matchSorter(rows, filter.value, { keys: [id] });
-  };
-
-
   render() {
     const {
       concepts,
@@ -133,7 +127,6 @@ export class BulkConceptsPage extends Component {
               preview={preview}
               previewConcept={this.props.previewConcept}
               addConcept={this.props.addConcept}
-              filterConcept={this.filterCaseInsensitive}
               conceptLimit={conceptLimit}
             />
           </div>

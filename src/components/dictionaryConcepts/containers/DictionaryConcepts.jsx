@@ -164,11 +164,6 @@ export class DictionaryConcepts extends Component {
     });
   };
 
-  filterCaseInsensitive = (filter, rows) => {
-    const id = filter.pivotId || filter.id;
-    return matchSorter(rows, filter.value, { keys: [id] });
-  };
-
   handleConcepts = (concepts) => {
     const newConcepts = [];
     concepts.forEach((concept) => {
@@ -249,7 +244,6 @@ export class DictionaryConcepts extends Component {
               handleDeleteMapping={this.handleDeleteMapping}
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
-              filterConcept={this.filterCaseInsensitive}
             />
           </div>
         </section>
