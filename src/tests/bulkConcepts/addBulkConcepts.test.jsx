@@ -19,7 +19,6 @@ const match = {
 };
 describe('Add Bulk Concepts', () => {
   const props = {
-    fetchCielConcepts: jest.fn(),
     addExistingBulkConcepts: jest.fn(),
     cielConcepts: mockConcepts,
     isFetching: false,
@@ -38,19 +37,6 @@ describe('Add Bulk Concepts', () => {
       </Provider>
     </MemoryRouter>);
     expect(wrapper.length).toEqual(1);
-  });
-
-  it('calls the handleClick function when the CIEL radio button is clicked', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const bulkWrapper = wrapper.find('AddBulkConcepts').instance();
-    const spy = jest.spyOn(bulkWrapper, 'handleCielClick');
-    bulkWrapper.forceUpdate();
-    wrapper.find('#ciel').at(0).simulate('click');
-    expect(spy).toHaveBeenCalled();
   });
 
   it('shows suggestions when typing', () => {

@@ -3,11 +3,8 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
-import { FETCH_CIEL_CONCEPTS, IS_FETCHING, ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
-import
-fetchCielConcepts,
-{ addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
-import cielConcepts from '../../__mocks__/concepts';
+import { ADD_EXISTING_BULK_CONCEPTS } from '../../../redux/actions/types';
+import { addExistingBulkConcepts, addDictionaryReference } from '../../../redux/actions/bulkConcepts';
 
 const mockStore = configureStore([thunk]);
 jest.mock('react-notify-toast');
@@ -21,24 +18,6 @@ describe('Test suite for ciel concepts actions', () => {
     moxios.uninstall(instance);
   });
 
-  it('dispatches FETCH_CIEL_CONCEPTS  action type on respose from server', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [{ cielConcepts: { cielConcepts } }],
-      });
-    });
-
-    const returnedAction = [
-      { type: IS_FETCHING, payload: true },
-      { type: FETCH_CIEL_CONCEPTS, payload: [{ cielConcepts: { cielConcepts } }] },
-      { type: IS_FETCHING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchCielConcepts())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
-  });
   it('dispatches ADD_EXISTING_BULK_CONCEPTS  action type on respose from server', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -55,24 +34,6 @@ describe('Test suite for ciel concepts actions', () => {
     const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
     const store = mockStore({});
     return store.dispatch(addExistingBulkConcepts(data))
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
-  });
-  it('dispatches an error message when a response is errored', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: 'could not complete this request',
-      });
-    });
-
-    const returnedAction = [
-      { type: IS_FETCHING, payload: true },
-      { type: FETCH_CIEL_CONCEPTS, payload: 'could not complete this request' },
-      { type: IS_FETCHING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchCielConcepts())
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
 

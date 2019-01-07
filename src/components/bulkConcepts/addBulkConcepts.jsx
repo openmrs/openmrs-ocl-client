@@ -8,12 +8,11 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
-import fetchCielConcepts, { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
+import { addExistingBulkConcepts } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
-    fetchCielConcepts: PropTypes.func.isRequired,
     addExistingBulkConcepts: PropTypes.func.isRequired,
     cielConcepts: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
@@ -40,10 +39,6 @@ export class AddBulkConcepts extends Component {
     const { conceptIds } = this.state;
     this.setState({ conceptIds: conceptIds ? `${conceptIds}, ${selected.id}` : selected.id });
   }
-
-  handleCielClick = () => {
-    this.props.fetchCielConcepts();
-  };
 
   textChange = (e) => {
     this.setState({ conceptIds: e.target.value });
@@ -77,7 +72,6 @@ export class AddBulkConcepts extends Component {
                 name="exampleRadios"
                 id="ciel"
                 value="option1"
-                onClick={this.handleCielClick}
               />
               <label className="form-check-label" htmlFor="exampleRadios1">
                 CIEL
@@ -195,5 +189,5 @@ export const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { fetchCielConcepts, addExistingBulkConcepts },
+  { addExistingBulkConcepts },
 )(AddBulkConcepts);
