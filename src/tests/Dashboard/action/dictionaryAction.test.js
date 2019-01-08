@@ -294,6 +294,8 @@ describe('Test suite for dictionary actions', () => {
     });
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+      { type: '[dictionaries] fetch dictionaries', payload: 'could not complete this request' },
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(
@@ -302,6 +304,28 @@ describe('Test suite for dictionary actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+  it('should return a network error message if failed search', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 599,
+      });
+    });
+    const expectedActions = [
+      { payload: true, type: IS_FETCHING },
+      { payload: false, type: IS_FETCHING },
+    ];
+    const store = mockStore({ payload: {} });
+    return store.dispatch(
+      searchDictionaries('', 1000, 1, 'sortAsc=name', 'verbose=true'),
+    ).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should return action type and payload', () => {
+    expect(clearDictionary()).toEqual(responseDict);
+  });
+
   it('should return action type and payload', () => {
     expect(clearDictionary()).toEqual(responseDict);
   });
