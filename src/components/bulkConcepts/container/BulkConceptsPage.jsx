@@ -74,10 +74,6 @@ export class BulkConceptsPage extends Component {
     this.setState(() => ({ searchInput: value }));
   };
 
-  fetchAll = () => {
-    this.props.fetchBulkConcepts();
-  }
-
   handleSearch = (event) => {
     event.preventDefault();
     const { searchInput } = this.state;
@@ -115,7 +111,6 @@ export class BulkConceptsPage extends Component {
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
             <SearchBar
-              fetchAll={this.fetchAll}
               handleSearch={this.handleSearch}
               handleChange={this.handleChange}
               searchInput={searchInput}

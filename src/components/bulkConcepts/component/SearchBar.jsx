@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
 
 const SearchBar = ({
-  fetchAll, handleChange, searchInput, handleSearch,
+  handleChange, searchInput, handleSearch,
 }) => (
   <div className="row search-container">
     <div className="concept-search-wrapper col-9 col-md-5 col-sm-8">
@@ -21,9 +20,6 @@ const SearchBar = ({
         />
       </form>
     </div>
-    <div className="col-3">
-      <Button color="secondary" onClick={fetchAll}>Show all</Button>
-    </div>
   </div>
 );
 
@@ -31,7 +27,6 @@ SearchBar.propTypes = {
   handleSearch: PropTypes.func.isRequired,
   searchInput: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
-  fetchAll: PropTypes.func.isRequired,
 };
 
 export default SearchBar;
