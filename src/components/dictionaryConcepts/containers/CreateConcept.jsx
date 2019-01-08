@@ -16,6 +16,7 @@ import {
   addSelectedAnswersToState,
   changeSelectedAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../components/helperFunction';
 
 export class CreateConcept extends Component {
   static propTypes = {
@@ -64,6 +65,14 @@ export class CreateConcept extends Component {
       names: [],
       descriptions: [],
       answers: [],
+      mappings: [{
+        map_type: 'Same as',
+        source: null,
+        to_concept_code: null,
+        to_concept_name: null,
+        id: 1,
+        to_source_url: null,
+      }],
     };
 
     autoBind(this);
@@ -227,6 +236,45 @@ export class CreateConcept extends Component {
     }
   }
 
+  addMappingRow = () => {
+    const { mappings } = this.state;
+    mappings.push({
+      map_type: 'Same as',
+      source: null,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: mappings.length + 1,
+      to_source_url: null,
+    });
+    this.setState({ mappings });
+  }
+
+  updateEventListener = (event) => {
+    const { tabIndex, name, value } = event.target;
+    const { mappings } = this.state;
+    mappings[tabIndex][name] = value;
+    if (name !== INTERNAL_MAPPING_DEFAULT_SOURCE && mappings[tabIndex].to_concept_code === null) {
+      mappings[tabIndex].to_concept_code = String(uuid());
+    }
+    this.setState(mappings);
+  }
+
+  updateAsyncSelectValue = (value) => {
+    const { mappings } = this.state;
+    if (value !== null && value.index !== undefined) {
+      mappings[value.index].to_source_url = value.value;
+      mappings[value.index].to_concept_name = value.label;
+    }
+    this.setState({ mappings });
+  }
+
+  removeMappingRow = (event) => {
+    const { tabIndex } = event.target;
+    const { mappings } = this.state;
+    delete mappings[tabIndex];
+    this.setState({ mappings });
+  }
+
   render() {
     const {
       match: {
@@ -237,6 +285,7 @@ export class CreateConcept extends Component {
       loading,
       selectedAnswers,
     } = this.props;
+    const { mappings } = this.state;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
     return (
@@ -282,6 +331,11 @@ Concept
                 queryAnswers={this.queryAnswers}
                 selectedAnswers={selectedAnswers}
                 handleAnswerChange={this.handleAnswerChange}
+                mappings={mappings}
+                addMappingRow={this.addMappingRow}
+                updateEventListener={this.updateEventListener}
+                removeMappingRow={this.removeMappingRow}
+                updateAsyncSelectValue={this.updateAsyncSelectValue}
               />
             </div>
           </div>

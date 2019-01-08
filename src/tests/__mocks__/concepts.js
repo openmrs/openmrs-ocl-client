@@ -1,10 +1,12 @@
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../components/dictionaryConcepts/components/helperFunction';
+
 export default {
   id: '1468667',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   concept_class: 'Diagnosis',
   datatype: 'N/A',
   retired: false,
-  source: 'CIEL',
+  source: INTERNAL_MAPPING_DEFAULT_SOURCE,
   descriptions: [
     {
       uuid: '453aa9941e824becaad4b374899e8bcb',
@@ -18,7 +20,7 @@ export default {
       type: 'ConceptDescription',
     },
   ],
-  owner: 'CIEL',
+  owner: INTERNAL_MAPPING_DEFAULT_SOURCE,
   owner_type: 'Organization',
   owner_url: '/orgs/CIEL/',
   display_name: 'Bronze Diabetes',
@@ -331,6 +333,31 @@ export const newConceptData = {
     UMLS_CUI: 'C0200703',
     ISPRIMITIVE: '1',
   },
+  mappings: [
+    {
+      id: 1,
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
+      to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+    },
+    {
+      map_type: 'Narrower than',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
+      to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
+    },
+    {
+      id: 3,
+      map_type: 'Same as',
+      source: 'SNOMED',
+      to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
+      to_concept_name: 'malaria',
+      to_source_url: null,
+    },
+  ],
 };
 
 export const existingConcept = {

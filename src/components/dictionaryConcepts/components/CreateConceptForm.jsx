@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
+import CreateMapping from './CreateMapping';
 import { classes } from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
     concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
+    mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
   } = props;
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
@@ -134,7 +136,7 @@ const CreateConceptForm = (props) => {
             <option>Rule</option>
             <option>Structured-Numeric</option>
             <option>Complex</option>
-            <option>Coded</option>
+            <option>to_concept_coded</option>
           </select>
         </div>
 
@@ -180,6 +182,26 @@ const CreateConceptForm = (props) => {
             </a>
           </div>
         </div>
+        <div>
+          <fieldset>
+            <legend>Related Concepts</legend>
+            {mappings.map((mapping, i) => (
+              <CreateMapping
+                source={mapping.source}
+                map_type={mapping.map_type}
+                to_concept_code={mapping.to_concept_code}
+                to_concept_name={mapping.to_concept_name}
+                updateEventListener={updateEventListener}
+                removeMappingRow={removeMappingRow}
+                updateAsyncSelectValue={updateAsyncSelectValue}
+                key={mapping.id}
+                index={i}
+              />
+            ))}
+            <Link to="#" onClick={addMappingRow}>Add Another Mapping</Link>
+          </fieldset>
+          <br />
+        </div>
         <div className="submit-button text-left">
           <button className="btn btn-sm bg-blue col-2 mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
@@ -215,6 +237,7 @@ CreateConceptForm.propTypes = {
   handleAsyncSelectChange: PropTypes.func,
   queryAnswers: PropTypes.func,
   selectedAnswers: PropTypes.array,
+  mappings: PropTypes.array,
 };
 
 CreateConceptForm.defaultProps = {
@@ -224,6 +247,7 @@ CreateConceptForm.defaultProps = {
   handleAsyncSelectChange: () => {},
   queryAnswers: () => {},
   selectedAnswers: [],
+  mappings: [],
 };
 
 export default CreateConceptForm;
