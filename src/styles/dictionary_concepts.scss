@@ -150,9 +150,24 @@ body {
   background: inherit;
   line-height: 2rem;
   height: 2rem;
-  width: 90%;
+  width: 80%;
   outline: none;
   box-shadow: none;
+}
+
+.search-button {
+border: none;
+background: inherit;
+&:hover {
+background: lightgray;
+border-radius: .5rem;
+}
+}
+
+@media only screen and (max-width : 500px) {
+  .concept-search {
+    width: 75%;
+  }
 }
 
 .custom-concept-list {

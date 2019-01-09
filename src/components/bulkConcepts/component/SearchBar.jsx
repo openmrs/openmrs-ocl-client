@@ -18,6 +18,7 @@ const SearchBar = ({
           placeholder="search concept"
           required
         />
+        <button type="submit" className="search-button"><i className="fas fa-arrow-right" /></button>
       </form>
     </div>
   </div>

@@ -15,6 +15,7 @@ export const DictionariesSearch = ({ onSearch, onSubmit, searchValue }) => (
           className="concept-search"
           placeholder="Search for Public dictionaries"
         />
+        <button type="submit" className="search-button"><i className="fas fa-arrow-right" /></button>
       </form>
     </div>
   </div>
