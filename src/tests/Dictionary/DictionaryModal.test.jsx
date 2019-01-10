@@ -206,4 +206,24 @@ describe('Test suite for dictionary modal', () => {
     };
     wrapper.find('#copy_dictionary').simulate('change', item);
   });
+
+  it('it should disable button if there is no error', () => {
+    wrapper.setState({
+      data: {
+        ...wrapper.state().data,
+        id: '1',
+        preferred_source: 'CIEL',
+        public_access: 'None',
+        name: 'OpenMRSDictionary',
+        owner: 'OpenMRS',
+        description: 'OpenMRSDictionary',
+        default_locale: 'en',
+        supported_locales: 'us',
+        repository_type: 'OpenMRSDictionary',
+      },
+    });
+    const submitButtonWrapper = wrapper.find('#addDictionary');
+    submitButtonWrapper.simulate('click', preventDefault);
+    expect(wrapper.state().disableButton).toBeTruthy();
+  });
 });
