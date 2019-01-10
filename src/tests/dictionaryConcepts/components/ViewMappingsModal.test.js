@@ -4,14 +4,11 @@ import { mount } from 'enzyme';
 import {
   Button, Modal,
 } from 'reactstrap';
-import { Provider } from 'react-redux';
-import { createMockStore } from 'redux-test-utils';
 import ViewMappingsModal from '../../../components/dictionaryConcepts/components/ViewMappingsModal';
 import RemoveMappings from '../../../components/dictionaryConcepts/components/RemoveMappings';
 
 let wrapper;
 let props;
-const store = createMockStore();
 
 describe('render ViewMappingsModal', () => {
   beforeEach(() => {
@@ -52,11 +49,7 @@ describe('render ViewMappingsModal', () => {
       source: '',
       retired: false,
     };
-    wrapper = mount(
-      <Provider store={store}>
-        <ViewMappingsModal.WrappedComponent store={store} {...props} />
-      </Provider>,
-    );
+    wrapper = mount(<ViewMappingsModal {...props} />);
   });
   it('should render without breaking', () => {
     expect(wrapper.length).toEqual(1);
@@ -73,11 +66,7 @@ describe('render ViewMappingsModal', () => {
       }],
       mappingLimit: 2,
     };
-    wrapper = mount(
-      <Provider store={store}>
-        <ViewMappingsModal.WrappedComponent store={store} {...newProps} />
-      </Provider>,
-    );
+    wrapper = mount(<ViewMappingsModal {...newProps} />);
     expect(wrapper.length).toEqual(1);
   });
   it('should render without breaking', () => {
@@ -85,7 +74,7 @@ describe('render ViewMappingsModal', () => {
   });
   it('should contain a modal.', () => {
     const modalWrapper = wrapper.find(Modal);
-    expect(modalWrapper.length).toEqual(3);
+    expect(modalWrapper.length).toEqual(2);
   });
   it('should close modal when click cancel', () => {
     wrapper.find(Button).simulate('click');

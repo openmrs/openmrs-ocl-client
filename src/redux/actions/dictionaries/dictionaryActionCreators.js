@@ -205,22 +205,6 @@ export const releaseHead = (url, data) => (dispatch) => {
       })
 };
 
-export const editMapping = (url, data, source) => dispatch => {
-  return api.dictionaries
-    .editMappingCall(url, data)
-    .then(() => {
-      notify.show(
-        'Mapping updated successfully.',
-        'success', 6000,
-      );
-      const ConceptsToFetch = `/users/${localStorage.getItem('username')}/sources/${source}/concepts/?includeMappings=true&q=&limit=0&page=1&verbose=true`
-      dispatch(fetchDictionaryConcepts(ConceptsToFetch));
-    })
-    .catch(error => {
-      notify.show(error.response.data[0], 'error', 6000);
-    })
-};
-
 export const createVersion = (url, data) => (dispatch) => {
   return api.dictionaries
     .creatingVersion(url, data)

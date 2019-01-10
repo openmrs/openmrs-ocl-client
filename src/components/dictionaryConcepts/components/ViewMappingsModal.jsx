@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter,
 } from 'reactstrap';
-import AddMapping from './AddMapping';
-import { editMapping as edit } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import RemoveMappings from './RemoveMappings';
 
 export class ViewMappingsModal extends Component {
@@ -17,9 +14,6 @@ export class ViewMappingsModal extends Component {
       mappings,
       mappingLimit,
       displayName,
-      source,
-      editMapping,
-      concepts,
       handleDeleteMapping,
       showDeleteMappingModal,
     } = this.props;
@@ -61,28 +55,15 @@ export class ViewMappingsModal extends Component {
                     id: 'row',
                     filterable: false,
                     sortable: false,
-                    Cell: ({ original: mapping }) => {
-                      const props = {
-                        source,
-                        editMapping,
-                        concepts,
-                        mappings,
-                        buttonName: 'Edit',
-                      };
-                      return (
-                        <React.Fragment>
-                          <AddMapping
-                            {...props}
-                            {...mapping}
-                          />
-                          <RemoveMappings
-                            showDeleteMappingModal={showDeleteMappingModal}
-                            handleDeleteMapping={handleDeleteMapping}
-                            {...mapping}
-                          />
-                        </React.Fragment>
-                      );
-                    },
+                    Cell: ({ original: mapping }) => (
+                      <React.Fragment>
+                        <RemoveMappings
+                          showDeleteMappingModal={showDeleteMappingModal}
+                          handleDeleteMapping={handleDeleteMapping}
+                          {...mapping}
+                        />
+                      </React.Fragment>
+                    ),
                   },
                 ]}
                 className="-striped -highlight custom-table-width"
@@ -105,27 +86,14 @@ ViewMappingsModal.propTypes = {
   handleToggle: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
-  editMapping: PropTypes.func,
-  concepts: PropTypes.array,
-  source: PropTypes.string,
-  mappings: PropTypes.array.isRequired,
   displayName: PropTypes.string,
   mappingLimit: PropTypes.number,
+  mappings: PropTypes.array.isRequired,
 };
 
 ViewMappingsModal.defaultProps = {
   displayName: '',
-  source: '',
   mappingLimit: 5,
-  concepts: [],
-  editMapping: () => {},
 };
 
-export const mapStateToProps = state => ({
-  concepts: state.concepts.dictionaryConcepts,
-});
-
-export default connect(
-  mapStateToProps,
-  { editMapping: edit },
-)(ViewMappingsModal);
+export default ViewMappingsModal;

@@ -36,7 +36,6 @@ import {
   releaseHead,
   editDictionary,
   createVersion,
-  editMapping,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
@@ -207,56 +206,6 @@ describe('Test suite for dictionary actions', () => {
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchDictionaryConcepts('/users/chriskala/collections/over/')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('should handle edit mapping and fail', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.reject({
-        status: 400,
-        response: {
-          data: ['Cannot map concept to itself'],
-        },
-      });
-    });
-    const expectedActions = [];
-
-    const MappingToEdit = {
-      map_type: 'Same As',
-      from_concept_url: '/users/chriskala/sources/85873898755537984747/concepts/3ebaa575-52e5-4d93-90e7-bc13a1ae4c9e/',
-      to_concept_url: '/users/chriskala/sources/85873898755537984747/concepts/01034897-766c-487e-97ec-075e5197f6e8/',
-    };
-
-    const store = mockStore({ payload: {} });
-    return store.dispatch(editMapping('/users/chriskala/sources/858738987555379984/mappings/5bfeac11bdfb8801a1702953/', MappingToEdit, '6346536456354635')).catch(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('should handle edit mapping and pass', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [],
-      });
-    });
-    const expectedActions = [
-      { payload: true, type: '[ui] toggle spinner' },
-    ];
-    const store = mockStore({ payload: {} });
-
-    const MappingToEdit = {
-      map_type: 'Same As',
-      from_concept_url: '/users/chriskala/sources/85873898755537984747/concepts/3ebaa575-52e5-4d93-90e7-bc13a1ae4c9e/',
-      to_concept_url: '/users/chriskala/sources/85873898755537984747/concepts/01034897-766c-487e-97ec-075e5197f6e8/',
-    };
-
-    return store.dispatch(
-      editMapping('/users/chriskala/sources/858738987555379984/mappings/5bfeac11bdfb8801a1702953/', MappingToEdit, '858738987555379984'),
-    ).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

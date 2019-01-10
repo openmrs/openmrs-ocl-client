@@ -67,11 +67,6 @@ export default {
       instance
         .put(url, data)
         .then(response => response.data),
-
-    editMappingCall: (url, data) =>
-    instance
-      .put(url, data)
-      .then(response => response.data),
   },
   organizations: {
     fetchOrganizations: () =>
