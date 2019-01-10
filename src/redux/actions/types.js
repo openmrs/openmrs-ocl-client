@@ -63,3 +63,4 @@ export const EDIT_CONCEPT_ADD_DESCRIPTION = '[concept] edit_concept_add_descript
 export const EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION = '[concept] edit_concept_remove_one_description';
 export const EDIT_CONCEPT_CREATE_NEW_NAMES = '[concept] edit_concept_create_new_names';
 export const EDIT_CONCEPT_REMOVE_ONE_NAME = '[concept] edit_concept_remove_one_name';
+export const NETWORK_ERROR = '[error] error_message';

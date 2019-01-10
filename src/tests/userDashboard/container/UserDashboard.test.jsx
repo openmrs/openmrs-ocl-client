@@ -198,6 +198,36 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper.find('#dictionaryHeader h6').text()).toEqual('ChrisMain4567');
     wrapper.unmount();
   });
+  it('should show network error', () => {
+    const propsWithDictionary = createMockStore({
+      ...storeObject,
+      ...Authenticated,
+      fetchUserData: jest.fn(),
+      loading: false,
+      userDictionary: [],
+      orgDictionary: [],
+      clearDictionaryData: jest.fn(),
+      user: {
+        userDictionary: [],
+        user: {
+          name: '',
+          orgs: 0,
+          public_collections: 0,
+        },
+        userOrganization: [],
+        userIsMember: false,
+        loading: false,
+        networkError: 'An error occurred with your internet connection, please fix it and try reloading the page.',
+      },
+    });
+    const wrapper = mount(<Provider store={propsWithDictionary}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper.find('.network-cardwrapper-error').text()).toEqual('An error occurred with your internet connection, please fix it and try reloading the page.');
+    wrapper.unmount();
+  });
 
   it('should test mapStateToProps', () => {
     const initialState = {

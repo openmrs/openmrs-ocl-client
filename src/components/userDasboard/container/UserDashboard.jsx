@@ -13,6 +13,7 @@ export class UserDashboard extends Component {
     fetchUserData: PropTypes.func.isRequired,
     clearDictionaryData: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
+    networkError: PropTypes.string.isRequired,
     userDictionary: PropTypes.array.isRequired,
     userOrganization: PropTypes.array.isRequired,
     user: PropTypes.shape({
@@ -55,6 +56,7 @@ export class UserDashboard extends Component {
       userOrganization,
       userDictionary,
       loading,
+      networkError,
     } = this.props;
     const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
     return (
@@ -111,6 +113,7 @@ New Dictionary
                   dictionaries={userDictionary}
                   fetching={loading}
                   gotoDictionary={this.gotoDictionary}
+                  networkError={networkError}
                 />
               </div>
             </div>
@@ -126,6 +129,7 @@ export const mapStateToProps = state => ({
   userDictionary: state.user.userDictionary,
   userOrganization: state.user.userOrganization,
   loading: state.user.loading,
+  networkError: state.user.networkError,
 });
 
 export default connect(

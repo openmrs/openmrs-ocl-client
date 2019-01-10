@@ -9,6 +9,7 @@ import {
   CLEAR_DICTIONARY,
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
+  NETWORK_ERROR,
 } from '../../../redux/actions/types';
 
 let state;
@@ -26,6 +27,7 @@ beforeEach(() => {
       public_collections: 0,
     },
     userIsMember: false,
+    networkError: '',
   };
   action = {};
 });
@@ -128,6 +130,19 @@ describe('Test suite for user dashboard reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       userIsMember: false,
+    });
+  });
+  it('should handle NETWORK_ERROR', () => {
+    action = {
+      type: NETWORK_ERROR,
+      payload: 'An error occurred with your internet connection, please fix it and try reloading the page.',
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      networkError: action.payload,
     });
   });
 });

@@ -11,6 +11,7 @@ import {
   CLEAR_DICTIONARY,
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
+  NETWORK_ERROR,
 } from '../../../redux/actions/types';
 import {
   fetchUserData,
@@ -151,7 +152,12 @@ describe('Test suite for user dashboard actions', () => {
       });
     });
 
-    const expectedActions = [];
+    const expectedActions = [
+      {
+        type: NETWORK_ERROR,
+        payload: 'An error occurred with your internet connection, please fix it and try reloading the page.',
+      },
+    ];
 
     const store = mockStore({});
     return store.dispatch(fetchUser('emasys')).then(() => {

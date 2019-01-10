@@ -7,6 +7,7 @@ import {
   ADDING_DICTIONARY,
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
+  NETWORK_ERROR,
 } from '../../actions/types';
 
 const userInitialState = {
@@ -19,6 +20,7 @@ const userInitialState = {
     public_collections: 0,
   },
   userIsMember: false,
+  networkError: '',
 };
 const userReducer = (state = userInitialState, action) => {
   switch (action.type) {
@@ -61,6 +63,11 @@ const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         userIsMember: action.payload,
+      };
+    case NETWORK_ERROR:
+      return {
+        ...state,
+        networkError: action.payload,
       };
     default:
       return state;

@@ -7,6 +7,7 @@ import {
   CLEAR_DICTIONARY,
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
+  NETWORK_ERROR,
 } from '../types';
 import instance from '../../../config/axiosConfig';
 import { filterUserPayload } from '../../reducers/util';
@@ -17,7 +18,9 @@ export const fetchUser = username => async (dispatch) => {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, GET_USER));
   } catch (error) {
-    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
+    const message = 'An error occurred with your internet connection, please fix it and try reloading the page.';
+    notify.show(message, 'error', 3000);
+    dispatch(isErrored(message, NETWORK_ERROR));
   }
 };
 
