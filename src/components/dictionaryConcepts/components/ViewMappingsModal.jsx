@@ -108,6 +108,7 @@ ViewMappingsModal.propTypes = {
   editMapping: PropTypes.func,
   concepts: PropTypes.array,
   source: PropTypes.string,
+  mappings: PropTypes.array.isRequired,
   displayName: PropTypes.string,
   mappingLimit: PropTypes.number,
 };

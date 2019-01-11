@@ -1,9 +1,13 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
+import {
+  Button, Modal, ModalHeader, ModalFooter,
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 const removeConcept = (props) => {
-  const { handleDelete, openDeleteModal, closeDeleteModal, disableButton } = props;
+  const {
+    handleDelete, openDeleteModal, closeDeleteModal, disableButton,
+  } = props;
   return (
     <div>
       <Modal isOpen={openDeleteModal} toggle={closeDeleteModal}>
@@ -11,7 +15,8 @@ const removeConcept = (props) => {
         Are you sure you want to Remove this Concept?
         </ModalHeader>
         <ModalFooter>
-          <Button color="danger" onClick={handleDelete} disabled={disableButton}>Remove concept</Button>{' '}
+          <Button color="danger" onClick={handleDelete} disabled={disableButton}>Remove concept</Button>
+          {' '}
           <Button color="secondary" onClick={closeDeleteModal} disabled={disableButton}>Cancel</Button>
         </ModalFooter>
       </Modal>

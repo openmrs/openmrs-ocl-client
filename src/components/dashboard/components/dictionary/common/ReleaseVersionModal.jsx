@@ -6,7 +6,14 @@ import PropTypes from 'prop-types';
 
 const ReleaseVersionModal = (props) => {
   const {
-    show, click, handleCreateVersion, handleChange, versionId, versionDescription, inputLength, disableButton,
+    show,
+    click,
+    handleCreateVersion,
+    handleChange,
+    versionId,
+    versionDescription,
+    inputLength,
+    disableButton,
   } = props;
   return (
     <div className="modal-container">

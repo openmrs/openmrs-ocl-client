@@ -42,11 +42,9 @@ class InternalMapping extends Component {
                 required
               >
                 {to_concept_name && <option value={to_concept_url}>{to_concept_name}</option>}
-                {concepts.map((concept) => {
-                  return (
-                    <option key={concept.id} value={concept.url}>{concept.display_name}</option>
-                  );
-                })}
+                {concepts.map(concept => (
+                  <option key={concept.id} value={concept.url}>{concept.display_name}</option>
+                ))}
               </select>
             </FormGroup>
           </div>

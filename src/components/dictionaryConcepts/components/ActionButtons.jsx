@@ -4,7 +4,17 @@ import { Link } from 'react-router-dom';
 import ViewConceptMappings from './ViewConceptMappings';
 
 const ActionButtons = ({
-  actionButtons, id, concept_class, showDeleteModal, version_url, mappings, source, mappingLimit, display_name, showDeleteMappingModal, handleDeleteMapping,
+  actionButtons,
+  id,
+  concept_class,
+  showDeleteModal,
+  version_url,
+  mappings,
+  source,
+  mappingLimit,
+  display_name,
+  showDeleteMappingModal,
+  handleDeleteMapping,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -58,6 +68,15 @@ ActionButtons.propTypes = {
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   display_name: PropTypes.string.isRequired,
+  mappings: PropTypes.array,
+  source: PropTypes.string,
+  mappingLimit: PropTypes.number,
+};
+
+ActionButtons.defaultProps = {
+  source: '',
+  mappings: [],
+  mappingLimit: null,
 };
 
 export default ActionButtons;

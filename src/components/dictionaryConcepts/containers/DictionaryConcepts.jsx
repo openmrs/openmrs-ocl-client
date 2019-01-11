@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
-import matchSorter from 'match-sorter';
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
@@ -80,7 +79,7 @@ export class DictionaryConcepts extends Component {
     });
   }
 
-  fetchConcepts(query = '', limit = 0, filterParams = null, filterName = null) {
+  fetchConcepts(query = '', limit = 0) {
     const {
       match: {
         params: { collectionName, type, typeName },
@@ -214,13 +213,15 @@ export class DictionaryConcepts extends Component {
           <div className="col-12 col-md-2 pt-1">
             <h4>Concepts</h4>
           </div>
-          {hasPermission && <ConceptDropdown
+          {hasPermission && (
+          <ConceptDropdown
             pathName={pathname}
             type={type}
             typeName={typeName}
             dictionaryName={dictionaryName}
             collectionName={collectionName}
-          />}
+          />
+          )}
         </section>
 
         <section className="row mt-3">

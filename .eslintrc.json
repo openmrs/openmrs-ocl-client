@@ -19,7 +19,10 @@
     "compilerOptions": { "target": "ES6", "module": "commonjs" },
     "max-len": ["error", { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-    "react/prefer-stateless-function": 0
+    "react/prefer-stateless-function": 0,
+    "react/sort-comp": 0,
+    "react/jsx-wrap-multilines": 0,
+    "react/no-unused-prop-types": 0
   },
   "parser": "babel-eslint"
 }

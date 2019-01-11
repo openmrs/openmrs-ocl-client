@@ -198,6 +198,7 @@ const CreateConceptForm = (props) => {
 CreateConceptForm.propTypes = {
   addDescription: PropTypes.func.isRequired,
   handleNewName: PropTypes.func.isRequired,
+  handleAnswerChange: PropTypes.func,
   state: PropTypes.shape({
     datatype: PropTypes.string,
     concept_class: PropTypes.string,
@@ -222,6 +223,7 @@ CreateConceptForm.defaultProps = {
   existingConcept: {},
   isEditConcept: false,
   handleAsyncSelectChange: () => {},
+  handleAnswerChange: () => {},
   queryAnswers: () => {},
   selectedAnswers: [],
 };

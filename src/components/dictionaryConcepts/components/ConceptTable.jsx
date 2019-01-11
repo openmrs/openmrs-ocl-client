@@ -93,6 +93,7 @@ const ConceptTable = ({
 ConceptTable.propTypes = {
   concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
   loading: PropTypes.bool.isRequired,
+  original: PropTypes.object,
   org: PropTypes.object.isRequired,
   locationPath: PropTypes.object.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
@@ -107,6 +108,7 @@ ConceptTable.propTypes = {
 ConceptTable.defaultProps = {
   openDeleteModal: false,
   url: '',
+  original: {},
 };
 
 export default ConceptTable;

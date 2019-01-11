@@ -16,7 +16,9 @@ class RemoveMappings extends Component {
 
   render() {
     const { modal } = this.state;
-    const { url, retired, handleDeleteMapping, showDeleteMappingModal } = this.props;
+    const {
+      url, retired, handleDeleteMapping, showDeleteMappingModal,
+    } = this.props;
     return (
       <React.Fragment>
         { !retired && (

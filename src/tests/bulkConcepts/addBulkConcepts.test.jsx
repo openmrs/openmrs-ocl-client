@@ -54,7 +54,7 @@ describe('Add Bulk Concepts', () => {
   });
 
   it('shows suggestions when typing', () => {
-    const hasMenu = wrapper => wrapper.find("#search-ul").length === 1;
+    const hasMenu = wrapper => wrapper.find('#search-ul').length === 1;
 
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -118,9 +118,8 @@ describe('Add Bulk Concepts', () => {
     const bulkWrapper = wrapper.find('AddBulkConcepts').instance();
     bulkWrapper.forceUpdate();
 
-    txtInput.simulate('change', { target: {value: '8,8,89' } });
+    txtInput.simulate('change', { target: { value: '8,8,89' } });
     txtInput.simulate('keydown', { key: 'Enter' });
     expect(bulkWrapper.state.conceptIds).toEqual('8,8,89');
   });
-
 });
