@@ -42,6 +42,7 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
+  fetchSourceConcepts,
   addConceptToDictionary,
   paginateConcepts,
   fetchExistingConcept,
@@ -79,6 +80,16 @@ describe('Test suite for dictionary concept actions', () => {
 
   afterEach(() => {
     moxios.uninstall(instance);
+  });
+
+  it('should call the fetchSourceConcepts and fetch concepts', async () => {
+    const expectedPosts = ['malaria', 'tuberclosis'];
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: expectedPosts });
+    });
+    await fetchSourceConcepts('source', 'query');
   });
 
   it('should handle FETCH_DICTIONARY_CONCEPT', () => {
@@ -679,6 +690,23 @@ describe('test suite for synchronous action creators', () => {
     const expectedActions = [
       { type: QUERY_POSSIBLE_ANSWER_CONCEPTS, payload: [{ type: 'concept' }] },
     ];
+
+    const store = mockStore(mockConceptStore);
+    return store.dispatch(queryPossibleAnswers('test')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle QUERY_POSSIBLE_ANSWER_CONCEPTS and fail', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+        response: [{ type: 'concept' }],
+      });
+    });
+
+    const expectedActions = [];
 
     const store = mockStore(mockConceptStore);
     return store.dispatch(queryPossibleAnswers('test')).then(() => {

@@ -2,6 +2,7 @@ import uuid from 'uuid/v4';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
 import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
   POPULATE_SIDEBAR,
@@ -229,6 +230,39 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   dispatch(isFetching(false));
 };
 
+export const fetchSourceConcepts = async (source, query, index) => {
+  const url = `/orgs/${source}/sources/${source}/concepts/?q=${query}&limit=0&verbose=true`;
+  const response = await instance.get(url);
+  const options = response.data.map(concept => ({
+    value: concept.url,
+    label: concept.display_name,
+    index,
+  }));
+  return options;
+};
+
+export const CreateMapping = (data, from_concept_url, source) => {
+  const url = `/users/${localStorage.getItem('username')}/sources/${source}/mappings/`;
+  axios.all(data.map((mapping) => {
+    const mappingData = mapping.source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
+      map_type: mapping.map_type,
+      from_concept_url,
+      to_source_url: mapping.source,
+      to_concept_code: mapping.to_concept_code,
+      to_concept_name: mapping.to_concept_name,
+    }) : ({
+      map_type: mapping.map_type,
+      from_concept_url,
+      to_concept_url: mapping.to_source_url,
+      to_concept_name: mapping.to_concept_name,
+    });
+
+    return (
+      instance.post(url, mappingData)
+    );
+  }));
+};
+
 export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = dataUrl;
@@ -238,6 +272,7 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
     dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
     notify.show('creating concept, please wait...', 'warning', 3000);
+    CreateMapping(data.mappings, response.data.url, response.data.source);
     await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
   } catch (error) {
     if (error.response) {

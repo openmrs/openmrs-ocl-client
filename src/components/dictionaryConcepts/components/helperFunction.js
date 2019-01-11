@@ -31,3 +31,5 @@ export const classes = [
   'Test',
   'Procedure',
 ];
+
+export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';

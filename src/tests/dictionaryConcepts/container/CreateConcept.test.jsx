@@ -64,10 +64,53 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
   });
 
+  it('should call addMappingRow function', () => {
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.addMappingRow();
+  });
+
+  it('should call removeMappingRow function', () => {
+    const event = { target: 0 };
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.removeMappingRow(event);
+  });
+
+  it('should call updateAsyncSelectValue function', () => {
+    const value = { index: 0, value: 'malaria 1', label: 'malaria 1' };
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.updateAsyncSelectValue(value);
+  });
+
+  it('should call updateEventListener function', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'to_concept_name',
+        value: 'malaria',
+      },
+    };
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.updateEventListener(event);
+  });
+
   it('should render without breaking', () => {
     localStorage.setItem('dictionaryPathName', '/dictionary/url');
     expect(wrapper.find('h3').text()).toEqual(': Create a question Concept ');
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('it should render with a null conceptType', () => {
+    const newProps = {
+      ...props,
+    };
+
+    newProps.match.params.conceptType = null;
+
+    const NewWrapper = mount(<Router>
+      <CreateConcept {...newProps} />
+    </Router>);
+    const instance = NewWrapper.find('CreateConcept').instance();
+    instance.addMappingRow();
   });
 
   it('should handle form completion and submission with invalid/incomplete data', () => {
