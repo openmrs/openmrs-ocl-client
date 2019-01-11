@@ -239,6 +239,10 @@ CreateConceptForm.propTypes = {
   queryAnswers: PropTypes.func,
   selectedAnswers: PropTypes.array,
   mappings: PropTypes.array,
+  addMappingRow: PropTypes.func.isRequired,
+  updateEventListener: PropTypes.func.isRequired,
+  removeMappingRow: PropTypes.func.isRequired,
+  updateAsyncSelectValue: PropTypes.func.isRequired,
 };
 
 CreateConceptForm.defaultProps = {
