@@ -1,21 +1,31 @@
 import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
-import { isSuccess, isErrored, isFetching } from '../globalActionCreators';
-import { FETCH_CIEL_CONCEPTS, ADD_EXISTING_BULK_CONCEPTS } from '../types';
+import {
+  isSuccess,
+  isErrored,
+  isFetching,
+  clear,
+} from '../globalActionCreators';
+import {
+  FETCH_SOURCE_CONCEPTS,
+  ADD_EXISTING_BULK_CONCEPTS,
+  FETCH_CONCEPT_SOURCES,
+  CLEAR_SOURCE_CONCEPTS,
+} from '../types';
 
-const fetchCielConcepts = () => async (dispatch) => {
+const fetchSourceConcepts = url => async (dispatch) => {
+  dispatch(clear(CLEAR_SOURCE_CONCEPTS));
   dispatch(isFetching(true));
-  const url = 'orgs/CIEL/sources/CIEL/concepts/?limit=0';
   try {
-    const response = await instance.get(url);
-    dispatch(isSuccess(response.data, FETCH_CIEL_CONCEPTS));
+    const response = await instance.get(`${url}concepts/?limit=0`);
+    dispatch(isSuccess(response.data, FETCH_SOURCE_CONCEPTS));
     dispatch(isFetching(false));
   } catch (error) {
-    dispatch(isErrored(error.response.data, FETCH_CIEL_CONCEPTS));
+    dispatch(isErrored(error.response.data, FETCH_SOURCE_CONCEPTS));
     dispatch(isFetching(false));
   }
 };
-export default fetchCielConcepts;
+export default fetchSourceConcepts;
 
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
   const { url, data } = conceptData;
@@ -57,4 +67,17 @@ export const addDictionaryReference = (conceptUrl, ownerUrl, dictionaryId) => as
     );
   }
   return dispatch(isSuccess(payload, ADD_EXISTING_BULK_CONCEPTS));
+};
+
+export const fetchConceptSources = () => async (dispatch) => {
+  dispatch(isFetching(true));
+  dispatch(clear(CLEAR_SOURCE_CONCEPTS));
+  try {
+    const response = await instance.get('/sources/');
+    dispatch(isSuccess(response.data, FETCH_CONCEPT_SOURCES));
+    dispatch(isFetching(false));
+  } catch (error) {
+    dispatch(isErrored(error.response.data, FETCH_CONCEPT_SOURCES));
+    dispatch(isFetching(false));
+  }
 };

@@ -19,3 +19,5 @@ export const isFetching = payload => ({
   type: IS_FETCHING,
   payload,
 });
+
+export const clear = type => ({ type });
