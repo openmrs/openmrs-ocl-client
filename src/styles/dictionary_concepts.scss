@@ -377,4 +377,9 @@ input:-webkit-autofill:active {
     padding-right: 0;
     padding-left: 0;
   }
+
+  .concept-table {
+    width: 100%;
+    overflow: auto;
+  }
 }
