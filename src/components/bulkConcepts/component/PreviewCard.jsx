@@ -31,7 +31,7 @@ const PreviewCard = ({
     minute: 'numeric',
   };
 
-  const mapping = mappings ? mappings.length : 'none';
+  const mapping = mappings || 'none';
   const description = descriptions ? descriptions[0].description : 'none';
   return (
     <div className="col-9">

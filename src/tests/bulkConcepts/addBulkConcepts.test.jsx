@@ -159,8 +159,8 @@ describe('Add Bulk Concepts', () => {
 
     moxios.wait(() => {
       expect(spy).toHaveBeenCalled();
+      wrapper.unmount();
     });
-    wrapper.unmount();
   });
 
   it('handleaAdAll close resultModal on close', () => {

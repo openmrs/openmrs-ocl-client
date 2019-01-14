@@ -26,6 +26,7 @@ const storeObject = {
     },
     userOrganization: [],
     loading: false,
+    networkError: '',
   },
   dictionaries: {
     dictionaries: mockDictionaries,
@@ -111,6 +112,7 @@ describe('Test suite for dictionary concepts components', () => {
         ],
         userDictionary: [dictionary],
         loading: false,
+        networkError: '',
       },
       history: { push: jest.fn() },
       dictionaries: [],
@@ -149,6 +151,7 @@ describe('Test suite for dictionary concepts components', () => {
         },
         userOrganization: [],
         loading: true,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>
@@ -188,6 +191,7 @@ describe('Test suite for dictionary concepts components', () => {
           },
         ],
         loading: false,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>
@@ -281,6 +285,7 @@ describe('Test suite for dictionary concepts components', () => {
           },
         ],
         loading: false,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>

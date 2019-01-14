@@ -10,7 +10,7 @@ const addBulkConceptResultModal = ({ openModal, closeModal, ids }) => (
       <ModalHeader toggle={closeModal}>
       Invalid Concept IDs
       </ModalHeader>
-      <Input type="textarea" name="text" id="idsText" value={ids.join(', ')} rows="10" />
+      <Input type="textarea" name="text" id="idsText" defaultValue={ids.join(', ')} rows="10" />
       <ModalFooter>
         <Button color="secondary" id="closeModal" onClick={closeModal}>Close</Button>
       </ModalFooter>

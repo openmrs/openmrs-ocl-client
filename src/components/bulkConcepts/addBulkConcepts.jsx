@@ -26,10 +26,10 @@ export class AddBulkConcepts extends Component {
         type: PropTypes.string,
         typeName: PropTypes.string,
         collectionName: PropTypes.string,
+        language: PropTypes.string,
       }).isRequired,
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
-    language: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -117,15 +117,14 @@ export class AddBulkConcepts extends Component {
     const { conceptIds, openResultModal, otherSelected } = this.state;
     const {
       match: {
-        params: { type, typeName, collectionName },
+        params: {
+          type, typeName, collectionName, language,
+        },
       },
       sourceConcepts,
       conceptSources,
-      language,
     } = this.props;
-
     const disableButton = (conceptIds.length < 1);
-
     return (
       <div className="container-fluid add-bulk-concepts custom-max-width">
         <ResultModal

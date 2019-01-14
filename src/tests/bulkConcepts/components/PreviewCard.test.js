@@ -30,7 +30,14 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
     const newProps = {
       ...props,
       concept: {
-        mappings: {},
+        mappings: [
+          {
+            map_type: '',
+            to_concept_name: '',
+            source: '',
+            to_concept_code: '',
+          },
+        ],
         descriptions: [{ description: '' }],
       },
     };

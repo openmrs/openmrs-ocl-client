@@ -24,7 +24,6 @@ describe('Test suite for dictionary concepts components', () => {
     history: {
       push: jest.fn(),
     },
-    path: '/',
     existingConcept: [],
     createNewName: jest.fn(),
     answer: [12343],
@@ -59,6 +58,7 @@ describe('Test suite for dictionary concepts components', () => {
   let wrapper;
 
   beforeEach(() => {
+    localStorage.setItem('dictionaryPathName', '/dictionary/url');
     wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);
@@ -94,7 +94,6 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should render without breaking', () => {
-    localStorage.setItem('dictionaryPathName', '/dictionary/url');
     expect(wrapper.find('h3').text()).toEqual(': Create a question Concept ');
     expect(wrapper).toMatchSnapshot();
   });
