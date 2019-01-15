@@ -82,18 +82,19 @@ export const fetchDictionaries = () => (dispatch) => {
     });
 };
 
-export const searchDictionaries = searchItem => (dispatch) => {
+export const searchDictionaries = searchItem => async (dispatch) => {
   dispatch(isFetching(true));
-  return api.dictionaries
-    .searchDictionaries(searchItem)
-    .then((payload) => {
-      dispatch(isSuccess(payload));
-      dispatch(isFetching(false));
-    })
-    .catch(error => () => {
-      dispatch(isErrored(error.payload.data));
-      dispatch(isFetching(false));
-    });
+  try {
+    const payload = await api.dictionaries
+      .searchDictionaries(searchItem);
+    dispatch(isSuccess(payload));
+    dispatch(isFetching(false));
+  }
+  catch (error) {
+    dispatch(isFetching(false));
+    error.response ? dispatch(isErrored(error.response.data)):
+    showNetworkError();
+  }
 };
 
 export const fetchDictionary = data => (dispatch) => {
