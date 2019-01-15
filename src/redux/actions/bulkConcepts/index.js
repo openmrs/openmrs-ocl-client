@@ -26,13 +26,21 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
     if (existing.length > 0) {
       notify.show(`Only ${payload.data.length - existing.length} of ${payload.data.length} concept(s) were added. Skipped ${existing.length} already added`, 'error', 3000);
     } else {
-      notify.show(`${payload.data.length - existing.length} Concept(s) Added`, 'success', 3000);
+      notify.show(`${payload.data.length} Concept(s) Added`, 'success', 4000);
     }
   } catch (error) {
-    notify.show(error, 'error', 3000);
+    notify.show(error.response.data.detail, 'error', 3000);
   }
 };
 
+export const isConceptValid = async ({ url }) => {
+  try {
+    const payload = await instance.get(url);
+    return payload.data.retired ? [false, 'retired'] : [true];
+  } catch (error) {
+    return [false, 'does not exist'];
+  }
+};
 
 export const addDictionaryReference = (conceptUrl, ownerUrl, dictionaryId) => async (dispatch) => {
   const url = `${ownerUrl}collections/${dictionaryId}/references/`;
