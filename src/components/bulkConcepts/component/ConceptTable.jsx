@@ -4,9 +4,10 @@ import ReactTable from 'react-table';
 import Loader from '../../Loader';
 import ActionButtons from './ActionButtons';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
+import ConceptPagination from './ConceptPagination';
 
 const ConceptTable = ({
-  concepts, loading, location, preview, previewConcept, addConcept, conceptLimit,
+  concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, currentPage,
 }) => {
   if (loading) {
     return (
@@ -19,10 +20,13 @@ const ConceptTable = ({
     <div className="row col-12 custom-concept-list">
       <ReactTable
         data={concepts}
+        currentPage={currentPage}
         loading={loading}
+        PaginationComponent={ConceptPagination}
         defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
         noDataText="No concepts found!"
         minRows={2}
+        limitCount={10}
         columns={[
           {
             Header: 'Name',
@@ -81,6 +85,7 @@ ConceptTable.propTypes = {
   addConcept: PropTypes.func.isRequired,
   previewConcept: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
 };
 ConceptTable.defaultProps = {
   original: {},
