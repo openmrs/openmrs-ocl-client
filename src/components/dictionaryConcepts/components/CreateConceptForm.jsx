@@ -203,11 +203,11 @@ const CreateConceptForm = (props) => {
           <br />
         </div>
         <div className="submit-button text-left">
-          <button className="btn btn-sm bg-blue col-2 mr-1" type="submit" disabled={props.disableButton}>
+          <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
           <Link to={props.path} className="collection-name small-text">
-            <button className="btn btn-sm  col-2 btn-danger" type="submit" disabled={props.disableButton}>
+            <button className="btn btn-danger" type="submit" disabled={props.disableButton}>
             Cancel
             </button>
           </Link>

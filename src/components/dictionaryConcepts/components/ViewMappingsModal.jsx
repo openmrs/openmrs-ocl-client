@@ -90,7 +90,7 @@ export class ViewMappingsModal extends Component {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={() => handleToggle(false)}>
+            <Button color="danger" onClick={() => handleToggle(false)}>
               Close
             </Button>
           </ModalFooter>

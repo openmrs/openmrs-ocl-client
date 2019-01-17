@@ -126,13 +126,19 @@ body {
 }
 
 .-pagination .-btn:not([disabled]){
-  color: #303438;
-  background: rgba(108, 117, 125, 0.5);
+  color: #ffffff;
+  background: #007bff;
 }
 
 .-pagination .-btn:not([disabled]):hover{
   color: #fff;
   background: #6c757d !important;
+}
+
+.ReactTable .-pagination .-previous,
+.ReactTable .-pagination .-center,
+.ReactTable .-pagination .-next {
+    flex: none;
 }
 
 .search-container .concept-search-wrapper .fa-search {
