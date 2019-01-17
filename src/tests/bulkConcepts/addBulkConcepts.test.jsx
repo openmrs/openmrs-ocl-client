@@ -21,9 +21,12 @@ const match = {
 };
 describe('Add Bulk Concepts', () => {
   const props = {
-    fetchCielConcepts: jest.fn(),
+    fetchSourceConcepts: jest.fn(),
     addExistingBulkConcepts: jest.fn(),
-    cielConcepts: mockConcepts,
+    fetchConceptSources: jest.fn(),
+    sourceConcepts: mockConcepts,
+    conceptSources: [{ id: 1, name: 'testSource', url: '/org/testSource/' },
+      { id: 2, name: 'testSource', url: '/org/testSource/' }],
     isFetching: false,
     match,
     language: 'en',
@@ -61,7 +64,7 @@ describe('Add Bulk Concepts', () => {
   });
 
   it('shows suggestions when typing', () => {
-    const hasMenu = wrapper => wrapper.find('#search-ul').length === 1;
+    const hasMenu = wrapper => wrapper.find('.search-ul').at(0).length === 1;
 
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
@@ -72,7 +75,7 @@ describe('Add Bulk Concepts', () => {
     expect(hasMenu(wrapper)).toBe(true);
   });
 
-  it('can search for and select "Bronze ..."', () => {
+  it('can search for and select "Bronze ..." in concepts', () => {
     const wrapper = mount(<MemoryRouter>
       <Provider store={store}>
         <AddBulkConcepts {...props} />
@@ -169,5 +172,38 @@ describe('Add Bulk Concepts', () => {
     const instance = wrapper.instance();
     instance.closeResultModal();
     expect(wrapper.state().openResultModal).toBe(false);
+  });
+
+  it('can search for and select "testSource ..." in conceptSources', () => {
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    const other = wrapper.find('#otherSourcesOption');
+    other.simulate('click');
+    const input = wrapper.find('#sourceSearch');
+    input.simulate('change', { target: { value: '' } });
+    input.simulate('keydown', { key: 'ArrowDown' });
+    input.simulate('keydown', { key: 'Enter' });
+    expect(input.instance().value).toEqual('testSource');
+    const component = wrapper.find('AddBulkConcepts').instance();
+    expect(component.sourceUrl).toEqual('org/testSource/');
+  });
+
+  it('can search for sources that does not exist', () => {
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    const other = wrapper.find('#otherSourcesOption');
+    other.simulate('click');
+    const input = wrapper.find('#sourceSearch');
+    input.simulate('change', { target: { value: 'non existent' } });
+    input.simulate('keydown', { key: 'ArrowDown' });
+    input.simulate('keydown', { key: 'Enter' });
+    const txtInput = wrapper.find('#idsText').at(0);
+    expect(txtInput.instance().props.value).toEqual('');
   });
 });

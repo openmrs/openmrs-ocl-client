@@ -30,11 +30,12 @@
   margin-bottom: -15px;
 }
 
-#search {
+#search, #sourceSearch {
   border: none;
   background: inherit;
   line-height: normal;
   height: 2rem;
+  width: 250px;
   outline: none;
   box-shadow: none;
 }
@@ -61,7 +62,7 @@
   border-radius: 10rem;
   padding: 0.6rem;
   float: right;
-  width: 350px;
+  width: 300px;
 }
 
 .search-bar i {
@@ -189,7 +190,7 @@
   position: relative;
 }
 
-#search-ul{
+.search-ul{
   position: absolute;
   margin-top: 10px;
   width: 70%;

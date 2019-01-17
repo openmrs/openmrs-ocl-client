@@ -8,17 +8,19 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
-import fetchCielConcepts, { addExistingBulkConcepts, isConceptValid } from '../../redux/actions/bulkConcepts';
+import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
 import ResultModal from './component/addBulkConceptResultModal';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
-    fetchCielConcepts: PropTypes.func.isRequired,
+    fetchSourceConcepts: PropTypes.func.isRequired,
+    fetchConceptSources: PropTypes.func.isRequired,
     addExistingBulkConcepts: PropTypes.func.isRequired,
-    cielConcepts: PropTypes.arrayOf(PropTypes.shape({
+    sourceConcepts: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
     })).isRequired,
+    conceptSources: PropTypes.array.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
         type: PropTypes.string,
@@ -35,13 +37,15 @@ export class AddBulkConcepts extends Component {
     this.state = {
       conceptIds: '',
       openResultModal: false,
+      otherSelected: false,
     };
     this.invalidConceptIds = [];
-    this.sourceUrl = 'orgs/CIEL/sources/CIEL/concepts/';
+    this.sourceUrl = 'orgs/CIEL/sources/CIEL/';
   }
 
   componentDidMount() {
-    this.props.fetchCielConcepts();
+    this.props.fetchConceptSources();
+    this.props.fetchSourceConcepts(this.sourceUrl);
   }
 
   handleSelected = (selected) => {
@@ -49,9 +53,27 @@ export class AddBulkConcepts extends Component {
     this.setState({ conceptIds: conceptIds ? `${conceptIds}, ${selected.id}` : selected.id });
   }
 
-  handleCielClick = () => {
-    this.props.fetchCielConcepts();
+  handleCielClick = (e) => {
+    this.setState({ otherSelected: false });
+    this.sourceUrl = e.target.value;
+    this.props.fetchSourceConcepts(this.sourceUrl);
+    this.reset();
   };
+
+  otherSourceClick = () => {
+    this.setState({ otherSelected: true });
+    this.props.fetchConceptSources();
+    this.reset();
+  }
+
+  handleSourceSelect = (source) => {
+    this.sourceUrl = source.url.substring(1);
+    this.props.fetchSourceConcepts(this.sourceUrl);
+  }
+
+  reset = () => {
+    this.setState({ conceptIds: '' });
+  }
 
   textChange = (e) => {
     this.setState({ conceptIds: e.target.value });
@@ -71,9 +93,9 @@ export class AddBulkConcepts extends Component {
       this.invalidConceptIds = [];
 
       const validConcepts = await conceptIdList.reduce(async (accumulator, id) => {
-        const validity = await isConceptValid({ url: `${this.sourceUrl}${id}/` });
+        const validity = await isConceptValid({ url: `${this.sourceUrl}concepts/${id}/` });
         if (validity[0]) {
-          (await accumulator).push(`/${this.sourceUrl}${id}/`);
+          (await accumulator).push(`/${this.sourceUrl}concepts/${id}/`);
         } else {
           this.invalidConceptIds.push(id);
         }
@@ -92,12 +114,13 @@ export class AddBulkConcepts extends Component {
 
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
-    const { conceptIds, openResultModal } = this.state;
+    const { conceptIds, openResultModal, otherSelected } = this.state;
     const {
       match: {
         params: { type, typeName, collectionName },
       },
-      cielConcepts,
+      sourceConcepts,
+      conceptSources,
       language,
     } = this.props;
 
@@ -127,16 +150,94 @@ Dictionary
               <input
                 className="form-check-input"
                 type="radio"
-                name="exampleRadios"
+                name="conceptSources"
                 id="ciel"
-                value="option1"
+                value="/orgs/CIEL/sources/CIEL/"
                 onClick={this.handleCielClick}
                 defaultChecked
               />
-              <label className="form-check-label" htmlFor="exampleRadios1">
+              <label className="form-check-label" htmlFor="ceil">
                 CIEL
               </label>
             </div>
+            <br />
+
+
+            <div id="other-search">
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="radio"
+                  name="conceptSources"
+                  id="otherSourcesOption"
+                  onClick={this.otherSourceClick}
+                />
+                <Downshift
+                  id="sourceSearchInput"
+                  onChange={selected => this.handleSourceSelect(selected)}
+                  itemToString={source => source && source.name}
+                >
+                  {({
+                    getInputProps,
+                    getItemProps,
+                    getMenuProps,
+                    highlightedIndex,
+                    isOpen,
+                    inputValue,
+                  }) => (
+                    <div>
+                      <div id="other-search">
+                          Other &nbsp;&nbsp;
+                        <form className="form-inline search-bar">
+                          <i className="fas fa-search" />
+                          { otherSelected && <input
+                            {
+                            ...getInputProps()
+                            }
+                            className="form-control search"
+                            id="sourceSearch"
+                            placeholder="Search"
+                            aria-label="Search"
+                          />
+                          }
+                        </form>
+                      </div>
+                      <div className="search-ul">
+                        {isOpen ? (
+                          <ul {...getMenuProps()} className="search-ul">
+                            {
+                            conceptSources.filter(item => !inputValue.trim()
+                            || item.name.toLowerCase()
+                              .includes(inputValue.toLowerCase())).slice(1, 10)
+                              .filter(item => item.name !== 'CIEL')
+                              .map((item, index) => (
+                                <li
+                                  {...getItemProps({
+                                    key: item.id,
+                                    index,
+                                    item,
+                                    style: {
+                                      backgroundColor:
+                                      highlightedIndex === index ? 'lightgray' : 'white',
+                                      padding: '5px 10px 1px',
+                                    },
+                                  })}
+                                >
+                                  {item.name}
+                                </li>
+                              ))
+                          }
+                          </ul>
+                        )
+                          : null}
+                      </div>
+                    </div>
+                  )}
+                </Downshift>
+
+              </div>
+            </div>
+
             <br />
           </div>
           <br />
@@ -178,9 +279,9 @@ Dictionary
                     </div>
                     <div className="search-ul">
                       {isOpen ? (
-                        <ul {...getMenuProps()} id="search-ul">
+                        <ul {...getMenuProps()} className="search-ul">
                           {
-                          cielConcepts.filter(item => !inputValue.trim()
+                          sourceConcepts.filter(item => !inputValue.trim()
                           || item.display_name.toLowerCase()
                             .includes(inputValue.toLowerCase())).slice(1, 10).map((item, index) => (
                               <li
@@ -245,10 +346,11 @@ Dictionary
 }
 
 export const mapStateToProps = state => ({
-  cielConcepts: state.cielConcepts.cielConcepts,
-  isFetching: state.cielConcepts.loading,
+  sourceConcepts: state.sourceConcepts.concepts,
+  conceptSources: state.sourceConcepts.conceptSources,
+  isFetching: state.sourceConcepts.loading,
 });
 export default connect(
   mapStateToProps,
-  { fetchCielConcepts, addExistingBulkConcepts },
+  { fetchSourceConcepts, addExistingBulkConcepts, fetchConceptSources },
 )(AddBulkConcepts);
