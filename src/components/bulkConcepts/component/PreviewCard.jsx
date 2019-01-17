@@ -1,43 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+  Button, Modal, ModalBody, ModalFooter,
+} from 'reactstrap';
 import CardBody from './CardBody';
 
-const PreviewCard = ({ concept, closeModal, addConcept }) => {
+const PreviewCard = ({
+  open, concept, closeModal, addConcept,
+}) => {
   const {
     display_name, descriptions, mappings, display_locale, id, url,
   } = concept;
 
   const mapping = mappings ? mappings.length : 'none';
   return (
-    <div className="pop-up-wrapper">
-      <h6>{id}</h6>
-      <div className="header-divider" />
-      <p className="synonyms">
-        Name
-        {' '}
-        <small>
-          <em className="float-right">{display_locale}</em>
-        </small>
-      </p>
-      <div className="pop-up-description rounded">{display_name}</div>
-      <CardBody title="Description" body={descriptions[0].description} />
-      <CardBody title="Mappings" body={mapping} />
-      <div className="buttons text-right mt-3">
-        <button
-          type="submit"
-          className="btn btn-sm btn-success no-shadow mr-2"
-          id="add-concept"
-          onClick={() => {
-            addConcept(url, display_name);
-            closeModal();
-          }}
-        >
-          Add
-        </button>
-        <button type="submit" className="btn btn-sm btn-danger no-shadow" onClick={closeModal}>
-          Close
-        </button>
-      </div>
+    <div className="col-9">
+      <Modal isOpen={open} className="modal-sm">
+        <ModalBody>
+          <h6>{`Id ${id}`}</h6>
+          <div className="header-divider" />
+          <p className="synonyms">
+         Name
+            &nbsp;
+            <small>
+              <em className="float-right">{display_locale}</em>
+            </small>
+          </p>
+          <div className="pop-up-description rounded">{display_name}</div>
+          <CardBody title="Description" body={descriptions ? descriptions[0].description : ''} />
+          <CardBody title="Mappings" body={mapping} />
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="primary"
+            id="addConcept"
+            onClick={() => {
+              addConcept(url, display_name);
+              closeModal();
+            }}
+          >
+            Add
+          </Button>
+          &nbsp;
+          <Button color="secondary" id="previewModalCloseBtn" onClick={() => closeModal()}>
+              Close
+          </Button>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };
@@ -45,6 +54,7 @@ const PreviewCard = ({ concept, closeModal, addConcept }) => {
 PreviewCard.propTypes = {
   closeModal: PropTypes.func.isRequired,
   addConcept: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
   concept: PropTypes.shape({
     display_name: PropTypes.string,
     descriptions: PropTypes.array,

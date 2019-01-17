@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
-import Popup from 'reactjs-popup';
 import PreviewCard from './PreviewCard';
 
 export class ActionButtons extends Component {
@@ -82,24 +81,15 @@ export class ActionButtons extends Component {
           onClick={() => this.fetchPreview(this.props.id)}
           role="presentation"
         >
-          <Popup
-            open={this.state.open}
-            trigger={(
-              <button type="submit" className="btn btn-sm mb-1 actionaButtons">
+          <button type="button" className="btn btn-sm mb-1 actionaButtons">
             Preview concept
-              </button>
-            )}
-            position="left center"
-            on="click"
-            onClose={this.closeModal}
-            contentStyle={{ width: '20rem', borderRadius: '.4rem' }}
-          >
             <PreviewCard
+              open={this.state.open}
               concept={this.props.preview}
               addConcept={this.addConcept}
               closeModal={this.closeModal}
             />
-          </Popup>
+          </button>
         </div>
       </React.Fragment>
     );
