@@ -153,36 +153,39 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         ) : null }
-
-        <div className="form-group">
-          <div className="row col-12 custom-concept-list">
-            <h6 className="text-left section-header">Names</h6>
-            <CreateConceptTable {...props} />
-            <a
-              href="#!"
-              className="text-left add-more-names"
-              id="add-more-name"
-              onClick={props.handleNewName}
-            >
-            Add another name...
-            </a>
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Names</h6>
+              <CreateConceptTable {...props} />
+              <a
+                href="#!"
+                className="text-left add-more-names"
+                id="add-more-name"
+                onClick={props.handleNewName}
+              >
+              Add another name...
+              </a>
+            </div>
           </div>
         </div>
-        <div className="form-group">
-          <div className="row col-12 custom-concept-list">
-            <h6 className="text-left section-header">Descriptions</h6>
-            <DescriptionTable {...props} />
-            <a
-              href="#!"
-              className="text-left add-more-names"
-              id="add-more-description"
-              onClick={props.addDescription}
-            >
-            Add another description...
-            </a>
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Descriptions</h6>
+              <DescriptionTable {...props} />
+              <a
+                href="#!"
+                className="text-left add-more-names"
+                id="add-more-description"
+                onClick={props.addDescription}
+              >
+              Add another description...
+              </a>
+            </div>
           </div>
         </div>
-        <div>
+        <div className="concept-table ">
           <fieldset>
             <legend>Related Concepts</legend>
             {mappings.map((mapping, i) => (
