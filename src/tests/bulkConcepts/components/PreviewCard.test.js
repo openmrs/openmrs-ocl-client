@@ -8,12 +8,14 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
   const props = {
     closeModal: jest.fn(),
     addConcept: jest.fn(),
-    open: jest.fn(),
+    open: true,
     concept: {
       display_name: 'lob dev',
       descriptions: [{ description: '' }],
       mappings: null,
       display_locale: 'en',
+      concept_class: 'diagnosis',
+      datatype: 'coded',
     },
   };
 
@@ -28,7 +30,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
     const newProps = {
       ...props,
       concept: {
-        mappings: ['erer', 'fvvv'],
+        mappings: {},
         descriptions: [{ description: '' }],
       },
     };
