@@ -127,7 +127,7 @@ Dictionary
             {owner === username && (
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn btn-primary m-3"
                 id="editB"
                 onClick={showEditModal}
               >
@@ -178,7 +178,7 @@ Dictionary
               {otherConcepts}
             </p>
             <Link
-              className="btn btn-secondary"
+              className="btn btn-primary m-3"
               id="conceptB"
               to={`/concepts${owner_url}${short_code}/${name}/${default_locale}`}
             >

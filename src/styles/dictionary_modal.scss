@@ -54,21 +54,6 @@
     margin-left: 45%;
     padding-top: 1%
 }
-#conceptB{
-    /* margin-right: 58%; */
-    margin-top: 2%;
-    margin-bottom: 5%;
-    margin-right: 65%;
-    background-color: #506096;
-}
-#editB{
-    padding-left: 10%;
-    padding-right: 10%;
-    margin-top: 2%;
-    margin-bottom: 5%;
-    margin-right: 65%;
-    background-color: #506096;
-}
 #loader {
     padding-top: 20%;
 }
@@ -81,6 +66,7 @@
 }
 #conceptsCard {
     margin-bottom: 2%;
+    text-align: left;
 }
 #desc {
     text-align: left;
@@ -164,4 +150,9 @@ legend {
 button:disabled{
     cursor: not-allowed;
     background: #e9ecef !important;
+}
+#addDictionary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
 }

@@ -433,7 +433,7 @@ export class DictionaryModal extends React.Component {
           </ModalBody>
           <ModalFooter>
             <Button
-              className="btn btn-outline-info"
+              className="btn btn-primary"
               id="addDictionary"
               onClick={this.addDictionary}
               disabled={disableButton}
@@ -442,7 +442,7 @@ export class DictionaryModal extends React.Component {
               {' '}
             </Button>
             <Button
-              className="btn btn-outline-danger test-btn-cancel"
+              className="btn btn-danger test-btn-cancel"
               id="cancel"
               onClick={this.hideModal}
               disabled={disableButton}
