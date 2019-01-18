@@ -112,6 +112,14 @@ describe('Test suite for dictionary concepts components', () => {
     expect(props.removeNameForEditConcept).toHaveBeenCalled();
   });
 
+  it('should handle remove name  elements for edit concept', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    wrapper.find('#remove-name').simulate('click');
+    expect(props.removeNameForEditConcept).toHaveBeenCalled();
+  });
+
   it('should handle handleUUID', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
@@ -152,6 +160,47 @@ describe('Test suite for dictionary concepts components', () => {
     });
 
     expect(notify.show).toHaveBeenCalledWith('enter a valid uuid', 'error', 3000);
+  });
+
+  it('should call addMappingRow function', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const instance = wrapper.find('EditConcept').instance();
+    instance.addMappingRow();
+  });
+
+  it('should call removeMappingRow function', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const event = { target: 0 };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.removeMappingRow(event);
+  });
+
+  it('should call updateAsyncSelectValue function', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const value = { index: 0, value: 'malaria 1', label: 'malaria 1' };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.updateAsyncSelectValue(value);
+  });
+
+  it('should call updateEventListener function', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'to_concept_name',
+        value: 'malaria',
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.updateEventListener(event);
   });
 
   it('it should handle submit event with invalid datatype', () => {
