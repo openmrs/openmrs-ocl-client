@@ -365,7 +365,7 @@ describe('DictionaryOverview', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle a new version release without error', async (done) => {
+  it('should handle a new version release without error', () => {
     const props = {
       dictionary,
       versions: [{ released: true, ...versions, customVersion }],
@@ -406,11 +406,55 @@ describe('DictionaryOverview', () => {
     wrapper.find('Input #versionId').simulate('change', event);
     wrapper.find('Button #saveReleaseVersion').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle release confirmation without error', async (done) => {
+    const props = {
+      dictionary,
+      versions: [{ released: true, ...versions, customVersion }],
+      dictionaryConcepts: [dictionary],
+      isReleased: true,
+      hideVersionModal: jest.fn(),
+      showVersionModal: jest.fn(),
+      error: null,
+      inputLength: 4,
+      match: {
+        params: {
+          ownerType: 'users',
+          owner: 'nesh',
+          type: 'collection',
+          name: 'test',
+        },
+      },
+      fetchDictionary: jest.fn(),
+      fetchVersions: jest.fn(),
+      fetchDictionaryConcepts: jest.fn(),
+      releaseHead: jest.fn(),
+      createVersion: jest.fn().mockImplementation(() => Promise.resolve()),
+      loader: false,
+    };
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        value: 'v2.0',
+        name: 'versionId',
+      },
+    };
+    localStorage.setItem('username', dictionary.owner);
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter><DictionaryOverview {...props} /></MemoryRouter>
+    </Provider>);
+    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'confirmRelease');
+    wrapper.find('#releaseVersion').simulate('click');
+    wrapper.find('Input #versionId').simulate('change', event);
+    wrapper.find('Button #saveReleaseVersion').simulate('click');
+    wrapper.find('Button #generalConfirmButton').simulate('click');
+    expect(spy).toHaveBeenCalledTimes(1);
     await expect(props.createVersion).toHaveBeenCalled();
     done();
   });
 
-  it('should handle a new version release with error', async (done) => {
+  it('should handle a new version release with error', () => {
     const props = {
       dictionary,
       versions: [{ released: true, ...versions, customVersion }],
@@ -451,8 +495,6 @@ describe('DictionaryOverview', () => {
     wrapper.find('Input #versionId').simulate('change', event);
     wrapper.find('Button #saveReleaseVersion').simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
-    await expect(props.createVersion).toHaveBeenCalled();
-    done();
   });
 
   it('should handleChange', () => {
