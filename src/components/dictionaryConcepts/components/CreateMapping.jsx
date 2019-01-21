@@ -4,6 +4,7 @@ import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
+import MapType from './MapType';
 
 class CreateMapping extends Component {
   constructor(props) {
@@ -38,18 +39,12 @@ class CreateMapping extends Component {
                 />
               </td>
               <td>
-                <select
-                  tabIndex={index}
-                  defaultValue={map_type}
-                  className="form-control"
-                  placeholder="map type"
-                  type="text"
-                  name="map_type"
-                  onChange={updateEventListener}
-                >
-                  <option>Same as</option>
-                  <option>Narrower than</option>
-                </select>
+                {<MapType
+                  updateEventListener={updateEventListener}
+                  index={index}
+                  map_type={map_type}
+                  source={source}
+                />}
               </td>
               {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
                 <td>
