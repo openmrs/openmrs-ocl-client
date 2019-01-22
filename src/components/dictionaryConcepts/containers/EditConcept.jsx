@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import CreateConceptForm from '../components/CreateConceptForm';
 import {
   createNewName,
@@ -18,6 +19,8 @@ import {
   createNewNameForEditConcept,
   removeNameForEditConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../components/helperFunction';
+
 
 export class EditConcept extends Component {
   static propTypes = {
@@ -59,6 +62,14 @@ export class EditConcept extends Component {
       names: [],
       descriptions: [],
       isEditConcept: true,
+      mappings: [{
+        map_type: 'Same as',
+        source: null,
+        to_concept_code: null,
+        to_concept_name: null,
+        id: 1,
+        to_source_url: null,
+      }],
     };
     this.conceptUrl = '';
 
@@ -104,9 +115,9 @@ export class EditConcept extends Component {
     event.preventDefault();
   }
 
-  removeNewName(event, uuid) {
+  removeNewName(event, id) {
     event.preventDefault();
-    this.props.removeNameForEditConcept(uuid);
+    this.props.removeNameForEditConcept(id);
   }
 
   addNewDescription(event) {
@@ -187,6 +198,45 @@ export class EditConcept extends Component {
     }
   }
 
+  addMappingRow = () => {
+    const { mappings } = this.state;
+    mappings.push({
+      map_type: 'Same as',
+      source: null,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: mappings.length + 1,
+      to_source_url: null,
+    });
+    this.setState({ mappings });
+  }
+
+  updateEventListener = (event) => {
+    const { tabIndex, name, value } = event.target;
+    const { mappings } = this.state;
+    mappings[tabIndex][name] = value;
+    if (name !== INTERNAL_MAPPING_DEFAULT_SOURCE && mappings[tabIndex].to_concept_code === null) {
+      mappings[tabIndex].to_concept_code = String(uuid());
+    }
+    this.setState(mappings);
+  }
+
+  updateAsyncSelectValue = (value) => {
+    const { mappings } = this.state;
+    if (value !== null && value.index !== undefined) {
+      mappings[value.index].to_source_url = value.value;
+      mappings[value.index].to_concept_name = value.label;
+    }
+    this.setState({ mappings });
+  }
+
+  removeMappingRow = (event) => {
+    const { tabIndex } = event.target;
+    const { mappings } = this.state;
+    delete mappings[tabIndex];
+    this.setState({ mappings });
+  }
+
   render() {
     const {
       match: {
@@ -197,6 +247,7 @@ export class EditConcept extends Component {
       existingConcept,
       loading,
     } = this.props;
+    const { mappings } = this.state;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
     return (
@@ -241,7 +292,12 @@ Concept
                 pathName={this.props.match.params}
                 existingConcept={existingConcept}
                 isEditConcept={this.state.isEditConcept}
+                addMappingRow={this.addMappingRow}
+                removeMappingRow={this.removeMappingRow}
+                updateEventListener={this.updateEventListener}
+                updateAsyncSelectValue={this.updateAsyncSelectValue}
                 answer={this.props.answer}
+                mappings={mappings}
                 disableButton={loading}
               />
               )
