@@ -32,7 +32,7 @@ const SubscriptionModal = (props) => {
 
         <ModalFooter>
           <Button
-            className="btn-sm btn-outline-danger test-btn-cancel"
+            className="btn btn-danger"
             id="sub-cancel"
             onClick={click}
           >
