@@ -11,12 +11,14 @@ import {
   previewConcept,
   addConcept,
   fetchFilteredConcepts,
+  setCurrentPage,
 } from '../../../redux/actions/concepts/addBulkConcepts';
-
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 
 export class BulkConceptsPage extends Component {
   static propTypes = {
+    setCurrentPage: PropTypes.func.isRequired,
+    currentPage: PropTypes.number.isRequired,
     fetchFilteredConcepts: PropTypes.func.isRequired,
     fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
@@ -50,7 +52,24 @@ export class BulkConceptsPage extends Component {
       classInput: '',
       searchInput: '',
       conceptLimit: 10,
+      searchingOn: false,
     };
+  }
+
+  componentDidMount() {
+    this.getBulkConcepts();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { searchingOn } = this.state;
+    const { currentPage } = this.props;
+    if (currentPage !== prevProps.currentPage) {
+      if (searchingOn) {
+        return this.searchOption();
+      }
+      return this.getBulkConcepts();
+    }
+    return null;
   }
 
   handleFilter = (event) => {
@@ -66,6 +85,11 @@ export class BulkConceptsPage extends Component {
     }
   };
 
+  getBulkConcepts = () => {
+    const { currentPage, fetchBulkConcepts: bulkConceptsFetched } = this.props;
+    bulkConceptsFetched(currentPage);
+  }
+
   handleChange = (event) => {
     const {
       target: { value },
@@ -73,11 +97,31 @@ export class BulkConceptsPage extends Component {
     this.setState(() => ({ searchInput: value }));
   };
 
-  handleSearch = (event) => {
-    event.preventDefault();
+  searchOption = () => {
     const { searchInput } = this.state;
     const query = `q=${searchInput.trim()}`;
-    this.props.fetchFilteredConcepts('CIEL', query);
+    const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
+    fetchedFilteredConcepts('CIEL', query, currentPage);
+  }
+
+  handleSearch = (event) => {
+    event.preventDefault();
+    const { setCurrentPage: settingCurrentPage } = this.props;
+    settingCurrentPage(1);
+    this.setState({ searchingOn: true });
+    this.searchOption();
+  };
+
+  handleNextPage = (e) => {
+    e.preventDefault();
+    const { id } = e.target;
+    const { searchingOn } = this.state;
+    const { setCurrentPage: settingCurrentPage } = this.props;
+    settingCurrentPage(Number(id));
+    if (searchingOn) {
+      return this.searchOption();
+    }
+    return this.getBulkConcepts();
   };
 
   render() {
@@ -87,7 +131,10 @@ export class BulkConceptsPage extends Component {
       datatypes,
       preview,
       classes,
+      currentPage,
       match: { params },
+      previewConcept: previewedConcept,
+      addConcept: addedConcept,
     } = this.props;
     const {
       datatypeInput, classInput, searchInput, conceptLimit,
@@ -119,9 +166,11 @@ export class BulkConceptsPage extends Component {
               loading={loading}
               location={params}
               preview={preview}
-              previewConcept={this.props.previewConcept}
-              addConcept={this.props.addConcept}
+              previewConcept={previewedConcept}
+              addConcept={addedConcept}
+              handleNextPage={this.handleNextPage}
               conceptLimit={conceptLimit}
+              currentPage={currentPage}
             />
           </div>
         </section>
@@ -130,12 +179,10 @@ export class BulkConceptsPage extends Component {
   }
 }
 
-export const mapStateToProps = state => ({
-  concepts: state.bulkConcepts.bulkConcepts,
-  loading: state.concepts.loading,
-  datatypes: state.bulkConcepts.datatypes,
-  classes: state.bulkConcepts.classes,
-  preview: state.bulkConcepts.preview,
+export const mapStateToProps = ({ bulkConcepts, concepts }) => ({
+  loading: concepts.loading,
+  concepts: bulkConcepts.bulkConcepts,
+  ...bulkConcepts,
 });
 
 export default connect(
@@ -146,5 +193,6 @@ export default connect(
     previewConcept,
     addConcept,
     fetchFilteredConcepts,
+    setCurrentPage,
   },
 )(BulkConceptsPage);

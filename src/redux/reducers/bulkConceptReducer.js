@@ -4,6 +4,9 @@ import {
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
   PREVIEW_CONCEPT,
+  SET_PERVIOUS_PAGE,
+  SET_NEXT_PAGE,
+  SET_CURRENT_PAGE,
 } from '../actions/types';
 import { getDatatypes, filterClass, normalizeList } from './util';
 
@@ -13,6 +16,7 @@ const userInitialState = {
   classes: [],
   datatypeList: [],
   classList: [],
+  currentPage: 1,
 };
 const bulkConcepts = (state = userInitialState, action) => {
   switch (action.type) {
@@ -34,6 +38,21 @@ const bulkConcepts = (state = userInitialState, action) => {
       return {
         ...state,
         preview: action.payload,
+      };
+    case SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
+      };
+    case SET_NEXT_PAGE:
+      return {
+        ...state,
+        currentPage: state.currentPage + 1,
+      };
+    case SET_PERVIOUS_PAGE:
+      return {
+        ...state,
+        currentPage: state.currentPage - 1,
       };
     case ADD_TO_DATATYPE_LIST:
       return {

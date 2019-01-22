@@ -6,6 +6,9 @@ import {
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
   PREVIEW_CONCEPT,
+  SET_CURRENT_PAGE,
+  SET_NEXT_PAGE,
+  SET_PERVIOUS_PAGE,
 } from '../../../redux/actions/types';
 import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
 
@@ -19,6 +22,7 @@ beforeEach(() => {
     classes: [],
     datatypeList: [],
     classList: [],
+    currentPage: 1,
   };
   action = {};
 });
@@ -42,6 +46,48 @@ describe('Test suite for bulkConcepts reducer', () => {
       classes: ['Diagnosis'],
       datatypes: ['N/A'],
       bulkConcepts: action.payload,
+    });
+  });
+  it('should handle SET_NEXT_PAGE', () => {
+    action = {
+      type: SET_NEXT_PAGE,
+      payload: 1,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      currentPage: action.payload + 1,
+    });
+  });
+  it('should handle SET_PERVIOUS_PAGE', () => {
+    action = {
+      type: SET_PERVIOUS_PAGE,
+      payload: 1,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      currentPage: action.payload - 1,
+    });
+  });
+  it('should handle SET_CURRENT_PAGE', () => {
+    action = {
+      type: SET_CURRENT_PAGE,
+      payload: 1,
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      currentPage: action.payload,
     });
   });
   it('should handle ADD_TO_DATATYPE_LIST', () => {
