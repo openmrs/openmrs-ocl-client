@@ -26,7 +26,7 @@ const GeneralModal = (props) => {
 
         <ModalFooter>
           <Button
-            className="btn-sm btn-outline-info version"
+            className="btn btn-primary mr-1"
             id="generalConfirmButton"
             onClick={select_confirm}
           >
@@ -34,7 +34,7 @@ const GeneralModal = (props) => {
           </Button>
 
           <Button
-            className="btn-sm btn-outline-danger test-btn-cancel"
+            className="btn btn-danger"
             id="sub-cancel"
             onClick={hide}
           >

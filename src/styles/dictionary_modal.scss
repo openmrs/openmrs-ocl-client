@@ -147,11 +147,7 @@ legend {
       color: #cc0000;
   }
 
-button:disabled{
-    cursor: not-allowed;
-    background: #e9ecef !important;
-}
-#addDictionary {
+#addDictionary, #generalConfirmButton, #saveReleaseVersion{
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
