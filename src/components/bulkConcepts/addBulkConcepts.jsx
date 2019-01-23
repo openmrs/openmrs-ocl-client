@@ -8,6 +8,7 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
+import Loader from '../Loader';
 import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
 import ResultModal from './component/addBulkConceptResultModal';
@@ -30,6 +31,7 @@ export class AddBulkConcepts extends Component {
       }).isRequired,
     }).isRequired,
     isFetching: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -123,6 +125,8 @@ export class AddBulkConcepts extends Component {
       },
       sourceConcepts,
       conceptSources,
+      isLoading,
+      isFetching,
     } = this.props;
     const disableButton = (conceptIds.length < 1);
     return (
@@ -137,9 +141,9 @@ export class AddBulkConcepts extends Component {
           <strong>
             {dictionaryName}
             {' '}
-Dictionary
+            Dictionary
           </strong>
-: Bulk Add Concepts
+          : Bulk Add Concepts
         </h3>
         <div className="scheduler-border">
           <h3>Select a source</h3>
@@ -189,43 +193,48 @@ Dictionary
                           Other &nbsp;&nbsp;
                         <form className="form-inline search-bar">
                           <i className="fas fa-search" />
-                          { otherSelected && <input
+                          {otherSelected && <input
                             {
-                            ...getInputProps()
-                            }
+                              ...getInputProps()
+                              }
                             className="form-control search"
                             id="sourceSearch"
                             placeholder="Search"
                             aria-label="Search"
                           />
-                          }
+                            }
+                          {isFetching
+                              && <div className="ml-auto text-right">
+                                <Loader smaller />
+                              </div>
+                            }
                         </form>
                       </div>
                       <div className="search-ul">
                         {isOpen ? (
                           <ul {...getMenuProps()} className="search-ul">
                             {
-                            conceptSources.filter(item => !inputValue.trim()
-                            || item.name.toLowerCase()
-                              .includes(inputValue.toLowerCase())).slice(1, 10)
-                              .filter(item => item.name !== 'CIEL')
-                              .map((item, index) => (
-                                <li
-                                  {...getItemProps({
-                                    key: item.id,
-                                    index,
-                                    item,
-                                    style: {
-                                      backgroundColor:
-                                      highlightedIndex === index ? 'lightgray' : 'white',
-                                      padding: '5px 10px 1px',
-                                    },
-                                  })}
-                                >
-                                  {item.name}
-                                </li>
-                              ))
-                          }
+                                conceptSources.filter(item => !inputValue.trim()
+                                  || item.name.toLowerCase()
+                                    .includes(inputValue.toLowerCase())).slice(1, 10)
+                                  .filter(item => item.name !== 'CIEL')
+                                  .map((item, index) => (
+                                    <li
+                                      {...getItemProps({
+                                        key: item.id,
+                                        index,
+                                        item,
+                                        style: {
+                                          backgroundColor:
+                                            highlightedIndex === index ? 'lightgray' : 'white',
+                                          padding: '5px 10px 1px',
+                                        },
+                                      })}
+                                    >
+                                      {item.name}
+                                    </li>
+                                  ))
+                              }
                           </ul>
                         )
                           : null}
@@ -261,18 +270,23 @@ Dictionary
                   <div>
                     <div id="other-search">
                       <div className="form-check">
-                        Quick search &nbsp;&nbsp;
+                          Quick search &nbsp;&nbsp;
                         <form className="form-inline search-bar">
                           <i className="fas fa-search" />
                           <input
                             {
-                            ...getInputProps()
-                            }
+                              ...getInputProps()
+                              }
                             className="form-control search"
                             id="search"
                             placeholder="search"
                             aria-label="Search"
                           />
+                          {isLoading
+                              && <div className="ml-auto text-right">
+                                <Loader smaller />
+                              </div>
+                            }
                         </form>
                       </div>
                     </div>
@@ -280,25 +294,26 @@ Dictionary
                       {isOpen ? (
                         <ul {...getMenuProps()} className="search-ul">
                           {
-                          sourceConcepts.filter(item => !inputValue.trim()
-                          || item.display_name.toLowerCase()
-                            .includes(inputValue.toLowerCase())).slice(1, 10).map((item, index) => (
-                              <li
-                                {...getItemProps({
-                                  key: item.id,
-                                  index,
-                                  item,
-                                  style: {
-                                    backgroundColor:
-                                    highlightedIndex === index ? 'lightgray' : 'white',
-                                    padding: '5px 10px 1px',
-                                  },
-                                })}
-                              >
-                                {item.display_name}
-                              </li>
-                          ))
-                        }
+                              sourceConcepts.filter(item => !inputValue.trim()
+                                || item.display_name.toLowerCase()
+                                  .includes(inputValue.toLowerCase()))
+                                .slice(1, 10).map((item, index) => (
+                                  <li
+                                    {...getItemProps({
+                                      key: item.id,
+                                      index,
+                                      item,
+                                      style: {
+                                        backgroundColor:
+                                          highlightedIndex === index ? 'lightgray' : 'white',
+                                        padding: '5px 10px 1px',
+                                      },
+                                    })}
+                                  >
+                                    {item.display_name}
+                                  </li>
+                                ))
+                            }
                         </ul>
                       )
                         : null}
@@ -348,6 +363,7 @@ export const mapStateToProps = state => ({
   sourceConcepts: state.sourceConcepts.concepts,
   conceptSources: state.sourceConcepts.conceptSources,
   isFetching: state.sourceConcepts.loading,
+  isLoading: state.sourceConcepts.spinning,
 });
 export default connect(
   mapStateToProps,

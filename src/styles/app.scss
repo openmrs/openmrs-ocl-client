@@ -41,6 +41,16 @@
   }
 }
 
+.smaller-loader {
+  border: 3px solid #dfdede;
+  border-top: 3px solid #3498db;
+  border-radius: 100%;
+  width: 12px;
+  height: 12px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
 .loader {
   border: 5px solid #f3f3f3;
   border-top: 5px solid #3498db;
