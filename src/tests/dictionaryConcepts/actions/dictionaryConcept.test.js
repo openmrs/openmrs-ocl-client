@@ -68,6 +68,7 @@ import concepts, {
   multipleConceptsMockStore,
   existingConcept,
 } from '../../__mocks__/concepts';
+import { CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -769,7 +770,7 @@ describe('Add answer mappings to concept', () => {
         to_source_name: 'CIEL',
         to_source_owner: 'CIEL',
         to_source_owner_type: 'Organization',
-        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        to_source_url: CIEL_SOURCE_URL,
         type: 'Mapping',
         updated_at: '2018-12-17T13:32:26.769',
         updated_by: 'admin',
@@ -801,7 +802,7 @@ describe('Add answer mappings to concept', () => {
         to_source_name: 'CIEL',
         to_source_owner: 'CIEL',
         to_source_owner_type: 'Organization',
-        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        to_source_url: CIEL_SOURCE_URL,
         type: 'Mapping',
         updated_at: '2018-12-17T13:32:26.769',
         updated_by: 'admin',

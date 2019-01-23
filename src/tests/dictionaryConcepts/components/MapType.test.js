@@ -9,7 +9,7 @@ describe('<MapType />', () => {
     };
     const wrapper = shallow(<MapType {...props} />);
     expect(wrapper.find('select')).toHaveLength(0);
-    expect(wrapper.find('textarea')).toHaveLength(1);
+    expect(wrapper.find('input')).toHaveLength(1);
   });
 
   it('should render select drop down for any other source', () => {
@@ -18,6 +18,6 @@ describe('<MapType />', () => {
     };
     const wrapper = shallow(<MapType {...props} />);
     expect(wrapper.find('select')).toHaveLength(1);
-    expect(wrapper.find('textarea')).toHaveLength(0);
+    expect(wrapper.find('input')).toHaveLength(0);
   });
 });

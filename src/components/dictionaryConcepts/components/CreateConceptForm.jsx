@@ -11,6 +11,7 @@ const CreateConceptForm = (props) => {
   const {
     concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
     mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
+    isEditConcept,
   } = props;
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
@@ -199,6 +200,8 @@ const CreateConceptForm = (props) => {
                 updateAsyncSelectValue={updateAsyncSelectValue}
                 key={mapping.id}
                 index={i}
+                isEditConcept={isEditConcept}
+                isNew={mapping.isNew}
               />
             ))}
             <Link to="#" onClick={addMappingRow}>Add Another Mapping</Link>

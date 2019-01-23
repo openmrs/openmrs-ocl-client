@@ -7,6 +7,7 @@ import {
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/EditConcept';
 import { newConcept, existingConcept } from '../../__mocks__/concepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
 jest.mock('react-notify-toast');
@@ -187,5 +188,120 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).newConcept).toEqual(newConcept);
     expect(mapStateToProps(initialState).newName).toEqual(['1']);
     expect(mapStateToProps(initialState).existingConcept).toEqual(existingConcept);
+  });
+});
+
+describe('Test suite for mappings on existing concepts', () => {
+  const props = {
+    match: {
+      params: {
+        conceptType: 'question',
+        collectionName: 'dev-col',
+        type: 'users',
+        typeName: 'emmabaye',
+        language: 'en',
+        conceptId: '1',
+        name: '',
+      },
+    },
+    history: {
+      push: jest.fn(),
+    },
+    createNewName: jest.fn(),
+    addNewDescription: jest.fn(),
+    clearSelections: jest.fn(),
+    fetchExistingConcept: jest.fn(),
+    clearPreviousConcept: jest.fn(),
+    createNewNameForEditConcept: jest.fn(),
+    removeDescriptionForEditConcept: jest.fn(),
+    addDescriptionForEditConcept: jest.fn(),
+    removeNameForEditConcept: jest.fn(),
+    updateConcept: jest.fn(),
+    addNewAnswer: jest.fn(),
+    removeAnswer: jest.fn(),
+    newName: ['1'],
+    description: ['1'],
+    answer: ['78'],
+    loading: false,
+    existingConcept: {
+      names: [{
+        uuid: '1234',
+        name: 'dummy',
+      }],
+      descriptions: [{
+        uuid: '1234',
+        name: 'dummy',
+      }],
+    },
+    newRow: '1234',
+  };
+  const wrapper = mount(<Router>
+    <EditConcept {...props} />
+  </Router>);
+
+  it('should call addMappingRow function', () => {
+    const instance = wrapper.find('EditConcept').instance();
+    instance.addMappingRow();
+  });
+
+  it('should call removeMappingRow function', () => {
+    const event = { target: 0 };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.removeMappingRow(event);
+  });
+
+  it('should call updateAsyncSelectValue function', () => {
+    const value = { index: 0, value: 'malaria 1', label: 'malaria 1' };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.updateAsyncSelectValue(value);
+  });
+
+  it('should call updateEventListener function', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'to_concept_name',
+        value: 'malaria',
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.updateEventListener(event);
+  });
+
+  it('should test componentWillReceiveProps', () => {
+    const newProps = {
+      existingConcept: {
+        mappings: [
+          {
+            id: 1,
+            map_type: 'Same as',
+            source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+            to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
+            to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+            to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+            isNew: false,
+          },
+          {
+            map_type: 'Narrower than',
+            source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+            to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
+            to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
+            to_source_url: CIEL_SOURCE_URL,
+            isNew: true,
+          },
+          {
+            id: 3,
+            map_type: 'Same as',
+            source: 'SNOMED',
+            to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
+            to_concept_name: 'malaria',
+            to_source_url: null,
+            isNew: false,
+          },
+        ],
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.componentWillReceiveProps(newProps);
   });
 });

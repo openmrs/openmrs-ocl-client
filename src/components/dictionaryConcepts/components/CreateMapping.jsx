@@ -21,22 +21,26 @@ class CreateMapping extends Component {
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, removeMappingRow, updateAsyncSelectValue,
+      isNew,
     } = this.props;
-
     return (
       <div>
         <table className="table table-striped table-bordered concept-form-table">
           <tbody>
             <tr>
               <td>
-                <input
-                  tabIndex={index}
-                  className="form-control"
-                  placeholder="source"
-                  type="text"
-                  name="source"
-                  onChange={updateEventListener}
-                />
+                {!isNew && source}
+                {
+                  isNew && <input
+                    tabIndex={index}
+                    className="form-control"
+                    placeholder="source"
+                    type="text"
+                    name="source"
+                    onChange={updateEventListener}
+                    defaultValue={source}
+                  />
+              }
               </td>
               <td>
                 {<MapType
@@ -62,17 +66,18 @@ class CreateMapping extends Component {
               )}
               {source && (
                 <td className="react-async">
+                  {!isNew && to_concept_name}
                   {source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
-                    <AsyncSelect
+                    isNew && <AsyncSelect
                       cacheOptions
                       isClearable
                       loadOptions={async () => fetchSourceConcepts(source, inputValue, index)}
                       onChange={updateAsyncSelectValue}
                       onInputChange={this.handleInputChange}
-                      placeholder="concept name"
+                      placeholder="search concept name"
                     />
                   ) : (
-                    <input
+                    isNew && <input
                       tabIndex={index}
                       defaultValue={to_concept_name}
                       className="form-control"
@@ -106,6 +111,7 @@ CreateMapping.propTypes = {
   updateEventListener: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
+  isNew: PropTypes.bool,
 };
 
 CreateMapping.defaultProps = {
@@ -114,6 +120,7 @@ CreateMapping.defaultProps = {
   to_concept_code: '',
   to_concept_name: '',
   index: 0,
+  isNew: false,
   updateEventListener: () => {},
   removeMappingRow: () => {},
   updateAsyncSelectValue: () => {},

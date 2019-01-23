@@ -52,6 +52,14 @@ describe('render MappingModal', () => {
     expect(wrapper.state().type).toBe('Internal Mapping');
   });
 
+  it('should call submitMapping onclick', () => {
+    wrapper.setState({
+      type: 'External Mapping',
+    });
+    wrapper.find('#mappingSubmit').simulate('click');
+    expect(wrapper.state().type).toBe('External Mapping');
+  });
+
   it('should close handleToggle onclick', () => {
     wrapper.find('#CloseModal').simulate('click');
     expect(props.handleToggle).toBeCalled();

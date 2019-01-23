@@ -7,12 +7,15 @@ const mapType = (props) => {
     source, index, map_type, updateEventListener,
   } = props;
   const mapTypeInput = source === INTERNAL_MAPPING_DEFAULT_SOURCE
-    ? (<textarea
+    ? (<input
       type="text"
       rows="3"
       className="form-control concept-description"
       name="map_type"
+      placeholder="Relationship"
       onChange={updateEventListener}
+      defaultValue={map_type}
+      tabIndex={index}
     />)
     : (
       <select

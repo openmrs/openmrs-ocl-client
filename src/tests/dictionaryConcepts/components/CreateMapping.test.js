@@ -45,4 +45,31 @@ describe('Test suite for dictionary concepts components', () => {
     inputField.find('#remove').first().simulate('click');
     expect(props.removeMappingRow).toHaveBeenCalled();
   });
+
+  it('should render when isNew is true and source not CIEL', () => {
+    const newProps = {
+      ...props,
+      isNew: true,
+      source: 'Snomed',
+    };
+
+    wrapper = mount(<Router>
+      <CreateMapping {...newProps} />
+    </Router>);
+    const inputs = wrapper.find('input');
+    expect(inputs).toHaveLength(3);
+  });
+
+  it('should render when isNew is true and source equal to CIEL', () => {
+    const newProps = {
+      ...props,
+      isNew: true,
+    };
+
+    wrapper = mount(<Router>
+      <CreateMapping {...newProps} />
+    </Router>);
+  });
+  const inputs = wrapper.find('input');
+  expect(inputs).toHaveLength(1);
 });
