@@ -12,6 +12,7 @@ import {
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
   NETWORK_ERROR,
+  LOGGED_OUT,
 } from '../../../redux/actions/types';
 import {
   fetchUserData,
@@ -85,6 +86,31 @@ describe('Test suite for user dashboard actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+  it('should handle request failure of status code 401 in FETCH_USER_DICTIONARY', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: { message: 'Request failed with status code 401' },
+      });
+    });
+
+    const expectedActions = [
+      {
+        payload: true,
+        type: IS_FETCHING,
+      },
+      {
+        type: LOGGED_OUT,
+        payload: {},
+      },
+    ];
+
+    const store = mockStore({});
+    return store.dispatch(fetchsUserDictionaries('chriskala', { history: { push: jest.fn } })).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
   it('should handle FETCH_USER_ORGANIZATION', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -119,6 +145,27 @@ describe('Test suite for user dashboard actions', () => {
 
     const store = mockStore({});
     return store.dispatch(fetchUserOrganizations('emasys')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle request failure of status code 401 in FETCH_USER_ORGANIZATION', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: { message: 'Request failed with status code 401' },
+      });
+    });
+
+    const expectedActions = [
+      {
+        type: LOGGED_OUT,
+        payload: {},
+      },
+    ];
+
+    const store = mockStore({});
+    return store.dispatch(fetchUserOrganizations('emasys', { history: { push: jest.fn } })).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -161,6 +208,27 @@ describe('Test suite for user dashboard actions', () => {
 
     const store = mockStore({});
     return store.dispatch(fetchUser('emasys')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle request failure of status code 401 in GET_USER', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 401,
+        response: { message: 'Request failed with status code 401' },
+      });
+    });
+
+    const expectedActions = [
+      {
+        type: LOGGED_OUT,
+        payload: {},
+      },
+    ];
+
+    const store = mockStore({});
+    return store.dispatch(fetchUser('emasys', { history: { push: jest.fn } })).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

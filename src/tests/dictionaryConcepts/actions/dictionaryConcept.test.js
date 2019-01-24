@@ -303,8 +303,31 @@ describe('Test suite for dictionary concept actions', () => {
       const request = moxios.requests.mostRecent();
       request.reject({
         status: 599,
+        response: newConcept.version_url,
+      });
+    });
+
+    const expectedActions = [
+      { type: REMOVE_MAPPING, payload: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/' },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    const collectionId = 'Tech';
+    return store.dispatch(removeConceptMapping(data, type, owner, collectionId)).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle REMOVE_MAPPING forbidden error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 403,
         response: {
-          data: { detail: 'Cannot remove mapping' },
+          data: { detail: 'You do not have permission to perform this action.' },
         },
       });
     });
@@ -335,6 +358,26 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: REMOVE_CONCEPT, payload: newConcept.version_url },
     ];
+
+    const store = mockStore(mockConceptStore);
+    const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
+    const type = 'users';
+    const owner = 'alexmochu';
+    const collectionId = 'Tech';
+    return store.dispatch(removeDictionaryConcept(data, type, owner, collectionId)).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+  it('should handle REMOVE_CONCEPT forbidden error', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 403,
+        response: { data: { detail: 'You do not have permission to perform this action.' } },
+      });
+    });
+
+    const expectedActions = [];
 
     const store = mockStore(mockConceptStore);
     const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
