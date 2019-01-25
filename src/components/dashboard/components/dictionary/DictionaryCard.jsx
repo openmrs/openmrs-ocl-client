@@ -44,7 +44,7 @@ const DictionaryCard = (dictionary) => {
           <div className="description col-12 text-left">
             <p>
               <span className="source-type">
-Concepts:
+Active Concepts:
                 {' '}
                 {active_concepts}
               </span>
