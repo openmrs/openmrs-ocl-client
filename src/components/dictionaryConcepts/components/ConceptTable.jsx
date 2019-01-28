@@ -40,7 +40,8 @@ const ConceptTable = ({
         <ReactTable
           data={concepts}
           loading={loading}
-          defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
+          pageSizeOptions={[5, 10, 20, 25, 50, 100]}
+          defaultPageSize={conceptLimit}
           noDataText="No concept!"
           minRows={2}
           columns={[
