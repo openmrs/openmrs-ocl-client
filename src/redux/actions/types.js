@@ -69,3 +69,4 @@ export const NETWORK_ERROR = '[error] error_message';
 export const SET_PERVIOUS_PAGE = '[page] prev_page';
 export const SET_NEXT_PAGE = '[page] next_page';
 export const SET_CURRENT_PAGE = '[page] current_page';
+export const IS_LOADING = '[ui] loader_spinning';
