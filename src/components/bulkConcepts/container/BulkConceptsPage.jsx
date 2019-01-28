@@ -94,6 +94,9 @@ export class BulkConceptsPage extends Component {
     const {
       target: { value },
     } = event;
+    if (!value) {
+      this.getBulkConcepts();
+    }
     this.setState(() => ({ searchInput: value }));
   };
 
