@@ -161,18 +161,6 @@ export class DictionaryModal extends React.Component {
 
   hideModal = () => {
     this.setState({
-      data: {
-        id: '',
-        preferred_source: 'CIEL',
-        public_access: 'View',
-        name: '',
-        owner: '',
-        description: '',
-        default_locale: 'en',
-        supported_locales: '',
-        repository_type: 'OpenMRSDictionary',
-        conceptUrl: '',
-      },
       errors: {},
       supportedLocalesOptions: [],
       disableButton: false,
