@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SideNavItem from './SideNavItem';
 
-const Sidenav = ({ filteredClass, filteredSources, handleChange }) => (
+const Sidenav = ({
+  filteredClass, filteredSources, handleChange, toggleCheck,
+}) => (
   <div className="col-12 col-md-2 custom-full-width">
     <div className="sidenav-container">
       <div className="row">
@@ -20,6 +22,7 @@ const Sidenav = ({ filteredClass, filteredSources, handleChange }) => (
           key={classItem}
           filterType="classes"
           handleChange={handleChange}
+          checkValue={toggleCheck.includes(`"${classItem}"`)}
         />
       ))}
     </div>
@@ -29,8 +32,13 @@ const Sidenav = ({ filteredClass, filteredSources, handleChange }) => (
 /* eslint-disable */
 Sidenav.propTypes = {
   filteredSources: PropTypes.array.isRequired,
+  toggleCheck: PropTypes.array.isRequired,
   filteredClass: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
 };
+
+Sidenav.defaultProps = {
+  toggleCheck: []
+}
 
 export default Sidenav;
