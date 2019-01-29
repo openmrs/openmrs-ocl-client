@@ -56,13 +56,13 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage) 
   }
 };
 
-export const addToFilterList = (item, type, query) => (dispatch) => {
+export const addToFilterList = (item, type, query, currentPage) => (dispatch) => {
   if (type === 'datatype') {
     dispatch(isSuccess(item, ADD_TO_DATATYPE_LIST));
-    return dispatch(fetchFilteredConcepts('CIEL', query));
+    return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
   }
   dispatch(isSuccess(item, ADD_TO_CLASS_LIST));
-  return dispatch(fetchFilteredConcepts('CIEL', query));
+  return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
 };
 
 export const previewConcept = id => (dispatch, getState) => {
