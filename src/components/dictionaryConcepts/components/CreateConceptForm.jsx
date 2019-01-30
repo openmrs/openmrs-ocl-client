@@ -186,23 +186,38 @@ const CreateConceptForm = (props) => {
           </div>
         </div>
         <div className="concept-table ">
-          <fieldset>
-            <legend>Related Concepts</legend>
-            {mappings.map((mapping, i) => (
-              <CreateMapping
-                source={mapping.source}
-                map_type={mapping.map_type}
-                to_concept_code={mapping.to_concept_code}
-                to_concept_name={mapping.to_concept_name}
-                updateEventListener={updateEventListener}
-                removeMappingRow={removeMappingRow}
-                updateAsyncSelectValue={updateAsyncSelectValue}
-                key={mapping.id}
-                index={i}
-              />
-            ))}
-            <Link to="#" onClick={addMappingRow}>Add Another Mapping</Link>
-          </fieldset>
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Mappings</h6>
+              <table className=" table-striped table-bordered concept-form-table">
+                <thead className="header text-white">
+                  <tr>
+                    <th scope="col">Related Mappings</th>
+                  </tr>
+                </thead>
+              </table>
+              {mappings.map((mapping, i) => (
+                <CreateMapping
+                  source={mapping.source}
+                  map_type={mapping.map_type}
+                  to_concept_code={mapping.to_concept_code}
+                  to_concept_name={mapping.to_concept_name}
+                  updateEventListener={updateEventListener}
+                  removeMappingRow={removeMappingRow}
+                  updateAsyncSelectValue={updateAsyncSelectValue}
+                  key={mapping.id}
+                  index={i}
+                />
+              ))}
+              <a
+                href="#!"
+                className="text-left add-more-names mt-3"
+                onClick={addMappingRow}
+              >
+              Add another Mapping...
+              </a>
+            </div>
+          </div>
           <br />
         </div>
         <div className="submit-button text-left">

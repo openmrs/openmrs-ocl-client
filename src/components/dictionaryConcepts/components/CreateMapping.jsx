@@ -14,85 +14,97 @@ class CreateMapping extends Component {
 
   handleInputChange = (value) => {
     this.setState({ inputValue: value });
-  }
+  };
 
   render() {
     const { inputValue } = this.state;
     const {
-      map_type, source, to_concept_code, to_concept_name, index,
-      updateEventListener, removeMappingRow, updateAsyncSelectValue,
+      map_type,
+      source,
+      to_concept_code,
+      to_concept_name,
+      index,
+      updateEventListener,
+      removeMappingRow,
+      updateAsyncSelectValue,
     } = this.props;
 
     return (
-      <div>
-        <table className="table table-striped table-bordered concept-form-table">
-          <tbody>
-            <tr>
-              <td>
-                <input
-                  tabIndex={index}
-                  className="form-control"
-                  placeholder="source"
-                  type="text"
-                  name="source"
-                  onChange={updateEventListener}
-                />
-              </td>
-              <td>
-                {<MapType
+      <table className="table table-striped table-bordered concept-form-table" id="table-mappings">
+        <tbody>
+          <tr>
+            <td>
+              <input
+                tabIndex={index}
+                className="form-control"
+                placeholder="source"
+                type="text"
+                name="source"
+                onChange={updateEventListener}
+              />
+            </td>
+            <td>
+              {
+                <MapType
                   updateEventListener={updateEventListener}
                   index={index}
                   map_type={map_type}
                   source={source}
-                />}
+                />
+              }
+            </td>
+            {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
+              <td>
+                <input
+                  tabIndex={index}
+                  defaultValue={to_concept_code}
+                  className="form-control"
+                  placeholder="to_concept_code"
+                  type="text"
+                  name="to_concept_code"
+                  id="to_concept_code"
+                  onChange={updateEventListener}
+                />
               </td>
-              {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
-                <td>
+            )}
+            {source && (
+              <td className="react-async">
+                {source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
+                  <AsyncSelect
+                    cacheOptions
+                    isClearable
+                    loadOptions={async () => fetchSourceConcepts(source, inputValue, index)
+                    }
+                    onChange={updateAsyncSelectValue}
+                    onInputChange={this.handleInputChange}
+                    placeholder="concept name"
+                  />
+                ) : (
                   <input
                     tabIndex={index}
-                    defaultValue={to_concept_code}
+                    defaultValue={to_concept_name}
                     className="form-control"
-                    placeholder="to_concept_code"
+                    placeholder="concept name (optional)"
                     type="text"
-                    name="to_concept_code"
-                    id="to_concept_code"
+                    name="to_concept_name"
                     onChange={updateEventListener}
                   />
-                </td>
-              )}
-              {source && (
-                <td className="react-async">
-                  {source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
-                    <AsyncSelect
-                      cacheOptions
-                      isClearable
-                      loadOptions={async () => fetchSourceConcepts(source, inputValue, index)}
-                      onChange={updateAsyncSelectValue}
-                      onInputChange={this.handleInputChange}
-                      placeholder="concept name"
-                    />
-                  ) : (
-                    <input
-                      tabIndex={index}
-                      defaultValue={to_concept_name}
-                      className="form-control"
-                      placeholder="concept name (optional)"
-                      type="text"
-                      name="to_concept_name"
-                      onChange={updateEventListener}
-                    />
-                  )}
-                </td>
-              )}
-              <td className="table-remove-link">
-                <Link id="remove" tabIndex={index} onClick={removeMappingRow} to="#">
-                    Remove
-                </Link>
+                )}
               </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            )}
+            <td className="table-remove-link">
+              <Link
+                id="remove"
+                tabIndex={index}
+                onClick={removeMappingRow}
+                to="#"
+              >
+                remove
+              </Link>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }
