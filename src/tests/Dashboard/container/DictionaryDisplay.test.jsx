@@ -104,28 +104,38 @@ describe('DictionaryDisplay', () => {
     expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
   it('should search for a dictionary', () => {
+    const searchDictionaries = jest.fn();
+    const clearDictionaries = jest.fn();
     const props = {
       fetchDictionaries: jest.fn(),
       dictionaries: [],
       isFetching: true,
-      clearDictionaries: jest.fn(),
-      searchDictionaries: jest.fn(),
+      clearDictionaries,
+      searchDictionaries,
       onSearch: jest.fn(),
       onSubmit: jest.fn(),
       organizations: [organizations],
       history: { push: jest.fn() },
-      searchValue: '',
     };
-    const wrapper = mount(<MemoryRouter>
-      <DictionaryDisplay {...props} />
-    </MemoryRouter>);
+    const wrapper = mount(<DictionaryDisplay {...props} />);
     const event = { target: { name: 'searchInput', value: 'openmrs' } };
     const event2 = { target: { name: 'searchInput', value: '', type: 'checkbox' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('#search').simulate('change', event2);
-    wrapper.find('#submit-search-form').simulate('submit', {
-      preventDefault: () => {},
+    const onSubmitEvent = { preventDefault: jest.fn() };
+    wrapper.setState({ searchInput: 'ka' }, () => {
+      wrapper.update();
+      wrapper.find('#submit-search-form').simulate('submit', onSubmitEvent);
+      expect(clearDictionaries).toHaveBeenCalled();
     });
+    wrapper.setState({ searchInput: 'test' }, () => {
+      wrapper.update();
+      wrapper.find('#submit-search-form').simulate('submit', onSubmitEvent);
+      expect(searchDictionaries).toHaveBeenCalled();
+    });
+    // test wheather an asterisk (*) is automatically added to the search query
+    expect(wrapper.state().searchInput).toEqual('test');
+    expect(searchDictionaries).toHaveBeenCalledWith(`${wrapper.state().searchInput}*`);
   });
   it('should render the Dictionary search component', () => {
     const properties = {

@@ -46,4 +46,22 @@ export const mockDictionaries = (() => {
   return dictionaries;
 })();
 
+export const sampleDictionaries = [
+  dictionary,
+  {
+    ...dictionary,
+    uuid: '8883946bc38fb30049835888',
+    id: 'main1',
+    short_code: 'main1',
+    name: 'Main Dictionary 1',
+  },
+  {
+    ...dictionary,
+    uuid: '1113946bc38fb30049835111',
+    id: 'main2',
+    short_code: 'main2',
+    name: 'Main Dictionary 2',
+  },
+];
+
 export default dictionary;

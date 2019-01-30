@@ -18,6 +18,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
         display_name: '',
       },
       addConcept: jest.fn(),
+      url: '',
     };
 
     const wrapper = shallow(<ActionButtons {...props} />);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,6 +13,7 @@ import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import UserDashboard from '../components/dictionary/user/UserDashboard';
 import AddDictionary from '../components/dictionary/AddDictionary';
 import Title from '../../Title';
+import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
 
 export class OwnerDictionary extends Component {
   static propTypes = {
@@ -61,10 +63,13 @@ export class OwnerDictionary extends Component {
     this.props.fetchDictionaries();
   }
 
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     this.props.clearDictionaries();
-    this.props.searchDictionaries(this.state.searchInput);
+    const { searchInput } = this.state;
+    if (searchInput && searchInput.trim().length > 2) {
+      this.props.searchDictionaries(`${searchInput}*`); // asterisk added to allow partial search
+    } else NotificationManager.warning(MIN_CHARACTERS_WARNING, '', MILLISECONDS_TO_SHOW_WARNING);
   }
 
   onSearch(event) {
@@ -102,6 +107,7 @@ export class OwnerDictionary extends Component {
             searchValue={searchInput}
             fetching={isFetching}
           />
+          <NotificationContainer />
           <div className="row justify-content-center">
             <div className="offset-sm-1 col-10">
               <OwnerListDictionaries
