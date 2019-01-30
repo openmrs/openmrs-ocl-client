@@ -334,6 +334,47 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(instance.componentDidUpdate(2)).toEqual(undefined);
   });
 
+  it('should refresh page when search input is empty', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      searchingOn: true,
+      fetchBulkConcepts: jest.fn(),
+      getBulkConcepts: jest.fn(),
+      concepts: [],
+      loading: true,
+      datatypes: [],
+      classes: [],
+      conceptLimit: 10,
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      handleNextPage: jest.fn(),
+    };
+    const wrapper = mount(<Router>
+      <Provider store={store}>
+        <BulkConceptsPage {...props} />
+      </Provider>
+    </Router>);
+    const Wrapper = wrapper.find('BulkConceptsPage').instance();
+    const spy = jest.spyOn(Wrapper, 'getBulkConcepts');
+    Wrapper.forceUpdate();
+    wrapper.update();
+    const event = { target: { name: 'searchInput', value: '' } };
+    wrapper.find('#search-concept').simulate('change', event);
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('should search for concepts', () => {
     const props = {
       setCurrentPage: jest.fn(),
