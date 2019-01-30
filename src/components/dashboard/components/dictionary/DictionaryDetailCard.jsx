@@ -144,6 +144,12 @@ Dictionary
               {active_concepts}
             </p>
             <p className="points">
+              <b>Active Concepts</b>
+:
+              {' '}
+              {active_concepts}
+            </p>
+            <p className="points">
               <b>Custom Concepts</b>
 :
               {' '}
