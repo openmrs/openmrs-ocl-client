@@ -56,6 +56,18 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should render without breaking without username specified', () => {
+    localStorage.removeItem('username', 'chriskala');
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper.find('.greetings h5').text()).toEqual('Welcome emasys nd');
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
   it('should handle hide function', () => {
     const wrapper = mount(<Provider store={store}>
       <MemoryRouter>

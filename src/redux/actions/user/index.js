@@ -11,30 +11,43 @@ import {
 } from '../types';
 import instance from '../../../config/axiosConfig';
 import { filterUserPayload } from '../../reducers/util';
+import { logout } from '../auth/authActionCreators';
 
-export const fetchUser = username => async (dispatch) => {
+const REQUEST_DENIED_MESSAGE = 'Request failed with status code 401';
+
+export const fetchUser = (username, props) => async (dispatch) => {
   const url = `users/${username}/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, GET_USER));
   } catch (error) {
+    if (error.message === REQUEST_DENIED_MESSAGE) {
+      dispatch(logout());
+      props.history.push('/');
+      return;
+    }
     const message = 'An error occurred with your internet connection, please fix it and try reloading the page.';
     notify.show(message, 'error', 3000);
     dispatch(isErrored(message, NETWORK_ERROR));
   }
 };
 
-export const fetchUserOrganizations = username => async (dispatch) => {
+export const fetchUserOrganizations = (username, props) => async (dispatch) => {
   const url = `users/${username}/orgs/`;
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_USER_ORGANIZATION));
   } catch (error) {
+    if (error.message === REQUEST_DENIED_MESSAGE) {
+      dispatch(logout());
+      props.history.push('/');
+      return;
+    }
     notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
-export const fetchsUserDictionaries = username => async (dispatch) => {
+export const fetchsUserDictionaries = (username, props) => async (dispatch) => {
   const url = `/users/${username}/collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
   dispatch(isFetching(true));
   try {
@@ -42,15 +55,20 @@ export const fetchsUserDictionaries = username => async (dispatch) => {
     const result = filterUserPayload(username, response.data);
     dispatch(isSuccess(result, FETCH_USER_DICTIONARY));
   } catch (error) {
+    if (error.message === REQUEST_DENIED_MESSAGE) {
+      dispatch(logout());
+      props.history.push('/');
+      return;
+    }
     notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
   }
 };
 
-export const fetchUserData = username => async (dispatch) => {
+export const fetchUserData = (username, props) => async (dispatch) => {
   dispatch(isFetching(true));
-  await dispatch(fetchUser(username));
-  await dispatch(fetchsUserDictionaries(username));
-  await dispatch(fetchUserOrganizations(username));
+  await dispatch(fetchUser(username, props));
+  await dispatch(fetchsUserDictionaries(username, props));
+  await dispatch(fetchUserOrganizations(username, props));
   dispatch(isFetching(false));
 };
 
