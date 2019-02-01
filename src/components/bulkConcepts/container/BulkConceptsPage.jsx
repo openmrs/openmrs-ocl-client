@@ -95,7 +95,8 @@ export class BulkConceptsPage extends Component {
       target: { value },
     } = event;
     if (!value) {
-      this.getBulkConcepts();
+      const { fetchBulkConcepts: bulkConceptsFetched } = this.props;
+      bulkConceptsFetched(1);
     }
     this.setState(() => ({ searchInput: value }));
   };
@@ -108,11 +109,10 @@ export class BulkConceptsPage extends Component {
   }
 
   handleSearch = (event) => {
-    event.preventDefault();
     const { setCurrentPage: settingCurrentPage } = this.props;
+    event.preventDefault();
     settingCurrentPage(1);
-    this.setState({ searchingOn: true });
-    this.searchOption();
+    this.setState({ searchingOn: true }, () => this.searchOption());
   };
 
   handleNextPage = (e) => {

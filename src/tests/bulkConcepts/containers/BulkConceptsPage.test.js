@@ -341,6 +341,7 @@ describe('Test suite for BulkConceptsPage component', () => {
       searchingOn: true,
       fetchBulkConcepts: jest.fn(),
       getBulkConcepts: jest.fn(),
+      bulkConceptsFetched: jest.fn(),
       concepts: [],
       loading: true,
       datatypes: [],
@@ -367,7 +368,7 @@ describe('Test suite for BulkConceptsPage component', () => {
       </Provider>
     </Router>);
     const Wrapper = wrapper.find('BulkConceptsPage').instance();
-    const spy = jest.spyOn(Wrapper, 'getBulkConcepts');
+    const spy = jest.spyOn(Wrapper.props, 'fetchBulkConcepts');
     Wrapper.forceUpdate();
     wrapper.update();
     const event = { target: { name: 'searchInput', value: '' } };
