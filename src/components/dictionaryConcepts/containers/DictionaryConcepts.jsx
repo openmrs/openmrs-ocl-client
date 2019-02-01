@@ -48,7 +48,7 @@ export class DictionaryConcepts extends Component {
     super(props);
     this.state = {
       searchInput: '',
-      conceptLimit: 10,
+      conceptLimit: 20,
       versionUrl: '',
       data: {
         references: [],
