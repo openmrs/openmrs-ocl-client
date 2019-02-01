@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ActionButtons from '../../../components/dictionaryConcepts/components/ActionButtons';
-import ViewConceptMappings from '../../../components/dictionaryConcepts/components/ViewConceptMappings';
 
 const props = {
   actionButtons: true,
@@ -49,16 +48,5 @@ describe('Test suite for ActionButton', () => {
   it('should call the showDeleteModal and fetchPreview', () => {
     wrapper.find('#retireConcept').simulate('click');
     expect(props.showDeleteModal).toBeCalled();
-  });
-
-  it('should render ViewConceptMappings if mappings is Not null', () => {
-    const viewWrapper = wrapper.find(ViewConceptMappings);
-    expect(viewWrapper.length).toEqual(1);
-  });
-
-  it('should not render viewconceptmappings if mappings is null', () => {
-    wrapper.setProps({ mappings: null });
-    const viewWrapper = wrapper.find(ViewConceptMappings);
-    expect(viewWrapper.length).toEqual(0);
   });
 });

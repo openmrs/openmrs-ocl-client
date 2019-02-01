@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import ViewConceptMappings from './ViewConceptMappings';
 
 const ActionButtons = ({
   actionButtons,
@@ -9,12 +8,6 @@ const ActionButtons = ({
   concept_class,
   showDeleteModal,
   version_url,
-  mappings,
-  source,
-  mappingLimit,
-  display_name,
-  showDeleteMappingModal,
-  handleDeleteMapping,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -32,19 +25,6 @@ const ActionButtons = ({
           >
           Edit
           </Link>
-          {
-          mappings && (
-          <ViewConceptMappings
-            mappings={mappings}
-            displayName={display_name}
-            mappingLimit={mappingLimit}
-            source={source}
-            showDeleteMappingModal={showDeleteMappingModal}
-            handleDeleteMapping={handleDeleteMapping}
-          />
-
-          )
-        }
         </React.Fragment>
       )}
       <button
