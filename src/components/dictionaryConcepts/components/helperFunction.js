@@ -33,3 +33,4 @@ export const classes = [
 ];
 
 export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';
+export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/';

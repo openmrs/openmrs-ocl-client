@@ -11,6 +11,7 @@ const CreateConceptForm = (props) => {
   const {
     concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
     mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
+    isEditConcept,
   } = props;
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
@@ -192,23 +193,31 @@ const CreateConceptForm = (props) => {
               <table className=" table-striped table-bordered concept-form-table">
                 <thead className="header text-white">
                   <tr>
-                    <th scope="col">Related Mappings</th>
+                    <th>Source</th>
+                    <th>Relationship</th>
+                    <th>Name</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
+                <tbody>
+
+                  {mappings.map((mapping, i) => (
+                    <CreateMapping
+                      source={mapping.source}
+                      map_type={mapping.map_type}
+                      to_concept_code={mapping.to_concept_code}
+                      to_concept_name={mapping.to_concept_name}
+                      updateEventListener={updateEventListener}
+                      removeMappingRow={removeMappingRow}
+                      updateAsyncSelectValue={updateAsyncSelectValue}
+                      key={mapping.id}
+                      index={i}
+                      isEditConcept={isEditConcept}
+                      isNew={mapping.isNew}
+                    />
+                  ))}
+                </tbody>
               </table>
-              {mappings.map((mapping, i) => (
-                <CreateMapping
-                  source={mapping.source}
-                  map_type={mapping.map_type}
-                  to_concept_code={mapping.to_concept_code}
-                  to_concept_name={mapping.to_concept_name}
-                  updateEventListener={updateEventListener}
-                  removeMappingRow={removeMappingRow}
-                  updateAsyncSelectValue={updateAsyncSelectValue}
-                  key={mapping.id}
-                  index={i}
-                />
-              ))}
               <a
                 href="#!"
                 className="text-left add-more-names mt-3"

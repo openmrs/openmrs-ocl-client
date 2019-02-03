@@ -363,6 +363,7 @@ export const newConceptData = {
       to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
       to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+      isNew: false,
     },
     {
       map_type: 'Narrower than',
@@ -370,6 +371,7 @@ export const newConceptData = {
       to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
       to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
+      isNew: true,
     },
     {
       id: 3,
@@ -378,6 +380,7 @@ export const newConceptData = {
       to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
       to_concept_name: 'malaria',
       to_source_url: null,
+      isNew: false,
     },
   ],
 };
@@ -448,7 +451,34 @@ export const existingConcept = {
       // eslint-disable-next-line max-len
       'Family planning register; Service delivery tally (for HP), RH register (for primary private clinics), Pre-ART, ART registers',
   },
-  mappings: 'mappings',
+  mappings: [
+    {
+      id: 1,
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
+      to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+      isNew: false,
+    },
+    {
+      map_type: 'Narrower than',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
+      to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
+      isNew: true,
+    },
+    {
+      id: 3,
+      map_type: 'Same as',
+      source: 'SNOMED',
+      to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
+      to_concept_name: 'malaria',
+      to_source_url: null,
+      isNew: false,
+    },
+  ],
   is_latest_version: true,
   locale: null,
   version_url:

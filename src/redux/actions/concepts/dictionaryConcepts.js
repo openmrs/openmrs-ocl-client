@@ -258,7 +258,7 @@ export const CreateMapping = (data, from_concept_url, source) => {
     });
 
     return (
-      instance.post(url, mappingData)
+      mapping.isNew && instance.post(url, mappingData)
     );
   }));
 };
@@ -305,11 +305,32 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
   dispatch(isFetching(false));
 };
 
+export const UpdateMapping = (data) => {
+  axios.all(data.map((mapping) => {
+    const mappingData = mapping.source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
+      map_type: mapping.map_type,
+      to_source_url: mapping.source,
+      to_concept_code: mapping.to_concept_code,
+      to_concept_name: mapping.to_concept_name,
+    }) : ({
+      map_type: mapping.map_type,
+      to_concept_url: mapping.to_source_url,
+      to_concept_name: mapping.to_concept_name,
+    });
+
+    return (
+      !mapping.isNew && instance.put(mapping.url, mappingData)
+    );
+  }));
+};
+
 export const updateConcept = (conceptUrl, data, history) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = conceptUrl;
   try {
     const response = await instance.put(url, data);
+    CreateMapping(data.mappings, data.from_concept_url, data.source);
+    UpdateMapping(data.mappings);
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     notify.show('Concept successfully updated', 'success', 3000);
   } catch (error) {
