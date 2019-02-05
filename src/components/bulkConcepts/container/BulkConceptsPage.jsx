@@ -110,10 +110,10 @@ export class BulkConceptsPage extends Component {
     fetchedFilteredConcepts('CIEL', query, currentPage);
   }
 
-  handleSearch = (event) => {
+  handleSearch = async (event) => {
     const { setCurrentPage: settingCurrentPage } = this.props;
     event.preventDefault();
-    settingCurrentPage(1);
+    await settingCurrentPage(1);
     this.setState({ searchingOn: true }, () => this.searchOption());
   };
 
