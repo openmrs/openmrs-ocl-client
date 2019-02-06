@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
@@ -14,6 +15,8 @@ import {
   setCurrentPage,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
+import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../dictionaryConcepts/components/helperFunction';
 
 export class BulkConceptsPage extends Component {
   static propTypes = {
@@ -105,9 +108,11 @@ export class BulkConceptsPage extends Component {
 
   searchOption = () => {
     const { searchInput } = this.state;
-    const query = `q=${searchInput.trim()}`;
-    const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
-    fetchedFilteredConcepts('CIEL', query, currentPage);
+    if (searchInput && searchInput.trim().length > 2) {
+      const query = `q=${searchInput.trim()}*`; // The asterisk permits partial search
+      const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
+      fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage);
+    } else NotificationManager.warning(MIN_CHARACTERS_WARNING, '', MILLISECONDS_TO_SHOW_WARNING);
   }
 
   handleSearch = async (event) => {
@@ -166,6 +171,7 @@ export class BulkConceptsPage extends Component {
               handleChange={this.handleChange}
               searchInput={searchInput}
             />
+            <NotificationContainer />
             <ConceptTable
               concepts={concepts}
               loading={loading}

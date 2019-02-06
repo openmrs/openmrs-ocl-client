@@ -162,19 +162,19 @@ describe('DictionaryDisplay', () => {
         <OwnerDictionary />
       </MemoryRouter>
     </Provider>);
-    const event = { target: { name: 'searchInput', value: 'openmrs' } };
+    const event = { target: { name: 'searchInput', value: 'k' } };
     const event2 = { target: { name: 'searchInput', value: '', type: 'checkbox' } };
     wrapper.find('#search').simulate('change', event);
     wrapper.find('#search').simulate('change', event2);
     const spy = jest.spyOn(wrapper.find('OwnerDictionary').instance(), 'onSubmit');
-    wrapper.find('#search').simulate('change', event);
     wrapper
       .find('OwnerDictionary')
       .instance()
       .forceUpdate();
-    wrapper.find('#submit-search-form').simulate('submit', {
-      preventDefault: () => {},
-    });
+    wrapper.find('#submit-search-form').simulate('submit', { preventDefault: jest.fn() });
+    const event3 = { target: { name: 'searchInput', value: 'test' } };
+    wrapper.find('#search').simulate('change', event3);
+    wrapper.find('#submit-search-form').simulate('submit', { preventDefault: jest.fn() });
     expect(spy).toHaveBeenCalled();
   });
   it('should render the Dictionary search component', () => {

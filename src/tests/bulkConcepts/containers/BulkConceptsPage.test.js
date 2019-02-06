@@ -75,7 +75,6 @@ describe('Test suite for BulkConceptsPage component', () => {
       fetchFilteredConcepts: jest.fn(),
       addConcept: jest.fn(),
       previewConcept: jest.fn(),
-
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -418,6 +417,10 @@ describe('Test suite for BulkConceptsPage component', () => {
 
     const clearForm = { target: { name: 'searchInput', value: '' } };
     wrapper.find('#search-concept').simulate('change', clearForm);
+
+    const typeWordInSearchField = { target: { name: 'searchInput', value: 'sample' } };
+    wrapper.find('#search-concept').simulate('change', typeWordInSearchField);
+    expect(wrapper.find('BulkConceptsPage').state().searchInput).toEqual('sample');
   });
 
   it('should filter search result', () => {

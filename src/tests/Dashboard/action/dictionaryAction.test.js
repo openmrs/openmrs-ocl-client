@@ -38,7 +38,7 @@ import {
   createVersion,
   editMapping,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
-import dictionaries from '../../__mocks__/dictionaries';
+import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
 import concepts from '../../__mocks__/concepts';
 
@@ -266,13 +266,13 @@ describe('Test suite for dictionary actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: [dictionaries],
+        response: sampleDictionaries,
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCHING_DICTIONARIES, payload: [dictionaries] },
+      { type: FETCHING_DICTIONARIES, payload: sampleDictionaries },
       { type: IS_FETCHING, payload: false },
     ];
 

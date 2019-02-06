@@ -2,7 +2,10 @@ import reducer from '../../../redux/reducers/generalSearchReducer';
 import { SEARCH_RESULTS, IS_FETCHING } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 
-const initialState = { dictionaries: [], loading: false };
+const initialState = {
+  dictionaries: [],
+  loading: false,
+};
 describe('Test suite for search result', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
