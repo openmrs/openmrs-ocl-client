@@ -16,6 +16,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
       display_locale: 'en',
       concept_class: 'diagnosis',
       datatype: 'coded',
+      names: [{ name: 'TEST SYNONYM' }, { name: 'TEST SYNONYM' }],
     },
   };
 
