@@ -516,3 +516,12 @@ export const nullConceptDescription = {
     '/orgs/OCL/sources/NameTypes/concepts/None/5821828444273a000717d00b/',
   url: '/orgs/OCL/sources/NameTypes/concepts/None/',
 };
+
+export const mockSource = {
+  short_code: 'HSTP-Indicators',
+  name: 'HSTP-Indicators',
+  url: '/orgs/EthiopiaMoH-test-zisasg/sources/HSTP-Indicators/',
+  owner: 'EthiopiaMoH-test-zisasg',
+  owner_type: 'Organization',
+  owner_url: '/orgs/EthiopiaMoH-test-zisasg/',
+};

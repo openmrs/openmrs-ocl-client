@@ -16,6 +16,8 @@ import {
   addSelectedAnswersToState,
   changeSelectedAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../components/helperFunction';
 
 export class CreateConcept extends Component {
   static propTypes = {
@@ -52,6 +54,8 @@ export class CreateConcept extends Component {
     addSelectedAnswers: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
     changeAnswer: PropTypes.func.isRequired,
+    fetchAllConceptSources: PropTypes.func.isRequired,
+    allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   constructor(props) {
@@ -83,12 +87,13 @@ export class CreateConcept extends Component {
       match: {
         params: { conceptType },
       },
+      fetchAllConceptSources,
     } = this.props;
     const concept = conceptType || '';
     this.props.createNewName();
     this.props.addNewDescription();
-    // eslint-disable-next-line
     this.setState({ concept_class: concept });
+    fetchAllConceptSources();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -253,8 +258,28 @@ export class CreateConcept extends Component {
   updateEventListener = (event) => {
     const { tabIndex, name, value } = event.target;
     const { mappings } = this.state;
-    mappings[tabIndex][name] = value;
+    // if the ciel source URL was provided, use just the name
+    if (value.toUpperCase().match(CIEL_SOURCE_URL.toUpperCase())) {
+      mappings[tabIndex][name] = INTERNAL_MAPPING_DEFAULT_SOURCE;
+    } else mappings[tabIndex][name] = value;
     this.setState(mappings);
+  }
+
+  updateAutoCompleteListener = (value, customEvent) => {
+    const { allSources } = this.props;
+    const matchingSource = allSources.filter(
+      src => src.name.trim().toUpperCase() === value.trim().toUpperCase(),
+    );
+    const event = {
+      ...customEvent,
+      target: {
+        ...customEvent.target,
+        value: matchingSource.length > 0
+          ? matchingSource[0].url
+          : value,
+      },
+    };
+    this.updateEventListener(event);
   }
 
   updateAsyncSelectValue = (value) => {
@@ -334,6 +359,8 @@ Concept
                 updateEventListener={this.updateEventListener}
                 removeMappingRow={this.removeMappingRow}
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
+                updateAutoCompleteListener={this.updateAutoCompleteListener}
+                allSources={this.props.allSources}
               />
             </div>
           </div>
@@ -351,7 +378,7 @@ export const mapStateToProps = state => ({
   loading: state.concepts.loading,
   queryResults: state.concepts.queryResults,
   selectedAnswers: state.concepts.selectedAnswers,
-
+  allSources: state.sourceConcepts.conceptSources,
 });
 export default connect(
   mapStateToProps,
@@ -365,5 +392,6 @@ export default connect(
     getPossibleAnswers: queryPossibleAnswers,
     addSelectedAnswers: addSelectedAnswersToState,
     changeAnswer: changeSelectedAnswer,
+    fetchAllConceptSources: fetchConceptSources,
   },
 )(CreateConcept);

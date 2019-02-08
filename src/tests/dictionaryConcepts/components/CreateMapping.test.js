@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import Router from 'react-mock-router';
 import CreateMapping from '../../../components/dictionaryConcepts/components/CreateMapping';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { mockSource } from '../../__mocks__/concepts';
 
 describe('Test suite for dictionary concepts components', () => {
   const props = {
@@ -14,12 +15,12 @@ describe('Test suite for dictionary concepts components', () => {
     updateEventListener: jest.fn(),
     removeMappingRow: jest.fn(),
     updateAsyncSelectValue: jest.fn(),
+    updateAutoCompleteListener: jest.fn(),
+    allSources: [mockSource],
   };
 
   let wrapper = mount(<Router>
-    <table>
-      <tbody><CreateMapping {...props} /></tbody>
-    </table>
+    <table><tbody><CreateMapping {...props} /></tbody></table>
   </Router>);
 
   it('should call handleInputChange', () => {
@@ -34,9 +35,7 @@ describe('Test suite for dictionary concepts components', () => {
     };
 
     wrapper = mount(<Router>
-      <table>
-        <tbody><CreateMapping {...newProps} /></tbody>
-      </table>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
 
     const inputField = wrapper.find('CreateMapping');
@@ -61,7 +60,9 @@ describe('Test suite for dictionary concepts components', () => {
       <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
     const inputs = wrapper.find('input');
-    expect(inputs).toHaveLength(3);
+    expect(inputs).toHaveLength(2);
+    const customTextInput = wrapper.find('textarea');
+    expect(customTextInput).toHaveLength(1);
   });
 
   it('should render when isNew is true and source equal to CIEL', () => {
@@ -73,7 +74,17 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper = mount(<Router>
       <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
+    const inputs = wrapper.find('select');
+    expect(inputs).toHaveLength(1);
   });
-  const inputs = wrapper.find('select');
-  expect(inputs).toHaveLength(1);
+
+  it('should call updateAutoCompleteListener', () => {
+    const newProps = {
+      ...props,
+      isNew: true,
+    };
+    wrapper = mount(<Router><table><tbody><CreateMapping {...newProps} /></tbody></table></Router>);
+    wrapper.find('textarea#source').simulate('change');
+    expect(props.updateAutoCompleteListener).toHaveBeenCalled();
+  });
 });

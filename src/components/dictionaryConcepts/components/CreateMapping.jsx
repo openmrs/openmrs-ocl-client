@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
+import TextInput from 'react-autocomplete-input';
+import 'react-autocomplete-input/dist/bundle.css';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
 import MapType from './MapType';
@@ -23,21 +25,42 @@ class CreateMapping extends Component {
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, removeMappingRow, updateAsyncSelectValue,
-      isNew,
+      isNew, updateAutoCompleteListener, allSources,
     } = this.props;
+    const mappingSources = allSources.map(src => src.name);
+    const customEvent = {
+      target: {
+        tabIndex: index,
+        name: 'source',
+        value: '',
+      },
+    };
+    let matchingSrc;
+    if (source) {
+      matchingSrc = allSources.filter(
+        src => src.url.trim().toUpperCase() === source.trim().toUpperCase(),
+      );
+    }
+
     return (
       <tr>
         <td>
-          {!isNew && source}
+          {!isNew && (matchingSrc && matchingSrc.length > 0 ? matchingSrc[0].name : source)}
           {
-            isNew && <input
+            isNew && <TextInput
+              id="source"
               tabIndex={index}
               className="form-control"
               placeholder="source"
               type="text"
               name="source"
-              onChange={updateEventListener}
-              defaultValue={source}
+              onChange={(event) => { updateAutoCompleteListener(event, customEvent); }}
+              trigger=""
+              regex="^[a-zA-Z0-9_\-/]+$"
+              matchAny
+              maxOptions={10}
+              options={mappingSources}
+              defaultValue={source || ''}
             />
         }
         </td>
@@ -116,6 +139,8 @@ CreateMapping.propTypes = {
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
   isNew: PropTypes.bool,
+  allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  updateAutoCompleteListener: PropTypes.func.isRequired,
 };
 
 CreateMapping.defaultProps = {
