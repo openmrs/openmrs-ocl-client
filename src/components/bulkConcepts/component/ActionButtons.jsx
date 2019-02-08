@@ -7,6 +7,8 @@ export class ActionButtons extends Component {
   static propTypes = {
     previewConcept: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
+    display_name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
     params: PropTypes.shape({
       type: PropTypes.string,
       typeName: PropTypes.string,
@@ -59,6 +61,7 @@ export class ActionButtons extends Component {
 
   render() {
     const { disableButton } = this.state;
+    const { id, url, display_name } = this.props;
     return (
       <React.Fragment>
         <button
@@ -66,9 +69,9 @@ export class ActionButtons extends Component {
           className="btn btn-sm mb-1 actionaButtons"
           id="add-button"
           onClick={() => this.addConceptButton(
-            this.props.id,
-            this.props.preview.url,
-            this.props.preview.display_name,
+            id,
+            url,
+            display_name,
           )
           }
           disabled={disableButton}

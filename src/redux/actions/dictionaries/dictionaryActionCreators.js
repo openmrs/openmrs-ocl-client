@@ -120,8 +120,9 @@ export const removeDictionaryConcept = (data, type, owner, collectionId) => disp
       );
     }
     )
-    .catch(() => {
-      notify.show("Network Error. Please try again later!", 'error', 6000)
+    .catch((error) => {
+      error.response ? notify.show(error.response.data.detail, 'error', 6000):
+      showNetworkError();
       });
     };
 
@@ -140,7 +141,8 @@ export const removeConceptMapping = (data, source) => dispatch => {
       }
     )
     .catch((error) => {
-      notify.show("Network Error. Please try again later!",'error', 6000)
+      error.response ? notify.show(error.response.data.detail, 'error', 6000):
+      showNetworkError();
     });
 };
 

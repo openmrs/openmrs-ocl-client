@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import autoBind from 'react-autobind';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 import {
   fetchDictionaries,
   searchDictionaries,
@@ -11,6 +12,7 @@ import ListDictionaries from '../components/dictionary/ListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import Paginations from '../components/DictionariesPaginations';
 import Title from '../../Title';
+import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
 
 export class DictionaryDisplay extends Component {
   static propTypes = {
@@ -40,10 +42,13 @@ export class DictionaryDisplay extends Component {
     this.props.fetchDictionaries();
   }
 
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     this.props.clearDictionaries();
-    this.props.searchDictionaries(this.state.searchInput);
+    const { searchInput } = this.state;
+    if (searchInput && searchInput.trim().length > 2) {
+      this.props.searchDictionaries(`${searchInput}*`); // asterisk added to allow partial search
+    } else NotificationManager.warning(MIN_CHARACTERS_WARNING, '', MILLISECONDS_TO_SHOW_WARNING);
   }
 
   onSearch(event) {
@@ -91,6 +96,7 @@ export class DictionaryDisplay extends Component {
               searchValue={searchInput}
               fetching={isFetching}
             />
+            <NotificationContainer />
           </div>
         </div>
         <Paginations

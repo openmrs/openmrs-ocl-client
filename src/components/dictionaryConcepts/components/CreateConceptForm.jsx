@@ -153,53 +153,71 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         ) : null }
-
-        <div className="form-group">
-          <div className="row col-12 custom-concept-list">
-            <h6 className="text-left section-header">Names</h6>
-            <CreateConceptTable {...props} />
-            <a
-              href="#!"
-              className="text-left add-more-names"
-              id="add-more-name"
-              onClick={props.handleNewName}
-            >
-            Add another name...
-            </a>
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Names</h6>
+              <CreateConceptTable {...props} />
+              <a
+                href="#!"
+                className="text-left add-more-names"
+                id="add-more-name"
+                onClick={props.handleNewName}
+              >
+              Add another name...
+              </a>
+            </div>
           </div>
         </div>
-        <div className="form-group">
-          <div className="row col-12 custom-concept-list">
-            <h6 className="text-left section-header">Descriptions</h6>
-            <DescriptionTable {...props} />
-            <a
-              href="#!"
-              className="text-left add-more-names"
-              id="add-more-description"
-              onClick={props.addDescription}
-            >
-            Add another description...
-            </a>
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Descriptions</h6>
+              <DescriptionTable {...props} />
+              <a
+                href="#!"
+                className="text-left add-more-names"
+                id="add-more-description"
+                onClick={props.addDescription}
+              >
+              Add another description...
+              </a>
+            </div>
           </div>
         </div>
-        <div>
-          <fieldset>
-            <legend>Related Concepts</legend>
-            {mappings.map((mapping, i) => (
-              <CreateMapping
-                source={mapping.source}
-                map_type={mapping.map_type}
-                to_concept_code={mapping.to_concept_code}
-                to_concept_name={mapping.to_concept_name}
-                updateEventListener={updateEventListener}
-                removeMappingRow={removeMappingRow}
-                updateAsyncSelectValue={updateAsyncSelectValue}
-                key={mapping.id}
-                index={i}
-              />
-            ))}
-            <Link to="#" onClick={addMappingRow}>Add Another Mapping</Link>
-          </fieldset>
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Mappings</h6>
+              <table className=" table-striped table-bordered concept-form-table">
+                <thead className="header text-white">
+                  <tr>
+                    <th scope="col">Related Mappings</th>
+                  </tr>
+                </thead>
+              </table>
+              {mappings.map((mapping, i) => (
+                <CreateMapping
+                  source={mapping.source}
+                  map_type={mapping.map_type}
+                  to_concept_code={mapping.to_concept_code}
+                  to_concept_name={mapping.to_concept_name}
+                  updateEventListener={updateEventListener}
+                  removeMappingRow={removeMappingRow}
+                  updateAsyncSelectValue={updateAsyncSelectValue}
+                  key={mapping.id}
+                  index={i}
+                />
+              ))}
+              <a
+                href="#!"
+                className="text-left add-more-names mt-3"
+                onClick={addMappingRow}
+              >
+              Add another Mapping...
+              </a>
+            </div>
+          </div>
           <br />
         </div>
         <div className="submit-button text-left">
@@ -239,10 +257,10 @@ CreateConceptForm.propTypes = {
   queryAnswers: PropTypes.func,
   selectedAnswers: PropTypes.array,
   mappings: PropTypes.array,
-  addMappingRow: PropTypes.func.isRequired,
-  updateEventListener: PropTypes.func.isRequired,
-  removeMappingRow: PropTypes.func.isRequired,
-  updateAsyncSelectValue: PropTypes.func.isRequired,
+  addMappingRow: PropTypes.func,
+  updateEventListener: PropTypes.func,
+  removeMappingRow: PropTypes.func,
+  updateAsyncSelectValue: PropTypes.func,
 };
 
 CreateConceptForm.defaultProps = {
@@ -254,6 +272,10 @@ CreateConceptForm.defaultProps = {
   queryAnswers: () => {},
   selectedAnswers: [],
   mappings: [],
+  addMappingRow: null,
+  updateEventListener: null,
+  removeMappingRow: null,
+  updateAsyncSelectValue: null,
 };
 
 export default CreateConceptForm;

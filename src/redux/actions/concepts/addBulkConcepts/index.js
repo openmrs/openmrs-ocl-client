@@ -8,10 +8,13 @@ import {
   FETCH_FILTERED_CONCEPTS,
   PREVIEW_CONCEPT,
   ADD_EXISTING_CONCEPTS,
+  SET_PERVIOUS_PAGE,
+  SET_NEXT_PAGE,
+  SET_CURRENT_PAGE,
 } from '../../types';
 
-export const fetchBulkConcepts = (source = 'CIEL') => async (dispatch) => {
-  const url = `orgs/${source}/sources/${source}/concepts/?limit=0&&verbose=true`;
+export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
+  const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&&verbose=true`;
   dispatch(isFetching(true));
   try {
     const response = await instance.get(url);
@@ -23,7 +26,7 @@ export const fetchBulkConcepts = (source = 'CIEL') => async (dispatch) => {
   }
 };
 
-export const fetchFilteredConcepts = (source = 'CIEL', query = '') => async (
+export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage) => async (
   dispatch,
   getState,
 ) => {
@@ -31,17 +34,16 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '') => async (
   const {
     bulkConcepts: { datatypeList, classList },
   } = getState();
-
-  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true`;
 
   if (datatypeList.length > 0 && classList.length > 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&datatype=${datatypeList.join(',')}&conceptClass=${classList.join(',')}`;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&datatype=${datatypeList.join(',')}&conceptClass=${classList.join(',')}`;
   }
   if (datatypeList.length > 0 && classList.length === 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&datatype=${datatypeList.join(',')}`;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&datatype=${datatypeList.join(',')}`;
   }
   if (datatypeList.length === 0 && classList.length > 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=0&verbose=true&conceptClass=${classList.join(',')}`;
+    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&conceptClass=${classList.join(',')}`;
   }
 
   try {
@@ -54,13 +56,13 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '') => async (
   }
 };
 
-export const addToFilterList = (item, type, query) => (dispatch) => {
+export const addToFilterList = (item, type, query, currentPage) => (dispatch) => {
   if (type === 'datatype') {
     dispatch(isSuccess(item, ADD_TO_DATATYPE_LIST));
-    return dispatch(fetchFilteredConcepts('CIEL', query));
+    return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
   }
   dispatch(isSuccess(item, ADD_TO_CLASS_LIST));
-  return dispatch(fetchFilteredConcepts('CIEL', query));
+  return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
 };
 
 export const previewConcept = id => (dispatch, getState) => {
@@ -80,4 +82,16 @@ export const addConcept = (params, data, conceptName) => async (dispatch) => {
     notify.show(`Just Added - ${conceptName}`, 'success', 3000);
   }
   notify.show(`${conceptName} already added`, 'error', 3000);
+};
+
+export const setCurrentPage = currentPage => async (dispatch) => {
+  dispatch(isSuccess(currentPage, SET_CURRENT_PAGE));
+};
+
+export const setNextPage = () => async (dispatch) => {
+  dispatch(isSuccess(null, SET_NEXT_PAGE));
+};
+
+export const setPreviousPage = () => async (dispatch) => {
+  dispatch(isSuccess(null, SET_PERVIOUS_PAGE));
 };

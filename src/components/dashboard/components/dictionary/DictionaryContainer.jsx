@@ -132,7 +132,9 @@ export class DictionaryOverview extends Component {
       owner: row.owner,
       source: row.source,
       preferredName: row.display_name,
-      description: row.descriptions.description,
+      description: row.descriptions ? row.descriptions.map(
+        description => description.description,
+      ).join(' ') : '',
       conceptClass: row.concept_class,
       datatype: row.datatype,
       retired: row.retired,

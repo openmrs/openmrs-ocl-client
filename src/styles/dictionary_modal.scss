@@ -78,6 +78,10 @@
     margin-right: 65%;
     font-size: 1.5em;
 }
+#table-mappings{
+    margin-bottom: 0;
+    border-bottom: #dee2e6;
+}
 .menu ul {
     list-style-type: none;
     margin: 0;
@@ -147,11 +151,7 @@ legend {
       color: #cc0000;
   }
 
-button:disabled{
-    cursor: not-allowed;
-    background: #e9ecef !important;
-}
-#addDictionary {
+#addDictionary, #generalConfirmButton, #saveReleaseVersion{
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;

@@ -36,6 +36,7 @@ export class DictionaryConcepts extends Component {
     filteredClass: PropTypes.arrayOf(PropTypes.string).isRequired,
     loading: PropTypes.bool.isRequired,
     filterBySource: PropTypes.func.isRequired,
+    filteredByClass: PropTypes.array,
     filterByClass: PropTypes.func.isRequired,
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.bool.isRequired,
@@ -47,7 +48,7 @@ export class DictionaryConcepts extends Component {
     super(props);
     this.state = {
       searchInput: '',
-      conceptLimit: 10,
+      conceptLimit: 20,
       versionUrl: '',
       data: {
         references: [],
@@ -193,6 +194,7 @@ export class DictionaryConcepts extends Component {
       filteredSources,
       loading,
       userIsMember,
+      filteredByClass,
     } = this.props;
 
     const myConcepts = this.handleConcepts(concepts);
@@ -230,6 +232,7 @@ export class DictionaryConcepts extends Component {
             filteredClass={filteredClass}
             filteredSources={filteredSources}
             handleChange={this.handleSearch}
+            toggleCheck={filteredByClass}
           />
           <div className="col-12 col-md-10 custom-full-width">
             <ConceptTable
@@ -253,10 +256,15 @@ export class DictionaryConcepts extends Component {
   }
 }
 
+DictionaryConcepts.defaultProps = {
+  filteredByClass: [],
+};
+
 export const mapStateToProps = state => ({
   concepts: state.concepts.dictionaryConcepts,
   totalConceptCount: state.concepts.totalConceptCount,
   filteredClass: state.concepts.filteredClass,
+  filteredByClass: state.concepts.filteredByClass,
   filteredSources: state.concepts.filteredSources,
   loading: state.concepts.loading,
   filteredList: state.concepts.filteredList,

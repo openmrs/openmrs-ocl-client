@@ -10,7 +10,7 @@ import {
 } from '../../components/dashboard/components/dictionary/DictionaryContainer';
 import dictionary from '../__mocks__/dictionaries';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
-import concepts from '../__mocks__/concepts';
+import concepts, { conceptWithoutDescriptions } from '../__mocks__/concepts';
 
 const store = createMockStore({
   organizations: {
@@ -329,7 +329,7 @@ describe('DictionaryOverview', () => {
       versions: [versions, customVersion],
       headVersion: [versions],
       url: '',
-      dictionaryConcepts: [concepts],
+      dictionaryConcepts: [concepts, conceptWithoutDescriptions],
       showEditModal: jest.fn(),
       hideSubModal: jest.fn(),
       showSubModal: jest.fn(),

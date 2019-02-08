@@ -9,6 +9,7 @@ import {
   ADD_EXISTING_BULK_CONCEPTS,
   CLEAR_SOURCE_CONCEPTS,
   FETCH_CONCEPT_SOURCES,
+  IS_LOADING,
 } from '../../../redux/actions/types';
 import
 fetchCielConcepts,
@@ -38,9 +39,9 @@ describe('Test suite for source concepts actions', () => {
 
     const returnedAction = [
       { type: CLEAR_SOURCE_CONCEPTS },
-      { type: IS_FETCHING, payload: true },
+      { type: IS_LOADING, payload: true },
       { type: FETCH_SOURCE_CONCEPTS, payload: [{ cielConcepts: { cielConcepts } }] },
-      { type: IS_FETCHING, payload: false },
+      { type: IS_LOADING, payload: false },
     ];
     const store = mockStore({});
     return store.dispatch(fetchCielConcepts())
@@ -75,9 +76,9 @@ describe('Test suite for source concepts actions', () => {
 
     const returnedAction = [
       { type: CLEAR_SOURCE_CONCEPTS },
-      { type: IS_FETCHING, payload: true },
+      { type: IS_LOADING, payload: true },
       { type: FETCH_SOURCE_CONCEPTS, payload: 'could not complete this request' },
-      { type: IS_FETCHING, payload: false },
+      { type: IS_LOADING, payload: false },
     ];
     const store = mockStore({});
     return store.dispatch(fetchCielConcepts())

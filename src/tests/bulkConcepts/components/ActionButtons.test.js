@@ -7,6 +7,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
     const props = {
       previewConcept: jest.fn(),
       id: '',
+      display_name: '',
       params: {
         type: '',
         typeName: '',
@@ -17,6 +18,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
         display_name: '',
       },
       addConcept: jest.fn(),
+      url: '',
     };
 
     const wrapper = shallow(<ActionButtons {...props} />);

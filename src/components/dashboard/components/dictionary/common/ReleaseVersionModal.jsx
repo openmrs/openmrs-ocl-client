@@ -54,7 +54,7 @@ const ReleaseVersionModal = (props) => {
 
         <ModalFooter>
           <Button
-            className="btn-sm btn-outline-info version"
+            className="btn btn-primary"
             id="saveReleaseVersion"
             onClick={handleCreateVersion}
             disabled={inputLength === 0 || disableButton}
@@ -63,7 +63,7 @@ const ReleaseVersionModal = (props) => {
           </Button>
 
           <Button
-            className="btn-sm btn-outline-danger test-btn-cancel"
+            className="btn btn-danger"
             id="sub-cancel"
             onClick={click}
           >

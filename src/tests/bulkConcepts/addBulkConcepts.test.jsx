@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import moxios from 'moxios';
 import { createMockStore } from 'redux-test-utils';
 import Authenticated from '../__mocks__/fakeStore';
-import { AddBulkConcepts } from '../../components/bulkConcepts/addBulkConcepts';
+import { AddBulkConcepts, mapStateToProps } from '../../components/bulkConcepts/addBulkConcepts';
 import { mockConcepts } from '../__mocks__/concepts';
 import configInstance from '../../config/axiosConfig';
 
@@ -30,6 +30,7 @@ describe('Add Bulk Concepts', () => {
     isFetching: false,
     match,
     language: 'en',
+    isLoading: true,
   };
 
   beforeEach(() => {
@@ -61,6 +62,36 @@ describe('Add Bulk Concepts', () => {
     bulkWrapper.forceUpdate();
     wrapper.find('#ciel').at(0).simulate('click');
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should render a loader while fetching Source Concepts', () => {
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...props} />
+      </Provider>
+    </MemoryRouter>);
+    expect(wrapper.find('Loader')).toHaveLength(1);
+  });
+
+  it('should render a loader while fetching Concepts Source', () => {
+    const properties = {
+      fetchSourceConcepts: jest.fn(),
+      addExistingBulkConcepts: jest.fn(),
+      fetchConceptSources: jest.fn(),
+      sourceConcepts: mockConcepts,
+      conceptSources: [{ id: 1, name: 'testSource', url: '/org/testSource/' },
+        { id: 2, name: 'testSource', url: '/org/testSource/' }],
+      isFetching: true,
+      isLoading: false,
+      match,
+      language: 'en',
+    };
+    const wrapper = mount(<MemoryRouter>
+      <Provider store={store}>
+        <AddBulkConcepts {...properties} />
+      </Provider>
+    </MemoryRouter>);
+    expect(wrapper.find('Loader')).toHaveLength(1);
   });
 
   it('shows suggestions when typing', () => {
@@ -159,8 +190,8 @@ describe('Add Bulk Concepts', () => {
 
     moxios.wait(() => {
       expect(spy).toHaveBeenCalled();
+      wrapper.unmount();
     });
-    wrapper.unmount();
   });
 
   it('handleaAdAll close resultModal on close', () => {
@@ -205,5 +236,18 @@ describe('Add Bulk Concepts', () => {
     input.simulate('keydown', { key: 'Enter' });
     const txtInput = wrapper.find('#idsText').at(0);
     expect(txtInput.instance().props.value).toEqual('');
+  });
+
+  it('should test mapStateToProps', () => {
+    const initialState = {
+      sourceConcepts: {
+        concepts: [],
+        conceptSources: [],
+        loading: false,
+        spinning: false,
+      },
+    };
+    expect(mapStateToProps(initialState).isLoading).toEqual(false);
+    expect(mapStateToProps(initialState).isFetching).toEqual(false);
   });
 });

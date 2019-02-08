@@ -26,6 +26,7 @@ const storeObject = {
     },
     userOrganization: [],
     loading: false,
+    networkError: '',
   },
   dictionaries: {
     dictionaries: mockDictionaries,
@@ -45,6 +46,18 @@ describe('Test suite for dictionary concepts components', () => {
     localStorage.setItem('username', 'chriskala');
   });
   it('should render without breaking', () => {
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <UserDashboard {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper.find('.greetings h5').text()).toEqual('Welcome emasys nd');
+
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render without breaking without username specified', () => {
+    localStorage.removeItem('username', 'chriskala');
     const wrapper = mount(<Provider store={store}>
       <MemoryRouter>
         <UserDashboard {...props} />
@@ -111,6 +124,7 @@ describe('Test suite for dictionary concepts components', () => {
         ],
         userDictionary: [dictionary],
         loading: false,
+        networkError: '',
       },
       history: { push: jest.fn() },
       dictionaries: [],
@@ -149,6 +163,7 @@ describe('Test suite for dictionary concepts components', () => {
         },
         userOrganization: [],
         loading: true,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>
@@ -188,6 +203,7 @@ describe('Test suite for dictionary concepts components', () => {
           },
         ],
         loading: false,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>
@@ -281,6 +297,7 @@ describe('Test suite for dictionary concepts components', () => {
           },
         ],
         loading: false,
+        networkError: '',
       },
     });
     const wrapper = mount(<Provider store={propsWithDictionary}>

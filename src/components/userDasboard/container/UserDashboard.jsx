@@ -35,7 +35,11 @@ export class UserDashboard extends Component {
 
   componentDidMount() {
     const username = getUsername();
-    this.props.fetchUserData(username);
+    if (!username) {
+      this.props.history.push('/');
+      return;
+    }
+    this.props.fetchUserData(username, this.props);
   }
 
   componentWillUnmount() {

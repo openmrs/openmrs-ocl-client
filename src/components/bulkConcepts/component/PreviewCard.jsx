@@ -20,6 +20,7 @@ const PreviewCard = ({
     created_on,
     concept_class,
     datatype,
+    names,
   } = concept;
 
   const DATE_OPTIONS = {
@@ -31,8 +32,9 @@ const PreviewCard = ({
     minute: 'numeric',
   };
 
-  const mapping = mappings ? mappings.length : 'none';
+  const mapping = mappings || 'none';
   const description = descriptions ? descriptions[0].description : 'none';
+  const synonyms = names && names.map(name => name.name).join();
   return (
     <div className="col-9">
       <Modal isOpen={open} className="modal-lg">
@@ -61,6 +63,7 @@ const PreviewCard = ({
             </small>
           </p>
           <div className="pop-up-description rounded">{display_name}</div>
+          <CardBody title="Synonyms" body={synonyms} />
           <CardBody title="Description" body={description} />
           <div className="row preview-row">
             <div><CardBody title="Class" body={concept_class} /></div>

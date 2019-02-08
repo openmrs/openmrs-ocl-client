@@ -4,9 +4,12 @@ import {
   IS_FETCHING,
   FETCH_CONCEPT_SOURCES,
   CLEAR_SOURCE_CONCEPTS,
+  IS_LOADING,
 } from '../../../redux/actions/types';
 
-const initialState = { concepts: [], loading: false, conceptSources: [] };
+const initialState = {
+  concepts: [], loading: false, spinning: false, conceptSources: [],
+};
 describe('Test suite for vote reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
@@ -45,6 +48,18 @@ describe('Test suite for vote reducer', () => {
       },
     )).toEqual({
       loading: false,
+    });
+  });
+
+  it('should handle IS_LOADING', () => {
+    expect(reducer(
+      {},
+      {
+        type: IS_LOADING,
+        payload: false,
+      },
+    )).toEqual({
+      spinning: false,
     });
   });
 

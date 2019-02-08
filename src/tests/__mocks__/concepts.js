@@ -34,6 +34,28 @@ export default {
   url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
 };
 
+export const conceptWithoutDescriptions = {
+  id: '1468667',
+  external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+  concept_class: 'Diagnosis',
+  datatype: 'N/A',
+  retired: false,
+  source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+  descriptions: null,
+  owner: INTERNAL_MAPPING_DEFAULT_SOURCE,
+  owner_type: 'Organization',
+  owner_url: '/orgs/CIEL/',
+  display_name: 'Bronze Diabetes',
+  display_locale: 'en',
+  version: '5835c0e2955c3c0007e5fb79',
+  mappings: null,
+  is_latest_version: true,
+  locale: null,
+  version_url:
+    '/orgs/CIEL/sources/CIEL/concepts/146869/5835c0e2955c3c0007e5fb79/',
+  url: '/orgs/CIEL/sources/CIEL/concepts/146869/',
+};
+
 export const concept2 = {
   id: '1468667',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',

@@ -11,18 +11,19 @@ import {
   ADD_EXISTING_BULK_CONCEPTS,
   FETCH_CONCEPT_SOURCES,
   CLEAR_SOURCE_CONCEPTS,
+  IS_LOADING,
 } from '../types';
 
 const fetchSourceConcepts = url => async (dispatch) => {
   dispatch(clear(CLEAR_SOURCE_CONCEPTS));
-  dispatch(isFetching(true));
+  dispatch(isSuccess(true, IS_LOADING));
   try {
     const response = await instance.get(`${url}concepts/?limit=0`);
     dispatch(isSuccess(response.data, FETCH_SOURCE_CONCEPTS));
-    dispatch(isFetching(false));
+    dispatch(isSuccess(false, IS_LOADING));
   } catch (error) {
     dispatch(isErrored(error.response.data, FETCH_SOURCE_CONCEPTS));
-    dispatch(isFetching(false));
+    dispatch(isSuccess(false, IS_LOADING));
   }
 };
 export default fetchSourceConcepts;
