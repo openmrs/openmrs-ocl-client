@@ -72,6 +72,7 @@ export class CreateConcept extends Component {
         to_concept_name: null,
         id: 1,
         to_source_url: null,
+        isNew: true,
       }],
     };
 
@@ -245,6 +246,7 @@ export class CreateConcept extends Component {
       to_concept_name: null,
       id: mappings.length + 1,
       to_source_url: null,
+      isNew: true,
     });
     this.setState({ mappings });
   }

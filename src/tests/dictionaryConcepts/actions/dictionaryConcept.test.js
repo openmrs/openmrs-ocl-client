@@ -68,6 +68,7 @@ import concepts, {
   multipleConceptsMockStore,
   existingConcept,
 } from '../../__mocks__/concepts';
+import { CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -303,31 +304,8 @@ describe('Test suite for dictionary concept actions', () => {
       const request = moxios.requests.mostRecent();
       request.reject({
         status: 599,
-        response: newConcept.version_url,
-      });
-    });
-
-    const expectedActions = [
-      { type: REMOVE_MAPPING, payload: '/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/' },
-    ];
-
-    const store = mockStore(mockConceptStore);
-    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
-    const type = 'users';
-    const owner = 'alexmochu';
-    const collectionId = 'Tech';
-    return store.dispatch(removeConceptMapping(data, type, owner, collectionId)).catch(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('should handle REMOVE_MAPPING forbidden error', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.reject({
-        status: 403,
         response: {
-          data: { detail: 'You do not have permission to perform this action.' },
+          data: { detail: 'Cannot remove mapping' },
         },
       });
     });
@@ -358,26 +336,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: REMOVE_CONCEPT, payload: newConcept.version_url },
     ];
-
-    const store = mockStore(mockConceptStore);
-    const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
-    const type = 'users';
-    const owner = 'alexmochu';
-    const collectionId = 'Tech';
-    return store.dispatch(removeDictionaryConcept(data, type, owner, collectionId)).catch(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('should handle REMOVE_CONCEPT forbidden error', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.reject({
-        status: 403,
-        response: { data: { detail: 'You do not have permission to perform this action.' } },
-      });
-    });
-
-    const expectedActions = [];
 
     const store = mockStore(mockConceptStore);
     const data = { references: ['/orgs/IHTSDO/sources/SNOMED-CT/concepts/12845003/73jifjibL83/'] };
@@ -812,7 +770,7 @@ describe('Add answer mappings to concept', () => {
         to_source_name: 'CIEL',
         to_source_owner: 'CIEL',
         to_source_owner_type: 'Organization',
-        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        to_source_url: CIEL_SOURCE_URL,
         type: 'Mapping',
         updated_at: '2018-12-17T13:32:26.769',
         updated_by: 'admin',
@@ -844,7 +802,7 @@ describe('Add answer mappings to concept', () => {
         to_source_name: 'CIEL',
         to_source_owner: 'CIEL',
         to_source_owner_type: 'Organization',
-        to_source_url: '/orgs/CIEL/sources/CIEL/',
+        to_source_url: CIEL_SOURCE_URL,
         type: 'Mapping',
         updated_at: '2018-12-17T13:32:26.769',
         updated_by: 'admin',

@@ -17,7 +17,9 @@ describe('Test suite for dictionary concepts components', () => {
   };
 
   let wrapper = mount(<Router>
-    <CreateMapping {...props} />
+    <table>
+      <tbody><CreateMapping {...props} /></tbody>
+    </table>
   </Router>);
 
   it('should call handleInputChange', () => {
@@ -32,7 +34,9 @@ describe('Test suite for dictionary concepts components', () => {
     };
 
     wrapper = mount(<Router>
-      <CreateMapping {...newProps} />
+      <table>
+        <tbody><CreateMapping {...newProps} /></tbody>
+      </table>
     </Router>);
 
     const inputField = wrapper.find('CreateMapping');
@@ -45,4 +49,31 @@ describe('Test suite for dictionary concepts components', () => {
     inputField.find('#remove').first().simulate('click');
     expect(props.removeMappingRow).toHaveBeenCalled();
   });
+
+  it('should render when isNew is true and source not CIEL', () => {
+    const newProps = {
+      ...props,
+      isNew: true,
+      source: 'Snomed',
+    };
+
+    wrapper = mount(<Router>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
+    </Router>);
+    const inputs = wrapper.find('input');
+    expect(inputs).toHaveLength(3);
+  });
+
+  it('should render when isNew is true and source equal to CIEL', () => {
+    const newProps = {
+      ...props,
+      isNew: true,
+    };
+
+    wrapper = mount(<Router>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
+    </Router>);
+  });
+  const inputs = wrapper.find('select');
+  expect(inputs).toHaveLength(1);
 });
