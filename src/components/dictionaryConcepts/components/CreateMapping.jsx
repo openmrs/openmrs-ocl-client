@@ -55,7 +55,7 @@ class CreateMapping extends Component {
                   tabIndex={index}
                   defaultValue={to_concept_code}
                   className="form-control"
-                  placeholder="to_concept_code"
+                  placeholder="To concept code"
                   type="text"
                   name="to_concept_code"
                   id="to_concept_code"
@@ -82,7 +82,7 @@ class CreateMapping extends Component {
               tabIndex={index}
               defaultValue={to_concept_name}
               className="form-control"
-              placeholder="concept name (optional)"
+              placeholder="Concept name (optional)"
               type="text"
               name="to_concept_name"
               onChange={updateEventListener}

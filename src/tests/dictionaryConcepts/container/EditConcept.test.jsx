@@ -267,8 +267,8 @@ describe('Test suite for mappings on existing concepts', () => {
     const event = {
       target: {
         tabIndex: 0,
-        name: 'to_concept_name',
-        value: 'malaria',
+        name: 'to_concept_code',
+        value: 'a234',
       },
     };
     const instance = wrapper.find('EditConcept').instance();
