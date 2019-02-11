@@ -81,7 +81,7 @@ class CreateMapping extends Component {
               )}
               onChange={updateAsyncSelectValue}
               onInputChange={this.handleInputChange}
-              placeholder="search concept name"
+              placeholder="search concept name or id"
             />
           ) : (
             isNew && <input

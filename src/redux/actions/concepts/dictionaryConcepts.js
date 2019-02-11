@@ -235,7 +235,7 @@ export const fetchSourceConcepts = async (source, query, index) => {
   const response = await instance.get(url);
   const options = response.data.map(concept => ({
     value: concept.url,
-    label: concept.display_name,
+    label: `ID(${concept.id}) - ${concept.display_name}`,
     index,
   }));
   return options;
