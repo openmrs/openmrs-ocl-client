@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
-import uid from 'uuid/v4';
 import CreateConceptForm from '../components/CreateConceptForm';
 import {
   createNewName,
@@ -217,9 +216,6 @@ export class EditConcept extends Component {
     const { tabIndex, name, value } = event.target;
     const { mappings } = this.state;
     mappings[tabIndex][name] = value;
-    if (name !== INTERNAL_MAPPING_DEFAULT_SOURCE && mappings[tabIndex].to_concept_code === null) {
-      mappings[tabIndex].to_concept_code = String(uid());
-    }
     this.setState(mappings);
   }
 
