@@ -16,6 +16,8 @@ class CreateMapping extends Component {
     this.setState({ inputValue: value });
   }
 
+  sourceNameToUpperCase = source => source.trim().toUpperCase();
+
   render() {
     const { inputValue } = this.state;
     const {
@@ -47,7 +49,7 @@ class CreateMapping extends Component {
             source={source}
           />}
 
-          {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
+          {source && this.sourceNameToUpperCase(source) !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
             <div className="row concept-code">
               <div className="col-2"> Code</div>
               <div className="col-10">
@@ -68,11 +70,15 @@ class CreateMapping extends Component {
 
         <td className="react-async">
           {!isNew && to_concept_name}
-          {source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
+          {source && this.sourceNameToUpperCase(source) === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
             isNew && <AsyncSelect
               cacheOptions
               isClearable
-              loadOptions={async () => fetchSourceConcepts(source, inputValue, index)}
+              loadOptions={async () => fetchSourceConcepts(
+                this.sourceNameToUpperCase(source),
+                inputValue,
+                index,
+              )}
               onChange={updateAsyncSelectValue}
               onInputChange={this.handleInputChange}
               placeholder="search concept name"

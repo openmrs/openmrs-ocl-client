@@ -8,6 +8,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
       previewConcept: jest.fn(),
       id: '',
       display_name: '',
+      url: '',
       params: {
         type: '',
         typeName: '',
