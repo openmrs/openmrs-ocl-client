@@ -159,14 +159,14 @@ const CreateConceptForm = (props) => {
             <div className="row col-12 custom-concept-list">
               <h6 className="text-left section-header">Names</h6>
               <CreateConceptTable {...props} />
-              <a
-                href="#!"
-                className="text-left add-more-names"
-                id="add-more-name"
+              <button
+                type="button"
                 onClick={props.handleNewName}
+                id="add-more-name"
+                className="btn btn-outline-secondary btn-sm "
               >
-              Add another name...
-              </a>
+                Add another name...
+              </button>
             </div>
           </div>
         </div>
@@ -175,14 +175,14 @@ const CreateConceptForm = (props) => {
             <div className="row col-12 custom-concept-list">
               <h6 className="text-left section-header">Descriptions</h6>
               <DescriptionTable {...props} />
-              <a
-                href="#!"
-                className="text-left add-more-names"
+              <button
+                type="button"
                 id="add-more-description"
                 onClick={props.addDescription}
+                className="btn btn-outline-secondary btn-sm "
               >
-              Add another description...
-              </a>
+                Add another description...
+              </button>
             </div>
           </div>
         </div>
@@ -218,13 +218,13 @@ const CreateConceptForm = (props) => {
                   ))}
                 </tbody>
               </table>
-              <a
-                href="#!"
-                className="text-left add-more-names mt-3"
+              <button
+                type="button"
                 onClick={addMappingRow}
+                className="btn btn-outline-secondary btn-sm mt-3"
               >
-              Add another Mapping...
-              </a>
+                Add another Mapping...
+              </button>
             </div>
           </div>
           <br />
