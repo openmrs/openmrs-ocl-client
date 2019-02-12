@@ -34,6 +34,7 @@ import {
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
+  fetchConceptsByName,
   filterByClass,
   filterBySource,
   createNewName,
@@ -216,6 +217,49 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should fetch dictionary concepts by name', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [concepts],
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchConceptsByName('search')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle the error when search by name fails', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 404,
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchConceptsByName('search')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
 
   it('should handle CREATE_NEW_CONCEPT', () => {
     moxios.wait(() => {

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import ActionButtons from './ActionButtons';
-import Loader from '../../Loader';
 import { conceptsProps } from '../proptypes';
 import { getUsername } from './helperFunction';
 import RemoveConcept from './RemoveConcept';
@@ -23,73 +22,61 @@ const ConceptTable = ({
   openDeleteModal,
   showDeleteMappingModal,
   handleDeleteMapping,
-}) => {
-  if (concepts.length > 0) {
-    return (
-      <div className="row col-12 custom-concept-list">
-        <RemoveConcept
-          collectionName={locationPath.collectionName}
-          conceptOwner={locationPath.typeName}
-          conceptUrl={url}
-          conceptType={locationPath.type}
-          handleDelete={handleDelete}
-          disableButton={loading}
-          openDeleteModal={openDeleteModal}
-          closeDeleteModal={closeDeleteModal}
-        />
-        <ReactTable
-          data={concepts}
-          loading={loading}
-          pageSizeOptions={[5, 10, 20, 25, 50, 100]}
-          defaultPageSize={conceptLimit}
-          noDataText="No concept!"
-          minRows={2}
-          columns={[
-            {
-              Header: 'Name',
-              accessor: 'display_name',
-              minWidth: 100,
-            },
-            {
-              Header: 'Class',
-              accessor: 'concept_class',
-            },
-            {
-              Header: 'Source',
-              accessor: 'source',
-            },
-            {
-              Header: 'Action',
-              width: 350,
-              Cell: ({ original: concept }) => {
-                const props = {
-                  showDeleteModal,
-                  handleDelete,
-                  handleDeleteMapping,
-                  mappingLimit: conceptLimit,
-                  showDeleteMappingModal,
-                };
-                const renderButtons = username === concept.owner || (
-                  concept.owner === org.name && org.userIsMember
-                );
-                return <ActionButtons actionButtons={renderButtons} {...concept} {...props} />;
-              },
-            },
-          ]}
-          className="-striped -highlight custom-table-width"
-        />
-      </div>
-    );
-  }
-  if (!loading && concepts.length <= 0) {
-    return <div>No concepts found</div>;
-  }
-  return (
-    <div className="mt-200 text-center">
-      <Loader />
-    </div>
-  );
-};
+}) => (
+  <div className="row col-12 custom-concept-list">
+    <RemoveConcept
+      collectionName={locationPath.collectionName}
+      conceptOwner={locationPath.typeName}
+      conceptUrl={url}
+      conceptType={locationPath.type}
+      handleDelete={handleDelete}
+      disableButton={loading}
+      openDeleteModal={openDeleteModal}
+      closeDeleteModal={closeDeleteModal}
+    />
+    <ReactTable
+      data={concepts}
+      loading={loading}
+      pageSizeOptions={[5, 10, 20, 25, 50, 100]}
+      defaultPageSize={conceptLimit}
+      noDataText="No concepts found!"
+      minRows={2}
+      columns={[
+        {
+          Header: 'Name',
+          accessor: 'display_name',
+          minWidth: 100,
+        },
+        {
+          Header: 'Class',
+          accessor: 'concept_class',
+        },
+        {
+          Header: 'Source',
+          accessor: 'source',
+        },
+        {
+          Header: 'Action',
+          width: 350,
+          Cell: ({ original: concept }) => {
+            const props = {
+              showDeleteModal,
+              handleDelete,
+              handleDeleteMapping,
+              mappingLimit: conceptLimit,
+              showDeleteMappingModal,
+            };
+            const renderButtons = username === concept.owner || (
+              concept.owner === org.name && org.userIsMember
+            );
+            return <ActionButtons actionButtons={renderButtons} {...concept} {...props} />;
+          },
+        },
+      ]}
+      className="-striped -highlight custom-table-width"
+    />
+  </div>
+);
 
 ConceptTable.propTypes = {
   concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
