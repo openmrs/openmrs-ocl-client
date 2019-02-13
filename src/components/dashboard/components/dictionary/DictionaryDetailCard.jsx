@@ -14,7 +14,6 @@ const DictionaryDetailCard = (props) => {
       public_access,
       owner,
       owner_type,
-      active_concepts,
       description,
       owner_url,
       short_code,
@@ -141,7 +140,7 @@ Dictionary
               <b>Total Concepts</b>
 :
               {' '}
-              {active_concepts}
+              {Number(customConcepts) + Number(cielConcepts)}
             </p>
             <p className="points">
               <b>Active Concepts</b>
