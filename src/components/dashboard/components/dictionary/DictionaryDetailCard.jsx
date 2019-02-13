@@ -19,6 +19,7 @@ const DictionaryDetailCard = (props) => {
       short_code,
       default_locale,
       url,
+      active_concepts,
     },
     versions,
     showEditModal,
@@ -270,6 +271,9 @@ Browse in traditional OCL
     </div>
   );
 };
+DictionaryDetailCard.defaultProps = {
+  active_concepts: 0,
+};
 
 DictionaryDetailCard.propTypes = {
   dictionary: PropTypes.object.isRequired,
@@ -294,6 +298,7 @@ DictionaryDetailCard.propTypes = {
   versionDescription: PropTypes.string.isRequired,
   versionId: PropTypes.string.isRequired,
   disableButton: PropTypes.bool.isRequired,
+  active_concepts: PropTypes.number,
 };
 
 export default DictionaryDetailCard;
