@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # Copy the package.json and the package-lock.json to the working directory
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Install the project dependencies and silence the npm output
 RUN npm install --silent
