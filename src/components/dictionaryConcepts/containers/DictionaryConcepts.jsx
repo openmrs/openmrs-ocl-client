@@ -37,6 +37,7 @@ export class DictionaryConcepts extends Component {
     loading: PropTypes.bool.isRequired,
     filterBySource: PropTypes.func.isRequired,
     filteredByClass: PropTypes.array,
+    filteredBySource: PropTypes.array,
     filterByClass: PropTypes.func.isRequired,
     fetchMemberStatus: PropTypes.func.isRequired,
     userIsMember: PropTypes.bool.isRequired,
@@ -195,6 +196,7 @@ export class DictionaryConcepts extends Component {
       loading,
       userIsMember,
       filteredByClass,
+      filteredBySource,
     } = this.props;
 
     const myConcepts = this.handleConcepts(concepts);
@@ -208,6 +210,8 @@ export class DictionaryConcepts extends Component {
       openDeleteModal,
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
+
+    const filters = [...filteredByClass, ...filteredBySource];
     return (
       <div className="container-fluid custom-dictionary-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
@@ -232,7 +236,7 @@ export class DictionaryConcepts extends Component {
             filteredClass={filteredClass}
             filteredSources={filteredSources}
             handleChange={this.handleSearch}
-            toggleCheck={filteredByClass}
+            toggleCheck={filters}
           />
           <div className="col-12 col-md-10 custom-full-width">
             <ConceptTable
@@ -258,6 +262,7 @@ export class DictionaryConcepts extends Component {
 
 DictionaryConcepts.defaultProps = {
   filteredByClass: [],
+  filteredBySource: [],
 };
 
 export const mapStateToProps = state => ({
@@ -265,6 +270,7 @@ export const mapStateToProps = state => ({
   totalConceptCount: state.concepts.totalConceptCount,
   filteredClass: state.concepts.filteredClass,
   filteredByClass: state.concepts.filteredByClass,
+  filteredBySource: state.concepts.filteredBySource,
   filteredSources: state.concepts.filteredSources,
   loading: state.concepts.loading,
   filteredList: state.concepts.filteredList,

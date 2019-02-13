@@ -11,7 +11,13 @@ const Sidenav = ({
         <h6 className="sidenav-header">Sources</h6>
       </div>
       {filteredSources.map(source => (
-        <SideNavItem item={source} key={source} filterType="source" handleChange={handleChange} />
+        <SideNavItem
+          item={source}
+          key={source}
+          filterType="source"
+          handleChange={handleChange}
+          checkValue={toggleCheck.includes(`${source}`)}
+        />
       ))}
       <div className="row mt-3">
         <h6 className="sidenav-header">Class</h6>
