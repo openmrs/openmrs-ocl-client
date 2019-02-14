@@ -5,7 +5,8 @@ import {
   CreateConcept,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/CreateConcept';
-import { newConcept } from '../../__mocks__/concepts';
+import { newConcept, mockSource } from '../../__mocks__/concepts';
+import { CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
 jest.mock('react-notify-toast');
@@ -53,6 +54,8 @@ describe('Test suite for dictionary concepts components', () => {
     getPossibleAnswers: jest.fn(),
     addSelectedAnswers: jest.fn(),
     changeAnswer: jest.fn(),
+    fetchAllConceptSources: jest.fn(),
+    allSources: [mockSource],
   };
 
   let wrapper;
@@ -91,6 +94,50 @@ describe('Test suite for dictionary concepts components', () => {
     };
     const instance = wrapper.find('CreateConcept').instance();
     instance.updateEventListener(event);
+  });
+
+  it('should call updateEventListener function with internal mapping', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'to_concept_name',
+        value: CIEL_SOURCE_URL,
+      },
+    };
+    const instance = wrapper.find('CreateConcept').instance();
+    const spy = jest.spyOn(instance, 'updateEventListener');
+    instance.updateEventListener(event);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call updateAutoCompleteListener function', () => {
+    const value = 'test';
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value,
+      },
+    };
+    const instance = wrapper.find('CreateConcept').instance();
+    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
+    instance.updateAutoCompleteListener(value, event);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call updateAutoCompleteListener with existing source', () => {
+    const value = mockSource.name;
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value,
+      },
+    };
+    const instance = wrapper.find('CreateConcept').instance();
+    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
+    instance.updateAutoCompleteListener(value, event);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should render without breaking', () => {
@@ -175,6 +222,9 @@ describe('Test suite for dictionary concepts components', () => {
         newName: ['1'],
         description: ['1'],
         newConcept,
+      },
+      sourceConcepts: {
+        conceptSources: [],
       },
     };
     expect(mapStateToProps(initialState).description).toEqual(['1']);

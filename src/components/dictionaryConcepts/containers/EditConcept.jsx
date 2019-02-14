@@ -19,6 +19,7 @@ import {
   removeNameForEditConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../components/helperFunction';
+import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 
 export class EditConcept extends Component {
   static propTypes = {
@@ -46,8 +47,9 @@ export class EditConcept extends Component {
     removeNameForEditConcept: PropTypes.func.isRequired,
     existingConcept: PropTypes.object.isRequired,
     updateConcept: PropTypes.func.isRequired,
-    answer: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
+    fetchAllConceptSources: PropTypes.func.isRequired,
+    allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   constructor(props) {
@@ -78,9 +80,11 @@ export class EditConcept extends Component {
           type, typeName, collectionName, conceptId,
         },
       },
+      fetchAllConceptSources,
     } = this.props;
     this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true`;
     this.props.fetchExistingConcept(this.conceptUrl);
+    fetchAllConceptSources();
   }
 
   componentWillUnmount() {
@@ -215,8 +219,28 @@ export class EditConcept extends Component {
   updateEventListener = (event) => {
     const { tabIndex, name, value } = event.target;
     const { mappings } = this.state;
-    mappings[tabIndex][name] = value;
+    // if the ciel source URL was provided, use just the name
+    if (value.toUpperCase().match(CIEL_SOURCE_URL.toUpperCase())) {
+      mappings[tabIndex][name] = INTERNAL_MAPPING_DEFAULT_SOURCE;
+    } else mappings[tabIndex][name] = value;
     this.setState(mappings);
+  }
+
+  updateAutoCompleteListener = (value, customEvent) => {
+    const { allSources } = this.props;
+    const matchingSource = allSources.filter(
+      src => src.name.trim().toUpperCase() === value.trim().toUpperCase(),
+    );
+    const event = {
+      ...customEvent,
+      target: {
+        ...customEvent.target,
+        value: matchingSource.length > 0
+          ? matchingSource[0].url
+          : value,
+      },
+    };
+    this.updateEventListener(event);
   }
 
   updateAsyncSelectValue = (value) => {
@@ -320,13 +344,14 @@ Concept
                 pathName={this.props.match.params}
                 existingConcept={existingConcept}
                 isEditConcept={this.state.isEditConcept}
-                answer={this.props.answer}
                 disableButton={loading}
                 mappings={mappings}
                 addMappingRow={this.addMappingRow}
                 updateEventListener={this.updateEventListener}
                 removeMappingRow={this.removeMappingRow}
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
+                updateAutoCompleteListener={this.updateAutoCompleteListener}
+                allSources={this.props.allSources}
               />
               )
               }
@@ -345,6 +370,7 @@ export const mapStateToProps = state => ({
   addedConcept: state.concepts.addConceptToDictionary,
   existingConcept: state.concepts.existingConcept,
   loading: state.concepts.loading,
+  allSources: state.sourceConcepts.conceptSources,
 });
 export default connect(
   mapStateToProps,
@@ -361,5 +387,6 @@ export default connect(
     clearPreviousConcept,
     createNewNameForEditConcept,
     removeNameForEditConcept,
+    fetchAllConceptSources: fetchConceptSources,
   },
 )(EditConcept);

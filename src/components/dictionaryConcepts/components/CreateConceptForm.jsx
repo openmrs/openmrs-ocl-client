@@ -11,7 +11,7 @@ const CreateConceptForm = (props) => {
   const {
     concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
     mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
-    isEditConcept,
+    isEditConcept, allSources, updateAutoCompleteListener,
   } = props;
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
@@ -200,7 +200,6 @@ const CreateConceptForm = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-
                   {mappings.map((mapping, i) => (
                     <CreateMapping
                       source={mapping.source}
@@ -208,12 +207,14 @@ const CreateConceptForm = (props) => {
                       to_concept_code={mapping.to_concept_code}
                       to_concept_name={mapping.to_concept_name}
                       updateEventListener={updateEventListener}
+                      updateAutoCompleteListener={updateAutoCompleteListener}
                       removeMappingRow={removeMappingRow}
                       updateAsyncSelectValue={updateAsyncSelectValue}
                       key={mapping.id}
                       index={i}
                       isEditConcept={isEditConcept}
                       isNew={mapping.isNew}
+                      allSources={allSources}
                     />
                   ))}
                 </tbody>
@@ -270,6 +271,8 @@ CreateConceptForm.propTypes = {
   updateEventListener: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
+  allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  updateAutoCompleteListener: PropTypes.func,
 };
 
 CreateConceptForm.defaultProps = {
@@ -285,6 +288,7 @@ CreateConceptForm.defaultProps = {
   updateEventListener: null,
   removeMappingRow: null,
   updateAsyncSelectValue: null,
+  updateAutoCompleteListener: null,
 };
 
 export default CreateConceptForm;

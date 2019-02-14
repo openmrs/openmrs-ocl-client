@@ -6,7 +6,7 @@ import {
   EditConcept,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/EditConcept';
-import { newConcept, existingConcept } from '../../__mocks__/concepts';
+import { newConcept, existingConcept, mockSource } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
@@ -57,6 +57,8 @@ describe('Test suite for dictionary concepts components', () => {
       }],
     },
     newRow: '1234',
+    fetchAllConceptSources: jest.fn(),
+    allSources: [mockSource],
   };
   it('should render without breaking', () => {
     const wrapper = mount(<Router>
@@ -183,6 +185,9 @@ describe('Test suite for dictionary concepts components', () => {
         existingConcept,
         disableButton: false,
       },
+      sourceConcepts: {
+        conceptSources: [],
+      },
     };
     expect(mapStateToProps(initialState).description).toEqual(['1']);
     expect(mapStateToProps(initialState).newConcept).toEqual(newConcept);
@@ -234,6 +239,8 @@ describe('Test suite for mappings on existing concepts', () => {
       }],
     },
     newRow: '1234',
+    fetchAllConceptSources: jest.fn(),
+    allSources: [mockSource],
   };
   const wrapper = mount(<Router>
     <EditConcept {...props} />
@@ -277,6 +284,20 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(instance.state.mappings[0].to_concept_code).not.toEqual(null);
   });
 
+  it('should call updateEventListener function with internal mapping', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'to_concept_name',
+        value: CIEL_SOURCE_URL,
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'updateEventListener');
+    instance.updateEventListener(event);
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('should test componentWillReceiveProps', () => {
     const newProps = {
       existingConcept: {
@@ -314,5 +335,35 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.componentWillReceiveProps({ existingConcept: { mappings: undefined } });
     instance.componentWillReceiveProps(newProps);
     expect(instance.state.source).toEqual(INTERNAL_MAPPING_DEFAULT_SOURCE);
+  });
+
+  it('should call updateAutoCompleteListener function', () => {
+    const value = 'test';
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value,
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
+    instance.updateAutoCompleteListener(value, event);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call updateAutoCompleteListener with existing source', () => {
+    const value = mockSource.name;
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value,
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
+    instance.updateAutoCompleteListener(value, event);
+    expect(spy).toHaveBeenCalled();
   });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CreateConceptForm from '../../../components/dictionaryConcepts/components/CreateConceptForm';
+import { mockSource } from '../../__mocks__/concepts';
 
 describe('Test suite for CreateConceptForm', () => {
   it('should render CreateConceptForm Component', () => {
@@ -27,6 +28,7 @@ describe('Test suite for CreateConceptForm', () => {
         },
       },
       concept: '',
+      allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper).toMatchSnapshot();
@@ -50,6 +52,7 @@ describe('Test suite for CreateConceptForm', () => {
       addAnswer: jest.fn(),
       answer: [],
       disableButton: false,
+      allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.set')).toHaveLength(1);
@@ -74,6 +77,7 @@ describe('Test suite for CreateConceptForm', () => {
       addAnswer: jest.fn(),
       answer: [],
       disableButton: false,
+      allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.symptom-finding')).toHaveLength(1);
@@ -99,6 +103,7 @@ describe('Test suite for CreateConceptForm', () => {
       description: [],
       isEditConcept: true,
       disableButton: false,
+      allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('.form-group.answer')).toHaveLength(1);
