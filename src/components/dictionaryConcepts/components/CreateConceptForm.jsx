@@ -195,7 +195,7 @@ const CreateConceptForm = (props) => {
                   <tr>
                     <th>Source</th>
                     <th>Relationship</th>
-                    <th>Name</th>
+                    <th>Concept</th>
                     <th>Action</th>
                   </tr>
                 </thead>
