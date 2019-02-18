@@ -1,19 +1,5 @@
 import { countBy } from 'lodash';
 
-
-export const getDatatypes = (concepts) => {
-  const datatypes = [];
-  if (Array.isArray(concepts)) {
-    concepts.map((concept) => {
-      if (!datatypes.includes(concept.datatype)) {
-        return datatypes.push(concept.datatype);
-      }
-      return null;
-    });
-  }
-  return datatypes;
-};
-
 export const filterSources = (concepts) => {
   const filteredSources = [];
   if (Array.isArray(concepts)) {

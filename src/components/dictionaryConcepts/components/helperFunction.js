@@ -32,5 +32,20 @@ export const classes = [
   'Procedure',
 ];
 
+export const DATA_TYPES = [
+  'Boolean',
+  'Coded',
+  'Complex',
+  'Document',
+  'Date',
+  'Time',
+  'Datetime',
+  'Structured-Numeric',
+  'Rule',
+  'Numeric',
+  'N/A',
+  'Text',
+];
+
 export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';
 export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/';

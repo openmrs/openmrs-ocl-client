@@ -11,6 +11,7 @@ import {
   SET_PERVIOUS_PAGE,
 } from '../../../redux/actions/types';
 import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
+import { classes as classList, DATA_TYPES as dataTypesList } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 let state;
 let action;
@@ -43,8 +44,8 @@ describe('Test suite for bulkConcepts reducer', () => {
 
     expect(reducer(state, action)).toEqual({
       ...state,
-      classes: ['Diagnosis'],
-      datatypes: ['N/A'],
+      classes: classList,
+      datatypes: dataTypesList,
       bulkConcepts: action.payload,
     });
   });
@@ -130,8 +131,8 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       bulkConcepts: action.payload,
-      classes: [undefined],
-      datatypes: [undefined],
+      classes: classList,
+      datatypes: dataTypesList,
     });
   });
   it('should handle PREVIEW_CONCEPT', () => {
