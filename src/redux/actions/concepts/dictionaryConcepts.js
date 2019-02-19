@@ -231,7 +231,7 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
 };
 
 export const fetchSourceConcepts = async (source, query, index) => {
-  const url = `/orgs/${source}/sources/${source}/concepts/?q=${query}&limit=0&verbose=true`;
+  const url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
   const response = await instance.get(url);
   const options = response.data.map(concept => ({
     value: concept.url,
