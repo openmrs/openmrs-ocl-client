@@ -289,7 +289,7 @@ describe('Test suite for mappings on existing concepts', () => {
       target: {
         tabIndex: 0,
         name: 'to_concept_name',
-        value: CIEL_SOURCE_URL,
+        value: INTERNAL_MAPPING_DEFAULT_SOURCE,
       },
     };
     const instance = wrapper.find('EditConcept').instance();
@@ -335,35 +335,5 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.componentWillReceiveProps({ existingConcept: { mappings: undefined } });
     instance.componentWillReceiveProps(newProps);
     expect(instance.state.source).toEqual(INTERNAL_MAPPING_DEFAULT_SOURCE);
-  });
-
-  it('should call updateAutoCompleteListener function', () => {
-    const value = 'test';
-    const event = {
-      target: {
-        tabIndex: 0,
-        name: 'source',
-        value,
-      },
-    };
-    const instance = wrapper.find('EditConcept').instance();
-    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
-    instance.updateAutoCompleteListener(value, event);
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should call updateAutoCompleteListener with existing source', () => {
-    const value = mockSource.name;
-    const event = {
-      target: {
-        tabIndex: 0,
-        name: 'source',
-        value,
-      },
-    };
-    const instance = wrapper.find('EditConcept').instance();
-    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
-    instance.updateAutoCompleteListener(value, event);
-    expect(spy).toHaveBeenCalled();
   });
 });

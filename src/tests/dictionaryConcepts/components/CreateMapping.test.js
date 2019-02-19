@@ -15,7 +15,6 @@ describe('Test suite for dictionary concepts components', () => {
     updateEventListener: jest.fn(),
     removeMappingRow: jest.fn(),
     updateAsyncSelectValue: jest.fn(),
-    updateAutoCompleteListener: jest.fn(),
     allSources: [mockSource],
   };
 
@@ -61,8 +60,6 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const inputs = wrapper.find('input');
     expect(inputs).toHaveLength(2);
-    const customTextInput = wrapper.find('textarea');
-    expect(customTextInput).toHaveLength(1);
   });
 
   it('should render when isNew is true and source equal to CIEL', () => {
@@ -75,16 +72,6 @@ describe('Test suite for dictionary concepts components', () => {
       <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
     const inputs = wrapper.find('select');
-    expect(inputs).toHaveLength(1);
-  });
-
-  it('should call updateAutoCompleteListener', () => {
-    const newProps = {
-      ...props,
-      isNew: true,
-    };
-    wrapper = mount(<Router><table><tbody><CreateMapping {...newProps} /></tbody></table></Router>);
-    wrapper.find('textarea#source').simulate('change');
-    expect(props.updateAutoCompleteListener).toHaveBeenCalled();
+    expect(inputs).toHaveLength(2);
   });
 });
