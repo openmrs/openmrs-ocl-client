@@ -34,3 +34,10 @@ export const classes = [
 
 export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';
 export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/';
+
+export const MAP_TYPE = {
+  conceptSet: 'CONCEPT-SET',
+  questionAndAnswer: 'Q-AND-A',
+};
+
+export const TRADITIONAL_OCL_BASE_URL = 'https://qa.openconceptlab.org';

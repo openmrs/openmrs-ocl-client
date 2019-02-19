@@ -188,10 +188,18 @@
   font-size: .9rem !important;
 }
 
+.synonym {
+  margin-right: 1em;
+}
+
+.showOthers:hover {
+  cursor: pointer;
+}
+
 .card-version{
   display: block;
   float: right;
-  max-width: 18rem;
+  width: 20%;
 }
 
 .card-version small em {
