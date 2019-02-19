@@ -71,11 +71,13 @@ class CreateMapping extends Component {
             map_type={map_type}
             source={source}
           />}
+        </td>
 
+        <td className="react-async">
+          {!isNew && to_concept_name}
           {source && this.sourceNameToUpperCase(source) !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
             <div className="row concept-code">
-              <div className="col-2"> Code</div>
-              <div className="col-10">
+              <div className="col-12 mb-2">
                 <input
                   tabIndex={index}
                   defaultValue={to_concept_code}
@@ -89,10 +91,6 @@ class CreateMapping extends Component {
               </div>
             </div>
           )}
-        </td>
-
-        <td className="react-async">
-          {!isNew && to_concept_name}
           {source && this.sourceNameToUpperCase(source) === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
             isNew && <AsyncSelect
               cacheOptions
