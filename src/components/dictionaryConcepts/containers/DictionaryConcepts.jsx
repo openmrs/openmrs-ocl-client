@@ -6,10 +6,12 @@ import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
 import ConceptTable from '../components/ConceptTable';
+import SearchBar from '../../bulkConcepts/component/SearchBar';
 import { conceptsProps } from '../proptypes';
 import { getUsername } from '../components/helperFunction';
 import {
   fetchDictionaryConcepts,
+  fetchConceptsByName,
   filterBySource,
   filterByClass,
   paginateConcepts,
@@ -43,6 +45,7 @@ export class DictionaryConcepts extends Component {
     userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
+    searchByName: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -182,6 +185,24 @@ export class DictionaryConcepts extends Component {
     return newConcepts;
   }
 
+  handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    this.setState(() => ({ searchInput: value }));
+    if (value.length === 0) {
+      this.fetchConcepts();
+    }
+  };
+
+  handleSearchByName = (event) => {
+    event.preventDefault();
+    const { searchInput } = this.state;
+    const query = `q=${searchInput.trim()}`;
+    const { searchByName } = this.props;
+    searchByName(query);
+  };
+
   render() {
     const {
       match: {
@@ -208,6 +229,7 @@ export class DictionaryConcepts extends Component {
     const {
       conceptLimit,
       openDeleteModal,
+      searchInput,
     } = this.state;
     localStorage.setItem('dictionaryPathName', pathname);
 
@@ -229,7 +251,6 @@ export class DictionaryConcepts extends Component {
           />
           )}
         </section>
-
         <section className="row mt-3">
           <SideNav
             typeName={typeName}
@@ -239,6 +260,11 @@ export class DictionaryConcepts extends Component {
             toggleCheck={filters}
           />
           <div className="col-12 col-md-10 custom-full-width">
+            <SearchBar
+              handleSearch={this.handleSearchByName}
+              handleChange={this.handleChange}
+              searchInput={searchInput}
+            />
             <ConceptTable
               concepts={myConcepts}
               loading={loading}
@@ -282,6 +308,7 @@ export default connect(
   mapStateToProps,
   {
     fetchDictionaryConcepts,
+    searchByName: fetchConceptsByName,
     filterBySource,
     filterByClass,
     paginateConcepts,

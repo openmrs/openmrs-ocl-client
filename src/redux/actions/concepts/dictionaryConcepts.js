@@ -144,6 +144,23 @@ export const fetchDictionaryConcepts = (
   dispatch(isFetching(false));
 };
 
+export const fetchConceptsByName = query => async (dispatch) => {
+  dispatch(isFetching(true));
+  const CONCEPT_TYPE = localStorage.getItem('type');
+  const USER_TYPE_NAME = localStorage.getItem('typeName');
+  const DICTIONARY_ID = localStorage.getItem('dictionaryId');
+
+  const url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${DICTIONARY_ID}/concepts/?includeMappings=true&${query}*&verbose=true`;
+  try {
+    const response = await instance.get(url);
+    dispatch(isSuccess(response.data, FETCH_DICTIONARY_CONCEPT));
+    dispatch(isFetching(false));
+  } catch (error) {
+    dispatch(isFetching(false));
+    notify.show('Something went wrong with your search, please try again.', 'error', 3000);
+  }
+};
+
 export const filterBySource = (
   keyword,
   conceptType,

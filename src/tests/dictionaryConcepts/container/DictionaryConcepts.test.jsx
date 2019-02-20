@@ -9,6 +9,7 @@ import {
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
 import concepts, { concept3 } from '../../__mocks__/concepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 const store = createMockStore({
   organizations: {
@@ -47,6 +48,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -87,6 +89,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -97,43 +100,6 @@ describe('Test suite for dictionary concepts components', () => {
     jest.runAllTimers();
 
     expect(wrapper).toMatchSnapshot();
-  });
-
-  it('should render a loader', () => {
-    const props = {
-      match: {
-        params: {
-          typeName: 'dev-col',
-          type: 'orgs',
-          collectionName: 'dev-col',
-          dictionaryName: 'dev-col',
-        },
-      },
-      location: {
-        pathname: '/random/path',
-      },
-      fetchDictionaryConcepts: jest.fn(),
-      concepts: [],
-      filteredClass: ['Diagnosis'],
-      filteredSources: ['CIEL'],
-      loading: true,
-      conceptsCount: 1,
-      totalConceptsCount: 1,
-      filterBySource: jest.fn(),
-      filterByClass: jest.fn(),
-      fetchMemberStatus: jest.fn(),
-      paginateConcepts: jest.fn(),
-      totalConceptCount: 20,
-      userIsMember: true,
-      removeDictionaryConcept: jest.fn(),
-      removeConceptMappingAction: jest.fn(),
-    };
-    const wrapper = mount(<Provider store={store}>
-      <Router>
-        <DictionaryConcepts {...props} />
-      </Router>
-    </Provider>);
-    expect(wrapper.find('Loader')).toHaveLength(1);
   });
 
   it('should remove a dictionary concept', () => {
@@ -162,6 +128,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
 
     const wrapper = mount(<Provider store={store}>
@@ -200,6 +167,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ versionUrl: 'url' });
@@ -238,6 +206,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ data: { references: [props.url] } });
@@ -273,6 +242,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
@@ -308,6 +278,7 @@ describe('Test suite for dictionary concepts components', () => {
       handleToggle: jest.fn(),
       showDeleteMappingModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
@@ -340,6 +311,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -390,6 +362,7 @@ describe('Test suite for dictionary concepts components', () => {
       userIsMember: true,
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
     };
     const app = shallow(<DictionaryConcepts {...props} />);
     const newProps = {
@@ -429,5 +402,87 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
     expect(mapStateToProps(initialState).dictionaries).toEqual([]);
+  });
+
+  it('should update the state with search term on change in the search bar', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [],
+      filteredClass: ['Diagnosis'],
+      filteredSources: [INTERNAL_MAPPING_DEFAULT_SOURCE],
+      loading: false,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    let event = { target: { name: 'searchInput', value: 'testing' } };
+    wrapper.find('#search-concept').simulate('change', event);
+    expect(wrapper.find('DictionaryConcepts').state().searchInput).toEqual('testing');
+    event = { target: { name: 'searchInput', value: '' } };
+    wrapper.find('#search-concept').simulate('change', event);
+    expect(wrapper.find('DictionaryConcepts').state().searchInput).toEqual('');
+  });
+
+  it('should call the search function when search form is submitted', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [],
+      filteredClass: ['Diagnosis'],
+      filteredSources: [INTERNAL_MAPPING_DEFAULT_SOURCE],
+      loading: false,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#submit-search-form').simulate('submit');
+    expect(wrapper.find('DictionaryConcepts').props().searchByName).toHaveBeenCalled();
   });
 });
