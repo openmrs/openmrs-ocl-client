@@ -5,8 +5,8 @@ import {
   CreateConcept,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/CreateConcept';
-import { newConcept, mockSource } from '../../__mocks__/concepts';
-import { CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { newConcept, mockSource, mockCielSource } from '../../__mocks__/concepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1234));
 jest.mock('react-notify-toast');
@@ -55,7 +55,7 @@ describe('Test suite for dictionary concepts components', () => {
     addSelectedAnswers: jest.fn(),
     changeAnswer: jest.fn(),
     fetchAllConceptSources: jest.fn(),
-    allSources: [mockSource],
+    allSources: [mockSource, mockCielSource],
   };
 
   let wrapper;
@@ -101,42 +101,12 @@ describe('Test suite for dictionary concepts components', () => {
       target: {
         tabIndex: 0,
         name: 'to_concept_name',
-        value: CIEL_SOURCE_URL,
+        value: INTERNAL_MAPPING_DEFAULT_SOURCE,
       },
     };
     const instance = wrapper.find('CreateConcept').instance();
     const spy = jest.spyOn(instance, 'updateEventListener');
     instance.updateEventListener(event);
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should call updateAutoCompleteListener function', () => {
-    const value = 'test';
-    const event = {
-      target: {
-        tabIndex: 0,
-        name: 'source',
-        value,
-      },
-    };
-    const instance = wrapper.find('CreateConcept').instance();
-    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
-    instance.updateAutoCompleteListener(value, event);
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should call updateAutoCompleteListener with existing source', () => {
-    const value = mockSource.name;
-    const event = {
-      target: {
-        tabIndex: 0,
-        name: 'source',
-        value,
-      },
-    };
-    const instance = wrapper.find('CreateConcept').instance();
-    const spy = jest.spyOn(instance, 'updateAutoCompleteListener');
-    instance.updateAutoCompleteListener(value, event);
     expect(spy).toHaveBeenCalled();
   });
 

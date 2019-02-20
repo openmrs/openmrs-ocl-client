@@ -525,3 +525,12 @@ export const mockSource = {
   owner_type: 'Organization',
   owner_url: '/orgs/EthiopiaMoH-test-zisasg/',
 };
+
+export const mockCielSource = {
+  short_code: 'CIEL',
+  name: 'CIEL',
+  url: '/orgs/CIEL/sources/CIEL/',
+  owner: 'CIEL',
+  owner_type: 'Organization',
+  owner_url: '/orgs/CIEL/',
+};

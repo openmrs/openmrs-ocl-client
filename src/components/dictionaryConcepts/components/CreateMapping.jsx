@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
-import TextInput from 'react-autocomplete-input';
-import 'react-autocomplete-input/dist/bundle.css';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from './helperFunction';
 import MapType from './MapType';
 
 class CreateMapping extends Component {
@@ -18,51 +16,33 @@ class CreateMapping extends Component {
     this.setState({ inputValue: value });
   }
 
-  sourceNameToUpperCase = source => source.trim().toUpperCase();
-
   render() {
     const { inputValue } = this.state;
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, removeMappingRow, updateAsyncSelectValue,
-      isNew, updateAutoCompleteListener, allSources,
+      isNew, allSources,
     } = this.props;
-    const mappingSources = allSources.map(src => src.name);
-    const customEvent = {
-      target: {
-        tabIndex: index,
-        name: 'source',
-        value: '',
-      },
-    };
-    let matchingSrc;
-    if (source) {
-      matchingSrc = allSources.filter(
-        src => src.url.trim().toUpperCase() === source.trim().toUpperCase(),
-      );
-    }
 
     return (
       <tr>
         <td>
-          {!isNew && (matchingSrc && matchingSrc.length > 0 ? matchingSrc[0].name : source)}
-          {
-            isNew && <TextInput
-              id="source"
-              tabIndex={index}
-              className="form-control"
-              placeholder="source"
-              type="text"
-              name="source"
-              onChange={(event) => { updateAutoCompleteListener(event, customEvent); }}
-              trigger=""
-              regex="^[a-zA-Z0-9_\-/]+$"
-              matchAny
-              maxOptions={10}
-              options={mappingSources}
-              defaultValue={source || ''}
-            />
-        }
+          {<select
+            id="source"
+            tabIndex={index}
+            className="form-control"
+            name="source"
+            onChange={updateEventListener}
+            defaultValue={isNew ? '' : source}
+          >
+            <option value="" hidden>Select a source</option>
+            {allSources.map(src => <option
+              key={src.url}
+              value={src.url === CIEL_SOURCE_URL ? INTERNAL_MAPPING_DEFAULT_SOURCE : src.url}
+            >
+              {src.name}
+            </option>)}
+          </select>}
         </td>
         <td>
           {<MapType
@@ -75,7 +55,7 @@ class CreateMapping extends Component {
 
         <td className="react-async">
           {!isNew && to_concept_name}
-          {source && this.sourceNameToUpperCase(source) !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
+          {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
             <div className="row concept-code">
               <div className="col-12 mb-2">
                 <input
@@ -91,12 +71,12 @@ class CreateMapping extends Component {
               </div>
             </div>
           )}
-          {source && this.sourceNameToUpperCase(source) === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
+          {source && source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
             isNew && <AsyncSelect
               cacheOptions
               isClearable
               loadOptions={async () => fetchSourceConcepts(
-                this.sourceNameToUpperCase(source),
+                source,
                 inputValue,
                 index,
               )}
@@ -138,7 +118,6 @@ CreateMapping.propTypes = {
   updateAsyncSelectValue: PropTypes.func,
   isNew: PropTypes.bool,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  updateAutoCompleteListener: PropTypes.func.isRequired,
 };
 
 CreateMapping.defaultProps = {
