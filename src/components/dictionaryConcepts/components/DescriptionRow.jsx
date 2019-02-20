@@ -2,30 +2,32 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
-import uuid from 'uuid/v4';
 import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class DescriptionRow extends Component {
   static propTypes = {
-    newRow: PropTypes.shape({
-      uuid: PropTypes.string,
-      locale: PropTypes.string,
-      description: PropTypes.string,
-    }),
+    newRow: PropTypes.object,
+    newRowUuid: PropTypes.string,
     addDataFromDescription: PropTypes.func.isRequired,
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.object.isRequired,
-    existingConcept: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/require-default-props
+    existingConcept: PropTypes.object,
   }
 
   static defaultProps = {
+    // eslint-disable-next-line react/default-props-match-prop-types
     newRow: {
-      uuid: String(uuid()),
+      id: '',
+      name: '',
       locale: 'en',
-      description: '',
+      locale_full: { value: 'en', label: 'English [en]' },
+      locale_preferred: true,
+      name_type: '',
     },
-  }
+    newRowUuid: '',
+  };
 
   constructor(props) {
     super(props);
@@ -124,7 +126,9 @@ class DescriptionRow extends Component {
             className=" btn btn-danger concept-form-table-link"
             id="remove-description"
             type="button"
-            onClick={event => this.handleRemove(event, this.props.newRow)}
+            onClick={event => ((this.props.newRowUuid === '')
+              ? this.handleRemove(event, this.props.newRow)
+              : this.handleRemove(event, this.props.newRowUuid))}
           >
             remove
           </button>

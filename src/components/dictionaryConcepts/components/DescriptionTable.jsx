@@ -22,6 +22,7 @@ const DescriptionTable = props => (
         ))
         : props.description.map(newRow => (
           <DescriptionRow
+            newRowUuid={newRow}
             key={newRow}
             {...props}
           />))
