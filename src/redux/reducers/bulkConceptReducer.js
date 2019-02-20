@@ -8,7 +8,8 @@ import {
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
 } from '../actions/types';
-import { getDatatypes, filterClass, normalizeList } from './util';
+import { normalizeList } from './util';
+import { classes as classList, DATA_TYPES as dataTypesList } from '../../components/dictionaryConcepts/components/helperFunction';
 
 const userInitialState = {
   bulkConcepts: [],
@@ -24,15 +25,15 @@ const bulkConcepts = (state = userInitialState, action) => {
       return {
         ...state,
         bulkConcepts: action.payload,
-        datatypes: getDatatypes(action.payload),
-        classes: filterClass(action.payload),
+        datatypes: dataTypesList,
+        classes: classList,
       };
     case FETCH_FILTERED_CONCEPTS:
       return {
         ...state,
         bulkConcepts: action.payload,
-        datatypes: getDatatypes(action.payload),
-        classes: filterClass(action.payload),
+        datatypes: dataTypesList,
+        classes: classList,
       };
     case PREVIEW_CONCEPT:
       return {
