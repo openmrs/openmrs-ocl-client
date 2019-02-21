@@ -13,6 +13,7 @@ const CreateConceptForm = (props) => {
     mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
     isEditConcept, allSources,
   } = props;
+  const selectedMappings = mappings.filter(map => map.retired === false);
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
@@ -200,9 +201,10 @@ const CreateConceptForm = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {mappings.map((mapping, i) => (
+                  {selectedMappings.map((mapping, i) => (
                     <CreateMapping
                       source={mapping.source}
+                      url={mapping.url}
                       map_type={mapping.map_type}
                       to_concept_code={mapping.to_concept_code}
                       to_concept_name={mapping.to_concept_name}

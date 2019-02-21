@@ -75,6 +75,8 @@ export class CreateConcept extends Component {
         id: 1,
         to_source_url: null,
         isNew: true,
+        retired: false,
+        url: uuid(),
       }],
     };
 
@@ -250,31 +252,48 @@ export class CreateConcept extends Component {
       id: mappings.length + 1,
       to_source_url: null,
       isNew: true,
+      retired: false,
+      url: uuid(),
     });
     this.setState({ mappings });
   }
 
-  updateEventListener = (event) => {
-    const { tabIndex, name, value } = event.target;
+  updateEventListener = (event, url) => {
+    const { value, name } = event.target;
     const { mappings } = this.state;
-    mappings[tabIndex][name] = value;
-    this.setState(mappings);
+    const newMappings = mappings.map((map) => {
+      const modifyMap = map;
+      if (modifyMap.url === url) {
+        modifyMap[name] = value;
+      }
+      return modifyMap;
+    });
+    this.setState({ mappings: newMappings });
   }
 
   updateAsyncSelectValue = (value) => {
     const { mappings } = this.state;
-    if (value !== null && value.index !== undefined) {
-      mappings[value.index].to_source_url = value.value;
-      mappings[value.index].to_concept_name = value.label;
-    }
-    this.setState({ mappings });
+    const updateAsyncMappings = mappings.map((map) => {
+      const updatedMap = map;
+      if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
+        updatedMap.to_source_url = value.value;
+        updatedMap.to_concept_name = value.label;
+      }
+      return updatedMap;
+    });
+    this.setState({ mappings: updateAsyncMappings });
   }
 
-  removeMappingRow = (event) => {
-    const { tabIndex } = event.target;
+  removeMappingRow = (url) => {
     const { mappings } = this.state;
-    delete mappings[tabIndex];
-    this.setState({ mappings });
+    const selectedMappings = mappings.map((map) => {
+      const updatedMap = map;
+      if (updatedMap.url === url) {
+        updatedMap.retired = true;
+      }
+      return updatedMap;
+    });
+    this.setState({ mappings: selectedMappings });
   }
 
   render() {

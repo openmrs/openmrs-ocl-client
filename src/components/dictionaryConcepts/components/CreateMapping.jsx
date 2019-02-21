@@ -20,9 +20,8 @@ class CreateMapping extends Component {
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, removeMappingRow, updateAsyncSelectValue,
-      isNew, allSources,
+      isNew, allSources, url,
     } = this.props;
-
     return (
       <tr>
         <td>
@@ -31,7 +30,7 @@ class CreateMapping extends Component {
             tabIndex={index}
             className="form-control"
             name="source"
-            onChange={updateEventListener}
+            onChange={(event) => { updateEventListener(event, url); }}
             defaultValue={isNew ? '' : source}
           >
             <option value="" hidden>Select a source</option>
@@ -65,7 +64,7 @@ class CreateMapping extends Component {
                   type="text"
                   name="to_concept_code"
                   id="to_concept_code"
-                  onChange={updateEventListener}
+                  onChange={(event) => { updateEventListener(event, url); }}
                 />
               </div>
             </div>
@@ -77,7 +76,7 @@ class CreateMapping extends Component {
               loadOptions={async () => fetchSourceConcepts(
                 source,
                 inputValue,
-                index,
+                url,
               )}
               onChange={updateAsyncSelectValue}
               onInputChange={this.handleInputChange}
@@ -91,7 +90,7 @@ class CreateMapping extends Component {
               placeholder="Concept name (optional)"
               type="text"
               name="to_concept_name"
-              onChange={updateEventListener}
+              onChange={(event) => { updateEventListener(event, url); }}
             />
           )}
         </td>
@@ -101,7 +100,7 @@ class CreateMapping extends Component {
             id="remove"
             className="btn btn-danger "
             tabIndex={index}
-            onClick={removeMappingRow}
+            onClick={() => removeMappingRow(url, to_concept_name, to_concept_code)}
             type="button"
           >
               remove
@@ -117,6 +116,7 @@ CreateMapping.propTypes = {
   source: PropTypes.string,
   to_concept_code: PropTypes.string,
   to_concept_name: PropTypes.string,
+  url: PropTypes.string,
   index: PropTypes.number,
   updateEventListener: PropTypes.func,
   removeMappingRow: PropTypes.func,
@@ -132,6 +132,7 @@ CreateMapping.defaultProps = {
   to_concept_name: '',
   index: 0,
   isNew: false,
+  url: '',
   updateEventListener: () => {},
   removeMappingRow: () => {},
   updateAsyncSelectValue: () => {},
