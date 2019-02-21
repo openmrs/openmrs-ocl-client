@@ -10,6 +10,7 @@ import {
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
 import concepts, { concept3 } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import ConceptTable from '../../../components/dictionaryConcepts/components/ConceptTable';
 
 const store = createMockStore({
   organizations: {
@@ -59,6 +60,25 @@ describe('Test suite for dictionary concepts components', () => {
     jest.runAllTimers();
 
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should contain strikethrough text for retired concepts', () => {
+    const props = {
+      concepts: [{ ...concepts, retired: true }],
+      loading: false,
+      org: {},
+      locationPath: {},
+      showDeleteModal: jest.fn(),
+      handleDelete: jest.fn(),
+      conceptLimit: 1,
+      closeDeleteModal: jest.fn(),
+      handleDeleteMapping: jest.fn(),
+      showDeleteMappingModal: jest.fn(),
+    };
+    const wrapper = mount(<ConceptTable {...props} />);
+    expect(wrapper).toMatchSnapshot();
+    const strikethroughText = wrapper.find('del.text-muted');
+    expect(strikethroughText.length).toBeGreaterThan(0);
   });
 
   it('should render component without breaking when the type is not specified', () => {

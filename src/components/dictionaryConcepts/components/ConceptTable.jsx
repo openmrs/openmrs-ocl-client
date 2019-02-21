@@ -8,6 +8,9 @@ import { getUsername } from './helperFunction';
 import RemoveConcept from './RemoveConcept';
 
 const username = getUsername();
+const showCellContents = cell => <span>
+  {cell.value[1] ? <del className="text-muted">{cell.value[0]}</del> : cell.value[0]}
+</span>;
 
 const ConceptTable = ({
   concepts,
@@ -44,16 +47,22 @@ const ConceptTable = ({
       columns={[
         {
           Header: 'Name',
-          accessor: 'display_name',
+          id: 'nameCol',
+          accessor: concept => [concept.display_name, concept.retired],
           minWidth: 100,
+          Cell: cell => showCellContents(cell),
         },
         {
           Header: 'Class',
-          accessor: 'concept_class',
+          id: 'classCol',
+          accessor: concept => [concept.concept_class, concept.retired],
+          Cell: cell => showCellContents(cell),
         },
         {
           Header: 'Source',
-          accessor: 'source',
+          id: 'sourceCol',
+          accessor: concept => [concept.source, concept.retired],
+          Cell: cell => showCellContents(cell),
         },
         {
           Header: 'Action',
