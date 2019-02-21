@@ -50,7 +50,7 @@ const PreviewCard = ({
   const mapping = mappings || 'none';
   const description = descriptions ? descriptions[0].description : 'none';
   const synonyms = names && names
-    .map(name => `<span className='synonym'>${name.name}</span>`)
+    .map(name => `<span className='synonym'>${name.name} (${name.locale})</span>`)
     .filter(name => name !== `<span className='synonym'>${display_name}</span>`)
     .join(' ');
   let setMembers;
