@@ -157,6 +157,8 @@ describe('Test suite for dictionary concepts components', () => {
   it('should handle form completion and submission with correct data', () => {
     const conceptName = { target: { name: 'name', value: 'test concept' } };
     wrapper.find('#concept-name').simulate('change', conceptName);
+    const conceptClass = { target: { name: 'concept_class', value: 'Procedure' } };
+    wrapper.find('#class').simulate('change', conceptClass);
     const conceptDatatype = { target: { name: 'datatype', value: 'Text' } };
     wrapper.find('#datatype').simulate('change', conceptDatatype);
     const conceptDescription = {
