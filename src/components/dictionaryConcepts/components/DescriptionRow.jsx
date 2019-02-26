@@ -119,14 +119,15 @@ class DescriptionRow extends Component {
           />
         </th>
         <td>
-          <a
+          <button
             href="#!"
-            className="concept-form-table-link"
+            className=" btn btn-danger concept-form-table-link"
             id="remove-description"
+            type="button"
             onClick={event => this.handleRemove(event, this.props.newRow)}
           >
             remove
-          </a>
+          </button>
         </td>
       </tr>
     );

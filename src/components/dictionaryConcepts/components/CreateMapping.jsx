@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
@@ -98,9 +97,15 @@ class CreateMapping extends Component {
         </td>
 
         <td className="table-remove-link">
-          <Link id="remove" tabIndex={index} onClick={removeMappingRow} to="#">
+          <button
+            id="remove"
+            className="btn btn-danger "
+            tabIndex={index}
+            onClick={removeMappingRow}
+            type="button"
+          >
               remove
-          </Link>
+          </button>
         </td>
       </tr>
     );
