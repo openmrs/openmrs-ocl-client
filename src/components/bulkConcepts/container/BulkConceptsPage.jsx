@@ -56,6 +56,7 @@ export class BulkConceptsPage extends Component {
       searchInput: '',
       conceptLimit: 10,
       searchingOn: false,
+      filterOn: false,
     };
   }
 
@@ -64,18 +65,25 @@ export class BulkConceptsPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { searchingOn } = this.state;
-    const { currentPage } = this.props;
+    const { searchingOn, searchInput, filterOn } = this.state;
+    const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
     if (currentPage !== prevProps.currentPage) {
-      if (searchingOn) {
+      if (filterOn) {
+        const query = `q=${searchInput}`;
+        return fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage);
+      }
+
+      if (searchingOn && !filterOn) {
         return this.searchOption();
       }
+
       return this.getBulkConcepts();
     }
     return null;
   }
 
   handleFilter = (event) => {
+    this.setState({ searchingOn: true, filterOn: true });
     const {
       target: { name },
     } = event;

@@ -8,6 +8,7 @@ import {
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
 import concepts from '../../__mocks__/concepts';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 const store = createMockStore({
   bulkConcepts: {
@@ -331,6 +332,39 @@ describe('Test suite for BulkConceptsPage component', () => {
     const wrapper = shallow(<BulkConceptsPage {...props} />).setState({ searchingOn: true });
     const instance = wrapper.instance();
     expect(instance.componentDidUpdate(2)).toEqual(undefined);
+  });
+
+  it('it should fetch filtered concepts when filter is true using the currently set page', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      filterConcept: jest.fn(),
+      concepts: [],
+      loading: true,
+      datatypes: [],
+      classes: [],
+      conceptLimit: 10,
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: INTERNAL_MAPPING_DEFAULT_SOURCE,
+        },
+      },
+      addToFilterList: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      handleNextPage: jest.fn(),
+    };
+    const wrapper = shallow(<BulkConceptsPage {...props} />);
+    const instance = wrapper.instance();
+    wrapper.setState({ filterOn: true });
+    instance.componentDidUpdate(props.currentPage);
+    expect(instance.props.fetchFilteredConcepts).toHaveBeenCalled();
   });
 
   it('should refresh page when search input is empty', () => {
