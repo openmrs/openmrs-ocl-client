@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import newVideo from '../styles/video/newInstructions.mp4';
+import { TRADITIONAL_OCL_BASE_URL } from '../../dictionaryConcepts/components/helperFunction';
 
 const LoginDetails = () => (
   <div className=" container login-details">
@@ -11,7 +12,7 @@ const LoginDetails = () => (
       <div className="card-body">
         Ensure you have an account from the traditional OCL. After that,
         {' '}
-        <a href="https://qa.openconceptlab.org/accounts/login/">
+        <a href={`${TRADITIONAL_OCL_BASE_URL}/accounts/login/`}>
           Login into the traditional OCL
         </a>
         <br />
