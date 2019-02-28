@@ -150,14 +150,14 @@ class ConceptNameRows extends Component {
           </select>
         </td>
         <td>
-          <a
-            href="#!"
-            className="concept-form-table-link"
+          <button
+            className="btn btn-danger concept-form-table-link"
             id="remove-name"
+            type="button"
             onClick={event => this.handleRemove(event, this.props.newRow.uuid)}
           >
             remove
-          </a>
+          </button>
         </td>
       </tr>
     );
