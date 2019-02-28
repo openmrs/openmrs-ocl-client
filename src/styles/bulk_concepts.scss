@@ -41,7 +41,7 @@
 }
 
 #other-search {
-  display: inline-block;
+  display: flex;
 }
 
 #exampleRadios3 {
@@ -60,7 +60,7 @@
 .search-bar {
   background: rgb(233, 233, 233);
   border-radius: 10rem;
-  padding: 0.6rem;
+  padding: 0 0.6rem;
   float: right;
   width: 300px;
 }
@@ -209,6 +209,10 @@
 
 .form-check{
   position: relative;
+}
+.vertical-center {
+  display: flex;
+  align-items: center;
 }
 
 .search-ul{
