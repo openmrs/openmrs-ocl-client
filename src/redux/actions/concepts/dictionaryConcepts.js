@@ -129,7 +129,7 @@ export const fetchDictionaryConcepts = (
     url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&conceptClass=${filterByClass.join(',')}`;
   }
   try {
-    const response = await instance.get(url);
+    const response = await instance.get(`${url}&includeRetired=1`);
     dispatch(getDictionaryConcepts(response.data, FETCH_DICTIONARY_CONCEPT));
     dispatch(paginateConcepts(response.data));
     if (query === '' && filterByClass.length === 0 && filterBySource.length === 0) {

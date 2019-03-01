@@ -8,6 +8,7 @@ const ActionButtons = ({
   concept_class,
   showDeleteModal,
   version_url,
+  retired,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -16,7 +17,7 @@ const ActionButtons = ({
   }
 
   return (
-    <React.Fragment>
+    !retired && <React.Fragment>
       {showExtra && (
         <React.Fragment>
           <Link
@@ -51,12 +52,14 @@ ActionButtons.propTypes = {
   mappings: PropTypes.array,
   source: PropTypes.string,
   mappingLimit: PropTypes.number,
+  retired: PropTypes.bool,
 };
 
 ActionButtons.defaultProps = {
   source: '',
   mappings: [],
   mappingLimit: null,
+  retired: false,
 };
 
 export default ActionButtons;
