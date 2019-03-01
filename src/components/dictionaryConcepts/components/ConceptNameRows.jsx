@@ -7,6 +7,8 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 class ConceptNameRows extends Component {
   static propTypes = {
     newRow: PropTypes.object,
+    nameRows: PropTypes.array,
+    index: PropTypes.number,
     addDataFromRow: PropTypes.func.isRequired,
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
@@ -24,6 +26,8 @@ class ConceptNameRows extends Component {
       locale_preferred: true,
       name_type: '',
     },
+    index: 0,
+    nameRows: [],
   };
 
   constructor(props) {
@@ -93,8 +97,19 @@ class ConceptNameRows extends Component {
   }
 
   handleRemove(event, id) {
-    this.props.removeRow(event, id);
-    this.props.removeDataFromRow(id, 'names');
+    const {
+      nameRows,
+      index,
+      removeRow,
+      removeDataFromRow,
+    } = this.props;
+    if (!id) {
+      removeRow(event, nameRows[index]);
+      removeDataFromRow(nameRows[index], 'names');
+    } else {
+      removeRow(event, id);
+      removeDataFromRow(id, 'names');
+    }
   }
 
   render() {
