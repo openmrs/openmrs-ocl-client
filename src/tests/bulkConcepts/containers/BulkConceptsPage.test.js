@@ -421,6 +421,10 @@ describe('Test suite for BulkConceptsPage component', () => {
     const typeWordInSearchField = { target: { name: 'searchInput', value: 'sample' } };
     wrapper.find('#search-concept').simulate('change', typeWordInSearchField);
     expect(wrapper.find('BulkConceptsPage').state().searchInput).toEqual('sample');
+
+    const searchForWordWithFewCharacters = { target: { name: 'searchInput', value: 'y' } };
+    wrapper.find('#search-concept').simulate('change', searchForWordWithFewCharacters);
+    expect(wrapper.find('BulkConceptsPage').state().searchInput).toEqual('y');
   });
 
   it('should filter search result', () => {

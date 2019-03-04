@@ -108,7 +108,7 @@ export class BulkConceptsPage extends Component {
 
   searchOption = () => {
     const { searchInput } = this.state;
-    if (searchInput && searchInput.trim().length > 2) {
+    if ((searchInput && searchInput.trim().length > 2) || (searchInput.trim().length === 0)) {
       const query = `q=${searchInput.trim()}*`; // The asterisk permits partial search
       const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
       fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage);
