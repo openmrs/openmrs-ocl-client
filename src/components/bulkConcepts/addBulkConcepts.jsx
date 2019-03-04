@@ -189,8 +189,8 @@ export class AddBulkConcepts extends Component {
                     inputValue,
                   }) => (
                     <div>
-                      <div id="other-search">
-                          Other &nbsp;&nbsp;
+                      <div id="other-search" className="vertical-center">
+                        <span className="mr-2">Other</span>
                         <form className="form-inline search-bar">
                           <i className="fas fa-search" />
                           {otherSelected && <input
@@ -269,8 +269,8 @@ export class AddBulkConcepts extends Component {
                 }) => (
                   <div>
                     <div id="other-search">
-                      <div className="form-check">
-                          Quick search &nbsp;&nbsp;
+                      <div className="form-check vertical-center">
+                        <span className="mr-2">Quick search</span>
                         <form className="form-inline search-bar">
                           <i className="fas fa-search" />
                           <input
@@ -347,8 +347,6 @@ export class AddBulkConcepts extends Component {
               onClick={this.handleAddAll}
               disabled={disableButton}
             >
-              <i className="fa fa-plus" />
-              {' '}
               Add
             </button>
 
