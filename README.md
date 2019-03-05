@@ -18,6 +18,10 @@
 - Clone the forked repository to your computer ensure to run the command below in the directory you want to store the project.
     # git clone [the url of the repository] For example; 
     # git clone https://github.com/yourusername/openmrs-ocl-client.git
+    # Create a .env file in the root directory with the variables API URL and Traditional OCL URL as shown below to access app in dev mode;
+      REACT_APP_OCL_API_HOST=https://api.qa.openconceptlab.org/
+      REACT_APP_TRADITIONAL_OCL_HOST=https://qa.openconceptlab.org
+      
 - In the root directory of the project install all the dependencies using the command below 
     $ npm install
 ```

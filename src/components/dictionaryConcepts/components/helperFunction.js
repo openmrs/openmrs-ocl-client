@@ -1,3 +1,5 @@
+import urlConfig from '../../../config';
+
 export const getUsername = () => localStorage.getItem('username');
 
 export const classes = [
@@ -55,4 +57,4 @@ export const MAP_TYPE = {
   questionAndAnswer: 'Q-AND-A',
 };
 
-export const TRADITIONAL_OCL_BASE_URL = 'https://qa.openconceptlab.org';
+export const TRADITIONAL_OCL_BASE_URL = urlConfig.TRADITIONAL_OCL;

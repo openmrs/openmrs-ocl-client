@@ -3,8 +3,9 @@ import {
   login, loginFailed, loginStarted, logout,
 } from './authActionCreators';
 import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
+import urlConfig from '../../../config';
 
-const BASE_URL = 'https://api.qa.openconceptlab.org/';
+const BASE_URL = urlConfig.OCL_API_HOST;
 
 const loginAction = ({ username, password }) => (dispatch) => {
   dispatch(loginStarted());
