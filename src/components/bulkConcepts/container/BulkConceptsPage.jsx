@@ -56,12 +56,22 @@ export class BulkConceptsPage extends Component {
       searchInput: '',
       conceptLimit: 10,
       searchingOn: false,
+      modalId: '',
     };
   }
 
   componentDidMount() {
     this.getBulkConcepts();
   }
+
+
+  openModal = (id) => {
+    this.setState({ modalId: id });
+  };
+
+  closeModal = () => {
+    this.setState({ modalId: '' });
+  };
 
   componentDidUpdate(prevProps) {
     const { searchingOn } = this.state;
@@ -176,6 +186,9 @@ export class BulkConceptsPage extends Component {
               concepts={concepts}
               loading={loading}
               location={params}
+              modalId={this.state.modalId}
+              openModal={this.openModal}
+              closeModal={this.closeModal}
               preview={preview}
               previewConcept={previewedConcept}
               addConcept={addedConcept}

@@ -6,6 +6,9 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
   it('should handle fetchPreview', () => {
     const props = {
       previewConcept: jest.fn(),
+      openModal: jest.fn(),
+      closeModal: jest.fn(),
+      modalId: '',
       id: '',
       display_name: '',
       url: '',
@@ -19,7 +22,6 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
         display_name: '',
       },
       addConcept: jest.fn(),
-      url: '',
     };
 
     const wrapper = shallow(<ActionButtons {...props} />);
