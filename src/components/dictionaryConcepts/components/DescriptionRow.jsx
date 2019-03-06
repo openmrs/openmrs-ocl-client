@@ -6,6 +6,7 @@ import locale from '../../dashboard/components/dictionary/common/Languages';
 
 class DescriptionRow extends Component {
   static propTypes = {
+    rowId: PropTypes.string,
     newRow: PropTypes.object,
     newRowUuid: PropTypes.string,
     addDataFromDescription: PropTypes.func.isRequired,
@@ -27,6 +28,7 @@ class DescriptionRow extends Component {
       name_type: '',
     },
     newRowUuid: '',
+    rowId: '',
   };
 
   constructor(props) {
@@ -34,8 +36,9 @@ class DescriptionRow extends Component {
     const defaultLocale = locale.find(
       currentLocale => currentLocale.value === props.pathName.language,
     );
+    const { rowId } = this.props;
     this.state = {
-      id: this.props.newRow,
+      id: rowId,
       locale: defaultLocale.value,
       locale_full: defaultLocale,
       description: '',
