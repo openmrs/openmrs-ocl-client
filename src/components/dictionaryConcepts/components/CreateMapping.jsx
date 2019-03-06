@@ -75,11 +75,11 @@ class CreateMapping extends Component {
             isNew && <AsyncSelect
               cacheOptions
               isClearable
-              loadOptions={async () => fetchSourceConcepts(
-                source,
-                inputValue,
-                index,
-              )}
+              loadOptions={async () => {
+                // console.log(e.keycode, "fhfjfnbjkfjfhjkfgfjkgfjkghjkf")
+                if (true) { return fetchSourceConcepts(source, inputValue, index); }
+                // return false;
+              }}
               onChange={updateAsyncSelectValue}
               onInputChange={this.handleInputChange}
               placeholder="search concept name or id"

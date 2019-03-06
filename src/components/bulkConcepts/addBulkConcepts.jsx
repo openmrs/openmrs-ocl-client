@@ -40,6 +40,8 @@ export class AddBulkConcepts extends Component {
       conceptIds: '',
       openResultModal: false,
       otherSelected: false,
+      value: '',
+      sourceValue: '',
     };
     this.invalidConceptIds = [];
     this.sourceUrl = 'orgs/CIEL/sources/CIEL/';
@@ -112,6 +114,19 @@ export class AddBulkConcepts extends Component {
   closeResultModal = () => {
     this.invalidConceptIds = [];
     this.setState({ openResultModal: false });
+  }
+
+  onKeyDown = (event, onKeyDown, onChange) => {
+    if (event.target.name === 'source') {
+      this.setState({ sourceValue: event.target.value });
+    } else {
+      this.setState({ value: event.target.value });
+    }
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      onChange(event);
+      onKeyDown(event);
+    }
   }
 
   render() {
@@ -195,12 +210,27 @@ export class AddBulkConcepts extends Component {
                           <i className="fas fa-search" />
                           {otherSelected && <input
                             {
-                              ...getInputProps()
-                              }
+                            ...getInputProps()
+                            }
                             className="form-control search"
                             id="sourceSearch"
                             placeholder="Search"
                             aria-label="Search"
+                            name="source"
+                            value={this.state.sourceValue}
+
+                            onKeyDown={
+                              e => this.onKeyDown(
+                                e,
+                                getInputProps().onKeyDown,
+                                getInputProps().onChange,
+                              )}
+                            onChange={e => this.onKeyDown(
+                              e,
+                              getInputProps().onKeyDown,
+                              getInputProps().onChange,
+                            )}
+                            {...getInputProps().rest}
                           />
                             }
                           {isFetching
@@ -275,12 +305,25 @@ export class AddBulkConcepts extends Component {
                           <i className="fas fa-search" />
                           <input
                             {
-                              ...getInputProps()
-                              }
+                            ...getInputProps()
+                            }
                             className="form-control search"
                             id="search"
                             placeholder="search"
+                            value={this.state.value}
                             aria-label="Search"
+                            onChange={e => this.onKeyDown(
+                              e,
+                              getInputProps().onKeyDown,
+                              getInputProps().onChange,
+                            )}
+                            onKeyDown={
+                              e => this.onKeyDown(
+                                e,
+                                getInputProps().onKeyDown,
+                                getInputProps().onChange,
+                              )}
+                            {...getInputProps().rest}
                           />
                           {isLoading
                               && <div className="ml-auto text-right">
