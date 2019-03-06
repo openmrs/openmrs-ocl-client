@@ -8,7 +8,7 @@ import {
 import { newConcept, mockSource, mockCielSource } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
-jest.mock('uuid/v4', () => jest.fn(() => 1234));
+jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
 
 describe('Test suite for dictionary concepts components', () => {
@@ -73,27 +73,47 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should call removeMappingRow function', () => {
-    const event = { target: 0 };
+    const url = '9999';
     const instance = wrapper.find('CreateConcept').instance();
-    instance.removeMappingRow(event);
+    instance.addMappingRow();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      isNew: true,
+      retired: false,
+      url: '9999',
+    };
+    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(2);
+    instance.removeMappingRow(url);
+    expect(instance.state.mappings[1].retired).toEqual(true);
   });
 
   it('should call updateAsyncSelectValue function', () => {
-    const value = { index: 0, value: 'malaria 1', label: 'malaria 1' };
+    const value = { index: '1234', value: 'malaria 1', label: 'malaria 1' };
     const instance = wrapper.find('CreateConcept').instance();
+    instance.updateAsyncSelectValue(null);
+    expect(instance.state.mappings[0].to_concept_name).toEqual(null);
     instance.updateAsyncSelectValue(value);
+    expect(instance.state.mappings[0].to_concept_name).toEqual('malaria 1');
   });
 
   it('should call updateEventListener function', () => {
     const event = {
       target: {
         tabIndex: 0,
-        name: 'to_concept_name',
-        value: 'malaria',
+        name: 'to_concept_code',
+        value: 'a234',
       },
     };
+    const url = '1234';
     const instance = wrapper.find('CreateConcept').instance();
-    instance.updateEventListener(event);
+    instance.updateEventListener({ target: { tabIndex: 0, name: INTERNAL_MAPPING_DEFAULT_SOURCE, value: '' } });
+    instance.updateEventListener(event, url);
+    expect(instance.state.mappings[0].to_concept_code).not.toEqual(null);
   });
 
   it('should call updateEventListener function with internal mapping', () => {

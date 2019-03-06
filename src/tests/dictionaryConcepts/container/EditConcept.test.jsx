@@ -9,7 +9,7 @@ import {
 import { newConcept, existingConcept, mockSource } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
-jest.mock('uuid/v4', () => jest.fn(() => 1234));
+jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
 
 localStorage.setItem('dictionaryPathName', '/');
@@ -39,6 +39,7 @@ describe('Test suite for dictionary concepts components', () => {
     removeDescriptionForEditConcept: jest.fn(),
     addDescriptionForEditConcept: jest.fn(),
     removeNameForEditConcept: jest.fn(),
+    removeConceptMappingAction: jest.fn(),
     updateConcept: jest.fn(),
     addNewAnswer: jest.fn(),
     removeAnswer: jest.fn(),
@@ -221,6 +222,10 @@ describe('Test suite for mappings on existing concepts', () => {
     removeDescriptionForEditConcept: jest.fn(),
     addDescriptionForEditConcept: jest.fn(),
     removeNameForEditConcept: jest.fn(),
+    removeConceptMappingAction: jest.fn(),
+    showGeneralModal: jest.fn(),
+    hideGeneralModal: jest.fn(),
+    confirmRemoveMappingRow: jest.fn(),
     updateConcept: jest.fn(),
     addNewAnswer: jest.fn(),
     removeAnswer: jest.fn(),
@@ -230,7 +235,7 @@ describe('Test suite for mappings on existing concepts', () => {
     loading: false,
     existingConcept: {
       names: [{
-        uuid: '1234',
+        uuid: '12345',
         name: 'dummy',
       }],
       descriptions: [{
@@ -252,17 +257,127 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(instance.state.mappings.length).toEqual(1);
   });
 
-  it('should call removeMappingRow function', () => {
-    const event = { target: { tabIndex: 1 } };
+  it('should call removeConceptMappingAction function', () => {
+    const url = '9999';
     const instance = wrapper.find('EditConcept').instance();
     instance.addMappingRow();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      isNew: true,
+      retired: false,
+      url: '9999',
+    };
     expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(2);
-    instance.removeMappingRow(event);
-    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(1);
+    instance.removeMappingRow(url);
+    expect(instance.state.mappings[1].retired).toEqual(true);
+  });
+
+  it('should call removeUnsavedMappingRow function', () => {
+    const url = '9999';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      isNew: true,
+      retired: false,
+      url: '9999',
+    };
+    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(2);
+    instance.removeUnsavedMappingRow(url);
+    expect(instance.state.mappings[1].retired).toEqual(true);
+  });
+
+  it('should call removeMappingRow function', () => {
+    const url = '9999';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      retired: false,
+      url: '9999',
+      isEditConcept: true,
+    };
+    const spy = jest.spyOn(instance, 'showGeneralModal');
+    instance.removeMappingRow(url);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should show the delete modal', () => {
+    const url = '9999';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      retired: false,
+      url: '9999',
+      isEditConcept: true,
+    };
+    instance.removeMappingRow(url);
+    expect(instance.state.openGeneralModal).toEqual(true);
+  });
+
+  it('should call confirmRemoveMappingRow', () => {
+    const url = '9999';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      retired: false,
+      url: '9999',
+      isEditConcept: true,
+    };
+    const spy = jest.spyOn(instance, 'confirmRemoveMappingRow');
+    instance.removeMappingRow(url);
+    wrapper.find('.btn-danger').at(0).simulate('click');
+    wrapper.find('Button #generalConfirmButton').simulate('click');
+    expect(spy).toHaveBeenCalled();
+    expect(props.removeConceptMappingAction).toHaveBeenCalled();
+  });
+
+  it('should hide the delete modal', () => {
+    const url = '9999';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: null,
+      to_concept_name: null,
+      id: 3,
+      to_source_url: null,
+      retired: false,
+      url: '9999',
+      isEditConcept: true,
+    };
+    const spy = jest.spyOn(instance, 'hideGeneralModal');
+    instance.removeMappingRow(url);
+    wrapper.find('.btn-danger').at(0).simulate('click');
+    wrapper.find('Button #sub-cancel').simulate('click');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should call updateAsyncSelectValue function', () => {
-    const value = { index: 0, value: 'malaria 1', label: 'malaria 1' };
+    const value = { index: '1234', value: 'malaria 1', label: 'malaria 1' };
     const instance = wrapper.find('EditConcept').instance();
     instance.updateAsyncSelectValue(null);
     expect(instance.state.mappings[0].to_concept_name).toEqual(null);
@@ -278,9 +393,10 @@ describe('Test suite for mappings on existing concepts', () => {
         value: 'a234',
       },
     };
+    const url = '1234';
     const instance = wrapper.find('EditConcept').instance();
     instance.updateEventListener({ target: { tabIndex: 0, name: INTERNAL_MAPPING_DEFAULT_SOURCE, value: '' } });
-    instance.updateEventListener(event);
+    instance.updateEventListener(event, url);
     expect(instance.state.mappings[0].to_concept_code).not.toEqual(null);
   });
 

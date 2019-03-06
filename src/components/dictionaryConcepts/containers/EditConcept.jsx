@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
+import uid from 'uuid/v4';
 import CreateConceptForm from '../components/CreateConceptForm';
 import {
   createNewName,
@@ -20,6 +21,9 @@ import {
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
+import { removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
+
 
 export class EditConcept extends Component {
   static propTypes = {
@@ -50,6 +54,7 @@ export class EditConcept extends Component {
     loading: PropTypes.bool.isRequired,
     fetchAllConceptSources: PropTypes.func.isRequired,
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    removeConceptMappingAction: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -63,6 +68,9 @@ export class EditConcept extends Component {
       descriptions: [],
       isEditConcept: true,
       mappings: [],
+      openGeneralModal: false,
+      url: '',
+      mapp: '',
     };
     this.conceptUrl = '';
 
@@ -212,31 +220,80 @@ export class EditConcept extends Component {
       id: mappings.length + 1,
       to_source_url: null,
       isNew: true,
+      retired: false,
+      url: uid(),
     });
     this.setState({ mappings });
   }
 
-  updateEventListener = (event) => {
-    const { tabIndex, name, value } = event.target;
+  updateEventListener = (event, url) => {
+    const { value, name } = event.target;
     const { mappings } = this.state;
-    mappings[tabIndex][name] = value;
-    this.setState(mappings);
+    const newMappings = mappings.map((map) => {
+      const modifyMap = map;
+      if (modifyMap.url === url) {
+        modifyMap[name] = value;
+      }
+      return modifyMap;
+    });
+    this.setState({ mappings: newMappings });
   }
 
   updateAsyncSelectValue = (value) => {
     const { mappings } = this.state;
-    if (value !== null && value.index !== undefined) {
-      mappings[value.index].to_source_url = value.value;
-      mappings[value.index].to_concept_name = value.label;
-    }
-    this.setState({ mappings });
+    const updateAsyncMappings = mappings.map((map) => {
+      const updatedMap = map;
+      if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
+        updatedMap.to_source_url = value.value;
+        updatedMap.to_concept_name = value.label;
+      }
+      return updatedMap;
+    });
+    this.setState({ mappings: updateAsyncMappings });
   }
 
-  removeMappingRow = (event) => {
-    const { tabIndex } = event.target;
+  hideGeneralModal = () => this.setState({ openGeneralModal: false });
+
+  showGeneralModal = (url) => {
+    this.setState({
+      openGeneralModal: true,
+      url,
+    });
+  }
+
+  removeUnsavedMappingRow = (url) => {
     const { mappings } = this.state;
-    delete mappings[tabIndex];
-    this.setState({ mappings });
+    const selectedMappings = mappings.map((map) => {
+      const updatedMap = map;
+      if (updatedMap.url === url) {
+        updatedMap.retired = true;
+      }
+      return updatedMap;
+    });
+    this.setState({ mappings: selectedMappings });
+  }
+
+  confirmRemoveMappingRow = async () => {
+    const { url } = this.state;
+    const { removeConceptMappingAction } = this.props;
+    const data = {
+      references: [url],
+    };
+    await removeConceptMappingAction(data);
+    this.removeUnsavedMappingRow(url);
+    this.hideGeneralModal();
+  }
+
+  removeMappingRow = (url, name, code) => {
+    const { mappings } = this.state;
+    const mapp = name || code;
+    this.setState({ mapp });
+    const filterMappings = mappings.filter(map => map.url === url);
+    if (filterMappings[0].isNew) {
+      this.removeUnsavedMappingRow(url);
+      return;
+    }
+    this.showGeneralModal(url);
   }
 
   organizeMappings = (mappings) => {
@@ -250,6 +307,7 @@ export class EditConcept extends Component {
           to_concept_name: mapping.to_concept_name,
           to_source_url: mapping.to_concept_url,
           url: mapping.url,
+          retired: mapping.retired,
         };
       }
       return {
@@ -260,6 +318,7 @@ export class EditConcept extends Component {
         to_concept_name: mapping.to_concept_name,
         to_source_url: mapping.to_concept_url,
         url: mapping.url,
+        retired: mapping.retired,
       };
     });
     this.setState({
@@ -281,7 +340,7 @@ export class EditConcept extends Component {
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
-    const { mappings } = this.state;
+    const { mappings, mapp, openGeneralModal } = this.state;
     return (
       <div className="container create-custom-concept">
         <div className="row create-concept-header">
@@ -334,6 +393,15 @@ Concept
               />
               )
               }
+              <GeneralModel
+                title={`Confirm deleting the mapping for Concept ${existingConcept.display_name}`}
+                content={`Are you sure you want to delete the mapping for ${existingConcept.display_name} to ${mapp}?`}
+                show={openGeneralModal}
+                confirm_button="Confirm"
+                cancel_button="Cancel"
+                hide={this.hideGeneralModal}
+                select_confirm={this.confirmRemoveMappingRow}
+              />
             </div>
           </div>
         </div>
@@ -367,5 +435,6 @@ export default connect(
     createNewNameForEditConcept,
     removeNameForEditConcept,
     fetchAllConceptSources: fetchConceptSources,
+    removeConceptMappingAction: removeConceptMapping,
   },
 )(EditConcept);
