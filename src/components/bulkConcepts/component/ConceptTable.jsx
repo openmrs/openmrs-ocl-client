@@ -8,6 +8,7 @@ import ConceptPagination from './ConceptPagination';
 
 const ConceptTable = ({
   concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, currentPage,
+  modalId, openModal, closeModal,
 }) => {
   if (loading) {
     return (
@@ -51,6 +52,9 @@ const ConceptTable = ({
             Cell: ({ original: concept }) => (
               <ActionButtons
                 preview={preview}
+                modalId={modalId}
+                closeModal={closeModal}
+                openModal={openModal}
                 previewConcept={previewConcept}
                 addConcept={addConcept}
                 params={location}
@@ -79,12 +83,16 @@ ConceptTable.propTypes = {
     display_name: PropTypes.string,
   }).isRequired,
   addConcept: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
   previewConcept: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
+  modalId: PropTypes.string,
 };
 ConceptTable.defaultProps = {
   original: {},
+  modalId: '',
 };
 
 export default ConceptTable;

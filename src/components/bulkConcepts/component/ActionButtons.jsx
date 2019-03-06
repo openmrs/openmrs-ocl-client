@@ -19,27 +19,22 @@ export class ActionButtons extends Component {
       display_name: PropTypes.string,
     }).isRequired,
     addConcept: PropTypes.func.isRequired,
+    openModal: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    modalId: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       disableButton: false,
     };
   }
 
-  openModal = () => {
-    this.setState({ open: true });
-  };
-
-  closeModal = () => {
-    this.setState({ open: false });
-  };
-
   fetchPreview = (id) => {
-    this.props.previewConcept(id);
-    this.openModal();
+    const { previewConcept, openModal } = this.props;
+    previewConcept(id);
+    openModal(id);
   };
 
   addConcept = (conceptUrl, name) => {
@@ -50,10 +45,11 @@ export class ActionButtons extends Component {
 
   addConceptButton = (id, url, display_name) => {
     this.setState({ disableButton: true });
+    const { closeModal } = this.props;
     notify.show('Adding...', 'warning', 800);
 
     this.fetchPreview(id);
-    this.closeModal();
+    closeModal();
     setTimeout(() => {
       this.addConcept(url, display_name);
     }, 1000);
@@ -61,7 +57,9 @@ export class ActionButtons extends Component {
 
   render() {
     const { disableButton } = this.state;
-    const { id, url, display_name } = this.props;
+    const {
+      id, url, display_name, modalId, closeModal, preview,
+    } = this.props;
     return (
       <React.Fragment>
         <button
@@ -87,10 +85,10 @@ export class ActionButtons extends Component {
           <button type="button" className="btn btn-sm mb-1 actionaButtons">
             Preview concept
             <PreviewCard
-              open={this.state.open}
-              concept={this.props.preview}
+              open={modalId === id}
+              concept={preview}
               addConcept={this.addConcept}
-              closeModal={this.closeModal}
+              closeModal={closeModal}
             />
           </button>
         </div>
