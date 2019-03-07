@@ -14,6 +14,7 @@ class ConceptNameRows extends Component {
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.object.isRequired,
     existingConcept: PropTypes.object.isRequired,
+    rowId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -28,6 +29,7 @@ class ConceptNameRows extends Component {
     },
     index: 0,
     nameRows: [],
+    rowId: '',
   };
 
   constructor(props) {
@@ -35,8 +37,9 @@ class ConceptNameRows extends Component {
     const defaultLocale = locale.find(
       currentLocale => currentLocale.value === props.pathName.language,
     );
+    const { rowId } = this.props;
     this.state = {
-      id: this.props.newRow.id,
+      id: rowId,
       name: '',
       locale: defaultLocale.value,
       locale_full: defaultLocale,
@@ -62,12 +65,12 @@ class ConceptNameRows extends Component {
     const { newRow } = this.props;
     const defaultLocale = locale.find(
       currentLocale => currentLocale.value === newRow.locale,
-    );
+    ) || locale[0];
     this.setState({
       ...this.state,
       uuid: newRow.uuid || '',
       name: newRow.name || '',
-      locale: newRow.locale || defaultLocale,
+      locale: newRow.locale || defaultLocale.value,
       locale_full: defaultLocale,
       name_type: newRow.name_type || 'Fully Specified',
       locale_preferred: newRow.locale_preferred || 'Yes',
@@ -98,21 +101,15 @@ class ConceptNameRows extends Component {
 
   handleRemove(event, id) {
     const {
-      nameRows,
-      index,
       removeRow,
       removeDataFromRow,
     } = this.props;
-    if (!id) {
-      removeRow(event, nameRows[index]);
-      removeDataFromRow(nameRows[index], 'names');
-    } else {
-      removeRow(event, id);
-      removeDataFromRow(id, 'names');
-    }
+    removeRow(event, id);
+    removeDataFromRow({ uuid: id }, 'names');
   }
 
   render() {
+    const { rowId } = this.props;
     return (
       <tr>
         <td>
@@ -169,7 +166,7 @@ class ConceptNameRows extends Component {
             className="btn btn-danger concept-form-table-link"
             id="remove-name"
             type="button"
-            onClick={event => this.handleRemove(event, this.props.newRow.uuid)}
+            onClick={event => this.handleRemove(event, rowId)}
           >
             remove
           </button>

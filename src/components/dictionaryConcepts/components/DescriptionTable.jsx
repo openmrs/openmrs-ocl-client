@@ -16,6 +16,7 @@ const DescriptionTable = props => (
         ? props.existingConcept.descriptions.map(newRow => (
           <DescriptionRow
             newRow={newRow}
+            rowId={newRow.uuid}
             key={newRow.uuid}
             {...props}
           />
@@ -23,6 +24,7 @@ const DescriptionTable = props => (
         : props.description.map(newRow => (
           <DescriptionRow
             newRowUuid={newRow}
+            rowId={newRow}
             key={newRow}
             {...props}
           />))

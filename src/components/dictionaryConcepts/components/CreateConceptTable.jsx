@@ -16,10 +16,10 @@ const CreateConceptTable = props => (
     <tbody>
       {props.existingConcept && props.existingConcept.names
         ? props.existingConcept.names.map(newRow => (
-          <ConceptNameRows newRow={newRow} key={newRow.uuid} {...props} />
+          <ConceptNameRows newRow={newRow} rowId={newRow.uuid} key={newRow.uuid} {...props} />
         ))
         : props.nameRows.map((newRow, index) => (
-          <ConceptNameRows key={newRow} index={index} {...props} />
+          <ConceptNameRows key={newRow} rowId={newRow} index={index} {...props} />
         ))}
     </tbody>
   </table>
