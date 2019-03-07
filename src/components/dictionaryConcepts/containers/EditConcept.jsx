@@ -19,8 +19,11 @@ import {
   createNewNameForEditConcept,
   removeNameForEditConcept,
   unretireMapping,
+  addSelectedAnswersToState,
+  removeSelectedAnswer,
+  addNewAnswerRow,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../components/helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import { removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
@@ -57,6 +60,10 @@ export class EditConcept extends Component {
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
     unretireMapping: PropTypes.func.isRequired,
+    addSelectedAnswers: PropTypes.func.isRequired,
+    selectedAnswers: PropTypes.array.isRequired,
+    removeAnswer: PropTypes.func.isRequired,
+    createNewAnswerRow: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -66,6 +73,7 @@ export class EditConcept extends Component {
       id: '',
       concept_class: '',
       datatype: 'None',
+      answers: [],
       names: [],
       descriptions: [],
       isEditConcept: true,
@@ -92,7 +100,7 @@ export class EditConcept extends Component {
       },
       fetchAllConceptSources,
     } = this.props;
-    this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true`;
+    this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true&verbose=true`;
     this.props.fetchExistingConcept(this.conceptUrl);
     fetchAllConceptSources();
   }
@@ -338,6 +346,42 @@ export class EditConcept extends Component {
     });
   }
 
+  handleAsyncSelectChange = (answers, uniqueKey) => {
+    const { addSelectedAnswers, selectedAnswers } = this.props;
+    addSelectedAnswers(answers, uniqueKey);
+
+    const answersToAdd = selectedAnswers
+      .filter(ans => ans.map_type === MAP_TYPE.questionAndAnswer)
+      .filter(ans => ans.prePopulated !== true);
+    this.setState({
+      answers: answersToAdd,
+    });
+  }
+
+  addAnswerRow = () => {
+    const { createNewAnswerRow } = this.props;
+    const frontEndUniqueKey = uid();
+    const initialAnswerFormation = {
+      frontEndUniqueKey,
+    };
+    createNewAnswerRow(initialAnswerFormation);
+  }
+
+  removeAnswerRow = (uniqueKey, editing, url, name, prepopulated) => {
+    const { removeAnswer } = this.props;
+    this.setState({
+      deletingAnswer: true,
+      answerToDeleteName: name,
+    });
+    if (editing && prepopulated) {
+      this.showGeneralModal(url);
+      this.removeUnsavedMappingRow(url);
+      return true;
+    }
+    removeAnswer(uniqueKey);
+    return true;
+  }
+
   render() {
     const {
       match: {
@@ -347,10 +391,13 @@ export class EditConcept extends Component {
       },
       existingConcept,
       loading,
+      selectedAnswers,
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
-    const { mappings, mapp, openGeneralModal } = this.state;
+    const {
+      mappings, mapp, openGeneralModal, deletingAnswer, answerToDeleteName,
+    } = this.state;
     return (
       <div className="container create-custom-concept">
         <div className="row create-concept-header">
@@ -400,12 +447,20 @@ Concept
                 removeMappingRow={this.removeMappingRow}
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
+                handleAsyncSelectChange={this.handleAsyncSelectChange}
+                selectedAnswers={selectedAnswers}
+                addAnswerRow={this.addAnswerRow}
+                removeAnswerRow={this.removeAnswerRow}
+                currentDictionaryName={dictionaryName}
               />
               )
               }
               <GeneralModel
-                title={`Confirm deleting the mapping for Concept ${existingConcept.display_name}`}
-                content={`Are you sure you want to delete the mapping for ${existingConcept.display_name} to ${mapp}?`}
+                title={`Confirm deleting the ${deletingAnswer ? 'answer' : 'mapping'} for Concept ${existingConcept.display_name}`}
+                content={
+                  deletingAnswer
+                    ? `Are you sure you want to delete the answer '${answerToDeleteName}'?`
+                    : `Are you sure you want to delete the mapping for ${existingConcept.display_name} to ${mapp}?`}
                 show={openGeneralModal}
                 confirm_button="Confirm"
                 cancel_button="Cancel"
@@ -428,6 +483,7 @@ export const mapStateToProps = state => ({
   existingConcept: state.concepts.existingConcept,
   loading: state.concepts.loading,
   allSources: state.sourceConcepts.conceptSources,
+  selectedAnswers: state.concepts.selectedAnswers,
 });
 export default connect(
   mapStateToProps,
@@ -447,5 +503,8 @@ export default connect(
     unretireMapping,
     fetchAllConceptSources: fetchConceptSources,
     removeConceptMappingAction: removeConceptMapping,
+    addSelectedAnswers: addSelectedAnswersToState,
+    removeAnswer: removeSelectedAnswer,
+    createNewAnswerRow: addNewAnswerRow,
   },
 )(EditConcept);

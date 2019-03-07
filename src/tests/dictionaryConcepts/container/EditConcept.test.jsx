@@ -45,7 +45,7 @@ describe('Test suite for dictionary concepts components', () => {
     removeAnswer: jest.fn(),
     newName: ['1'],
     description: ['1'],
-    answer: ['78'],
+    answers: [],
     loading: false,
     existingConcept: {
       names: [{
@@ -60,6 +60,9 @@ describe('Test suite for dictionary concepts components', () => {
     newRow: '1234',
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource],
+    addSelectedAnswers: jest.fn(),
+    selectedAnswers: [],
+    createNewAnswerRow: jest.fn(),
   };
   it('should render without breaking', () => {
     const wrapper = mount(<Router>
@@ -246,6 +249,11 @@ describe('Test suite for mappings on existing concepts', () => {
     newRow: '1234',
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource],
+    addSelectedAnswers: jest.fn(),
+    selectedAnswers: [{
+      frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A', prePopulated: false,
+    }],
+    createNewAnswerRow: jest.fn(),
   };
   const wrapper = mount(<Router>
     <EditConcept {...props} />
@@ -451,5 +459,26 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.componentWillReceiveProps({ existingConcept: { mappings: undefined } });
     instance.componentWillReceiveProps(newProps);
     expect(instance.state.source).toEqual(INTERNAL_MAPPING_DEFAULT_SOURCE);
+  });
+
+  it('should update the state with answers', () => {
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'handleAsyncSelectChange');
+    instance.handleAsyncSelectChange();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should add new answer row', () => {
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'addAnswerRow');
+    instance.addAnswerRow();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should remove answer row', () => {
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'removeAnswerRow');
+    instance.removeAnswerRow('uniqueKey', true, 'url', 'name', 'code', true);
+    expect(spy).toHaveBeenCalled();
   });
 });

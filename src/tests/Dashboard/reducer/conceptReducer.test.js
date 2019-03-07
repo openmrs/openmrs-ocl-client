@@ -4,9 +4,11 @@ import {
   IS_FETCHING,
   SEARCH_CONCEPTS,
   CLEAR_CONCEPTS,
-  QUERY_POSSIBLE_ANSWER_CONCEPTS,
   ADD_SELECTED_ANSWERS,
-  CHANGE_ANSWER_MAPPING,
+  ADD_NEW_ANSWER_ROW,
+  REMOVE_SELECTED_ANSWER,
+  PRE_POPULATE_ANSWERS,
+  UNPOPULATE_PRE_POPULATED_ANSWERS,
 } from '../../../redux/actions/types';
 import concepts from '../../__mocks__/concepts';
 
@@ -32,8 +34,9 @@ const initialState = {
     descriptions: [],
     names: [],
   },
-  queryResults: [],
-  selectedAnswers: [],
+  selectedAnswers: [{
+    frontEndUniqueKey: 'intialKey',
+  }],
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
@@ -163,25 +166,33 @@ describe('Test suite for concepts reducer', () => {
     },
   );
 
-  it('should add the concepts query results to redux state', () => {
-    const payload = [{ concept: 'test' }];
-    const newState = reducer(initialState, { type: QUERY_POSSIBLE_ANSWER_CONCEPTS, payload });
-    expect(newState.queryResults).toEqual(payload);
-  });
-
   it('should add the selected answers to redux state', () => {
-    const payload = [{ answer: 'test' }];
+    const payload = { answer: { frontEndUniqueKey: 'intialKey' }, uniqueKey: 'intialKey' };
     const newState = reducer(initialState, { type: ADD_SELECTED_ANSWERS, payload });
-    expect(newState.selectedAnswers).toEqual(payload);
+    expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'intialKey' }]);
   });
 
-  it('should add change the answer mapping details and update redux state', () => {
-    const changedState = {
-      ...initialState,
-      selectedAnswers: [{ id: 'testID', map_type: 'Internal' }],
-    };
-    const payload = { id: 'testID', map_type: 'External' };
-    const newState = reducer(changedState, { type: CHANGE_ANSWER_MAPPING, payload });
-    expect(newState.selectedAnswers[0].map_type).toEqual('External');
+  it('should prepopulate selected answers array', () => {
+    const payload = [{ frontEndUniqueKey: 'newIntialKey' }];
+    const newState = reducer(initialState, { type: PRE_POPULATE_ANSWERS, payload });
+    expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'newIntialKey' }]);
+  });
+
+  it('should unpopulate selected answers array', () => {
+    const payload = [{ frontEndUniqueKey: 'newIntialKey' }];
+    const newState = reducer(initialState, { type: UNPOPULATE_PRE_POPULATED_ANSWERS, payload });
+    expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'intialKey' }]);
+  });
+
+  it('should add new answer row', () => {
+    const payload = { frontEndUniqueKey: 'newIntialKey' };
+    const newState = reducer(initialState, { type: ADD_NEW_ANSWER_ROW, payload });
+    expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'intialKey' }, { frontEndUniqueKey: 'newIntialKey' }]);
+  });
+
+  it('should remove answer row', () => {
+    const payload = 'intialKey';
+    const newState = reducer(initialState, { type: REMOVE_SELECTED_ANSWER, payload });
+    expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'newIntialKey' }]);
   });
 });

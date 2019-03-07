@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
+import { queryAnswers } from '../../../redux/actions/concepts/dictionaryConcepts';
 
-class AsyncMulti extends Component {
-    state = { inputValue: '' }
+class SelectAnswers extends Component {
+  state = {
+    inputValue: '',
+
+  }
 
     handleChange = (arr) => {
-      const { handleAsyncSelectChange } = this.props;
-      handleAsyncSelectChange(arr);
+      const { handleAsyncSelectChange, frontEndUniqueKey } = this.props;
+      if (arr !== null) {
+        handleAsyncSelectChange(arr, frontEndUniqueKey);
+      }
     };
 
     handleInputChange = (value) => {
@@ -16,23 +22,28 @@ class AsyncMulti extends Component {
 
     render() {
       const { inputValue } = this.state;
-      const { queryAnswers } = this.props;
+      const { source } = this.props;
       return (
         <AsyncSelect
-          isMulti
+          isClearable
           cacheOptions
-          loadOptions={async () => queryAnswers(inputValue)}
+          loadOptions={async () => queryAnswers(source, inputValue)}
           onChange={this.handleChange}
           onInputChange={this.handleInputChange}
-          placeholder="Search possible answer concepts"
+          placeholder="Search"
         />
       );
     }
 }
 
-AsyncMulti.propTypes = {
+SelectAnswers.propTypes = {
   handleAsyncSelectChange: PropTypes.func.isRequired,
-  queryAnswers: PropTypes.func.isRequired,
+  source: PropTypes.string,
+  frontEndUniqueKey: PropTypes.string.isRequired,
 };
 
-export default AsyncMulti;
+SelectAnswers.defaultProps = {
+  source: '',
+};
+
+export default SelectAnswers;

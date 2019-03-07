@@ -1,59 +1,126 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SelectAnswers from '../containers/SelectAnswers';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
 
 
-const answerRow = (props) => {
-  const { display_name, handleAnswerChange, id } = props;
-  return (
-    <tr>
-      <td>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="eg. Malaria"
-          name="display-name"
-          disabled
-          value={display_name}
-          required
-        />
-      </td>
-      <td>
-        <select
-          name="map_scope"
-          className="form-control"
-          onChange={event => handleAnswerChange(event, id)}
-          required
-        >
-          <option>Internal</option>
-          <option>External</option>
-        </select>
-      </td>
-      <td>
-        <select
-          name="map_type"
-          className="form-control"
-          onChange={event => handleAnswerChange(event, id)}
-          required
-        >
-          <option>Same as</option>
-          <option>Narrower than</option>
-        </select>
-      </td>
-    </tr>
+class AnswerRow extends React.Component {
+  constructor(props) {
+    super(props);
+    const DEFAULT_SOURCE = localStorage.getItem('dictionaryId');
+    this.state = {
+      source: DEFAULT_SOURCE,
+    };
+  }
 
-  );
-};
+  handleChangeInSource = (event) => {
+    const newSource = event.target.value;
+    this.setState({
+      source: newSource,
+    });
+  }
 
-answerRow.propTypes = {
+  render() {
+    const {
+      removeAnswerRow,
+      currentDictionaryName,
+      handleAsyncSelectChange,
+      frontEndUniqueKey,
+      toConceptName,
+      isEditConcept,
+      prePopulated,
+      answerUrl,
+    } = this.props;
+    const { source } = this.state;
+    return (
+      <tr>
+        <td>
+          {
+            isEditConcept && prePopulated ? (
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentDictionaryName}
+                required
+              />
+            ) : (
+              <select
+                name="map_scope"
+                className="form-control"
+                onChange={event => this.handleChangeInSource(event)}
+                required
+              >
+                <option value={localStorage.getItem('dictionaryId')}>{currentDictionaryName}</option>
+                <option value={INTERNAL_MAPPING_DEFAULT_SOURCE}>
+                INTERNAL_MAPPING_DEFAULT_SOURCE
+                </option>
+              </select>
+            )
+          }
+        </td>
+        <td className="react-async">
+          {
+          isEditConcept && prePopulated ? (
+            <input
+              type="text"
+              className="form-control"
+              defaultValue={toConceptName}
+              required
+            />
+          ) : (
+            <SelectAnswers
+              handleAsyncSelectChange={handleAsyncSelectChange}
+              source={source}
+              frontEndUniqueKey={frontEndUniqueKey}
+            />
+          )
+        }
+        </td>
+        <td>
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={() => removeAnswerRow(
+              frontEndUniqueKey,
+              isEditConcept,
+              answerUrl,
+              toConceptName,
+              prePopulated,
+            )}
+          >
+                remove
+          </button>
+        </td>
+      </tr>
+
+    );
+  }
+}
+
+
+AnswerRow.propTypes = {
   display_name: PropTypes.string,
   handleAnswerChange: PropTypes.func.isRequired,
   id: PropTypes.string,
+  answerUrl: PropTypes.string,
+  prePopulated: PropTypes.bool,
+  isEditConcept: PropTypes.bool.isRequired,
+  removeAnswerRow: PropTypes.func.isRequired,
+  toConceptName: PropTypes.string,
+  frontEndUniqueKey: PropTypes.string,
+  handleAsyncSelectChange: PropTypes.func.isRequired,
+  currentDictionaryName: PropTypes.string,
 };
 
-answerRow.defaultProps = {
+AnswerRow.defaultProps = {
   display_name: '',
   id: '',
+  answerUrl: '',
+  prePopulated: false,
+  toConceptName: '',
+  currentDictionaryName: '',
+  frontEndUniqueKey: 'unique',
 };
 
 
-export default answerRow;
+export default AnswerRow;

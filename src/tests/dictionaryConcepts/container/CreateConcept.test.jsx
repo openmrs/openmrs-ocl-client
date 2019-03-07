@@ -29,7 +29,6 @@ describe('Test suite for dictionary concepts components', () => {
     },
     existingConcept: [],
     createNewName: jest.fn(),
-    answer: [12343],
     addNewDescription: jest.fn(),
     clearSelections: jest.fn(),
     removeNewName: jest.fn(),
@@ -49,15 +48,13 @@ describe('Test suite for dictionary concepts components', () => {
     state: {
       id: '1',
     },
-    queryResults: [{
-      id: 'test ID', url: 'answer/url', owner: 'answer owner', display_name: 'display name',
-    }],
-    selectedAnswers: [{ id: 'test ID', map_type: 'Same as' }],
-    getPossibleAnswers: jest.fn(),
+    selectedAnswers: [{ frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A' }],
     addSelectedAnswers: jest.fn(),
-    changeAnswer: jest.fn(),
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource, mockCielSource],
+    unpopulateSelectedAnswers: jest.fn(),
+    removeAnswer: jest.fn(),
+    createNewAnswerRow: jest.fn(),
   };
 
   let wrapper;
@@ -227,41 +224,24 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should update the state with answers', () => {
-    wrapper = wrapper.find('CreateConcept');
-    const instance = wrapper.instance();
-    instance.handleAsyncSelectChange([{ answer: 'test answer' }]);
-    expect(wrapper.state().answers).toEqual([{ answer: 'test answer' }]);
+    const instance = wrapper.find('CreateConcept').instance();
+    expect(instance.state.answers).toEqual([]);
+    instance.handleAsyncSelectChange();
+    expect(instance.state.answers).toEqual([{ frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A' }]);
   });
 
-  it('should return options after query', () => {
-    const options = [{
-      id: 'test ID',
-      display_name: 'display name',
-      label: 'answer owner: display name',
-      map_scope: 'Internal',
-      map_type: 'Same as',
-      owner: 'answer owner',
-      url: 'answer/url',
-      value: 'answer/url',
-    }];
-
-    wrapper = wrapper.find('CreateConcept');
-    const instance = wrapper.instance();
-    expect(instance.queryAnswers('test query')).toEqual(options);
+  it('should add new answer row', () => {
+    const instance = wrapper.find('CreateConcept').instance();
+    const spy = jest.spyOn(instance, 'addAnswerRow');
+    instance.addAnswerRow();
+    expect(spy).toHaveBeenCalled();
   });
 
-  it(' should update the state with new answer details', () => {
-    wrapper = wrapper.find('CreateConcept');
-    const instance = wrapper.instance();
-    expect(wrapper.state().answers).toEqual([]);
-    const event = {
-      target: {
-        name: 'map_type',
-        value: 'Same as',
-      },
-    };
-    instance.handleAnswerChange(event, 'test ID');
-    expect(wrapper.state().answers[0].map_type).toEqual('Same as');
+  it('should remove answer row', () => {
+    const instance = wrapper.find('CreateConcept').instance();
+    const spy = jest.spyOn(instance, 'removeAnswerRow');
+    instance.removeAnswerRow('uniqueKey');
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should pass the Relationship provided to CreateConceptForm', () => {

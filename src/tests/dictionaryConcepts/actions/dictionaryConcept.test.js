@@ -28,9 +28,11 @@ import {
   FETCH_EXISTING_CONCEPT_ERROR,
   REMOVE_CONCEPT,
   REMOVE_MAPPING,
-  QUERY_POSSIBLE_ANSWER_CONCEPTS,
   ADD_SELECTED_ANSWERS,
-  CHANGE_ANSWER_MAPPING,
+  PRE_POPULATE_ANSWERS,
+  ADD_NEW_ANSWER_ROW,
+  REMOVE_SELECTED_ANSWER,
+  UNPOPULATE_PRE_POPULATED_ANSWERS,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -44,6 +46,7 @@ import {
   clearSelections,
   createNewConcept,
   fetchSourceConcepts,
+  queryAnswers,
   addConceptToDictionary,
   paginateConcepts,
   fetchExistingConcept,
@@ -53,10 +56,12 @@ import {
   createNewNameForEditConcept,
   removeNameForEditConcept,
   updateConcept,
-  queryPossibleAnswers,
   addSelectedAnswersToState,
-  changeSelectedAnswer,
   addAnswerMappingToConcept,
+  addNewAnswerRow,
+  removeSelectedAnswer,
+  unpopulatePrepopulatedAnswers,
+  prepopulateAnswers,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -69,7 +74,7 @@ import concepts, {
   multipleConceptsMockStore,
   existingConcept,
 } from '../../__mocks__/concepts';
-import { CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -92,6 +97,58 @@ describe('Test suite for dictionary concept actions', () => {
       request.respondWith({ status: 200, response: expectedPosts });
     });
     await fetchSourceConcepts('source', 'query');
+  });
+
+  it('should query possible answer concepts', async () => {
+    const expectedAnswers = [{
+      id: 'Answer 1',
+      url: 'url',
+      source: 'source',
+      display_name: 'display_name',
+    }];
+
+    const expectedResult = [{
+      id: 'Answer 1',
+      url: 'url',
+      source: 'source',
+      display_name: 'display_name',
+      map_type: MAP_TYPE.questionAndAnswer,
+      value: 'url',
+      label: 'source: display_name',
+    }];
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: expectedAnswers });
+    });
+    const result = await queryAnswers('source', 'query');
+    expect(result).toEqual(expectedResult);
+  });
+
+  it('should query possible answer concepts from CIEL', async () => {
+    const expectedAnswers = [{
+      id: 'CIEL 1',
+      url: 'url',
+      source: 'source',
+      display_name: 'display_name',
+    }];
+
+    const expectedResult = [{
+      id: 'CIEL 1',
+      url: 'url',
+      source: 'source',
+      display_name: 'display_name',
+      map_type: MAP_TYPE.questionAndAnswer,
+      value: 'url',
+      label: 'source: display_name',
+    }];
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: expectedAnswers });
+    });
+    const result = await queryAnswers(INTERNAL_MAPPING_DEFAULT_SOURCE, 'query');
+    expect(result).toEqual(expectedResult);
   });
 
   it('should handle FETCH_DICTIONARY_CONCEPT', () => {
@@ -462,6 +519,7 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+      { type: PRE_POPULATE_ANSWERS, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -493,6 +551,7 @@ describe('Testing Edit concept actions ', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+      { type: PRE_POPULATE_ANSWERS, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -574,6 +633,7 @@ describe('Testing Edit concept actions ', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: UPDATE_CONCEPT, payload: existingConcept },
+      { type: IS_FETCHING, payload: false },
     ];
 
     const store = mockStore(mockConceptStore);
@@ -707,56 +767,42 @@ describe('test suite for synchronous action creators', () => {
 
   it('should handle ADD_SELECTED_ANSWERS', () => {
     const expectedActions = [
-      { type: ADD_SELECTED_ANSWERS, payload: [{}] },
+      { type: ADD_SELECTED_ANSWERS, payload: { answer: [{}], uniqueKey: undefined } },
     ];
     const store = mockStore(mockConceptStore);
     store.dispatch(addSelectedAnswersToState([{}]));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should handle CHANGE_ANSWER_MAPPING ', () => {
-    const expectedActions = [
-      { type: CHANGE_ANSWER_MAPPING, payload: [{}] },
-    ];
+  it('should handle ADD_NEW_ANSWER_ROW', () => {
     const store = mockStore(mockConceptStore);
-    store.dispatch(changeSelectedAnswer([{}]));
+    const expectedActions = [{ type: ADD_NEW_ANSWER_ROW, payload: {} }];
+    store.dispatch(addNewAnswerRow({}));
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should handle QUERY_POSSIBLE_ANSWER_CONCEPTS', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [{ type: 'concept' }],
-      });
-    });
-
-    const expectedActions = [
-      { type: QUERY_POSSIBLE_ANSWER_CONCEPTS, payload: [{ type: 'concept' }] },
-    ];
-
+  it('should handle REMOVE_SELECTED_ANSWER', () => {
     const store = mockStore(mockConceptStore);
-    return store.dispatch(queryPossibleAnswers('test')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    const expectedActions = [{ type: REMOVE_SELECTED_ANSWER, payload: 'uniqueKey' }];
+    store.dispatch(removeSelectedAnswer('uniqueKey'));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should handle QUERY_POSSIBLE_ANSWER_CONCEPTS and fail', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: [{ type: 'concept' }],
-      });
-    });
-
-    const expectedActions = [];
-
+  it('should handle UNPOPULATE_PRE_POPULATED_ANSWERS', () => {
     const store = mockStore(mockConceptStore);
-    return store.dispatch(queryPossibleAnswers('test')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    const expectedActions = [{ type: UNPOPULATE_PRE_POPULATED_ANSWERS }];
+    store.dispatch(unpopulatePrepopulatedAnswers());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle PRE_POPULATE_ANSWERS', () => {
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{
+      type: PRE_POPULATE_ANSWERS,
+      payload: [{ retired: false, prePopulated: true }],
+    }];
+    store.dispatch(prepopulateAnswers([{ retired: false, prePopulated: true }]));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 });
 
