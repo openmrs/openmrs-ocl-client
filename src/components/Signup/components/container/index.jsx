@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { TRADITIONAL_OCL_BASE_URL } from '../../../dictionaryConcepts/components/helperFunction';
 
 export class Signup extends Component {
   state = {
@@ -118,7 +119,7 @@ export class Signup extends Component {
             <div className="container text-right pt-3">
               Or Sign Up on
               {' '}
-              <a href="https://qa.openconceptlab.org/accounts/signup/">Traditional OCL</a>
+              <a href={`${TRADITIONAL_OCL_BASE_URL}/accounts/signup/`}>Traditional OCL</a>
             </div>
           </form>
         </div>

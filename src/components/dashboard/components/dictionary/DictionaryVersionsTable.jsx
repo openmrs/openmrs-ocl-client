@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { TRADITIONAL_OCL_BASE_URL } from '../../../dictionaryConcepts/components/helperFunction';
 
 const DictionaryVersionsTable = (version) => {
   const {
@@ -12,13 +13,13 @@ const DictionaryVersionsTable = (version) => {
   const DATE_OPTIONS = {
     weekday: 'long', year: 'numeric', month: 'short', day: 'numeric',
   };
-  const traditionalOclUrl = 'https://qa.openconceptlab.org';
+
   return (
     <tr id="versiontable">
       <td>{id}</td>
       <td>{ (new Date(updated_on)).toLocaleDateString('en-US', DATE_OPTIONS)}</td>
       <td>
-        <a className="btn btn-sm" target="_blank" rel="noopener noreferrer" href={traditionalOclUrl + version_url}>Browse in OCL</a>
+        <a className="btn btn-sm" target="_blank" rel="noopener noreferrer" href={TRADITIONAL_OCL_BASE_URL + version_url}>Browse in OCL</a>
         {' '}
         <Link className="downloadConcepts btn btn-sm" onClick={download} to="#">Download</Link>
         {' '}

@@ -189,6 +189,52 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper3.instance().state.errors).toEqual({});
   });
 
+  it('it should handle undefined submit error response', async () => {
+    const error = {
+      response: undefined,
+    };
+
+    const newProps = {
+      title: 'Add Dictionary',
+      buttonname: 'Add Dictionary',
+      show: true,
+      modalhide: jest.fn(),
+      submit: jest.fn().mockImplementation(() => Promise.reject(error)),
+      organizations: [],
+      fetchingOrganizations: jest.fn(),
+      fetchSources: jest.fn(),
+      createDictionary: jest.fn(),
+      createDictionaryUser: jest.fn(),
+      handleHide: jest.fn(),
+      name: jest.fn(),
+      dictionary,
+      sources: [{ name: 'source', id: '1' }],
+      dictionaries: [],
+      userDictionaries: [],
+      searchDictionaries: jest.fn(),
+    };
+    const wrapper3 = shallow(<DictionaryModal {...newProps} />);
+
+    wrapper3.setState({
+      data: {
+        ...wrapper3.state().data,
+        id: '1',
+        preferred_source: 'CIEL',
+        public_access: 'None',
+        name: 'OpenMRSDictionary',
+        owner: 'indiviual',
+        description: 'OpenMRSDictionary',
+        default_locale: 'en',
+        supported_locales: 'us',
+        repository_type: 'OpenMRSDictionary',
+      },
+      errors: {},
+    });
+
+    await wrapper3.instance().onSubmit(preventDefault);
+    expect(wrapper3.instance().state.errors).toEqual({});
+  });
+
   it('it should handle search input values', () => {
     props.isEditingDictionary = false;
     const wrapper2 = mount(<DictionaryModal {...props} />);
