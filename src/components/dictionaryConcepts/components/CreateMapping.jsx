@@ -31,7 +31,7 @@ class CreateMapping extends Component {
             className="form-control"
             name="source"
             onChange={(event) => { updateEventListener(event, url); }}
-            defaultValue={isNew ? '' : source}
+            value={source || undefined}
           >
             <option value="" hidden>Select a source</option>
             {allSources.map(src => <option
