@@ -71,6 +71,7 @@ export class EditConcept extends Component {
       openGeneralModal: false,
       url: '',
       mapp: '',
+      source: '',
     };
     this.conceptUrl = '';
 
@@ -102,9 +103,10 @@ export class EditConcept extends Component {
   componentWillReceiveProps(newProps) {
     const { existingConcept } = newProps;
     const { mappings } = this.state;
-    if (existingConcept.mappings !== undefined
-      && existingConcept.mappings.length > mappings.length) {
-      this.organizeMappings(existingConcept.mappings);
+    if (existingConcept !== undefined && existingConcept.mappings) {
+      if (existingConcept.mappings.length > mappings.length) {
+        this.organizeMappings(existingConcept.mappings);
+      }
     }
   }
 

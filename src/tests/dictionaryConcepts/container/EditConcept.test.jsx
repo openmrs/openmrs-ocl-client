@@ -214,6 +214,7 @@ describe('Test suite for mappings on existing concepts', () => {
       push: jest.fn(),
     },
     createNewName: jest.fn(),
+    organizeMappings: jest.fn(),
     addNewDescription: jest.fn(),
     clearSelections: jest.fn(),
     fetchExistingConcept: jest.fn(),
@@ -412,6 +413,18 @@ describe('Test suite for mappings on existing concepts', () => {
     const spy = jest.spyOn(instance, 'updateEventListener');
     instance.updateEventListener(event);
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should test componentWillReceiveProps with ', () => {
+    const newProps = {
+      existingConcept: {
+        mappings: null,
+      },
+    };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.componentWillReceiveProps({ existingConcept: { mappings: undefined } });
+    instance.componentWillReceiveProps(newProps);
+    expect(instance.state.source).toEqual('');
   });
 
   it('should test componentWillReceiveProps', () => {
