@@ -5,7 +5,9 @@ import {
   CreateConcept,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/CreateConcept';
-import { newConcept, mockSource, mockCielSource } from '../../__mocks__/concepts';
+import {
+  newConcept, mockSource, mockCielSource, mockMapping,
+} from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
@@ -260,5 +262,15 @@ describe('Test suite for dictionary concepts components', () => {
     };
     instance.handleAnswerChange(event, 'test ID');
     expect(wrapper.state().answers[0].map_type).toEqual('Same as');
+  });
+
+  it('should pass the Relationship provided to CreateConceptForm', () => {
+    wrapper.setState({ mappings: [mockMapping] }, () => {
+      const inputValue = 'BROADER-THAN';
+      const relationshipDropdown = wrapper.find('select#mapping-relationship');
+      const event = { target: { name: 'map_type', value: inputValue } };
+      relationshipDropdown.simulate('change', event);
+      expect(wrapper.find('CreateConceptForm').props().mappings[0].map_type).toEqual(inputValue);
+    });
   });
 });

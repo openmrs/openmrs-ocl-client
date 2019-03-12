@@ -45,6 +45,7 @@ class CreateMapping extends Component {
         <td>
           {<MapType
             updateEventListener={updateEventListener}
+            url={url}
             index={index}
             map_type={map_type}
             source={source}
