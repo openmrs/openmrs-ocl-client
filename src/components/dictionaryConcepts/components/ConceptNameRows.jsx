@@ -13,7 +13,8 @@ class ConceptNameRows extends Component {
     removeRow: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
     pathName: PropTypes.object.isRequired,
-    existingConcept: PropTypes.object.isRequired,
+    // eslint-disable-next-line react/require-default-props
+    existingConcept: PropTypes.object,
     rowId: PropTypes.string,
   };
 
