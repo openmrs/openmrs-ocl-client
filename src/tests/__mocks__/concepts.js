@@ -534,3 +534,15 @@ export const mockCielSource = {
   owner_type: 'Organization',
   owner_url: '/orgs/CIEL/',
 };
+
+export const mockMapping = {
+  id: 1,
+  isNew: true,
+  map_type: 'SAME-AS',
+  retired: false,
+  source: null,
+  to_concept_code: null,
+  to_concept_name: null,
+  to_source_url: null,
+  url: '1234',
+};

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const mapType = (props) => {
   const {
-    index, map_type, map_types, updateEventListener,
+    index, map_type, map_types, updateEventListener, url,
   } = props;
   return (
     <select
@@ -13,7 +13,8 @@ const mapType = (props) => {
       placeholder="map type"
       type="text"
       name="map_type"
-      onChange={updateEventListener}
+      id="mapping-relationship"
+      onChange={(event) => { updateEventListener(event, url); }}
     >
       {
       map_types.map(_ => <option key={_}>
@@ -31,9 +32,11 @@ mapType.propTypes = {
   index: PropTypes.number,
   updateEventListener: PropTypes.func,
   map_types: PropTypes.array,
+  url: PropTypes.string,
 };
 
 mapType.defaultProps = {
+  url: '',
   map_type: '',
   index: 0,
   updateEventListener: () => {},
