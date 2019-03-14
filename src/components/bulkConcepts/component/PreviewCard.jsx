@@ -90,7 +90,7 @@ const PreviewCard = ({
       <Modal isOpen={open} className="modal-lg">
         <ModalBody className="preview-modal">
           <h6>
-            {`${display_name}(${id})`}
+            {`${display_name}  (${id})`}
             <div className="card-version">
               <small>
                 <a href={`${TRADITIONAL_OCL_BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
