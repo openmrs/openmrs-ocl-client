@@ -9,7 +9,6 @@ const props = {
   addDataFromRow: jest.fn(),
   removeRow: jest.fn(),
   removeDataFromRow: jest.fn(),
-  existingConcept: {},
   newRow: {
     uuid: '123',
   },
