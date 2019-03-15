@@ -18,6 +18,7 @@ import {
   clearPreviousConcept,
   createNewNameForEditConcept,
   removeNameForEditConcept,
+  unretireMapping,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
@@ -55,6 +56,7 @@ export class EditConcept extends Component {
     fetchAllConceptSources: PropTypes.func.isRequired,
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
+    unretireMapping: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -158,6 +160,14 @@ export class EditConcept extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    const { mappings } = this.state;
+    const retired = mappings.filter(mapping => mapping.retired);
+    const freshMappings = mappings.filter(mapping => mapping.isNew);
+    freshMappings.forEach((mapping) => {
+      const toBeUnRetired = retired.find(m => m.to_concept_name === mapping.to_concept_name);
+      if (toBeUnRetired) this.props.unretireMapping(toBeUnRetired.url);
+    });
+
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
       this.props.updateConcept(this.conceptUrl, this.state, this.props.history);
@@ -434,6 +444,7 @@ export default connect(
     clearPreviousConcept,
     createNewNameForEditConcept,
     removeNameForEditConcept,
+    unretireMapping,
     fetchAllConceptSources: fetchConceptSources,
     removeConceptMappingAction: removeConceptMapping,
   },
