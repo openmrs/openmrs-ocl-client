@@ -11,6 +11,7 @@ const ActionButtons = ({
   showDeleteModal,
   version_url,
   retired,
+  retireConcept,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -18,17 +19,7 @@ const ActionButtons = ({
     showExtra = true;
   }
   return (
-    !retired && <React.Fragment>
-      {showExtra && (
-        <React.Fragment>
-          <Link
-            className="edit-button-link btn btn-sm mb-1 actionButtons"
-            to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
-          >
-          Edit
-          </Link>
-        </React.Fragment>
-      )}
+    <React.Fragment>
       {source !== CUSTOM_SOURCE && (
         <button
           type="button"
@@ -41,6 +32,34 @@ const ActionButtons = ({
           Remove
         </button>
       )}
+      {!retired && <React.Fragment>
+        {showExtra && (
+          <React.Fragment>
+            <button
+              className="btn btn-sm mb-1 actionButtons"
+              type="button"
+              id="retire"
+              onClick={() => retireConcept(id, true)}
+            >
+              Retire
+            </button>
+            <Link
+              className="edit-button-link btn btn-sm mb-1 actionButtons"
+              to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
+            >
+            Edit
+            </Link>
+          </React.Fragment>
+        )}
+      </React.Fragment>}
+      {retired && showExtra && <button
+        className="btn btn-sm mb-1 actionButtons"
+        type="button"
+        id="unRetire"
+        onClick={() => retireConcept(id, false)}
+      >
+        Unretire
+      </button>}
     </React.Fragment>
   );
 };
@@ -58,6 +77,7 @@ ActionButtons.propTypes = {
   source: PropTypes.string,
   mappingLimit: PropTypes.number,
   retired: PropTypes.bool,
+  retireConcept: PropTypes.func,
 };
 
 ActionButtons.defaultProps = {
@@ -65,6 +85,7 @@ ActionButtons.defaultProps = {
   mappings: [],
   mappingLimit: null,
   retired: false,
+  retireConcept: () => {},
 };
 
 export default ActionButtons;

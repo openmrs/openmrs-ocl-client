@@ -8,7 +8,7 @@ import {
   DictionaryConcepts,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/DictionaryConcepts';
-import concepts, { concept3 } from '../../__mocks__/concepts';
+import concepts, { concept3, sampleConcept } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 import ConceptTable from '../../../components/dictionaryConcepts/components/ConceptTable';
 
@@ -17,6 +17,14 @@ const store = createMockStore({
     organizations: [],
   },
 });
+
+const retireMockProps = {
+  retireCurrentConcept: jest.fn(),
+  recreateConcept: jest.fn(),
+  removeConcept: jest.fn(),
+  getOriginalConcept: async () => jest.fn(),
+  originalConcept: sampleConcept,
+};
 
 jest.useFakeTimers();
 
@@ -50,6 +58,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -110,6 +119,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -149,6 +159,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
 
     const wrapper = mount(<Provider store={store}>
@@ -188,6 +199,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ versionUrl: 'url' });
@@ -227,6 +239,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     wrapper.setState({ data: { references: [props.url] } });
@@ -263,6 +276,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
@@ -299,6 +313,7 @@ describe('Test suite for dictionary concepts components', () => {
       showDeleteMappingModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = shallow(<DictionaryConcepts {...props} />);
     const instance = wrapper.instance();
@@ -332,6 +347,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -383,6 +399,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const app = shallow(<DictionaryConcepts {...props} />);
     const newProps = {
@@ -453,6 +470,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -496,6 +514,7 @@ describe('Test suite for dictionary concepts components', () => {
       removeDictionaryConcept: jest.fn(),
       removeConceptMappingAction: jest.fn(),
       searchByName: jest.fn(),
+      ...retireMockProps,
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -504,5 +523,100 @@ describe('Test suite for dictionary concepts components', () => {
     </Provider>);
     wrapper.find('#submit-search-form').simulate('submit');
     expect(wrapper.find('DictionaryConcepts').props().searchByName).toHaveBeenCalled();
+  });
+
+  describe('Retire/Unretire Concepts', () => {
+    let props;
+    let wrapper;
+
+    beforeEach(() => {
+      props = {
+        match: {
+          params: {
+            collectionName: 'MULAGO',
+            dictionaryName: 'Mulago Hospital',
+            language: 'en',
+            type: 'users',
+            typeName: 'admin',
+          },
+        },
+        location: {
+          pathname: '/concepts/users/admin/MULAGO/Mulago Hospital/en',
+        },
+        fetchDictionaryConcepts: jest.fn(),
+        concepts: [sampleConcept],
+        filteredClass: [],
+        filteredSources: [],
+        loading: false,
+        conceptsCount: 1,
+        totalConceptsCount: 1,
+        filterBySource: jest.fn(),
+        filterByClass: jest.fn(),
+        fetchMemberStatus: jest.fn(),
+        paginateConcepts: jest.fn(),
+        totalConceptCount: 20,
+        userIsMember: true,
+        removeDictionaryConcept: jest.fn(),
+        removeConceptMappingAction: jest.fn(),
+        searchByName: jest.fn(),
+        ...retireMockProps,
+      };
+      wrapper = mount(<Provider store={store}>
+        <Router>
+          <DictionaryConcepts {...props} />
+        </Router>
+      </Provider>);
+    });
+
+    it('should call the handleRetireConcept method when retiring', () => {
+      const dictionaryConcepts = wrapper.find('DictionaryConcepts');
+      const container = dictionaryConcepts.instance();
+      const spy = jest.spyOn(container, 'handleRetireConcept');
+      dictionaryConcepts.setState({ isOwner: true }, () => {
+        wrapper.find('button#retire').simulate('click');
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    it('should call the handleRetireConcept method when un-retiring', () => {
+      const retired = true;
+      const newProps = {
+        ...props,
+        concepts: [{ ...sampleConcept, retired }],
+        originalConcept: { ...props.originalConcept, retired },
+      };
+      wrapper = mount(<Provider store={store}>
+        <Router>
+          <DictionaryConcepts {...newProps} />
+        </Router>
+      </Provider>);
+      const dictionaryConcepts = wrapper.find('DictionaryConcepts');
+      const container = dictionaryConcepts.instance();
+      const spy = jest.spyOn(container, 'handleRetireConcept');
+      dictionaryConcepts.setState({ isOwner: true }, () => {
+        wrapper.find('button#unRetire').simulate('click');
+        expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    it('should call handleRetireConcept without crashing when owner_url is invalid', () => {
+      const newProps = {
+        ...props,
+        concepts: [{ ...sampleConcept, owner_url: '' }],
+        originalConcept: { ...props.originalConcept, owner_url: '' },
+      };
+      wrapper = mount(<Provider store={store}>
+        <Router>
+          <DictionaryConcepts {...newProps} />
+        </Router>
+      </Provider>);
+      const dictionaryConcepts = wrapper.find('DictionaryConcepts');
+      const container = dictionaryConcepts.instance();
+      const spy = jest.spyOn(container, 'handleRetireConcept');
+      dictionaryConcepts.setState({ isOwner: true }, () => {
+        wrapper.find('button#retire').simulate('click');
+        expect(spy).toHaveBeenCalled();
+      });
+    });
   });
 });

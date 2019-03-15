@@ -25,6 +25,8 @@ const ConceptTable = ({
   openDeleteModal,
   showDeleteMappingModal,
   handleDeleteMapping,
+  retireConcept,
+  isOwner,
 }) => (
   <div className="row col-12 custom-concept-list">
     <RemoveConcept
@@ -74,10 +76,11 @@ const ConceptTable = ({
               handleDeleteMapping,
               mappingLimit: conceptLimit,
               showDeleteMappingModal,
+              retireConcept,
             };
             const renderButtons = username === concept.owner || (
               concept.owner === org.name && org.userIsMember
-            );
+            ) || isOwner;
             return <ActionButtons actionButtons={renderButtons} {...concept} {...props} />;
           },
         },
@@ -101,11 +104,15 @@ ConceptTable.propTypes = {
   closeDeleteModal: PropTypes.func.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
+  retireConcept: PropTypes.func,
+  isOwner: PropTypes.bool,
 };
 ConceptTable.defaultProps = {
   openDeleteModal: false,
   url: '',
   original: {},
+  retireConcept: () => {},
+  isOwner: false,
 };
 
 export default ConceptTable;

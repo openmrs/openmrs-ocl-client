@@ -214,6 +214,7 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       newConcept: action.payload,
+      dictionaryConcepts: [action.payload, ...state.dictionaryConcepts],
     });
   });
   it('should handle ADD_CONCEPT_TO_DICTIONARY', () => {

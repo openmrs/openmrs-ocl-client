@@ -18,6 +18,7 @@ import {
 import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
 import api from '../../api';
+import axiosInstance from '../../../config/axiosConfig';
 
 export const showNetworkError = () => (
   notify.show('Network Error. Please try again later!', 'error', 6000));
@@ -251,3 +252,14 @@ export const createVersion = (url, data) => (dispatch) => {
     });
 };
 
+export const retireConcept = (conceptUrl, retired) => async (dispatch) => {
+  try {
+    const response = await axiosInstance.put(conceptUrl, { retired });
+    notify.show('Concept successfully un-retired', 'success', 3000);
+    return response.data;
+  } catch (error) {
+    error && error.response && error.response.data && dispatch(isErrored(error.response.data));
+    notify.show('Failed to un-retire the concept', 'error', 3000);
+    return null;
+  }
+}

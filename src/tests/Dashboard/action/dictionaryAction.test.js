@@ -37,10 +37,11 @@ import {
   editDictionary,
   createVersion,
   editMapping,
+  retireConcept,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
-import concepts from '../../__mocks__/concepts';
+import concepts, { sampleConcept, sampleRetiredConcept } from '../../__mocks__/concepts';
 
 jest.mock('react-notify-toast');
 
@@ -379,6 +380,49 @@ describe('Test suite for dictionary actions', () => {
     const store = mockStore({ payload: {} });
     return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should retire a concept when the retireConcept action is triggered with the true argument', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: sampleRetiredConcept,
+      });
+    });
+    const store = mockStore({ payload: {} });
+    return store.dispatch(retireConcept(sampleConcept.url, { retired: true })).then((result) => {
+      expect(result.retired).toEqual(true);
+    });
+  });
+
+  it('should unretire a concept when the retireConcept action is triggered with the false argument', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: sampleConcept,
+      });
+    });
+    const store = mockStore({ payload: {} });
+    return store.dispatch(retireConcept(sampleConcept.url, { retired: false })).then((result) => {
+      expect(result.retired).toEqual(false);
+    });
+  });
+
+  it('should handle retire/unretire errors', () => {
+    const message = 'Sample Error message';
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 400,
+        response: { data: message },
+      });
+    });
+    const store = mockStore({ payload: {} });
+    return store.dispatch(retireConcept(sampleConcept.url, { retired: false })).then(() => {
+      expect(store.getActions()).toEqual([{ type: FETCHING_DICTIONARIES, payload: message }]);
     });
   });
 });

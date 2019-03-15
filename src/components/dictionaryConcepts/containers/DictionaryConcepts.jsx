@@ -2,21 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
+import uuid from 'uuid/v4';
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
 import ConceptTable from '../components/ConceptTable';
 import SearchBar from '../../bulkConcepts/component/SearchBar';
 import { conceptsProps } from '../proptypes';
-import { getUsername } from '../components/helperFunction';
+import { getUsername, CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE } from '../components/helperFunction';
 import {
   fetchDictionaryConcepts,
   fetchConceptsByName,
   filterBySource,
   filterByClass,
   paginateConcepts,
+  createNewConcept,
+  fetchExistingConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { removeDictionaryConcept, removeConceptMapping, retireConcept } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
 export class DictionaryConcepts extends Component {
@@ -46,6 +49,11 @@ export class DictionaryConcepts extends Component {
     removeDictionaryConcept: PropTypes.func.isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
     searchByName: PropTypes.func.isRequired,
+    retireCurrentConcept: PropTypes.func.isRequired,
+    recreateConcept: PropTypes.func.isRequired,
+    removeConcept: PropTypes.func.isRequired,
+    getOriginalConcept: PropTypes.func.isRequired,
+    originalConcept: PropTypes.shape({}).isRequired,
   };
 
   constructor(props) {
@@ -58,6 +66,7 @@ export class DictionaryConcepts extends Component {
         references: [],
       },
       openDeleteModal: false,
+      isOwner: false,
     };
     autoBind(this);
   }
@@ -203,6 +212,68 @@ export class DictionaryConcepts extends Component {
     searchByName(query);
   };
 
+  recreateMappings = mappings => mappings.map((mapping) => {
+    const isInternal = (
+      mapping.to_source_url.trim().toLowerCase() === CIEL_SOURCE_URL.trim().toLowerCase()
+    );
+    const freshMapping = {
+      isNew: true,
+      url: String(uuid()),
+      map_type: mapping.map_type,
+      to_concept_code: mapping.to_concept_code,
+      to_concept_name: mapping.to_concept_name,
+      to_concept_url: mapping.to_concept_url,
+      source: isInternal ? INTERNAL_MAPPING_DEFAULT_SOURCE : mapping.source,
+      to_source_url: isInternal
+        ? `${mapping.to_source_url}concepts/${mapping.to_concept_code}/`
+        : mapping.to_source_url,
+    };
+    return freshMapping;
+  });
+
+  retireRemoveRecreate = async (createUrl, concept, versionUrl, type, owner, retired) => {
+    const {
+      retireCurrentConcept, recreateConcept, removeConcept,
+    } = this.props;
+    const id = String(uuid());
+    const retireProcesses = await Promise.all([
+      retireCurrentConcept(concept.url, retired),
+      removeConcept({ references: [versionUrl] }, type, owner, concept.source),
+      recreateConcept(
+        {
+          ...concept,
+          id,
+          retired,
+          answers: concept.answers || [],
+          mappings: concept && concept.mappings && this.recreateMappings(concept.mappings),
+        },
+        createUrl,
+      ),
+    ]);
+    return retireProcesses;
+  };
+
+  handleRetireConcept = (id, retired) => {
+    const { concepts, getOriginalConcept } = this.props;
+    const selectedConcept = concepts.find(concept => concept.id === id);
+    getOriginalConcept(`${selectedConcept.url}?includeMappings=true`)
+      .then(() => {
+        const { originalConcept } = this.props;
+        const [, type, owner] = selectedConcept.owner_url.split('/');
+        if (type && owner) {
+          const createUrl = selectedConcept.url.replace(`${id}/`, '');
+          this.retireRemoveRecreate(
+            createUrl,
+            originalConcept,
+            selectedConcept.version_url,
+            type,
+            owner,
+            retired,
+          );
+        }
+      });
+  };
+
   render() {
     const {
       match: {
@@ -278,6 +349,8 @@ export class DictionaryConcepts extends Component {
               handleDeleteMapping={this.handleDeleteMapping}
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
+              retireConcept={this.handleRetireConcept}
+              isOwner={this.state.isOwner}
             />
           </div>
         </section>
@@ -302,6 +375,7 @@ export const mapStateToProps = state => ({
   filteredList: state.concepts.filteredList,
   dictionaries: state.dictionaries.dictionary,
   userIsMember: state.user.userIsMember,
+  originalConcept: state.concepts.existingConcept,
 });
 
 export default connect(
@@ -315,5 +389,9 @@ export default connect(
     fetchMemberStatus,
     removeDictionaryConcept,
     removeConceptMappingAction: removeConceptMapping,
+    retireCurrentConcept: retireConcept,
+    recreateConcept: createNewConcept,
+    removeConcept: removeDictionaryConcept,
+    getOriginalConcept: fetchExistingConcept,
   },
 )(DictionaryConcepts);
