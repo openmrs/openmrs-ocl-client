@@ -73,10 +73,53 @@ describe('Test suite for dictionary concepts components', () => {
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource],
     addSelectedAnswers: jest.fn(),
+    selectConfirm: jest.fn(),
     selectedAnswers: [],
     createNewAnswerRow: jest.fn(),
     ...editConceptProps,
   };
+
+  it('should redirect on confirm cancel', () => {
+    localStorage.setItem('dictionaryPathName', '/concepts/users/admin/CCL/CASE CLINIC/en');
+    const history = { push: jest.fn() };
+    const wrapper = mount(<Router>
+      <EditConcept {...props} history={history} />
+    </Router>);
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'selectConfirm');
+    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('Button #generalConfirmButton').simulate('click');
+    expect(spy).toHaveBeenCalled();
+    expect(history.push).toHaveBeenCalledWith('/concepts/users/admin/CCL/CASE CLINIC/en');
+  });
+
+  it('should not redirect on confirm cancel', () => {
+    jest.mock('react-notify-toast');
+    notify.show = jest.fn();
+    localStorage.removeItem('dictionaryPathName');
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'selectConfirm');
+    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('Button #generalConfirmButton').simulate('click');
+    expect(spy).toHaveBeenCalled();
+    expect(notify.show).toHaveBeenCalledWith('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
+  });
+
+  it('should hide the cancel modal on decline cancel ', () => {
+    const wrapper = mount(<Router>
+      <EditConcept {...props} />
+    </Router>);
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'hideModal');
+    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('Button #sub-cancel').simulate('click');
+    expect(instance.state.show).toEqual(false);
+    expect(spy).toHaveBeenCalled();
+  });
+
   it('should render without breaking', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
