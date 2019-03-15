@@ -53,7 +53,31 @@ class CreateMapping extends Component {
         </td>
 
         <td className="react-async">
-          {!isNew && to_concept_name}
+          {!isNew && (source && source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
+            <AsyncSelect
+              cacheOptions
+              isClearable
+              loadOptions={async () => fetchSourceConcepts(
+                source,
+                inputValue,
+                url,
+              )}
+              defaultInputValue={to_concept_name}
+              onChange={updateAsyncSelectValue}
+              onInputChange={this.handleInputChange}
+              placeholder="search concept name or id"
+            />
+          ) : (
+            <input
+              tabIndex={index}
+              defaultValue={to_concept_name}
+              className="form-control"
+              placeholder="Concept name (optional)"
+              type="text"
+              name="to_concept_name"
+              onChange={(event) => { updateEventListener(event, url); }}
+            />
+          ))}
           {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
             <div className="row concept-code">
               <div className="col-12 mb-2">
@@ -84,7 +108,8 @@ class CreateMapping extends Component {
               placeholder="search concept name or id"
             />
           ) : (
-            isNew && <input
+            isNew
+            && <input
               tabIndex={index}
               defaultValue={to_concept_name}
               className="form-control"
