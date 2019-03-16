@@ -407,3 +407,7 @@ input:-webkit-autofill:active {
 .concept-code {
   margin-top: 5px;
 }
+
+input[type=text] {
+  text-overflow: ellipsis;
+}

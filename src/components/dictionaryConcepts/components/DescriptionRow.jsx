@@ -103,7 +103,6 @@ class DescriptionRow extends Component {
       <tr>
         <td>
           <textarea
-            type="text"
             rows="3"
             className="form-control concept-description"
             onChange={this.handleChange}
