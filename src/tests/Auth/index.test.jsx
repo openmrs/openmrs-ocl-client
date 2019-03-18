@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { createMockStore } from 'redux-test-utils';
-import Router from 'react-mock-router';
+import { MemoryRouter as Router } from 'react-router';
 
 import Authenticate from '../../components/Auth';
 import { authenticated, notAuthenticated } from '../__mocks__/fakeStore';

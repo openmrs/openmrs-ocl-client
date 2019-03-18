@@ -43,7 +43,7 @@ export class Signup extends Component {
                 id="firstName"
                 required
                 value={firstName}
-                onChange={this.handleInput}
+                onChange={e => this.handleInput(e)}
               />
               <p className="paragraph">Last Name</p>
               <input
@@ -54,7 +54,7 @@ export class Signup extends Component {
                 id="lastname"
                 required
                 value={lastName}
-                onChange={this.handleInput}
+                onChange={e => this.handleInput(e)}
               />
               <p className="paragraph">Email</p>
               <input
@@ -65,7 +65,7 @@ export class Signup extends Component {
                 id="email"
                 required
                 value={email}
-                onChange={this.handleInput}
+                onChange={e => this.handleInput(e)}
               />
               <p className="paragraph">Username</p>
               <input
@@ -76,7 +76,7 @@ export class Signup extends Component {
                 id="userName"
                 required
                 value={username}
-                onChange={this.handleInput}
+                onChange={e => this.handleInput(e)}
               />
               <p className="paragraph">Password</p>
               <input
@@ -87,7 +87,7 @@ export class Signup extends Component {
                 name="password"
                 required
                 value={password}
-                onChange={this.handleInput}
+                onChange={e => this.handleInput(e)}
               />
               <div className="form-group">
                 <p className="paragraph"> Confirm Password</p>
@@ -99,7 +99,7 @@ export class Signup extends Component {
                   name="confirmpassword"
                   required
                   value={confirmPassword}
-                  onChange={this.handleInput}
+                  onChange={e => this.handleInput(e)}
                 />
               </div>
               <div className="row">

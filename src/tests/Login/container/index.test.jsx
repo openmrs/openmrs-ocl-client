@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Router from 'react-mock-router';
+import { MemoryRouter as Router } from 'react-router';
 import { notify } from 'react-notify-toast';
 import { Login } from '../../../components/login/container/index';
 
