@@ -369,3 +369,15 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
 export const clearPreviousConcept = () => (dispatch) => {
   dispatch({ type: CLEAR_PREVIOUS_CONCEPT });
 };
+
+export const unretireMapping = url => async (dispatch) => {
+  dispatch(isFetching(true));
+  try {
+    const response = await instance.put(url, { retired: false });
+    dispatch(isSuccess(response.data, UPDATE_CONCEPT));
+    notify.show('Mapping Un-retired', 'success', 5000);
+  } catch (error) {
+    notify.show('Could not un-retire mapping', 'error', 3000);
+    dispatch(isFetching(false));
+  }
+};
