@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Router from 'react-mock-router';
+import { MemoryRouter as Router } from 'react-router';
 import { createMockStore } from 'redux-test-utils';
 import { Provider } from 'react-redux';
 import {

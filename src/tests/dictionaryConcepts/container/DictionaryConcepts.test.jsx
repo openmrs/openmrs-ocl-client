@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { createMockStore } from 'redux-test-utils';
 import { Provider } from 'react-redux';
-import Router from 'react-mock-router';
+import { MemoryRouter as Router } from 'react-router';
 
 import {
   DictionaryConcepts,

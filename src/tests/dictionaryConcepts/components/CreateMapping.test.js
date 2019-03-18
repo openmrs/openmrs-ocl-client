@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Router from 'react-mock-router';
+import { MemoryRouter as Router } from 'react-router';
 import CreateMapping from '../../../components/dictionaryConcepts/components/CreateMapping';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 import { mockSource } from '../../__mocks__/concepts';
