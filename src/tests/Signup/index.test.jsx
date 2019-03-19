@@ -84,4 +84,18 @@ describe('Sign up Component', () => {
     wrapper.find('#password').simulate('change', event);
     expect(spy).toHaveBeenCalledTimes(1);
   });
+
+  it('should handle text confirmpassword input', () => {
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        value: 'user',
+        name: 'confirmpassword',
+      },
+    };
+    const spy = jest.spyOn(wrapper.find('Signup').instance(), 'handleInput');
+    wrapper.instance().forceUpdate();
+    wrapper.find('#confirmpassword').simulate('change', event);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });
