@@ -17,7 +17,7 @@
     "react-notify-toast": "^0.4.0",
     "react-redux": "^5.0.7",
     "react-render-html": "^0.6.0",
-    "react-router": "^4.4.0",
+    "react-router": "^4.3.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
     "react-select": "^2.0.0-beta.7",
@@ -30,7 +30,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "chmod +x ./init.sh && ./init.sh && cp env-config.js ./public/ && npm run build:css && react-scripts start",
+    "start": "npm run build:css && react-scripts start",
     "build": "npm run build:css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

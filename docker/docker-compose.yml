@@ -3,6 +3,10 @@ version: '2.1'
 services:
   oclclient:
     image: openmrs/ocl-client:local
+    environment:
+      - REACT_APP_OCL_API_HOST=${REACT_APP_OCL_API_HOST:-https://api.qa.openconceptlab.org/}
+      - REACT_APP_TRADITIONAL_OCL_HOST=${REACT_APP_TRADITIONAL_OCL_HOST:-https://qa.openconceptlab.org}
+      - ENVIRONMENT=${ENVIRONMENT:-local}
     ports:
       - 8081:80
     restart: always

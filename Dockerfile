@@ -39,16 +39,5 @@ COPY --from=build-deps /usr/src/app/docker/default.conf /etc/nginx/conf.d/
 # Make port 80 available to the world outside the container
 EXPOSE 80
 
-# Copy .env file and shell script to container
-WORKDIR /usr/share/nginx/html
-COPY ./init.sh .
-COPY .env .
-
-# Add bash
-RUN apk add --no-cache bash
-
-# Make our shell script executable
-RUN chmod +x init.sh
-
 # Start Nginx server
-CMD ["/bin/bash", "-c", "/usr/share/nginx/html/init.sh && nginx -g \"daemon off;\""]
+CMD ["nginx", "-g", "daemon off;"]
