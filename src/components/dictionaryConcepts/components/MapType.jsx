@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPES_DEFAULTS } from './helperFunction';
 
 const mapType = (props) => {
   const {
-    index, map_type, map_types, updateEventListener, url,
+    index, map_type, map_types, updateEventListener, url, source,
   } = props;
   return (
     <select
       tabIndex={index}
-      defaultValue={map_type}
+      value={source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? MAP_TYPES_DEFAULTS[1] : map_type}
       className="form-control"
       placeholder="map type"
       type="text"
@@ -33,12 +34,14 @@ mapType.propTypes = {
   updateEventListener: PropTypes.func,
   map_types: PropTypes.array,
   url: PropTypes.string,
+  source: PropTypes.string,
 };
 
 mapType.defaultProps = {
   url: '',
   map_type: '',
   index: 0,
+  source: INTERNAL_MAPPING_DEFAULT_SOURCE,
   updateEventListener: () => {},
   map_types: ['SAME-AS', 'NARROWER-THAN', 'BROADER-THAN', 'Associated finding', 'Associated morphology',
     'Associated procedure', 'Associated with', 'Causative agent', 'Finding site', 'Has specimen', 'Laterality', 'Severity', 'Access', 'After',

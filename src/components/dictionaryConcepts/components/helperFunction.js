@@ -49,6 +49,8 @@ export const DATA_TYPES = [
   'Text',
 ];
 
+export const MAP_TYPES_DEFAULTS = ['SAME-AS', 'NARROWER-THAN'];
+
 export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';
 export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/';
 
