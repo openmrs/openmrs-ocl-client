@@ -104,7 +104,7 @@ export class EditConcept extends Component {
   componentWillReceiveProps(newProps) {
     const { existingConcept } = newProps;
     const { mappings } = this.state;
-    if (existingConcept.mappings !== undefined
+    if (existingConcept && existingConcept.mappings
       && existingConcept.mappings.length > mappings.length) {
       this.organizeMappings(existingConcept.mappings);
     }
