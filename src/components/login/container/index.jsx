@@ -6,7 +6,7 @@ import { withRouter, Link } from 'react-router-dom';
 import Title from '../../Title';
 import { loginAction } from '../../../redux/actions/auth/authActions';
 import SubmitButton from '../components/SubmitButton';
-import { TRADITIONAL_OCL_BASE_URL } from '../../dictionaryConcepts/components/helperFunction';
+import { TRADITIONAL_OCL_HOST } from '../../dictionaryConcepts/components/helperFunction';
 
 export class Login extends Component {
   state = {
@@ -95,7 +95,7 @@ export class Login extends Component {
 have an account?
                     {' '}
                     <a
-                      href={`${TRADITIONAL_OCL_BASE_URL}/accounts/signup/`}
+                      href={`${TRADITIONAL_OCL_HOST}/accounts/signup/`}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -103,7 +103,7 @@ have an account?
                     </a>
                     <br />
                     <a
-                      href={TRADITIONAL_OCL_BASE_URL}
+                      href={TRADITIONAL_OCL_HOST}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

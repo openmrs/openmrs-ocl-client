@@ -7,7 +7,7 @@ import CardBody from './CardBody';
 import MappingPreview from './MappingPreview';
 import {
   MAP_TYPE,
-  TRADITIONAL_OCL_BASE_URL,
+  TRADITIONAL_OCL_HOST,
 } from '../../dictionaryConcepts/components/helperFunction';
 
 const getSetMembers = mappings => (
@@ -93,7 +93,7 @@ const PreviewCard = ({
             {`${display_name}  (${id})`}
             <div className="card-version">
               <small>
-                <a href={`${TRADITIONAL_OCL_BASE_URL}${url}`} target="_blank" rel="noopener noreferrer">
+                <a href={`${TRADITIONAL_OCL_HOST}${url}`} target="_blank" rel="noopener noreferrer">
                   <i className="fas fa-external-link-alt" />
 View in traditional OCL
                 </a>

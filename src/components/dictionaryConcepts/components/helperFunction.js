@@ -59,4 +59,4 @@ export const MAP_TYPE = {
   questionAndAnswer: 'Q-AND-A',
 };
 
-export const TRADITIONAL_OCL_BASE_URL = urlConfig.TRADITIONAL_OCL;
+export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;

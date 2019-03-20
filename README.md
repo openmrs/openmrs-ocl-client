@@ -18,9 +18,6 @@
 - Clone the forked repository to your computer ensure to run the command below in the directory you want to store the project.
     # git clone [the url of the repository] For example; 
     # git clone https://github.com/yourusername/openmrs-ocl-client.git
-    # Create a .env file in the root directory with the variables API URL and Traditional OCL URL as shown below to access app in dev mode;
-      OCL_API_HOST=https://api.qa.openconceptlab.org/
-      TRADITIONAL_OCL_HOST=https://qa.openconceptlab.org
       
 - In the root directory of the project install all the dependencies using the command below 
     $ npm install
@@ -68,13 +65,13 @@ For instances where port 3000 is being used it will prompt you to reply with let
 ```
 - Build the Docker image using the provided Dockerfile in the root folder. 
    
-$ docker build -t openmrs/ocl-client:local .
+$ docker-compose build
 
 - Run the docker image using docker-compose
 
-$ docker-compose -f docker/docker-compose.yml up -d
+$ docker-compose up -d
 
-- Navigate to your http://localhost:8081/
+- Navigate to your http://localhost:8080/
 You should now see your app running :)
 ```
 

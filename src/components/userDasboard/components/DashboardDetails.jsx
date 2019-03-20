@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TRADITIONAL_OCL_BASE_URL } from '../../dictionaryConcepts/components/helperFunction';
+import { TRADITIONAL_OCL_HOST } from '../../dictionaryConcepts/components/helperFunction';
 
 const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) => {
   const nameOfOrganizations = organizations.map(organization => organization.name).join(',');
@@ -16,7 +16,7 @@ const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) =
             {' '}
 organization. This can be changed via
             {' '}
-            <a href={TRADITIONAL_OCL_BASE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={TRADITIONAL_OCL_HOST} target="_blank" rel="noopener noreferrer">
             the traditional OCL
             </a>
 .
@@ -41,7 +41,7 @@ organizations:
           {organizations.map(organization => (
             <span className="lead org-name text-capitalize" key={organization.id}>
               <a
-                href={`${TRADITIONAL_OCL_BASE_URL}${organization.url}`}
+                href={`${TRADITIONAL_OCL_HOST}${organization.url}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -55,7 +55,7 @@ organizations:
           <span className="d-block">
           This can be changed via
             {' '}
-            <a href={TRADITIONAL_OCL_BASE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={TRADITIONAL_OCL_HOST} target="_blank" rel="noopener noreferrer">
             the traditional OCL
             </a>
 .
@@ -70,7 +70,7 @@ organizations:
         <p className="lead">
         You do not belong to any organization. This can be changed via
           {' '}
-          <a href={TRADITIONAL_OCL_BASE_URL} target="_blank" rel="noopener noreferrer">
+          <a href={TRADITIONAL_OCL_HOST} target="_blank" rel="noopener noreferrer">
           the traditional OCL
           </a>
 .

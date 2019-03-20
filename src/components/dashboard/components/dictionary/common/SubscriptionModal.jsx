@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {
   Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Input,
 } from 'reactstrap';
-import { TRADITIONAL_OCL_BASE_URL } from '../../../../dictionaryConcepts/components/helperFunction';
+import { TRADITIONAL_OCL_HOST } from '../../../../dictionaryConcepts/components/helperFunction';
 
 const SubscriptionModal = (props) => {
   const { show, click, url } = props;
-  const subUrl = `${TRADITIONAL_OCL_BASE_URL}${url}`;
+  const subUrl = `${TRADITIONAL_OCL_HOST}${url}`;
   return (
     <div className="modal-container">
       <Modal

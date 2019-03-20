@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 import ReleaseVersionModal from './common/ReleaseVersionModal';
 import SubscriptionModal from './common/SubscriptionModal';
-import { TRADITIONAL_OCL_BASE_URL } from '../../../dictionaryConcepts/components/helperFunction';
+import { TRADITIONAL_OCL_HOST } from '../../../dictionaryConcepts/components/helperFunction';
 
 const DictionaryDetailCard = (props) => {
   const {
@@ -56,7 +56,7 @@ const DictionaryDetailCard = (props) => {
     minute: 'numeric',
   };
 
-  const traditionalUrl = `${TRADITIONAL_OCL_BASE_URL}${url}`;
+  const traditionalUrl = `${TRADITIONAL_OCL_HOST}${url}`;
   const releasedVersions = versions.filter(version => version.released === true);
 
   return (
