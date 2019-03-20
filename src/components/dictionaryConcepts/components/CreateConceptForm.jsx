@@ -231,6 +231,7 @@ const CreateConceptForm = (props) => {
                       isEditConcept={isEditConcept}
                       isNew={mapping.isNew}
                       allSources={allSources}
+                      isShown={false}
                     />
                   ))}
                 </tbody>

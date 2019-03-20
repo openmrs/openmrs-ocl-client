@@ -11,6 +11,7 @@ import {
 import Loader from '../Loader';
 import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
+import { KEY_CODE_FOR_ENTER } from '../dictionaryConcepts/components/helperFunction';
 import ResultModal from './component/addBulkConceptResultModal';
 
 export class AddBulkConcepts extends Component {
@@ -40,6 +41,7 @@ export class AddBulkConcepts extends Component {
       conceptIds: '',
       openResultModal: false,
       otherSelected: false,
+      value: '',
     };
     this.invalidConceptIds = [];
     this.sourceUrl = 'orgs/CIEL/sources/CIEL/';
@@ -112,6 +114,15 @@ export class AddBulkConcepts extends Component {
   closeResultModal = () => {
     this.invalidConceptIds = [];
     this.setState({ openResultModal: false });
+  }
+
+  onKeyDown = (event, onKeyDown, onChange) => {
+    this.setState({ value: event.target.value });
+    if (event.keyCode === KEY_CODE_FOR_ENTER) {
+      event.preventDefault();
+      onChange(event);
+      onKeyDown(event);
+    }
   }
 
   render() {
@@ -221,7 +232,7 @@ export class AddBulkConcepts extends Component {
                                   .map((item, index) => (
                                     <li
                                       {...getItemProps({
-                                        key: item.id,
+                                        key: item.name,
                                         index,
                                         item,
                                         style: {
@@ -280,7 +291,20 @@ export class AddBulkConcepts extends Component {
                             className="form-control search"
                             id="search"
                             placeholder="search"
+                            value={this.state.value}
                             aria-label="Search"
+                            onChange={e => this.onKeyDown(
+                              e,
+                              getInputProps().onKeyDown,
+                              getInputProps().onChange,
+                            )}
+                            onKeyDown={
+                              e => this.onKeyDown(
+                                e,
+                                getInputProps().onKeyDown,
+                                getInputProps().onChange,
+                              )}
+                            {...getInputProps().rest}
                           />
                           {isLoading
                               && <div className="ml-auto text-right">

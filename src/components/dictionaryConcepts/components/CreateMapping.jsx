@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPES_DEFAULTS } from './helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  MAP_TYPES_DEFAULTS,
+  CIEL_SOURCE_URL,
+  KEY_CODE_FOR_ENTER,
+} from './helperFunction';
 import MapType from './MapType';
 
 class CreateMapping extends Component {
@@ -11,6 +15,9 @@ class CreateMapping extends Component {
     this.state = {
       type: '',
       editMapType: '',
+      inputValue: this.props.to_concept_name || '',
+      options: [],
+      isVisible: false,
     };
   }
 
@@ -40,12 +47,28 @@ class CreateMapping extends Component {
     }
   }
 
+  handleKeyPress = (event, inputValue, url) => {
+    if (event.keyCode === KEY_CODE_FOR_ENTER) {
+      this.doSearch(inputValue, url);
+    }
+  }
+
+  handleSelect = (res) => {
+    this.setState({ isVisible: false, inputValue: res.label });
+    this.props.updateAsyncSelectValue(res);
+  };
+
+  doSearch = async (inputValue, url) => {
+    const options = await fetchSourceConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url);
+    this.setState({ options, isVisible: true });
+  }
+
   render() {
     const { inputValue } = this.state;
     const {
       map_type, source, to_concept_code, to_concept_name, index,
-      updateEventListener, removeMappingRow, updateAsyncSelectValue,
-      isNew, allSources, url,
+      updateEventListener, removeMappingRow,
+      isNew, allSources, url, isShown,
     } = this.props;
     const nullEditMapType = (source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? this.state.type
       || MAP_TYPES_DEFAULTS[1] : this.state.type || MAP_TYPES_DEFAULTS[0]);
@@ -85,19 +108,32 @@ class CreateMapping extends Component {
 
         <td className="react-async">
           {!isNew && (source && source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
-            <AsyncSelect
-              cacheOptions
-              isClearable
-              loadOptions={async () => fetchSourceConcepts(
-                source,
-                inputValue,
-                url,
-              )}
-              defaultInputValue={to_concept_name}
-              onChange={updateAsyncSelectValue}
-              onInputChange={this.handleInputChange}
-              placeholder="search concept name or id"
-            />
+            <div className="conceptDetails">
+              <input
+                tabIndex={index}
+                className="form-control"
+                placeholder="search concept name or id"
+                type="text"
+                id="searchInputCiel"
+                name="to_concept_name"
+                value={inputValue}
+                onChange={e => this.handleInputChange(e.target.value)
+                }
+                onKeyDown={e => this.handleKeyPress(e, inputValue, url)}
+              />
+              {(this.state.isVisible || isShown) && <ul className="cielConceptsList">
+                  {this.state.options.map(result => <li key={result.label}>
+                    <button
+                      type="button"
+                      id="selectMappingnotNew"
+                      name="selectButton"
+                      onClick={() => this.handleSelect(result)}
+                    >
+                      {result.label}
+                    </button>
+                  </li>)}
+              </ul>}
+            </div>
           ) : (
             <input
               tabIndex={index}
@@ -105,6 +141,7 @@ class CreateMapping extends Component {
               className="form-control"
               placeholder="Concept name (optional)"
               type="text"
+              id="searchInputNotCiel"
               name="to_concept_name"
               onChange={(event) => { updateEventListener(event, url); }}
             />
@@ -126,18 +163,32 @@ class CreateMapping extends Component {
             </div>
           )}
           {source && source === INTERNAL_MAPPING_DEFAULT_SOURCE ? (
-            isNew && <AsyncSelect
-              cacheOptions
-              isClearable
-              loadOptions={async () => fetchSourceConcepts(
-                source,
-                inputValue,
-                url,
-              )}
-              onChange={updateAsyncSelectValue}
-              onInputChange={this.handleInputChange}
-              placeholder="search concept name or id"
-            />
+            isNew
+            && <div className="conceptDetails">
+              <input
+                tabIndex={index}
+                className="form-control"
+                placeholder="search concept name or id"
+                type="text"
+                id="searchInputCielIsnew"
+                name="to_concept_name"
+                value={inputValue}
+                onChange={e => this.handleInputChange(e.target.value)
+                }
+                onKeyDown={e => this.handleKeyPress(e, inputValue, url)}
+              />
+              {(this.state.isVisible || isShown) && <ul className="cielConceptsList">
+                  {this.state.options.map(result => <li key={result.label}>
+                    <button
+                      type="button"
+                      id="selectMappingNew"
+                      onClick={() => this.handleSelect(result)}
+                    >
+                      {result.label}
+                    </button>
+                  </li>)}
+              </ul>}
+            </div>
           ) : (
             isNew
             && <input
@@ -145,6 +196,7 @@ class CreateMapping extends Component {
               defaultValue={to_concept_name}
               className="form-control"
               placeholder="Concept name (optional)"
+              id="ConceptName"
               type="text"
               name="to_concept_name"
               onChange={(event) => { updateEventListener(event, url); }}
@@ -180,6 +232,7 @@ CreateMapping.propTypes = {
   updateAsyncSelectValue: PropTypes.func,
   isNew: PropTypes.bool,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  isShown: PropTypes.bool,
 };
 
 CreateMapping.defaultProps = {
@@ -193,6 +246,7 @@ CreateMapping.defaultProps = {
   updateEventListener: () => {},
   removeMappingRow: () => {},
   updateAsyncSelectValue: () => {},
+  isShown: false,
 };
 
 export default CreateMapping;
