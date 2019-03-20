@@ -23,7 +23,9 @@ import {
   removeSelectedAnswer,
   addNewAnswerRow,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE } from '../components/helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
+} from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import { removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
@@ -251,6 +253,10 @@ export class EditConcept extends Component {
       const modifyMap = map;
       if (modifyMap.url === url) {
         modifyMap[name] = value;
+      }
+      if (name === ATTRIBUTE_NAME_SOURCE) {
+        modifyMap.to_concept_code = '';
+        modifyMap.to_concept_name = '';
       }
       return modifyMap;
     });
