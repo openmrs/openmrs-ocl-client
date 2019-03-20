@@ -1,37 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AsyncMulti from '../containers/SelectAnswers';
 import AnswerRow from './AnswerRow';
 
 const AnswersTable = (props) => {
   const {
-    handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
+    handleAsyncSelectChange,
+    selectedAnswers,
+    handleAnswerChange,
+    removeAnswerRow,
+    currentDictionaryName,
+    isEditConcept,
   } = props;
-
   return (
     <table className="table table-striped table-bordered concept-form-table">
       <thead className="header text-white">
         <tr>
-          <th scope="col" colSpan="6">Answers</th>
+          <th scope="col">Source</th>
+          <th scope="col">Concept</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         {selectedAnswers.map(ans => (
           <AnswerRow
-            key={ans.id}
-            id={ans.id}
-            display_name={ans.display_name}
+            frontEndUniqueKey={ans.frontEndUniqueKey}
+            key={ans.frontEndUniqueKey}
+            toConceptName={ans.to_concept_name}
+            answerUrl={ans.url}
+            prePopulated={ans.prePopulated}
             handleAnswerChange={handleAnswerChange}
+            removeAnswerRow={removeAnswerRow}
+            currentDictionaryName={currentDictionaryName}
+            handleAsyncSelectChange={handleAsyncSelectChange}
+            isEditConcept={isEditConcept}
           />
         ))}
-        <tr>
-          <td colSpan="8">
-            <AsyncMulti
-              handleAsyncSelectChange={handleAsyncSelectChange}
-              queryAnswers={queryAnswers}
-            />
-          </td>
-        </tr>
       </tbody>
     </table>
   );
@@ -39,13 +42,17 @@ const AnswersTable = (props) => {
 
 AnswersTable.propTypes = {
   handleAsyncSelectChange: PropTypes.func.isRequired,
-  queryAnswers: PropTypes.func.isRequired,
   selectedAnswers: PropTypes.array.isRequired,
   handleAnswerChange: PropTypes.func,
+  isEditConcept: PropTypes.bool.isRequired,
+  removeAnswerRow: PropTypes.func,
+  currentDictionaryName: PropTypes.string,
 };
 
 AnswersTable.defaultProps = {
   handleAnswerChange: () => {},
+  currentDictionaryName: '',
+  removeAnswerRow: () => {},
 };
 
 export default AnswersTable;

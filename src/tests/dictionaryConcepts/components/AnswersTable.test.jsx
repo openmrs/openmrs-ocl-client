@@ -7,11 +7,14 @@ import selectedAnswers from '../../__mocks__/answers';
 const props = {
   selectedAnswers,
   addDataFromAnswer: jest.fn(),
-  removeAnswer: jest.fn(),
+  removeAnswerRow: jest.fn(),
   removeDataFromRow: jest.fn(),
   existingConcept: {},
   handleAsyncSelectChange: jest.fn(),
   queryAnswers: jest.fn(),
+  currentDictionaryName: 'test dictionary',
+  isEditConcept: false,
+  frontEndUniqueKey: 'unique',
 };
 
 describe('Test suite for AnswersTable', () => {

@@ -10,13 +10,19 @@ describe('<SelectAnswers />', () => {
     props = {
       handleAsyncSelectChange: jest.fn(),
       queryAnswers: jest.fn(),
+      source: 'test source',
+      frontEndUniqueKey: 'unique',
     };
     wrapper = shallow(<SelectAnswers {...props} />);
   });
 
-  it('should handle change', () => {
-    wrapper.simulate('change');
-    expect(props.handleAsyncSelectChange).toHaveBeenCalledTimes(1);
+  it('should handle change in AsncSelect', () => {
+    const instance = wrapper.instance();
+    const spy = jest.spyOn(instance, 'handleChange');
+    instance.handleChange(['value']);
+    expect(spy).toHaveBeenCalled();
+    instance.handleChange(null);
+    expect(spy).toHaveBeenCalled();
   });
 
   it('should update the state with current input value', () => {

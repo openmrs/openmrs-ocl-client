@@ -9,11 +9,16 @@ import { classes } from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
-    concept, handleAsyncSelectChange, queryAnswers, selectedAnswers, handleAnswerChange,
+    concept, handleAsyncSelectChange,
+    selectedAnswers,
+    handleAnswerChange,
+    addAnswerRow, removeAnswerRow, currentDictionaryName,
     mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
     isEditConcept, allSources,
   } = props;
+
   const selectedMappings = mappings.filter(map => map.retired === false);
+
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
@@ -148,10 +153,19 @@ const CreateConceptForm = (props) => {
               <h6 className="text-left section-header">Answers</h6>
               <AnswersTable
                 handleAsyncSelectChange={handleAsyncSelectChange}
-                queryAnswers={queryAnswers}
                 selectedAnswers={selectedAnswers}
                 handleAnswerChange={handleAnswerChange}
+                removeAnswerRow={removeAnswerRow}
+                currentDictionaryName={currentDictionaryName}
+                isEditConcept={isEditConcept}
               />
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm mt-3"
+                onClick={addAnswerRow}
+              >
+                Add answer...
+              </button>
             </div>
           </div>
         ) : null }
@@ -187,50 +201,54 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
-        <div className="concept-table ">
-          <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Mappings</h6>
-              <table className=" table-striped table-bordered concept-form-table">
-                <thead className="header text-white">
-                  <tr>
-                    <th>Source</th>
-                    <th>Relationship</th>
-                    <th>Concept</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedMappings.map((mapping, i) => (
-                    <CreateMapping
-                      source={mapping.source}
-                      url={mapping.url}
-                      map_type={mapping.map_type}
-                      to_concept_code={mapping.to_concept_code}
-                      to_concept_name={mapping.to_concept_name}
-                      updateEventListener={updateEventListener}
-                      removeMappingRow={removeMappingRow}
-                      updateAsyncSelectValue={updateAsyncSelectValue}
-                      key={mapping.id}
-                      index={i}
-                      isEditConcept={isEditConcept}
-                      isNew={mapping.isNew}
-                      allSources={allSources}
-                    />
-                  ))}
-                </tbody>
-              </table>
-              <button
-                type="button"
-                onClick={addMappingRow}
-                className="btn btn-outline-secondary btn-sm mt-3"
-              >
-                Add another Mapping...
-              </button>
+        {
+          props.state.concept_class !== 'question' && (
+            <div className="concept-table ">
+              <div className="form-group">
+                <div className="row col-12 custom-concept-list">
+                  <h6 className="text-left section-header">Mappings</h6>
+                  <table className=" table-striped table-bordered concept-form-table">
+                    <thead className="header text-white">
+                      <tr>
+                        <th>Source</th>
+                        <th>Relationship</th>
+                        <th>Concept</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedMappings.map((mapping, i) => (
+                        <CreateMapping
+                          source={mapping.source}
+                          url={mapping.url}
+                          map_type={mapping.map_type}
+                          to_concept_code={mapping.to_concept_code}
+                          to_concept_name={mapping.to_concept_name}
+                          updateEventListener={updateEventListener}
+                          removeMappingRow={removeMappingRow}
+                          updateAsyncSelectValue={updateAsyncSelectValue}
+                          key={mapping.id}
+                          index={i}
+                          isEditConcept={isEditConcept}
+                          isNew={mapping.isNew}
+                          allSources={allSources}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                  <button
+                    type="button"
+                    onClick={addMappingRow}
+                    className="btn btn-outline-secondary btn-sm mt-3"
+                  >
+                  Add another Mapping...
+                  </button>
+                </div>
+              </div>
+              <br />
             </div>
-          </div>
-          <br />
-        </div>
+          )
+        }
         <div className="submit-button text-left">
           <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
@@ -265,7 +283,6 @@ CreateConceptForm.propTypes = {
   isEditConcept: PropTypes.bool,
   existingConcept: PropTypes.object,
   handleAsyncSelectChange: PropTypes.func,
-  queryAnswers: PropTypes.func,
   selectedAnswers: PropTypes.array,
   mappings: PropTypes.array,
   addMappingRow: PropTypes.func,
@@ -273,6 +290,9 @@ CreateConceptForm.propTypes = {
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  addAnswerRow: PropTypes.func,
+  removeAnswerRow: PropTypes.func,
+  currentDictionaryName: PropTypes.string,
 };
 
 CreateConceptForm.defaultProps = {
@@ -281,13 +301,15 @@ CreateConceptForm.defaultProps = {
   isEditConcept: false,
   handleAsyncSelectChange: () => {},
   handleAnswerChange: () => {},
-  queryAnswers: () => {},
   selectedAnswers: [],
   mappings: [],
   addMappingRow: null,
   updateEventListener: null,
   removeMappingRow: null,
   updateAsyncSelectValue: null,
+  addAnswerRow: () => {},
+  removeAnswerRow: () => {},
+  currentDictionaryName: '',
 };
 
 export default CreateConceptForm;

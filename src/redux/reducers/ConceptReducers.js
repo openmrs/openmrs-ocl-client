@@ -24,14 +24,17 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_CONCEPT,
-  QUERY_POSSIBLE_ANSWER_CONCEPTS,
   ADD_SELECTED_ANSWERS,
-  CHANGE_ANSWER_MAPPING,
+  REMOVE_SELECTED_ANSWER,
+  PRE_POPULATE_ANSWERS,
+  UNPOPULATE_PRE_POPULATED_ANSWERS,
+  ADD_NEW_ANSWER_ROW,
 } from '../actions/types';
 import {
   filterSources, filterClass, filterList, normalizeList, filterNames,
   filterDescriptions,
 } from './util';
+
 
 const initialState = {
   concepts: [],
@@ -55,13 +58,11 @@ const initialState = {
     descriptions: [],
     names: [],
   },
-  queryResults: [],
-  selectedAnswers: [],
+  selectedAnswers: [{
+    frontEndUniqueKey: 'intialKey',
+  }],
 };
 
-const answerFilter = (answers, id) => answers.filter(answer => answer.id === id)[0];
-
-const changedAnswerIndex = (answers, id) => answers.findIndex(answer => answer.id === id);
 
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -230,30 +231,52 @@ export default (state = initialState, action) => {
       return {
         ...state,
       };
-    case QUERY_POSSIBLE_ANSWER_CONCEPTS:
-      return {
-        ...state,
-        queryResults: [...action.payload],
-      };
-    case ADD_SELECTED_ANSWERS:
+    case PRE_POPULATE_ANSWERS: {
       return {
         ...state,
         selectedAnswers: [...action.payload],
       };
-    case CHANGE_ANSWER_MAPPING:
-      // eslint-disable-next-line no-case-declarations
-      const currentAnswer = answerFilter(state.selectedAnswers, action.payload.id);
-      // eslint-disable-next-line no-case-declarations
-      const newCurrentAnswer = Object.assign(currentAnswer, action.payload);
-      // eslint-disable-next-line no-case-declarations
-      const newSelectedAnswers = state.selectedAnswers;
-      // eslint-disable-next-line no-case-declarations
-      const changedIndex = changedAnswerIndex(state.selectedAnswers, action.payload.id);
-      newSelectedAnswers[changedIndex] = newCurrentAnswer;
+    }
+    case UNPOPULATE_PRE_POPULATED_ANSWERS: {
       return {
         ...state,
-        selectedAnswers: [...newSelectedAnswers],
+        selectedAnswers: [{
+          frontEndUniqueKey: 'intialKey',
+        }],
       };
+    }
+
+    case ADD_NEW_ANSWER_ROW: {
+      const answers = state.selectedAnswers;
+      answers.push(action.payload);
+      return {
+        ...state,
+        selectedAnswers: [...answers],
+      };
+    }
+
+    case ADD_SELECTED_ANSWERS: {
+      const answers = state.selectedAnswers;
+      const answerToAdd = answers.filter(ans => ans.frontEndUniqueKey === action.payload.uniqueKey);
+
+      const indexOfAnswerToAdd = answers
+        .findIndex(ans => ans.frontEndUniqueKey === action.payload.uniqueKey);
+
+      const newAnswerToAdd = { ...answerToAdd[0], ...action.payload.answer };
+      answers[indexOfAnswerToAdd] = newAnswerToAdd;
+      return {
+        ...state,
+        selectedAnswers: answers,
+      };
+    }
+    case REMOVE_SELECTED_ANSWER: {
+      const answers = state.selectedAnswers;
+      const newAnswers = answers.filter(ans => ans.frontEndUniqueKey !== action.payload);
+      return {
+        ...state,
+        selectedAnswers: newAnswers,
+      };
+    }
     default:
       return state;
   }

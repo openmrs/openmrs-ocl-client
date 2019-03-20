@@ -12,11 +12,13 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
-  queryPossibleAnswers,
   addSelectedAnswersToState,
-  changeSelectedAnswer,
+  removeSelectedAnswer,
+  unpopulatePrepopulatedAnswers,
+  addNewAnswerRow,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
+import { MAP_TYPE } from '../components/helperFunction';
 
 export class CreateConcept extends Component {
   static propTypes = {
@@ -48,13 +50,13 @@ export class CreateConcept extends Component {
     }).isRequired,
     addedConcept: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
-    getPossibleAnswers: PropTypes.func.isRequired,
-    queryResults: PropTypes.array.isRequired,
     addSelectedAnswers: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
-    changeAnswer: PropTypes.func.isRequired,
     fetchAllConceptSources: PropTypes.func.isRequired,
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    unpopulateSelectedAnswers: PropTypes.func.isRequired,
+    removeAnswer: PropTypes.func.isRequired,
+    createNewAnswerRow: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -65,8 +67,8 @@ export class CreateConcept extends Component {
       concept_class: '',
       datatype: 'None',
       names: [],
-      descriptions: [],
       answers: [],
+      descriptions: [],
       mappings: [{
         map_type: 'Same as',
         source: null,
@@ -89,7 +91,9 @@ export class CreateConcept extends Component {
         params: { conceptType },
       },
       fetchAllConceptSources,
+      unpopulateSelectedAnswers,
     } = this.props;
+    unpopulateSelectedAnswers();
     const concept = conceptType || '';
     this.props.createNewName();
     this.props.addNewDescription();
@@ -120,30 +124,27 @@ export class CreateConcept extends Component {
     this.props.clearSelections();
   }
 
-  handleAsyncSelectChange = (answers) => {
-    const { addSelectedAnswers } = this.props;
-    addSelectedAnswers(answers);
-    this.setState({ answers });
+  handleAsyncSelectChange = (answers, uniqueKey) => {
+    const { addSelectedAnswers, selectedAnswers } = this.props;
+    addSelectedAnswers(answers, uniqueKey);
+    const answersToAdd = selectedAnswers.filter(ans => ans.map_type === MAP_TYPE.questionAndAnswer);
+    this.setState({
+      answers: answersToAdd,
+    });
   }
 
-  queryAnswers = (query) => {
-    const { queryResults, getPossibleAnswers } = this.props;
-    const defaults = { map_type: 'Same as', map_scope: 'Internal' };
-    getPossibleAnswers(query);
-    const options = queryResults.map(concept => ({
-      ...concept,
-      ...defaults,
-      value: `${concept.url}`,
-      label: `${concept.owner}: ${concept.display_name}`,
-    }));
-    return options;
+  addAnswerRow = () => {
+    const { createNewAnswerRow } = this.props;
+    const frontEndUniqueKey = uuid();
+    const initialAnswerFormation = {
+      frontEndUniqueKey,
+    };
+    createNewAnswerRow(initialAnswerFormation);
   }
 
-  handleAnswerChange = (event, id) => {
-    const { changeAnswer, selectedAnswers } = this.props;
-    const obj = { id, [event.target.name]: event.target.value };
-    changeAnswer(obj);
-    this.setState({ answers: selectedAnswers });
+  removeAnswerRow = (uniqueKey) => {
+    const { removeAnswer } = this.props;
+    removeAnswer(uniqueKey);
   }
 
   handleNewName(event) {
@@ -328,6 +329,7 @@ Concept
           <div className="row form-container">
             <div className="col-lg-12 custom-side-padding">
               <CreateConceptForm
+                currentDictionaryName={dictionaryName}
                 handleNewName={this.handleNewName}
                 nameRows={this.props.newName}
                 removeRow={this.removeNewName}
@@ -349,9 +351,9 @@ Concept
                 removeDataFromRow={this.removeDataFromRow}
                 pathName={this.props.match.params}
                 handleAsyncSelectChange={this.handleAsyncSelectChange}
-                queryAnswers={this.queryAnswers}
                 selectedAnswers={selectedAnswers}
-                handleAnswerChange={this.handleAnswerChange}
+                addAnswerRow={this.addAnswerRow}
+                removeAnswerRow={this.removeAnswerRow}
                 mappings={mappings}
                 addMappingRow={this.addMappingRow}
                 updateEventListener={this.updateEventListener}
@@ -373,7 +375,6 @@ export const mapStateToProps = state => ({
   newConcept: state.concepts.newConcept,
   addedConcept: state.concepts.addConceptToDictionary,
   loading: state.concepts.loading,
-  queryResults: state.concepts.queryResults,
   selectedAnswers: state.concepts.selectedAnswers,
   allSources: state.sourceConcepts.conceptSources,
 });
@@ -386,9 +387,10 @@ export default connect(
     removeDescription,
     clearSelections,
     createNewConcept,
-    getPossibleAnswers: queryPossibleAnswers,
     addSelectedAnswers: addSelectedAnswersToState,
-    changeAnswer: changeSelectedAnswer,
+    removeAnswer: removeSelectedAnswer,
     fetchAllConceptSources: fetchConceptSources,
+    unpopulateSelectedAnswers: unpopulatePrepopulatedAnswers,
+    createNewAnswerRow: addNewAnswerRow,
   },
 )(CreateConcept);
