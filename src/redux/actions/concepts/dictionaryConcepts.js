@@ -146,21 +146,52 @@ export const fetchDictionaryConcepts = (
   dispatch(isFetching(false));
 };
 
-export const fetchConceptsByName = query => async (dispatch) => {
-  dispatch(isFetching(true));
+const removeDups = (arr, id) => {
+  const unique = arr.map(elem => elem[id])
+    .map((e, i, final) => final.indexOf(e) === i && i)
+    .filter(e => arr[e]).map(e => arr[e]);
+  return unique;
+};
+
+const queryMultiple = async (queryArray) => {
   const CONCEPT_TYPE = localStorage.getItem('type');
   const USER_TYPE_NAME = localStorage.getItem('typeName');
   const DICTIONARY_ID = localStorage.getItem('dictionaryId');
-
-  const url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${DICTIONARY_ID}/concepts/?includeMappings=true&${query}*&verbose=true`;
+  const queryUrls = queryArray.map(query => `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${DICTIONARY_ID}/concepts/?includeMappings=true&q=${query}*&verbose=true`);
+  const promises = queryUrls.map(url => instance.get(url));
   try {
-    const response = await instance.get(url);
-    dispatch(isSuccess(response.data, FETCH_DICTIONARY_CONCEPT));
-    dispatch(isFetching(false));
+    const arr = [];
+    const response = await axios.all(promises);
+    const data = response.map(res => res.data);
+    data.forEach((dt) => {
+      dt.forEach(val => arr.push(val));
+    });
+    const returnArr = removeDups(arr, 'id');
+    return returnArr;
   } catch (error) {
-    dispatch(isFetching(false));
-    notify.show('Something went wrong with your search, please try again.', 'error', 3000);
+    notify.show('An error occurred while adding your answer mappings', 'error', 3000);
   }
+};
+
+export const fetchConceptsByName = query => async (dispatch) => {
+  dispatch(isFetching(true));
+  const queryArray = query.split('=').slice(1)[0].split(' ');
+  const data = await queryMultiple(queryArray);
+  dispatch(isSuccess(data, FETCH_DICTIONARY_CONCEPT));
+  dispatch(isFetching(false));
+  // const CONCEPT_TYPE = localStorage.getItem('type');
+  // const USER_TYPE_NAME = localStorage.getItem('typeName');
+  // const DICTIONARY_ID = localStorage.getItem('dictionaryId');
+
+  // const url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${DICTIONARY_ID}/concepts/?includeMappings=true&${query}*&verbose=true`;
+  // try {
+  //   const response = await instance.get(url);
+  //   dispatch(isSuccess(response.data, FETCH_DICTIONARY_CONCEPT));
+  //   dispatch(isFetching(false));
+  // } catch (error) {
+  //   dispatch(isFetching(false));
+  //   notify.show('Something went wrong with your search, please try again.', 'error', 3000);
+  // }
 };
 
 export const filterBySource = (
