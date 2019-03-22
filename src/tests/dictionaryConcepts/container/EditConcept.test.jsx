@@ -6,13 +6,25 @@ import {
   EditConcept,
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/EditConcept';
-import { newConcept, existingConcept, mockSource } from '../../__mocks__/concepts';
+import {
+  newConcept, existingConcept, mockSource, sampleConcept,
+} from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
 
 localStorage.setItem('dictionaryPathName', '/');
+
+const editConceptProps = {
+  deleteConcept: jest.fn(),
+  recreateConcept: async () => jest.fn(),
+  unretireMapping: jest.fn(),
+  dictionaryConcepts: [sampleConcept],
+  updateConcept: async () => sampleConcept,
+  existingConcept: sampleConcept,
+  isEditConcept: true,
+};
 
 describe('Test suite for dictionary concepts components', () => {
   const props = {
@@ -63,6 +75,7 @@ describe('Test suite for dictionary concepts components', () => {
     addSelectedAnswers: jest.fn(),
     selectedAnswers: [],
     createNewAnswerRow: jest.fn(),
+    ...editConceptProps,
   };
   it('should render without breaking', () => {
     const wrapper = mount(<Router>
@@ -131,15 +144,16 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('it should handle submit event', () => {
-    const wrapper = mount(<Router>
-      <EditConcept {...props} />
-    </Router>);
+    const wrapper = mount(<Router><EditConcept {...props} /></Router>);
     const submitForm = wrapper.find('#createConceptForm');
     expect(submitForm.length).toEqual(1);
-    submitForm.simulate('submit', {
-      preventDefault: () => {},
-    });
-    expect(props.updateConcept).toHaveBeenCalled();
+    wrapper.find('EditConcept').setState(sampleConcept);
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'handleSubmit');
+    instance.forceUpdate();
+    wrapper.update();
+    submitForm.simulate('submit', { preventDefault: jest.fn() });
+    expect(spy).toHaveBeenCalled();
   });
 
   it('it should handle submit event with invalid uuid', () => {
@@ -254,6 +268,7 @@ describe('Test suite for mappings on existing concepts', () => {
       frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A', prePopulated: false,
     }],
     createNewAnswerRow: jest.fn(),
+    ...editConceptProps,
   };
   const wrapper = mount(<Router>
     <EditConcept {...props} />

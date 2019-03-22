@@ -217,17 +217,17 @@ export const removeSelectedAnswer = uniqueKey => (dispatch) => {
 };
 
 export const addAnswerMappingToConcept = async (url, source, answers) => {
-  const user = localStorage.getItem('username');
-  const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
-  const answerMappings = answers.map(answer => ({
-    map_type: answer.map_type,
-    from_concept_url: url,
-    to_concept_url: answer.url,
-  }));
-
-  const promises = answerMappings.map(mapping => instance.post(mappingUrl, mapping));
-
   try {
+    const user = localStorage.getItem('username');
+    const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
+    const answerMappings = answers.map(answer => ({
+      map_type: answer.map_type,
+      from_concept_url: url,
+      to_concept_url: answer.url,
+    }));
+
+    const promises = answerMappings.map(mapping => instance.post(mappingUrl, mapping));
+
     await axios.all(promises);
   } catch (error) {
     notify.show('An error occurred while adding your answer mappings', 'error', 3000);
@@ -372,6 +372,8 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
     notify.show('Concept successfully updated', 'success', 3000);
+    dispatch(isFetching(false));
+    return response.data;
   } catch (error) {
     if (error.response) {
       const { response } = error;

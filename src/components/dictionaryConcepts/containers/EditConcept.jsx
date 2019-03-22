@@ -22,10 +22,11 @@ import {
   addSelectedAnswersToState,
   removeSelectedAnswer,
   addNewAnswerRow,
+  createNewConcept,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
-import { removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
 
@@ -64,6 +65,9 @@ export class EditConcept extends Component {
     selectedAnswers: PropTypes.array.isRequired,
     removeAnswer: PropTypes.func.isRequired,
     createNewAnswerRow: PropTypes.func.isRequired,
+    deleteConcept: PropTypes.func.isRequired,
+    recreateConcept: PropTypes.func.isRequired,
+    dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   constructor(props) {
@@ -83,6 +87,7 @@ export class EditConcept extends Component {
       mapp: '',
     };
     this.conceptUrl = '';
+    this.createUrl = '';
 
     autoBind(this);
   }
@@ -101,6 +106,7 @@ export class EditConcept extends Component {
       fetchAllConceptSources,
     } = this.props;
     this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true&verbose=true`;
+    this.createUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/`;
     this.props.fetchExistingConcept(this.conceptUrl);
     fetchAllConceptSources();
   }
@@ -166,9 +172,46 @@ export class EditConcept extends Component {
     this.setState({ [name]: value });
   }
 
+  recreateMappings = mappings => mappings.map((mapping) => {
+    const isInternal = Boolean(
+      mapping.to_source_url
+      && (mapping.to_source_url.trim().toLowerCase() === CIEL_SOURCE_URL.trim().toLowerCase()),
+    );
+    const freshMapping = {
+      ...mapping,
+      isNew: true,
+      url: String(uid()),
+      source: isInternal ? INTERNAL_MAPPING_DEFAULT_SOURCE : mapping.source,
+      to_source_url: isInternal
+        ? `${mapping.to_source_url}concepts/${mapping.to_concept_code}/`
+        : mapping.to_source_url,
+    };
+    return freshMapping;
+  });
+
+  deleteConceptReference = (version_url) => {
+    const { deleteConcept, match: { params: { type, typeName, collectionName } } } = this.props;
+    deleteConcept({ references: [version_url] }, type, typeName, collectionName);
+  }
+
+  updateConceptReference = async (concept, mappings) => {
+    const { recreateConcept, dictionaryConcepts } = this.props;
+    const conceptRef = dictionaryConcepts.find(c => c.id === concept.id);
+    const newMappings = mappings && this.recreateMappings(mappings);
+    const freshConcept = {
+      ...concept,
+      id: String(uid()),
+      answers: concept.answers || [],
+      mappings: newMappings,
+    };
+    recreateConcept(freshConcept, this.createUrl)
+      .then(() => this.deleteConceptReference(conceptRef.version_url));
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     const { mappings } = this.state;
+    const { history } = this.props;
     const retired = mappings.filter(mapping => mapping.retired);
     const freshMappings = mappings.filter(mapping => mapping.isNew);
     freshMappings.forEach((mapping) => {
@@ -178,7 +221,10 @@ export class EditConcept extends Component {
 
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
-      this.props.updateConcept(this.conceptUrl, this.state, this.props.history);
+      const unRetiredMappings = mappings.filter(m => m.retired === false);
+      this.props.updateConcept(this.conceptUrl, this.state, history)
+        .then(editedConcept => this.updateConceptReference(editedConcept, unRetiredMappings)
+          .then(() => setTimeout(() => history.goBack(), 2000)));
     } else {
       if (!regx.test(this.state.id)) {
         notify.show('enter a valid uuid', 'error', 3000);
@@ -484,6 +530,7 @@ export const mapStateToProps = state => ({
   loading: state.concepts.loading,
   allSources: state.sourceConcepts.conceptSources,
   selectedAnswers: state.concepts.selectedAnswers,
+  dictionaryConcepts: state.concepts.dictionaryConcepts,
 });
 export default connect(
   mapStateToProps,
@@ -506,5 +553,7 @@ export default connect(
     addSelectedAnswers: addSelectedAnswersToState,
     removeAnswer: removeSelectedAnswer,
     createNewAnswerRow: addNewAnswerRow,
+    deleteConcept: removeDictionaryConcept,
+    recreateConcept: createNewConcept,
   },
 )(EditConcept);
