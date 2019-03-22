@@ -52,7 +52,7 @@ class AnswerRow extends React.Component {
               >
                 <option value={localStorage.getItem('dictionaryId')}>{currentDictionaryName}</option>
                 <option value={INTERNAL_MAPPING_DEFAULT_SOURCE}>
-                INTERNAL_MAPPING_DEFAULT_SOURCE
+                  {INTERNAL_MAPPING_DEFAULT_SOURCE}
                 </option>
               </select>
             )
