@@ -5,7 +5,7 @@ import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import CreateMapping from './CreateMapping';
-import { classes } from './helperFunction';
+import { classes, MAP_TYPE } from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
@@ -17,7 +17,8 @@ const CreateConceptForm = (props) => {
     isEditConcept, allSources,
   } = props;
 
-  const selectedMappings = mappings.filter(map => map.retired === false);
+  const selectedMappings = mappings
+    .filter(map => map.retired === false && map.map_type !== MAP_TYPE.questionAndAnswer);
 
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
@@ -201,54 +202,50 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
-        {
-          props.state.concept_class !== 'question' && (
-            <div className="concept-table ">
-              <div className="form-group">
-                <div className="row col-12 custom-concept-list">
-                  <h6 className="text-left section-header">Mappings</h6>
-                  <table className=" table-striped table-bordered concept-form-table">
-                    <thead className="header text-white">
-                      <tr>
-                        <th>Source</th>
-                        <th>Relationship</th>
-                        <th>Concept</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedMappings.map((mapping, i) => (
-                        <CreateMapping
-                          source={mapping.source}
-                          url={mapping.url}
-                          map_type={mapping.map_type}
-                          to_concept_code={mapping.to_concept_code}
-                          to_concept_name={mapping.to_concept_name}
-                          updateEventListener={updateEventListener}
-                          removeMappingRow={removeMappingRow}
-                          updateAsyncSelectValue={updateAsyncSelectValue}
-                          key={mapping.id}
-                          index={i}
-                          isEditConcept={isEditConcept}
-                          isNew={mapping.isNew}
-                          allSources={allSources}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
-                  <button
-                    type="button"
-                    onClick={addMappingRow}
-                    className="btn btn-outline-secondary btn-sm mt-3"
-                  >
+        <div className="concept-table ">
+          <div className="form-group">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Mappings</h6>
+              <table className=" table-striped table-bordered concept-form-table">
+                <thead className="header text-white">
+                  <tr>
+                    <th>Source</th>
+                    <th>Relationship</th>
+                    <th>Concept</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedMappings.map((mapping, i) => (
+                    <CreateMapping
+                      source={mapping.source}
+                      url={mapping.url}
+                      map_type={mapping.map_type}
+                      to_concept_code={mapping.to_concept_code}
+                      to_concept_name={mapping.to_concept_name}
+                      updateEventListener={updateEventListener}
+                      removeMappingRow={removeMappingRow}
+                      updateAsyncSelectValue={updateAsyncSelectValue}
+                      key={mapping.id}
+                      index={i}
+                      isEditConcept={isEditConcept}
+                      isNew={mapping.isNew}
+                      allSources={allSources}
+                    />
+                  ))}
+                </tbody>
+              </table>
+              <button
+                type="button"
+                onClick={addMappingRow}
+                className="btn btn-outline-secondary btn-sm mt-3"
+              >
                   Add another Mapping...
-                  </button>
-                </div>
-              </div>
-              <br />
+              </button>
             </div>
-          )
-        }
+          </div>
+          <br />
+        </div>
         <div className="submit-button text-left">
           <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
