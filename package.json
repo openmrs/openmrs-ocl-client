@@ -30,7 +30,7 @@
     "uuid": "^3.3.2"
   },
   "scripts": {
-    "start": "chmod +x ./init.sh && ./init.sh && cp env-config.js ./public/ && npm run build:css && react-scripts start",
+    "start": "npm run build:css && react-scripts start",
     "build": "npm run build:css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
