@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { CUSTOM_SOURCE } from './helperFunction';
 
 const ActionButtons = ({
   actionButtons,
+  source,
   id,
   concept_class,
   showDeleteModal,
@@ -15,7 +17,6 @@ const ActionButtons = ({
   if (actionButtons === true) {
     showExtra = true;
   }
-
   return (
     !retired && <React.Fragment>
       {showExtra && (
@@ -28,14 +29,18 @@ const ActionButtons = ({
           </Link>
         </React.Fragment>
       )}
-      <button
-        type="button"
-        className="btn btn-sm mb-1 actionButtons action-btn-style"
-        id="retireConcept"
-        onClick={() => { showDeleteModal(version_url); }}
-      >
-      Remove
-      </button>
+      {source !== CUSTOM_SOURCE && (
+        <button
+          type="button"
+          className="btn btn-sm mb-1 actionButtons action-btn-style"
+          id="retireConcept"
+          onClick={() => {
+            showDeleteModal(version_url);
+          }}
+        >
+          Remove
+        </button>
+      )}
     </React.Fragment>
   );
 };
