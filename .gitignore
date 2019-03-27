@@ -29,5 +29,3 @@ package-lock.json
 **/__snapshots__/**
 src/components/dashboard/container/ListContainer.jsx
 .env
-/public/env-config.js
-env-config.js
