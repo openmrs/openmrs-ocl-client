@@ -2,17 +2,42 @@ import React, { Component } from 'react';
 import AsyncSelect from 'react-select/lib/Async';
 import PropTypes from 'prop-types';
 import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from './helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPES_DEFAULTS } from './helperFunction';
 import MapType from './MapType';
 
 class CreateMapping extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      type: '',
+      editMapType: '',
+    };
   }
 
   handleInputChange = (value) => {
     this.setState({ inputValue: value });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      type: nextProps.map_type,
+    });
+  }
+
+  componentWillMount() {
+    const editMapType = this.props.source;
+    this.setState({
+      editMapType,
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.source !== this.props.source) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        type: '',
+      });
+    }
   }
 
   render() {
@@ -22,6 +47,9 @@ class CreateMapping extends Component {
       updateEventListener, removeMappingRow, updateAsyncSelectValue,
       isNew, allSources, url,
     } = this.props;
+    const nullEditMapType = (source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? this.state.type
+      || MAP_TYPES_DEFAULTS[1] : this.state.type || MAP_TYPES_DEFAULTS[0]);
+
     return (
       <tr>
         <td>
@@ -43,13 +71,17 @@ class CreateMapping extends Component {
           </select>}
         </td>
         <td>
-          {<MapType
-            updateEventListener={updateEventListener}
-            url={url}
-            index={index}
-            map_type={map_type}
-            source={source}
-          />}
+
+          {
+            <MapType
+              updateEventListener={updateEventListener}
+              url={url}
+              index={index}
+              map_type={this.state.editMapType === null ? nullEditMapType : map_type}
+              id="newSource"
+            />
+          }
+
         </td>
 
         <td className="react-async">

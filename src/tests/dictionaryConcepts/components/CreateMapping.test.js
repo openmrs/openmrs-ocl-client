@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { MemoryRouter as Router } from 'react-router';
 import CreateMapping from '../../../components/dictionaryConcepts/components/CreateMapping';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
@@ -73,5 +73,19 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const inputs = wrapper.find('select');
     expect(inputs).toHaveLength(2);
+  });
+  it('should call componentDidUpdate', () =>{
+    const newProps = {
+      ...props,
+      isNew: true,
+      source: 'Source',
+    };
+    wrapper = mount(<CreateMapping {...newProps} />);
+    const nextProps = {
+      ...props,
+      source: 'MapType',
+    };
+    wrapper.setProps(nextProps);
+    expect(wrapper.instance().props.source).toEqual('MapType');
   });
 });
