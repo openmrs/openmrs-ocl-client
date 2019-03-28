@@ -164,6 +164,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         newConcept: action.payload,
+        dictionaryConcepts: [action.payload, ...state.dictionaryConcepts],
       };
     case SEARCH_CONCEPTS:
       return {

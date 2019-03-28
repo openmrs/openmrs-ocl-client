@@ -284,7 +284,7 @@ export const CreateMapping = (data, from_concept_url, source) => {
     const mappingData = mapping.source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
       map_type: mapping.map_type,
       from_concept_url,
-      to_source_url: mapping.source,
+      to_source_url: mapping.to_source_url || mapping.source,
       to_concept_code: mapping.to_concept_code,
       to_concept_name: mapping.to_concept_name,
     }) : ({
@@ -293,7 +293,6 @@ export const CreateMapping = (data, from_concept_url, source) => {
       to_concept_url: mapping.to_source_url,
       to_concept_name: mapping.to_concept_name,
     });
-
     return (
       mapping.isNew && instance.post(url, mappingData)
     );
