@@ -50,9 +50,13 @@ class AnswerRow extends React.Component {
                 onChange={event => this.handleChangeInSource(event)}
                 required
               >
-                <option value={localStorage.getItem('dictionaryId')}>{currentDictionaryName}</option>
+                <option value={localStorage.getItem('dictionaryId')}>
+                  {currentDictionaryName}
+                  &nbsp;(Dictionary)
+                </option>
                 <option value={INTERNAL_MAPPING_DEFAULT_SOURCE}>
-                INTERNAL_MAPPING_DEFAULT_SOURCE
+                  {INTERNAL_MAPPING_DEFAULT_SOURCE}
+                  &nbsp;(Source)
                 </option>
               </select>
             )
