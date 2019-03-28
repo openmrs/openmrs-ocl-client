@@ -62,6 +62,7 @@ import {
   removeSelectedAnswer,
   unpopulatePrepopulatedAnswers,
   prepopulateAnswers,
+  unretireMapping,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -666,6 +667,40 @@ describe('Testing Edit concept actions ', () => {
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
     return store.dispatch(updateConcept(conceptUrl, existingConcept, history)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should unretire a Mapping when the unretireMapping action is triggered', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: existingConcept });
+    });
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: UPDATE_CONCEPT, payload: existingConcept },
+    ];
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(unretireMapping(conceptUrl)).then((result) => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(result.retired).toEqual(false);
+    });
+  });
+
+  it('should handle exceptions for unretire a Mapping', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 400 });
+    });
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+    ];
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(unretireMapping(conceptUrl)).then((result) => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(result).toEqual(null);
     });
   });
 

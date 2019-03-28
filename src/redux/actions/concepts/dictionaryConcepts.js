@@ -399,8 +399,10 @@ export const unretireMapping = url => async (dispatch) => {
     const response = await instance.put(url, { retired: false });
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     notify.show('Mapping Un-retired', 'success', 5000);
+    return response.data;
   } catch (error) {
     notify.show('Could not un-retire mapping', 'error', 3000);
     dispatch(isFetching(false));
+    return null;
   }
 };
