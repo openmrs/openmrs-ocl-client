@@ -1,9 +1,10 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { MemoryRouter as Router } from 'react-router';
 import CreateMapping from '../../../components/dictionaryConcepts/components/CreateMapping';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
 import { mockSource } from '../../__mocks__/concepts';
+import { wrap } from 'module';
 
 describe('Test suite for dictionary concepts components', () => {
   const props = {
@@ -73,5 +74,16 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const inputs = wrapper.find('select');
     expect(inputs).toHaveLength(2);
+  });
+  it('should set the default relationship when source changes.'
+  + 'Selecting a new relationship updates the state and map_type props with the new relationship details.', () => {
+    wrapper = mount(<CreateMapping {...props} />);
+    const nextProps = {
+      ...props,
+      source: 'MapTypes',
+      map_type: 'Associated With',
+    };
+    wrapper.setProps(nextProps);
+    expect(wrapper.instance().props.map_type).toEqual('Associated With');
   });
 });

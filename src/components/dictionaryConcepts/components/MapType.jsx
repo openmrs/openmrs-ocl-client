@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPES_DEFAULTS } from './helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
 
 const mapType = (props) => {
   const {
-    index, map_type, map_types, updateEventListener, url, source,
+    index, map_type, map_types, updateEventListener, url,
   } = props;
+
   return (
     <select
       tabIndex={index}
-      value={source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? MAP_TYPES_DEFAULTS[1] : map_type}
+      value={map_type}
       className="form-control"
       placeholder="map type"
       type="text"
