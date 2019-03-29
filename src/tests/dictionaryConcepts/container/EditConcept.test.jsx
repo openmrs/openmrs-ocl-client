@@ -423,6 +423,25 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(instance.state.mappings[0].to_concept_code).not.toEqual(null);
   });
 
+  it('should call updateEventListener function on source change', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value: '',
+      },
+    };
+    const url = '1234';
+    const { value } = event.target;
+    const instance = wrapper.find('EditConcept').instance();
+    const spy = jest.spyOn(instance, 'updateEventListener');
+    instance.updateEventListener({ target: { tabIndex: 0, name: INTERNAL_MAPPING_DEFAULT_SOURCE, value: '' } });
+    instance.updateEventListener(event, url);
+    wrapper.find('.form-control').at(0).simulate('select');
+    expect(spy).toHaveBeenCalled();
+    expect(instance.state.mappings[0].to_concept_code).toEqual(value);
+  });
+
   it('should call updateEventListener function with internal mapping', () => {
     const event = {
       target: {

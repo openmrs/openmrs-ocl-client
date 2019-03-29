@@ -62,3 +62,4 @@ export const MAP_TYPE = {
 export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;
 
 export const CUSTOM_SOURCE = 'Custom';
+export const ATTRIBUTE_NAME_SOURCE = 'source';
