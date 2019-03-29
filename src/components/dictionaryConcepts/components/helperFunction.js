@@ -63,3 +63,4 @@ export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;
 
 export const CUSTOM_SOURCE = 'Custom';
 export const ATTRIBUTE_NAME_SOURCE = 'source';
+export const KEY_CODE_FOR_ENTER = 13;

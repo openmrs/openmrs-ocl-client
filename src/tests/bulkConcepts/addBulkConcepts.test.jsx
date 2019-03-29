@@ -8,6 +8,7 @@ import Authenticated from '../__mocks__/fakeStore';
 import { AddBulkConcepts, mapStateToProps } from '../../components/bulkConcepts/addBulkConcepts';
 import { mockConcepts } from '../__mocks__/concepts';
 import configInstance from '../../config/axiosConfig';
+import { KEY_CODE_FOR_ENTER } from '../../components/dictionaryConcepts/components/helperFunction';
 
 const store = createMockStore(Authenticated);
 const match = {
@@ -113,13 +114,14 @@ describe('Add Bulk Concepts', () => {
       </Provider>
     </MemoryRouter>);
     const input = wrapper.find('#search');
-    input.simulate('change', { target: { value: '' } });
+    input.simulate('change', { target: { value: 'Bronze Diabetes' } });
     input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { key: 'Enter' });
+    input.simulate('keydown', { keyCode: KEY_CODE_FOR_ENTER });
     expect(input.instance().value).toEqual('Bronze Diabetes');
     const txtInput = wrapper.find('#idsText').at(0);
-    expect(txtInput.instance().props.value).toEqual('1');
+    expect(txtInput.instance().props.value).toEqual('');
   });
+
 
   it('can search for concept that does not exist', () => {
     const wrapper = mount(<MemoryRouter>
@@ -130,7 +132,7 @@ describe('Add Bulk Concepts', () => {
     const input = wrapper.find('#search');
     input.simulate('change', { target: { value: 'non existent' } });
     input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { key: 'Enter' });
+    input.simulate('keydown', { keyCode: KEY_CODE_FOR_ENTER });
     const txtInput = wrapper.find('#idsText').at(0);
     expect(txtInput.instance().props.value).toEqual('');
   });
@@ -214,7 +216,7 @@ describe('Add Bulk Concepts', () => {
     const other = wrapper.find('#otherSourcesOption');
     other.simulate('click');
     const input = wrapper.find('#sourceSearch');
-    input.simulate('change', { target: { value: '' } });
+    input.simulate('change', { target: { value: 'testSource' } });
     input.simulate('keydown', { key: 'ArrowDown' });
     input.simulate('keydown', { key: 'Enter' });
     expect(input.instance().value).toEqual('testSource');

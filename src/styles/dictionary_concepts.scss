@@ -411,3 +411,31 @@ input:-webkit-autofill:active {
 input[type=text] {
   text-overflow: ellipsis;
 }
+
+.conceptDetails {
+  max-height: 80px;
+}
+.cielConceptsList {
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 5px;
+  background: #F4f4f4;
+  z-index: 10;
+
+  li {
+    display: block;
+    margin: 1px;
+    padding: 5px;
+  }
+  li:hover {
+    background: #cccccc;
+  }
+  button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+  }
+}
