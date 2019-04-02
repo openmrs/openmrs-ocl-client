@@ -27,7 +27,7 @@ export class ActionButtons extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      disableButton: false,
+      disableActionButton: '',
     };
   }
 
@@ -43,12 +43,10 @@ export class ActionButtons extends Component {
     this.props.addConcept(params, data, name);
   };
 
-  addConceptButton = (id, url, display_name) => {
-    this.setState({ disableButton: true });
+  addConceptButton = (url, display_name) => {
+    this.setState({ disableActionButton: true });
     const { closeModal } = this.props;
     notify.show('Adding...', 'warning', 800);
-
-    this.fetchPreview(id);
     closeModal();
     setTimeout(() => {
       this.addConcept(url, display_name);
@@ -56,7 +54,7 @@ export class ActionButtons extends Component {
   };
 
   render() {
-    const { disableButton } = this.state;
+    const { disableActionButton } = this.state;
     const {
       id, url, display_name, modalId, closeModal, preview,
     } = this.props;
@@ -67,12 +65,11 @@ export class ActionButtons extends Component {
           className="btn btn-sm mb-1 actionaButtons"
           id="add-button"
           onClick={() => this.addConceptButton(
-            id,
             url,
             display_name,
           )
           }
-          disabled={disableButton}
+          disabled={disableActionButton}
         >
           Add concept
         </button>
