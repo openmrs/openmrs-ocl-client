@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { CUSTOM_SOURCE } from './helperFunction';
+import { CUSTOM_SOURCE, CONCEPT_CLASS } from './helperFunction';
 
 const ActionButtons = ({
   actionButtons,
@@ -14,13 +14,14 @@ const ActionButtons = ({
   retireConcept,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
+  const showButton = source !== CUSTOM_SOURCE || concept_class === CONCEPT_CLASS;
   let showExtra;
   if (actionButtons === true) {
     showExtra = true;
   }
   return (
     <React.Fragment>
-      {source !== CUSTOM_SOURCE && (
+      {showButton && (
         <button
           type="button"
           className="btn btn-sm mb-1 actionButtons action-btn-style"
