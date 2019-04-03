@@ -13,6 +13,8 @@ import {
 import ListDictionaries from '../../../components/dashboard/components/dictionary/ListDictionaries';
 import DictionaryCard from '../../../components/dashboard/components/dictionary/DictionaryCard';
 
+jest.mock('react-notify-toast');
+
 describe('DictionaryDisplay', () => {
   it('should render without any dictionary data', () => {
     const props = {
