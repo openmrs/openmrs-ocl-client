@@ -31,7 +31,6 @@ import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
-
 export class EditConcept extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -87,6 +86,7 @@ export class EditConcept extends Component {
       openGeneralModal: false,
       url: '',
       mapp: '',
+      show: false,
     };
     this.conceptUrl = '';
     this.createUrl = '';
@@ -354,6 +354,23 @@ export class EditConcept extends Component {
     this.hideGeneralModal();
   }
 
+  selectConfirm = () => {
+    const path = localStorage.getItem('dictionaryPathName');
+    if (path) {
+      this.props.history.push(path);
+    } else {
+      notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
+    }
+  }
+
+  hideModal = () => this.setState({ show: false });
+
+  showModal = () => {
+    this.setState(
+      { show: true },
+    );
+  }
+
   removeMappingRow = (url, name, code) => {
     const { mappings } = this.state;
     const mapp = name || code;
@@ -504,6 +521,7 @@ Concept
                 addAnswerRow={this.addAnswerRow}
                 removeAnswerRow={this.removeAnswerRow}
                 currentDictionaryName={dictionaryName}
+                showModal={this.showModal}
               />
               )
               }
@@ -518,6 +536,16 @@ Concept
                 cancel_button="Cancel"
                 hide={this.hideGeneralModal}
                 select_confirm={this.confirmRemoveMappingRow}
+              />
+              <GeneralModel
+                title=""
+                content="Are you sure you want to cancel without saving?"
+                show={this.state.show}
+                confirm_button="Yes"
+                cancel_button="No"
+                hide={this.hideModal}
+                select_confirm={this.selectConfirm}
+                showModal={this.showModal}
               />
             </div>
           </div>

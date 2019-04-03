@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
@@ -251,11 +250,9 @@ const CreateConceptForm = (props) => {
           <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
-          <Link to={props.path} className="collection-name small-text">
-            <button className="btn btn-danger" type="submit" disabled={props.disableButton}>
+          <button id="remove" className="btn btn-danger" type="button" onClick={props.showModal}>
             Cancel
-            </button>
-          </Link>
+          </button>
         </div>
       </div>
     </form>
@@ -285,6 +282,7 @@ CreateConceptForm.propTypes = {
   mappings: PropTypes.array,
   addMappingRow: PropTypes.func,
   updateEventListener: PropTypes.func,
+  showModal: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -299,6 +297,7 @@ CreateConceptForm.defaultProps = {
   isEditConcept: false,
   handleAsyncSelectChange: () => {},
   handleAnswerChange: () => {},
+  showModal: () => {},
   selectedAnswers: [],
   mappings: [],
   addMappingRow: null,
