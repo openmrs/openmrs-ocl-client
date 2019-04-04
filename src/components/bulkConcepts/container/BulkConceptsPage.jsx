@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { notify } from 'react-notify-toast';
 import SideNav from '../component/Sidenav';
 import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
@@ -122,7 +122,7 @@ export class BulkConceptsPage extends Component {
       const query = `q=${searchInput.trim()}*`; // The asterisk permits partial search
       const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
       fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage);
-    } else NotificationManager.warning(MIN_CHARACTERS_WARNING, '', MILLISECONDS_TO_SHOW_WARNING);
+    } else notify.show(MIN_CHARACTERS_WARNING, 'error', MILLISECONDS_TO_SHOW_WARNING);
   }
 
   handleSearch = async (event) => {
@@ -181,7 +181,6 @@ export class BulkConceptsPage extends Component {
               handleChange={this.handleChange}
               searchInput={searchInput}
             />
-            <NotificationContainer />
             <ConceptTable
               concepts={concepts}
               loading={loading}
