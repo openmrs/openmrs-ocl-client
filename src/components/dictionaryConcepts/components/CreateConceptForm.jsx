@@ -146,29 +146,6 @@ const CreateConceptForm = (props) => {
             <option>to_concept_coded</option>
           </select>
         </div>
-
-        {concept.toString().trim() === 'question' ? (
-          <div className="form-group answer">
-            <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Answers</h6>
-              <AnswersTable
-                handleAsyncSelectChange={handleAsyncSelectChange}
-                selectedAnswers={selectedAnswers}
-                handleAnswerChange={handleAnswerChange}
-                removeAnswerRow={removeAnswerRow}
-                currentDictionaryName={currentDictionaryName}
-                isEditConcept={isEditConcept}
-              />
-              <button
-                type="button"
-                className="btn btn-outline-secondary btn-sm mt-3"
-                onClick={addAnswerRow}
-              >
-                Add answer...
-              </button>
-            </div>
-          </div>
-        ) : null }
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
@@ -201,6 +178,28 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
+        {concept.toString().trim() === 'question' ? (
+          <div className="form-group answer">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Answers</h6>
+              <AnswersTable
+                handleAsyncSelectChange={handleAsyncSelectChange}
+                selectedAnswers={selectedAnswers}
+                handleAnswerChange={handleAnswerChange}
+                removeAnswerRow={removeAnswerRow}
+                currentDictionaryName={currentDictionaryName}
+                isEditConcept={isEditConcept}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm mt-3"
+                onClick={addAnswerRow}
+              >
+                Add answer...
+              </button>
+            </div>
+          </div>
+        ) : null }
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
