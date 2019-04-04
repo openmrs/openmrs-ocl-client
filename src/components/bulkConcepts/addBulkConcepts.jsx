@@ -40,7 +40,6 @@ export class AddBulkConcepts extends Component {
     this.state = {
       conceptIds: '',
       openResultModal: false,
-      otherSelected: false,
       value: '',
     };
     this.invalidConceptIds = [];
@@ -58,22 +57,10 @@ export class AddBulkConcepts extends Component {
   }
 
   handleCielClick = (e) => {
-    this.setState({ otherSelected: false });
     this.sourceUrl = e.target.value;
     this.props.fetchSourceConcepts(this.sourceUrl);
     this.reset();
   };
-
-  otherSourceClick = () => {
-    this.setState({ otherSelected: true });
-    this.props.fetchConceptSources();
-    this.reset();
-  }
-
-  handleSourceSelect = (source) => {
-    this.sourceUrl = source.url.substring(1);
-    this.props.fetchSourceConcepts(this.sourceUrl);
-  }
 
   reset = () => {
     this.setState({ conceptIds: '' });
@@ -127,7 +114,7 @@ export class AddBulkConcepts extends Component {
 
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
-    const { conceptIds, openResultModal, otherSelected } = this.state;
+    const { conceptIds, openResultModal } = this.state;
     const {
       match: {
         params: {
@@ -135,9 +122,7 @@ export class AddBulkConcepts extends Component {
         },
       },
       sourceConcepts,
-      conceptSources,
       isLoading,
-      isFetching,
     } = this.props;
     const disableButton = (conceptIds.length < 1);
     return (
@@ -154,7 +139,7 @@ export class AddBulkConcepts extends Component {
             {' '}
             Dictionary
           </strong>
-          : Bulk Add Concepts
+          : Add Bulk CIEL Concepts
         </h3>
         <div className="scheduler-border">
           <h3>Select a source</h3>
@@ -174,90 +159,6 @@ export class AddBulkConcepts extends Component {
                 CIEL
               </label>
             </div>
-            <br />
-
-
-            <div id="other-search">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="conceptSources"
-                  id="otherSourcesOption"
-                  onClick={this.otherSourceClick}
-                />
-                <Downshift
-                  id="sourceSearchInput"
-                  onChange={selected => this.handleSourceSelect(selected)}
-                  itemToString={source => source && source.name}
-                >
-                  {({
-                    getInputProps,
-                    getItemProps,
-                    getMenuProps,
-                    highlightedIndex,
-                    isOpen,
-                    inputValue,
-                  }) => (
-                    <div>
-                      <div id="other-search" className="vertical-center">
-                        <span className="mr-2">Other</span>
-                        <form className="form-inline search-bar">
-                          <i className="fas fa-search" />
-                          {otherSelected && <input
-                            {
-                              ...getInputProps()
-                              }
-                            className="form-control search"
-                            id="sourceSearch"
-                            placeholder="Search"
-                            aria-label="Search"
-                          />
-                            }
-                          {isFetching
-                              && <div className="ml-auto text-right">
-                                <Loader smaller />
-                              </div>
-                            }
-                        </form>
-                      </div>
-                      <div className="search-ul">
-                        {isOpen ? (
-                          <ul {...getMenuProps()} className="search-ul">
-                            {
-                                conceptSources.filter(item => !inputValue.trim()
-                                  || item.name.toLowerCase()
-                                    .includes(inputValue.toLowerCase())).slice(1, 10)
-                                  .filter(item => item.name !== 'CIEL')
-                                  .map((item, index) => (
-                                    <li
-                                      {...getItemProps({
-                                        key: item.name,
-                                        index,
-                                        item,
-                                        style: {
-                                          backgroundColor:
-                                            highlightedIndex === index ? 'lightgray' : 'white',
-                                          padding: '5px 10px 1px',
-                                        },
-                                      })}
-                                    >
-                                      {item.name}
-                                    </li>
-                                  ))
-                              }
-                          </ul>
-                        )
-                          : null}
-                      </div>
-                    </div>
-                  )}
-                </Downshift>
-
-              </div>
-            </div>
-
-            <br />
           </div>
           <br />
           <div className="row">

@@ -74,27 +74,6 @@ describe('Add Bulk Concepts', () => {
     expect(wrapper.find('Loader')).toHaveLength(1);
   });
 
-  it('should render a loader while fetching Concepts Source', () => {
-    const properties = {
-      fetchSourceConcepts: jest.fn(),
-      addExistingBulkConcepts: jest.fn(),
-      fetchConceptSources: jest.fn(),
-      sourceConcepts: mockConcepts,
-      conceptSources: [{ id: 1, name: 'testSource', url: '/org/testSource/' },
-        { id: 2, name: 'testSource', url: '/org/testSource/' }],
-      isFetching: true,
-      isLoading: false,
-      match,
-      language: 'en',
-    };
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...properties} />
-      </Provider>
-    </MemoryRouter>);
-    expect(wrapper.find('Loader')).toHaveLength(1);
-  });
-
   it('shows suggestions when typing', () => {
     const hasMenu = wrapper => wrapper.find('.search-ul').at(0).length === 1;
 
@@ -205,39 +184,6 @@ describe('Add Bulk Concepts', () => {
     const instance = wrapper.instance();
     instance.closeResultModal();
     expect(wrapper.state().openResultModal).toBe(false);
-  });
-
-  it('can search for and select "testSource ..." in conceptSources', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const other = wrapper.find('#otherSourcesOption');
-    other.simulate('click');
-    const input = wrapper.find('#sourceSearch');
-    input.simulate('change', { target: { value: 'testSource' } });
-    input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { key: 'Enter' });
-    expect(input.instance().value).toEqual('testSource');
-    const component = wrapper.find('AddBulkConcepts').instance();
-    expect(component.sourceUrl).toEqual('org/testSource/');
-  });
-
-  it('can search for sources that does not exist', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const other = wrapper.find('#otherSourcesOption');
-    other.simulate('click');
-    const input = wrapper.find('#sourceSearch');
-    input.simulate('change', { target: { value: 'non existent' } });
-    input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { key: 'Enter' });
-    const txtInput = wrapper.find('#idsText').at(0);
-    expect(txtInput.instance().props.value).toEqual('');
   });
 
   it('should test mapStateToProps', () => {
