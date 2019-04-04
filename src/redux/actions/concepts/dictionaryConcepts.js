@@ -186,22 +186,26 @@ export const filterByClass = (
 };
 
 export const queryAnswers = async (source, query) => {
-  const CONCEPT_TYPE = localStorage.getItem('type');
-  const USER_TYPE_NAME = localStorage.getItem('typeName');
+  try {
+    const CONCEPT_TYPE = localStorage.getItem('type');
+    const USER_TYPE_NAME = localStorage.getItem('typeName');
 
-  let url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${source}/concepts/?${query}*&verbose=true`;
-  if (source === INTERNAL_MAPPING_DEFAULT_SOURCE) {
-    url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
+    let url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${source}/concepts/?${query}*&verbose=true`;
+    if (source === INTERNAL_MAPPING_DEFAULT_SOURCE) {
+      url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
+    }
+    const response = await instance.get(url);
+    const defaults = { map_type: MAP_TYPE.questionAndAnswer };
+    const options = response.data.map(concept => ({
+      ...concept,
+      ...defaults,
+      value: `${concept.url}`,
+      label: `${concept.source}: ${concept.display_name}`,
+    }));
+    return options;
+  } catch (error) {
+    return [];
   }
-  const response = await instance.get(url);
-  const defaults = { map_type: MAP_TYPE.questionAndAnswer };
-  const options = response.data.map(concept => ({
-    ...concept,
-    ...defaults,
-    value: `${concept.url}`,
-    label: `${concept.source}: ${concept.display_name}`,
-  }));
-  return options;
 };
 
 export const addNewAnswerRow = answer => (dispatch) => {

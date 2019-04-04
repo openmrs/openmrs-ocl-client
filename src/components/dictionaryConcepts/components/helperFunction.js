@@ -68,3 +68,5 @@ export const INTERNET_ERROR = 'An error occurred with your internet connection, 
 export const CUSTOM_SOURCE = 'Custom';
 export const ATTRIBUTE_NAME_SOURCE = 'source';
 export const KEY_CODE_FOR_ENTER = 13;
+export const KEY_CODE_FOR_ESCAPE = 27;
+export const KEY_CODE_FOR_SPACE = 32;

@@ -423,6 +423,7 @@ input[type=text] {
   z-index: 10;
   max-height:210px;
   overflow:auto;
+  position: relative;
 
   li {
     display: block;

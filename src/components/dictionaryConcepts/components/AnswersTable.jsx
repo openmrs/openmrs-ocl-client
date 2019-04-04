@@ -21,10 +21,11 @@ const AnswersTable = (props) => {
         </tr>
       </thead>
       <tbody>
-        {selectedAnswers.map(ans => (
+        {selectedAnswers.map((ans, index) => (
           <AnswerRow
             frontEndUniqueKey={ans.frontEndUniqueKey}
-            key={ans.frontEndUniqueKey}
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
             toConceptName={ans.to_concept_name}
             answerUrl={ans.url}
             prePopulated={ans.prePopulated}

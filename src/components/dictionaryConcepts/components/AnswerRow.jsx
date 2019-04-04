@@ -76,6 +76,7 @@ class AnswerRow extends React.Component {
               handleAsyncSelectChange={handleAsyncSelectChange}
               source={source}
               frontEndUniqueKey={frontEndUniqueKey}
+              isShown={false}
             />
           )
         }
