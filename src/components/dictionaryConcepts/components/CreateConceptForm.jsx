@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
@@ -147,28 +148,7 @@ const CreateConceptForm = (props) => {
           </select>
         </div>
 
-        {concept.toString().trim() === 'question' ? (
-          <div className="form-group answer">
-            <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Answers</h6>
-              <AnswersTable
-                handleAsyncSelectChange={handleAsyncSelectChange}
-                selectedAnswers={selectedAnswers}
-                handleAnswerChange={handleAnswerChange}
-                removeAnswerRow={removeAnswerRow}
-                currentDictionaryName={currentDictionaryName}
-                isEditConcept={isEditConcept}
-              />
-              <button
-                type="button"
-                className="btn btn-outline-secondary btn-sm mt-3"
-                onClick={addAnswerRow}
-              >
-                Add answer...
-              </button>
-            </div>
-          </div>
-        ) : null }
+        
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
@@ -201,6 +181,28 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
+        {concept.toString().trim() === 'question' ? (
+          <div className="form-group answer">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Answers</h6>
+              <AnswersTable
+                handleAsyncSelectChange={handleAsyncSelectChange}
+                selectedAnswers={selectedAnswers}
+                handleAnswerChange={handleAnswerChange}
+                removeAnswerRow={removeAnswerRow}
+                currentDictionaryName={currentDictionaryName}
+                isEditConcept={isEditConcept}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm mt-3"
+                onClick={addAnswerRow}
+              >
+                Add answer...
+              </button>
+            </div>
+          </div>
+        ) : null }
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
@@ -250,9 +252,11 @@ const CreateConceptForm = (props) => {
           <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
-          <button id="remove" className="btn btn-danger" type="button" onClick={props.showModal}>
+          <Link to={props.path} className="collection-name small-text">
+            <button className="btn btn-danger" type="submit" disabled={props.disableButton}>
             Cancel
-          </button>
+            </button>
+          </Link>
         </div>
       </div>
     </form>
@@ -282,7 +286,6 @@ CreateConceptForm.propTypes = {
   mappings: PropTypes.array,
   addMappingRow: PropTypes.func,
   updateEventListener: PropTypes.func,
-  showModal: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -297,7 +300,6 @@ CreateConceptForm.defaultProps = {
   isEditConcept: false,
   handleAsyncSelectChange: () => {},
   handleAnswerChange: () => {},
-  showModal: () => {},
   selectedAnswers: [],
   mappings: [],
   addMappingRow: null,
