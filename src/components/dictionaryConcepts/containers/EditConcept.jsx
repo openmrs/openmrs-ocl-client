@@ -26,6 +26,7 @@ import {
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
+  CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
 } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
@@ -90,7 +91,7 @@ export class EditConcept extends Component {
     };
     this.conceptUrl = '';
     this.createUrl = '';
-
+    this.oldState = {};
     autoBind(this);
   }
 
@@ -109,7 +110,9 @@ export class EditConcept extends Component {
     } = this.props;
     this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true&verbose=true`;
     this.createUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/`;
-    this.props.fetchExistingConcept(this.conceptUrl);
+    this.props.fetchExistingConcept(this.conceptUrl).then(() => {
+      this.oldState = this.state;
+    });
     fetchAllConceptSources();
   }
 
@@ -366,9 +369,13 @@ export class EditConcept extends Component {
   hideModal = () => this.setState({ show: false });
 
   showModal = () => {
-    this.setState(
-      { show: true },
-    );
+    if (this.oldState === this.state) {
+      this.selectConfirm();
+    } else {
+      this.setState(
+        { show: true },
+      );
+    }
   }
 
   removeMappingRow = (url, name, code) => {
@@ -538,11 +545,11 @@ Concept
                 select_confirm={this.confirmRemoveMappingRow}
               />
               <GeneralModel
-                title=""
-                content="Are you sure you want to cancel without saving?"
+                title={LEAVE_PAGE_POPUP_TITLE}
+                content={CANCEL_WARNING}
                 show={this.state.show}
-                confirm_button="Yes"
-                cancel_button="No"
+                confirm_button={LEAVE_PAGE}
+                cancel_button={STAY_ON_PAGE}
                 hide={this.hideModal}
                 select_confirm={this.selectConfirm}
                 showModal={this.showModal}

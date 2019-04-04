@@ -18,7 +18,10 @@ import {
   addNewAnswerRow,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
-import { MAP_TYPE } from '../components/helperFunction';
+import {
+  MAP_TYPE, CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
+} from '../components/helperFunction';
+import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
 export class CreateConcept extends Component {
   static propTypes = {
@@ -80,8 +83,9 @@ export class CreateConcept extends Component {
         retired: false,
         url: uuid(),
       }],
+      show: false,
     };
-
+    this.oldState = {};
     autoBind(this);
   }
 
@@ -95,14 +99,9 @@ export class CreateConcept extends Component {
     } = this.props;
     unpopulateSelectedAnswers();
     const concept = conceptType || '';
-    const { newName, description } = this.props;
-    if (newName.length === 0) {
-      this.props.createNewName();
-    }
-    if (description.length === 0) {
-      this.props.addNewDescription();
-    }
-    this.setState({ concept_class: concept });
+    this.initializeConcept(concept).then(() => {
+      this.oldState = this.state;
+    });
     fetchAllConceptSources();
   }
 
@@ -127,6 +126,17 @@ export class CreateConcept extends Component {
 
   componentWillUnmount() {
     this.props.clearSelections();
+  }
+
+  initializeConcept = async (concept) => {
+    const { newName, description } = this.props;
+    if (newName.length === 0) {
+      this.props.createNewName();
+    }
+    if (description.length === 0) {
+      this.props.addNewDescription();
+    }
+    this.setState({ concept_class: concept });
   }
 
   handleAsyncSelectChange = (answers, uniqueKey) => {
@@ -302,6 +312,20 @@ export class CreateConcept extends Component {
     this.setState({ mappings: selectedMappings });
   }
 
+  selectConfirm = () => {
+    this.props.history.push(localStorage.getItem('dictionaryPathName'));
+  }
+
+  hideModal = () => this.setState({ show: false });
+
+  showModal = () => {
+    if (this.oldState === this.state) {
+      this.selectConfirm();
+    } else {
+      this.setState({ show: true });
+    }
+  }
+
   render() {
     const {
       match: {
@@ -365,6 +389,17 @@ Concept
                 removeMappingRow={this.removeMappingRow}
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
+                showModal={this.showModal}
+              />
+              <GeneralModel
+                title={LEAVE_PAGE_POPUP_TITLE}
+                content={CANCEL_WARNING}
+                show={this.state.show}
+                confirm_button={LEAVE_PAGE}
+                cancel_button={STAY_ON_PAGE}
+                hide={this.hideModal}
+                select_confirm={this.selectConfirm}
+                showModal={this.showModal}
               />
             </div>
           </div>

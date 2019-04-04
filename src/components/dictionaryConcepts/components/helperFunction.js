@@ -60,7 +60,11 @@ export const MAP_TYPE = {
 };
 
 export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;
-
+export const CANCEL_WARNING = 'You have unsaved changes. Do you wish to leave without saving these changes?';
+export const LEAVE_PAGE_POPUP_TITLE = 'Are you sure you want to leave this page?';
+export const LEAVE_PAGE = 'Leave';
+export const STAY_ON_PAGE = 'Stay';
+export const INTERNET_ERROR = 'An error occurred with your internet connection, please fix it and try reloading the page.';
 export const CUSTOM_SOURCE = 'Custom';
 export const ATTRIBUTE_NAME_SOURCE = 'source';
 export const KEY_CODE_FOR_ENTER = 13;
