@@ -38,9 +38,7 @@ const store = createStore(
 );
 
 store.subscribe(() => {
-  saveState({
-    users: { loggedIn: store.getState().users.loggedIn },
-  });
+  saveState(store.getState());
 });
 
 export default store;
