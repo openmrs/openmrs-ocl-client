@@ -47,9 +47,11 @@ class CreateMapping extends Component {
     }
   }
 
-  handleKeyPress = (event, inputValue, url) => {
+
+  handleKeyPress = async (event, inputValue, url) => {
     if (event.keyCode === KEY_CODE_FOR_ENTER) {
-      this.doSearch(inputValue, url);
+      const options = await fetchSourceConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url);
+      this.setState({ options, isVisible: true });
     }
   }
 
@@ -57,11 +59,6 @@ class CreateMapping extends Component {
     this.setState({ isVisible: false, inputValue: res.label });
     this.props.updateAsyncSelectValue(res);
   };
-
-  doSearch = async (inputValue, url) => {
-    const options = await fetchSourceConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url);
-    this.setState({ options, isVisible: true });
-  }
 
   render() {
     const { inputValue } = this.state;
