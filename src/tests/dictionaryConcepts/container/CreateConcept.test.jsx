@@ -134,6 +134,28 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+  it('should not call the createNewName function if new names are already available', () => {
+    const propsWithNames = { ...props, newName: ['a'] };
+    wrapper = mount(<Router><CreateConcept {...propsWithNames} /></Router>);
+    expect(propsWithNames.createNewName).not.toHaveBeenCalled();
+  });
+  it('should call the createNewName function if there are no new names', () => {
+    const propsWithoutNames = { ...props, newName: [] };
+    wrapper = mount(<Router><CreateConcept {...propsWithoutNames} /></Router>);
+    expect(propsWithoutNames.createNewName).toHaveBeenCalled();
+  });
+
+  it('should not call the addNewDescription function if new descriptions are already available', () => {
+    const propsWithDescriptions = { ...props, description: ['b'] };
+    wrapper = mount(<Router><CreateConcept {...propsWithDescriptions} /></Router>);
+    expect(propsWithDescriptions.addNewDescription).not.toHaveBeenCalled();
+  });
+  it('should call the addNewDescription function if there are no new descriptions', () => {
+    const propsWithoutDescriptions = { ...props, description: [] };
+    wrapper = mount(<Router><CreateConcept {...propsWithoutDescriptions} /></Router>);
+    expect(propsWithoutDescriptions.addNewDescription).toHaveBeenCalled();
+  });
+
   it('it should render with a null conceptType', () => {
     const newProps = {
       ...props,
