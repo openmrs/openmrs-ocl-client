@@ -95,8 +95,13 @@ export class CreateConcept extends Component {
     } = this.props;
     unpopulateSelectedAnswers();
     const concept = conceptType || '';
-    this.props.createNewName();
-    this.props.addNewDescription();
+    const { newName, description } = this.props;
+    if (newName.length === 0) {
+      this.props.createNewName();
+    }
+    if (description.length === 0) {
+      this.props.addNewDescription();
+    }
     this.setState({ concept_class: concept });
     fetchAllConceptSources();
   }
