@@ -67,7 +67,7 @@ class CreateMapping extends Component {
     const { inputValue } = this.state;
     const {
       map_type, source, to_concept_code, to_concept_name, index,
-      updateEventListener, removeMappingRow,
+      updateEventListener, updateSourceEventListener, removeMappingRow,
       isNew, allSources, url, isShown,
     } = this.props;
     const nullEditMapType = (source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? this.state.type
@@ -81,7 +81,7 @@ class CreateMapping extends Component {
             tabIndex={index}
             className="form-control"
             name="source"
-            onChange={(event) => { updateEventListener(event, url); }}
+            onChange={(event) => { updateSourceEventListener(event, url); }}
             value={source || undefined}
           >
             <option value="" hidden>Select a source</option>
@@ -228,6 +228,7 @@ CreateMapping.propTypes = {
   url: PropTypes.string,
   index: PropTypes.number,
   updateEventListener: PropTypes.func,
+  updateSourceEventListener: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
   isNew: PropTypes.bool,
@@ -244,6 +245,7 @@ CreateMapping.defaultProps = {
   isNew: false,
   url: '',
   updateEventListener: () => {},
+  updateSourceEventListener: () => {},
   removeMappingRow: () => {},
   updateAsyncSelectValue: () => {},
   isShown: false,

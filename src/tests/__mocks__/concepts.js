@@ -663,3 +663,14 @@ export const sampleRetiredConcept = {
   ...sampleConcept,
   retired: true,
 };
+
+export const newMappings = [{
+  id: 1,
+  map_type: 'Same-as',
+  source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+  to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
+  to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+  to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+  isNew: false,
+  url: '1435',
+}];

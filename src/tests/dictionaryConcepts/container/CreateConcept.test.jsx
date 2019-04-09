@@ -314,4 +314,38 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.find('.cancelButton').simulate('click');
     expect(createConceptInstance.state.show).toEqual(false);
   });
+  it('should set `NARROWER-THAN` as the default relationship when the source is changed to `MapTypes`'
+  + 'while creating a new concept', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value: '',
+      },
+    };
+    const url = '1234';
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.state.mappings[1] = {
+      source: 'MapTypes',
+    };
+    instance.updateSourceEventListener(event, url);
+    expect(instance.state.mappings[1].map_type).toEqual('NARROWER-THAN');
+  });
+  it('should set `SAME-AS` as the default relationship when the source is changed to `CIEL`'
+  + 'while creating a new concept', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value: '',
+      },
+    };
+    const url = '1234';
+    const instance = wrapper.find('CreateConcept').instance();
+    instance.state.mappings[1] = {
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+    };
+    instance.updateSourceEventListener(event, url);
+    expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
+  });
 });

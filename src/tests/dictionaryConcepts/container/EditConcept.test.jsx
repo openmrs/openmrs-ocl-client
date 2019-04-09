@@ -7,7 +7,7 @@ import {
   mapStateToProps,
 } from '../../../components/dictionaryConcepts/containers/EditConcept';
 import {
-  newConcept, existingConcept, mockSource, sampleConcept,
+  newConcept, existingConcept, mockSource, sampleConcept, newMappings,
 } from '../../__mocks__/concepts';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
 
@@ -588,5 +588,41 @@ describe('Test suite for mappings on existing concepts', () => {
   it('should call removeAnswer and remove the anwser row when a user clicks the remove button while creating a Q-A concept', () => {
     wrapper.find('button#removeAnswer').simulate('click');
     expect(props.removeAnswer).toHaveBeenCalledWith(props.selectedAnswers[0].frontEndUniqueKey);
+  });
+  it('should set `NARROWER-THAN` as the default relationship when the source is changed to `Datatype`'
+  + 'while editing a concept', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value: '',
+      },
+    };
+    const url = '1435';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings = newMappings;
+    instance.state.mappings[0] = {
+      source: 'Datatype',
+      url: '1435',
+    };
+    instance.updateSourceEventListener(event, url);
+    expect(instance.state.mappings[0].map_type).toEqual('NARROWER-THAN');
+  });
+  it('should set `SAME-AS` as the default relationship when the source is changed to `CIEL`'
+  + 'while editing a concept', () => {
+    const event = {
+      target: {
+        tabIndex: 0,
+        name: 'source',
+        value: 'a234',
+      },
+    };
+    const url = '1234';
+    const instance = wrapper.find('EditConcept').instance();
+    instance.state.mappings[1] = {
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+    };
+    instance.updateSourceEventListener(event, url);
+    expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
   });
 });

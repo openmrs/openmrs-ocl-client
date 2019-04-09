@@ -12,8 +12,8 @@ const CreateConceptForm = (props) => {
     selectedAnswers,
     handleAnswerChange,
     addAnswerRow, removeAnswerRow, currentDictionaryName,
-    mappings, addMappingRow, updateEventListener, removeMappingRow, updateAsyncSelectValue,
-    isEditConcept, allSources,
+    mappings, addMappingRow, updateEventListener, updateSourceEventListener,
+    isEditConcept, allSources, removeMappingRow, updateAsyncSelectValue,
   } = props;
 
   const selectedMappings = mappings
@@ -222,6 +222,7 @@ const CreateConceptForm = (props) => {
                       to_concept_code={mapping.to_concept_code}
                       to_concept_name={mapping.to_concept_name}
                       updateEventListener={updateEventListener}
+                      updateSourceEventListener={updateSourceEventListener}
                       removeMappingRow={removeMappingRow}
                       updateAsyncSelectValue={updateAsyncSelectValue}
                       key={mapping.id}
@@ -281,6 +282,7 @@ CreateConceptForm.propTypes = {
   mappings: PropTypes.array,
   addMappingRow: PropTypes.func,
   updateEventListener: PropTypes.func,
+  updateSourceEventListener: PropTypes.func,
   showModal: PropTypes.func,
   removeMappingRow: PropTypes.func,
   updateAsyncSelectValue: PropTypes.func,
@@ -301,6 +303,7 @@ CreateConceptForm.defaultProps = {
   mappings: [],
   addMappingRow: null,
   updateEventListener: null,
+  updateSourceEventListener: null,
   removeMappingRow: null,
   updateAsyncSelectValue: null,
   addAnswerRow: () => {},

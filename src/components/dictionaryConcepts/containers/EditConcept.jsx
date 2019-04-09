@@ -27,6 +27,7 @@ import {
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
   CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
+  MAP_TYPES_DEFAULTS,
 } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
@@ -295,6 +296,26 @@ export class EditConcept extends Component {
     this.setState({ mappings });
   }
 
+  updateSourceEventListener = (event, url) => {
+    const { value, name } = event.target;
+    const defaultRelationship = MAP_TYPES_DEFAULTS[1];
+    const relationship = MAP_TYPES_DEFAULTS[0];
+    const { mappings } = this.state;
+    const newMappings = mappings.map((map) => {
+      const modifyMap = map;
+      if (modifyMap.url === url) {
+        modifyMap[name] = value;
+      }
+      if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
+        modifyMap.map_type = defaultRelationship;
+      } else {
+        modifyMap.map_type = relationship;
+      }
+      return modifyMap;
+    });
+    this.setState({ mappings: newMappings });
+  }
+
   updateEventListener = (event, url) => {
     const { value, name } = event.target;
     const { mappings } = this.state;
@@ -520,6 +541,7 @@ Concept
                 mappings={mappings}
                 addMappingRow={this.addMappingRow}
                 updateEventListener={this.updateEventListener}
+                updateSourceEventListener={this.updateSourceEventListener}
                 removeMappingRow={this.removeMappingRow}
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
