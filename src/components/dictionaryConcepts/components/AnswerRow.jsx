@@ -91,6 +91,7 @@ class AnswerRow extends React.Component {
               toConceptName,
               prePopulated,
             )}
+            id="removeAnswer"
           >
                 remove
           </button>

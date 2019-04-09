@@ -558,4 +558,8 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.removeAnswerRow('uniqueKey', true, 'url', 'name', 'code', true);
     expect(spy).toHaveBeenCalled();
   });
+  it('should call removeAnswer and remove the anwser row when a user clicks the remove button while creating a Q-A concept', () => {
+    wrapper.find('button#removeAnswer').simulate('click');
+    expect(props.removeAnswer).toHaveBeenCalledWith(props.selectedAnswers[0].frontEndUniqueKey);
+  });
 });
