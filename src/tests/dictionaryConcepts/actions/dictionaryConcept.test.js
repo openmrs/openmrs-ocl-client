@@ -97,7 +97,11 @@ describe('Test suite for dictionary concept actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({ status: 200, response: expectedPosts });
     });
-    await fetchSourceConcepts('source', 'query');
+    try {
+      await fetchSourceConcepts('source', 'query');
+    } catch (error) {
+      expect(error).toEqual([]);
+    }
   });
 
   it('should query possible answer concepts', async () => {
