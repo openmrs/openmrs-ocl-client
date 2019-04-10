@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
 import AnswerRow from './AnswerRow';
 
 const AnswersTable = (props) => {
@@ -21,21 +22,24 @@ const AnswersTable = (props) => {
         </tr>
       </thead>
       <tbody>
-        {selectedAnswers.map((ans, index) => (
-          <AnswerRow
-            frontEndUniqueKey={ans.frontEndUniqueKey}
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            toConceptName={ans.to_concept_name}
-            answerUrl={ans.url}
-            prePopulated={ans.prePopulated}
-            handleAnswerChange={handleAnswerChange}
-            removeAnswerRow={removeAnswerRow}
-            currentDictionaryName={currentDictionaryName}
-            handleAsyncSelectChange={handleAsyncSelectChange}
-            isEditConcept={isEditConcept}
-          />
-        ))}
+        {selectedAnswers.map((ans) => {
+          // eslint-disable-next-line no-param-reassign
+          ans.frontEndUniqueKey = ans.frontEndUniqueKey || uuid();
+          return (
+            <AnswerRow
+              frontEndUniqueKey={ans.frontEndUniqueKey}
+              key={ans.frontEndUniqueKey}
+              toConceptName={ans.to_concept_name}
+              answerUrl={ans.url}
+              prePopulated={ans.prePopulated}
+              handleAnswerChange={handleAnswerChange}
+              removeAnswerRow={removeAnswerRow}
+              currentDictionaryName={currentDictionaryName}
+              handleAsyncSelectChange={handleAsyncSelectChange}
+              isEditConcept={isEditConcept}
+            />
+          );
+        })}
       </tbody>
     </table>
   );

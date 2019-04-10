@@ -89,6 +89,7 @@ export class EditConcept extends Component {
       url: '',
       mapp: '',
       show: false,
+      uniqueKey: '',
     };
     this.conceptUrl = '';
     this.createUrl = '';
@@ -201,13 +202,14 @@ export class EditConcept extends Component {
   }
 
   updateConceptReference = async (concept, mappings) => {
+    const { answers } = this.state;
     const { recreateConcept, dictionaryConcepts } = this.props;
     const conceptRef = dictionaryConcepts.find(c => c.id === concept.id);
     const newMappings = mappings && this.recreateMappings(mappings);
     const freshConcept = {
       ...concept,
       id: String(uid()),
-      answers: concept.answers || [],
+      answers,
       mappings: newMappings,
     };
     recreateConcept(freshConcept, this.createUrl)
@@ -367,14 +369,15 @@ export class EditConcept extends Component {
     this.setState({ mappings: selectedMappings });
   }
 
-  confirmRemoveMappingRow = async () => {
+  confirmRemoveMappingRow = async (uniqueKey) => {
     const { url } = this.state;
-    const { removeConceptMappingAction } = this.props;
+    const { removeConceptMappingAction, removeAnswer } = this.props;
     const data = {
       references: [url],
     };
     await removeConceptMappingAction(data);
     this.removeUnsavedMappingRow(url);
+    removeAnswer(uniqueKey);
     this.hideGeneralModal();
   }
 
@@ -469,6 +472,7 @@ export class EditConcept extends Component {
     this.setState({
       deletingAnswer: true,
       answerToDeleteName: name,
+      uniqueKey,
     });
     if (editing && prepopulated) {
       this.showGeneralModal(url);
@@ -493,7 +497,12 @@ export class EditConcept extends Component {
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
     const {
-      mappings, mapp, openGeneralModal, deletingAnswer, answerToDeleteName,
+      mappings,
+      mapp,
+      openGeneralModal,
+      deletingAnswer,
+      answerToDeleteName,
+      uniqueKey,
     } = this.state;
     return (
       <div className="container create-custom-concept">
@@ -564,7 +573,7 @@ Concept
                 confirm_button="Confirm"
                 cancel_button="Cancel"
                 hide={this.hideGeneralModal}
-                select_confirm={this.confirmRemoveMappingRow}
+                select_confirm={() => this.confirmRemoveMappingRow(uniqueKey)}
               />
               <GeneralModel
                 title={LEAVE_PAGE_POPUP_TITLE}
