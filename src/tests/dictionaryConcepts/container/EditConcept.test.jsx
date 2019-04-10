@@ -45,7 +45,7 @@ describe('Test suite for dictionary concepts components', () => {
     createNewName: jest.fn(),
     addNewDescription: jest.fn(),
     clearSelections: jest.fn(),
-    fetchExistingConcept: jest.fn(),
+    fetchExistingConcept: async () => jest.fn(),
     clearPreviousConcept: jest.fn(),
     createNewNameForEditConcept: jest.fn(),
     removeDescriptionForEditConcept: jest.fn(),
@@ -78,6 +78,14 @@ describe('Test suite for dictionary concepts components', () => {
     createNewAnswerRow: jest.fn(),
     ...editConceptProps,
   };
+
+  let editConceptWrapper;
+  let editConceptComponent;
+
+  beforeEach(() => {
+    editConceptWrapper = mount(<Router><EditConcept {...props} /></Router>);
+    editConceptComponent = editConceptWrapper.find('EditConcept');
+  });
 
   it('should redirect on confirm cancel', () => {
     localStorage.setItem('dictionaryPathName', '/concepts/users/admin/CCL/CASE CLINIC/en');
@@ -255,6 +263,25 @@ describe('Test suite for dictionary concepts components', () => {
     expect(mapStateToProps(initialState).newName).toEqual(['1']);
     expect(mapStateToProps(initialState).existingConcept).toEqual(existingConcept);
   });
+
+  it('should show the modal when cancel is clicked with unsaved changes', () => {
+    const event = {
+      target: {
+        name: 'datatype',
+        value: 'Complex',
+      },
+    };
+    editConceptWrapper.find('select#datatype').simulate('change', event);
+    editConceptWrapper.find('.cancelButton').simulate('click');
+    expect(editConceptComponent.instance().state.show).toEqual(true);
+  });
+
+  it('should not show the modal when cancel is clicked without unsaved changes', () => {
+    const editConceptInstance = editConceptComponent.instance();
+    editConceptInstance.oldState = editConceptInstance.state;
+    editConceptWrapper.find('.cancelButton').simulate('click');
+    expect(editConceptInstance.state.show).toEqual(false);
+  });
 });
 
 describe('Test suite for mappings on existing concepts', () => {
@@ -276,7 +303,7 @@ describe('Test suite for mappings on existing concepts', () => {
     createNewName: jest.fn(),
     addNewDescription: jest.fn(),
     clearSelections: jest.fn(),
-    fetchExistingConcept: jest.fn(),
+    fetchExistingConcept: async () => jest.fn(),
     clearPreviousConcept: jest.fn(),
     createNewNameForEditConcept: jest.fn(),
     removeDescriptionForEditConcept: jest.fn(),

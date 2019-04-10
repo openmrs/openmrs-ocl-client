@@ -58,12 +58,14 @@ describe('Test suite for dictionary concepts components', () => {
   };
 
   let wrapper;
+  let createConceptComponent;
 
   beforeEach(() => {
     localStorage.setItem('dictionaryPathName', '/dictionary/url');
     wrapper = mount(<Router>
       <CreateConcept {...props} />
     </Router>);
+    createConceptComponent = wrapper.find('CreateConcept');
   });
 
   it('should call addMappingRow function', () => {
@@ -274,5 +276,42 @@ describe('Test suite for dictionary concepts components', () => {
       relationshipDropdown.simulate('change', event);
       expect(wrapper.find('CreateConceptForm').props().mappings[0].map_type).toEqual(inputValue);
     });
+  });
+
+  it('should follow the provided path when the Leave button is clicked', () => {
+    const mockPath = localStorage.getItem('dictionaryPathName');
+    const spy = jest.spyOn(createConceptComponent.instance(), 'selectConfirm');
+    createConceptComponent.setState({ show: true }, () => {
+      wrapper.find('.leaveButton').at(1).simulate('click');
+      expect(spy).toHaveBeenCalled();
+      expect(props.history.push).toHaveBeenCalledWith(mockPath);
+    });
+  });
+
+  it('should hide the modal when the Stay button is clicked', () => {
+    const spy = jest.spyOn(createConceptComponent.instance(), 'hideModal');
+    createConceptComponent.setState({ show: true });
+    wrapper.find('.stayButton').at(1).simulate('click');
+    expect(spy).toHaveBeenCalled();
+    expect(createConceptComponent.instance().state.show).toEqual(false);
+  });
+
+  it('should show the modal when Cancel is clicked with unsaved changes', () => {
+    const event = {
+      target: {
+        name: 'datatype',
+        value: 'Complex',
+      },
+    };
+    wrapper.find('select#datatype').simulate('change', event);
+    wrapper.find('.cancelButton').simulate('click');
+    expect(createConceptComponent.instance().state.show).toEqual(true);
+  });
+
+  it('should not show the modal when cancel is clicked without unsaved changes', () => {
+    const createConceptInstance = createConceptComponent.instance();
+    createConceptInstance.oldState = createConceptInstance.state;
+    wrapper.find('.cancelButton').simulate('click');
+    expect(createConceptInstance.state.show).toEqual(false);
   });
 });

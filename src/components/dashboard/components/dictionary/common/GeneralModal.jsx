@@ -26,19 +26,19 @@ const GeneralModal = (props) => {
 
         <ModalFooter>
           <Button
-            className="btn btn-primary mr-1"
-            id="generalConfirmButton"
-            onClick={select_confirm}
-          >
-            {confirm_button}
-          </Button>
-
-          <Button
-            className="btn btn-danger"
+            className="btn btn-primary stayButton primaryButton"
             id="sub-cancel"
             onClick={hide}
           >
             {cancel_button}
+          </Button>
+
+          <Button
+            className="btn btn-danger mr-1 leaveButton"
+            id="generalConfirmButton"
+            onClick={select_confirm}
+          >
+            {confirm_button}
           </Button>
         </ModalFooter>
       </Modal>

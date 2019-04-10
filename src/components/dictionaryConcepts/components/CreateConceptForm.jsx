@@ -249,7 +249,7 @@ const CreateConceptForm = (props) => {
           <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
-          <button id="remove" className="btn btn-danger" type="button" onClick={props.showModal}>
+          <button id="remove" className="btn btn-danger cancelButton" type="button" onClick={props.showModal}>
             Cancel
           </button>
         </div>
