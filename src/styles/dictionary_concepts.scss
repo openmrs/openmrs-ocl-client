@@ -421,6 +421,8 @@ input[type=text] {
   padding: 5px;
   background: #F4f4f4;
   z-index: 10;
+  max-height:210px;
+  overflow:auto;
 
   li {
     display: block;
