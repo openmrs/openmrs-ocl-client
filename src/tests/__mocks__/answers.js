@@ -3,5 +3,5 @@ export default [{
   display_name: 'test display name 1',
 }, {
   frontEndUniqueKey: 'testID2',
-  display_name: 'test display name 1',
+  display_name: 'test display name 2',
 }];

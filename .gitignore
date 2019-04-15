@@ -29,3 +29,6 @@ package-lock.json
 **/__snapshots__/**
 src/components/dashboard/container/ListContainer.jsx
 .env
+
+# IDE settings
+.idea/*
