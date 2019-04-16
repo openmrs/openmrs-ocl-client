@@ -850,7 +850,7 @@ describe('Add answer mappings to concept', () => {
     moxios.uninstall();
   });
 
-  it('should add all chosen answer mappings', async () => {
+  it('should add all chosen answer mappings', () => {
     const mappingData = [
       {
         url: 'some/test.url',
@@ -940,6 +940,6 @@ describe('Add answer mappings to concept', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({ status: 201, response: expected });
     });
-    await addAnswerMappingToConcept('/url/test/', '2434435454545', mappingData);
+    addAnswerMappingToConcept('/url/test/', '2434435454545', mappingData);
   });
 });

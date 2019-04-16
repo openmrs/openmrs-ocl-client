@@ -19,7 +19,7 @@
     "react-render-html": "^0.6.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^2.1.8",
     "react-select": "^2.4.2",
     "react-table": "^6.8.6",
     "react-tooltip": "^3.6.0",
@@ -41,7 +41,6 @@
     "watch:css": "node-sass-chokidar ./src/styles/all.scss ./src/styles/all.css --include-path ./node_modules src/styles -o src/styles --watch --recursive"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
     "coveralls": "^3.0.2",
     "deep-freeze": "0.0.1",
     "enzyme": "^3.7.0",
