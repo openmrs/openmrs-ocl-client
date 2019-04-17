@@ -217,7 +217,7 @@ export class AddBulkConcepts extends Component {
                     </div>
                     <div className="search-ul">
                       {isOpen ? (
-                        <ul {...getMenuProps()} className="search-ul">
+                        <ul {...getMenuProps()} className="search-ul-li">
                           {
                               sourceConcepts.filter(item => !inputValue.trim()
                                 || item.display_name.toLowerCase()
