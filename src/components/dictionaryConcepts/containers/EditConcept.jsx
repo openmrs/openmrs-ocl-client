@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
-import uid from 'uuid/v4';
+import uuid from 'uuid/v4';
 import CreateConceptForm from '../components/CreateConceptForm';
 import {
   createNewName,
@@ -23,6 +23,7 @@ import {
   removeSelectedAnswer,
   addNewAnswerRow,
   createNewConcept,
+  unPopulateThisAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
@@ -30,7 +31,11 @@ import {
   MAP_TYPES_DEFAULTS,
 } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
-import { removeDictionaryConcept, removeConceptMapping } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import {
+  removeDictionaryConcept,
+  removeConceptMapping,
+  removeEditedConceptMapping,
+} from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
 export class EditConcept extends Component {
@@ -63,6 +68,7 @@ export class EditConcept extends Component {
     fetchAllConceptSources: PropTypes.func.isRequired,
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
+    removeEditedConceptMappingAction: PropTypes.func.isRequired,
     unretireMapping: PropTypes.func.isRequired,
     addSelectedAnswers: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
@@ -70,6 +76,7 @@ export class EditConcept extends Component {
     createNewAnswerRow: PropTypes.func.isRequired,
     deleteConcept: PropTypes.func.isRequired,
     recreateConcept: PropTypes.func.isRequired,
+    unPopulateAnswer: PropTypes.func.isRequired,
     dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
@@ -94,6 +101,7 @@ export class EditConcept extends Component {
     this.conceptUrl = '';
     this.createUrl = '';
     this.oldState = {};
+    this.editedAnswers = [];
     autoBind(this);
   }
 
@@ -150,9 +158,9 @@ export class EditConcept extends Component {
     event.preventDefault();
   }
 
-  removeNewName(event, uuid) {
+  removeNewName(event, uid) {
     event.preventDefault();
-    this.props.removeNameForEditConcept(uuid);
+    this.props.removeNameForEditConcept(uid);
   }
 
   addNewDescription(event) {
@@ -187,7 +195,7 @@ export class EditConcept extends Component {
     const freshMapping = {
       ...mapping,
       isNew: true,
-      url: String(uid()),
+      url: String(uuid()),
       source: isInternal ? INTERNAL_MAPPING_DEFAULT_SOURCE : mapping.source,
       to_source_url: isInternal
         ? `${mapping.to_source_url}concepts/${mapping.to_concept_code}/`
@@ -208,7 +216,7 @@ export class EditConcept extends Component {
     const newMappings = mappings && this.recreateMappings(mappings);
     const freshConcept = {
       ...concept,
-      id: String(uid()),
+      id: String(uuid()),
       answers,
       mappings: newMappings,
     };
@@ -216,12 +224,20 @@ export class EditConcept extends Component {
       .then(() => this.deleteConceptReference(conceptRef.version_url));
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     const { mappings } = this.state;
-    const { history } = this.props;
+    const { removeEditedConceptMappingAction, history } = this.props;
     const retired = mappings.filter(mapping => mapping.retired);
     const freshMappings = mappings.filter(mapping => mapping.isNew);
+    const editedAns = this.editedAnswers;
+    editedAns.forEach((answer) => {
+      const data = {
+        references: [answer],
+      };
+      removeEditedConceptMappingAction(data);
+    });
+
     freshMappings.forEach((mapping) => {
       const toBeUnRetired = retired.find(m => m.to_concept_name === mapping.to_concept_name);
       if (toBeUnRetired) this.props.unretireMapping(toBeUnRetired.url);
@@ -293,7 +309,7 @@ export class EditConcept extends Component {
       to_source_url: null,
       isNew: true,
       retired: false,
-      url: uid(),
+      url: uuid(),
     });
     this.setState({ mappings });
   }
@@ -460,7 +476,7 @@ export class EditConcept extends Component {
 
   addAnswerRow = () => {
     const { createNewAnswerRow } = this.props;
-    const frontEndUniqueKey = uid();
+    const frontEndUniqueKey = uuid();
     const initialAnswerFormation = {
       frontEndUniqueKey,
     };
@@ -482,6 +498,13 @@ export class EditConcept extends Component {
     removeAnswer(uniqueKey);
     return true;
   }
+
+  removeCurrentAnswer = (info) => {
+    const { unPopulateAnswer } = this.props;
+    this.editedAnswers = [...this.editedAnswers, info.answerUrl];
+    this.removeUnsavedMappingRow(info.answerUrl);
+    unPopulateAnswer(info.answer);
+  };
 
   render() {
     const {
@@ -560,6 +583,7 @@ Concept
                 removeAnswerRow={this.removeAnswerRow}
                 currentDictionaryName={dictionaryName}
                 showModal={this.showModal}
+                removeCurrentAnswer={this.removeCurrentAnswer}
               />
               )
               }
@@ -622,10 +646,12 @@ export default connect(
     unretireMapping,
     fetchAllConceptSources: fetchConceptSources,
     removeConceptMappingAction: removeConceptMapping,
+    removeEditedConceptMappingAction: removeEditedConceptMapping,
     addSelectedAnswers: addSelectedAnswersToState,
     removeAnswer: removeSelectedAnswer,
     createNewAnswerRow: addNewAnswerRow,
     deleteConcept: removeDictionaryConcept,
     recreateConcept: createNewConcept,
+    unPopulateAnswer: unPopulateThisAnswer,
   },
 )(EditConcept);

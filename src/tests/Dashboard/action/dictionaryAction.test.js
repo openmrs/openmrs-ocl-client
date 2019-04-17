@@ -471,6 +471,26 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     });
   });
 
+  it('should handle failed a dictionary fetching', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 500,
+        response: {
+          data: 'Error Occurred',
+        },
+      });
+    });
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchVersions('/users/chriskala/collections/over/versions/'))
+      .then()
+      .catch((error) => {
+        expect(notify.show).toHaveBeenCalledWith(
+          `${error.response.data[0]}`, 'error', 6000,
+        );
+      });
+  });
+
   it('should handle release head version', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();

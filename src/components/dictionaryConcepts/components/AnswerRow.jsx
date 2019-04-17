@@ -10,15 +10,43 @@ class AnswerRow extends React.Component {
     const DEFAULT_SOURCE = localStorage.getItem('dictionaryId');
     this.state = {
       source: DEFAULT_SOURCE,
+      isClicked: false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      isEditing: this.props.isEditConcept,
+      isPrePopulated: this.props.prePopulated,
+    });
   }
 
   handleChangeInSource = (event) => {
     const newSource = event.target.value;
+    this.resetInput(event);
     this.setState({
       source: newSource,
     });
   }
+
+  handleClick = () => {
+    if (!this.state.isClicked) {
+      this.setState({
+        isClicked: true,
+        isEditing: false,
+        isPrePopulated: false,
+      });
+    }
+  }
+
+  resetInput = () => {
+    const {
+      answer, removeCurrentAnswer, answerUrl, frontEndUniqueKey,
+    } = this.props;
+    if (answer.prePopulated) {
+      removeCurrentAnswer({ answerUrl, frontEndUniqueKey, answer });
+    }
+  };
 
   render() {
     const {
@@ -31,17 +59,20 @@ class AnswerRow extends React.Component {
       isEditConcept,
       prePopulated,
       answerUrl,
+      removeCurrentAnswer,
+      answer,
     } = this.props;
-    const { source } = this.state;
+    const { source, isEditing, isPrePopulated } = this.state;
     return (
       <tr>
         <td>
           {
-            isEditConcept && prePopulated ? (
+            isEditing && isPrePopulated ? (
               <input
                 type="text"
                 className="form-control"
                 defaultValue={toSourceName}
+                onClick={this.handleClick}
                 required
               />
             ) : (
@@ -65,21 +96,16 @@ class AnswerRow extends React.Component {
         </td>
         <td className="react-async">
           {
-          isEditConcept && prePopulated ? (
-            <input
-              type="text"
-              className="form-control"
-              defaultValue={toConceptName}
-              required
-            />
-          ) : (
             <SelectAnswers
               handleAsyncSelectChange={handleAsyncSelectChange}
               source={source}
               frontEndUniqueKey={frontEndUniqueKey}
               isShown={false}
+              defaultValue={toConceptName}
+              removeCurrentAnswer={removeCurrentAnswer}
+              answer={answer}
+              answerUrl={answerUrl}
             />
-          )
         }
         </td>
         <td>
@@ -117,7 +143,9 @@ AnswerRow.propTypes = {
   toSourceName: PropTypes.string,
   frontEndUniqueKey: PropTypes.string,
   handleAsyncSelectChange: PropTypes.func.isRequired,
+  removeCurrentAnswer: PropTypes.func.isRequired,
   currentDictionaryName: PropTypes.string,
+  answer: PropTypes.object.isRequired,
 };
 
 AnswerRow.defaultProps = {

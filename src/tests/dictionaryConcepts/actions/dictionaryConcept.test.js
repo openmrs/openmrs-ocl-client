@@ -33,6 +33,7 @@ import {
   ADD_NEW_ANSWER_ROW,
   REMOVE_SELECTED_ANSWER,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
+  UN_POPULATE_THIS_ANSWER,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -63,11 +64,14 @@ import {
   unpopulatePrepopulatedAnswers,
   prepopulateAnswers,
   unretireMapping,
+  unPopulateThisAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
   removeConceptMapping,
+  removeEditedConceptMapping,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { removeMapping } from '../../../redux/actions/dictionaries/dictionaryActions';
 import concepts, {
   mockConceptStore,
   newConcept,
@@ -725,6 +729,46 @@ describe('Testing Edit concept actions ', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle unpopulating a selected answer', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 201,
+        response: [],
+      });
+    });
+
+    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
+
+    const expectedActions = [
+      removeMapping(data.references[0]),
+    ];
+
+    const store = mockStore(mockConceptStore);
+    return store.dispatch(removeEditedConceptMapping(data)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle failed request to unpopulate a selected answer', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 500,
+        response: [],
+      });
+    });
+
+    const showNetworkError = jest.fn();
+    const data = { references: ['/users/admin/sources/858738987555379984/mappings/5bff9fb3bdfb8801a1702975/'] };
+
+    const store = mockStore(mockConceptStore);
+    return store.dispatch(removeEditedConceptMapping(data)).then().catch((error) => {
+      expect(error).toBeTruthy();
+      expect(showNetworkError).toHaveBeenCalled();
+    });
+  });
 });
 
 
@@ -837,6 +881,20 @@ describe('test suite for synchronous action creators', () => {
       payload: [{ retired: false, prePopulated: true }],
     }];
     store.dispatch(prepopulateAnswers([{ retired: false, prePopulated: true }]));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle UN_POPULATE_THIS_ANSWER', () => {
+    const store = mockStore(mockConceptStore);
+    const answer = {
+      frontEndUniqueKey: 'unique',
+      prePopulated: false,
+    };
+    const expectedActions = [{
+      type: UN_POPULATE_THIS_ANSWER,
+      payload: answer,
+    }];
+    store.dispatch(unPopulateThisAnswer(answer));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });

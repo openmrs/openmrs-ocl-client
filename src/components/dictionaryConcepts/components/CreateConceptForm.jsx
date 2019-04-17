@@ -8,12 +8,21 @@ import { classes, MAP_TYPE } from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
-    concept, handleAsyncSelectChange,
+    concept,
+    handleAsyncSelectChange,
     selectedAnswers,
     handleAnswerChange,
-    addAnswerRow, removeAnswerRow, currentDictionaryName,
-    mappings, addMappingRow, updateEventListener, updateSourceEventListener,
-    isEditConcept, allSources, removeMappingRow, updateAsyncSelectValue,
+    addAnswerRow,
+    removeAnswerRow,
+    currentDictionaryName,
+    mappings, addMappingRow,
+    updateEventListener,
+    updateSourceEventListener,
+    isEditConcept,
+    allSources,
+    removeMappingRow,
+    updateAsyncSelectValue,
+    removeCurrentAnswer,
   } = props;
 
   const selectedMappings = mappings
@@ -189,6 +198,7 @@ const CreateConceptForm = (props) => {
                 removeAnswerRow={removeAnswerRow}
                 currentDictionaryName={currentDictionaryName}
                 isEditConcept={isEditConcept}
+                removeCurrentAnswer={removeCurrentAnswer}
               />
               <button
                 type="button"
@@ -290,6 +300,7 @@ CreateConceptForm.propTypes = {
   addAnswerRow: PropTypes.func,
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
+  removeCurrentAnswer: PropTypes.func,
 };
 
 CreateConceptForm.defaultProps = {
@@ -309,6 +320,7 @@ CreateConceptForm.defaultProps = {
   addAnswerRow: () => {},
   removeAnswerRow: () => {},
   currentDictionaryName: '',
+  removeCurrentAnswer: () => {},
 };
 
 export default CreateConceptForm;

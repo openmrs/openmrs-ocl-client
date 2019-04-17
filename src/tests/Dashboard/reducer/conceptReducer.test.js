@@ -9,6 +9,7 @@ import {
   REMOVE_SELECTED_ANSWER,
   PRE_POPULATE_ANSWERS,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
+  UN_POPULATE_THIS_ANSWER,
 } from '../../../redux/actions/types';
 import concepts from '../../__mocks__/concepts';
 
@@ -194,5 +195,37 @@ describe('Test suite for concepts reducer', () => {
     const payload = 'intialKey';
     const newState = reducer(initialState, { type: REMOVE_SELECTED_ANSWER, payload });
     expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'newIntialKey' }]);
+  });
+
+  it('should handle UN_POPULATE_THIS_ANSWER', () => {
+    const payload = {
+      frontEndUniqueKey: 'initialKey',
+      prePopulated: false,
+    };
+    const state = {
+      ...initialState,
+      selectedAnswers: [
+        {
+          frontEndUniqueKey: 'initialKey',
+          prePopulated: true,
+        },
+        {
+          frontEndUniqueKey: 'initialKey1',
+          prePopulated: true,
+        },
+      ],
+    };
+    const expected = [
+      {
+        frontEndUniqueKey: 'initialKey',
+        prePopulated: false,
+      },
+      {
+        frontEndUniqueKey: 'initialKey1',
+        prePopulated: true,
+      },
+    ];
+    const newState = reducer(state, { type: UN_POPULATE_THIS_ANSWER, payload });
+    expect(newState.selectedAnswers).toEqual(expected);
   });
 });

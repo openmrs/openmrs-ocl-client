@@ -147,6 +147,19 @@ export const removeConceptMapping = (data, source) => dispatch => {
     });
 };
 
+export const removeEditedConceptMapping = (data) => dispatch =>
+  api.dictionaries
+    .removeConceptMapping(data)
+    .then(
+      () => {
+        dispatch(removeMapping(data.references[0]));
+      }
+    )
+    .catch((error) => {
+      error.response ? notify.show(error.response.data.detail, 'error', 6000):
+      showNetworkError();
+    });
+
 export const fetchVersions = data => (dispatch) => {
   return api.dictionaries
     .fetchingVersions(data)

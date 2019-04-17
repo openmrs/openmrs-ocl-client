@@ -13,6 +13,7 @@ const defaultProps = {
   queryAnswers: jest.fn(),
   currentDictionaryName: 'test dictionary',
   isEditConcept: false,
+  removeCurrentAnswer: jest.fn(),
 };
 
 describe('Test suite for AnswersTable', () => {
