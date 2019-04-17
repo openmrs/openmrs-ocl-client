@@ -215,12 +215,18 @@
   align-items: center;
 }
 
-.search-ul{
-  position: absolute;
-  margin-top: 10px;
-  width: 70%;
-  list-style: none;
-  z-index: 999;
+.search-ul-li{
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  padding: 1px;
+  background: #F4f4f4;
+  z-index: 1;
+  max-height:210px;
+  max-width: 300px;
+  min-width: 300px;
+  margin-left: 8.5%;
+  overflow:auto;
+  position: fixed;
 }
 
 .preview-row{
