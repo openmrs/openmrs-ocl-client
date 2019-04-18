@@ -14,7 +14,7 @@ import {
 } from '../../types';
 
 export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
-  const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&&verbose=true`;
+  const url = `orgs/${source}/sources/${source}/concepts/?sortAsc=name&page=${currentPage}&&verbose=true`;
   dispatch(isFetching(true));
   try {
     const response = await instance.get(url);
