@@ -8,7 +8,6 @@ import Authenticated from '../__mocks__/fakeStore';
 import { AddBulkConcepts, mapStateToProps } from '../../components/bulkConcepts/addBulkConcepts';
 import { mockConcepts } from '../__mocks__/concepts';
 import configInstance from '../../config/axiosConfig';
-import { KEY_CODE_FOR_ENTER } from '../../components/dictionaryConcepts/components/helperFunction';
 
 const store = createMockStore(Authenticated);
 const match = {
@@ -63,57 +62,6 @@ describe('Add Bulk Concepts', () => {
     bulkWrapper.forceUpdate();
     wrapper.find('#ciel').at(0).simulate('click');
     expect(spy).toHaveBeenCalled();
-  });
-
-  it('should render a loader while fetching Source Concepts', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    expect(wrapper.find('Loader')).toHaveLength(1);
-  });
-
-  it('shows suggestions when typing', () => {
-    const hasMenu = wrapper => wrapper.find('.search-ul').at(0).length === 1;
-
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    wrapper.find('#search').simulate('keydown', { key: 'ArrowDown' });
-    expect(hasMenu(wrapper)).toBe(true);
-  });
-
-  it('can search for and select "Bronze ..." in concepts', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const input = wrapper.find('#search');
-    input.simulate('change', { target: { value: 'Bronze Diabetes' } });
-    input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { keyCode: KEY_CODE_FOR_ENTER });
-    expect(input.instance().value).toEqual('Bronze Diabetes');
-    const txtInput = wrapper.find('#idsText').at(0);
-    expect(txtInput.instance().props.value).toEqual('');
-  });
-
-
-  it('can search for concept that does not exist', () => {
-    const wrapper = mount(<MemoryRouter>
-      <Provider store={store}>
-        <AddBulkConcepts {...props} />
-      </Provider>
-    </MemoryRouter>);
-    const input = wrapper.find('#search');
-    input.simulate('change', { target: { value: 'non existent' } });
-    input.simulate('keydown', { key: 'ArrowDown' });
-    input.simulate('keydown', { keyCode: KEY_CODE_FOR_ENTER });
-    const txtInput = wrapper.find('#idsText').at(0);
-    expect(txtInput.instance().props.value).toEqual('');
   });
 
   it('adding ides to already existing conceptIds should prepend commer', () => {

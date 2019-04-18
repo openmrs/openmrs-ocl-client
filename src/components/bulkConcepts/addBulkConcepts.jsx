@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Downshift from 'downshift';
 import {
   Form,
   FormGroup,
   Input,
 } from 'reactstrap';
-import Loader from '../Loader';
 import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
-import { KEY_CODE_FOR_ENTER } from '../dictionaryConcepts/components/helperFunction';
 import ResultModal from './component/addBulkConceptResultModal';
 
 export class AddBulkConcepts extends Component {
@@ -40,7 +37,6 @@ export class AddBulkConcepts extends Component {
     this.state = {
       conceptIds: '',
       openResultModal: false,
-      value: '',
     };
     this.invalidConceptIds = [];
     this.sourceUrl = 'orgs/CIEL/sources/CIEL/';
@@ -103,15 +99,6 @@ export class AddBulkConcepts extends Component {
     this.setState({ openResultModal: false });
   }
 
-  onKeyDown = (event, onKeyDown, onChange) => {
-    this.setState({ value: event.target.value });
-    if (event.keyCode === KEY_CODE_FOR_ENTER) {
-      event.preventDefault();
-      onChange(event);
-      onKeyDown(event);
-    }
-  }
-
   render() {
     const dictionaryName = localStorage.getItem('dictionaryName');
     const { conceptIds, openResultModal } = this.state;
@@ -121,8 +108,6 @@ export class AddBulkConcepts extends Component {
           type, typeName, collectionName, language,
         },
       },
-      sourceConcepts,
-      isLoading,
     } = this.props;
     const disableButton = (conceptIds.length < 1);
     return (
@@ -164,88 +149,6 @@ export class AddBulkConcepts extends Component {
           <div className="row">
             <div className="col-md-6">
               <h3>Concept IDs to add</h3>
-            </div>
-            <div className="col-md-6 pull-right">
-              <Downshift
-                id="searchInput"
-                onChange={selected => this.handleSelected(selected)}
-                itemToString={item => item && item.display_name}
-              >
-                {({
-                  getInputProps,
-                  getItemProps,
-                  getMenuProps,
-                  highlightedIndex,
-                  isOpen,
-                  inputValue,
-                }) => (
-                  <div>
-                    <div id="other-search">
-                      <div className="form-check vertical-center">
-                        <span className="mr-2">Quick search</span>
-                        <form className="form-inline search-bar">
-                          <i className="fas fa-search" />
-                          <input
-                            {
-                              ...getInputProps()
-                              }
-                            className="form-control search"
-                            id="search"
-                            placeholder="search"
-                            value={this.state.value}
-                            aria-label="Search"
-                            onChange={e => this.onKeyDown(
-                              e,
-                              getInputProps().onKeyDown,
-                              getInputProps().onChange,
-                            )}
-                            onKeyDown={
-                              e => this.onKeyDown(
-                                e,
-                                getInputProps().onKeyDown,
-                                getInputProps().onChange,
-                              )}
-                            {...getInputProps().rest}
-                          />
-                          {isLoading
-                              && <div className="ml-auto text-right">
-                                <Loader smaller />
-                              </div>
-                            }
-                        </form>
-                      </div>
-                    </div>
-                    <div className="search-ul">
-                      {isOpen ? (
-                        <ul {...getMenuProps()} className="search-ul-li">
-                          {
-                              sourceConcepts.filter(item => !inputValue.trim()
-                                || item.display_name.toLowerCase()
-                                  .includes(inputValue.toLowerCase()))
-                                .slice(1, 10).map((item, index) => (
-                                  <li
-                                    {...getItemProps({
-                                      key: item.id,
-                                      index,
-                                      item,
-                                      style: {
-                                        backgroundColor:
-                                          highlightedIndex === index ? 'lightgray' : 'white',
-                                        padding: '5px 10px 1px',
-                                      },
-                                    })}
-                                  >
-                                    {item.display_name}
-                                  </li>
-                                ))
-                            }
-                        </ul>
-                      )
-                        : null}
-                    </div>
-                  </div>
-                )}
-              </Downshift>
             </div>
           </div>
           <div className="preferred-concepts">
