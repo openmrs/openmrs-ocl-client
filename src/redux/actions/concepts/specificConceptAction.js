@@ -24,7 +24,7 @@ const fetchConceptsActionTypes = (
     if (error.response) {
       dispatch(isErrored(error.response.data));
       dispatch(isFetching(false));
-    } else if (error.request) {
+    } else {
       dispatch(isErrored("Request can't be made"));
       dispatch(isFetching(false));
     }
