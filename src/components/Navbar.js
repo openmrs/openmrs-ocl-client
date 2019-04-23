@@ -26,7 +26,7 @@ export class Navbar extends Component {
     event.preventDefault();
     this.props.logoutAction();
     this.props.history.push('/');
-    notify.show('You Loggedout successfully', 'success', 3000);
+    notify.show('You Logged out successfully', 'success', 3000);
   };
 
   toggle = () => {
