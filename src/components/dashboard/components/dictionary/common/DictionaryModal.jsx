@@ -217,6 +217,34 @@ export class DictionaryModal extends React.Component {
               <div>
                 <div>
                   <FormGroup style={{ marginTop: '12px' }}>
+                    Dictionary Name
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {''}
+                    {errors && <InlineError text={errors.name} />}
+                    <Input
+                      type="text"
+                      id="dictionary_name"
+                      onChange={this.onChange}
+                      name="name"
+                      placeholder="e.g Community Health Dictionary"
+                      value={data.name}
+                      required
+                    />
+                  </FormGroup>
+                  <FormGroup style={{ marginTop: '12px' }}>
+                    Description
+                    {' '}
+                    <Input
+                      type="textarea"
+                      id="dictionary_description"
+                      name="description"
+                      placeholder="e.g Description of this dictionary"
+                      onChange={this.onChange}
+                      value={data.description}
+                    />
+                  </FormGroup>
+                  <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Source
                     {' '}
                     <b className="text-danger">*</b>
@@ -303,23 +331,6 @@ export class DictionaryModal extends React.Component {
                       <option value="None">Private</option>
                     </Input>
                   </FormGroup>
-
-                  <FormGroup style={{ marginTop: '12px' }}>
-                    Dictionary Name
-                    {' '}
-                    <b className="text-danger">*</b>
-                    {''}
-                    {errors && <InlineError text={errors.name} />}
-                    <Input
-                      type="text"
-                      id="dictionary_name"
-                      onChange={this.onChange}
-                      name="name"
-                      placeholder="e.g Community Health Dictionary"
-                      value={data.name}
-                      required
-                    />
-                  </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Owner
                     {' '}
@@ -379,18 +390,6 @@ export class DictionaryModal extends React.Component {
                       disabled={isEditingDictionary !== true ? isEditingDictionary : true}
                     />
                     <ReactTooltip place="top" effect="solid" />
-                  </FormGroup>
-                  <FormGroup style={{ marginTop: '12px' }}>
-                    Description
-                    {' '}
-                    <Input
-                      type="textarea"
-                      id="dictionary_description"
-                      name="description"
-                      placeholder="e.g Description of this dictionary"
-                      onChange={this.onChange}
-                      value={data.description}
-                    />
                   </FormGroup>
                   <FormGroup>
                     <Input
