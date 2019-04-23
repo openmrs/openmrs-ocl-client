@@ -232,6 +232,31 @@ export class DictionaryModal extends React.Component {
                       required
                     />
                   </FormGroup>
+                  <FormGroup
+                    style={{ marginTop: '12px' }}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Short Code"
+                  >
+                    Short Code
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {errors && <InlineError text={errors.id} />}
+                    <Input
+                      type="text"
+                      id="dictionary_short_code"
+                      name="id"
+                      onChange={this.onChange}
+                      value={data.id}
+                      placeholder="
+                      Mnemonic used to identify the collection
+                       in the URL (an acronym e.g. Community-MCH)
+                      "
+                      required
+                      disabled={isEditingDictionary !== true ? isEditingDictionary : true}
+                    />
+                    <ReactTooltip place="top" effect="solid" />
+                  </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
                     Description
                     {' '}
@@ -275,6 +300,59 @@ export class DictionaryModal extends React.Component {
                     </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
+                    Owner
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {errors && <InlineError text={errors.owner} />}
+                    <Input
+                      type="select"
+                      id="owner"
+                      placeholder="Individual"
+                      name="owner"
+                      onChange={this.onChange}
+                      value={data.owner}
+                    >
+                      {isEditingDictionary
+                      && <option value={data.owner}>{data.owner}</option>
+                      }
+                      { organizations && organizations.length !== 0 && <option value="" />}
+                      <option value="Individual" style={{ textTransform: 'capitalize' }}>
+                        {' '}
+                        {localStorage.getItem('username')}
+                        {' '}
+                        (Yourself)
+                        {' '}
+                      </option>
+                      {organizations
+                      && organizations.map(organization => (
+                        <option value={organization.id} key={organization.id}>
+                          {organization.id}
+                          {' '}
+                          {' '}
+                          (organization)
+                        </option>
+                      ))}
+                    </Input>
+                  </FormGroup>
+                  <FormGroup style={{ marginTop: '12px' }}>
+                    Visibility
+                    {' '}
+                    <b className="text-danger">*</b>
+                    {''}
+                    {errors && <InlineError text={errors.public_access} />}
+                    <Input
+                      type="select"
+                      id="public_access"
+                      placeholder="Private"
+                      name="public_access"
+                      onChange={this.onChange}
+                      value={data.public_access}
+                    >
+                      <option value="View">Public</option>
+                      <option value="None">Private</option>
+                    </Input>
+                  </FormGroup>
+                  <FormGroup style={{ marginTop: '12px' }}>
                     Preferred Language
                     {' '}
                     <b className="text-danger">*</b>
@@ -313,84 +391,6 @@ export class DictionaryModal extends React.Component {
                     isMulti
                     onChange={this.handleChangeSupportedLocale}
                   />
-                  <FormGroup style={{ marginTop: '12px' }}>
-                    Visibility
-                    {' '}
-                    <b className="text-danger">*</b>
-                    {''}
-                    {errors && <InlineError text={errors.public_access} />}
-                    <Input
-                      type="select"
-                      id="public_access"
-                      placeholder="Private"
-                      name="public_access"
-                      onChange={this.onChange}
-                      value={data.public_access}
-                    >
-                      <option value="View">Public</option>
-                      <option value="None">Private</option>
-                    </Input>
-                  </FormGroup>
-                  <FormGroup style={{ marginTop: '12px' }}>
-                    Owner
-                    {' '}
-                    <b className="text-danger">*</b>
-                    {errors && <InlineError text={errors.owner} />}
-                    <Input
-                      type="select"
-                      id="owner"
-                      placeholder="Individual"
-                      name="owner"
-                      onChange={this.onChange}
-                      value={data.owner}
-                    >
-                      {isEditingDictionary
-                      && <option value={data.owner}>{data.owner}</option>
-                      }
-                      { organizations && organizations.length !== 0 && <option value="" />}
-                      <option value="Individual" style={{ textTransform: 'capitalize' }}>
-                        {' '}
-                        {localStorage.getItem('username')}
-                        {' '}
-(Yourself)
-                        {' '}
-                      </option>
-                      {organizations
-                        && organizations.map(organization => (
-                          <option value={organization.id} key={organization.id}>
-                            {organization.id}
-                            {' '}
-                            {' '}
-(organization)
-                          </option>
-                        ))}
-                    </Input>
-                  </FormGroup>
-                  <FormGroup
-                    style={{ marginTop: '12px' }}
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title="Short Code"
-                  >
-                    Short Code
-                    {' '}
-                    <b className="text-danger">*</b>
-                    {errors && <InlineError text={errors.id} />}
-                    <Input
-                      type="text"
-                      id="dictionary_short_code"
-                      name="id"
-                      onChange={this.onChange}
-                      value={data.id}
-                      placeholder="
-                      Mnemonic used to identify the collection
-                       in the URL (an acronym e.g. Community-MCH)
-                      "
-                      required
-                      disabled={isEditingDictionary !== true ? isEditingDictionary : true}
-                    />
-                    <ReactTooltip place="top" effect="solid" />
-                  </FormGroup>
                   <FormGroup>
                     <Input
                       type="hidden"
