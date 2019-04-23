@@ -2,6 +2,7 @@ import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
 import {
   IS_FETCHING,
@@ -80,7 +81,9 @@ describe('Test suite for addBulkConcepts async actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
-  it('should handle ADD_EXISTING_CONCEPTS', () => {
+  it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -97,6 +100,31 @@ describe('Test suite for addBulkConcepts async actions', () => {
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
     return store.dispatch(addConcept(params, 'data', 'lob dev')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Just Added - lob dev', 'success', 3000);
+    });
+  });
+  it('should notify user when one tries to add a duplicate concept', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{ concepts, ...{ added: false } }],
+      });
+    });
+
+    const expectedActions = [
+      { type: ADD_EXISTING_CONCEPTS, payload: [{ concepts, ...{ added: false } }] },
+    ];
+
+    const store = mockStore({});
+    const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
+    return store.dispatch(addConcept(params, 'data', 'lob dev')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('lob dev already added', 'error', 3000);
     });
   });
   it('should handle FETCH_FILTERED_CONCEPTS with no filters', () => {

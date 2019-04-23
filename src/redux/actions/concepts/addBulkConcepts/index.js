@@ -80,8 +80,9 @@ export const addConcept = (params, data, conceptName) => async (dispatch) => {
   dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
   if (payload.data[0].added === true) {
     notify.show(`Just Added - ${conceptName}`, 'success', 3000);
+  } else {
+    notify.show(`${conceptName} already added`, 'error', 3000);
   }
-  notify.show(`${conceptName} already added`, 'error', 3000);
 };
 
 export const setCurrentPage = currentPage => async (dispatch) => {
