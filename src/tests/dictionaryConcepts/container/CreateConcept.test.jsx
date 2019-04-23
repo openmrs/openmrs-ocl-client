@@ -68,6 +68,10 @@ describe('Test suite for dictionary concepts components', () => {
     createConceptComponent = wrapper.find('CreateConcept');
   });
 
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
   it('should call addMappingRow function', () => {
     const instance = wrapper.find('CreateConcept').instance();
     instance.addMappingRow();
@@ -132,7 +136,25 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should render without breaking', () => {
-    expect(wrapper.find('h3').text()).toEqual(': Create a question Concept ');
+    expect(wrapper.find('h3').text()).toEqual(': Create a question concept');
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render "create a set of concepts" without breaking', () => {
+    const newProps = {
+      ...props,
+      match: {
+        ...props.match,
+        params: {
+          ...props.match.params,
+          conceptType: 'set',
+        },
+      },
+    };
+    wrapper = mount(<Router>
+      <CreateConcept {...newProps} />
+    </Router>);
+    expect(wrapper.find('h3').text()).toEqual(': Create a set of concepts');
     expect(wrapper).toMatchSnapshot();
   });
 

@@ -65,7 +65,7 @@ const ConceptDropdown = props => (
           </DropdownItem>
           <DropdownItem>
             <Link className="dropdown-item" to={`/new/set${props.pathName}`}>
-          Create a Set of concept
+          Create a set of concepts
             </Link>
           </DropdownItem>
           <DropdownItem>

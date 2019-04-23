@@ -358,8 +358,10 @@ export class CreateConcept extends Component {
       selectedAnswers,
     } = this.props;
     const { mappings } = this.state;
-    const concept = conceptType ? ` ${conceptType}` : '';
+    const concept = conceptType ? `${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
+    const append = concept === 'set' ? ' of concepts' : ' concept';
+
     return (
       <div className="container create-custom-concept">
         <div className="row create-concept-header">
@@ -367,10 +369,9 @@ export class CreateConcept extends Component {
             <h3>
               {dictionaryName}
 : Create a
+              {' '}
               <span className="text-capitalize">{concept}</span>
-              {' '}
-Concept
-              {' '}
+              {append}
               <br />
             </h3>
           </div>
