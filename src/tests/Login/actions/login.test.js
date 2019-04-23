@@ -125,6 +125,11 @@ describe('Test suite for login action', () => {
       {
         type: AUTHENTICATION_IN_PROGRESS,
         loading: true,
+      },
+      {
+        type: AUTHENTICATION_FAILED,
+        loading: false,
+        payload: { errorMessage: undefined },
       }];
 
     const store = mockStore();

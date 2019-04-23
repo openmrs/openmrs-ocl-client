@@ -22,7 +22,8 @@ const loginAction = ({ username, password }) => (dispatch) => {
     return dispatch(login(response));
   }).catch((error) => {
     if (error.response === undefined) {
-      return showNetworkError();
+      showNetworkError();
+      return dispatch(loginFailed());
     }
     let errorMessage = error.response.data.detail;
     if (errorMessage === 'Not found.') {
