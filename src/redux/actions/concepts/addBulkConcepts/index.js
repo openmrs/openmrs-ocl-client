@@ -14,7 +14,7 @@ import {
 } from '../../types';
 
 export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
-  const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&&verbose=true`;
+  const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
   dispatch(isFetching(true));
   try {
     const response = await instance.get(url);
@@ -34,16 +34,14 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage) 
   const {
     bulkConcepts: { datatypeList, classList },
   } = getState();
-  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
 
-  if (datatypeList.length > 0 && classList.length > 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&datatype=${datatypeList.join(',')}&conceptClass=${classList.join(',')}`;
+  if (datatypeList.length > 0) {
+    url = `${url}&datatype=${datatypeList.join(',')}`;
   }
-  if (datatypeList.length > 0 && classList.length === 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&datatype=${datatypeList.join(',')}`;
-  }
-  if (datatypeList.length === 0 && classList.length > 0) {
-    url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&conceptClass=${classList.join(',')}`;
+
+  if (classList.length > 0) {
+    url = `${url}&conceptClass=${classList.join(',')}`;
   }
 
   try {
