@@ -61,9 +61,9 @@ const ConceptTable = ({
           Cell: cell => showCellContents(cell),
         },
         {
-          Header: 'Source',
+          Header: 'Source - ID',
           id: 'sourceCol',
-          accessor: concept => [concept.source, concept.retired],
+          accessor: concept => [`${concept.source} - ${concept.id}`, concept.retired],
           Cell: cell => showCellContents(cell),
         },
         {
