@@ -76,7 +76,7 @@ describe('Navbar Component', () => {
       preventDefault: () => {},
     };
     wrapper.find('#logout-user').at(0).simulate('click', event);
-    expect(notify.show).toHaveBeenCalledWith('You Loggedout successfully', 'success', 3000);
+    expect(notify.show).toHaveBeenCalledWith('You Logged out successfully', 'success', 3000);
   });
 
   it('should toggle state isOpen value on button click', () => {
