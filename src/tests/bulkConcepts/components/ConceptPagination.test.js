@@ -12,7 +12,6 @@ describe('Test suite for ConceptPagination component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       data: [concepts],
       loading: false,
@@ -82,7 +81,6 @@ describe('Test suite for ConceptPagination component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       data: [{ id: '1' }, { id: '2' },
         { id: '3' }, { id: '4' },
@@ -118,7 +116,6 @@ describe('Test suite for ConceptPagination component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       data: [concepts],
       loading: false,
@@ -150,7 +147,6 @@ describe('Test suite for ConceptPagination component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       data: [concepts],
       loading: false,

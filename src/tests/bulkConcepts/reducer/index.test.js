@@ -1,7 +1,6 @@
 import deepFreeze from 'deep-freeze';
 import reducer from '../../../redux/reducers/bulkConceptReducer';
 import {
-  FETCH_BULK_CONCEPTS,
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
@@ -33,22 +32,6 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toBe(state);
   });
 
-  it('should handle FETCH_BULK_CONCEPTS', () => {
-    action = {
-      type: FETCH_BULK_CONCEPTS,
-      payload: [concepts, concept2],
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      classes: classList,
-      datatypes: dataTypesList,
-      bulkConcepts: action.payload,
-    });
-  });
   it('should handle SET_NEXT_PAGE', () => {
     action = {
       type: SET_NEXT_PAGE,

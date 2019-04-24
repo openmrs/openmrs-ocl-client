@@ -7,7 +7,6 @@ import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
 import Header from './Header';
 import {
-  fetchBulkConcepts,
   addToFilterList,
   previewConcept,
   addConcept,
@@ -23,7 +22,6 @@ export class BulkConceptsPage extends Component {
     setCurrentPage: PropTypes.func.isRequired,
     currentPage: PropTypes.number.isRequired,
     fetchFilteredConcepts: PropTypes.func.isRequired,
-    fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
     loading: PropTypes.bool.isRequired,
     preview: PropTypes.shape({
@@ -60,11 +58,6 @@ export class BulkConceptsPage extends Component {
     };
   }
 
-  componentDidMount() {
-    this.getBulkConcepts();
-  }
-
-
   openModal = (id) => {
     this.setState({ modalId: id });
   };
@@ -76,12 +69,11 @@ export class BulkConceptsPage extends Component {
   componentDidUpdate(prevProps) {
     const { searchingOn } = this.state;
     const { currentPage } = this.props;
-    if (currentPage !== prevProps.currentPage) {
-      if (searchingOn) {
-        return this.searchOption();
-      }
-      return this.getBulkConcepts();
+    if (currentPage !== prevProps.currentPage && searchingOn) {
+      console.log('hey');
+      return this.searchOption();
     }
+    console.log('hey2');
     return null;
   }
 
@@ -100,19 +92,10 @@ export class BulkConceptsPage extends Component {
     }
   };
 
-  getBulkConcepts = () => {
-    const { currentPage, fetchBulkConcepts: bulkConceptsFetched } = this.props;
-    bulkConceptsFetched(currentPage);
-  }
-
   handleChange = (event) => {
     const {
       target: { value },
     } = event;
-    if (!value) {
-      const { fetchBulkConcepts: bulkConceptsFetched } = this.props;
-      bulkConceptsFetched(1);
-    }
     this.setState(() => ({ searchInput: value }));
   };
 
@@ -141,7 +124,7 @@ export class BulkConceptsPage extends Component {
     if (searchingOn) {
       return this.searchOption();
     }
-    return this.getBulkConcepts();
+    return null;
   };
 
   render() {
@@ -211,7 +194,6 @@ export const mapStateToProps = ({ bulkConcepts, concepts }) => ({
 export default connect(
   mapStateToProps,
   {
-    fetchBulkConcepts,
     addToFilterList,
     previewConcept,
     addConcept,

@@ -1,5 +1,4 @@
 import {
-  FETCH_BULK_CONCEPTS,
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
@@ -21,13 +20,6 @@ const userInitialState = {
 };
 const bulkConcepts = (state = userInitialState, action) => {
   switch (action.type) {
-    case FETCH_BULK_CONCEPTS:
-      return {
-        ...state,
-        bulkConcepts: action.payload,
-        datatypes: dataTypesList,
-        classes: classList,
-      };
     case FETCH_FILTERED_CONCEPTS:
       return {
         ...state,

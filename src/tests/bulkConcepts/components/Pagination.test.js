@@ -24,7 +24,6 @@ describe('Test suite for Paginations component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       concepts: [concepts],
       loading: false,
@@ -64,7 +63,6 @@ describe('Test suite for Paginations component', () => {
     const props = {
       setCurrentPage: jest.fn(),
       currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
       filterConcept: jest.fn(),
       concepts: [concepts],
       loading: false,
