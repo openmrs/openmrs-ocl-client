@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { CUSTOM_SOURCE } from './helperFunction';
+import { CUSTOM_SOURCE, TRADITIONAL_OCL_HOST } from './helperFunction';
 
 const ActionButtons = ({
   actionButtons,
@@ -12,6 +12,7 @@ const ActionButtons = ({
   version_url,
   retired,
   retireConcept,
+  url,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -21,16 +22,26 @@ const ActionButtons = ({
   return (
     <React.Fragment>
       {source !== CUSTOM_SOURCE && (
-        <button
-          type="button"
-          className="btn btn-sm mb-1 actionButtons action-btn-style"
-          id="retireConcept"
-          onClick={() => {
-            showDeleteModal(version_url);
-          }}
-        >
-          Remove
-        </button>
+        <React.Fragment>
+          <button
+            type="button"
+            className="btn btn-sm mb-1 actionButtons action-btn-style"
+            id="retireConcept"
+            onClick={() => {
+              showDeleteModal(version_url);
+            }}
+          >
+            Remove
+          </button>
+          <a
+            href={`${TRADITIONAL_OCL_HOST}${url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="edit-button-link btn btn-sm mb-1"
+          >
+            View in traditional OCL
+          </a>
+        </React.Fragment>
       )}
       {!retired && <React.Fragment>
         {showExtra && (
@@ -70,6 +81,7 @@ ActionButtons.propTypes = {
   concept_class: PropTypes.string.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
   version_url: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   display_name: PropTypes.string.isRequired,
