@@ -8,7 +8,7 @@ const Sidenav = ({
   <div className="col-12 col-md-2 custom-full-width">
     <div className="sidenav-container">
       <div className="row">
-        <h6 className="sidenav-header">Sources</h6>
+        <h6 className="sidenav-header">Source</h6>
       </div>
       {filteredSources.map(source => (
         <SideNavItem
