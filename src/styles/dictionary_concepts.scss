@@ -141,6 +141,10 @@ body {
     flex: none;
 }
 
+.ReactTable .rt-td {
+  white-space: normal;
+}
+
 .search-container .concept-search-wrapper .fa-search {
   font-size: .8rem;
   padding-right: .7rem;
