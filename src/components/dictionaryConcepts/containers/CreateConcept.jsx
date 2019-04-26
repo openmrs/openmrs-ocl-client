@@ -233,7 +233,8 @@ export class CreateConcept extends Component {
     }
   }
 
-  removeDataFromRow(id, arrayName) {
+  removeDataFromRow(data, arrayName) {
+    const id = data.uuid;
     const currentData = this.state[arrayName].filter(name => name.id !== id);
     if (currentData.length) {
       const newItems = this.state[arrayName].filter(name => name.id !== id);
