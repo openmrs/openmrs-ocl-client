@@ -35,6 +35,8 @@ export class BulkConceptsPage extends Component {
     previewConcept: PropTypes.func.isRequired,
     classes: PropTypes.array.isRequired,
     addToFilterList: PropTypes.func.isRequired,
+    singleConcept: PropTypes.array,
+    recursiveConcept: PropTypes.array,
     match: PropTypes.shape({
       params: PropTypes.shape({
         type: PropTypes.string,
@@ -46,7 +48,9 @@ export class BulkConceptsPage extends Component {
 
   static defaultProps = {
     preview: {},
-  }
+    singleConcept: [],
+    recursiveConcept: [],
+  };
 
   constructor(props) {
     super(props);
@@ -155,6 +159,8 @@ export class BulkConceptsPage extends Component {
       match: { params },
       previewConcept: previewedConcept,
       addConcept: addedConcept,
+      singleConcept,
+      recursiveConcept,
     } = this.props;
     const {
       datatypeInput, classInput, searchInput, conceptLimit,
@@ -194,6 +200,8 @@ export class BulkConceptsPage extends Component {
               handleNextPage={this.handleNextPage}
               conceptLimit={conceptLimit}
               currentPage={currentPage}
+              singleConcept={singleConcept}
+              recursiveConcept={recursiveConcept}
             />
           </div>
         </section>
@@ -217,5 +225,6 @@ export default connect(
     addConcept,
     fetchFilteredConcepts,
     setCurrentPage,
+
   },
 )(BulkConceptsPage);

@@ -7,7 +7,7 @@ import {
   BulkConceptsPage,
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
-import concepts from '../../__mocks__/concepts';
+import concepts, { concept4 } from '../../__mocks__/concepts';
 
 const store = createMockStore({
   bulkConcepts: {
@@ -551,5 +551,209 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(mapStateToProps(initialState).classes).toEqual([]);
     expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
+  });
+
+  it('should check whether mappings is not null', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(wrapper.instance().props.children.props.children.props.concepts[0]
+      .mappings.length,
+    ).toEqual(1);
+    expect(wrapper.instance().props.children.props.children.props.concepts[0]
+      .mappings,
+    ).toEqual([{ to_concept_url: '/orgs/CIEL/sources/CIEL/concepts/1366/' }]);
+    jest.runAllTimers();
+  });
+  it('should check whether singleConcept has a length greater than one', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      singleConcept: [concept4],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.singleConcept[0]
+        .mappings.length,
+    ).toEqual(1);
+    jest.runAllTimers();
+  });
+  it('should check whether recursiveConcept has a length greater than one', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      singleConcept: [concept4],
+      recursiveConcept: [concept4],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.recursiveConcept[0]
+        .mappings.length,
+    ).toEqual(1);
+    jest.runAllTimers();
+  });
+  it('should check whether singleConcept has a length equal to 0', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      singleConcept: [concepts],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.singleConcept[0]
+        .mappings,
+    ).toBe(null);
+    jest.runAllTimers();
+  });
+  it('should check whether recursiveConcept has a length less than one', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 1,
+      fetchBulkConcepts: jest.fn(),
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      match: {
+        params: {
+          type: 'users',
+          typeName: 'emasys',
+          collectionName: 'dev-org',
+          language: 'en',
+          dictionaryName: 'CIEL',
+        },
+      },
+      addToFilterList: jest.fn(),
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      addConcept: jest.fn(),
+      previewConcept: jest.fn(),
+      fetchFilteredConcepts: jest.fn(),
+      singleConcept: [concept4],
+      recursiveConcept: [concepts],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...props} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.recursiveConcept[0]
+        .mappings,
+    ).toBe(null);
+    jest.runAllTimers();
   });
 });

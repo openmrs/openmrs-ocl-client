@@ -44,6 +44,8 @@ export const REMOVE_SELECTED_ANSWER = '[concepts] remove_selected_answer';
 export const PRE_POPULATE_ANSWERS = '[concepts] pre_populate_answers';
 export const UNPOPULATE_PRE_POPULATED_ANSWERS = '[concepts] unpopulate_pre_populated_answers';
 export const ADD_NEW_ANSWER_ROW = '[concepts] add_new_answer_row';
+export const GET_SINGLE_CIEL_CONCEPT = '[concepts] get_single_ciel_concept';
+export const GET_RECURSIVE_CIEL_CONCEPT = '[concepts] get_recursive_ciel_concepts';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
 export const SEARCH_RESULTS = '[searchResults] search';

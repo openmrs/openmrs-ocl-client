@@ -22,6 +22,10 @@ export class ActionButtons extends Component {
     openModal: PropTypes.func.isRequired,
     closeModal: PropTypes.func.isRequired,
     modalId: PropTypes.string.isRequired,
+    mappings: PropTypes.array,
+    singleConcept: PropTypes.array,
+    recursiveConcept: PropTypes.array,
+
   };
 
   constructor(props) {
@@ -40,14 +44,42 @@ export class ActionButtons extends Component {
   addConcept = (conceptUrl, name) => {
     const { params } = this.props;
     const data = { data: { expressions: [conceptUrl] } };
-    this.props.addConcept(params, data, name);
+    if (this.props.mappings && this.props.mappings.length > 0) {
+      this.props.addConcept(params, data, name);
+      const conceptUrls = this.props.mappings.map(concept => concept.to_concept_url);
+      const newData = { data: { expressions: conceptUrls } };
+      this.props.addConcept(params, newData, name, conceptUrls);
+      // eslint-disable-next-line array-callback-return
+      this.props.singleConcept.map((concepts) => {
+        if (concepts.mappings && concepts.mappings.length > 0) {
+          const secondLevelConceptUrls = concepts.mappings.map(
+            concept => concept.to_concept_url,
+          );
+          const newMapData = { data: { expressions: secondLevelConceptUrls } };
+          this.props.addConcept(params, newMapData, name, undefined, secondLevelConceptUrls);
+          // eslint-disable-next-line array-callback-return
+          this.props.recursiveConcept.map((con) => {
+            if (con.mappings && con.mappings.length > 0) {
+              const thirdLevelConceptUrls = con.mappings.map(
+                concept => concept.to_concept_url,
+              );
+              const finalMapData = { data: { expressions: thirdLevelConceptUrls } };
+              this.props.addConcept(params, finalMapData, name);
+            } else {
+              this.props.addConcept(params, newMapData, name, secondLevelConceptUrls);
+            }
+          });
+        }
+      });
+    } else {
+      this.props.addConcept(params, data, name);
+    }
   };
 
   addConceptButton = (id, url, display_name) => {
     this.setState({ disableButton: true });
     const { closeModal } = this.props;
     notify.show('Adding...', 'warning', 800);
-
     this.fetchPreview(id);
     closeModal();
     setTimeout(() => {
@@ -96,5 +128,11 @@ export class ActionButtons extends Component {
     );
   }
 }
+
+ActionButtons.defaultProps = {
+  mappings: null,
+  singleConcept: [],
+  recursiveConcept: [],
+};
 
 export default ActionButtons;
