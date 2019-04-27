@@ -49,6 +49,8 @@ export const UNPOPULATE_PRE_POPULATED_ANSWERS = '[concepts] unpopulate_pre_popul
 export const UNPOPULATE_PRE_POPULATED_SETS = '[concepts] unpopulate_pre_populated_sets';
 export const ADD_NEW_ANSWER_ROW = '[concepts] add_new_answer_row';
 export const ADD_NEW_SET_ROW = '[concepts] add_new_set_row';
+export const GET_QUESTION_ANSWERS = '[concepts] get_question_answers';
+export const GET_RECURSIVE_QUESTION_ANSWERS = '[concepts] get_recursive_question_answers';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
 export const SEARCH_RESULTS = '[searchResults] search';

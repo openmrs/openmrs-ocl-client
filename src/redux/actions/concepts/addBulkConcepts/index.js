@@ -11,6 +11,8 @@ import {
   SET_PERVIOUS_PAGE,
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
+  GET_QUESTION_ANSWERS,
+  GET_RECURSIVE_QUESTION_ANSWERS,
 } from '../../types';
 
 export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
@@ -71,7 +73,9 @@ export const previewConcept = id => (dispatch, getState) => {
   return dispatch(isSuccess(payload[0], PREVIEW_CONCEPT));
 };
 
-export const addConcept = (params, data, conceptName) => async (dispatch) => {
+export const addConcept = (
+  params, data, conceptName, conceptUrls, secondLevelConceptUrls,
+) => async (dispatch) => {
   const { type, typeName, collectionName } = params;
   const url = `${type}/${typeName}/collections/${collectionName}/references/`;
   const payload = await instance.put(url, data);
@@ -80,6 +84,18 @@ export const addConcept = (params, data, conceptName) => async (dispatch) => {
     notify.show(`Just Added - ${conceptName}`, 'success', 3000);
   } else {
     notify.show(`${conceptName} already added`, 'error', 3000);
+  }
+  if (conceptUrls && conceptUrls.length > 0) {
+    conceptUrls.map(async (newUrl) => {
+      const response = await instance.get(newUrl);
+      dispatch(isSuccess(response.data, GET_QUESTION_ANSWERS));
+    });
+  }
+  if (secondLevelConceptUrls && secondLevelConceptUrls.length > 0) {
+    secondLevelConceptUrls.map(async (newUrl) => {
+      const response = await instance.get(newUrl);
+      dispatch(isSuccess(response.data, GET_RECURSIVE_QUESTION_ANSWERS));
+    });
   }
 };
 

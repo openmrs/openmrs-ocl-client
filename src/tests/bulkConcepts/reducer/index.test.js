@@ -9,8 +9,10 @@ import {
   SET_CURRENT_PAGE,
   SET_NEXT_PAGE,
   SET_PERVIOUS_PAGE,
+  GET_QUESTION_ANSWERS,
+  GET_RECURSIVE_QUESTION_ANSWERS,
 } from '../../../redux/actions/types';
-import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
+import concepts, { concept2, concept4, multipleConceptsMockStore } from '../../__mocks__/concepts';
 import { classes as classList, DATA_TYPES as dataTypesList } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 let state;
@@ -24,6 +26,8 @@ beforeEach(() => {
     datatypeList: [],
     classList: [],
     currentPage: 1,
+    questionAnswers: [],
+    recursiveQuestionAnswers: [],
   };
   action = {};
 });
@@ -147,6 +151,32 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       preview: action.payload,
+    });
+  });
+  it('should respond with a payload containing concepts from the second recursive iteration', () => {
+    action = {
+      type: GET_QUESTION_ANSWERS,
+      payload: concept4,
+    };
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      questionAnswers: [action.payload],
+    });
+  });
+  it('should respond with a payload containing concepts from the third recursive iteration', () => {
+    action = {
+      type: GET_RECURSIVE_QUESTION_ANSWERS,
+      payload: concept4,
+    };
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      recursiveQuestionAnswers: [action.payload],
     });
   });
 });

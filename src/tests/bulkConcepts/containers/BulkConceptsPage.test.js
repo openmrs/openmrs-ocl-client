@@ -7,7 +7,7 @@ import {
   BulkConceptsPage,
   mapStateToProps,
 } from '../../../components/bulkConcepts/container/BulkConceptsPage';
-import concepts from '../../__mocks__/concepts';
+import concepts, { concept4 } from '../../__mocks__/concepts';
 
 const store = createMockStore({
   bulkConcepts: {
@@ -297,7 +297,58 @@ describe('Test suite for BulkConceptsPage component', () => {
     wrapper.find('#add-button').simulate('click');
     jest.runAllTimers();
   });
-
+  it('should check whether the concept has a mapping before adding it to the collection after clicking the add button', () => {
+    const newProps = {
+      ...props,
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      questionAnswers: [concept4],
+      recursiveQuestionAnswers: [concept4],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...newProps} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.recursiveQuestionAnswers[0]
+        .mappings.length,
+    ).toEqual(1);
+    jest.runAllTimers();
+  });
+  it('should check whether the concept does not have any mappings before adding it to the collection after clicking the add button', () => {
+    const newProps = {
+      ...props,
+      concepts: [concept4],
+      loading: false,
+      datatypes: ['text'],
+      classes: ['Diagnosis'],
+      preview: {
+        url: 'dsa',
+        display_name: 'asd',
+      },
+      questionAnswers: [concept4],
+      recursiveQuestionAnswers: [concepts],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <BulkConceptsPage {...newProps} />
+      </Router>
+    </Provider>);
+    wrapper.find('#add-button').simulate('click');
+    expect(
+      wrapper.instance().props.children.props.children.props.recursiveQuestionAnswers[0]
+        .mappings,
+    ).toBe(null);
+    jest.runAllTimers();
+  });
   it('should test mapStateToProps', () => {
     const initialState = {
       concepts: {

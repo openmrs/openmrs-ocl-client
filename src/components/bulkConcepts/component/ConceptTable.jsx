@@ -8,7 +8,7 @@ import ConceptPagination from './ConceptPagination';
 
 const ConceptTable = ({
   concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, currentPage,
-  modalId, openModal, closeModal,
+  modalId, openModal, closeModal, questionAnswers, recursiveQuestionAnswers,
 }) => {
   if (loading) {
     return (
@@ -58,6 +58,8 @@ const ConceptTable = ({
                 previewConcept={previewConcept}
                 addConcept={addConcept}
                 params={location}
+                questionAnswers={questionAnswers}
+                recursiveQuestionAnswers={recursiveQuestionAnswers}
                 {...concept}
               />
             ),
@@ -88,11 +90,15 @@ ConceptTable.propTypes = {
   previewConcept: PropTypes.func.isRequired,
   conceptLimit: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
+  questionAnswers: PropTypes.array,
+  recursiveQuestionAnswers: PropTypes.array,
   modalId: PropTypes.string,
 };
 ConceptTable.defaultProps = {
   original: {},
   modalId: '',
+  questionAnswers: [],
+  recursiveQuestionAnswers: [],
 };
 
 export default ConceptTable;
