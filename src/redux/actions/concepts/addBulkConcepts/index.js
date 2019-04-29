@@ -34,7 +34,7 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage) 
   const {
     bulkConcepts: { datatypeList, classList },
   } = getState();
-  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&includeMappings=1&sortAsc=lastUpdate`;
 
   if (datatypeList.length > 0) {
     url = `${url}&datatype=${datatypeList.join(',')}`;
