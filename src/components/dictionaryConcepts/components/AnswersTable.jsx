@@ -30,6 +30,7 @@ const AnswersTable = (props) => {
               frontEndUniqueKey={ans.frontEndUniqueKey}
               key={ans.frontEndUniqueKey}
               toConceptName={ans.to_concept_name}
+              toSourceName={ans.to_source_name}
               answerUrl={ans.url}
               prePopulated={ans.prePopulated}
               handleAnswerChange={handleAnswerChange}

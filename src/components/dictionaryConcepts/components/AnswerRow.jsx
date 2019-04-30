@@ -27,6 +27,7 @@ class AnswerRow extends React.Component {
       handleAsyncSelectChange,
       frontEndUniqueKey,
       toConceptName,
+      toSourceName,
       isEditConcept,
       prePopulated,
       answerUrl,
@@ -40,7 +41,7 @@ class AnswerRow extends React.Component {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={currentDictionaryName}
+                defaultValue={toSourceName}
                 required
               />
             ) : (
@@ -113,6 +114,7 @@ AnswerRow.propTypes = {
   isEditConcept: PropTypes.bool.isRequired,
   removeAnswerRow: PropTypes.func.isRequired,
   toConceptName: PropTypes.string,
+  toSourceName: PropTypes.string,
   frontEndUniqueKey: PropTypes.string,
   handleAsyncSelectChange: PropTypes.func.isRequired,
   currentDictionaryName: PropTypes.string,
@@ -124,6 +126,7 @@ AnswerRow.defaultProps = {
   answerUrl: '',
   prePopulated: false,
   toConceptName: '',
+  toSourceName: '',
   currentDictionaryName: '',
   frontEndUniqueKey: 'unique',
 };
