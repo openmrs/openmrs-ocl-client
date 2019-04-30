@@ -71,11 +71,11 @@ export class UserDashboard extends Component {
           <div className="col-12 user-info">
             <div className="row">
               <div className="greetings">
-                <h5>
+                <h3>
 Welcome
                   {' '}
                   {name}
-                </h5>
+                </h3>
               </div>
             </div>
             <div className="row">

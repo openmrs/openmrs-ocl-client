@@ -51,7 +51,7 @@ describe('Test suite for dictionary concepts components', () => {
         <UserDashboard {...props} />
       </MemoryRouter>
     </Provider>);
-    expect(wrapper.find('.greetings h5').text()).toEqual('Welcome emasys nd');
+    expect(wrapper.find('.greetings h3').first().text()).toEqual('Welcome emasys nd');
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -63,7 +63,7 @@ describe('Test suite for dictionary concepts components', () => {
         <UserDashboard {...props} />
       </MemoryRouter>
     </Provider>);
-    expect(wrapper.find('.greetings h5').text()).toEqual('Welcome emasys nd');
+    expect(wrapper.find('.greetings h3').first().text()).toEqual('Welcome emasys nd');
 
     expect(wrapper).toMatchSnapshot();
   });

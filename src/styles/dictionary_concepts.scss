@@ -52,7 +52,7 @@ body {
   background: white;
   padding: .5rem .7rem;
   box-shadow: 0 4px 15px 1px #00000012;
-  font-size: 70%;
+  font-size: medium;
   margin-bottom: 2rem;
 }
 
@@ -64,7 +64,6 @@ body {
 
 .sidenav-container .custom-control-label {
   margin-bottom: 0;
-  padding-top: .3rem;
 }
 
 .search-container {
@@ -321,18 +320,8 @@ input:-webkit-autofill:active {
   margin-left: 2rem;
 }
 
-.concept-form-body .form-group label,
-.section-header,
-.add-more-names {
-  font-size: .8rem;
-}
-
 .normal-cursor {
   cursor: default !important;
-}
-
-.collection-name{
-  font-family: 'Roboto',sans-serif;
 }
 
 .collection-name:link{

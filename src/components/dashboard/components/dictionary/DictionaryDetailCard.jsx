@@ -199,16 +199,16 @@ Browse in traditional OCL
               { owner === username
                 ? (
                   <li>
-                    <button
-                      type="button"
+                    <a
+                      href="#"
                       onClick={showVersionModal}
-                      className="fas fa-cloud-upload-alt head"
                       id="releaseVersion"
                     >
+                      <i className="fas fa-cloud-upload-alt head text-primary" />
                       <span id="release-head">
                         &nbsp;Release&nbsp;latest&nbsp;version
                       </span>
-                    </button>
+                    </a>
                   </li>
                 )
                 : null}
@@ -235,7 +235,7 @@ Browse in traditional OCL
                     ))
                   ) : (
                     <tr>
-                      <td className="version-msg" colSpan="4">
+                      <td className="version-msg text-black" colSpan="4">
                         No released Versions
                       </td>
                     </tr>

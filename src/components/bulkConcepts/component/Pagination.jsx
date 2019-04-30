@@ -34,7 +34,7 @@ export class Paginations extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-6 text-left">
-              <i>
+              <span>
                 Showing
                 {' '}
                 {firstDictionaryIndex}
@@ -46,7 +46,7 @@ export class Paginations extends Component {
                 many
                 {' '}
                 concepts
-              </i>
+              </span>
             </div>
             <div className="col-6 text-right">
               <span className="paginate-controllers">

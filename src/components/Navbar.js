@@ -41,13 +41,13 @@ export class Navbar extends Component {
     return (
       <div className="custom-bg-dark">
         <Notification options={{ zIndex: 10000, top: '200px' }} />
-        <Navigation color="light" light expand="md" className="custom-max-width">
+        <Navigation color="light" light expand="xl" className="custom-max-width">
           <NavbarBrand href="/">OCL for OpenMRS</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           {
           loggedIn && (
             <Collapse isOpen={isOpen} navbar>
-              <Nav className="ml-auto" navbar>
+              <Nav className="ml-auto" navbar expand="xl">
                 <NavItem>
                   <Link className="nav-link text-white" to="/home">Home</Link>
                 </NavItem>
@@ -56,9 +56,9 @@ export class Navbar extends Component {
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret className="text-white">
-                    <span className="fa fa-user" />
-                  &nbsp;
                     {localStorage.getItem('username') || this.props.user.username}
+                    &nbsp;
+                    <span className="fa fa-user" />
                   </DropdownToggle>
                   <DropdownMenu className="text-center" right>
                     <DropdownItem
@@ -67,11 +67,11 @@ export class Navbar extends Component {
                       onClick={this.logoutUser}
                       id="logout-user"
                     >
-                      <strong>
+                      <span>
                       Logout
                         {' '}
                         <i className="fa fa-sign-out-alt" />
-                      </strong>
+                      </span>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
