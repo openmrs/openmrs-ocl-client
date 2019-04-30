@@ -23,7 +23,6 @@ export class DictionaryModal extends React.Component {
         public_access: 'View',
         name: '',
         owner: '',
-        custom_validation_schema: 'OpenMRS',
         description: '',
         default_locale: 'en',
         supported_locales: '',
@@ -31,7 +30,6 @@ export class DictionaryModal extends React.Component {
         conceptUrl: '',
       },
       errors: {},
-      supportedLocalesOptions: [],
       disableButton: false,
     };
   }
@@ -163,7 +161,6 @@ export class DictionaryModal extends React.Component {
   hideModal = () => {
     this.setState({
       errors: {},
-      supportedLocalesOptions: [],
       disableButton: false,
     });
     this.props.modalhide();
@@ -176,7 +173,6 @@ export class DictionaryModal extends React.Component {
         default_locale, repository_type,
       },
     } = this.props;
-    const supportedLocalesOptions = this.preSelectSupportedLocales();
     this.setState({
       data: {
         id,
@@ -190,7 +186,6 @@ export class DictionaryModal extends React.Component {
         repository_type,
       },
       errors: {},
-      supportedLocalesOptions,
     });
   }
 
@@ -231,7 +226,7 @@ export class DictionaryModal extends React.Component {
                       placeholder="e.g Community Health Dictionary"
                       value={data.name}
                       required
-                      autoFocus
+                      autofocus="autofocus"
                     />
                   </FormGroup>
                   <FormGroup
@@ -383,7 +378,7 @@ export class DictionaryModal extends React.Component {
                     closeMenuOnSelect={false}
                     defaultValue={
                       isEditingDictionary
-                        ? this.state.supportedLocalesOptions
+                        ? this.preSelectSupportedLocales()
                         : []}
                     options={
                       languages.filter(

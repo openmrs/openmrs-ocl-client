@@ -78,7 +78,9 @@ export class DictionaryOverview extends Component {
     }
   }
 
-  handleHide = () => this.setState({ showEditModal: false });
+  handleHide = () => {
+    this.setState({ showEditModal: false });
+  };
 
   handleShow = () => this.setState({ showEditModal: true });
 
