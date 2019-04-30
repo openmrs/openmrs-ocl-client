@@ -2,6 +2,11 @@ import React from 'react';
 import ReactTable from 'react-table';
 import PropTypes from 'prop-types';
 
+const returnSource = (props) => {
+  const { to_source_owner, to_source_name } = props.original;
+  return `${to_source_owner} / ${to_source_name}`;
+};
+
 const MappingPreview = ({ title, body }) => {
   if (body === 'none') {
     return (
@@ -29,7 +34,7 @@ const MappingPreview = ({ title, body }) => {
           },
           {
             Header: 'Source',
-            accessor: 'source',
+            Cell: props => returnSource(props),
           },
           {
             Header: 'Code',
