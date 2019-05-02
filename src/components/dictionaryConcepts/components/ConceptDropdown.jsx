@@ -34,37 +34,37 @@ const ConceptDropdown = props => (
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/diagnosis${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Diagnosis${props.pathName}`}>
           Create a Diagnosis concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/symptom-finding${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Symptom-Finding${props.pathName}`}>
           Create a Symptom/Finding concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/procedure${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Procedure${props.pathName}`}>
           Create a Procedure concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/question${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Question${props.pathName}`}>
           Create a Q-and-A concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/drug${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Drug${props.pathName}`}>
           Create a Drug concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/test${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Test${props.pathName}`}>
           Create a Test concept
             </Link>
           </DropdownItem>
           <DropdownItem>
-            <Link className="dropdown-item" to={`/new/set${props.pathName}`}>
+            <Link className="dropdown-item" to={`/new/Set${props.pathName}`}>
           Create a set of concepts
             </Link>
           </DropdownItem>
