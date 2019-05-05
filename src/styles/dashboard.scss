@@ -1,5 +1,5 @@
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 a:hover {
@@ -193,7 +193,7 @@ nav {
 
 .dashboard-wrapper {
   margin-top: 0.5rem;
-  padding-bottom: 30px; 
+  padding-bottom: 30px;
 
 }
 .title-wrapper {
@@ -218,7 +218,6 @@ nav {
 
 .card-container {
   position: relative;
-  font-family: 'Roboto', sans-serif;
   height: 10rem;
   /* min-width: 20rem; */
   border-radius: 0.2rem 0.2rem 0 0;
@@ -341,7 +340,8 @@ nav {
 }
 
 .header {
-  background-color: #4f6196;
+  background-color: #145193;
+  font-size: medium;
 }
 
 .display-name {
@@ -424,7 +424,7 @@ nav {
   float: right;
   margin-right: 37%;
   border-radius: 20px;
-  
+
 }
 .add-dictionaries:hover {
   background-color: #2b6d27;
@@ -550,11 +550,7 @@ p{
   padding-bottom: 2rem;
 }
 
-.fas{
-  color:#3359db;
-}
-
-@media only screen and (max-width: 992px) { 
+@media only screen and (max-width: 992px) {
   fieldset{
     min-width: 320px;
     margin-bottom: .7rem;

@@ -24,7 +24,7 @@ const CreateConceptForm = (props) => {
       <div className="concept-form-body">
         <div className="form-row">
           <div className="form-group col-md-7">
-            <label htmlFor="uuid">UUID</label>
+            <label htmlFor="uuid"><h5>UUID</h5></label>
             <input
               type="text"
               className="form-control"
@@ -53,7 +53,7 @@ const CreateConceptForm = (props) => {
         <div className="form-row">
           {!props.concept && (
           <div className="form-group col-md-5">
-            <label htmlFor="class">Class</label>
+            <label htmlFor="class"><h5>Class</h5></label>
             <select
               id="class"
               name="concept_class"
@@ -69,7 +69,7 @@ const CreateConceptForm = (props) => {
           )}
           {props.concept && (
           <div className="form-group col-md-5">
-            <label htmlFor="class">Class</label>
+            <label htmlFor="class"><h5>Class</h5></label>
             <div>
               { (props.concept.toString().trim() === 'symptom-finding')
               && (
@@ -123,7 +123,7 @@ const CreateConceptForm = (props) => {
           )}
         </div>
         <div className="datatypefield">
-          <label htmlFor="datatype">Datatype</label>
+          <label htmlFor="datatype"><h5>Datatype</h5></label>
           <select
             id="datatype"
             name="datatype"
@@ -149,7 +149,7 @@ const CreateConceptForm = (props) => {
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Names</h6>
+              <h5 className="text-left section-header">Names</h5>
               <CreateConceptTable {...props} />
               <button
                 type="button"
@@ -165,7 +165,7 @@ const CreateConceptForm = (props) => {
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Descriptions</h6>
+              <h5 className="text-left section-header">Descriptions</h5>
               <DescriptionTable {...props} />
               <button
                 type="button"
@@ -181,7 +181,7 @@ const CreateConceptForm = (props) => {
         {concept.toString().trim() === 'question' ? (
           <div className="form-group answer">
             <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Answers</h6>
+              <h5 className="text-left section-header">Answers</h5>
               <AnswersTable
                 handleAsyncSelectChange={handleAsyncSelectChange}
                 selectedAnswers={selectedAnswers}
@@ -203,7 +203,7 @@ const CreateConceptForm = (props) => {
         <div className="concept-table ">
           <div className="form-group">
             <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Mappings</h6>
+              <h5 className="text-left section-header">Mappings</h5>
               <table className=" table-striped table-bordered concept-form-table">
                 <thead className="header text-white">
                   <tr>

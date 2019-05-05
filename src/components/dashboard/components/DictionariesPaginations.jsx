@@ -7,7 +7,7 @@ const Paginations = props => (
       <div className="container">
         <div className="row">
           <div className="col-md-6 text-left">
-            <i>
+            <span>
               Showing
               {' '}
               {props.firstDictionaryIndex}
@@ -19,7 +19,7 @@ of
               {props.totalDictionaries}
               {' '}
               dictionaries
-            </i>
+            </span>
           </div>
           <div className="col-6 text-right">
             <span className="paginate-controllers">
