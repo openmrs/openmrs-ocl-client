@@ -33,10 +33,12 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
       concept: {
         mappings: [
           {
-            map_type: '',
+            map_type: 'Mapping',
             to_concept_name: '',
             source: '',
-            to_concept_code: '',
+            to_concept_code: '047',
+            to_source_name: 'RxNORM',
+            to_source_owner: 'NLM',
           },
         ],
         descriptions: [{ description: '' }],
@@ -46,6 +48,7 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
       <PreviewCard {...newProps} />
     </Router>);
     expect(wrapper.length).toEqual(1);
+    expect(wrapper.find('Cell').getElement(0).props.original).toEqual(newProps.concept.mappings[0]);
   });
 
   it('should render with mappings containing set members', () => {
