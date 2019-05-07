@@ -4,6 +4,8 @@ import reduxThunk from 'redux-thunk';
 import logger from 'redux-logger';
 import rootReducer from './index';
 
+export const STORE_VERSION = '1';
+
 const saveState = (state) => {
   try {
     localStorage.setItem('state', JSON.stringify(state));
@@ -13,12 +15,19 @@ const saveState = (state) => {
   }
 };
 
-const loadState = () => {
+export const loadState = () => {
   try {
     const state = localStorage.getItem('state');
     if (state === null) {
       return undefined;
     }
+
+    const storeVersion = localStorage.getItem('storeVersion');
+    if (storeVersion !== STORE_VERSION) {
+      localStorage.setItem('storeVersion', STORE_VERSION);
+      return undefined;
+    }
+
     return JSON.parse(state);
   } catch (e) {
     return undefined;
