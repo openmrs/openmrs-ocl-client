@@ -13,13 +13,13 @@ import {
 const getSetMembers = mappings => (
   mappings.filter(mapping => mapping.map_type === MAP_TYPE.conceptSet))
   .map(
-    mapping => `<div>${mapping.to_concept_name}(${mapping.to_concept_code})</div>`,
+    mapping => `<div>${mapping.to_concept_name} (${mapping.to_concept_code})</div>`,
   );
 
 const getAnswers = mappings => (
   mappings.filter(mapping => mapping.map_type === MAP_TYPE.questionAndAnswer))
   .map(
-    mapping => `<div>${mapping.to_concept_name}(${mapping.to_concept_code})</div>`,
+    mapping => `<div>${mapping.to_concept_name} (${mapping.to_concept_code})</div>`,
   );
 
 const getOtherMappings = mappings => (
