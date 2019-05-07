@@ -361,7 +361,7 @@ export class CreateConcept extends Component {
     const { mappings } = this.state;
     const concept = conceptType ? `${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
-    const append = concept === 'set' ? ' of concepts' : ' concept';
+    const append = concept === 'Set' ? ' of concepts' : ' concept';
 
     return (
       <div className="container create-custom-concept">

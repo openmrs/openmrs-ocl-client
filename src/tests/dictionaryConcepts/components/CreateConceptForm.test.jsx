@@ -39,7 +39,7 @@ describe('Test suite for CreateConceptForm', () => {
       state: {
         id: '1',
       },
-      concept: 'set',
+      concept: 'Set',
       addDescription: jest.fn(),
       handleNewName: jest.fn(),
       path: '',
@@ -64,7 +64,7 @@ describe('Test suite for CreateConceptForm', () => {
       state: {
         id: '1',
       },
-      concept: 'symptom-finding',
+      concept: 'Symptom-Finding',
       addDescription: jest.fn(),
       handleNewName: jest.fn(),
       path: '',
