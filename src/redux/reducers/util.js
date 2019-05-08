@@ -71,3 +71,13 @@ export const filterUserPayload = (user, payload) => {
 };
 
 export const filterDescriptions = (item, list) => list.filter(listItem => listItem.uuid !== item);
+
+export const updatePopulatedAnswers = (ans, answers) => {
+  const newAnswers = answers.map((item) => {
+    if (item.frontEndUniqueKey === ans.frontEndUniqueKey) {
+      return ans;
+    }
+    return item;
+  });
+  return newAnswers;
+};

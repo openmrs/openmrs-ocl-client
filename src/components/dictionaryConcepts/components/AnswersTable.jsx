@@ -11,6 +11,7 @@ const AnswersTable = (props) => {
     removeAnswerRow,
     currentDictionaryName,
     isEditConcept,
+    removeCurrentAnswer,
   } = props;
   return (
     <table className="table table-striped table-bordered concept-form-table">
@@ -38,6 +39,8 @@ const AnswersTable = (props) => {
               currentDictionaryName={currentDictionaryName}
               handleAsyncSelectChange={handleAsyncSelectChange}
               isEditConcept={isEditConcept}
+              answer={ans}
+              removeCurrentAnswer={removeCurrentAnswer}
             />
           );
         })}
@@ -53,6 +56,7 @@ AnswersTable.propTypes = {
   isEditConcept: PropTypes.bool.isRequired,
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
+  removeCurrentAnswer: PropTypes.func.isRequired,
 };
 
 AnswersTable.defaultProps = {

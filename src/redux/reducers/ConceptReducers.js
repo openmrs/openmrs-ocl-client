@@ -29,10 +29,16 @@ import {
   PRE_POPULATE_ANSWERS,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   ADD_NEW_ANSWER_ROW,
+  UN_POPULATE_THIS_ANSWER,
 } from '../actions/types';
 import {
-  filterSources, filterClass, filterList, normalizeList, filterNames,
+  filterSources,
+  filterClass,
+  filterList,
+  normalizeList,
+  filterNames,
   filterDescriptions,
+  updatePopulatedAnswers,
 } from './util';
 
 
@@ -278,6 +284,15 @@ export default (state = initialState, action) => {
         selectedAnswers: newAnswers,
       };
     }
+
+    case UN_POPULATE_THIS_ANSWER: {
+      const newAnswers = updatePopulatedAnswers(action.payload, state.selectedAnswers);
+      return {
+        ...state,
+        selectedAnswers: newAnswers,
+      };
+    }
+
     default:
       return state;
   }

@@ -76,6 +76,8 @@ describe('Test suite for dictionary concepts components', () => {
     selectConfirm: jest.fn(),
     selectedAnswers: [],
     createNewAnswerRow: jest.fn(),
+    removeEditedConceptMapping: jest.fn(),
+    unPopulateAnswer: jest.fn(),
     ...editConceptProps,
   };
 
@@ -128,11 +130,33 @@ describe('Test suite for dictionary concepts components', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should render without breaking', () => {
+  it('should render "Edit a question concept" without breaking', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
     </Router>);
     expect(wrapper.find('h3').text()).toEqual(': Edit a question Concept ');
+    wrapper.unmount();
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render other concepts too without breaking', () => {
+    const newProps = {
+      ...props,
+      match: {
+        params: {
+          collectionName: 'dev-col',
+          type: 'users',
+          typeName: 'emmabaye',
+          language: 'en',
+          conceptId: '1',
+          name: '',
+        },
+      },
+    };
+    const wrapper = mount(<Router>
+      <EditConcept {...newProps} />
+    </Router>);
+    expect(wrapper.find('h3').text()).toEqual(': Edit a Concept ');
     wrapper.unmount();
     expect(wrapper).toMatchSnapshot();
   });
@@ -338,6 +362,9 @@ describe('Test suite for mappings on existing concepts', () => {
       frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A', prePopulated: false,
     }],
     createNewAnswerRow: jest.fn(),
+    removeEditedConceptMappingAction: jest.fn(),
+    unPopulateAnswer: jest.fn(),
+    removeCurrentAnswer: jest.fn(),
     ...editConceptProps,
   };
   const wrapper = mount(<Router>
@@ -624,5 +651,18 @@ describe('Test suite for mappings on existing concepts', () => {
     };
     instance.updateSourceEventListener(event, url);
     expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
+  });
+
+  it('should call removeEditedConceptMappingAction function to remove mapping', () => {
+    const answerUrl = 'url';
+    const frontEndUniqueKey = 'unique';
+    const answer = {};
+    const info = { answerUrl, frontEndUniqueKey, answer };
+    const instance = wrapper.find('EditConcept').instance();
+    instance.removeCurrentAnswer(info);
+    const submitForm = wrapper.find('#createConceptForm');
+    submitForm.simulate('submit', { preventDefault: jest.fn() });
+    expect(props.removeEditedConceptMappingAction)
+      .toHaveBeenCalledWith({ references: [answerUrl] });
   });
 });

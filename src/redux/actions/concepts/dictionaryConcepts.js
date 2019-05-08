@@ -31,6 +31,7 @@ import {
   PRE_POPULATE_ANSWERS,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   ADD_NEW_ANSWER_ROW,
+  UN_POPULATE_THIS_ANSWER,
 } from '../types';
 import {
   isFetching,
@@ -245,6 +246,17 @@ export const prepopulateAnswers = (answers) => {
   return {
     type: PRE_POPULATE_ANSWERS,
     payload: prepopulatedAnswers,
+  };
+};
+
+export const unPopulateThisAnswer = (answer) => {
+  const newAns = {
+    ...answer,
+    prePopulated: false,
+  };
+  return {
+    type: UN_POPULATE_THIS_ANSWER,
+    payload: newAns,
   };
 };
 

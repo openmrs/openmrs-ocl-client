@@ -16,25 +16,39 @@ describe('<SelectAnswers />', () => {
       queryAnswers: jest.fn(),
       source: 'test source',
       frontEndUniqueKey: 'unique',
+      defaultValue: '',
+      index: 0,
+      isShown: false,
+      answer: {},
+      answerUrl: '',
+      removeCurrentAnswer: jest.fn(),
     };
     wrapper = mount(<SelectAnswers {...props} />);
   });
 
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
   it('should handle key down event when a user presses enter button to search for concept', async () => {
     const spy = jest.spyOn(wrapper.instance(), 'handleKeyDown');
+    wrapper.find('#searchInputCiel').simulate('keyDown');
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.state().isClicked).toBeTruthy();
     const event = { keyCode: KEY_CODE_FOR_ENTER };
     await wrapper.instance().handleKeyDown(event, 'malaria');
-    expect(spy).toHaveBeenCalled();
     expect(wrapper.state().isVisible).toBeTruthy();
   });
 
   it('should handle key down event when a user presses enter button to search for concept with input less that 3', async () => {
+    wrapper.find('#searchInputCiel').simulate('keyDown');
     const event = { keyCode: KEY_CODE_FOR_ENTER };
     await wrapper.instance().handleKeyDown(event, 'ma');
     expect(wrapper.state().isVisible).toBeFalsy();
   });
 
   it('should handle key down event when a user presses button thats not enter to search for concept', () => {
+    wrapper.find('#searchInputCiel').simulate('keyDown');
     const spy = jest.spyOn(wrapper.instance(), 'handleKeyDown');
     const event = { keyCode: KEY_CODE_FOR_SPACE };
     wrapper.find('#searchInputCiel').simulate('keyDown', event);
@@ -42,6 +56,7 @@ describe('<SelectAnswers />', () => {
   });
 
   it('should handle key down event when a user presses escape button to remove the dropdown', () => {
+    wrapper.find('#searchInputCiel').simulate('keyDown');
     const spy = jest.spyOn(wrapper.instance(), 'handleKeyDown');
     const event = { keyCode: KEY_CODE_FOR_ESCAPE };
     wrapper.find('#searchInputCiel').simulate('keyDown', event);
@@ -71,5 +86,53 @@ describe('<SelectAnswers />', () => {
     const spy = jest.spyOn(wrapper.instance(), 'handleInputChange');
     wrapper.find('#searchInputCiel').simulate('change');
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should call resetInput  when a user types in a prepopulated answer to edit it', () => {
+    const newProps = {
+      ...props,
+      isShown: true,
+      isClicked: false,
+      answer: {
+        prePopulated: true,
+      },
+    };
+    wrapper = mount(<SelectAnswers {...newProps} />);
+    const spy = jest.spyOn(wrapper.instance(), 'resetInput');
+    wrapper.find('#searchInputCiel').simulate('keyDown');
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.state().isClicked).toBeTruthy();
+  });
+
+  it('should clear input and update with current value when a user presses any key', () => {
+    const newProps = {
+      ...props,
+      isShown: true,
+      isClicked: false,
+      answer: {
+        prePopulated: true,
+      },
+    };
+    wrapper = mount(<SelectAnswers {...newProps} />);
+    const event = { key: 'a' };
+    wrapper.find('#searchInputCiel').simulate('keyDown', event);
+    expect(wrapper.state().inputValue).toEqual('a');
+    expect(props.removeCurrentAnswer).toHaveBeenCalled();
+  });
+
+  it('should clear input when a user presses any non-character key', () => {
+    const newProps = {
+      ...props,
+      isShown: true,
+      isClicked: false,
+      answer: {
+        prePopulated: true,
+      },
+    };
+    wrapper = mount(<SelectAnswers {...newProps} />);
+    const e = { key: 'backspace' };
+    wrapper.find('#searchInputCiel').simulate('keyDown', e);
+    expect(wrapper.state().inputValue).toEqual('');
+    expect(props.removeCurrentAnswer).toHaveBeenCalled();
   });
 });
