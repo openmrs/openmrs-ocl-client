@@ -8,7 +8,7 @@ import {
 import {
   newConcept, mockSource, mockCielSource, mockMapping,
 } from '../../__mocks__/concepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CONCEPT_CLASS, CONCEPT_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
@@ -17,7 +17,7 @@ describe('Test suite for dictionary concepts components', () => {
   const props = {
     match: {
       params: {
-        conceptType: 'question',
+        conceptType: CONCEPT_TYPE.question,
         collectionName: 'dev-col',
         type: 'users',
         typeName: 'emasys',
@@ -39,7 +39,7 @@ describe('Test suite for dictionary concepts components', () => {
     loading: false,
     newConcept: {
       id: '1',
-      concept_class: 'question',
+      concept_class: CONCEPT_CLASS.question,
       datatype: 'Text',
       names: [],
       descriptions: [],
@@ -136,7 +136,7 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should render without breaking', () => {
-    expect(wrapper.find('h3').text()).toEqual(': Create a question concept');
+    expect(wrapper.find('h3').text()).toEqual(': Create a Question concept');
     expect(wrapper).toMatchSnapshot();
   });
 

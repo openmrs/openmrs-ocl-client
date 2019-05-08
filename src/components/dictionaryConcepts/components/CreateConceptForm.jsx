@@ -4,7 +4,7 @@ import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import CreateMapping from './CreateMapping';
-import { classes, MAP_TYPE } from './helperFunction';
+import { classes, MAP_TYPE, CONCEPT_CLASS } from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
@@ -187,7 +187,7 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
-        {concept.toString().trim() === 'question' ? (
+        {concept.toString().trim() === CONCEPT_CLASS.question ? (
           <div className="form-group answer">
             <div className="row col-12 custom-concept-list">
               <h5 className="text-left section-header">Answers</h5>

@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import CreateConceptForm from '../../../components/dictionaryConcepts/components/CreateConceptForm';
 import { mockSource } from '../../__mocks__/concepts';
+import { CONCEPT_CLASS } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 describe('Test suite for CreateConceptForm', () => {
   it('should render CreateConceptForm Component', () => {
@@ -89,7 +90,7 @@ describe('Test suite for CreateConceptForm', () => {
       state: {
         id: '1',
       },
-      concept: 'question',
+      concept: CONCEPT_CLASS.question,
       addDescription: jest.fn(),
       handleNewName: jest.fn(),
       path: '',
