@@ -147,14 +147,14 @@ describe('Test suite for dictionary concepts components', () => {
         ...props.match,
         params: {
           ...props.match.params,
-          conceptType: 'set',
+          conceptType: 'Set',
         },
       },
     };
     wrapper = mount(<Router>
       <CreateConcept {...newProps} />
     </Router>);
-    expect(wrapper.find('h3').text()).toEqual(': Create a set of concepts');
+    expect(wrapper.find('h3').text()).toEqual(': Create a Set of concepts');
     expect(wrapper).toMatchSnapshot();
   });
 

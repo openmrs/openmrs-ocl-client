@@ -71,7 +71,7 @@ const CreateConceptForm = (props) => {
           <div className="form-group col-md-5">
             <label htmlFor="class"><h5>Class</h5></label>
             <div>
-              { (props.concept.toString().trim() === 'symptom-finding')
+              { (props.concept.toString().trim() === 'Symptom-Finding')
               && (
               <React.Fragment>
                 <select
@@ -91,7 +91,7 @@ const CreateConceptForm = (props) => {
               )
               }
 
-              { (props.concept.toString().trim() === 'set')
+              { (props.concept.toString().trim() === 'Set')
               && (
               <React.Fragment>
                 <select
@@ -112,8 +112,8 @@ const CreateConceptForm = (props) => {
               }
 
               {(
-                props.concept.toString().trim() !== 'symptom-finding'
-                && props.concept.toString().trim() !== 'set') && (
+                props.concept.toString().trim() !== 'Symptom-Finding'
+                && props.concept.toString().trim() !== Set) && (
                 <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
                   {props.concept}
                 </span>
