@@ -37,10 +37,10 @@ import {
   filterList,
   normalizeList,
   filterNames,
-  filterDescriptions,
+  removeItem,
   updatePopulatedAnswers,
+  addDescription,
 } from './util';
-
 
 const initialState = {
   concepts: [],
@@ -68,7 +68,6 @@ const initialState = {
     frontEndUniqueKey: 'intialKey',
   }],
 };
-
 
 export default (state = initialState, action) => {
   const calculatePayload = () => {
@@ -152,7 +151,7 @@ export default (state = initialState, action) => {
     case ADD_NEW_DESCRIPTION:
       return {
         ...state,
-        description: [...state.description, action.payload],
+        description: addDescription(action.payload, state.description),
       };
     case REMOVE_ONE_DESCRIPTION:
       return {
@@ -201,10 +200,7 @@ export default (state = initialState, action) => {
         ...state,
         existingConcept: {
           ...state.existingConcept,
-          descriptions: [
-            ...state.existingConcept.descriptions,
-            { uuid: action.payload },
-          ],
+          descriptions: addDescription(action.payload, state.existingConcept.descriptions),
         },
       };
     case EDIT_CONCEPT_CREATE_NEW_NAMES:
@@ -223,7 +219,7 @@ export default (state = initialState, action) => {
         ...state,
         existingConcept: {
           ...state.existingConcept,
-          descriptions: filterDescriptions(action.payload, state.existingConcept.descriptions),
+          descriptions: removeItem(action.payload, state.existingConcept.descriptions),
         },
       };
     case EDIT_CONCEPT_REMOVE_ONE_NAME:
@@ -231,7 +227,7 @@ export default (state = initialState, action) => {
         ...state,
         existingConcept: {
           ...state.existingConcept,
-          names: filterDescriptions(action.payload, state.existingConcept.names),
+          names: removeItem(action.payload, state.existingConcept.names),
         },
       };
     case FETCH_EXISTING_CONCEPT_ERROR:

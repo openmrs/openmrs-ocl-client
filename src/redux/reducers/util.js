@@ -70,7 +70,10 @@ export const filterUserPayload = (user, payload) => {
   return filteredDictionaries;
 };
 
-export const filterDescriptions = (item, list) => list.filter(listItem => listItem.uuid !== item);
+export const removeItem = (item, list) => {
+  const newList = list ? list.filter(listItem => listItem.uuid !== item) : [];
+  return newList;
+};
 
 export const updatePopulatedAnswers = (ans, answers) => {
   const newAnswers = answers.map((item) => {
@@ -80,4 +83,9 @@ export const updatePopulatedAnswers = (ans, answers) => {
     return item;
   });
   return newAnswers;
+};
+
+export const addDescription = (uuid, list) => {
+  const newList = list ? [...list, { uuid }] : [{ uuid }];
+  return newList;
 };

@@ -235,13 +235,10 @@ export class CreateConcept extends Component {
 
   removeDataFromRow(data, arrayName) {
     const id = data.uuid;
-    const currentData = this.state[arrayName].filter(name => name.id !== id);
-    if (currentData.length) {
-      const newItems = this.state[arrayName].filter(name => name.id !== id);
-      this.setState(() => ({
-        [arrayName]: newItems,
-      }));
-    }
+    const newItems = this.state[arrayName].filter(name => name.id !== id);
+    this.setState(() => ({
+      [arrayName]: newItems,
+    }));
   }
 
   addDataFromDescription(data) {

@@ -108,7 +108,6 @@ export class EditConcept extends Component {
   componentDidMount() {
     this.props.clearPreviousConcept();
     this.props.createNewName();
-    this.props.addNewDescription();
     this.updateState();
     const {
       match: {
