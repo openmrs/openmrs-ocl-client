@@ -170,7 +170,10 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should not call the addNewDescription function if new descriptions are already available', () => {
-    const propsWithDescriptions = { ...props, description: ['b'] };
+    const propsWithDescriptions = {
+      ...props,
+      description: [{ uuid: 'somethingunique' }],
+    };
     wrapper = mount(<Router><CreateConcept {...propsWithDescriptions} /></Router>);
     expect(propsWithDescriptions.addNewDescription).not.toHaveBeenCalled();
   });

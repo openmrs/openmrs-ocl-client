@@ -33,6 +33,7 @@ const props = {
       source: 'loinc2',
     },
   ],
+  url: '/url',
 };
 
 describe('Test suite for ActionButton', () => {

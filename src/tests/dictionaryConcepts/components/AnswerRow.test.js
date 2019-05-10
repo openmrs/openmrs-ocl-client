@@ -66,8 +66,8 @@ describe('Test select input field', () => {
       isEditConcept: true,
       prePopulated: true,
     };
-    wrapper = mount(<AnswerRow {...newProps} />);
-    const instance = wrapper.instance();
+    wrapper = mount(<table><tbody><AnswerRow {...newProps} /></tbody></table>);
+    const instance = wrapper.find('AnswerRow').instance();
     const spy = jest.spyOn(instance, 'handleClick');
     instance.handleClick();
     expect(spy).toHaveBeenCalled();
@@ -76,15 +76,36 @@ describe('Test select input field', () => {
     expect(instance.state.isPrePopulated).toBe(false);
   });
 
+  it('should not update state on subsequent clicks in the answer input', () => {
+    const newProps = {
+      ...props,
+      isEditConcept: true,
+      prePopulated: true,
+    };
+    wrapper = mount(<table><tbody><AnswerRow {...newProps} /></tbody></table>);
+    const instance = wrapper.find('AnswerRow').instance();
+    const input = wrapper.find('input').at(0);
+    const initialState = instance.state;
+    expect(instance.state.isClicked).toBe(false);
+    input.simulate('click');
+    const newState = instance.state;
+    expect(newState).not.toEqual(initialState);
+    expect(instance.state.isClicked).toBe(true);
+    input.simulate('click');
+    expect(instance.state).toEqual(newState);
+    expect(instance.state.isClicked).toBe(true);
+  });
+
+
   it('should call removeCurrentAnswer to remove the existing answer when resetInput is triggered', () => {
     const newProps = {
       ...props,
       isEditConcept: true,
       answer: { prePopulated: true },
     };
-    wrapper = mount(<AnswerRow {...newProps} />);
-    const instance = wrapper.instance();
-    const e = { key: 'a' }
+    wrapper = mount(<table><tbody><AnswerRow {...newProps} /></tbody></table>);
+    const instance = wrapper.find('AnswerRow').instance();
+    const e = { key: 'a' };
     instance.resetInput(e);
     const { answerUrl, frontEndUniqueKey, answer } = newProps;
     expect(props.removeCurrentAnswer).toHaveBeenCalledWith({ answerUrl, frontEndUniqueKey, answer });

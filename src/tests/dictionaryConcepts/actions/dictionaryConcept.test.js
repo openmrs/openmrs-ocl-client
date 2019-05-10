@@ -534,6 +534,15 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle errors if fetching Source Concepts fails', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: '' });
+    });
+    const expectedResult = [];
+    expect(await fetchSourceConcepts('expect', 'to', 'fail')).toEqual(expectedResult);
+  });
 });
 
 describe('Testing Edit concept actions ', () => {

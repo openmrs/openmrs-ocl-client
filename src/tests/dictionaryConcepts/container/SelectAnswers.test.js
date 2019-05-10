@@ -74,6 +74,7 @@ describe('<SelectAnswers />', () => {
         display_name: 'MALARIAL SMEAR',
         label: 'CIEL: MALARIAL SMEAR',
         value: '/orgs/CIEL/sources/CIEL/concepts/32/',
+        uuid: 'somethingunique',
       }],
     }, () => {
       const spy = jest.spyOn(wrapper.instance(), 'handleSelect');

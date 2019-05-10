@@ -78,6 +78,7 @@ describe('Test suite for dictionary concepts components', () => {
     createNewAnswerRow: jest.fn(),
     removeEditedConceptMapping: jest.fn(),
     unPopulateAnswer: jest.fn(),
+    removeEditedConceptMappingAction: jest.fn(),
     ...editConceptProps,
   };
 

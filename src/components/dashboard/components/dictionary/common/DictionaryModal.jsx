@@ -230,7 +230,7 @@ export class DictionaryModal extends React.Component {
                       placeholder="e.g Community Health Dictionary"
                       value={data.name}
                       required
-                      autofocus="autofocus"
+                      autoFocus
                     />
                   </FormGroup>
                   <FormGroup
