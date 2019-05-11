@@ -731,7 +731,7 @@ export const sampleConcept = {
       url: '/users/admin/sources/MULAGO/mappings/5c91173cb3f81601aa3809c6/',
     },
   ],
-  is_latest_version: false,
+  is_latest_version: true,
   locale: null,
   version_url: '/users/admin/sources/MULAGO/concepts/2bdf4057-6c31-4c39-bc91-3dbe7935ca9d/5c91173bb3f81601aa3809bf/',
   url: '/users/admin/sources/MULAGO/concepts/2bdf4057-6c31-4c39-bc91-3dbe7935ca9d/',

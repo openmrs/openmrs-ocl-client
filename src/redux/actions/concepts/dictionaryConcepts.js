@@ -137,8 +137,14 @@ export const fetchDictionaryConcepts = (
   }
   try {
     const response = await instance.get(`${url}&includeRetired=1`);
-    dispatch(getDictionaryConcepts(response.data, FETCH_DICTIONARY_CONCEPT));
-    dispatch(paginateConcepts(response.data));
+    // this filter is to account for situations where a ref to a concept
+    // version is not removed after an update. Pending backend fix.
+    // ticket: https://github.com/OpenConceptLab/ocl_issues/issues/115
+    const concepts = response.data.filter(
+      concept => concept.external_id || concept.is_latest_version,
+    );
+    dispatch(getDictionaryConcepts(concepts, FETCH_DICTIONARY_CONCEPT));
+    dispatch(paginateConcepts(concepts));
     if (query === '' && filterByClass.length === 0 && filterBySource.length === 0) {
       dispatch(populateSidenav());
     }

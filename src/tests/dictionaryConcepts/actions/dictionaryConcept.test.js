@@ -87,7 +87,8 @@ import concepts, {
   newConcept,
   newConceptData,
   multipleConceptsMockStore,
-  existingConcept, newConceptDataWithAnswerAndSetMappings,
+  newConceptDataWithAnswerAndSetMappings,
+  existingConcept, sampleConcept,
 } from '../../__mocks__/concepts';
 import { CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
@@ -167,19 +168,20 @@ describe('Test suite for dictionary concept actions', () => {
   });
 
   it('should handle FETCH_DICTIONARY_CONCEPT', () => {
+    const expectedConcepts = [concepts, sampleConcept];
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: [concepts],
+        response: expectedConcepts,
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
-      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
-      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: expectedConcepts },
+      { type: TOTAL_CONCEPT_COUNT, payload: 2 },
+      { type: FETCH_NEXT_CONCEPTS, payload: expectedConcepts },
       { type: POPULATE_SIDEBAR, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
