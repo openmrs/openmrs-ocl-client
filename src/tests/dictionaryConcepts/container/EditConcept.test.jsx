@@ -24,6 +24,8 @@ const editConceptProps = {
   updateConcept: async () => sampleConcept,
   existingConcept: sampleConcept,
   isEditConcept: true,
+  deleteReferenceFromCollection: () => true,
+  addReferenceToCollection: () => true,
 };
 
 describe('Test suite for dictionary concepts components', () => {
@@ -394,7 +396,7 @@ describe('Test suite for mappings on existing concepts', () => {
     };
     expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(2);
     instance.removeMappingRow(url);
-    expect(instance.state.mappings[1].retired).toEqual(true);
+    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(1);
   });
 
   it('should call removeUnsavedMappingRow function', () => {
@@ -664,5 +666,34 @@ describe('Test suite for mappings on existing concepts', () => {
     submitForm.simulate('submit', { preventDefault: jest.fn() });
     expect(props.removeEditedConceptMappingAction)
       .toHaveBeenCalledWith({ references: [answerUrl] });
+  });
+
+  describe('updateConceptReference', () => {
+    it('should return true on success', async () => {
+      const editConceptInstance = wrapper.find('EditConcept').instance();
+      expect(await editConceptInstance.updateConceptReference(sampleConcept)).toBeTruthy();
+    });
+
+    it('should return false on delete reference failure', async () => {
+      const editConceptWrapper = mount(<Router>
+        <EditConcept
+          {...props}
+          deleteReferenceFromCollection={() => false}
+        />
+      </Router>);
+      const editConceptInstance = editConceptWrapper.find('EditConcept').instance();
+      expect(await editConceptInstance.updateConceptReference(sampleConcept)).toBeFalsy();
+    });
+
+    it('should return false on add reference failure', async () => {
+      const editConceptWrapper = mount(<Router>
+        <EditConcept
+          {...props}
+          addReferenceToCollection={() => false}
+        />
+      </Router>);
+      const editConceptInstance = editConceptWrapper.find('EditConcept').instance();
+      expect(await editConceptInstance.updateConceptReference(sampleConcept)).toBeFalsy();
+    });
   });
 });

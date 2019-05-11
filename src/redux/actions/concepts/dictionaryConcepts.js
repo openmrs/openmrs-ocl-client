@@ -382,12 +382,12 @@ export const UpdateMapping = (data) => {
   }));
 };
 
-export const updateConcept = (conceptUrl, data, history) => async (dispatch) => {
+export const updateConcept = (conceptUrl, data, history, source, concept) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = conceptUrl;
   try {
     const response = await instance.put(url, data);
-    CreateMapping(data.mappings, data.from_concept_url, data.source);
+    CreateMapping(data.mappings, concept.url, source);
     UpdateMapping(data.mappings);
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
@@ -407,7 +407,8 @@ export const updateConcept = (conceptUrl, data, history) => async (dispatch) => 
     }
     dispatch(isFetching(false));
   }
-  return history.goBack();
+  history.goBack();
+  return false;
 };
 
 export const clearPreviousConcept = () => (dispatch) => {

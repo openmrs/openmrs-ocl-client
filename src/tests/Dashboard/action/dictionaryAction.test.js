@@ -37,11 +37,12 @@ import {
   editDictionary,
   createVersion,
   editMapping,
-  retireConcept,
+  retireConcept, addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
 import concepts, { sampleConcept, sampleRetiredConcept } from '../../__mocks__/concepts';
+import { notify } from 'react-notify-toast';
 
 jest.mock('react-notify-toast');
 
@@ -620,6 +621,108 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     const url = '/users/nesh/collections/test/1.0/';
     return store.dispatch(createVersion(url, data)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('addReferenceToCollectionAction', () => {
+    beforeEach(() => {
+      moxios.install(instance);
+    });
+
+    afterEach(() => {
+      moxios.uninstall(instance);
+    });
+
+    it('should return the right data on success', async () => {
+      const expectedData = 'data';
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: { expectedData },
+        });
+      });
+
+      const result = await addReferenceToCollectionAction()();
+      expect(result.data).toEqual({ expectedData });
+    });
+
+    it('should return false and display an error on an unknown failure', async () => {
+      const notifyMock = jest.fn();
+      notify.show = notifyMock;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.reject();
+      });
+
+      const result = await addReferenceToCollectionAction()();
+      expect(result).toBeFalsy();
+      expect(notifyMock).toHaveBeenCalledWith('Failed to update the concept in this collection', 'error', 3000);
+    });
+
+    it('should return false and display the error on failure', async () => {
+      const message = 'Failed';
+      const notifyMock = jest.fn();
+      notify.show = notifyMock;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.reject({ response: { data: message } });
+      });
+
+      const result = await addReferenceToCollectionAction()();
+      expect(result).toBeFalsy();
+      expect(notifyMock).toHaveBeenCalledWith(message, 'error', 3000);
+    });
+  });
+
+  describe('deleteReferenceFromCollectionAction', () => {
+    beforeEach(() => {
+      moxios.install(instance);
+    });
+
+    afterEach(() => {
+      moxios.uninstall(instance);
+    });
+
+    it('should return the right data on success', async () => {
+      const expectedData = 'data';
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: { expectedData },
+        });
+      });
+
+      const result = await deleteReferenceFromCollectionAction()();
+      expect(result.data).toEqual({ expectedData });
+    });
+
+    it('should return false and display an error on an unknown failure', async () => {
+      const notifyMock = jest.fn();
+      notify.show = notifyMock;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.reject();
+      });
+
+      const result = await deleteReferenceFromCollectionAction()();
+      expect(result).toBeFalsy();
+      expect(notifyMock).toHaveBeenCalledWith('Failed to update the concept in this collection. Please Retry', 'error', 3000);
+    });
+
+    it('should return false and display the error failure', async () => {
+      const message = 'Failed';
+      const notifyMock = jest.fn();
+      notify.show = notifyMock;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.reject({ response: { data: message } });
+      });
+
+      const result = await deleteReferenceFromCollectionAction()();
+      expect(result).toBeFalsy();
+      expect(notifyMock).toHaveBeenCalledWith(message, 'error', 3000);
     });
   });
 });

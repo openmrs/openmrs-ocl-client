@@ -276,3 +276,31 @@ export const retireConcept = (conceptUrl, retired) => async (dispatch) => {
     return null;
   }
 }
+
+export const addReferenceToCollectionAction = (type, owner, collection, expressions) => async (dispatch) => {
+  try {
+    return await api.dictionaries.addReferencesToCollection(type, owner, collection, expressions);
+  } catch (e) {
+    if(e && e.response && e.response.data){
+      notify.show(e.response.data, 'error', 3000);
+    }
+    else{
+      notify.show('Failed to update the concept in this collection', 'error', 3000);
+    }
+    return false;
+  }
+};
+
+export const deleteReferenceFromCollectionAction = (type, owner, collection, references) => async (dispatch) => {
+  try {
+    return await api.dictionaries.deleteReferenceFromCollection(type, owner, collection, references);
+  } catch (e) {
+    if(e && e.response && e.response.data){
+      notify.show(e.response.data, 'error', 3000);
+    }
+    else{
+      notify.show('Failed to update the concept in this collection. Please Retry', 'error', 3000);
+    }
+    return false;
+  }
+};
