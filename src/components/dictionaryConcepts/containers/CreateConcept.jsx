@@ -16,6 +16,10 @@ import {
   removeSelectedAnswer,
   unpopulatePrepopulatedAnswers,
   addNewAnswerRow,
+  addNewSetRow,
+  removeSelectedSet,
+  addSelectedSetsToState,
+  unpopulatePrepopulatedSets,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import {
@@ -55,12 +59,17 @@ export class CreateConcept extends Component {
     addedConcept: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
     addSelectedAnswers: PropTypes.func.isRequired,
+    addSelectedSets: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
+    selectedSets: PropTypes.array.isRequired,
     fetchAllConceptSources: PropTypes.func.isRequired,
     allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     unpopulateSelectedAnswers: PropTypes.func.isRequired,
+    unpopulateSelectedSets: PropTypes.func.isRequired,
     removeAnswer: PropTypes.func.isRequired,
+    removeSet: PropTypes.func.isRequired,
     createNewAnswerRow: PropTypes.func.isRequired,
+    createNewSetRow: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -72,6 +81,7 @@ export class CreateConcept extends Component {
       datatype: 'None',
       names: [],
       answers: [],
+      sets: [],
       descriptions: [],
       mappings: [{
         map_type: 'Same as',
@@ -97,8 +107,10 @@ export class CreateConcept extends Component {
       },
       fetchAllConceptSources,
       unpopulateSelectedAnswers,
+      unpopulateSelectedSets,
     } = this.props;
     unpopulateSelectedAnswers();
+    unpopulateSelectedSets();
     const concept = conceptType || '';
     this.initializeConcept(concept).then(() => {
       this.oldState = this.state;
@@ -149,6 +161,15 @@ export class CreateConcept extends Component {
     });
   }
 
+  handleSetAsyncSelectChange = (sets, uniqueKey) => {
+    const { addSelectedSets, selectedSets } = this.props;
+    addSelectedSets(sets, uniqueKey);
+    const setsToAdd = selectedSets.filter(set => set.map_type === MAP_TYPE.conceptSet);
+    this.setState({
+      sets: setsToAdd,
+    });
+  }
+
   addAnswerRow = () => {
     const { createNewAnswerRow } = this.props;
     const frontEndUniqueKey = uuid();
@@ -158,9 +179,23 @@ export class CreateConcept extends Component {
     createNewAnswerRow(initialAnswerFormation);
   }
 
+  addSetRow = () => {
+    const { createNewSetRow } = this.props;
+    const frontEndUniqueKey = uuid();
+    const initialSetFormation = {
+      frontEndUniqueKey,
+    };
+    createNewSetRow(initialSetFormation);
+  }
+
   removeAnswerRow = (uniqueKey) => {
     const { removeAnswer } = this.props;
     removeAnswer(uniqueKey);
+  }
+
+  removeSetRow = (uniqueKey) => {
+    const { removeSet } = this.props;
+    removeSet(uniqueKey);
   }
 
   handleNewName(event) {
@@ -354,6 +389,7 @@ export class CreateConcept extends Component {
       },
       loading,
       selectedAnswers,
+      selectedSets,
     } = this.props;
     const { mappings } = this.state;
     const concept = conceptType ? `${conceptType}` : '';
@@ -411,6 +447,10 @@ export class CreateConcept extends Component {
                 updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
                 showModal={this.showModal}
+                handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}
+                selectedSets={selectedSets}
+                removeSetRow={this.removeSetRow}
+                addSetRow={this.addSetRow}
               />
               <GeneralModel
                 title={LEAVE_PAGE_POPUP_TITLE}
@@ -437,6 +477,7 @@ export const mapStateToProps = state => ({
   addedConcept: state.concepts.addConceptToDictionary,
   loading: state.concepts.loading,
   selectedAnswers: state.concepts.selectedAnswers,
+  selectedSets: state.concepts.selectedSets,
   allSources: state.sourceConcepts.conceptSources,
 });
 export default connect(
@@ -449,9 +490,13 @@ export default connect(
     clearSelections,
     createNewConcept,
     addSelectedAnswers: addSelectedAnswersToState,
+    addSelectedSets: addSelectedSetsToState,
     removeAnswer: removeSelectedAnswer,
+    removeSet: removeSelectedSet,
     fetchAllConceptSources: fetchConceptSources,
     unpopulateSelectedAnswers: unpopulatePrepopulatedAnswers,
+    unpopulateSelectedSets: unpopulatePrepopulatedSets,
     createNewAnswerRow: addNewAnswerRow,
+    createNewSetRow: addNewSetRow,
   },
 )(CreateConcept);

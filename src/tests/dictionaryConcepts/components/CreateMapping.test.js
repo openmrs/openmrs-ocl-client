@@ -218,7 +218,7 @@ describe('Test suite for dictionary concepts components', () => {
     });
   });
 
-  it('should handle key down event when a user presses the enter button to search mappings for existing rows', async () => {
+  it('should handle key down event when a user presses the enter button to search mappings for existing rows', async (done) => {
     const newProps = {
       ...props,
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
@@ -232,8 +232,10 @@ describe('Test suite for dictionary concepts components', () => {
     const spy = jest.spyOn(inputField.instance(), 'handleKeyPress');
     const event = { keyCode: KEY_CODE_FOR_ENTER };
     inputField.find('#searchInputCiel').simulate('keyDown', event);
-    await inputField.instance().handleKeyPress(event, 'malaria');
-    expect(spy).toHaveBeenCalled();
+    inputField.instance().handleKeyPress(event, 'malaria').then(() => {
+      expect(spy).toHaveBeenCalled();
+      done();
+    });
   });
 
   it('should handle key down event when a user presses the enter button to search mappings for new rows (isNew is true)', async () => {

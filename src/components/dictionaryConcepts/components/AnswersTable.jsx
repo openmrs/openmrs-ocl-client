@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 import AnswerRow from './AnswerRow';
+import { MAP_TYPE } from './helperFunction';
 
 const AnswersTable = (props) => {
   const {
@@ -12,6 +13,7 @@ const AnswersTable = (props) => {
     currentDictionaryName,
     isEditConcept,
     removeCurrentAnswer,
+    mapType,
   } = props;
   return (
     <table className="table table-striped table-bordered concept-form-table">
@@ -41,6 +43,7 @@ const AnswersTable = (props) => {
               isEditConcept={isEditConcept}
               answer={ans}
               removeCurrentAnswer={removeCurrentAnswer}
+              mapType={mapType}
             />
           );
         })}
@@ -56,13 +59,16 @@ AnswersTable.propTypes = {
   isEditConcept: PropTypes.bool.isRequired,
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
-  removeCurrentAnswer: PropTypes.func.isRequired,
+  removeCurrentAnswer: PropTypes.func,
+  mapType: PropTypes.string,
 };
 
 AnswersTable.defaultProps = {
   handleAnswerChange: () => {},
   currentDictionaryName: '',
   removeAnswerRow: () => {},
+  mapType: MAP_TYPE.questionAndAnswer,
+  removeCurrentAnswer: () => {},
 };
 
 export default AnswersTable;

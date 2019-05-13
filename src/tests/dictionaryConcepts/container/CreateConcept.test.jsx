@@ -8,12 +8,21 @@ import {
 import {
   newConcept, mockSource, mockCielSource, mockMapping,
 } from '../../__mocks__/concepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CONCEPT_CLASS, CONCEPT_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  CONCEPT_CLASS,
+  CONCEPT_TYPE,
+  MAP_TYPE,
+} from '../../../components/dictionaryConcepts/components/helperFunction';
+
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
 
 describe('Test suite for dictionary concepts components', () => {
+  const removeSetMock = jest.fn();
+  const createNewSetRowMock = jest.fn();
+
   const props = {
     match: {
       params: {
@@ -49,12 +58,19 @@ describe('Test suite for dictionary concepts components', () => {
       id: '1',
     },
     selectedAnswers: [{ frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A' }],
+    selectedSets: [{
+      frontEndUniqueKey: 'unique', id: 'test ID', map_type: MAP_TYPE.conceptSet, prePopulated: false,
+    }],
     addSelectedAnswers: jest.fn(),
+    addSelectedSets: jest.fn(),
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource, mockCielSource],
     unpopulateSelectedAnswers: jest.fn(),
+    unpopulateSelectedSets: jest.fn(),
     removeAnswer: jest.fn(),
+    removeSet: removeSetMock,
     createNewAnswerRow: jest.fn(),
+    createNewSetRow: createNewSetRowMock,
   };
 
   let wrapper;
@@ -276,6 +292,18 @@ describe('Test suite for dictionary concepts components', () => {
     expect(instance.state.answers).toEqual([{ frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A' }]);
   });
 
+  describe('handleSetAsyncSelectChange', () => {
+    it('should update the state with sets', () => {
+      const instance = wrapper.find('CreateConcept').instance();
+      instance.handleSetAsyncSelectChange([{
+        frontEndUniqueKey: 'unique', id: 'test ID', map_type: MAP_TYPE.conceptSet, prePopulated: false,
+      }], 'abc');
+      expect(instance.state.sets).toEqual([{
+        frontEndUniqueKey: 'unique', id: 'test ID', map_type: MAP_TYPE.conceptSet, prePopulated: false,
+      }]);
+    });
+  });
+
   it('should add new answer row', () => {
     const instance = wrapper.find('CreateConcept').instance();
     const spy = jest.spyOn(instance, 'addAnswerRow');
@@ -283,11 +311,29 @@ describe('Test suite for dictionary concepts components', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  describe('addSetRow', () => {
+    it('should correctly call createNewSetRow', () => {
+      const instance = wrapper.find('CreateConcept').instance();
+      createNewSetRowMock.mockClear();
+      instance.addSetRow();
+      expect(createNewSetRowMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it('should remove answer row', () => {
     const instance = wrapper.find('CreateConcept').instance();
     const spy = jest.spyOn(instance, 'removeAnswerRow');
     instance.removeAnswerRow('uniqueKey');
     expect(spy).toHaveBeenCalled();
+  });
+
+  describe('remove set', () => {
+    it('should remove set row', () => {
+      const instance = wrapper.find('CreateConcept').instance();
+      removeSetMock.mockClear();
+      instance.removeSetRow('uniqueKey');
+      expect(removeSetMock).toHaveBeenCalledWith('uniqueKey');
+    });
   });
 
   it('should pass the Relationship provided to CreateConceptForm', () => {

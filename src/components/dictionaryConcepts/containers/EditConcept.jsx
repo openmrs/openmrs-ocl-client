@@ -23,6 +23,9 @@ import {
   removeSelectedAnswer,
   addNewAnswerRow,
   unPopulateThisAnswer,
+  addSelectedSetsToState,
+  removeSelectedSet,
+  addNewSetRow,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
@@ -69,9 +72,15 @@ export class EditConcept extends Component {
     removeEditedConceptMappingAction: PropTypes.func.isRequired,
     unretireMapping: PropTypes.func.isRequired,
     addSelectedAnswers: PropTypes.func.isRequired,
+    addSelectedSets: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
+    selectedSets: PropTypes.array.isRequired,
     removeAnswer: PropTypes.func.isRequired,
+    removeSet: PropTypes.func.isRequired,
     createNewAnswerRow: PropTypes.func.isRequired,
+    createNewSetRow: PropTypes.func.isRequired,
+    deleteConcept: PropTypes.func.isRequired,
+    recreateConcept: PropTypes.func.isRequired,
     unPopulateAnswer: PropTypes.func.isRequired,
     dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     addReferenceToCollection: PropTypes.func.isRequired,
@@ -86,11 +95,13 @@ export class EditConcept extends Component {
       concept_class: '',
       datatype: 'None',
       answers: [],
+      sets: [],
       names: [],
       descriptions: [],
       isEditConcept: true,
       mappings: [],
       openGeneralModal: false,
+      openDeleteSetModal: false,
       url: '',
       mapp: '',
       show: false,
@@ -308,11 +319,11 @@ export class EditConcept extends Component {
       const modifyMap = map;
       if (modifyMap.url === url) {
         modifyMap[name] = value;
-      }
-      if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
-        modifyMap.map_type = defaultRelationship;
-      } else {
-        modifyMap.map_type = relationship;
+        if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
+          modifyMap.map_type = defaultRelationship;
+        } else {
+          modifyMap.map_type = relationship;
+        }
       }
       return modifyMap;
     });
@@ -351,9 +362,18 @@ export class EditConcept extends Component {
 
   hideGeneralModal = () => this.setState({ openGeneralModal: false });
 
+  hideDeleteSetModal = () => this.setState({ openDeleteSetModal: false });
+
   showGeneralModal = (url) => {
     this.setState({
       openGeneralModal: true,
+      url,
+    });
+  }
+
+  showDeleteSetModal = (url) => {
+    this.setState({
+      openDeleteSetModal: true,
       url,
     });
   }
@@ -386,6 +406,18 @@ export class EditConcept extends Component {
     this.removeUnsavedMappingRow(url);
     removeAnswer(uniqueKey);
     this.hideGeneralModal();
+  }
+
+  confirmRemoveSetRow = async (uniqueKey) => {
+    const { url } = this.state;
+    const { removeConceptMappingAction, removeSet } = this.props;
+    const data = {
+      references: [url],
+    };
+    await removeConceptMappingAction(data);
+    this.removeUnsavedMappingRow(url);
+    removeSet(uniqueKey);
+    this.hideDeleteSetModal();
   }
 
   selectConfirm = () => {
@@ -465,6 +497,18 @@ export class EditConcept extends Component {
     });
   }
 
+  handleSetAsyncSelectChange = (sets, uniqueKey) => {
+    const { addSelectedSets, selectedSets } = this.props;
+    addSelectedSets(sets, uniqueKey);
+
+    const setsToAdd = selectedSets
+      .filter(set => set.map_type === MAP_TYPE.conceptSet)
+      .filter(set => set.prePopulated !== true);
+    this.setState({
+      sets: setsToAdd,
+    });
+  };
+
   addAnswerRow = () => {
     const { createNewAnswerRow } = this.props;
     const frontEndUniqueKey = uuid();
@@ -473,6 +517,15 @@ export class EditConcept extends Component {
     };
     createNewAnswerRow(initialAnswerFormation);
   }
+
+  addSetRow = () => {
+    const { createNewSetRow } = this.props;
+    const frontEndUniqueKey = uuid();
+    const initialSetFormation = {
+      frontEndUniqueKey,
+    };
+    createNewSetRow(initialSetFormation);
+  };
 
   removeAnswerRow = (uniqueKey, editing, url, name, prepopulated) => {
     const { removeAnswer } = this.props;
@@ -497,6 +550,22 @@ export class EditConcept extends Component {
     unPopulateAnswer(info.answer);
   };
 
+  removeSetRow = (uniqueKey, editing, url, name, prePopulated) => {
+    const { removeSet } = this.props;
+    this.setState({
+      deletingSet: true,
+      setToDeleteName: name,
+      uniqueKey,
+    });
+    if (editing && prePopulated) {
+      this.showDeleteSetModal(url);
+      this.removeUnsavedMappingRow(url);
+      return true;
+    }
+    removeSet(uniqueKey);
+    return true;
+  };
+
   render() {
     const {
       match: {
@@ -507,6 +576,7 @@ export class EditConcept extends Component {
       existingConcept,
       loading,
       selectedAnswers,
+      selectedSets,
     } = this.props;
     const concept = conceptType ? ` ${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
@@ -514,8 +584,11 @@ export class EditConcept extends Component {
       mappings,
       mapp,
       openGeneralModal,
+      openDeleteSetModal,
       deletingAnswer,
+      deletingSet,
       answerToDeleteName,
+      setToDeleteName,
       uniqueKey,
     } = this.state;
     return (
@@ -575,6 +648,10 @@ Concept
                 currentDictionaryName={dictionaryName}
                 showModal={this.showModal}
                 removeCurrentAnswer={this.removeCurrentAnswer}
+                handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}
+                selectedSets={selectedSets}
+                removeSetRow={this.removeSetRow}
+                addSetRow={this.addSetRow}
               />
               )
               }
@@ -589,6 +666,18 @@ Concept
                 cancel_button="Cancel"
                 hide={this.hideGeneralModal}
                 select_confirm={() => this.confirmRemoveMappingRow(uniqueKey)}
+              />
+              <GeneralModel
+                title={`Confirm deleting the ${deletingSet ? 'set' : 'mapping'} for Concept ${existingConcept.display_name}`}
+                content={
+                  deletingSet
+                    ? `Are you sure you want to delete the set '${setToDeleteName}'?`
+                    : `Are you sure you want to delete the mapping for ${existingConcept.display_name} to ${mapp}?`}
+                show={openDeleteSetModal}
+                confirm_button="Confirm"
+                cancel_button="Cancel"
+                hide={this.hideDeleteSetModal}
+                select_confirm={() => this.confirmRemoveSetRow(uniqueKey)}
               />
               <GeneralModel
                 title={LEAVE_PAGE_POPUP_TITLE}
@@ -617,6 +706,7 @@ export const mapStateToProps = state => ({
   loading: state.concepts.loading,
   allSources: state.sourceConcepts.conceptSources,
   selectedAnswers: state.concepts.selectedAnswers,
+  selectedSets: state.concepts.selectedSets,
   dictionaryConcepts: state.concepts.dictionaryConcepts,
 });
 export default connect(
@@ -639,8 +729,11 @@ export default connect(
     removeConceptMappingAction: removeConceptMapping,
     removeEditedConceptMappingAction: removeEditedConceptMapping,
     addSelectedAnswers: addSelectedAnswersToState,
+    addSelectedSets: addSelectedSetsToState,
     removeAnswer: removeSelectedAnswer,
+    removeSet: removeSelectedSet,
     createNewAnswerRow: addNewAnswerRow,
+    createNewSetRow: addNewSetRow,
     unPopulateAnswer: unPopulateThisAnswer,
     addReferenceToCollection: addReferenceToCollectionAction,
     deleteReferenceFromCollection: deleteReferenceFromCollectionAction,

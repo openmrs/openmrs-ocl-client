@@ -32,6 +32,10 @@ import {
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   ADD_NEW_ANSWER_ROW,
   UN_POPULATE_THIS_ANSWER,
+  ADD_NEW_SET_ROW,
+  REMOVE_SELECTED_SET,
+  ADD_SELECTED_SETS,
+  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
 } from '../types';
 import {
   isFetching,
@@ -186,7 +190,7 @@ export const filterByClass = (
   dispatch(fetchDictionaryConcepts(conceptType, conceptOwner, conceptName, query));
 };
 
-export const queryAnswers = async (source, query) => {
+export const queryAnswers = async (source, query, mapType = MAP_TYPE.questionAndAnswer) => {
   try {
     const CONCEPT_TYPE = localStorage.getItem('type');
     const USER_TYPE_NAME = localStorage.getItem('typeName');
@@ -196,7 +200,7 @@ export const queryAnswers = async (source, query) => {
       url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
     }
     const response = await instance.get(url);
-    const defaults = { map_type: MAP_TYPE.questionAndAnswer };
+    const defaults = { map_type: mapType };
     const options = response.data.map(concept => ({
       ...concept,
       ...defaults,
@@ -213,12 +217,24 @@ export const addNewAnswerRow = answer => (dispatch) => {
   dispatch({ type: ADD_NEW_ANSWER_ROW, payload: answer });
 };
 
+export const addNewSetRow = set => (dispatch) => {
+  dispatch({ type: ADD_NEW_SET_ROW, payload: set });
+};
+
 export const addSelectedAnswersToState = (answer, uniqueKey) => (dispatch) => {
   dispatch({ type: ADD_SELECTED_ANSWERS, payload: { answer, uniqueKey } });
 };
 
+export const addSelectedSetsToState = (set, uniqueKey) => (dispatch) => {
+  dispatch({ type: ADD_SELECTED_SETS, payload: { set, uniqueKey } });
+};
+
 export const removeSelectedAnswer = uniqueKey => (dispatch) => {
   dispatch({ type: REMOVE_SELECTED_ANSWER, payload: uniqueKey });
+};
+
+export const removeSelectedSet = uniqueKey => (dispatch) => {
+  dispatch({ type: REMOVE_SELECTED_SET, payload: uniqueKey });
 };
 
 export const addAnswerMappingToConcept = async (url, source, answers) => {
@@ -236,6 +252,24 @@ export const addAnswerMappingToConcept = async (url, source, answers) => {
     await axios.all(promises);
   } catch (error) {
     notify.show('An error occurred while adding your answer mappings', 'error', 3000);
+  }
+};
+
+export const addSetMappingToConcept = async (url, source, sets) => {
+  try {
+    const user = localStorage.getItem('username');
+    const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
+    const setMappings = sets.map(set => ({
+      map_type: set.map_type,
+      from_concept_url: url,
+      to_concept_url: set.url,
+    }));
+
+    const promises = setMappings.map(mapping => instance.post(mappingUrl, mapping));
+
+    await axios.all(promises);
+  } catch (error) {
+    notify.show('A network error occurred while adding your set mappings. Please retry.', 'error', 3000);
   }
 };
 
@@ -260,9 +294,25 @@ export const unPopulateThisAnswer = (answer) => {
   };
 };
 
+export const prePopulateSets = (sets) => {
+  const prePopulatedSets = sets
+    .map(set => Object.assign(set, { prePopulated: true }))
+    .filter(set => set.retired !== true);
+  return {
+    type: PRE_POPULATE_SETS,
+    payload: prePopulatedSets,
+  };
+};
+
 export const unpopulatePrepopulatedAnswers = () => (dispatch) => {
   dispatch({
     type: UNPOPULATE_PRE_POPULATED_ANSWERS,
+  });
+};
+
+export const unpopulatePrepopulatedSets = () => (dispatch) => {
+  dispatch({
+    type: UNPOPULATE_PRE_POPULATED_SETS,
   });
 };
 
@@ -329,7 +379,12 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
     notify.show('creating concept, please wait...', 'warning');
     CreateMapping(data.mappings, response.data.url, response.data.source);
-    await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
+    if (data.answers) {
+      await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
+    }
+    if (data.sets) {
+      await addSetMappingToConcept(response.data.url, response.data.source, data.sets);
+    }
   } catch (error) {
     notify.hide();
     if (error.response) {
@@ -354,7 +409,9 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_EXISTING_CONCEPT));
     const answers = response.data.mappings.filter(map => map.map_type === 'Q-AND-A');
+    const sets = response.data.mappings.filter(map => map.map_type === MAP_TYPE.conceptSet);
     dispatch(prepopulateAnswers(answers));
+    dispatch(prePopulateSets(sets));
   } catch (error) {
     notify.show('Could not retrieve concept details', 'error', 3000);
     if (error.response) {
@@ -392,6 +449,7 @@ export const updateConcept = (conceptUrl, data, history, source, concept) => asy
     UpdateMapping(data.mappings);
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
+    await addSetMappingToConcept(response.data.url, response.data.source, data.sets);
     notify.show('Concept successfully updated', 'success', 3000);
     dispatch(isFetching(false));
     return response.data;
