@@ -22,7 +22,6 @@ import {
   addSelectedAnswersToState,
   removeSelectedAnswer,
   addNewAnswerRow,
-  createNewConcept,
   unPopulateThisAnswer,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
@@ -32,9 +31,8 @@ import {
 } from '../components/helperFunction';
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import {
-  removeDictionaryConcept,
   removeConceptMapping,
-  removeEditedConceptMapping,
+  removeEditedConceptMapping, addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
@@ -74,10 +72,10 @@ export class EditConcept extends Component {
     selectedAnswers: PropTypes.array.isRequired,
     removeAnswer: PropTypes.func.isRequired,
     createNewAnswerRow: PropTypes.func.isRequired,
-    deleteConcept: PropTypes.func.isRequired,
-    recreateConcept: PropTypes.func.isRequired,
     unPopulateAnswer: PropTypes.func.isRequired,
     dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    addReferenceToCollection: PropTypes.func.isRequired,
+    deleteReferenceFromCollection: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -186,47 +184,35 @@ export class EditConcept extends Component {
     this.setState({ [name]: value });
   }
 
-  recreateMappings = mappings => mappings.map((mapping) => {
-    const isInternal = Boolean(
-      mapping.to_source_url
-      && (mapping.to_source_url.trim().toLowerCase() === CIEL_SOURCE_URL.trim().toLowerCase()),
-    );
-    const freshMapping = {
-      ...mapping,
-      isNew: true,
-      url: String(uuid()),
-      source: isInternal ? INTERNAL_MAPPING_DEFAULT_SOURCE : mapping.source,
-      to_source_url: isInternal
-        ? `${mapping.to_source_url}concepts/${mapping.to_concept_code}/`
-        : mapping.to_source_url,
-    };
-    return freshMapping;
-  });
-
-  deleteConceptReference = (version_url) => {
-    const { deleteConcept, match: { params: { type, typeName, collectionName } } } = this.props;
-    deleteConcept({ references: [version_url] }, type, typeName, collectionName);
-  }
-
-  updateConceptReference = async (concept, mappings) => {
-    const { answers } = this.state;
-    const { recreateConcept, dictionaryConcepts } = this.props;
+  updateConceptReference = async (concept) => {
+    const {
+      dictionaryConcepts,
+      match: { params: { type, typeName, collectionName } },
+      deleteReferenceFromCollection,
+      addReferenceToCollection,
+    } = this.props;
     const conceptRef = dictionaryConcepts.find(c => c.id === concept.id);
-    const newMappings = mappings && this.recreateMappings(mappings);
-    const freshConcept = {
-      ...concept,
-      id: String(uuid()),
-      answers,
-      mappings: newMappings,
-    };
-    recreateConcept(freshConcept, this.createUrl)
-      .then(() => this.deleteConceptReference(conceptRef.version_url));
-  }
+
+    let response = await deleteReferenceFromCollection(type, typeName, collectionName, [
+      conceptRef.version_url,
+    ]);
+    if (!response) return false;
+
+    response = await addReferenceToCollection(type, typeName, collectionName, [conceptRef.url]);
+    if (!response) return false;
+
+    return true;
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { mappings } = this.state;
-    const { removeEditedConceptMappingAction, history } = this.props;
+    const {
+      removeEditedConceptMappingAction,
+      history,
+      match: { params: { collectionName } },
+      existingConcept: concept,
+    } = this.props;
     const retired = mappings.filter(mapping => mapping.retired);
     const freshMappings = mappings.filter(mapping => mapping.isNew);
     const editedAns = this.editedAnswers;
@@ -245,9 +231,9 @@ export class EditConcept extends Component {
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
       const unRetiredMappings = mappings.filter(m => m.retired === false);
-      this.props.updateConcept(this.conceptUrl, this.state, history)
-        .then(editedConcept => this.updateConceptReference(editedConcept, unRetiredMappings)
-          .then(() => setTimeout(() => history.goBack(), 2000)));
+      this.props.updateConcept(this.conceptUrl, this.state, history, collectionName, concept)
+        .then(result => result && this.updateConceptReference(result, unRetiredMappings)
+          .then(() => history.goBack()));
     } else {
       if (!regx.test(this.state.id)) {
         notify.show('enter a valid uuid', 'error', 3000);
@@ -372,15 +358,21 @@ export class EditConcept extends Component {
     });
   }
 
-  removeUnsavedMappingRow = (url) => {
+  removeUnsavedMappingRow = (url, wasRetired = true) => {
     const { mappings } = this.state;
-    const selectedMappings = mappings.map((map) => {
-      const updatedMap = map;
-      if (updatedMap.url === url) {
-        updatedMap.retired = true;
-      }
-      return updatedMap;
-    });
+    let selectedMappings;
+    if (wasRetired) {
+      selectedMappings = mappings.map((map) => {
+        const updatedMap = map;
+        if (updatedMap.url === url) {
+          updatedMap.retired = true;
+        }
+        return updatedMap;
+      });
+    } else {
+      selectedMappings = mappings.filter(mapping => mapping.url !== url);
+    }
+
     this.setState({ mappings: selectedMappings });
   }
 
@@ -423,7 +415,7 @@ export class EditConcept extends Component {
     this.setState({ mapp });
     const filterMappings = mappings.filter(map => map.url === url);
     if (filterMappings[0].isNew) {
-      this.removeUnsavedMappingRow(url);
+      this.removeUnsavedMappingRow(url, false);
       return;
     }
     this.showGeneralModal(url);
@@ -649,8 +641,8 @@ export default connect(
     addSelectedAnswers: addSelectedAnswersToState,
     removeAnswer: removeSelectedAnswer,
     createNewAnswerRow: addNewAnswerRow,
-    deleteConcept: removeDictionaryConcept,
-    recreateConcept: createNewConcept,
     unPopulateAnswer: unPopulateThisAnswer,
+    addReferenceToCollection: addReferenceToCollectionAction,
+    deleteReferenceFromCollection: deleteReferenceFromCollectionAction,
   },
 )(EditConcept);

@@ -643,7 +643,7 @@ describe('Testing Edit concept actions ', () => {
 
     const store = mockStore(mockConceptStore);
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
-    return store.dispatch(updateConcept(conceptUrl, existingConcept, history)).then(() => {
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -669,7 +669,7 @@ describe('Testing Edit concept actions ', () => {
 
     const store = mockStore(mockConceptStore);
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
-    return store.dispatch(updateConcept(conceptUrl, existingConcept, history)).then(() => {
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

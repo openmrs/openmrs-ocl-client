@@ -38,6 +38,16 @@ export default {
         .get(`${data}`)
         .then(response => response.data),
 
+    addReferencesToCollection: (type, owner, collection, expressions) =>
+      instance.put(`${type}/${owner}/collections/${collection}/references/`, {
+        data: { expressions }
+      }),
+
+    deleteReferenceFromCollection: (type, owner, collection, references) =>
+      instance.delete(`${type}/${owner}/collections/${collection}/references/`, {
+        data: {references}
+      }),
+
     removeDictionaryConcept: (data, type, owner, collectionId) =>
       instance
         .delete(`/${type}/${owner}/collections/${collectionId}/references/`, {data:data})
