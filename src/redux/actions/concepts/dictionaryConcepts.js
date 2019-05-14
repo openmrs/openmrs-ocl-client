@@ -323,14 +323,15 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = dataUrl;
   try {
-    notify.show('creating concept, please wait...', 'warning', 1000);
+    notify.show('creating concept, please wait...', 'warning');
     const response = await instance.post(url, data);
     dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
     dispatch(addConceptToDictionary(response.data.id, dataUrl));
-    notify.show('creating concept, please wait...', 'warning', 3000);
+    notify.show('creating concept, please wait...', 'warning');
     CreateMapping(data.mappings, response.data.url, response.data.source);
     await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
   } catch (error) {
+    notify.hide();
     if (error.response) {
       const { response } = error;
       notify.show(`An error occurred when creating a concept.
@@ -338,7 +339,7 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   Object.keys(response.data).map(e => response.data[e]).toString()
 } for ${
   Object.keys(error.response.data).toString()
-}`, 'error', 3000);
+}`, 'error', 5000);
       dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     }
   }

@@ -23,6 +23,7 @@ export class DictionaryModal extends React.Component {
         public_access: 'View',
         name: '',
         owner: '',
+        custom_validation_schema: 'OpenMRS',
         description: '',
         default_locale: 'en',
         supported_locales: '',
