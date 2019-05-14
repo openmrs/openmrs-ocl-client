@@ -9,7 +9,7 @@ import {
 import {
   newConcept, existingConcept, mockSource, sampleConcept, newMappings,
 } from '../../__mocks__/concepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, CONCEPT_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
@@ -32,7 +32,7 @@ describe('Test suite for dictionary concepts components', () => {
   const props = {
     match: {
       params: {
-        conceptType: 'question',
+        conceptType: CONCEPT_TYPE.question,
         collectionName: 'dev-col',
         type: 'users',
         typeName: 'emmabaye',
@@ -136,7 +136,7 @@ describe('Test suite for dictionary concepts components', () => {
     const wrapper = mount(<Router>
       <EditConcept {...props} />
     </Router>);
-    expect(wrapper.find('h3').text()).toEqual(': Edit a question Concept ');
+    expect(wrapper.find('h3').text()).toEqual(': Edit a Question Concept ');
     wrapper.unmount();
     expect(wrapper).toMatchSnapshot();
   });
@@ -314,7 +314,7 @@ describe('Test suite for mappings on existing concepts', () => {
   const props = {
     match: {
       params: {
-        conceptType: 'question',
+        conceptType: CONCEPT_TYPE.question,
         collectionName: 'dev-col',
         type: 'users',
         typeName: 'emmabaye',

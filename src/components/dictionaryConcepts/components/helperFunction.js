@@ -59,6 +59,14 @@ export const MAP_TYPE = {
   questionAndAnswer: 'Q-AND-A',
 };
 
+export const CONCEPT_TYPE = {
+  question: 'Question',
+};
+
+export const CONCEPT_CLASS = {
+  question: 'Question',
+};
+
 export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;
 export const CANCEL_WARNING = 'You have unsaved changes. Do you wish to leave without saving these changes?';
 export const LEAVE_PAGE_POPUP_TITLE = 'Are you sure you want to leave this page?';
