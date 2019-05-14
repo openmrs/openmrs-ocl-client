@@ -35,7 +35,7 @@ describe('Test suite for dictionary concepts components', () => {
     removeDescription: jest.fn(),
     createNewConcept: jest.fn(),
     newName: ['1'],
-    description: ['1'],
+    description: [{ uuid: '1' }],
     loading: false,
     newConcept: {
       id: '1',

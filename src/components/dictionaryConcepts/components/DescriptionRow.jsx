@@ -8,7 +8,6 @@ class DescriptionRow extends Component {
   static propTypes = {
     rowId: PropTypes.string,
     newRow: PropTypes.object,
-    newRowUuid: PropTypes.string,
     addDataFromDescription: PropTypes.func.isRequired,
     removeDescription: PropTypes.func.isRequired,
     removeDataFromRow: PropTypes.func.isRequired,
@@ -27,7 +26,6 @@ class DescriptionRow extends Component {
       locale_preferred: true,
       name_type: '',
     },
-    newRowUuid: '',
     rowId: '',
   };
 
@@ -128,9 +126,7 @@ class DescriptionRow extends Component {
             className=" btn btn-danger concept-form-table-link"
             id="remove-description"
             type="button"
-            onClick={event => ((this.props.newRowUuid === '')
-              ? this.handleRemove(event, this.props.newRow)
-              : this.handleRemove(event, this.props.newRowUuid))}
+            onClick={event => this.handleRemove(event, this.props.newRow)}
           >
             remove
           </button>

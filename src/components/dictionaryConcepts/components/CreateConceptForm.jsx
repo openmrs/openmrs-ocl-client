@@ -27,7 +27,7 @@ const CreateConceptForm = (props) => {
 
   const selectedMappings = mappings
     .filter(map => map.retired === false && map.map_type !== MAP_TYPE.questionAndAnswer);
-
+  const descriptions = props.existingConcept.descriptions || props.description;
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
@@ -182,7 +182,7 @@ const CreateConceptForm = (props) => {
                 onClick={props.addDescription}
                 className="btn btn-outline-secondary btn-sm "
               >
-                Add another description...
+                {descriptions.length > 0 ? 'Add another description...' : 'Add a description'}
               </button>
             </div>
           </div>
@@ -301,6 +301,7 @@ CreateConceptForm.propTypes = {
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
   removeCurrentAnswer: PropTypes.func,
+  description: PropTypes.array,
 };
 
 CreateConceptForm.defaultProps = {
@@ -321,6 +322,7 @@ CreateConceptForm.defaultProps = {
   removeAnswerRow: () => {},
   currentDictionaryName: '',
   removeCurrentAnswer: () => {},
+  description: [],
 };
 
 export default CreateConceptForm;

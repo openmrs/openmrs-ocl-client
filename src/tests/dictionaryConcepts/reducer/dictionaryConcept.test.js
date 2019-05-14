@@ -44,7 +44,7 @@ beforeEach(() => {
     sourceList: [],
     classList: [],
     newName: ['456'],
-    description: ['456'],
+    description: [{ uuid: '456' }],
     answer: ['123y'],
     newConcept: {},
     addConceptToDictionary: [],
@@ -168,7 +168,7 @@ describe('Test suite for single dictionary concepts', () => {
 
     expect(reducer(state, action)).toEqual({
       ...state,
-      description: ['456', '123'],
+      description: [{ uuid: '456' }, { uuid: '123' }],
     });
   });
 
@@ -183,7 +183,7 @@ describe('Test suite for single dictionary concepts', () => {
 
     expect(reducer(state, action)).toEqual({
       ...state,
-      description: ['456'],
+      description: [{ uuid: '456' }],
     });
   });
   it('should handle CLEAR_FORM_SELECTIONS', () => {
