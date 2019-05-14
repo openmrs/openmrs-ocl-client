@@ -20,130 +20,74 @@ jest.useFakeTimers();
 jest.mock('react-notify-toast');
 
 describe('Test suite for BulkConceptsPage component', () => {
-  it('should render without breaking', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
-      conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
+  const props = {
+    setCurrentPage: jest.fn(),
+    currentPage: 1,
+    fetchBulkConcepts: jest.fn(),
+    filterConcept: jest.fn(),
+    concepts: [],
+    loading: true,
+    datatypes: [],
+    classes: [],
+    match: {
+      params: {
+        type: 'users',
+        typeName: 'emasys',
+        collectionName: 'dev-org',
+        language: 'en',
+        dictionaryName: 'CIEL',
       },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
+    },
+    addConcept: jest.fn(),
+    previewConcept: jest.fn(),
+    fetchFilteredConcepts: jest.fn(),
+    addToFilterList: jest.fn(),
+  };
+  it('should render without breaking', () =>  {
+    const nextProps = {
+      ...props,
+      conceptLimit: 10,
     };
     const wrapper = mount(<Router>
-      <BulkConceptsPage {...props} />
+      <BulkConceptsPage {...nextProps} />
     </Router>);
     expect(wrapper.find('h4').text()).toEqual('Add CIEL concepts');
 
     expect(wrapper).toMatchSnapshot();
   });
   it('should render without concepts', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
+    const nextProps = {
+      ...props,
       loading: false,
-      datatypes: [],
-      classes: [],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     expect(wrapper.find('.rt-noData').text()).toEqual('No concepts found!');
   });
   it('should render a loader', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     expect(wrapper.find('Loader')).toHaveLength(1);
   });
 
   it('it should call the handle handleNextPage function', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
     };
-    const wrapper = shallow(<BulkConceptsPage {...props} />);
+    const wrapper = shallow(<BulkConceptsPage {...nextProps} />);
     const event = {
       preventDefault: jest.fn(),
       target: {
@@ -154,32 +98,12 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(instance.handleNextPage(event)).toEqual(undefined);
   });
   it('it should call the handle handleNextPage function while searching', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
     };
-    const wrapper = shallow(<BulkConceptsPage {...props} />).setState({ searchingOn: true });
+    const wrapper = shallow(<BulkConceptsPage {...nextProps} />).setState({ searchingOn: true });
     const event = {
       preventDefault: jest.fn(),
       target: {
@@ -191,35 +115,15 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('it should call searchingOn state should be available', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
+    const nextProps = {
+      ...props,
       searchingOn: true,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     const event = {
@@ -238,132 +142,53 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('it should call the handle componentDidUpdate function', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
       componentDidUpdate: jest.fn(),
     };
-    const wrapper = shallow(<BulkConceptsPage {...props} />);
+    const wrapper = shallow(<BulkConceptsPage {...nextProps} />);
     const instance = wrapper.instance();
     expect(instance.componentDidUpdate(2)).toEqual(undefined);
   });
 
   it('it should call the handle componentDidMount function', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
       componentDidMount: jest.fn(),
     };
-    const wrapper = shallow(<BulkConceptsPage {...props} />);
+    const wrapper = shallow(<BulkConceptsPage {...nextProps} />);
     const instance = wrapper.instance();
     expect(instance.componentDidMount()).toEqual(undefined);
   });
 
   it('it should call the handle componentDidUpdate function while searching', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
+    const nextProps = {
+      ...props,
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
       componentDidUpdate: jest.fn(),
     };
-    const wrapper = shallow(<BulkConceptsPage {...props} />).setState({ searchingOn: true });
+    const wrapper = shallow(<BulkConceptsPage {...nextProps} />).setState({ searchingOn: true });
     const instance = wrapper.instance();
     expect(instance.componentDidUpdate(2)).toEqual(undefined);
   });
 
   it('should refresh page when search input is empty', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
+    const nextProps = {
+      ...props,
       searchingOn: true,
-      fetchBulkConcepts: jest.fn(),
       getBulkConcepts: jest.fn(),
       bulkConceptsFetched: jest.fn(),
-      concepts: [],
-      loading: true,
-      datatypes: [],
-      classes: [],
       conceptLimit: 10,
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
       handleNextPage: jest.fn(),
     };
     const wrapper = mount(<Router>
       <Provider store={store}>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Provider>
     </Router>);
     const Wrapper = wrapper.find('BulkConceptsPage').instance();
@@ -376,12 +201,8 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('should search for concepts', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
-      filterConcept: jest.fn(),
+    const nextProps = {
+      ...props,
       handleSearch: jest.fn(),
       handleChange: jest.fn(),
       inputValue: '',
@@ -389,22 +210,10 @@ describe('Test suite for BulkConceptsPage component', () => {
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     const event = { target: { name: 'searchInput', value: '   testing' } };
@@ -428,32 +237,17 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('should filter search result', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
+    const nextProps = {
+      ...props,
       concepts: [concepts],
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
+
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     const event = { target: { name: 'Diagnosis, datatype', checked: true } };
@@ -463,32 +257,17 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('should filter search result with datatype', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
-      filterConcept: jest.fn(),
+    const nextProps = {
+      ...props,
       concepts: [concepts],
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
       addToFilterList: jest.fn(),
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     let event = { target: { name: 'Diagnosis, datatype', checked: true } };
@@ -499,35 +278,20 @@ describe('Test suite for BulkConceptsPage component', () => {
   });
 
   it('should simulate clicks on action buttons', () => {
-    const props = {
-      setCurrentPage: jest.fn(),
-      currentPage: 1,
-      fetchBulkConcepts: jest.fn(),
+    const nextProps = {
+      ...props,
       concepts: [concepts],
       loading: false,
       datatypes: ['text'],
       classes: ['Diagnosis'],
-      match: {
-        params: {
-          type: 'users',
-          typeName: 'emasys',
-          collectionName: 'dev-org',
-          language: 'en',
-          dictionaryName: 'CIEL',
-        },
-      },
-      addToFilterList: jest.fn(),
       preview: {
         url: 'dsa',
         display_name: 'asd',
       },
-      addConcept: jest.fn(),
-      previewConcept: jest.fn(),
-      fetchFilteredConcepts: jest.fn(),
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
-        <BulkConceptsPage {...props} />
+        <BulkConceptsPage {...nextProps} />
       </Router>
     </Provider>);
     wrapper.find('#add-button').simulate('click');
