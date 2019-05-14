@@ -2,6 +2,7 @@ import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
+import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
 import {
   IS_FETCHING,
@@ -34,6 +35,10 @@ import {
   REMOVE_SELECTED_ANSWER,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   UN_POPULATE_THIS_ANSWER,
+  ADD_NEW_SET_ROW,
+  REMOVE_SELECTED_SET,
+  ADD_SELECTED_SETS,
+  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -65,6 +70,11 @@ import {
   prepopulateAnswers,
   unretireMapping,
   unPopulateThisAnswer,
+  addNewSetRow,
+  removeSelectedSet,
+  addSelectedSetsToState,
+  addSetMappingToConcept,
+  prePopulateSets, unpopulatePrepopulatedSets,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -77,7 +87,7 @@ import concepts, {
   newConcept,
   newConceptData,
   multipleConceptsMockStore,
-  existingConcept,
+  existingConcept, newConceptDataWithAnswerAndSetMappings,
 } from '../../__mocks__/concepts';
 import { CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
@@ -323,15 +333,29 @@ describe('Test suite for dictionary concept actions', () => {
   });
 
 
-  it('should handle CREATE_NEW_CONCEPT', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 201,
-        response: newConcept,
-      });
+  it('should handle CREATE_NEW_CONCEPT with answer and set mappings', (done) => {
+    const store = mockStore(mockConceptStore);
+    const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
+
+    moxios.stubRequest(/(.*?)/, {
+      status: 201,
+      response: newConcept,
     });
 
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: CREATE_NEW_CONCEPT, payload: newConcept },
+    ];
+
+    store.dispatch(createNewConcept(newConceptDataWithAnswerAndSetMappings, url)).then(() => {
+      const actions = store.getActions();
+      expect(actions.slice(0, 2)).toEqual(expectedActions);
+      expect(actions[actions.length - 1]).toEqual({ type: IS_FETCHING, payload: false });
+      done();
+    });
+  });
+
+  it('should handle CREATE_NEW_CONCEPT', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -525,6 +549,7 @@ describe('Test suite for dictionary concept actions', () => {
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
       { type: PRE_POPULATE_ANSWERS, payload: [] },
+      { type: PRE_POPULATE_SETS, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -566,6 +591,7 @@ describe('Testing Edit concept actions ', () => {
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
       { type: PRE_POPULATE_ANSWERS, payload: [] },
+      { type: PRE_POPULATE_SETS, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -876,10 +902,53 @@ describe('test suite for synchronous action creators', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
+  describe('addNewSetRow', () => {
+    it('dispatches ADD_NEW_SET_ROW action', () => {
+      const store = mockStore(mockConceptStore);
+      const setRow = {};
+      const expectedActions = [{ type: ADD_NEW_SET_ROW, payload: setRow }];
+      expect(store.getActions()).not.toEqual(expectedActions);
+      store.dispatch(addNewSetRow(setRow));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('addSelectedSetsToState', () => {
+    it('dispatches ADD_SELECTED_SETS action', () => {
+      const sets = [{}];
+      const expectedActions = [
+        { type: ADD_SELECTED_SETS, payload: { set: sets, uniqueKey: undefined } },
+      ];
+      const store = mockStore(mockConceptStore);
+      expect(store.getActions()).not.toEqual(expectedActions);
+      store.dispatch(addSelectedSetsToState(sets));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('removeSelectedSet', () => {
+    it('dispatches REMOVE_SELECTED_SET', () => {
+      const store = mockStore(mockConceptStore);
+      const key = 'uniqueKey';
+      const expectedActions = [{ type: REMOVE_SELECTED_SET, payload: key }];
+      expect(store.getActions()).not.toEqual(expectedActions);
+      store.dispatch(removeSelectedSet(key));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('should handle UNPOPULATE_PRE_POPULATED_ANSWERS', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: UNPOPULATE_PRE_POPULATED_ANSWERS }];
     store.dispatch(unpopulatePrepopulatedAnswers());
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should handle UNPOPULATE_PRE_POPULATED_SETS', () => {
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{ type: UNPOPULATE_PRE_POPULATED_SETS }];
+    expect(store.getActions()).not.toEqual(expectedActions);
+    store.dispatch(unpopulatePrepopulatedSets());
     expect(store.getActions()).toEqual(expectedActions);
   });
 
@@ -904,17 +973,26 @@ describe('test suite for synchronous action creators', () => {
       payload: answer,
     }];
     store.dispatch(unPopulateThisAnswer(answer));
+  });
+
+  it('should handle PRE_POPULATE_SETS', () => {
+    const store = mockStore(mockConceptStore);
+    const expectedActions = [{
+      type: PRE_POPULATE_SETS,
+      payload: [{ retired: false, prePopulated: true }],
+    }];
+    store.dispatch(prePopulateSets([{ retired: false, prePopulated: true }]));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
 
 describe('Add answer mappings to concept', () => {
   beforeEach(() => {
-    moxios.install();
+    moxios.install(instance);
   });
 
   afterEach(() => {
-    moxios.uninstall();
+    moxios.uninstall(instance);
   });
 
   it('should add all chosen answer mappings', () => {
@@ -1008,5 +1086,78 @@ describe('Add answer mappings to concept', () => {
       request.respondWith({ status: 201, response: expected });
     });
     addAnswerMappingToConcept('/url/test/', '2434435454545', mappingData);
+  });
+});
+
+describe('Add set mappings to concept', () => {
+  beforeEach(() => {
+    moxios.install(instance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+
+  it('should add all chosen set mappings', (done) => {
+    const mappingData = [
+      {
+        url: 'some/test.url',
+        map_scope: 'Internal',
+        map_type: 'Set',
+        to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+        to_concept_name: 'CIEL: MALARIAL SMEAR',
+        to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
+      },
+    ];
+
+    const url = '/url/test/';
+    const source = '2434435454545';
+    const mappingUrl = `/users/null/sources/${source}/mappings/`;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+
+      expect(request.config.data).toEqual(JSON.stringify({
+        map_type: mappingData[0].map_type,
+        from_concept_url: url,
+        to_concept_url: mappingData[0].url,
+      }));
+      expect(request.url.indexOf(mappingUrl)).toBeGreaterThan(-1);
+
+      request.respondWith({ status: 201, response: {} }).then(() => {
+        done();
+      });
+    });
+
+    addSetMappingToConcept(url, source, mappingData);
+  });
+
+  it('should notify the user if error occurs when adding set mappings', (done) => {
+    const mappingData = [
+      {
+        url: 'some/test.url',
+        map_scope: 'Internal',
+        map_type: 'Set',
+        to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+        to_concept_name: 'CIEL: MALARIAL SMEAR',
+        to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
+      },
+    ];
+
+    const notifyShowMock = jest.fn();
+    notify.show = notifyShowMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({ status: 400, response: {} });
+    });
+
+    addSetMappingToConcept('/url/test/', 'source', mappingData).then(() => {
+      expect(notifyShowMock).toHaveBeenCalledWith(
+        'A network error occurred while adding your set mappings. Please retry.',
+        'error',
+        3000,
+      );
+      done();
+    });
   });
 });

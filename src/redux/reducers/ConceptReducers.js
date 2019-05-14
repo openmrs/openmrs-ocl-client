@@ -30,6 +30,10 @@ import {
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   ADD_NEW_ANSWER_ROW,
   UN_POPULATE_THIS_ANSWER,
+  ADD_NEW_SET_ROW,
+  REMOVE_SELECTED_SET,
+  ADD_SELECTED_SETS,
+  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
 } from '../actions/types';
 import {
   filterSources,
@@ -65,6 +69,9 @@ const initialState = {
     names: [],
   },
   selectedAnswers: [{
+    frontEndUniqueKey: 'intialKey',
+  }],
+  selectedSets: [{
     frontEndUniqueKey: 'intialKey',
   }],
 };
@@ -240,10 +247,25 @@ export default (state = initialState, action) => {
         selectedAnswers: [...action.payload],
       };
     }
+    case PRE_POPULATE_SETS: {
+      return {
+        ...state,
+        selectedSets: [...action.payload],
+      };
+    }
     case UNPOPULATE_PRE_POPULATED_ANSWERS: {
       return {
         ...state,
         selectedAnswers: [{
+          frontEndUniqueKey: 'intialKey',
+        }],
+      };
+    }
+
+    case UNPOPULATE_PRE_POPULATED_SETS: {
+      return {
+        ...state,
+        selectedSets: [{
           frontEndUniqueKey: 'intialKey',
         }],
       };
@@ -255,6 +277,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedAnswers: [...answers],
+      };
+    }
+
+    case ADD_NEW_SET_ROW: {
+      const sets = state.selectedSets;
+      return {
+        ...state,
+        selectedSets: [...sets, action.payload],
       };
     }
 
@@ -272,6 +302,22 @@ export default (state = initialState, action) => {
         selectedAnswers: answers,
       };
     }
+
+    case ADD_SELECTED_SETS: {
+      const sets = state.selectedSets;
+      const setToAdd = sets.filter(set => set.frontEndUniqueKey === action.payload.uniqueKey);
+
+      const indexOfSetToAdd = sets
+        .findIndex(set => set.frontEndUniqueKey === action.payload.uniqueKey);
+
+      const newSetToAdd = { ...setToAdd[0], ...action.payload.set };
+      sets[indexOfSetToAdd] = newSetToAdd;
+      return {
+        ...state,
+        selectedSets: sets,
+      };
+    }
+
     case REMOVE_SELECTED_ANSWER: {
       const answers = state.selectedAnswers;
       const newAnswers = answers.filter(ans => ans.frontEndUniqueKey !== action.payload);
@@ -289,6 +335,14 @@ export default (state = initialState, action) => {
       };
     }
 
+    case REMOVE_SELECTED_SET: {
+      const sets = state.selectedSets;
+      const newSets = sets.filter(set => set.frontEndUniqueKey !== action.payload);
+      return {
+        ...state,
+        selectedSets: newSets,
+      };
+    }
     default:
       return state;
   }

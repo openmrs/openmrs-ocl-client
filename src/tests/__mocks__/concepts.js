@@ -1,4 +1,7 @@
-import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../components/dictionaryConcepts/components/helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  MAP_TYPE
+} from '../../components/dictionaryConcepts/components/helperFunction';
 
 export default {
   id: '1468667',
@@ -381,6 +384,81 @@ export const newConceptData = {
       to_concept_name: 'malaria',
       to_source_url: null,
       isNew: false,
+    },
+  ],
+};
+
+export const newConceptDataWithAnswerAndSetMappings = {
+  id: '12845003',
+  external_id: '12845003',
+  concept_class: 'Laboratory Procedure',
+  datatype: 'N/A',
+  names: [
+    {
+      name: 'Malaria smear',
+      external_id: '14',
+      locale: 'en',
+      locale_preferred: 'true',
+      name_type: 'Designated Preferred Name',
+    },
+    {
+      name: 'Malaria smear (procedure)',
+      external_id: '176',
+      locale: 'en',
+      name_type: 'Full Form of Descriptor',
+    },
+  ],
+
+  extras: {
+    UMLS_CUI: 'C0200703',
+    ISPRIMITIVE: '1',
+  },
+  mappings: [
+    {
+      id: 1,
+      map_type: 'Same as',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
+      to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
+      isNew: false,
+    },
+    {
+      map_type: 'Narrower than',
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
+      to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
+      to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
+      isNew: true,
+    },
+    {
+      id: 3,
+      map_type: 'Same as',
+      source: 'SNOMED',
+      to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
+      to_concept_name: 'malaria',
+      to_source_url: null,
+      isNew: false,
+    },
+  ],
+  answers: [
+    {
+      url: 'some/test.url',
+      map_scope: 'Internal',
+      map_type: MAP_TYPE.questionAndAnswer,
+      to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+      to_concept_name: 'CIEL: MALARIAL SMEAR',
+      to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
+    },
+  ],
+  sets: [
+    {
+      url: 'some/test.url',
+      map_scope: 'Internal',
+      map_type: 'Set',
+      to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
+      to_concept_name: 'CIEL: MALARIAL SMEAR',
+      to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
     },
   ],
 };

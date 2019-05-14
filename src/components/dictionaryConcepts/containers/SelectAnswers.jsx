@@ -4,7 +4,7 @@ import { notify } from 'react-notify-toast';
 import { queryAnswers } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   KEY_CODE_FOR_ENTER,
-  KEY_CODE_FOR_ESCAPE,
+  KEY_CODE_FOR_ESCAPE, MAP_TYPE,
 } from '../components/helperFunction';
 import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
 
@@ -43,13 +43,14 @@ class SelectAnswers extends Component {
 
     handleKeyDown = async (event, inputValue) => {
       const { isClicked } = this.state;
+      const { mapType } = this.props;
       if (!isClicked) {
         this.resetInput(event);
         this.setState({ isClicked: true });
       }
       if (isClicked && (event.keyCode === KEY_CODE_FOR_ENTER) && inputValue.length >= 3) {
         const { source } = this.props;
-        const options = await queryAnswers(source, inputValue);
+        const options = await queryAnswers(source, inputValue, mapType);
         this.setState({ options, isVisible: true });
       } else if (isClicked && (event.keyCode === KEY_CODE_FOR_ENTER) && (inputValue.length < 3)) {
         notify.show(MIN_CHARACTERS_WARNING, 'error', MILLISECONDS_TO_SHOW_WARNING);
@@ -108,6 +109,7 @@ SelectAnswers.propTypes = {
   answer: PropTypes.object,
   removeCurrentAnswer: PropTypes.func.isRequired,
   answerUrl: PropTypes.string,
+  mapType: PropTypes.string,
 };
 
 SelectAnswers.defaultProps = {
@@ -117,6 +119,7 @@ SelectAnswers.defaultProps = {
   isShown: false,
   answer: {},
   answerUrl: '',
+  mapType: MAP_TYPE.questionAndAnswer,
 };
 
 export default SelectAnswers;
