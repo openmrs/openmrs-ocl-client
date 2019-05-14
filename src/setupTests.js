@@ -25,3 +25,4 @@ const uuid = { v4: jest.fn(() => 1) };
 global.uuid = uuid;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+global.XMLHttpRequest = undefined;
