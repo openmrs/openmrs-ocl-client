@@ -64,7 +64,7 @@ const PreviewCard = ({
   }
 
   const displaySetMembersOrAnswers = () => {
-    if (setMembers && setMembers.length > 0) {
+    if (setMembers && setMembers.length > 0 && answers && answers.length < 1) {
       remainingCount = setMembers.length - NUMBER_OF_ITEMS_TO_DISPLAY;
       return <CardBody
         remainingCount={remainingCount}
@@ -73,7 +73,7 @@ const PreviewCard = ({
         remainingItems={setMembers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
       />;
     }
-    if (answers && answers.length > 0) {
+    if (answers && answers.length > 0 && setMembers && setMembers.length < 1) {
       remainingCount = answers.length - NUMBER_OF_ITEMS_TO_DISPLAY;
       return <CardBody
         remainingCount={remainingCount}
@@ -81,6 +81,23 @@ const PreviewCard = ({
         body={answers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
         remainingItems={answers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
       />;
+    }
+    if (answers && answers.length > 0 && setMembers && setMembers.length > 0) {
+      remainingCount = answers.length - NUMBER_OF_ITEMS_TO_DISPLAY;
+      return <React.Fragment>
+        <CardBody
+          remainingCount={remainingCount}
+          title="Answers"
+          body={answers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+          remainingItems={answers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+        />
+        <CardBody
+          remainingCount={remainingCount}
+          title="Sets"
+          body={setMembers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+          remainingItems={setMembers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+        />
+      </React.Fragment>;
     }
     return '';
   };

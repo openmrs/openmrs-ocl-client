@@ -4,7 +4,12 @@ import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import CreateMapping from './CreateMapping';
-import { classes, MAP_TYPE, CONCEPT_CLASS } from './helperFunction';
+import {
+  classes,
+  MAP_TYPE,
+  CONCEPT_CLASS,
+  isSetConcept,
+} from './helperFunction';
 
 const CreateConceptForm = (props) => {
   const {
@@ -14,6 +19,11 @@ const CreateConceptForm = (props) => {
     handleAnswerChange,
     addAnswerRow,
     removeAnswerRow,
+    handleSetAsyncSelectChange,
+    selectedSets,
+    handleSetChange,
+    removeSetRow,
+    addSetRow,
     currentDictionaryName,
     mappings, addMappingRow,
     updateEventListener,
@@ -25,9 +35,13 @@ const CreateConceptForm = (props) => {
     removeCurrentAnswer,
   } = props;
 
-  const selectedMappings = mappings
-    .filter(map => map.retired === false && map.map_type !== MAP_TYPE.questionAndAnswer);
+  const selectedMappings = mappings.filter(
+    map => map.retired === false
+        && map.map_type !== MAP_TYPE.questionAndAnswer
+        && map.map_type !== MAP_TYPE.conceptSet,
+  );
   const descriptions = props.existingConcept.descriptions || props.description;
+
   return (
     <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
@@ -100,7 +114,7 @@ const CreateConceptForm = (props) => {
               )
               }
 
-              { (props.concept.toString().trim() === 'Set')
+              { isSetConcept(props.concept.toString().trim())
               && (
               <React.Fragment>
                 <select
@@ -111,9 +125,10 @@ const CreateConceptForm = (props) => {
                   required
                   onChange={props.handleChange}
                 >
-                  <option key="LabSet">LabSet</option>
-                  <option key="ConvSet">ConvSet</option>
-                  <option key="MedSet">MedSet</option>
+                  <option value="" key="default" />
+                  <option value="LabSet" key="LabSet">LabSet</option>
+                  <option value="ConvSet" key="ConvSet">ConvSet</option>
+                  <option value="MedSet" key="MedSet">MedSet</option>
 
                 </select>
               </React.Fragment>
@@ -187,6 +202,29 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
+        {isSetConcept(props.concept.toString().trim()) ? (
+          <div className="form-group set">
+            <div className="row col-12 custom-concept-list">
+              <h6 className="text-left section-header">Sets</h6>
+              <AnswersTable
+                handleAsyncSelectChange={handleSetAsyncSelectChange}
+                selectedAnswers={selectedSets}
+                handleAnswerChange={handleSetChange}
+                removeAnswerRow={removeSetRow}
+                currentDictionaryName={currentDictionaryName}
+                isEditConcept={isEditConcept}
+                mapType={MAP_TYPE.conceptSet}
+              />
+              <button
+                type="button"
+                className="btn btn-outline-secondary btn-sm mt-3"
+                onClick={addSetRow}
+              >
+                Add set...
+              </button>
+            </div>
+          </div>
+        ) : '' }
         {concept.toString().trim() === CONCEPT_CLASS.question ? (
           <div className="form-group answer">
             <div className="row col-12 custom-concept-list">
@@ -289,6 +327,11 @@ CreateConceptForm.propTypes = {
   existingConcept: PropTypes.object,
   handleAsyncSelectChange: PropTypes.func,
   selectedAnswers: PropTypes.array,
+  handleSetAsyncSelectChange: PropTypes.func,
+  selectedSets: PropTypes.array,
+  handleSetChange: PropTypes.func,
+  removeSetRow: PropTypes.func,
+  addSetRow: PropTypes.func,
   mappings: PropTypes.array,
   addMappingRow: PropTypes.func,
   updateEventListener: PropTypes.func,
@@ -312,6 +355,11 @@ CreateConceptForm.defaultProps = {
   handleAnswerChange: () => {},
   showModal: () => {},
   selectedAnswers: [],
+  handleSetAsyncSelectChange: () => {},
+  handleSetChange: () => {},
+  removeSetRow: () => {},
+  selectedSets: [],
+  addSetRow: () => {},
   mappings: [],
   addMappingRow: null,
   updateEventListener: null,

@@ -40,10 +40,15 @@ export const USER_IS_MEMBER = '[user] user_is_member';
 export const USER_IS_NOT_MEMBER = '[user] user_is_not__member';
 export const ADD_NEW_ANSWER_MAPPING = '[concepts] add_new_answer_mapping';
 export const ADD_SELECTED_ANSWERS = '[concepts] add_selected_answers';
+export const ADD_SELECTED_SETS = '[concepts] add_selected_sets';
 export const REMOVE_SELECTED_ANSWER = '[concepts] remove_selected_answer';
+export const REMOVE_SELECTED_SET = '[concepts] remove_selected_set';
 export const PRE_POPULATE_ANSWERS = '[concepts] pre_populate_answers';
+export const PRE_POPULATE_SETS = '[concepts] pre_populate_sets';
 export const UNPOPULATE_PRE_POPULATED_ANSWERS = '[concepts] unpopulate_pre_populated_answers';
+export const UNPOPULATE_PRE_POPULATED_SETS = '[concepts] unpopulate_pre_populated_sets';
 export const ADD_NEW_ANSWER_ROW = '[concepts] add_new_answer_row';
+export const ADD_NEW_SET_ROW = '[concepts] add_new_set_row';
 
 export const ADD_EXISTING_CONCEPTS = '[concepts] add_existing_concepts';
 export const SEARCH_RESULTS = '[searchResults] search';

@@ -10,6 +10,10 @@ import {
   PRE_POPULATE_ANSWERS,
   UNPOPULATE_PRE_POPULATED_ANSWERS,
   UN_POPULATE_THIS_ANSWER,
+  ADD_NEW_SET_ROW,
+  REMOVE_SELECTED_SET,
+  ADD_SELECTED_SETS,
+  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
 } from '../../../redux/actions/types';
 import concepts from '../../__mocks__/concepts';
 
@@ -36,6 +40,9 @@ const initialState = {
     names: [],
   },
   selectedAnswers: [{
+    frontEndUniqueKey: 'intialKey',
+  }],
+  selectedSets: [{
     frontEndUniqueKey: 'intialKey',
   }],
 };
@@ -179,10 +186,24 @@ describe('Test suite for concepts reducer', () => {
     expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'newIntialKey' }]);
   });
 
+  it('should prePopulate selected sets array', () => {
+    const payload = [{ frontEndUniqueKey: 'newIntialKey' }];
+    const newState = reducer(initialState, { type: PRE_POPULATE_SETS, payload });
+    expect(newState.selectedSets).toEqual([{ frontEndUniqueKey: 'newIntialKey' }]);
+  });
+
   it('should unpopulate selected answers array', () => {
     const payload = [{ frontEndUniqueKey: 'newIntialKey' }];
     const newState = reducer(initialState, { type: UNPOPULATE_PRE_POPULATED_ANSWERS, payload });
     expect(newState.selectedAnswers).toEqual([{ frontEndUniqueKey: 'intialKey' }]);
+  });
+
+  describe('unpopulate prepopulated sets', () => {
+    it('should unpopulate selected sets array', () => {
+      const payload = [{ frontEndUniqueKey: 'newIntialKey' }];
+      const newState = reducer(initialState, { type: UNPOPULATE_PRE_POPULATED_SETS, payload });
+      expect(newState.selectedSets).toEqual([{ frontEndUniqueKey: 'intialKey' }]);
+    });
   });
 
   it('should add new answer row', () => {
@@ -225,7 +246,39 @@ describe('Test suite for concepts reducer', () => {
         prePopulated: true,
       },
     ];
-    const newState = reducer(state, { type: UN_POPULATE_THIS_ANSWER, payload });
-    expect(newState.selectedAnswers).toEqual(expected);
+    const newState = reducer(state, {
+      type: UN_POPULATE_THIS_ANSWER,
+      payload
+    });
+    expect(newState.selectedAnswers)
+      .toEqual(expected);
+  });
+
+  it('should add the selected sets to redux state', () => {
+    const expectedSet = { frontEndUniqueKey: 'newFrontendKey' };
+    let state = reducer(initialState, { type: 'init' });
+    expect(state.selectedSets).toEqual(initialState.selectedSets);
+    const existingSet = state.selectedSets[0];
+    const payload = { set: expectedSet, uniqueKey: existingSet.frontEndUniqueKey };
+    state = reducer(state, { type: ADD_SELECTED_SETS, payload });
+    expect(state.selectedSets).toContainEqual(expectedSet);
+  });
+
+  it('should add new set row', () => {
+    const expectedSet = { frontEndUniqueKey: 'newFrontEndKey' };
+    let state = reducer(initialState, { type: 'init' });
+    expect(state.selectedSets).not.toContainEqual(expectedSet);
+    state = reducer(state, { type: ADD_NEW_SET_ROW, payload: expectedSet });
+    expect(state.selectedSets).toContainEqual(expectedSet);
+  });
+
+  it('should remove set row', () => {
+    let state = reducer(initialState, { type: 'init' });
+    expect(state.selectedSets).toEqual(initialState.selectedSets);
+    const existingSet = state.selectedSets[0];
+    const setToRemoveKey = existingSet.frontEndUniqueKey;
+    expect(state.selectedSets).toContainEqual(existingSet);
+    state = reducer(initialState, { type: REMOVE_SELECTED_SET, payload: setToRemoveKey });
+    expect(state.selectedSets).not.toContainEqual(existingSet);
   });
 });

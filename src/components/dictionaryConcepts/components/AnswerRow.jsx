@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectAnswers from '../containers/SelectAnswers';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from './helperFunction';
 
 
 class AnswerRow extends React.Component {
@@ -61,6 +61,7 @@ class AnswerRow extends React.Component {
       answerUrl,
       removeCurrentAnswer,
       answer,
+      mapType,
     } = this.props;
     const { source, isEditing, isPrePopulated } = this.state;
     return (
@@ -105,6 +106,7 @@ class AnswerRow extends React.Component {
               removeCurrentAnswer={removeCurrentAnswer}
               answer={answer}
               answerUrl={answerUrl}
+              mapType={mapType}
             />
         }
         </td>
@@ -146,6 +148,7 @@ AnswerRow.propTypes = {
   removeCurrentAnswer: PropTypes.func.isRequired,
   currentDictionaryName: PropTypes.string,
   answer: PropTypes.object.isRequired,
+  mapType: PropTypes.string,
 };
 
 AnswerRow.defaultProps = {
@@ -157,6 +160,7 @@ AnswerRow.defaultProps = {
   toSourceName: '',
   currentDictionaryName: '',
   frontEndUniqueKey: 'unique',
+  mapType: MAP_TYPE.questionAndAnswer,
 };
 
 

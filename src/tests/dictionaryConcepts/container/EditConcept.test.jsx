@@ -9,7 +9,13 @@ import {
 import {
   newConcept, existingConcept, mockSource, sampleConcept, newMappings,
 } from '../../__mocks__/concepts';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, CONCEPT_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  CIEL_SOURCE_URL,
+  CONCEPT_TYPE,
+  MAP_TYPE,
+} from '../../../components/dictionaryConcepts/components/helperFunction';
+
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
 jest.mock('react-notify-toast');
@@ -312,6 +318,9 @@ describe('Test suite for dictionary concepts components', () => {
 });
 
 describe('Test suite for mappings on existing concepts', () => {
+  const removeSetSpy = jest.fn();
+  const createNewSetRowMock = jest.fn();
+  const removeConceptMappingActionMock = jest.fn();
   const props = {
     match: {
       params: {
@@ -336,13 +345,14 @@ describe('Test suite for mappings on existing concepts', () => {
     removeDescriptionForEditConcept: jest.fn(),
     addDescriptionForEditConcept: jest.fn(),
     removeNameForEditConcept: jest.fn(),
-    removeConceptMappingAction: jest.fn(),
+    removeConceptMappingAction: removeConceptMappingActionMock,
     showGeneralModal: jest.fn(),
     hideGeneralModal: jest.fn(),
     confirmRemoveMappingRow: jest.fn(),
     updateConcept: jest.fn(),
     addNewAnswer: jest.fn(),
     removeAnswer: jest.fn(),
+    removeSet: removeSetSpy,
     newName: ['1'],
     description: ['1'],
     answer: ['78'],
@@ -361,13 +371,18 @@ describe('Test suite for mappings on existing concepts', () => {
     fetchAllConceptSources: jest.fn(),
     allSources: [mockSource],
     addSelectedAnswers: jest.fn(),
+    addSelectedSets: jest.fn(),
     selectedAnswers: [{
       frontEndUniqueKey: 'unique', id: 'test ID', map_type: 'Q-AND-A', prePopulated: false,
+    }],
+    selectedSets: [{
+      frontEndUniqueKey: 'unique', id: 'test ID', map_type: MAP_TYPE.conceptSet, prePopulated: false,
     }],
     createNewAnswerRow: jest.fn(),
     removeEditedConceptMappingAction: jest.fn(),
     unPopulateAnswer: jest.fn(),
     removeCurrentAnswer: jest.fn(),
+    createNewSetRow: createNewSetRowMock,
     ...editConceptProps,
   };
   const wrapper = mount(<Router>
@@ -476,6 +491,18 @@ describe('Test suite for mappings on existing concepts', () => {
     wrapper.find('Button #generalConfirmButton').simulate('click');
     expect(spy).toHaveBeenCalled();
     expect(props.removeConceptMappingAction).toHaveBeenCalled();
+  });
+
+  describe('EditConcept', () => {
+    it('should call removeConceptMappingAction and removeSet', () => {
+      const instance = wrapper.find('EditConcept').instance();
+      removeSetSpy.mockClear();
+      removeConceptMappingActionMock.mockClear();
+      instance.confirmRemoveSetRow('uniqueKey').then(() => {
+        expect(removeSetSpy).toHaveBeenCalledWith('uniqueKey');
+        expect(removeConceptMappingActionMock).toHaveBeenCalled();
+      });
+    });
   });
 
   it('should hide the delete modal', () => {
@@ -602,11 +629,28 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it('should update the state with sets', () => {
+    const instance = wrapper.find('EditConcept').instance();
+    instance.handleSetAsyncSelectChange({ a: 1 }, 1);
+    expect(instance.state.sets).toEqual([{
+      frontEndUniqueKey: 'unique', id: 'test ID', map_type: MAP_TYPE.conceptSet, prePopulated: false,
+    }]);
+  });
+
   it('should add new answer row', () => {
     const instance = wrapper.find('EditConcept').instance();
     const spy = jest.spyOn(instance, 'addAnswerRow');
     instance.addAnswerRow();
     expect(spy).toHaveBeenCalled();
+  });
+
+  describe('addSetRow', () => {
+    it('properly calls createNewSetRow', () => {
+      const instance = wrapper.find('EditConcept').instance();
+      createNewSetRowMock.mockClear();
+      instance.addSetRow();
+      expect(createNewSetRowMock).toHaveBeenCalled();
+    });
   });
 
   it('should remove answer row', () => {
@@ -615,6 +659,24 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.removeAnswerRow('uniqueKey', true, 'url', 'name', 'code', true);
     expect(spy).toHaveBeenCalled();
   });
+
+  describe('remove set row', () => {
+    it('should correctly set the state', () => {
+      const instance = wrapper.find('EditConcept').instance();
+      instance.removeSetRow(1, true, '/url', 'name', true);
+      expect(instance.state.deletingSet).toBeTruthy();
+      expect(instance.state.setToDeleteName).toEqual('name');
+      expect(instance.state.uniqueKey).toEqual(1);
+    });
+
+    it('should call remove set when either editing or prePopulated are false', () => {
+      const instance = wrapper.find('EditConcept').instance();
+      removeSetSpy.mockClear();
+      instance.removeSetRow(1, true, '/url', 'name', false);
+      expect(removeSetSpy).toHaveBeenCalledWith(1);
+    });
+  });
+
   it('should call removeAnswer and remove the anwser row when a user clicks the remove button while creating a Q-A concept', () => {
     wrapper.find('button#removeAnswer').simulate('click');
     expect(props.removeAnswer).toHaveBeenCalledWith(props.selectedAnswers[0].frontEndUniqueKey);
@@ -644,13 +706,13 @@ describe('Test suite for mappings on existing concepts', () => {
       target: {
         tabIndex: 0,
         name: 'source',
-        value: 'a234',
+        value: INTERNAL_MAPPING_DEFAULT_SOURCE,
       },
     };
     const url = '1234';
     const instance = wrapper.find('EditConcept').instance();
     instance.state.mappings[1] = {
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      url,
     };
     instance.updateSourceEventListener(event, url);
     expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
