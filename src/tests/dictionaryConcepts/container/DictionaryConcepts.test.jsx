@@ -369,7 +369,9 @@ describe('Test suite for dictionary concepts components', () => {
     dictionaryConceptsWrapper.forceUpdate();
     wrapper.find('#CIEL').simulate('change', sourceEvent);
     wrapper.find('#Diagnosis').simulate('change', classesEvent);
-    expect(spy).toHaveBeenCalledTimes(2);
+    classesEvent.target.type = undefined;
+    wrapper.find('#Diagnosis').simulate('change', classesEvent);
+    expect(spy).toHaveBeenCalledTimes(3);
   });
 
   it('should test componentWillReceiveProps', () => {
