@@ -88,7 +88,7 @@ import concepts, {
   newConceptData,
   multipleConceptsMockStore,
   newConceptDataWithAnswerAndSetMappings,
-  existingConcept, sampleConcept,
+  existingConcept, sampleConcept, conceptWithoutMappings,
 } from '../../__mocks__/concepts';
 import { CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
@@ -550,6 +550,30 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT, payload: existingConcept },
+      { type: PRE_POPULATE_ANSWERS, payload: [] },
+      { type: PRE_POPULATE_SETS, payload: [] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should dispatch the right actions when mappings are empty', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: conceptWithoutMappings,
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_EXISTING_CONCEPT, payload: conceptWithoutMappings },
       { type: PRE_POPULATE_ANSWERS, payload: [] },
       { type: PRE_POPULATE_SETS, payload: [] },
       { type: IS_FETCHING, payload: false },

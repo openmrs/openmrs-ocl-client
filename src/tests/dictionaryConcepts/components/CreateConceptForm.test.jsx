@@ -142,4 +142,34 @@ describe('Test suite for CreateConceptForm', () => {
     expect(wrapper.find('CreateMapping').length).toBe(1);
     wrapper.unmount();
   });
+
+  it('should display all the possible options when editing a concept', () => {
+    const props = {
+      state: {
+        id: '1',
+      },
+      mappings: [{
+        id: 'uniqueid',
+        retired: false,
+      }],
+      addDescription: jest.fn(),
+      handleNewName: jest.fn(),
+      toggleUUID: jest.fn(),
+      handleChange: jest.fn(),
+      handleSubmit: jest.fn(),
+      addAnswer: jest.fn(),
+      concept: CONCEPT_CLASS.diagnosis,
+      editable: false,
+      nameRows: [],
+      disableButton: false,
+      allSources: [mockSource],
+      isEditConcept: true,
+    };
+    const wrapper = shallow(<CreateConceptForm {...props} />);
+    expect(wrapper.find('CreateConceptTable').length).toBe(1);
+    expect(wrapper.find('DescriptionTable').length).toBe(1);
+    expect(wrapper.find('AnswersTable').length).toBe(2);
+    expect(wrapper.find('CreateMapping').length).toBe(1);
+    wrapper.unmount();
+  });
 });

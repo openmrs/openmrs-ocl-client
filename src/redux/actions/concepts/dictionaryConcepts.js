@@ -414,8 +414,12 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
   try {
     const response = await instance.get(url);
     dispatch(isSuccess(response.data, FETCH_EXISTING_CONCEPT));
-    const answers = response.data.mappings.filter(map => map.map_type === 'Q-AND-A');
-    const sets = response.data.mappings.filter(map => map.map_type === MAP_TYPE.conceptSet);
+
+    let { mappings } = response.data;
+    if (!mappings) mappings = [];
+
+    const answers = mappings.filter(map => map.map_type === 'Q-AND-A');
+    const sets = mappings.filter(map => map.map_type === MAP_TYPE.conceptSet);
     dispatch(prepopulateAnswers(answers));
     dispatch(prePopulateSets(sets));
   } catch (error) {

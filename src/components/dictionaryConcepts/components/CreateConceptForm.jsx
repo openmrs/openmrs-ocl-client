@@ -202,7 +202,7 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         </div>
-        {(isSetConcept(props.concept.toString().trim()) || !concept) && (
+        {(isSetConcept(props.concept.toString().trim()) || !concept || isEditConcept) && (
           <div className="form-group set">
             <div className="row col-12 custom-concept-list">
               <h6 className="text-left section-header">Sets</h6>
@@ -225,7 +225,7 @@ const CreateConceptForm = (props) => {
             </div>
           </div>
         )}
-        {(concept.toString().trim() === CONCEPT_CLASS.question || !concept) && (
+        {(concept.toString().trim() === CONCEPT_CLASS.question || !concept || isEditConcept) && (
           <div className="form-group answer">
             <div className="row col-12 custom-concept-list">
               <h5 className="text-left section-header">Answers</h5>
