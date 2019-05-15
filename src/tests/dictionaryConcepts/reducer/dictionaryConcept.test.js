@@ -352,6 +352,7 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       existingConcept: {
+        datatype: '',
         descriptions: [],
         names: [],
       },

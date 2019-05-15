@@ -79,8 +79,6 @@ export class EditConcept extends Component {
     removeSet: PropTypes.func.isRequired,
     createNewAnswerRow: PropTypes.func.isRequired,
     createNewSetRow: PropTypes.func.isRequired,
-    deleteConcept: PropTypes.func.isRequired,
-    recreateConcept: PropTypes.func.isRequired,
     unPopulateAnswer: PropTypes.func.isRequired,
     dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     addReferenceToCollection: PropTypes.func.isRequired,
@@ -93,7 +91,7 @@ export class EditConcept extends Component {
       notEditable: true,
       id: '',
       concept_class: '',
-      datatype: 'None',
+      datatype: '',
       answers: [],
       sets: [],
       names: [],
@@ -134,6 +132,13 @@ export class EditConcept extends Component {
     fetchAllConceptSources();
   }
 
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.existingConcept !== this.props.existingConcept) {
+      const { existingConcept: { datatype } } = this.props;
+      this.setState({ datatype });
+    }
+  }
+
   componentWillUnmount() {
     this.props.clearSelections();
   }
@@ -152,12 +157,13 @@ export class EditConcept extends Component {
       match: {
         params: { conceptType, conceptId },
       },
+      existingConcept: { datatype },
     } = this.props;
     const concept = conceptType || '';
     this.setState({
-      ...this.state,
       id: conceptId,
       concept_class: concept,
+      datatype,
     });
   }
 
