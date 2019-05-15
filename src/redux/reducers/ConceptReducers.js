@@ -200,6 +200,7 @@ export default (state = initialState, action) => {
         existingConcept: {
           descriptions: [],
           names: [],
+          datatype: ''
         },
       };
     case EDIT_CONCEPT_ADD_DESCRIPTION:

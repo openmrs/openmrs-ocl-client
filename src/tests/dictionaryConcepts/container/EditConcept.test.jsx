@@ -23,8 +23,6 @@ jest.mock('react-notify-toast');
 localStorage.setItem('dictionaryPathName', '/');
 
 const editConceptProps = {
-  deleteConcept: jest.fn(),
-  recreateConcept: async () => jest.fn(),
   unretireMapping: jest.fn(),
   dictionaryConcepts: [sampleConcept],
   updateConcept: async () => sampleConcept,
@@ -87,6 +85,10 @@ describe('Test suite for dictionary concepts components', () => {
     removeEditedConceptMapping: jest.fn(),
     unPopulateAnswer: jest.fn(),
     removeEditedConceptMappingAction: jest.fn(),
+    addSelectedSets: jest.fn(),
+    selectedSets: [],
+    removeSet: jest.fn(),
+    createNewSetRow: jest.fn(),
     ...editConceptProps,
   };
 
@@ -366,6 +368,7 @@ describe('Test suite for mappings on existing concepts', () => {
         uuid: '1234',
         name: 'dummy',
       }],
+      datatype: 'Text',
     },
     newRow: '1234',
     fetchAllConceptSources: jest.fn(),
@@ -758,5 +761,19 @@ describe('Test suite for mappings on existing concepts', () => {
       const editConceptInstance = editConceptWrapper.find('EditConcept').instance();
       expect(await editConceptInstance.updateConceptReference(sampleConcept)).toBeFalsy();
     });
+  });
+  it('should update container state when props change', () => {
+    const editWrapper = mount(<EditConcept {...props} />);
+    const instance = editWrapper.instance();
+    const spy = jest.spyOn(instance, 'componentDidUpdate');
+    const newProps = {
+      existingConcept: {
+        ...props.existingConcept,
+        datatype: 'Boolean',
+      },
+    };
+    editWrapper.setProps(newProps);
+    expect(spy).toHaveBeenCalled();
+    expect(instance.state.datatype).toEqual(newProps.existingConcept.datatype);
   });
 });
