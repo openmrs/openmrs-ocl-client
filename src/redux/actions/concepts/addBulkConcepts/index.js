@@ -2,7 +2,6 @@ import { notify } from 'react-notify-toast';
 import instance from '../../../../config/axiosConfig';
 import { isFetching, isSuccess } from '../../globalActionCreators';
 import {
-  FETCH_BULK_CONCEPTS,
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
@@ -13,20 +12,7 @@ import {
   SET_CURRENT_PAGE,
 } from '../../types';
 
-export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
-  const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
-  dispatch(isFetching(true));
-  try {
-    const response = await instance.get(url);
-    dispatch(isSuccess(response.data, FETCH_BULK_CONCEPTS));
-    dispatch(isFetching(false));
-  } catch (error) {
-    dispatch(isFetching(false));
-    notify.show('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
-  }
-};
-
-export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage) => async (
+export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1) => async (
   dispatch,
   getState,
 ) => {
