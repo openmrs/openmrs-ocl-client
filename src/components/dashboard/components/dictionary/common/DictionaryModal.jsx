@@ -31,7 +31,6 @@ export class DictionaryModal extends React.Component {
         conceptUrl: '',
       },
       errors: {},
-      supportedLocalesOptions: [],
       disableButton: false,
     };
   }
@@ -163,7 +162,6 @@ export class DictionaryModal extends React.Component {
   hideModal = () => {
     this.setState({
       errors: {},
-      supportedLocalesOptions: [],
       disableButton: false,
     });
     this.props.modalhide();
@@ -176,7 +174,6 @@ export class DictionaryModal extends React.Component {
         default_locale, repository_type,
       },
     } = this.props;
-    const supportedLocalesOptions = this.preSelectSupportedLocales();
     this.setState({
       data: {
         id,
@@ -190,7 +187,6 @@ export class DictionaryModal extends React.Component {
         repository_type,
       },
       errors: {},
-      supportedLocalesOptions,
     });
   }
 
@@ -200,7 +196,6 @@ export class DictionaryModal extends React.Component {
       organizations, dictionary,
       isEditingDictionary,
     } = this.props;
-    const publicSources = [];
     return (
       <div>
         <Modal
@@ -294,11 +289,6 @@ export class DictionaryModal extends React.Component {
                         </option>
                         )
                       }
-                      {
-                        publicSources.sort((a, b) => a.name > b.name).map(source => (
-                          <option value={source.id}>{source.name}</option>
-                        ))
-                      }
                     </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
@@ -383,7 +373,7 @@ export class DictionaryModal extends React.Component {
                     closeMenuOnSelect={false}
                     defaultValue={
                       isEditingDictionary
-                        ? this.state.supportedLocalesOptions
+                        ? this.preSelectSupportedLocales()
                         : []}
                     options={
                       languages.filter(
