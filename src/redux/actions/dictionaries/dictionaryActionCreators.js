@@ -13,7 +13,7 @@ import {
   realisingHeadSuccess,
   editDictionarySuccess,
   creatingVersionsSuccess,
-  creatingVersionsError,
+  creatingVersionsError, replaceConcept,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
@@ -265,14 +265,18 @@ export const createVersion = (url, data) => (dispatch) => {
     });
 };
 
-export const retireConcept = (conceptUrl, retired) => async (dispatch) => {
+export const retireConcept = (conceptUrl, retire) => async (dispatch) => {
+  const retiredMessage = retire ? 'retired' : 'un-retired';
+  const retiringMessage = retire ? 'Retiring' : 'Un-Retiring';
+  notify.show(retiringMessage, 'warning', 2000);
   try {
-    const response = await axiosInstance.put(conceptUrl, { retired });
-    notify.show('Concept successfully un-retired', 'success', 3000);
+    const response = await api.concepts.retireConcept(conceptUrl, retire);
+    dispatch(replaceConcept(response.data));
+    notify.show(`Concept successfully ${retiredMessage}`, 'success', 3000);
     return response.data;
   } catch (error) {
     error && error.response && error.response.data && dispatch(isErrored(error.response.data));
-    notify.show('Failed to un-retire the concept', 'error', 3000);
+    notify.show(`Failed to ${retiredMessage} the concept`, 'error', 3000);
     return null;
   }
 }

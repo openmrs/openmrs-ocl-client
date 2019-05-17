@@ -34,6 +34,7 @@ import {
   REMOVE_SELECTED_SET,
   ADD_SELECTED_SETS,
   PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
+  REPLACE_CONCEPT,
 } from '../actions/types';
 import {
   filterSources,
@@ -111,6 +112,14 @@ export default (state = initialState, action) => {
           .filter(concept => concept.version_url !== action.payload),
         dictionaryConcepts: state.dictionaryConcepts
           .filter(concept => concept.version_url !== action.payload),
+      };
+    case REPLACE_CONCEPT:
+      return {
+        ...state,
+        paginatedConcepts: state.paginatedConcepts
+          .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
+        dictionaryConcepts: state.dictionaryConcepts
+          .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
       };
     case TOTAL_CONCEPT_COUNT:
       return {

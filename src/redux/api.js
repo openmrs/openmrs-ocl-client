@@ -89,4 +89,7 @@ export default {
         .get(`users/${localStorage.username}/orgs/`)
         .then(response => response.data),
   },
+  concepts: {
+    retireConcept: (conceptUrl, retire) => instance.put(conceptUrl, { retired: retire }),
+  }
 };
