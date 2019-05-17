@@ -16,7 +16,7 @@ import {
   RELEASING_HEAD_VERSION,
   REMOVE_CONCEPT,
   CREATING_RELEASED_VERSION,
-  CREATING_RELEASED_VERSION_FAILED,
+  CREATING_RELEASED_VERSION_FAILED, REPLACE_CONCEPT,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -25,7 +25,7 @@ import {
   isErrored,
   isSuccess,
   clearDictionary,
-  removeConcept,
+  removeConcept, replaceConcept,
 } from '../../../redux/actions/dictionaries/dictionaryActions';
 import {
   fetchDictionaries,
@@ -79,6 +79,16 @@ describe('Test for successfully removing a Concept from a dictionary', () => {
 
   it('should return action type and payload after removing a concept', () => {
     expect(removeConcept(response)).toEqual(removeDictionaryConcept);
+  });
+});
+
+describe('replaceConcept', () => {
+  it('should return action type and payload', () => {
+    const expected = {
+      type: REPLACE_CONCEPT,
+      payload: concepts,
+    };
+    expect(replaceConcept(concepts)).toEqual(expected);
   });
 });
 

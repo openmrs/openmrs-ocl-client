@@ -14,8 +14,10 @@ import {
   REMOVE_SELECTED_SET,
   ADD_SELECTED_SETS,
   PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
+  REPLACE_CONCEPT,
 } from '../../../redux/actions/types';
-import concepts from '../../__mocks__/concepts';
+import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
+import { replaceConcept } from '../../../redux/actions/dictionaries/dictionaryActions';
 
 const initialState = {
   concepts: [],
@@ -280,5 +282,18 @@ describe('Test suite for concepts reducer', () => {
     expect(state.selectedSets).toContainEqual(existingSet);
     state = reducer(initialState, { type: REMOVE_SELECTED_SET, payload: setToRemoveKey });
     expect(state.selectedSets).not.toContainEqual(existingSet);
+  });
+
+  describe(REPLACE_CONCEPT, () => {
+    it('should replace a concept in dictionaryConcepts and paginatedConcepts', () => {
+      let state = reducer(multipleConceptsMockStore.concepts, 'init');
+      const conceptToReplace = state.dictionaryConcepts[0];
+      const newConcept = concepts;
+      newConcept.id = conceptToReplace.id;
+      expect(conceptToReplace).not.toEqual(newConcept);
+      state = reducer(state, replaceConcept(newConcept));
+      expect(state.dictionaryConcepts[0]).toEqual(newConcept);
+      expect(state.paginatedConcepts[0]).toEqual(newConcept);
+    });
   });
 });

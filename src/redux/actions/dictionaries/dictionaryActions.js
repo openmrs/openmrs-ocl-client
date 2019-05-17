@@ -14,7 +14,7 @@ import {
   REMOVE_MAPPING,
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
-  RELEASING_HEAD_VERSION,
+  RELEASING_HEAD_VERSION, REPLACE_CONCEPT,
 } from '../types';
 
 export const addDictionary = response => ({
@@ -69,6 +69,11 @@ export const clearDictionary = () => ({
 
 export const removeConcept = payload => ({
   type: REMOVE_CONCEPT,
+  payload,
+});
+
+export const replaceConcept = payload => ({
+  type: REPLACE_CONCEPT,
   payload,
 });
 

@@ -19,11 +19,13 @@ const store = createMockStore({
 });
 
 const retireMockProps = {
-  retireCurrentConcept: jest.fn(),
+  retireCurrentConcept: jest.fn(() => sampleConcept),
   recreateConcept: jest.fn(),
   removeConcept: jest.fn(),
   getOriginalConcept: async () => jest.fn(),
   originalConcept: sampleConcept,
+  addReferenceToCollection: jest.fn(() => true),
+  deleteReferenceFromCollection: jest.fn(() => true),
 };
 
 jest.useFakeTimers();
@@ -618,6 +620,85 @@ describe('Test suite for dictionary concepts components', () => {
       dictionaryConcepts.setState({ isOwner: true }, () => {
         wrapper.find('button#retire').simulate('click');
         expect(spy).toHaveBeenCalled();
+      });
+    });
+
+    describe('handleRetireConcept', () => {
+      let instance;
+      let concept;
+      let retire;
+      beforeEach(() => {
+        instance = wrapper.find('DictionaryConcepts').instance();
+        retireMockProps.retireCurrentConcept.mockClear();
+        retireMockProps.addReferenceToCollection.mockClear();
+        retireMockProps.deleteReferenceFromCollection.mockClear();
+        [concept] = props.concepts;
+        retire = true;
+      });
+
+      it('should call retireCurrentConcept, deleteReferenceFromCollection and addReferenceToCollection with the right arguments', async () => {
+        await instance.handleRetireConcept(concept.id, retire);
+        expect(retireMockProps.retireCurrentConcept).toHaveBeenCalledWith(concept.url, retire);
+        expect(retireMockProps.deleteReferenceFromCollection).toHaveBeenCalledWith(
+          props.match.params.type,
+          props.match.params.typeName,
+          props.match.params.collectionName,
+          [concept.version_url],
+        );
+        expect(retireMockProps.addReferenceToCollection).toHaveBeenCalledWith(
+          props.match.params.type,
+          props.match.params.typeName,
+          props.match.params.collectionName,
+          [concept.url],
+        );
+      });
+
+      it('should not call deleteReferenceFromCollection and addReferenceToCollection when retire fails', async () => {
+        const newProps = {
+          ...props,
+          retireCurrentConcept: () => false,
+        };
+        wrapper = mount(<Provider store={store}>
+          <Router>
+            <DictionaryConcepts {...newProps} />
+          </Router>
+        </Provider>);
+        instance = wrapper.find('DictionaryConcepts').instance();
+        await instance.handleRetireConcept(concept.id, retire);
+        expect(retireMockProps.deleteReferenceFromCollection).not.toHaveBeenCalled();
+        expect(retireMockProps.addReferenceToCollection).not.toHaveBeenCalled();
+      });
+
+      it('should return false and doesn\'t call addReferenceToCollection when deleteReferenceFromCollection fails', async () => {
+        const newProps = {
+          ...props,
+          deleteReferenceFromCollection: () => false,
+        };
+        wrapper = mount(<Provider store={store}>
+          <Router>
+            <DictionaryConcepts {...newProps} />
+          </Router>
+        </Provider>);
+        instance = wrapper.find('DictionaryConcepts').instance();
+        const result = await instance.handleRetireConcept(concept.id, retire);
+        expect(result).toEqual(false);
+        expect(retireMockProps.addReferenceToCollection).not.toHaveBeenCalled();
+      });
+
+      it('should return false when addReferenceToCollection fails', async () => {
+        retire = false;
+        const newProps = {
+          ...props,
+          addReferenceToCollection: () => false,
+        };
+        wrapper = mount(<Provider store={store}>
+          <Router>
+            <DictionaryConcepts {...newProps} />
+          </Router>
+        </Provider>);
+        instance = wrapper.find('DictionaryConcepts').instance();
+        const result = await instance.handleRetireConcept(concept.id, retire);
+        expect(result).toEqual(false);
       });
     });
   });

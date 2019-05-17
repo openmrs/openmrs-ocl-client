@@ -16,6 +16,7 @@ export const CLEAR_DICTIONARIES = '[dictionaries] clear dictionaries';
 export const FETCHING_DICTIONARY = '[dictionary] fetch dictionary';
 export const CLEAR_DICTIONARY = '[dictionary] clear dictionary';
 export const REMOVE_CONCEPT = '[concepts] remove concept';
+export const REPLACE_CONCEPT = '[concepts] replace concept';
 export const REMOVE_MAPPING = '[mappings] remove mapping';
 export const FETCHING_VERSIONS = '[dictionary] fetch versions of a dictionary';
 export const RELEASING_HEAD_VERSION = '[dictionary] releasing HEAD version of a dictionary';
