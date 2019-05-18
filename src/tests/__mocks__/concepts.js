@@ -753,3 +753,8 @@ export const newMappings = [{
   isNew: false,
   url: '1435',
 }];
+
+export const conceptWithoutMappings = {
+  ...sampleConcept,
+  mappings: null,
+};

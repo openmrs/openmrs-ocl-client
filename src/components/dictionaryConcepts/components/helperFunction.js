@@ -65,6 +65,7 @@ export const CONCEPT_TYPE = {
 
 export const CONCEPT_CLASS = {
   question: 'Question',
+  diagnosis: 'Diagnosis',
 };
 
 export const TRADITIONAL_OCL_HOST = urlConfig.TRADITIONAL_OCL_HOST;
