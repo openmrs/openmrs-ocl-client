@@ -92,4 +92,7 @@ export default {
   concepts: {
     retireConcept: (conceptUrl, retire) => instance.put(conceptUrl, { retired: retire }),
   }
+  mappings: {
+    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}`),
+  },
 };

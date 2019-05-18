@@ -1,4 +1,5 @@
 import { notify } from 'react-notify-toast';
+import { union } from 'lodash';
 import instance from '../../../../config/axiosConfig';
 import { isFetching, isSuccess } from '../../globalActionCreators';
 import {
@@ -12,6 +13,7 @@ import {
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
 } from '../../types';
+import api from '../../../api';
 
 export const fetchBulkConcepts = (currentPage, source = 'CIEL') => async (dispatch) => {
   const url = `orgs/${source}/sources/${source}/concepts/?limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
@@ -71,15 +73,36 @@ export const previewConcept = id => (dispatch, getState) => {
   return dispatch(isSuccess(payload[0], PREVIEW_CONCEPT));
 };
 
-export const addConcept = (params, data, conceptName) => async (dispatch) => {
+export const recursivelyFetchConceptMappings = async (fromConceptCode, levelsToCheck) => {
+  const startingConceptMappings = await api.mappings.fetchFromPublicSources(fromConceptCode);
+  const mappingsList = [startingConceptMappings.data];
+  for (let i = 0; i < levelsToCheck; i += 1) {
+    const toConceptCodes = mappingsList[i].map(
+      mapping => mapping.to_concept_code,
+    );
+    if (!toConceptCodes.length) break;
+    const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
+    mappingsList.push(conceptMappings.data);
+  }
+  return union(...mappingsList).map(mapping => mapping.to_concept_url);
+};
+
+export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
   const { type, typeName, collectionName } = params;
   const url = `${type}/${typeName}/collections/${collectionName}/references/`;
-  const payload = await instance.put(url, data);
-  dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
-  if (payload.data[0].added === true) {
-    notify.show(`Just Added - ${conceptName}`, 'success', 3000);
-  } else {
-    notify.show(`${conceptName} already added`, 'error', 3000);
+  try {
+    const referencesToAdd = await recursivelyFetchConceptMappings(id, 2);
+    data.data.expressions.push(...referencesToAdd);
+
+    const payload = await instance.put(url, data);
+    dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
+    if (payload.data[0].added === true) {
+      notify.show(`Just Added - ${conceptName}`, 'success', 3000);
+    } else {
+      notify.show(`${conceptName} already added`, 'error', 3000);
+    }
+  } catch (e) {
+    notify.show(`Failed to add ${conceptName}. Please Retry`, 'error', 3000);
   }
 };
 
