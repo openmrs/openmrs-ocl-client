@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SideNavItems = ({
-  listItem, handleChange, value, filterType,
+  listItem, handleChange, value, filterType, isChecked,
 }) => (
   <div className="custom-control custom-checkbox">
     <input
@@ -13,6 +13,7 @@ const SideNavItems = ({
       data-own="stuff"
       value={value}
       onChange={handleChange}
+      checked={isChecked}
     />
     <label className="custom-control-label bulk-concept-label" htmlFor={listItem}>
       {listItem}
@@ -25,6 +26,11 @@ SideNavItems.propTypes = {
   filterType: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool,
+};
+
+SideNavItems.defaultProps = {
+  isChecked: false,
 };
 
 export default SideNavItems;

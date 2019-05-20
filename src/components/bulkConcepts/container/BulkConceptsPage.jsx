@@ -7,7 +7,6 @@ import SearchBar from '../component/SearchBar';
 import ConceptTable from '../component/ConceptTable';
 import Header from './Header';
 import {
-  fetchBulkConcepts,
   addToFilterList,
   previewConcept,
   addConcept,
@@ -42,11 +41,15 @@ export class BulkConceptsPage extends Component {
         collectionName: PropTypes.string,
       }).isRequired,
     }).isRequired,
+    datatypeList: PropTypes.array,
+    classList: PropTypes.array,
   };
 
   static defaultProps = {
     preview: {},
-  }
+    datatypeList: [],
+    classList: [],
+  };
 
   constructor(props) {
     super(props);
@@ -101,8 +104,8 @@ export class BulkConceptsPage extends Component {
   };
 
   getBulkConcepts = () => {
-    const { currentPage, fetchBulkConcepts: bulkConceptsFetched } = this.props;
-    bulkConceptsFetched(currentPage);
+    const { currentPage, fetchFilteredConcepts: bulkConceptsFetched } = this.props;
+    bulkConceptsFetched(undefined, undefined, currentPage);
   }
 
   handleChange = (event) => {
@@ -155,6 +158,8 @@ export class BulkConceptsPage extends Component {
       match: { params },
       previewConcept: previewedConcept,
       addConcept: addedConcept,
+      datatypeList,
+      classList,
     } = this.props;
     const {
       datatypeInput, classInput, searchInput, conceptLimit,
@@ -174,6 +179,8 @@ export class BulkConceptsPage extends Component {
             dataTypeValue={datatypeInput}
             classValue={classInput}
             handleChange={this.handleFilter}
+            datatypeList={datatypeList}
+            classList={classList}
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
             <SearchBar
@@ -206,12 +213,13 @@ export const mapStateToProps = ({ bulkConcepts, concepts }) => ({
   loading: concepts.loading,
   concepts: bulkConcepts.bulkConcepts,
   ...bulkConcepts,
+  datatypeList: bulkConcepts.datatypeList,
+  classList: bulkConcepts.classList,
 });
 
 export default connect(
   mapStateToProps,
   {
-    fetchBulkConcepts,
     addToFilterList,
     previewConcept,
     addConcept,

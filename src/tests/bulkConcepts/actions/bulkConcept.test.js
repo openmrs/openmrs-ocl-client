@@ -6,7 +6,6 @@ import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
 import {
   IS_FETCHING,
-  FETCH_BULK_CONCEPTS,
   ADD_TO_DATATYPE_LIST,
   ADD_TO_CLASS_LIST,
   FETCH_FILTERED_CONCEPTS,
@@ -17,7 +16,6 @@ import {
   SET_PERVIOUS_PAGE,
 } from '../../../redux/actions/types';
 import {
-  fetchBulkConcepts,
   addToFilterList,
   fetchFilteredConcepts,
   previewConcept,
@@ -38,48 +36,6 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
   afterEach(() => {
     moxios.uninstall(instance);
-  });
-
-  it('should handle FETCH_BULK_CONCEPTS', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [concepts],
-      });
-    });
-
-    const expectedActions = [
-      { type: IS_FETCHING, payload: true },
-      { type: FETCH_BULK_CONCEPTS, payload: [concepts] },
-      { type: IS_FETCHING, payload: false },
-    ];
-
-    const store = mockStore({});
-
-    return store.dispatch(fetchBulkConcepts()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-  it('should handle error in FETCH_BULK_CONCEPTS', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: 'bad request',
-      });
-    });
-
-    const expectedActions = [
-      { type: IS_FETCHING, payload: true },
-      { type: IS_FETCHING, payload: false },
-    ];
-
-    const store = mockStore({});
-
-    return store.dispatch(fetchBulkConcepts()).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
   });
   it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', () => {
     const notifyMock = jest.fn();
