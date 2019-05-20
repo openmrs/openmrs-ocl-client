@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -63,23 +64,30 @@ const PreviewCard = ({
     otherMappings = getOtherMappings(mapping);
   }
 
-  const displaySetMembersOrAnswers = () => {
+  const displaySetMembers = () => {
     if (setMembers && setMembers.length > 0) {
       remainingCount = setMembers.length - NUMBER_OF_ITEMS_TO_DISPLAY;
       return <CardBody
         remainingCount={remainingCount}
         title="Set members"
-        body={setMembers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
-        remainingItems={setMembers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+        body={setMembers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY)
+          .join(' ')}
+        remainingItems={setMembers.slice(NUMBER_OF_ITEMS_TO_DISPLAY)
+          .join(' ')}
       />;
     }
+    return '';
+  };
+  const displayAnswers = () => {
     if (answers && answers.length > 0) {
       remainingCount = answers.length - NUMBER_OF_ITEMS_TO_DISPLAY;
       return <CardBody
         remainingCount={remainingCount}
         title="Answers"
-        body={answers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
-        remainingItems={answers.slice(NUMBER_OF_ITEMS_TO_DISPLAY).join(' ')}
+        body={answers.slice(0, NUMBER_OF_ITEMS_TO_DISPLAY)
+          .join(' ')}
+        remainingItems={answers.slice(NUMBER_OF_ITEMS_TO_DISPLAY)
+          .join(' ')}
       />;
     }
     return '';
@@ -112,7 +120,8 @@ View in traditional OCL
             <div><CardBody title="Class" body={concept_class} /></div>
             <div><CardBody title="Data Type" body={datatype} /></div>
           </div>
-          {displaySetMembersOrAnswers()}
+          {displayAnswers()}
+          {displaySetMembers()}
           <MappingPreview title="Mappings" body={otherMappings.length > 0 ? otherMappings : 'none'} />
         </ModalBody>
         <ModalFooter>
