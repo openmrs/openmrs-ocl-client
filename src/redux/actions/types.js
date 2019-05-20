@@ -79,3 +79,4 @@ export const SET_NEXT_PAGE = '[page] next_page';
 export const SET_CURRENT_PAGE = '[page] current_page';
 export const IS_LOADING = '[ui] loader_spinning';
 export const UN_POPULATE_THIS_ANSWER = '[concept] unpopulate an answer';
+export const UNPOPULATE_SET = '[concept] unpopulate a set';

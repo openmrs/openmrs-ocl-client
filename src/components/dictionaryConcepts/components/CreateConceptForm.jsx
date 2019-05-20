@@ -205,7 +205,7 @@ const CreateConceptForm = (props) => {
         {(isSetConcept(props.concept.toString().trim()) || !concept || isEditConcept) && (
           <div className="form-group set">
             <div className="row col-12 custom-concept-list">
-              <h6 className="text-left section-header">Sets</h6>
+              <h5 className="text-left section-header">Set Members</h5>
               <AnswersTable
                 handleAsyncSelectChange={handleSetAsyncSelectChange}
                 selectedAnswers={selectedSets}
@@ -214,6 +214,7 @@ const CreateConceptForm = (props) => {
                 currentDictionaryName={currentDictionaryName}
                 isEditConcept={isEditConcept}
                 mapType={MAP_TYPE.conceptSet}
+                removeCurrentAnswer={removeCurrentAnswer}
               />
               <button
                 type="button"
@@ -236,6 +237,7 @@ const CreateConceptForm = (props) => {
                 removeAnswerRow={removeAnswerRow}
                 currentDictionaryName={currentDictionaryName}
                 isEditConcept={isEditConcept}
+                mapType={MAP_TYPE.questionAndAnswer}
                 removeCurrentAnswer={removeCurrentAnswer}
               />
               <button

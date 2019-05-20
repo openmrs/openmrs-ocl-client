@@ -33,8 +33,10 @@ import {
   ADD_NEW_SET_ROW,
   REMOVE_SELECTED_SET,
   ADD_SELECTED_SETS,
-  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
+  PRE_POPULATE_SETS,
+  UNPOPULATE_PRE_POPULATED_SETS,
   REPLACE_CONCEPT,
+  UNPOPULATE_SET,
 } from '../actions/types';
 import {
   filterSources,
@@ -209,7 +211,7 @@ export default (state = initialState, action) => {
         existingConcept: {
           descriptions: [],
           names: [],
-          datatype: ''
+          datatype: '',
         },
       };
     case EDIT_CONCEPT_ADD_DESCRIPTION:
@@ -342,6 +344,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedAnswers: newAnswers,
+      };
+    }
+
+    case UNPOPULATE_SET: {
+      const newSets = updatePopulatedAnswers(action.payload, state.selectedSets);
+      return {
+        ...state,
+        selectedSets: newSets,
       };
     }
 

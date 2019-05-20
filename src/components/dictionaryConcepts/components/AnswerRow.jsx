@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SelectAnswers from '../containers/SelectAnswers';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from './helperFunction';
+import { INTERNAL_MAPPING_DEFAULT_SOURCE } from './helperFunction';
 
 
 class AnswerRow extends React.Component {
@@ -30,11 +30,13 @@ class AnswerRow extends React.Component {
   }
 
   handleClick = () => {
+    const { toSourceName } = this.props;
     if (!this.state.isClicked) {
       this.setState({
         isClicked: true,
         isEditing: false,
         isPrePopulated: false,
+        source: toSourceName,
       });
     }
   }
@@ -72,7 +74,7 @@ class AnswerRow extends React.Component {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={toSourceName}
+                defaultValue={toSourceName.toUpperCase()}
                 onClick={this.handleClick}
                 required
               />
@@ -81,6 +83,7 @@ class AnswerRow extends React.Component {
                 name="map_scope"
                 className="form-control"
                 onChange={event => this.handleChangeInSource(event)}
+                defaultValue={toSourceName}
                 required
               >
                 <option value={localStorage.getItem('dictionaryId')}>
@@ -107,6 +110,7 @@ class AnswerRow extends React.Component {
               answer={answer}
               answerUrl={answerUrl}
               mapType={mapType}
+              handleClick={this.handleClick}
             />
         }
         </td>
@@ -148,7 +152,7 @@ AnswerRow.propTypes = {
   removeCurrentAnswer: PropTypes.func.isRequired,
   currentDictionaryName: PropTypes.string,
   answer: PropTypes.object.isRequired,
-  mapType: PropTypes.string,
+  mapType: PropTypes.string.isRequired,
 };
 
 AnswerRow.defaultProps = {
@@ -160,7 +164,6 @@ AnswerRow.defaultProps = {
   toSourceName: '',
   currentDictionaryName: '',
   frontEndUniqueKey: 'unique',
-  mapType: MAP_TYPE.questionAndAnswer,
 };
 
 

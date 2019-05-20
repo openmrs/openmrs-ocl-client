@@ -26,6 +26,7 @@ import {
   addSelectedSetsToState,
   removeSelectedSet,
   addNewSetRow,
+  unpopulateSet,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
@@ -83,6 +84,7 @@ export class EditConcept extends Component {
     dictionaryConcepts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     addReferenceToCollection: PropTypes.func.isRequired,
     deleteReferenceFromCollection: PropTypes.func.isRequired,
+    unpopulateCurrentSet: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -550,10 +552,16 @@ export class EditConcept extends Component {
   }
 
   removeCurrentAnswer = (info) => {
-    const { unPopulateAnswer } = this.props;
-    this.editedAnswers = [...this.editedAnswers, info.answerUrl];
-    this.removeUnsavedMappingRow(info.answerUrl);
-    unPopulateAnswer(info.answer);
+    const { answer, answer: { map_type }, answerUrl } = info;
+    const { unPopulateAnswer, unpopulateCurrentSet } = this.props;
+    const { conceptSet, questionAndAnswer } = MAP_TYPE;
+    this.editedAnswers = [...this.editedAnswers, answerUrl];
+    this.removeUnsavedMappingRow(answerUrl);
+    if (map_type === questionAndAnswer) {
+      unPopulateAnswer(answer);
+    } else if (map_type === conceptSet) {
+      unpopulateCurrentSet(answer);
+    }
   };
 
   removeSetRow = (uniqueKey, editing, url, name, prePopulated) => {
@@ -741,6 +749,7 @@ export default connect(
     createNewAnswerRow: addNewAnswerRow,
     createNewSetRow: addNewSetRow,
     unPopulateAnswer: unPopulateThisAnswer,
+    unpopulateCurrentSet: unpopulateSet,
     addReferenceToCollection: addReferenceToCollectionAction,
     deleteReferenceFromCollection: deleteReferenceFromCollectionAction,
   },

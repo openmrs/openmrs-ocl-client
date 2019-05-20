@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import AnswersTable from '../../../components/dictionaryConcepts/components/AnswersTable';
 import selectedAnswers from '../../__mocks__/answers';
+import { MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 const defaultProps = {
   selectedAnswers,
@@ -14,6 +15,7 @@ const defaultProps = {
   currentDictionaryName: 'test dictionary',
   isEditConcept: false,
   removeCurrentAnswer: jest.fn(),
+  mapType: MAP_TYPE.conceptSet,
 };
 
 describe('Test suite for AnswersTable', () => {

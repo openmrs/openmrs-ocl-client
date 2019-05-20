@@ -38,7 +38,9 @@ import {
   ADD_NEW_SET_ROW,
   REMOVE_SELECTED_SET,
   ADD_SELECTED_SETS,
-  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
+  PRE_POPULATE_SETS,
+  UNPOPULATE_PRE_POPULATED_SETS,
+  UNPOPULATE_SET,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -74,7 +76,9 @@ import {
   removeSelectedSet,
   addSelectedSetsToState,
   addSetMappingToConcept,
-  prePopulateSets, unpopulatePrepopulatedSets,
+  prePopulateSets,
+  unpopulatePrepopulatedSets,
+  unpopulateSet,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -988,17 +992,40 @@ describe('test suite for synchronous action creators', () => {
     expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should handle UN_POPULATE_THIS_ANSWER', () => {
+  it('should dispatch UN_POPULATE_THIS_ANSWER action type', () => {
     const store = mockStore(mockConceptStore);
     const answer = {
+      frontEndUniqueKey: 'unique',
+      prePopulated: true,
+    };
+    const newAnswer = {
       frontEndUniqueKey: 'unique',
       prePopulated: false,
     };
     const expectedActions = [{
       type: UN_POPULATE_THIS_ANSWER,
-      payload: answer,
+      payload: newAnswer,
     }];
     store.dispatch(unPopulateThisAnswer(answer));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('should dispatch UNPOPULATE_SET action type', () => {
+    const store = mockStore(mockConceptStore);
+    const set = {
+      frontEndUniqueKey: 'unique',
+      prePopulated: true,
+    };
+    const newSet = {
+      frontEndUniqueKey: 'unique',
+      prePopulated: false,
+    };
+    const expectedActions = [{
+      type: UNPOPULATE_SET,
+      payload: newSet,
+    }];
+    store.dispatch(unpopulateSet(set));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 
   it('should handle PRE_POPULATE_SETS', () => {

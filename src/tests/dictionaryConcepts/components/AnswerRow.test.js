@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import AnswerRow from
   '../../../components/dictionaryConcepts/components/AnswerRow';
+import { MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 
 describe('Test select input field', () => {
@@ -23,6 +24,7 @@ describe('Test select input field', () => {
       answer: {},
       isClicked: false,
       answerUrl: '',
+      mapType: MAP_TYPE.questionAndAnswer,
     };
   });
 

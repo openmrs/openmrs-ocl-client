@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
 import AnswerRow from './AnswerRow';
-import { MAP_TYPE } from './helperFunction';
 
 const AnswersTable = (props) => {
   const {
@@ -60,14 +59,13 @@ AnswersTable.propTypes = {
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
   removeCurrentAnswer: PropTypes.func,
-  mapType: PropTypes.string,
+  mapType: PropTypes.string.isRequired,
 };
 
 AnswersTable.defaultProps = {
   handleAnswerChange: () => {},
   currentDictionaryName: '',
   removeAnswerRow: () => {},
-  mapType: MAP_TYPE.questionAndAnswer,
   removeCurrentAnswer: () => {},
 };
 

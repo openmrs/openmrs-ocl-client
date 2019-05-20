@@ -30,6 +30,7 @@ const editConceptProps = {
   isEditConcept: true,
   deleteReferenceFromCollection: () => true,
   addReferenceToCollection: () => true,
+  unpopulateCurrentSet: jest.fn(),
 };
 
 describe('Test suite for dictionary concepts components', () => {
