@@ -1,4 +1,5 @@
 import moxios from 'moxios';
+import { notify } from 'react-notify-toast';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
@@ -15,17 +16,38 @@ import
 fetchCielConcepts,
 { addExistingBulkConcepts, addDictionaryReference, fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
+import api from '../../../redux/api';
 
 const mockStore = configureStore([thunk]);
 jest.mock('react-notify-toast');
 
 describe('Test suite for source concepts actions', () => {
+  api.mappings.fetchFromPublicSources = jest.fn(() => ({ data: [] }));
+
   beforeEach(() => {
     moxios.install(instance);
   });
 
   afterEach(() => {
     moxios.uninstall(instance);
+  });
+  it('should dispatch an error on fetchConceptSources failure', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        status: 400,
+        response: { data: 'error' },
+      });
+    });
+    const returnedAction = [
+      { type: IS_FETCHING, payload: true },
+      { type: CLEAR_SOURCE_CONCEPTS },
+      { type: FETCH_CONCEPT_SOURCES, payload: 'error' },
+      { type: IS_FETCHING, payload: false },
+    ];
+    const store = mockStore({});
+    return store.dispatch(fetchConceptSources())
+      .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
 
   it('dispatches FETCH_SOURCE_CONCEPTS  action type on respose from server', () => {
@@ -47,7 +69,9 @@ describe('Test suite for source concepts actions', () => {
     return store.dispatch(fetchCielConcepts())
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
-  it('dispatches ADD_EXISTING_BULK_CONCEPTS  action type on respose from server', () => {
+  it('should dispatch ADD_EXISTING_BULK_CONCEPTS  action type on response from server', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -60,10 +84,15 @@ describe('Test suite for source concepts actions', () => {
       type: ADD_EXISTING_BULK_CONCEPTS,
       payload: [{ data: { data: [{ added: true }] } }],
     }];
-    const data = { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] };
+    const url = 'uuu';
+    const conceptIdList = [123];
+    const conceptData = { url, data: { data: { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] } }, conceptIdList };
+
     const store = mockStore({});
-    return store.dispatch(addExistingBulkConcepts(data))
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
+    return store.dispatch(addExistingBulkConcepts(conceptData))
+      .then(() => {
+        expect(store.getActions()).toEqual(returnedAction);
+      });
   });
   it('dispatches an error message when a response is errored', () => {
     moxios.wait(() => {
@@ -82,7 +111,9 @@ describe('Test suite for source concepts actions', () => {
     ];
     const store = mockStore({});
     return store.dispatch(fetchCielConcepts())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
+      .then(() => {
+        expect(store.getActions()).toEqual(returnedAction);
+      });
   });
 
   it('dispatches ADD_EXISTING_BULK_CONCEPTS  when adding dictionary reference', () => {
@@ -118,44 +149,5 @@ describe('Test suite for source concepts actions', () => {
     const store = mockStore({});
     return store.dispatch(addExistingBulkConcepts(data))
       .catch(() => expect(store.getActions()).toEqual(returnedAction));
-  });
-
-  it('dispatches FETCH_CONCEPT_SOURCES  action type on fetchConceptSources success', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [],
-      });
-    });
-
-    const returnedAction = [
-      { type: IS_FETCHING, payload: true },
-      { type: CLEAR_SOURCE_CONCEPTS },
-      { type: FETCH_CONCEPT_SOURCES, payload: [] },
-      { type: IS_FETCHING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchConceptSources())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
-  });
-
-  it('dispatches an error on fetchConceptSources failure', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.reject({
-        status: 400,
-        response: { data: 'error' },
-      });
-    });
-    const returnedAction = [
-      { type: IS_FETCHING, payload: true },
-      { type: CLEAR_SOURCE_CONCEPTS },
-      { type: FETCH_CONCEPT_SOURCES, payload: 'error' },
-      { type: IS_FETCHING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchConceptSources())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
 });

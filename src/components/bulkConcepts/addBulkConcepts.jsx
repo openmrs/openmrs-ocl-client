@@ -88,8 +88,9 @@ export class AddBulkConcepts extends Component {
         }
         return accumulator;
       }, Promise.resolve([]));
-
-      this.props.addExistingBulkConcepts({ url, data: { data: { expressions: validConcepts } } });
+      this.props.addExistingBulkConcepts(
+        { url, data: { data: { expressions: validConcepts } }, conceptIdList },
+      );
       this.setState({ conceptIds: '', openResultModal: this.invalidConceptIds.length > 0 });
     }
   }

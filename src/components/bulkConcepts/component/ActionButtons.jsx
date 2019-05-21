@@ -37,21 +37,21 @@ export class ActionButtons extends Component {
     openModal(id);
   };
 
-  addConcept = (conceptUrl, name) => {
+  addConcept = (conceptUrl, name, id) => {
+    notify.show(`Adding ${name}...`, 'warning', 800);
     const { params } = this.props;
     const data = { data: { expressions: [conceptUrl] } };
-    this.props.addConcept(params, data, name);
+    this.props.addConcept(params, data, name, id);
   };
 
   addConceptButton = (id, url, display_name) => {
     this.setState({ disableButton: true });
     const { closeModal } = this.props;
-    notify.show('Adding...', 'warning', 800);
 
     this.fetchPreview(id);
     closeModal();
     setTimeout(() => {
-      this.addConcept(url, display_name);
+      this.addConcept(url, display_name, id);
     }, 1000);
   };
 

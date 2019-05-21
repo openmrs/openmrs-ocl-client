@@ -129,7 +129,7 @@ View in traditional OCL
             color="primary"
             id="addConcept"
             onClick={() => {
-              addConcept(url, display_name);
+              addConcept(url, display_name, id);
               closeModal();
             }}
           >

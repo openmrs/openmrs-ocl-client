@@ -7,6 +7,8 @@ import {
   fetchingOrganizations, createDictionary, createDictionaryUser,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import organizations from '../../__mocks__/organizations';
+import api from '../../../redux/api';
+import { recursivelyFetchConceptMappings } from '../../../redux/actions/concepts/addBulkConcepts/index';
 
 const mockStore = configureStore([thunk]);
 
@@ -210,4 +212,27 @@ describe('Test suite for dictionary actions', () => {
         expect(store.getActions()).toEqual(expectedActions);
       });
   });
+});
+
+describe('Test suite for Traditional OCL actions', () => {
+  beforeEach(() => {
+    moxios.install(instance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+
+  it('should call the mappings endpoint with the right parameters', async () => {
+    const fromConcepts = '1,2,3';
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+      });
+    });
+    await api.mappings.fetchFromPublicSources(fromConcepts);
+    const requestUrl = moxios.requests.__items[0].url;
+    expect(requestUrl).toContain(`mappings/?fromConcept=${fromConcepts}`);
+  })
 });
