@@ -33,6 +33,7 @@ export class DictionaryModal extends React.Component {
       errors: {},
       disableButton: false,
     };
+    this.nameInput = undefined;
   }
 
   componentDidMount() {
@@ -41,6 +42,16 @@ export class DictionaryModal extends React.Component {
     if (isEditingDictionary) {
       this.populateFields();
       this.preSelectSupportedLocales();
+    }
+  }
+
+  componentDidUpdate = () => {
+    this.focusInput();
+  }
+
+  focusInput = () => {
+    if (this.nameInput) {
+      this.nameInput.focus();
     }
   }
 
@@ -190,6 +201,10 @@ export class DictionaryModal extends React.Component {
     });
   }
 
+  setNameInput = (input) => {
+    this.nameInput = input;
+  }
+
   render() {
     const { data, errors, disableButton } = this.state;
     const {
@@ -226,7 +241,7 @@ export class DictionaryModal extends React.Component {
                       placeholder="e.g Community Health Dictionary"
                       value={data.name}
                       required
-                      autoFocus
+                      innerRef={input => this.setNameInput(input)}
                     />
                   </FormGroup>
                   <FormGroup
