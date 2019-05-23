@@ -37,7 +37,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
   afterEach(() => {
     moxios.uninstall(instance);
   });
-  it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', () => {
+  it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', async (done) => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
     moxios.wait(() => {
@@ -58,6 +58,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
       expect(notifyMock).toHaveBeenCalledWith('Just Added - lob dev', 'success', 3000);
+      done();
     });
   });
   it('should notify user when one tries to add a duplicate concept', () => {

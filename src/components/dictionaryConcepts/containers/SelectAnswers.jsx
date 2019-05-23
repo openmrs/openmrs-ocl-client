@@ -4,7 +4,7 @@ import { notify } from 'react-notify-toast';
 import { queryAnswers } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   KEY_CODE_FOR_ENTER,
-  KEY_CODE_FOR_ESCAPE, MAP_TYPE,
+  KEY_CODE_FOR_ESCAPE,
 } from '../components/helperFunction';
 import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
 
@@ -24,11 +24,12 @@ class SelectAnswers extends Component {
     resetInput = (e) => {
       const value = String(e.key).length === 1 ? e.key : '';
       const {
-        answer, removeCurrentAnswer, answerUrl, frontEndUniqueKey,
+        answer, removeCurrentAnswer, answerUrl, frontEndUniqueKey, handleClick,
       } = this.props;
       if (answer.prePopulated) {
         this.setState({ inputValue: value, hasReset: true });
         removeCurrentAnswer({ answerUrl, frontEndUniqueKey, answer });
+        handleClick();
       }
     };
 
@@ -109,7 +110,8 @@ SelectAnswers.propTypes = {
   answer: PropTypes.object,
   removeCurrentAnswer: PropTypes.func.isRequired,
   answerUrl: PropTypes.string,
-  mapType: PropTypes.string,
+  mapType: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 SelectAnswers.defaultProps = {
@@ -119,7 +121,6 @@ SelectAnswers.defaultProps = {
   isShown: false,
   answer: {},
   answerUrl: '',
-  mapType: MAP_TYPE.questionAndAnswer,
 };
 
 export default SelectAnswers;

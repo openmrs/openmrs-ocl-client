@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import SelectAnswers from '../../../components/dictionaryConcepts/containers/SelectAnswers';
-import { KEY_CODE_FOR_ESCAPE, KEY_CODE_FOR_ENTER, KEY_CODE_FOR_SPACE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { KEY_CODE_FOR_ESCAPE, KEY_CODE_FOR_ENTER, KEY_CODE_FOR_SPACE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 
 jest.mock('react-notify-toast');
@@ -22,6 +22,8 @@ describe('<SelectAnswers />', () => {
       answer: {},
       answerUrl: '',
       removeCurrentAnswer: jest.fn(),
+      mapType: MAP_TYPE.questionAndAnswer,
+      handleClick: jest.fn(),
     };
     wrapper = mount(<SelectAnswers {...props} />);
   });
