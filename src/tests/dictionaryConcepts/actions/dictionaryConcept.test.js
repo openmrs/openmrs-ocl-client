@@ -80,6 +80,7 @@ import {
   unpopulatePrepopulatedSets,
   unpopulateSet,
   buildNewMappingData,
+  fetchConceptsFromASource,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -99,8 +100,9 @@ import {
   CIEL_SOURCE_URL,
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE,
-  MAP_TYPES_DEFAULTS
+  MAP_TYPES_DEFAULTS,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
+import api from '../../../redux/api';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -1348,5 +1350,37 @@ describe('buildUpdateMappingData', () => {
       to_concept_name: toConceptName,
     };
     expect(buildNewMappingData(mapping)).toEqual(expectedMapping);
+  });
+});
+
+describe('fetchConceptsFromASource', () => {
+  const conceptsInASourceMock = jest.fn();
+  const notifyMock = jest.fn();
+  const sourceUrl = 'test/url';
+  const query = '/test query';
+
+  beforeEach(() => {
+    notify.show = notifyMock;
+    api.concepts.list.conceptsInASource = conceptsInASourceMock;
+    conceptsInASourceMock.mockClear();
+    notifyMock.mockClear();
+  });
+
+  it('should call the fetch concepts endpoint method with the right arguments', async () => {
+    await fetchConceptsFromASource(sourceUrl, query);
+    expect(conceptsInASourceMock).toHaveBeenCalledTimes(1);
+    expect(conceptsInASourceMock).toHaveBeenCalledWith(sourceUrl, query);
+  });
+
+  it('should notify the user in case of an unknown error', async () => {
+    api.concepts.list.conceptsInASource = jest.fn().mockImplementationOnce(() => {
+      throw {
+        response: {
+          data: 'error',
+        },
+      };
+    });
+    await fetchConceptsFromASource(sourceUrl, query);
+    expect(notifyMock).toHaveBeenCalledWith('Could not load concepts: error. Please retry.', 'error', 2000);
   });
 });
