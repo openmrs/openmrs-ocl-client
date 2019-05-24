@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { fetchSourceConcepts } from '../../../redux/actions/concepts/dictionaryConcepts';
+import { notify } from 'react-notify-toast';
+import {
+  fetchConceptsFromASource,
+  fetchSourceConcepts,
+} from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPES_DEFAULTS,
@@ -18,6 +22,8 @@ class CreateMapping extends Component {
       inputValue: this.props.to_concept_name || '',
       options: [],
       isVisible: false,
+      internalConceptOptions: [],
+      isInternalConceptOptionsListVisible: false,
     };
   }
 
@@ -48,20 +54,61 @@ class CreateMapping extends Component {
   }
 
 
-  handleKeyPress = async (event, inputValue, url) => {
+  handleKeyPress = async (event, inputValue, url, isExternalMapping = true) => {
+    this.setState({
+      isInternalConceptOptionsListVisible: false,
+    });
+
     if (event.keyCode === KEY_CODE_FOR_ENTER) {
-      const options = await fetchSourceConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url);
-      this.setState({ options, isVisible: true });
+      if (inputValue.length > 2) {
+        if (isExternalMapping) {
+          const options = await fetchSourceConcepts(
+            INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url,
+          );
+          this.setState({ options, isVisible: true });
+        } else {
+          this.setState({
+            internalConceptOptions: [],
+            isInternalConceptOptionsListVisible: false,
+          });
+          const internalConceptOptions = await fetchConceptsFromASource(url, inputValue);
+          this.setState({
+            internalConceptOptions,
+            isInternalConceptOptionsListVisible: true,
+          });
+        }
+      } else {
+        notify.show('Query must have at least three characters', 'warning', 2000);
+      }
     }
-  }
+  };
 
   handleSelect = (res) => {
     this.setState({ isVisible: false, inputValue: res.label });
     this.props.updateAsyncSelectValue(res);
   };
 
+  selectInternalMapping(concept, url) {
+    this.setState({
+      isInternalConceptOptionsListVisible: false,
+    });
+    const { updateEventListener } = this.props;
+    updateEventListener({
+      target: {
+        value: concept.display_name,
+        name: 'to_concept_name',
+      },
+    }, url);
+    updateEventListener({
+      target: {
+        value: concept.id,
+        name: 'to_concept_code',
+      },
+    }, url);
+  }
+
   render() {
-    const { inputValue } = this.state;
+    const { inputValue, isInternalConceptOptionsListVisible, internalConceptOptions } = this.state;
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, updateSourceEventListener, removeMappingRow,
@@ -147,14 +194,16 @@ class CreateMapping extends Component {
             <div className="row concept-code">
               <div className="col-12 mb-2">
                 <input
+                  autoComplete="off"
                   tabIndex={index}
-                  defaultValue={to_concept_code}
+                  value={to_concept_code}
                   className="form-control"
                   placeholder="To concept code"
                   type="text"
                   name="to_concept_code"
                   id="to_concept_code"
                   onChange={(event) => { updateEventListener(event, url); }}
+                  onKeyDown={event => this.handleKeyPress(event, to_concept_code, source, false)}
                 />
               </div>
             </div>
@@ -189,16 +238,31 @@ class CreateMapping extends Component {
           ) : (
             isNew
             && <input
+              autoComplete="off"
               tabIndex={index}
-              defaultValue={to_concept_name}
+              value={to_concept_name}
               className="form-control"
               placeholder="Concept name (optional)"
               id="ConceptName"
               type="text"
               name="to_concept_name"
               onChange={(event) => { updateEventListener(event, url); }}
+              onKeyDown={event => this.handleKeyPress(event, to_concept_name, source, false)}
             />
           )}
+          {isInternalConceptOptionsListVisible && <ul className="cielConceptsList">
+            {internalConceptOptions.map(concept => <li key={concept.id}>
+              <button
+                type="button"
+                id={`concept-id-${concept.id}`}
+                name={`concept-name-${concept.id}`}
+                onClick={() => this.selectInternalMapping(concept, url)}
+              >
+                {concept.display_name}
+              </button>
+            </li>)}
+            {internalConceptOptions.length < 1 && <li className="message">No concepts matching this query</li>}
+          </ul>}
         </td>
 
         <td className="table-remove-link">

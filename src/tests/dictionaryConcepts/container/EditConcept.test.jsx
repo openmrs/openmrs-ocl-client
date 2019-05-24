@@ -48,6 +48,7 @@ describe('Test suite for dictionary concepts components', () => {
     },
     history: {
       push: jest.fn(),
+      goBack: jest.fn(),
     },
     createNewName: jest.fn(),
     addNewDescription: jest.fn(),
@@ -338,6 +339,7 @@ describe('Test suite for mappings on existing concepts', () => {
     },
     history: {
       push: jest.fn(),
+      goBack: jest.fn(),
     },
     createNewName: jest.fn(),
     addNewDescription: jest.fn(),

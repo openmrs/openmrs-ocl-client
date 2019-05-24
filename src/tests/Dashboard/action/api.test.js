@@ -236,3 +236,51 @@ describe('Test suite for Traditional OCL actions', () => {
     expect(requestUrl).toContain(`mappings/?fromConcept=${fromConcepts}`);
   })
 });
+
+describe('concepts', () => {
+  describe('list', () => {
+    describe('conceptsInASource', () => {
+      beforeEach(() => {
+        moxios.install(instance);
+      });
+
+      afterEach(() => {
+        moxios.uninstall(instance);
+      });
+
+      it('should call the fetchConcepts endpoint with the right query', async ()=> {
+        const url = '/test/url';
+        const query = 'testQuery';
+        let requestUrl;
+
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          requestUrl = request.url;
+          request.respondWith({
+            status: 200,
+          });
+        });
+
+        await api.concepts.list.conceptsInASource(url, query);
+        expect(requestUrl).toContain(`${url}concepts/?q=${query}*`);
+      });
+
+      it('should call the fetchConcepts endpoint with no query term if it is not provided', async ()=> {
+        const url = '/test/url';
+        const query = 'testQuery';
+        let requestUrl;
+
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          requestUrl = request.url;
+          request.respondWith({
+            status: 200,
+          });
+        });
+
+        await api.concepts.list.conceptsInASource(url);
+        expect(requestUrl).toContain(`${url}concepts/?q=*`);
+      });
+    });
+  });
+});

@@ -423,7 +423,7 @@ input[type=text] {
     margin: 1px;
     padding: 5px;
   }
-  li:hover {
+  li:hover:not(.message) {
     background: #cccccc;
   }
   button {

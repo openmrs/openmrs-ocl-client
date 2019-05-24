@@ -47,6 +47,7 @@ import {
 } from '../globalActionCreators/index';
 
 import instance from '../../../config/axiosConfig';
+import api from '../../api';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
   let conceptList = concepts;
@@ -380,6 +381,20 @@ export const buildNewMappingData = (mapping, fromConceptUrl) => {
     to_concept_url: `${mapping.source}concepts/${mapping.to_concept_code}/`,
     to_concept_name: mapping.to_concept_name,
   });
+};
+
+export const fetchConceptsFromASource = async (sourceUrl, query) => {
+  try {
+    const response = await api.concepts.list.conceptsInASource(sourceUrl, query);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      notify.show(`Could not load concepts: ${error.response.data}. Please retry.`, 'error', 2000);
+    } else {
+      notify.show('Could not load concepts. Please retry.', 'error', 2000);
+    }
+    return [];
+  }
 };
 
 export const CreateMapping = (data, from_concept_url, source) => {
