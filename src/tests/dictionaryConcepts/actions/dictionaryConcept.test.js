@@ -79,6 +79,7 @@ import {
   prePopulateSets,
   unpopulatePrepopulatedSets,
   unpopulateSet,
+  buildNewMappingData,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -94,7 +95,12 @@ import concepts, {
   newConceptDataWithAnswerAndSetMappings,
   existingConcept, sampleConcept, conceptWithoutMappings,
 } from '../../__mocks__/concepts';
-import { CIEL_SOURCE_URL, INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import {
+  CIEL_SOURCE_URL,
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  MAP_TYPE,
+  MAP_TYPES_DEFAULTS
+} from '../../../components/dictionaryConcepts/components/helperFunction';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -504,6 +510,29 @@ describe('Test suite for dictionary concept actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should handle any unknown error in createNewConcept', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({});
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
+    return store.dispatch(createNewConcept(newConceptData, url)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledWith('An error occurred when creating a concept. Please retry.', 'error', 2000);
+    });
+  });
+
   it('should handle ADD_CONCEPT_TO_DICTIONARY', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -736,6 +765,32 @@ describe('Testing Edit concept actions ', () => {
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
     return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should handle any unknown error in updateConcept', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({});
+    });
+
+    const history = {
+      goBack: () => '',
+    };
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledWith('An error occurred when updating the concept. Please retry.', 'error', 2000);
     });
   });
 
@@ -1212,5 +1267,86 @@ describe('Add set mappings to concept', () => {
       );
       done();
     });
+  });
+});
+
+describe('buildNewMappingData', () => {
+  const fromConceptUrl = '/test/from/concept/url';
+  const toSourceUrl = '/test/to/source/url';
+  const toConceptCode = 'testCode';
+  const toConceptName = 'testName';
+  const mapType = MAP_TYPES_DEFAULTS[0];
+
+  it('buildNewMappingData should return the map_type, from_concept_url, to_source_url, to_concept_code, to_concept_name if given an external concept', () => {
+    const mapping = {
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      map_type: mapType,
+      to_source_url: toSourceUrl,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    const expectedMapping = {
+      map_type: mapType,
+      from_concept_url: fromConceptUrl,
+      to_source_url: toSourceUrl,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    expect(buildNewMappingData(mapping, fromConceptUrl)).toEqual(expectedMapping);
+  });
+
+  it('buildNewMappingData should return the map_type, from_concept_url, to_concept_url, to_concept_name if given an internal concept', () => {
+    const mapping = {
+      source: 'not external',
+      map_type: mapType,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    const expectedMapping = {
+      map_type: mapType,
+      from_concept_url: fromConceptUrl,
+      to_concept_url: `${mapping.source}concepts/${toConceptCode}/`,
+      to_concept_name: toConceptName,
+    };
+    expect(buildNewMappingData(mapping, fromConceptUrl)).toEqual(expectedMapping);
+  });
+});
+
+describe('buildUpdateMappingData', () => {
+  const toSourceUrl = '/test/to/source/url';
+  const toConceptCode = 'testCode';
+  const toConceptName = 'testName';
+  const mapType = MAP_TYPES_DEFAULTS[0];
+
+  it('buildUpdateMappingData should return the map_type, to_source_url, to_concept_code, to_concept_name if given an external concept', () => {
+    const mapping = {
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      map_type: mapType,
+      to_source_url: toSourceUrl,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    const expectedMapping = {
+      map_type: mapType,
+      to_source_url: toSourceUrl,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    expect(buildNewMappingData(mapping)).toEqual(expectedMapping);
+  });
+
+  it('buildUpdateMappingData should return the map_type, to_concept_url, to_concept_name if given an internal concept', () => {
+    const mapping = {
+      source: 'not external',
+      map_type: mapType,
+      to_concept_code: toConceptCode,
+      to_concept_name: toConceptName,
+    };
+    const expectedMapping = {
+      map_type: mapType,
+      to_concept_url: `${mapping.source}concepts/${toConceptCode}/`,
+      to_concept_name: toConceptName,
+    };
+    expect(buildNewMappingData(mapping)).toEqual(expectedMapping);
   });
 });

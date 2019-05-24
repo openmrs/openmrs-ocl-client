@@ -367,24 +367,26 @@ export const fetchSourceConcepts = async (source, query, index) => {
   }
 };
 
+export const buildNewMappingData = (mapping, fromConceptUrl) => {
+  return mapping.source === INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
+    map_type: mapping.map_type,
+    from_concept_url: fromConceptUrl,
+    to_source_url: mapping.to_source_url || mapping.source,
+    to_concept_code: mapping.to_concept_code,
+    to_concept_name: mapping.to_concept_name,
+  }) : ({
+    map_type: mapping.map_type,
+    from_concept_url: fromConceptUrl,
+    to_concept_url: `${mapping.source}concepts/${mapping.to_concept_code}/`,
+    to_concept_name: mapping.to_concept_name,
+  });
+};
+
 export const CreateMapping = (data, from_concept_url, source) => {
   const url = `/users/${localStorage.getItem('username')}/sources/${source}/mappings/`;
   axios.all(data.map((mapping) => {
-    const mappingData = mapping.source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
-      map_type: mapping.map_type,
-      from_concept_url,
-      to_source_url: mapping.to_source_url || mapping.source,
-      to_concept_code: mapping.to_concept_code,
-      to_concept_name: mapping.to_concept_name,
-    }) : ({
-      map_type: mapping.map_type,
-      from_concept_url,
-      to_concept_url: mapping.to_source_url,
-      to_concept_name: mapping.to_concept_name,
-    });
-    return (
-      mapping.isNew && instance.post(url, mappingData)
-    );
+    const mappingData = buildNewMappingData(mapping, from_concept_url);
+    return mapping.isNew && instance.post(url, mappingData);
   }));
 };
 
@@ -415,6 +417,8 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   Object.keys(error.response.data).toString()
 }`, 'error', 5000);
       dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
+    } else {
+      notify.show('An error occurred when creating a concept. Please retry.', 'error', 2000);
     }
   }
   return dispatch(isFetching(false));
@@ -444,22 +448,23 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
   dispatch(isFetching(false));
 };
 
+export const buildUpdateMappingData = (mapping) => {
+  return mapping.source === INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
+    map_type: mapping.map_type,
+    to_source_url: mapping.source,
+    to_concept_code: mapping.to_concept_code,
+    to_concept_name: mapping.to_concept_name,
+  }) : ({
+    map_type: mapping.map_type,
+    to_concept_url: `${mapping.source}concepts/${mapping.to_concept_code}/`,
+    to_concept_name: mapping.to_concept_name,
+  });
+};
+
 export const UpdateMapping = (data) => {
   axios.all(data.map((mapping) => {
-    const mappingData = mapping.source !== INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
-      map_type: mapping.map_type,
-      to_source_url: mapping.source,
-      to_concept_code: mapping.to_concept_code,
-      to_concept_name: mapping.to_concept_name,
-    }) : ({
-      map_type: mapping.map_type,
-      to_concept_url: mapping.to_source_url,
-      to_concept_name: mapping.to_concept_name,
-    });
-
-    return (
-      !mapping.isNew && instance.put(mapping.url, mappingData)
-    );
+    const mappingData = buildUpdateMappingData(mapping);
+    return !mapping.isNew && instance.put(mapping.url, mappingData);
   }));
 };
 
@@ -486,6 +491,8 @@ export const updateConcept = (conceptUrl, data, history, source, concept) => asy
   Object.keys(error.response.data).toString()
 }`, 'error', 3000);
       dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
+    } else {
+      notify.show('An error occurred when updating the concept. Please retry.', 'error', 2000);
     }
     dispatch(isFetching(false));
   }
