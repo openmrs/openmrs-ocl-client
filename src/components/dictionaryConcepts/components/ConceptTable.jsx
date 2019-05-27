@@ -7,7 +7,6 @@ import { conceptsProps } from '../proptypes';
 import { getUsername } from './helperFunction';
 import RemoveConcept from './RemoveConcept';
 
-const username = getUsername();
 const showCellContents = cell => <span>
   {cell.value[1] ? <del className="text-muted">{cell.value[0]}</del> : cell.value[0]}
 </span>;
@@ -78,6 +77,7 @@ const ConceptTable = ({
               showDeleteMappingModal,
               retireConcept,
             };
+            const username = getUsername();
             const renderButtons = username === concept.owner || (
               concept.owner === org.name && org.userIsMember
             ) || isOwner;

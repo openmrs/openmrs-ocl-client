@@ -92,6 +92,46 @@ describe('Test suite for dictionary concepts components', () => {
     expect(strikethroughText.length).toBeGreaterThan(0);
   });
 
+  describe('ConceptTable', () => {
+    it('concept row should display the retire concept button when the collection owner is logged in', () => {
+      const props = {
+        concepts: [{ ...concepts, retired: false }],
+        loading: false,
+        org: {},
+        locationPath: {},
+        showDeleteModal: jest.fn(),
+        handleDelete: jest.fn(),
+        conceptLimit: 1,
+        closeDeleteModal: jest.fn(),
+        handleDeleteMapping: jest.fn(),
+        showDeleteMappingModal: jest.fn(),
+      };
+
+      localStorage.setItem('username', props.concepts[0].owner);
+      const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
+      expect(wrapper.find('#retire')).toHaveLength(1);
+    });
+
+    it('concept row should not display the retire concept button when the collection owner is not logged in', () => {
+      const props = {
+        concepts: [{ ...concepts, retired: false }],
+        loading: false,
+        org: {},
+        locationPath: {},
+        showDeleteModal: jest.fn(),
+        handleDelete: jest.fn(),
+        conceptLimit: 1,
+        closeDeleteModal: jest.fn(),
+        handleDeleteMapping: jest.fn(),
+        showDeleteMappingModal: jest.fn(),
+      };
+
+      localStorage.setItem('username', 'notTheOwner');
+      const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
+      expect(wrapper.find('#retire')).toHaveLength(0);
+    });
+  });
+
   it('should render component without breaking when the type is not specified', () => {
     const props = {
       match: {
