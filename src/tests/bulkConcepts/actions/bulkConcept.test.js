@@ -41,7 +41,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
   afterEach(() => {
     moxios.uninstall(instance);
   });
-  it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', async (done) => {
+  it('should add concept on ADD_EXISTING_CONCEPTS action dispatch', (done) => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
     moxios.wait(() => {
@@ -58,14 +58,14 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({});
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    return store.dispatch(addConcept(params, { data: { expressions: ['test'] } }, 'lob dev')).then(() => {
+    store.dispatch(addConcept(params, { data: { expressions: ['test'] } }, 'lob dev')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
       expect(notifyMock).toHaveBeenCalledWith('Just Added - lob dev', 'success', 3000);
       done();
     });
   });
-  it('should notify user when one tries to add a duplicate concept', () => {
+  it('should notify user when one tries to add a duplicate concept', (done) => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
     moxios.wait(() => {
@@ -82,13 +82,14 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({});
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    return store.dispatch(addConcept(params, {data: {expressions: ['test']}}, 'lob dev')).then(() => {
+    store.dispatch(addConcept(params, {data: {expressions: ['test']}}, 'lob dev')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
       expect(notifyMock).toHaveBeenCalledWith('lob dev already added', 'error', 3000);
+      done();
     });
   });
-  it('should handle FETCH_FILTERED_CONCEPTS with no filters', () => {
+  it('should handle FETCH_FILTERED_CONCEPTS with no filters', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -105,11 +106,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore(mockConceptStore);
 
-    return store.dispatch(fetchFilteredConcepts()).then(() => {
+    store.dispatch(fetchFilteredConcepts()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
-  it('should handle FETCH_FILTERED_CONCEPTS with datatype filters', () => {
+  it('should handle FETCH_FILTERED_CONCEPTS with datatype filters', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -126,11 +128,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({ bulkConcepts: { datatypeList: ['text'], classList: [] } });
 
-    return store.dispatch(fetchFilteredConcepts()).then(() => {
+    store.dispatch(fetchFilteredConcepts()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
-  it('should handle FETCH_FILTERED_CONCEPTS with classes filters', () => {
+  it('should handle FETCH_FILTERED_CONCEPTS with classes filters', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -147,11 +150,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({ bulkConcepts: { datatypeList: [], classList: ['classList'] } });
 
-    return store.dispatch(fetchFilteredConcepts()).then(() => {
+    store.dispatch(fetchFilteredConcepts()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
-  it('should handle FETCH_FILTERED_CONCEPTS with both classes and datatype filters', () => {
+  it('should handle FETCH_FILTERED_CONCEPTS with both classes and datatype filters', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -168,11 +172,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({ bulkConcepts: { datatypeList: ['text'], classList: ['classList'] } });
 
-    return store.dispatch(fetchFilteredConcepts()).then(() => {
+    store.dispatch(fetchFilteredConcepts()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
-  it('should handle error in FETCH_FILTERED_CONCEPTS', () => {
+  it('should handle error in FETCH_FILTERED_CONCEPTS', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -188,11 +193,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore(mockConceptStore);
 
-    return store.dispatch(fetchFilteredConcepts()).then(() => {
+    store.dispatch(fetchFilteredConcepts()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      done();
     });
   });
-  it('dispatches the current page', () => {
+  it('dispatches the current page', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -205,10 +211,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
     ];
     const store = mockStore({});
     const currentPage = 1;
-    return store.dispatch(setCurrentPage(currentPage))
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
+    store.dispatch(setCurrentPage(currentPage)).then(() => {
+      expect(store.getActions()).toEqual(returnedAction);
+      done();
+    });
   });
-  it('dispatches the next page', () => {
+  it('dispatches the next page', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -220,10 +228,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
       { type: SET_NEXT_PAGE, payload: null },
     ];
     const store = mockStore({});
-    return store.dispatch(setNextPage())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
+    store.dispatch(setNextPage()).then(() => {
+      expect(store.getActions()).toEqual(returnedAction);
+      done();
+    });
   });
-  it('dispatches the previous page', () => {
+  it('dispatches the previous page', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -235,10 +245,12 @@ describe('Test suite for addBulkConcepts async actions', () => {
       { type: SET_PERVIOUS_PAGE, payload: null },
     ];
     const store = mockStore({});
-    return store.dispatch(setPreviousPage())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
+    store.dispatch(setPreviousPage()).then(() => {
+      expect(store.getActions()).toEqual(returnedAction);
+      done();
+    });
   });
-  it('should notify user when it fails to add a concept', () => {
+  it('should notify user when it fails to add a concept', (done) => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
     moxios.wait(() => {
@@ -251,9 +263,10 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     const store = mockStore({});
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    return store.dispatch(addConcept(params, [], 'lob dev')).then(() => {
+    store.dispatch(addConcept(params, [], 'lob dev')).then(() => {
       expect(notifyMock).toHaveBeenCalledTimes(1);
       expect(notifyMock).toHaveBeenCalledWith('Failed to add lob dev. Please Retry', 'error', 3000);
+      done();
     });
   });
 });
@@ -300,28 +313,45 @@ describe('recursivelyFetchConceptMappings', () => {
 });
 
 describe('test suite for addBulkConcepts synchronous action creators', () => {
-  it('should handle ADD_TO_DATATYPE_LIST', () => {
+  beforeEach(() => {
+    moxios.install(instance);
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: {},
+      });
+    });
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+
+  it('should handle ADD_TO_DATATYPE_LIST', async () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [
       { type: ADD_TO_DATATYPE_LIST, payload: 'text' },
       { payload: true, type: '[ui] toggle spinner' },
     ];
-    store.dispatch(addToFilterList('text', 'datatype'));
-    expect(store.getActions()).toEqual(expectedActions);
+    await store.dispatch(addToFilterList('text', 'datatype'));
+    expect(store.getActions()[0]).toEqual(expectedActions[0]);
+    expect(store.getActions()[1]).toEqual(expectedActions[1]);
   });
-  it('should handle ADD_TO_CLASS_LIST', () => {
+  it('should handle ADD_TO_CLASS_LIST', async () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [
       { type: ADD_TO_CLASS_LIST, payload: 'drug' },
       { payload: true, type: '[ui] toggle spinner' },
     ];
-    store.dispatch(addToFilterList('drug', 'class'));
-    expect(store.getActions()).toEqual(expectedActions);
+    await store.dispatch(addToFilterList('drug', 'class'));
+    expect(store.getActions()[0]).toEqual(expectedActions[0]);
+    expect(store.getActions()[1]).toEqual(expectedActions[1]);
   });
-  it('should handle PREVIEW_CONCEPT', () => {
+  it('should handle PREVIEW_CONCEPT', async () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: PREVIEW_CONCEPT, payload: { id: 123 } }];
-    store.dispatch(previewConcept(123));
+    await store.dispatch(previewConcept(123));
     expect(store.getActions()).toEqual(expectedActions);
   });
 });
