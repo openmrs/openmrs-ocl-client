@@ -50,7 +50,7 @@ describe('Test suite for source concepts actions', () => {
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
 
-  it('dispatches FETCH_SOURCE_CONCEPTS  action type on respose from server', () => {
+  it('should dispatch FETCH_SOURCE_CONCEPTS  action type on response from server', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -94,7 +94,7 @@ describe('Test suite for source concepts actions', () => {
         expect(store.getActions()).toEqual(returnedAction);
       });
   });
-  it('dispatches an error message when a response is errored', () => {
+  it('should dispatch an error message when a response is errored', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -116,7 +116,7 @@ describe('Test suite for source concepts actions', () => {
       });
   });
 
-  it('dispatches ADD_EXISTING_BULK_CONCEPTS  when adding dictionary reference', () => {
+  it('should dispatch ADD_EXISTING_BULK_CONCEPTS  action type when adding a dictionary reference', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -137,7 +137,7 @@ describe('Test suite for source concepts actions', () => {
     return store.dispatch(addDictionaryReference(conceptUrl, ownerUrl, dictionaryId))
       .then(() => expect(store.getActions()).toEqual(expectedAction));
   });
-  it('dispatches an error when adding bulk concepts', () => {
+  it('should dispatch an error when adding bulk concepts', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.reject({
