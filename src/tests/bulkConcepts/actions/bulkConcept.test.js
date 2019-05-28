@@ -89,7 +89,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
       done();
     });
   });
-  it('should handle FETCH_FILTERED_CONCEPTS with no filters', (done) => {
+  it('should handle FETCH_FILTERED_CONCEPTS  with no filters', (done) => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({

@@ -341,7 +341,7 @@ describe('Test suite for dictionary concepts components', () => {
     });
   });
 
-  it('should handle key down event when a user presses the enter button to search mappings for existing rows', (done) => {
+  it('should handle key down event when a user presses the enter button  to search mappings for existing rows', (done) => {
     const newProps = {
       ...props,
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
