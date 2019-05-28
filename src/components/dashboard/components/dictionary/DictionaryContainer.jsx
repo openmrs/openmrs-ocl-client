@@ -59,7 +59,7 @@ export class DictionaryOverview extends Component {
     this.props.fetchDictionary(url);
     this.props.fetchVersions(versionUrl);
 
-    const conceptsUrl = `/${ownerType}/${owner}/collections/${name}/concepts/?includeRetired=true&q=&limit=0&page=1&verbose=true`;
+    const conceptsUrl = `/${ownerType}/${owner}/collections/${name}/concepts/?includeRetired=true&q=&limit=0&page=1&verbose=true&is_latest_version=true`;
     this.props.fetchDictionaryConcepts(conceptsUrl);
   }
 
