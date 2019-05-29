@@ -1,8 +1,6 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import {
-  DictionaryModal,
-} from '../../components/dashboard/components/dictionary/common/DictionaryModal';
+import { DictionaryModal } from '../../components/dashboard/components/dictionary/common/DictionaryModal';
 import organizations from '../__mocks__/organizations';
 import dictionary from '../__mocks__/dictionaries';
 
@@ -27,8 +25,17 @@ const props = {
 };
 
 describe('Test suite for dictionary modal', () => {
-  const wrapper = shallow(<DictionaryModal {...props} />);
-  const preventDefault = { preventDefault: jest.fn() };
+  let wrapper;
+  let preventDefault;
+
+  beforeEach(() => {
+    wrapper = shallow(<DictionaryModal {...props} />);
+    preventDefault = { preventDefault: jest.fn() };
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
 
   it('should take a snapshot', () => {
     expect(wrapper).toMatchSnapshot();
@@ -60,11 +67,11 @@ describe('Test suite for dictionary modal', () => {
       ...props,
       organizations: [organizations],
     };
-    const wrap = shallow(<DictionaryModal {...newProps} />);
-    wrap
+    wrapper = shallow(<DictionaryModal {...newProps} />);
+    wrapper
       .find('#dictionary_name')
       .simulate('change', { target: { value: 'CIEL', name: 'name' } });
-    expect(wrap.state().data.name).toEqual('CIEL');
+    expect(wrapper.state().data.name).toEqual('CIEL');
   });
 
   it('it should handle change of supported locales option', () => {
@@ -76,8 +83,7 @@ describe('Test suite for dictionary modal', () => {
 
   it('it should render when editing dictionary', () => {
     props.isEditingDictionary = true;
-    const editDictionaryModal = shallow(<DictionaryModal {...props} />);
-    expect(editDictionaryModal).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('it should handle validations errors on submit', () => {
@@ -96,9 +102,9 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.state().errors.preferred_source).toEqual('Required');
     expect(wrapper.state().errors.default_locale).toEqual('Required');
     expect(wrapper.state().errors.public_access).toEqual('Required');
-    expect(
-      wrapper.state().errors.supported_locales,
-    ).toEqual('Preferred language must not be included in other languages');
+    expect(wrapper.state().errors.supported_locales).toEqual(
+      'Preferred language must not be included in other languages',
+    );
   });
 
   it('it should handle submit', async () => {
@@ -167,11 +173,10 @@ describe('Test suite for dictionary modal', () => {
       userDictionaries: [],
       searchDictionaries: jest.fn(),
     };
-    const wrapper3 = shallow(<DictionaryModal {...newProps} />);
-
-    wrapper3.setState({
+    wrapper = shallow(<DictionaryModal {...newProps} />);
+    wrapper.setState({
       data: {
-        ...wrapper3.state().data,
+        ...wrapper.state().data,
         id: '1',
         preferred_source: 'CIEL',
         public_access: 'None',
@@ -185,15 +190,14 @@ describe('Test suite for dictionary modal', () => {
       errors: {},
     });
 
-    await wrapper3.instance().onSubmit(preventDefault);
-    expect(wrapper3.instance().state.errors).toEqual({});
+    await wrapper.instance().onSubmit(preventDefault);
+    expect(wrapper.instance().state.errors).toEqual({});
   });
 
   it('it should handle undefined submit error response', async () => {
     const error = {
       response: undefined,
     };
-
     const newProps = {
       title: 'Add Dictionary',
       buttonname: 'Add Dictionary',
@@ -213,11 +217,10 @@ describe('Test suite for dictionary modal', () => {
       userDictionaries: [],
       searchDictionaries: jest.fn(),
     };
-    const wrapper3 = shallow(<DictionaryModal {...newProps} />);
-
-    wrapper3.setState({
+    wrapper = shallow(<DictionaryModal {...newProps} />);
+    wrapper.setState({
       data: {
-        ...wrapper3.state().data,
+        ...wrapper.state().data,
         id: '1',
         preferred_source: 'CIEL',
         public_access: 'None',
@@ -230,19 +233,17 @@ describe('Test suite for dictionary modal', () => {
       },
       errors: {},
     });
-
-    await wrapper3.instance().onSubmit(preventDefault);
-    expect(wrapper3.instance().state.errors).toEqual({});
+    await wrapper.instance().onSubmit(preventDefault);
+    expect(wrapper.instance().state.errors).toEqual({});
   });
 
   it('it should handle search input values', () => {
     props.isEditingDictionary = false;
-    const wrapper2 = mount(<DictionaryModal {...props} />);
-    const spy = jest.spyOn(wrapper2.find('DictionaryModal').instance(), 'searchInputValues');
-    wrapper2.find('input#react-select-3-input')
-      .simulate('change');
+    wrapper = mount(<DictionaryModal {...props} />);
+    const spy = jest.spyOn(wrapper.find('DictionaryModal').instance(), 'searchInputValues');
+    wrapper.find('input#react-select-3-input').simulate('change');
     expect(spy).toHaveBeenCalledTimes(1);
-    wrapper2.instance().searchInputValues('dictionary');
+    wrapper.instance().searchInputValues('dictionary');
     expect(props.searchDictionaries).toBeCalled();
   });
 
