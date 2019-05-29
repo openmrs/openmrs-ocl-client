@@ -32,6 +32,7 @@ export class DictionaryModal extends React.Component {
       },
       errors: {},
       disableButton: false,
+      inputFocus: false,
     };
     this.nameInput = undefined;
   }
@@ -46,14 +47,15 @@ export class DictionaryModal extends React.Component {
   }
 
   componentDidUpdate = () => {
-    this.focusInput();
-  }
-
-  focusInput = () => {
-    if (this.nameInput) {
-      this.nameInput.focus();
+    if (this.nameInput && !this.state.inputFocus) {
+      this.focusInput(this.nameInput);
+      this.setState({ inputFocus: true });
     }
-  }
+  };
+
+  focusInput = (input) => {
+    input.focus();
+  };
 
   onChange = (e) => {
     const { organizations } = this.props;
@@ -174,6 +176,7 @@ export class DictionaryModal extends React.Component {
     this.setState({
       errors: {},
       disableButton: false,
+      inputFocus: false,
     });
     this.props.modalhide();
   }

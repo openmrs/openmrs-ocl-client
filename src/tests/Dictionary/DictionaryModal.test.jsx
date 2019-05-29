@@ -273,4 +273,14 @@ describe('Test suite for dictionary modal', () => {
     submitButtonWrapper.simulate('click', preventDefault);
     expect(wrapper.state().disableButton).toBeTruthy();
   });
+
+  it('should set focus on the name input when the form to create a new dictionary is rendered', () => {
+    wrapper = mount(<DictionaryModal {...props} />);
+    const instance = wrapper.instance();
+    const spy = jest.spyOn(instance, 'focusInput');
+    expect(instance.state.inputFocus).toBe(false);
+    instance.forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(instance.state.inputFocus).toBe(true);
+  });
 });
