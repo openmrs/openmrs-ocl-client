@@ -97,6 +97,6 @@ export default {
     },
   },
   mappings: {
-    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}`),
+    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}&limit=0`),
   },
 };

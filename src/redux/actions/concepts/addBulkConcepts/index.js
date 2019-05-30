@@ -1,5 +1,5 @@
 import { notify } from 'react-notify-toast';
-import { union } from 'lodash';
+import { union, pull } from 'lodash';
 import instance from '../../../../config/axiosConfig';
 import { isFetching, isSuccess } from '../../globalActionCreators';
 import {
@@ -13,7 +13,7 @@ import {
   SET_CURRENT_PAGE,
 } from '../../types';
 import api from '../../../api';
-import { MAPPINGS_RECURSION_DEPTH } from '../../../../components/dictionaryConcepts/components/helperFunction';
+import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
 
 export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1) => async (
   dispatch,
@@ -61,6 +61,7 @@ export const previewConcept = id => (dispatch, getState) => {
 };
 
 
+
 export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsToCheck) => {
   const startingConceptMappings = await api.mappings.fetchFromPublicSources(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
@@ -72,7 +73,11 @@ export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsTo
     const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
     mappingsList.push(conceptMappings.data);
   }
-  return union(...mappingsList).map(mapping => mapping.to_concept_url);
+  const toConceptUrls = union(...mappingsList).map((mapping) => {
+    return mapping.to_concept_url;
+  });
+  const filteredToConceptUrls = pull(toConceptUrls, null);
+  return removeDuplicates(filteredToConceptUrls);
 };
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
