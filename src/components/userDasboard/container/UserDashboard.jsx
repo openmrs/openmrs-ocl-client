@@ -19,7 +19,6 @@ export class UserDashboard extends Component {
     user: PropTypes.shape({
       name: PropTypes.string,
       orgs: PropTypes.number,
-      public_collections: PropTypes.number,
     }).isRequired,
     history: PropTypes.shape({
       push: PropTypes.func,
@@ -56,13 +55,13 @@ export class UserDashboard extends Component {
 
   render() {
     const {
-      user: { name, orgs, public_collections },
+      user: { name, orgs },
       userOrganization,
       userDictionary,
       loading,
       networkError,
     } = this.props;
-    const dictionary = public_collections === 1 ? 'dictionary' : 'dictionaries';
+    const dictionary = userDictionary.length === 1 ? 'dictionary' : 'dictionaries';
     return (
       <div className="container custom-max-width">
         <Title title="Home" />
@@ -81,7 +80,7 @@ Welcome
             <div className="row">
               <DashboardDetails
                 numberOfOrgs={orgs}
-                numberOfDictionary={public_collections}
+                numberOfDictionary={userDictionary.length}
                 organizations={userOrganization}
               />
             </div>
