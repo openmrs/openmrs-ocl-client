@@ -5,7 +5,7 @@ export default {
     createDictionary: data => instance
       .post(`orgs/${data.owner}/collections/`, data)
     /* eslint-disable */
-        .then((response) => { 
+        .then((response) => {
           instance.post(`orgs/${data.owner}/sources/`, data);
           return response;
         }),
@@ -17,7 +17,7 @@ export default {
           instance.post('user/sources/', data);
           return response;
         }),
-    
+
     editDictionary: (url, data) =>
       instance
         .put(url, data)
@@ -27,7 +27,7 @@ export default {
       instance
       .get(`collections/?q=${''}&limit=${0}&page=${1}&verbose=true`)
       .then(payload => payload.data),
-      
+
     searchDictionaries: (searchTerm) =>
       instance
       .get(`collections/?q=${searchTerm}&limit=${0}&page=${1}&verbose=true`)
@@ -68,11 +68,11 @@ export default {
         .get(`${data}`)
         .then(response => response.data),
 
-    creatingVersion: (url,data) => 
+    creatingVersion: (url,data) =>
       instance
          .post(`${url}`, data)
          .then(response => response.data),
-    
+
     realisingHeadVersion: (url, data) =>
       instance
         .put(url, data)
@@ -93,6 +93,6 @@ export default {
     retireConcept: (conceptUrl, retire) => instance.put(conceptUrl, { retired: retire }),
   },
   mappings: {
-    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}`),
+    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}&limit=0`),
   },
 };

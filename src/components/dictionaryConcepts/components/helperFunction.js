@@ -1,4 +1,5 @@
 import urlConfig from '../../../config';
+import { union } from 'lodash';
 
 export const getUsername = () => localStorage.getItem('username');
 
@@ -81,3 +82,4 @@ export const KEY_CODE_FOR_ESCAPE = 27;
 export const KEY_CODE_FOR_SPACE = 32;
 export const MAPPINGS_RECURSION_DEPTH = 2;
 export const isSetConcept = conceptClass => conceptClass.toLowerCase().indexOf('set') > -1;
+export const removeDuplicates = items => union(items);
