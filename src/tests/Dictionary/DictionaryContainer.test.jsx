@@ -155,7 +155,7 @@ describe('DictionaryOverview', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle componentWillUpdate in HEAD version release', () => {
+  it('should fetch all released versions when a new collection version is released', () => {
     const props = {
       dictionary,
       versions: [customVersion],
@@ -177,15 +177,10 @@ describe('DictionaryOverview', () => {
       error: [],
       loader: false,
     };
-    const wrapper = mount(<Provider store={store}>
-      <MemoryRouter>
-        <DictionaryOverview {...props} />
-      </MemoryRouter>
-    </Provider>);
-
-    const prevProp = wrapper.props();
-    wrapper.find(DictionaryOverview).instance().componentWillUpdate(prevProp);
+    const wrapper = shallow(<DictionaryOverview {...props} />);
+    wrapper.setProps({ versions: [...props.versions, { id: 2 }] });
     expect(props.fetchVersions).toHaveBeenCalled();
+    wrapper.unmount();
   });
 
   it('should render dictionary versions', () => {

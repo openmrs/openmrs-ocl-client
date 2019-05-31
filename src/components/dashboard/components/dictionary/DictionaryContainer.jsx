@@ -63,7 +63,7 @@ export class DictionaryOverview extends Component {
     this.props.fetchDictionaryConcepts(conceptsUrl);
   }
 
-  componentWillUpdate(prevProps) {
+  componentDidUpdate = (prevProps) => {
     const {
       match: {
         params: {
@@ -73,7 +73,7 @@ export class DictionaryOverview extends Component {
     } = this.props;
     const versionUrl = `/${ownerType}/${owner}/${type}/${name}/versions/?verbose=true`;
 
-    if (prevProps.isReleased !== this.props.isReleased) {
+    if (prevProps.versions.length !== this.props.versions.length) {
       this.props.fetchVersions(versionUrl);
     }
   }
