@@ -214,9 +214,11 @@ describe('Test suite for dictionary concepts components', () => {
   });
 
   it('should handle form completion and submission with invalid/incomplete data', () => {
+    const event = { target: { name: 'id', value: '12345ft-007#' } };
+    wrapper.find('#id').simulate('change', event);
     wrapper.find('#toggleUUID').simulate('click');
-    const event = { target: { name: 'id', value: '12345ft-007' } };
-    wrapper.find('#uuid').simulate('change', event);
+    const newEvent = { target: { name: 'external_id', value: '12345ft-007#' } };
+    wrapper.find('#uuid').simulate('change', newEvent);
     wrapper.find('#createConceptForm').simulate('submit', {
       preventDefault: () => {},
     });
@@ -225,8 +227,10 @@ describe('Test suite for dictionary concepts components', () => {
     const conceptDatatype = { target: { name: 'datatype', value: '' } };
     wrapper.find('#datatype').simulate('change', conceptDatatype);
     wrapper.find('#toggleUUID').simulate('click');
-    const uuid = { target: { name: 'id', value: '12345ft-007#' } };
+    const uuid = { target: { name: 'external_id', value: '12345ft-007' } };
     wrapper.find('#uuid').simulate('change', uuid);
+    const newUuid = { target: { name: 'id', value: '12345ft-007' } };
+    wrapper.find('#id').simulate('change', newUuid);
     const conceptDescription = {
       target: { name: 'description', value: 'test concept description' },
     };
@@ -238,9 +242,15 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
+
   it('should handle form completion and submission with correct data', () => {
     const conceptName = { target: { name: 'name', value: 'test concept' } };
     wrapper.find('#concept-name').simulate('change', conceptName);
+    wrapper.find('#toggleUUID').simulate('click');
+    const uuid = { target: { name: 'external_id', value: '12345ft-007' } };
+    wrapper.find('#uuid').simulate('change', uuid);
+    const newUuid = { target: { name: 'id', value: '12345ft-006' } };
+    wrapper.find('#id').simulate('change', newUuid);
     const conceptClass = { target: { name: 'concept_class', value: 'Procedure' } };
     wrapper.find('#class').simulate('change', conceptClass);
     const conceptDatatype = { target: { name: 'datatype', value: 'Text' } };

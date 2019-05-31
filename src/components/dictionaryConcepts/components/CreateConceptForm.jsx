@@ -47,14 +47,14 @@ const CreateConceptForm = (props) => {
       <div className="concept-form-body">
         <div className="form-row">
           <div className="form-group col-md-7">
-            <label htmlFor="uuid"><h5>UUID</h5></label>
+            <label htmlFor="external_id"><h5>OpenMRS UUID (OCL External ID)</h5></label>
             <input
               type="text"
               className="form-control"
               readOnly={props.editable}
               onChange={props.handleChange}
-              value={props.state.id}
-              name="id"
+              name="external_id"
+              value={props.state.external_id}
               id="uuid"
               required
             />
@@ -62,6 +62,7 @@ const CreateConceptForm = (props) => {
             Only alphanumeric characters, hyphens, periods, and underscores are allowed.
             </small>
           </div>
+          {(!isEditConcept) && (
           <div className="form-group col-md-3 custom-field">
             <button
               type="submit"
@@ -69,8 +70,29 @@ const CreateConceptForm = (props) => {
               id="toggleUUID"
               onClick={props.toggleUUID}
             >
-            click here to manually enter
+                click here to manually enter
             </button>
+          </div>
+          )}
+        </div>
+        <div className="form-row">
+          <div className="form-group col-md-7">
+            <label htmlFor="id"><h5>OCL ID</h5></label>
+            <input
+              type="text"
+              className="form-control"
+              onChange={props.handleChange}
+              value={props.state.id}
+              readOnly={isEditConcept}
+              name="id"
+              id="id"
+            />
+            <small className="form-text text-muted">
+              This ID is used when viewing your concept in OCL,
+              but it will not be reflected when you download it to OpenMRS.
+              This ID must be unique within your dictionary,
+              and it cannot be changed after creating the concept.
+            </small>
           </div>
         </div>
         <div className="form-row">
@@ -317,6 +339,7 @@ CreateConceptForm.propTypes = {
     datatype: PropTypes.string,
     concept_class: PropTypes.string,
     id: PropTypes.string,
+    external_id: PropTypes.string,
   }).isRequired,
   concept: PropTypes.string.isRequired,
   path: PropTypes.string,

@@ -51,6 +51,7 @@ export class CreateConcept extends Component {
     description: PropTypes.array.isRequired,
     newConcept: PropTypes.shape({
       id: PropTypes.string,
+      external_id: PropTypes.string,
       concept_class: PropTypes.string,
       datatype: PropTypes.string,
       names: PropTypes.array,
@@ -76,7 +77,8 @@ export class CreateConcept extends Component {
     super(props);
     this.state = {
       notEditable: true,
-      id: String(uuid()),
+      id: '',
+      external_id: String(uuid()),
       concept_class: '',
       datatype: 'None',
       names: [],
@@ -241,11 +243,15 @@ export class CreateConcept extends Component {
     } = this.props;
     const url = `/${type}/${typeName}/sources/${collectionName}/concepts/`;
     const regx = /^[a-zA-Z\d-_]+$/;
-    if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
+    if (regx.test(this.state.id) && regx.test(this.state.external_id)
+      && this.state.datatype && this.state.concept_class) {
       this.props.createNewConcept(this.state, url);
     } else {
+      if (!regx.test(this.state.external_id)) {
+        notify.show('enter a valid uuid for the OpenMRS UUID field', 'error', 3000);
+      }
       if (!regx.test(this.state.id)) {
-        notify.show('enter a valid uuid', 'error', 3000);
+        notify.show('enter a valid id for the OCL ID field', 'error', 3000);
       }
       if (!this.state.datatype) {
         notify.show('choose a datatype', 'error', 3000);
@@ -395,7 +401,6 @@ export class CreateConcept extends Component {
     const concept = conceptType ? `${conceptType}` : '';
     const path = localStorage.getItem('dictionaryPathName');
     const append = concept === 'Set' ? ' of concepts' : ' concept';
-
     return (
       <div className="container create-custom-concept">
         <div className="row create-concept-header">
