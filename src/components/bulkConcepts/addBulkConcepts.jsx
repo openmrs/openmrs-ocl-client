@@ -72,7 +72,7 @@ export class AddBulkConcepts extends Component {
         params: { type, typeName, collectionName },
       },
     } = this.props;
-    const url = `${type}/${typeName}/collections/${collectionName}/references/`;
+    const url = `${type}/${typeName}/collections/${collectionName}/references/?cascade=sourcemappings`;
     const { conceptIds } = this.state;
     const conceptIdList = conceptIds.split(/[\s,\r\n]+/);
 

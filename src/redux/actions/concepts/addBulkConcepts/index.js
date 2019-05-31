@@ -82,7 +82,7 @@ export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsTo
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
   const { type, typeName, collectionName } = params;
-  const url = `${type}/${typeName}/collections/${collectionName}/references/`;
+  const url = `${type}/${typeName}/collections/${collectionName}/references/?cascade=sourcemappings`;
   try {
     const referencesToAdd = await recursivelyFetchConceptMappings([id], MAPPINGS_RECURSION_DEPTH);
     data.data.expressions.push(...referencesToAdd);
