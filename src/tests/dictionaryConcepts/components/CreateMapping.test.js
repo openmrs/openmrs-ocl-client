@@ -19,6 +19,7 @@ describe('Test suite for dictionary concepts components', () => {
     removeMappingRow: jest.fn(),
     updateAsyncSelectValue: jest.fn(),
     allSources: [mockSource],
+    url: 'uniqueMappingUrl',
   };
 
   let wrapper = mount(<Router>
@@ -62,7 +63,7 @@ describe('Test suite for dictionary concepts components', () => {
       <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
     const inputs = wrapper.find('input');
-    expect(inputs).toHaveLength(2);
+    expect(inputs).toHaveLength(3);
   });
 
   it('should render when isNew is true and source equal to CIEL', () => {
@@ -123,7 +124,7 @@ describe('Test suite for dictionary concepts components', () => {
     expect(props.updateEventListener).toHaveBeenCalled();
   });
 
-  it('should call handleKeyPress when a key is pressed in the concept name input', () => {
+  it('should call handleKeyPress when a key is pressed in the internal concepts search input', () => {
     const newProps = {
       ...props,
       isNew: true,
@@ -140,9 +141,56 @@ describe('Test suite for dictionary concepts components', () => {
 
     expect(handleKeyPressSpy).not.toHaveBeenCalled();
 
-    createMappingRow.find('#ConceptName').simulate('keyDown');
-    createMappingRow.find('#to_concept_code').simulate('keyDown');
-    expect(handleKeyPressSpy).toHaveBeenCalledTimes(2);
+    createMappingRow.find(`#search-internal-mappings-${newProps.url}`).simulate('keyDown');
+    expect(handleKeyPressSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should update the internalConceptSearchQuery prop when a search query is typed', () => {
+    const searchQuery = 'query';
+    const newProps = {
+      ...props,
+      isNew: true,
+      source: 'maptypes',
+    };
+
+    wrapper = mount(<Router>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
+    </Router>);
+
+    const createMappingRow = wrapper.find('CreateMapping');
+    const instance = createMappingRow.instance();
+
+    expect(instance.state.internalConceptSearchQuery).toEqual('');
+
+    createMappingRow.find(`#search-internal-mappings-${newProps.url}`).simulate('change', {
+      target: {
+        value: searchQuery,
+      },
+    });
+    expect(instance.state.internalConceptSearchQuery).toEqual(searchQuery);
+  });
+
+  it('should display a spinner when loading internal concepts', (done) => {
+    const newProps = {
+      ...props,
+      isNew: true,
+      source: 'maptypes',
+    };
+
+    wrapper = mount(<Router>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
+    </Router>);
+
+    const createMappingRow = wrapper.find('CreateMapping');
+    const instance = createMappingRow.instance();
+
+    expect(wrapper.find('.concept-code .loading')).toHaveLength(0);
+
+    instance.setState({ conceptsLoading: true }, () => {
+      wrapper.update();
+      expect(wrapper.find('.concept-code .loading')).toHaveLength(1);
+      done();
+    });
   });
 
   it('should handle change when a user inputs concept name mappings data for for existing concepts', () => {
