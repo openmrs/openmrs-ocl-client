@@ -24,6 +24,8 @@ class CreateMapping extends Component {
       isVisible: false,
       internalConceptOptions: [],
       isInternalConceptOptionsListVisible: false,
+      internalConceptSearchQuery: '',
+      conceptsLoading: false,
     };
   }
 
@@ -70,11 +72,13 @@ class CreateMapping extends Component {
           this.setState({
             internalConceptOptions: [],
             isInternalConceptOptionsListVisible: false,
+            conceptsLoading: true,
           });
           const internalConceptOptions = await fetchConceptsFromASource(url, inputValue);
           this.setState({
             internalConceptOptions,
             isInternalConceptOptionsListVisible: true,
+            conceptsLoading: false,
           });
         }
       } else {
@@ -108,7 +112,13 @@ class CreateMapping extends Component {
   }
 
   render() {
-    const { inputValue, isInternalConceptOptionsListVisible, internalConceptOptions } = this.state;
+    const {
+      inputValue,
+      isInternalConceptOptionsListVisible,
+      internalConceptOptions,
+      internalConceptSearchQuery,
+      conceptsLoading,
+    } = this.state;
     const {
       map_type, source, to_concept_code, to_concept_name, index,
       updateEventListener, updateSourceEventListener, removeMappingRow,
@@ -203,7 +213,6 @@ class CreateMapping extends Component {
                   name="to_concept_code"
                   id="to_concept_code"
                   onChange={(event) => { updateEventListener(event, url); }}
-                  onKeyDown={event => this.handleKeyPress(event, to_concept_code, source, false)}
                 />
               </div>
             </div>
@@ -247,22 +256,46 @@ class CreateMapping extends Component {
               type="text"
               name="to_concept_name"
               onChange={(event) => { updateEventListener(event, url); }}
-              onKeyDown={event => this.handleKeyPress(event, to_concept_name, source, false)}
             />
           )}
-          {isInternalConceptOptionsListVisible && <ul className="cielConceptsList">
-            {internalConceptOptions.map(concept => <li key={concept.id}>
-              <button
-                type="button"
-                id={`concept-id-${concept.id}`}
-                name={`concept-name-${concept.id}`}
-                onClick={() => this.selectInternalMapping(concept, url)}
-              >
-                {concept.display_name}
-              </button>
-            </li>)}
-            {internalConceptOptions.length < 1 && <li className="message">No concepts matching this query</li>}
-          </ul>}
+          {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
+            <div className="concept-code">
+              <span className={conceptsLoading ? 'loading' : ''}>
+                <input
+                  autoComplete="off"
+                  tabIndex={index}
+                  value={internalConceptSearchQuery}
+                  className="form-control"
+                  placeholder="or search concepts"
+                  id={`search-internal-mappings-${url}`}
+                  type="text"
+                  onChange={(event) => {
+                    this.setState({ internalConceptSearchQuery: event.target.value });
+                  }}
+                  onKeyDown={(event) => {
+                    this.handleKeyPress(event, internalConceptSearchQuery, source, false);
+                  }}
+                />
+              </span>
+            </div>
+          )}
+          {isInternalConceptOptionsListVisible && (
+            <div className="position-relative">
+              <ul className="cielConceptsList search-results">
+                {internalConceptOptions.map(concept => <li key={concept.id}>
+                  <button
+                    type="button"
+                    id={`concept-id-${concept.id}`}
+                    name={`concept-name-${concept.id}`}
+                    onClick={() => this.selectInternalMapping(concept, url)}
+                  >
+                    {concept.display_name}
+                  </button>
+                </li>)}
+                {internalConceptOptions.length < 1 && <li className="message">No concepts matching this query</li>}
+              </ul>
+            </div>
+          )}
         </td>
 
         <td className="table-remove-link">
