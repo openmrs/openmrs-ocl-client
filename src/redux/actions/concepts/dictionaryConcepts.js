@@ -485,9 +485,11 @@ export const UpdateMapping = (data) => {
 
 export const updateConcept = (conceptUrl, data, history, source, concept) => async (dispatch) => {
   dispatch(isFetching(true));
+  let updatedConcept;
   const url = conceptUrl;
   try {
     const response = await instance.put(url, data);
+    updatedConcept = response.data;
     CreateMapping(data.mappings, concept.url, source);
     UpdateMapping(data.mappings);
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
@@ -511,6 +513,7 @@ export const updateConcept = (conceptUrl, data, history, source, concept) => asy
     }
     dispatch(isFetching(false));
   }
+  if (updatedConcept) return updatedConcept;
   history.goBack();
   return false;
 };
