@@ -258,6 +258,7 @@ export const addAnswerMappingToConcept = async (url, source, answers) => {
       map_type: answer.map_type,
       from_concept_url: url,
       to_concept_url: answer.url,
+      external_id: String(uuid()),
     }));
 
     const promises = answerMappings.map(mapping => instance.post(mappingUrl, mapping));
@@ -276,6 +277,7 @@ export const addSetMappingToConcept = async (url, source, sets) => {
       map_type: set.map_type,
       from_concept_url: url,
       to_concept_url: set.url,
+      external_id: String(uuid()),
     }));
 
     const promises = setMappings.map(mapping => instance.post(mappingUrl, mapping));
@@ -387,11 +389,13 @@ export const buildNewMappingData = (mapping, fromConceptUrl) => {
     to_source_url: sourceObject.url,
     to_concept_code,
     to_concept_name,
+    external_id: String(uuid()),
   }) : ({
     map_type,
     from_concept_url: fromConceptUrl,
     to_concept_url: `${sourceObject.url}concepts/${to_concept_code}/`,
     to_concept_name,
+    external_id: String(uuid()),
   });
 };
 
