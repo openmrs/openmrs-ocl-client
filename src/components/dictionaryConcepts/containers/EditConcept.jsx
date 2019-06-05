@@ -92,6 +92,7 @@ export class EditConcept extends Component {
     this.state = {
       notEditable: true,
       id: '',
+      external_id: '',
       concept_class: '',
       datatype: '',
       answers: [],
@@ -125,6 +126,7 @@ export class EditConcept extends Component {
         },
       },
       fetchAllConceptSources,
+      existingConcept,
     } = this.props;
     this.conceptUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/${conceptId}/?includeMappings=true&verbose=true`;
     this.createUrl = `/${type}/${typeName}/sources/${collectionName}/concepts/`;
@@ -132,6 +134,7 @@ export class EditConcept extends Component {
       this.oldState = this.state;
     });
     fetchAllConceptSources();
+    this.setState({ external_id: existingConcept.external_id });
   }
 
   componentDidUpdate = (prevProps) => {
