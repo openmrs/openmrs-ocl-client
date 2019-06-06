@@ -237,6 +237,42 @@ describe('Test suite for Traditional OCL actions', () => {
   })
 });
 
+describe('dictionaries', () => {
+  describe('references', () => {
+    describe('delete', () => {
+      describe('fromACollection', () => {
+        beforeEach(() => {
+          moxios.install(instance);
+        });
+
+        afterEach(() => {
+          moxios.uninstall(instance);
+        });
+
+        it('should call the deleteMappingsFromCollection endpoint with the right query and data', async () => {
+          const collectionUrl = '/test/collection/url/';
+          const references = ['/test/reference'];
+          let requestUrl;
+          let data;
+
+          moxios.wait(() => {
+            const request = moxios.requests.mostRecent();
+            requestUrl = request.url;
+            data = request.config.data;
+            request.respondWith({
+              status: 200,
+            });
+          });
+
+          await api.dictionaries.references.delete.fromACollection(collectionUrl, references);
+          expect(requestUrl).toContain(`${collectionUrl}references/`);
+          expect(data).toEqual(JSON.stringify({ references }));
+        });
+      });
+    });
+  });
+});
+
 describe('concepts', () => {
   describe('list', () => {
     describe('conceptsInASource', () => {
@@ -280,6 +316,38 @@ describe('concepts', () => {
 
         await api.concepts.list.conceptsInASource(url);
         expect(requestUrl).toContain(`${url}concepts/?q=*`);
+      });
+    });
+  });
+});
+
+describe('mappings', () => {
+  describe('list', () => {
+    describe('fromAConceptInACollection', () => {
+      beforeEach(() => {
+        moxios.install(instance);
+      });
+
+      afterEach(() => {
+        moxios.uninstall(instance);
+      });
+
+      it('should call the fetchMappingsInCollection endpoint with the right query', async () => {
+        const collectionUrl = '/test/collection/url/';
+        const fromConceptCode = 1;
+        let requestUrl;
+
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          requestUrl = request.url;
+          request.respondWith({
+            status: 200,
+          });
+        });
+
+        await api.mappings.list.fromAConceptInACollection(collectionUrl, fromConceptCode);
+        expect(requestUrl)
+          .toContain(`${collectionUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`);
       });
     });
   });
