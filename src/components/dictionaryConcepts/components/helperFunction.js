@@ -84,3 +84,6 @@ export const MAPPINGS_RECURSION_DEPTH = 2;
 export const isSetConcept = conceptClass => conceptClass.toLowerCase().indexOf('set') > -1;
 export const removeDuplicates = items => union(items);
 export const isExternalSource = source => source && includes(['External', 'externalDictionary'], source.source_type);
+export const preventFormSubmit = event => event.target.type !== 'textarea'
+    && event.which === KEY_CODE_FOR_ENTER
+    && event.preventDefault();

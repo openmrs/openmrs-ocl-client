@@ -9,6 +9,7 @@ import {
   MAP_TYPE,
   CONCEPT_CLASS,
   isSetConcept,
+  preventFormSubmit,
 } from './helperFunction';
 
 const CreateConceptForm = (props) => {
@@ -43,7 +44,8 @@ const CreateConceptForm = (props) => {
   const descriptions = props.existingConcept.descriptions || props.description;
 
   return (
-    <form className="form-wrapper" onSubmit={props.handleSubmit} id="createConceptForm">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+    <form className="form-wrapper" onKeyPress={preventFormSubmit} onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
         <div className="form-row">
           <div className="form-group col-md-7">
