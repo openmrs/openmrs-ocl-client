@@ -1212,6 +1212,7 @@ describe('Add set mappings to concept', () => {
   it('should add all chosen set mappings', (done) => {
     const mappingData = [
       {
+        external_id: '1',
         url: 'some/test.url',
         map_scope: 'Internal',
         map_type: 'Set',
@@ -1232,6 +1233,7 @@ describe('Add set mappings to concept', () => {
         map_type: mappingData[0].map_type,
         from_concept_url: url,
         to_concept_url: mappingData[0].url,
+        external_id: mappingData[0].external_id,
       }));
       expect(request.url.indexOf(mappingUrl)).toBeGreaterThan(-1);
 
@@ -1278,6 +1280,7 @@ describe('buildNewMappingData', () => {
   const toConceptCode = 'testCode';
   const toConceptName = 'testName';
   const mapType = MAP_TYPES_DEFAULTS[0];
+  const external_id = '1';
 
   it('buildNewMappingData should return the map_type, from_concept_url, to_source_url, to_concept_code, to_concept_name if given an external concept', () => {
     const mapping = {
@@ -1287,6 +1290,7 @@ describe('buildNewMappingData', () => {
       to_concept_name: toConceptName,
     };
     const expectedMapping = {
+      external_id: external_id,
       map_type: mapType,
       from_concept_url: fromConceptUrl,
       to_source_url: mapping.sourceObject.url,
@@ -1304,6 +1308,7 @@ describe('buildNewMappingData', () => {
       to_concept_name: toConceptName,
     };
     const expectedMapping = {
+      external_id: external_id,
       map_type: mapType,
       from_concept_url: fromConceptUrl,
       to_concept_url: `${mapping.sourceObject.url}concepts/${toConceptCode}/`,
