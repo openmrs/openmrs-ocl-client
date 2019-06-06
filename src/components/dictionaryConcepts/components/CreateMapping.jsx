@@ -56,14 +56,14 @@ class CreateMapping extends Component {
   }
 
 
-  handleKeyPress = async (event, inputValue, url, isExternalMapping = true) => {
+  handleKeyPress = async (event, inputValue, url, isCielMapping = true) => {
     this.setState({
       isInternalConceptOptionsListVisible: false,
     });
 
     if (event.keyCode === KEY_CODE_FOR_ENTER) {
-      if (inputValue.length > 2) {
-        if (isExternalMapping) {
+      if (inputValue && inputValue.length > 2) {
+        if (isCielMapping) {
           const options = await fetchSourceConcepts(
             INTERNAL_MAPPING_DEFAULT_SOURCE, inputValue, url,
           );
@@ -135,7 +135,9 @@ class CreateMapping extends Component {
             tabIndex={index}
             className="form-control"
             name="source"
-            onChange={(event) => { updateSourceEventListener(event, url); }}
+            onChange={(event) => {
+              updateSourceEventListener(event, url, allSources[event.target.selectedIndex - 1]);
+            }}
             value={source || undefined}
           >
             <option value="" hidden>Select a source</option>

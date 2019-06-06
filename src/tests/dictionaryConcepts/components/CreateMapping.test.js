@@ -2,10 +2,12 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { MemoryRouter as Router } from 'react-router';
 import { notify } from 'react-notify-toast';
+import moxios from 'moxios';
 import CreateMapping from '../../../components/dictionaryConcepts/components/CreateMapping';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE, KEY_CODE_FOR_ENTER } from '../../../components/dictionaryConcepts/components/helperFunction';
 import concept, { mockSource } from '../../__mocks__/concepts';
 import api from '../../../redux/api';
+import apiInstance from '../../../config/axiosConfig';
 
 
 describe('Test suite for dictionary concepts components', () => {
@@ -25,6 +27,14 @@ describe('Test suite for dictionary concepts components', () => {
   let wrapper = mount(<Router>
     <table><tbody><CreateMapping {...props} /></tbody></table>
   </Router>);
+
+  beforeEach(() => {
+    moxios.install(apiInstance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(apiInstance);
+  });
 
   it('should call handleInputChange', () => {
     const instance = wrapper.find('CreateMapping').instance();
@@ -299,6 +309,42 @@ describe('Test suite for dictionary concepts components', () => {
     expect(notifyMock).toHaveBeenCalledWith('Query must have at least three characters', 'warning', 2000);
   });
 
+  it('should call action to query ciel concepts and set the results to state', async () => {
+    const data = [concept];
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: data,
+      });
+    });
+
+    const event = {
+      keyCode: KEY_CODE_FOR_ENTER,
+    };
+    const inputValue = 'testQuery';
+    const url = '/test/url';
+    const newProps = {
+      ...props,
+      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+    };
+
+    wrapper = mount(<Router>
+      <table><tbody><CreateMapping {...newProps} /></tbody></table>
+    </Router>);
+
+    const createMapping = wrapper.find('CreateMapping');
+    const createMappingInstance = createMapping.instance();
+
+    expect(createMapping.state().options).toHaveLength(0);
+    expect(createMapping.state().isVisible).toBeFalsy();
+
+    await createMappingInstance.handleKeyPress(event, inputValue, url, true);
+
+    expect(createMapping.state().options[0].to_concept_code).toEqual(data[0].id);
+    expect(createMapping.state().isVisible).toBeTruthy();
+  });
+
   it('should display "No concepts matching this query" when there are no concepts to select from', (done) => {
     const newProps = {
       ...props,
@@ -389,7 +435,7 @@ describe('Test suite for dictionary concepts components', () => {
     });
   });
 
-  it('should handle key down event when a user presses the enter button to search mappings for existing rows', (done) => {
+  it('should handle key down event when a user presses the enter button to search mappings for existing rows', () => {
     const newProps = {
       ...props,
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
@@ -400,16 +446,15 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
 
     const inputField = wrapper.find('CreateMapping');
-    const spy = jest.spyOn(inputField.instance(), 'handleKeyPress');
+    const handleKeyPressMock = jest.fn();
+    inputField.instance().handleKeyPress = handleKeyPressMock;
+
     const event = { keyCode: KEY_CODE_FOR_ENTER };
     inputField.find('#searchInputCiel').simulate('keyDown', event);
-    inputField.instance().handleKeyPress(event, 'malaria').then(() => {
-      expect(spy).toHaveBeenCalled();
-      done();
-    });
+    expect(handleKeyPressMock).toHaveBeenCalled();
   });
 
-  it('should handle key down event when a user presses the enter button to search mappings for new rows (isNew is true)', async () => {
+  it('should handle key down event when a user presses the enter button to search mappings for new rows (isNew is true)', () => {
     const newProps = {
       ...props,
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
@@ -421,11 +466,12 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
 
     const inputField = wrapper.find('CreateMapping');
-    const spy = jest.spyOn(inputField.instance(), 'handleKeyPress');
+    const handleKeyPressMock = jest.fn();
+    inputField.instance().handleKeyPress = handleKeyPressMock;
+
     const event = { keyCode: KEY_CODE_FOR_ENTER };
     inputField.find('#searchInputCielIsnew').simulate('keyDown', event);
-    await inputField.instance().handleKeyPress(event, 'malaria');
-    expect(spy).toHaveBeenCalled();
+    expect(handleKeyPressMock).toHaveBeenCalled();
   });
 
   describe('selectInternalMapping', () => {

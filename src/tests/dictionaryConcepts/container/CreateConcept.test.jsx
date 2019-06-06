@@ -408,9 +408,12 @@ describe('Test suite for dictionary concepts components', () => {
     const instance = wrapper.find('CreateConcept').instance();
     instance.state.mappings[1] = {
       source: 'MapTypes',
+      url,
     };
     instance.updateSourceEventListener(event, url);
-    expect(instance.state.mappings[1].map_type).toEqual('NARROWER-THAN');
+    setImmediate(() => {
+      expect(instance.state.mappings[1].map_type).toEqual('NARROWER-THAN');
+    });
   });
   it('should set `SAME-AS` as the default relationship when the source is changed to `CIEL`'
   + 'while creating a new concept', () => {
@@ -418,15 +421,15 @@ describe('Test suite for dictionary concepts components', () => {
       target: {
         tabIndex: 0,
         name: 'source',
-        value: '',
+        value: INTERNAL_MAPPING_DEFAULT_SOURCE,
       },
     };
     const url = '1234';
     const instance = wrapper.find('CreateConcept').instance();
-    instance.state.mappings[1] = {
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-    };
+
     instance.updateSourceEventListener(event, url);
-    expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
+    setImmediate(() => {
+      expect(instance.state.mappings[0].map_type).toEqual('SAME-AS');
+    });
   });
 });

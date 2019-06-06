@@ -4,6 +4,7 @@ import autoBind from 'react-autobind';
 import { notify } from 'react-notify-toast';
 import PropTypes from 'prop-types';
 import uuid from 'uuid/v4';
+import { find } from 'lodash';
 import CreateConceptForm from '../components/CreateConceptForm';
 import {
   createNewName,
@@ -321,7 +322,7 @@ export class EditConcept extends Component {
     this.setState({ mappings });
   }
 
-  updateSourceEventListener = (event, url) => {
+  updateSourceEventListener = (event, url, source) => {
     const { value, name } = event.target;
     const defaultRelationship = MAP_TYPES_DEFAULTS[1];
     const relationship = MAP_TYPES_DEFAULTS[0];
@@ -330,6 +331,7 @@ export class EditConcept extends Component {
       const modifyMap = map;
       if (modifyMap.url === url) {
         modifyMap[name] = value;
+        modifyMap.sourceObject = source;
         if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
           modifyMap.map_type = defaultRelationship;
         } else {
@@ -365,6 +367,7 @@ export class EditConcept extends Component {
       if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
         updatedMap.to_source_url = value.value;
         updatedMap.to_concept_name = value.label;
+        updatedMap.to_concept_code = value.to_concept_code;
       }
       return updatedMap;
     });
@@ -465,12 +468,14 @@ export class EditConcept extends Component {
   }
 
   organizeMappings = (mappings) => {
+    const { allSources } = this.props;
     const filteredMappings = mappings.map((mapping, i) => {
       if (mapping.to_source_url === CIEL_SOURCE_URL) {
         return {
           id: i,
           map_type: mapping.map_type,
           source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+          sourceObject: find(allSources, { url: mapping.to_source_url }),
           to_concept_code: mapping.to_concept_code,
           to_concept_name: mapping.to_concept_name,
           to_source_url: mapping.to_concept_url,
@@ -482,6 +487,7 @@ export class EditConcept extends Component {
         id: i,
         map_type: mapping.map_type,
         source: mapping.to_source_url,
+        sourceObject: find(allSources, { url: mapping.to_source_url }),
         to_concept_code: mapping.to_concept_code,
         to_concept_name: mapping.to_concept_name,
         to_source_url: mapping.to_concept_url,
