@@ -119,6 +119,28 @@ describe('Test suite for Paginations component', () => {
     wrapper.find('.fa-angle-double-right').simulate('click');
     expect(wrapper.find('Paginations').instance().props.currentPage + 1).toEqual(2);
   });
+  it('should call setPreviousPage when the previous page icon element is clicked', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 2,
+      firstDictionaryIndex: 1,
+      dictionaries: 10,
+      lastPage: 9,
+      setNextPage: jest.fn(),
+      setPreviousPage: jest.fn(),
+      view: true,
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <Paginations {...props} />
+      </Router>
+    </Provider>);
+    const instance = wrapper.find('Paginations').instance();
+    expect(instance.props.setPreviousPage).not.toHaveBeenCalled();
+    wrapper.find('.fa-angle-double-left').simulate('click');
+    expect(instance.props.setPreviousPage).toHaveBeenCalled();
+  });
+
   it('should test mapStateToProps', () => {
     const initialState = {
       bulkConcepts: {
