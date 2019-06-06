@@ -10,6 +10,7 @@ import {
   MAP_TYPES_DEFAULTS,
   CIEL_SOURCE_URL,
   KEY_CODE_FOR_ENTER,
+  isExternalSource,
 } from './helperFunction';
 import MapType from './MapType';
 
@@ -120,7 +121,7 @@ class CreateMapping extends Component {
       conceptsLoading,
     } = this.state;
     const {
-      map_type, source, to_concept_code, to_concept_name, index,
+      map_type, source, sourceObject, to_concept_code, to_concept_name, index,
       updateEventListener, updateSourceEventListener, removeMappingRow,
       isNew, allSources, url, isShown,
     } = this.props;
@@ -260,7 +261,8 @@ class CreateMapping extends Component {
               onChange={(event) => { updateEventListener(event, url); }}
             />
           )}
-          {source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
+          {sourceObject && !isExternalSource(sourceObject)
+          && source && source !== INTERNAL_MAPPING_DEFAULT_SOURCE && (
             <div className="concept-code">
               <span className={conceptsLoading ? 'loading' : ''}>
                 <input
@@ -330,11 +332,13 @@ CreateMapping.propTypes = {
   isNew: PropTypes.bool,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   isShown: PropTypes.bool,
+  sourceObject: PropTypes.object,
 };
 
 CreateMapping.defaultProps = {
   map_type: '',
   source: '',
+  sourceObject: {},
   to_concept_code: '',
   to_concept_name: '',
   index: 0,

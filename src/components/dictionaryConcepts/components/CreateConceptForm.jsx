@@ -289,6 +289,7 @@ const CreateConceptForm = (props) => {
                   {selectedMappings.map((mapping, i) => (
                     <CreateMapping
                       source={mapping.source}
+                      sourceObject={mapping.sourceObject}
                       url={mapping.url}
                       map_type={mapping.map_type}
                       to_concept_code={mapping.to_concept_code}
