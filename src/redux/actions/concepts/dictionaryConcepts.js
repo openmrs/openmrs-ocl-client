@@ -2,7 +2,11 @@ import uuid from 'uuid/v4';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
 import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
-import { INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPE } from '../../../components/dictionaryConcepts/components/helperFunction';
+import {
+  INTERNAL_MAPPING_DEFAULT_SOURCE,
+  MAP_TYPE,
+  isExternalSource,
+} from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
   POPULATE_SIDEBAR,
@@ -360,6 +364,7 @@ export const fetchSourceConcepts = async (source, query, index) => {
     const options = response.data.map(concept => ({
       value: concept.url,
       label: `ID(${concept.id}) - ${concept.display_name}`,
+      to_concept_code: concept.id,
       index,
     }));
     return options;
@@ -369,17 +374,24 @@ export const fetchSourceConcepts = async (source, query, index) => {
 };
 
 export const buildNewMappingData = (mapping, fromConceptUrl) => {
-  return mapping.source === INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
-    map_type: mapping.map_type,
+  const {
+    sourceObject,
+    map_type,
+    to_concept_code,
+    to_concept_name,
+  } = mapping;
+
+  return isExternalSource(sourceObject) ? ({
+    map_type,
     from_concept_url: fromConceptUrl,
-    to_source_url: mapping.to_source_url || mapping.source,
-    to_concept_code: mapping.to_concept_code,
-    to_concept_name: mapping.to_concept_name,
+    to_source_url: sourceObject.url,
+    to_concept_code,
+    to_concept_name,
   }) : ({
-    map_type: mapping.map_type,
+    map_type,
     from_concept_url: fromConceptUrl,
-    to_concept_url: `${mapping.source}concepts/${mapping.to_concept_code}/`,
-    to_concept_name: mapping.to_concept_name,
+    to_concept_url: `${sourceObject.url}concepts/${to_concept_code}/`,
+    to_concept_name,
   });
 };
 
@@ -399,9 +411,10 @@ export const fetchConceptsFromASource = async (sourceUrl, query) => {
 
 export const CreateMapping = (data, from_concept_url, source) => {
   const url = `/users/${localStorage.getItem('username')}/sources/${source}/mappings/`;
-  axios.all(data.map((mapping) => {
+  const newMappings = data.filter(mapping => mapping && mapping.isNew);
+  axios.all(newMappings.map((mapping) => {
     const mappingData = buildNewMappingData(mapping, from_concept_url);
-    return mapping.isNew && instance.post(url, mappingData);
+    return instance.post(url, mappingData);
   }));
 };
 
@@ -464,22 +477,30 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
 };
 
 export const buildUpdateMappingData = (mapping) => {
-  return mapping.source === INTERNAL_MAPPING_DEFAULT_SOURCE ? ({
-    map_type: mapping.map_type,
-    to_source_url: mapping.source,
-    to_concept_code: mapping.to_concept_code,
-    to_concept_name: mapping.to_concept_name,
+  const {
+    sourceObject,
+    map_type,
+    to_concept_code,
+    to_concept_name,
+  } = mapping;
+
+  return isExternalSource(sourceObject) ? ({
+    map_type,
+    to_source_url: sourceObject.url,
+    to_concept_code,
+    to_concept_name,
   }) : ({
-    map_type: mapping.map_type,
-    to_concept_url: `${mapping.source}concepts/${mapping.to_concept_code}/`,
-    to_concept_name: mapping.to_concept_name,
+    map_type,
+    to_concept_url: `${sourceObject.url}concepts/${to_concept_code}/`,
+    to_concept_name,
   });
 };
 
 export const UpdateMapping = (data) => {
-  axios.all(data.map((mapping) => {
+  const updatedMappings = data.filter(mapping => mapping && !mapping.isNew);
+  axios.all(updatedMappings.map((mapping) => {
     const mappingData = buildUpdateMappingData(mapping);
-    return !mapping.isNew && instance.put(mapping.url, mappingData);
+    return instance.put(mapping.url, mappingData);
   }));
 };
 

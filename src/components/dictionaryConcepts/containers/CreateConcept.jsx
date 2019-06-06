@@ -314,7 +314,7 @@ export class CreateConcept extends Component {
     this.setState({ mappings });
   }
 
-  updateSourceEventListener = (event, url) => {
+  updateSourceEventListener = (event, url, source) => {
     const { value, name } = event.target;
     const defaultRelationship = MAP_TYPES_DEFAULTS[1];
     const relationship = MAP_TYPES_DEFAULTS[0];
@@ -323,11 +323,13 @@ export class CreateConcept extends Component {
       const modifyMap = map;
       if (modifyMap.url === url) {
         modifyMap[name] = value;
-      }
-      if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
-        modifyMap.map_type = defaultRelationship;
-      } else {
-        modifyMap.map_type = relationship;
+        modifyMap.sourceObject = source;
+
+        if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
+          modifyMap.map_type = defaultRelationship;
+        } else {
+          modifyMap.map_type = relationship;
+        }
       }
       return modifyMap;
     });
@@ -354,6 +356,7 @@ export class CreateConcept extends Component {
       if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
         updatedMap.to_source_url = value.value;
         updatedMap.to_concept_name = value.label;
+        updatedMap.to_concept_code = value.to_concept_code;
       }
       return updatedMap;
     });

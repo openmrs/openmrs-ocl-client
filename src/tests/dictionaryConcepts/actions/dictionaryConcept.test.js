@@ -80,7 +80,7 @@ import {
   unpopulatePrepopulatedSets,
   unpopulateSet,
   buildNewMappingData,
-  fetchConceptsFromASource,
+  fetchConceptsFromASource, buildUpdateMappingData,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -103,6 +103,7 @@ import {
   MAP_TYPES_DEFAULTS,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 import api from '../../../redux/api';
+import { externalSource, internalSource } from '../../__mocks__/sources';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -1274,23 +1275,21 @@ describe('Add set mappings to concept', () => {
 
 describe('buildNewMappingData', () => {
   const fromConceptUrl = '/test/from/concept/url';
-  const toSourceUrl = '/test/to/source/url';
   const toConceptCode = 'testCode';
   const toConceptName = 'testName';
   const mapType = MAP_TYPES_DEFAULTS[0];
 
   it('buildNewMappingData should return the map_type, from_concept_url, to_source_url, to_concept_code, to_concept_name if given an external concept', () => {
     const mapping = {
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: externalSource,
       map_type: mapType,
-      to_source_url: toSourceUrl,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
     };
     const expectedMapping = {
       map_type: mapType,
       from_concept_url: fromConceptUrl,
-      to_source_url: toSourceUrl,
+      to_source_url: mapping.sourceObject.url,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
     };
@@ -1299,7 +1298,7 @@ describe('buildNewMappingData', () => {
 
   it('buildNewMappingData should return the map_type, from_concept_url, to_concept_url, to_concept_name if given an internal concept', () => {
     const mapping = {
-      source: 'not external',
+      sourceObject: internalSource,
       map_type: mapType,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
@@ -1307,7 +1306,7 @@ describe('buildNewMappingData', () => {
     const expectedMapping = {
       map_type: mapType,
       from_concept_url: fromConceptUrl,
-      to_concept_url: `${mapping.source}concepts/${toConceptCode}/`,
+      to_concept_url: `${mapping.sourceObject.url}concepts/${toConceptCode}/`,
       to_concept_name: toConceptName,
     };
     expect(buildNewMappingData(mapping, fromConceptUrl)).toEqual(expectedMapping);
@@ -1315,41 +1314,39 @@ describe('buildNewMappingData', () => {
 });
 
 describe('buildUpdateMappingData', () => {
-  const toSourceUrl = '/test/to/source/url';
   const toConceptCode = 'testCode';
   const toConceptName = 'testName';
   const mapType = MAP_TYPES_DEFAULTS[0];
 
   it('buildUpdateMappingData should return the map_type, to_source_url, to_concept_code, to_concept_name if given an external concept', () => {
     const mapping = {
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: externalSource,
       map_type: mapType,
-      to_source_url: toSourceUrl,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
     };
     const expectedMapping = {
       map_type: mapType,
-      to_source_url: toSourceUrl,
+      to_source_url: mapping.sourceObject.url,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
     };
-    expect(buildNewMappingData(mapping)).toEqual(expectedMapping);
+    expect(buildUpdateMappingData(mapping)).toEqual(expectedMapping);
   });
 
   it('buildUpdateMappingData should return the map_type, to_concept_url, to_concept_name if given an internal concept', () => {
     const mapping = {
-      source: 'not external',
+      sourceObject: internalSource,
       map_type: mapType,
       to_concept_code: toConceptCode,
       to_concept_name: toConceptName,
     };
     const expectedMapping = {
       map_type: mapType,
-      to_concept_url: `${mapping.source}concepts/${toConceptCode}/`,
+      to_concept_url: `${mapping.sourceObject.url}concepts/${toConceptCode}/`,
       to_concept_name: toConceptName,
     };
-    expect(buildNewMappingData(mapping)).toEqual(expectedMapping);
+    expect(buildUpdateMappingData(mapping)).toEqual(expectedMapping);
   });
 });
 

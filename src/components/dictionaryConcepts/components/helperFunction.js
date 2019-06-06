@@ -1,5 +1,5 @@
+import { union, includes } from 'lodash';
 import urlConfig from '../../../config';
-import { union } from 'lodash';
 
 export const getUsername = () => localStorage.getItem('username');
 
@@ -83,3 +83,4 @@ export const KEY_CODE_FOR_SPACE = 32;
 export const MAPPINGS_RECURSION_DEPTH = 2;
 export const isSetConcept = conceptClass => conceptClass.toLowerCase().indexOf('set') > -1;
 export const removeDuplicates = items => union(items);
+export const isExternalSource = source => source && includes(['External', 'externalDictionary'], source.source_type);

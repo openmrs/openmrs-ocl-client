@@ -2,6 +2,7 @@ import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE
 } from '../../components/dictionaryConcepts/components/helperFunction';
+import { externalSource, internalSource } from './sources';
 
 export default {
   id: '1468667',
@@ -364,6 +365,7 @@ export const newConceptData = {
       id: 1,
       map_type: 'Same as',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
       to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
@@ -372,6 +374,7 @@ export const newConceptData = {
     {
       map_type: 'Narrower than',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
       to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
@@ -381,6 +384,7 @@ export const newConceptData = {
       id: 3,
       map_type: 'Same as',
       source: 'SNOMED',
+      sourceObject: externalSource,
       to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
       to_concept_name: 'malaria',
       to_source_url: null,
@@ -419,6 +423,7 @@ export const newConceptDataWithAnswerAndSetMappings = {
       id: 1,
       map_type: 'Same as',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
       to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
@@ -427,6 +432,7 @@ export const newConceptDataWithAnswerAndSetMappings = {
     {
       map_type: 'Narrower than',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
       to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
@@ -436,6 +442,7 @@ export const newConceptDataWithAnswerAndSetMappings = {
       id: 3,
       map_type: 'Same as',
       source: 'SNOMED',
+      sourceObject: externalSource,
       to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
       to_concept_name: 'malaria',
       to_source_url: null,
@@ -535,6 +542,7 @@ export const existingConcept = {
       id: 1,
       map_type: 'Same as',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: 'dce20834-a9d7-41c6-be70-587f5246d41a',
       to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
@@ -543,6 +551,7 @@ export const existingConcept = {
     {
       map_type: 'Narrower than',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+      sourceObject: internalSource,
       to_concept_code: '67c0bc01-4f16-4424-80fd-f08b122bcef2',
       to_concept_name: 'MALARIA DIAGNOSIS IN THE LAST TWELVE MONTHS',
       to_source_url: '/orgs/CIEL/sources/CIEL/concepts/1476/',
@@ -552,6 +561,7 @@ export const existingConcept = {
       id: 3,
       map_type: 'Same as',
       source: 'SNOMED',
+      sourceObject: externalSource,
       to_concept_code: '92eebf0a-df73-4c17-985f-0347c7dee768',
       to_concept_name: 'malaria',
       to_source_url: null,

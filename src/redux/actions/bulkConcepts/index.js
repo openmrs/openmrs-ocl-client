@@ -85,7 +85,7 @@ export const fetchConceptSources = () => async (dispatch) => {
   dispatch(isFetching(true));
   dispatch(clear(CLEAR_SOURCE_CONCEPTS));
   try {
-    const response = await instance.get('/sources/?limit=0');
+    const response = await instance.get('/sources/?limit=0&verbose=true');
     dispatch(isSuccess(response.data, FETCH_CONCEPT_SOURCES));
     dispatch(isFetching(false));
   } catch (error) {
