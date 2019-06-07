@@ -532,15 +532,6 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should call updateAsyncSelectValue function', () => {
-    const value = { index: '1234', value: 'malaria 1', label: 'malaria 1' };
-    const instance = wrapper.find('EditConcept').instance();
-    instance.updateAsyncSelectValue(null);
-    expect(instance.state.mappings[0].to_concept_name).toEqual(null);
-    instance.updateAsyncSelectValue(value);
-    expect(instance.state.mappings[0].to_concept_name).toEqual('malaria 1');
-  });
-
   it('should call updateEventListener function', () => {
     const event = {
       target: {
@@ -703,7 +694,7 @@ describe('Test suite for mappings on existing concepts', () => {
       source: 'Datatype',
       url: '1435',
     };
-    instance.updateSourceEventListener(event, url);
+    instance.updateSourceEventListener(event, url, { url: '/not/ciel' });
     expect(instance.state.mappings[0].map_type).toEqual('NARROWER-THAN');
   });
   it('should set `SAME-AS` as the default relationship when the source is changed to `CIEL`'
@@ -712,7 +703,7 @@ describe('Test suite for mappings on existing concepts', () => {
       target: {
         tabIndex: 0,
         name: 'source',
-        value: INTERNAL_MAPPING_DEFAULT_SOURCE,
+        value: CIEL_SOURCE_URL,
       },
     };
     const url = '1234';
@@ -720,7 +711,7 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.state.mappings[1] = {
       url,
     };
-    instance.updateSourceEventListener(event, url);
+    instance.updateSourceEventListener(event, url, { url: CIEL_SOURCE_URL });
     expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
   });
 

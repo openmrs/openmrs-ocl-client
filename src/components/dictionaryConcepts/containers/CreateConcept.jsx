@@ -24,7 +24,7 @@ import {
 import { fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import {
   MAP_TYPE, CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
-  INTERNAL_MAPPING_DEFAULT_SOURCE, MAP_TYPES_DEFAULTS,
+  MAP_TYPES_DEFAULTS, CIEL_SOURCE_URL,
 } from '../components/helperFunction';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
@@ -325,7 +325,7 @@ export class CreateConcept extends Component {
         modifyMap[name] = value;
         modifyMap.sourceObject = source;
 
-        if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
+        if (source && source.url !== CIEL_SOURCE_URL) {
           modifyMap.map_type = defaultRelationship;
         } else {
           modifyMap.map_type = relationship;
@@ -347,20 +347,6 @@ export class CreateConcept extends Component {
       return modifyMap;
     });
     this.setState({ mappings: newMappings });
-  }
-
-  updateAsyncSelectValue = (value) => {
-    const { mappings } = this.state;
-    const updateAsyncMappings = mappings.map((map) => {
-      const updatedMap = map;
-      if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
-        updatedMap.to_source_url = value.value;
-        updatedMap.to_concept_name = value.label;
-        updatedMap.to_concept_code = value.to_concept_code;
-      }
-      return updatedMap;
-    });
-    this.setState({ mappings: updateAsyncMappings });
   }
 
   removeMappingRow = (url) => {
@@ -452,7 +438,6 @@ export class CreateConcept extends Component {
                 updateEventListener={this.updateEventListener}
                 updateSourceEventListener={this.updateSourceEventListener}
                 removeMappingRow={this.removeMappingRow}
-                updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
                 showModal={this.showModal}
                 handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}

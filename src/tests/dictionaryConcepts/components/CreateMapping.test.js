@@ -8,18 +8,19 @@ import { INTERNAL_MAPPING_DEFAULT_SOURCE, KEY_CODE_FOR_ENTER } from '../../../co
 import concept, { mockSource } from '../../__mocks__/concepts';
 import api from '../../../redux/api';
 import apiInstance from '../../../config/axiosConfig';
+import { externalSource, internalSource } from '../../__mocks__/sources';
 
 
 describe('Test suite for dictionary concepts components', () => {
   const props = {
     map_type: 'same as',
-    source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+    sourceObject: internalSource,
     to_concept_code: '674647-75775',
     to_concept_name: 'malaria',
     index: 1,
     updateEventListener: jest.fn(),
     removeMappingRow: jest.fn(),
-    updateAsyncSelectValue: jest.fn(),
+    updateSourceEventListener: jest.fn(),
     allSources: [mockSource],
     url: 'uniqueMappingUrl',
   };
@@ -36,15 +37,10 @@ describe('Test suite for dictionary concepts components', () => {
     moxios.uninstall(apiInstance);
   });
 
-  it('should call handleInputChange', () => {
-    const instance = wrapper.find('CreateMapping').instance();
-    instance.handleInputChange('malaria');
-  });
-
   it('should call updateEventListener', () => {
     const newProps = {
       ...props,
-      source: 'SNOMED',
+      sourceObject: externalSource,
     };
 
     wrapper = mount(<Router>
@@ -52,7 +48,7 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
 
     const inputField = wrapper.find('CreateMapping');
-    inputField.find('#searchInputNotCiel').simulate('change');
+    inputField.find(`#to-concept-name-${props.url}`).simulate('change');
     expect(props.updateEventListener).toHaveBeenCalled();
   });
 
@@ -66,33 +62,18 @@ describe('Test suite for dictionary concepts components', () => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'Snomed',
     };
 
     wrapper = mount(<Router>
       <table><tbody><CreateMapping {...newProps} /></tbody></table>
     </Router>);
     const inputs = wrapper.find('input');
-    expect(inputs).toHaveLength(3);
-  });
-
-  it('should render when isNew is true and source equal to CIEL', () => {
-    const newProps = {
-      ...props,
-      isNew: true,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-    const inputs = wrapper.find('select');
-    expect(inputs).toHaveLength(2);
+    expect(inputs).toHaveLength(1);
   });
 
   it('should handle update of new mappings row source data when isNew is true', () => {
     const newProps = {
       ...props,
-      to_concept_name: 'malaria',
       isNew: true,
     };
 
@@ -101,14 +82,16 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const inputField = wrapper.find('CreateMapping');
     inputField.find('#source').simulate('change');
-    expect(props.updateEventListener).toHaveBeenCalled();
+    expect(props.updateSourceEventListener).toHaveBeenCalled();
   });
 
-  it('should handel update of new mappings row data for non Ciel concepts when isNew is true', () => {
+  it('should handle update of new mappings row data for external concepts when isNew is true', () => {
     const newProps = {
       ...props,
+      to_concept_name: null,
+      to_concept_code: null,
       isNew: true,
-      source: 'Classes',
+      sourceObject: externalSource,
     };
 
     wrapper = mount(<Router>
@@ -119,26 +102,10 @@ describe('Test suite for dictionary concepts components', () => {
     expect(props.updateEventListener).toHaveBeenCalled();
   });
 
-  it('should handle update of new mappings row concept name for Ciel concepts when isNew is true', () => {
-    const newProps = {
-      ...props,
-      isNew: true,
-      source: 'maptypes',
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-    const inputField = wrapper.find('CreateMapping');
-    inputField.find('#ConceptName').simulate('change');
-    expect(props.updateEventListener).toHaveBeenCalled();
-  });
-
   it('should call handleKeyPress when a key is pressed in the internal concepts search input', () => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'maptypes',
     };
 
     wrapper = mount(<Router>
@@ -151,7 +118,7 @@ describe('Test suite for dictionary concepts components', () => {
 
     expect(handleKeyPressSpy).not.toHaveBeenCalled();
 
-    createMappingRow.find(`#search-internal-mappings-${newProps.url}`).simulate('keyDown');
+    createMappingRow.find(`#to-concept-name-${newProps.url}`).simulate('keyDown');
     expect(handleKeyPressSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -160,7 +127,6 @@ describe('Test suite for dictionary concepts components', () => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'maptypes',
     };
 
     wrapper = mount(<Router>
@@ -170,9 +136,9 @@ describe('Test suite for dictionary concepts components', () => {
     const createMappingRow = wrapper.find('CreateMapping');
     const instance = createMappingRow.instance();
 
-    expect(instance.state.internalConceptSearchQuery).toEqual('');
+    expect(instance.state.internalConceptSearchQuery).toEqual(props.to_concept_name);
 
-    createMappingRow.find(`#search-internal-mappings-${newProps.url}`).simulate('change', {
+    createMappingRow.find(`#to-concept-name-${newProps.url}`).simulate('change', {
       target: {
         value: searchQuery,
       },
@@ -184,7 +150,6 @@ describe('Test suite for dictionary concepts components', () => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'maptypes',
     };
 
     wrapper = mount(<Router>
@@ -203,56 +168,6 @@ describe('Test suite for dictionary concepts components', () => {
     });
   });
 
-  it('should handle change when a user inputs concept name mappings data for for existing concepts', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const inputField = wrapper.find('CreateMapping');
-    const spy = jest.spyOn(inputField.instance(), 'handleInputChange');
-    inputField.find('#searchInputCiel').simulate('change');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should handle change when a user inputs concept name mappings data for new rows when isNew is true', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-      isNew: true,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const inputField = wrapper.find('CreateMapping');
-    const spy = jest.spyOn(inputField.instance(), 'handleInputChange');
-    inputField.find('#searchInputCielIsnew').simulate('change');
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('Should handle key down event when a user presses the enter button to search mappings for existing rows', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const inputField = wrapper.find('CreateMapping');
-    const spy = jest.spyOn(inputField.instance(), 'handleKeyPress');
-    const event = { key: 'Space' };
-    inputField.find('#searchInputCiel').simulate('keyDown', event);
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('should call action to query internal concepts and set the results to state', async () => {
     const data = [concept];
     const conceptsInASourceMock = jest.fn(() => ({ data }));
@@ -264,7 +179,6 @@ describe('Test suite for dictionary concepts components', () => {
     const url = '/test/url';
     const newProps = {
       ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
     };
 
     wrapper = mount(<Router>
@@ -292,7 +206,6 @@ describe('Test suite for dictionary concepts components', () => {
     const url = '/test/url';
     const newProps = {
       ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
     };
 
     notify.show = notifyMock;
@@ -309,47 +222,10 @@ describe('Test suite for dictionary concepts components', () => {
     expect(notifyMock).toHaveBeenCalledWith('Query must have at least three characters', 'warning', 2000);
   });
 
-  it('should call action to query ciel concepts and set the results to state', async () => {
-    const data = [concept];
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: data,
-      });
-    });
-
-    const event = {
-      keyCode: KEY_CODE_FOR_ENTER,
-    };
-    const inputValue = 'testQuery';
-    const url = '/test/url';
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const createMapping = wrapper.find('CreateMapping');
-    const createMappingInstance = createMapping.instance();
-
-    expect(createMapping.state().options).toHaveLength(0);
-    expect(createMapping.state().isVisible).toBeFalsy();
-
-    await createMappingInstance.handleKeyPress(event, inputValue, url, true);
-
-    expect(createMapping.state().options[0].to_concept_code).toEqual(data[0].id);
-    expect(createMapping.state().isVisible).toBeTruthy();
-  });
-
   it('should display "No concepts matching this query" when there are no concepts to select from', (done) => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'maptypes',
     };
 
     const mappingRow = shallow(<CreateMapping {...newProps} />);
@@ -369,7 +245,6 @@ describe('Test suite for dictionary concepts components', () => {
     const newProps = {
       ...props,
       isNew: true,
-      source: 'maptypes',
     };
 
     const mappingRow = shallow(<CreateMapping {...newProps} />);
@@ -387,98 +262,10 @@ describe('Test suite for dictionary concepts components', () => {
     });
   });
 
-  it('Should handle click event when a user click to select a prefered concept name for existing rows', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-      isNew: false,
-      isShown: true,
-    };
-
-    wrapper = mount(<table><tbody><CreateMapping {...newProps} /></tbody></table>);
-
-    const inputField = wrapper.find('CreateMapping');
-    inputField.setState({
-      options: [{
-        index: '1',
-        label: 'mala',
-        value: '/orgs/CIEL/sources/CIEL/concepts/32/',
-      }],
-    }, () => {
-      const spy = jest.spyOn(inputField.instance(), 'handleSelect');
-      wrapper.find('#selectMappingnotNew').simulate('click');
-      expect(spy).toHaveBeenCalled();
-    });
-  });
-
-  it('should handle click when a user click to select a prefered concept mapping name for new rows', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-      isNew: true,
-      isShown: true,
-    };
-
-    wrapper = mount(<table><tbody><CreateMapping {...newProps} /></tbody></table>);
-
-    const inputField = wrapper.find('CreateMapping');
-    inputField.setState({
-      options: [{
-        index: '1',
-        label: 'mala',
-        value: '/orgs/CIEL/sources/CIEL/concepts/32/',
-      }],
-    }, () => {
-      const spy = jest.spyOn(inputField.instance(), 'handleSelect');
-      wrapper.find('#selectMappingNew').simulate('click');
-      expect(spy).toHaveBeenCalled();
-    });
-  });
-
-  it('should handle key down event when a user presses the enter button to search mappings for existing rows', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const inputField = wrapper.find('CreateMapping');
-    const handleKeyPressMock = jest.fn();
-    inputField.instance().handleKeyPress = handleKeyPressMock;
-
-    const event = { keyCode: KEY_CODE_FOR_ENTER };
-    inputField.find('#searchInputCiel').simulate('keyDown', event);
-    expect(handleKeyPressMock).toHaveBeenCalled();
-  });
-
-  it('should handle key down event when a user presses the enter button to search mappings for new rows (isNew is true)', () => {
-    const newProps = {
-      ...props,
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-      isNew: true,
-    };
-
-    wrapper = mount(<Router>
-      <table><tbody><CreateMapping {...newProps} /></tbody></table>
-    </Router>);
-
-    const inputField = wrapper.find('CreateMapping');
-    const handleKeyPressMock = jest.fn();
-    inputField.instance().handleKeyPress = handleKeyPressMock;
-
-    const event = { keyCode: KEY_CODE_FOR_ENTER };
-    inputField.find('#searchInputCielIsnew').simulate('keyDown', event);
-    expect(handleKeyPressMock).toHaveBeenCalled();
-  });
-
   describe('selectInternalMapping', () => {
     it('should call updateEventListener twice with the expected arguments', () => {
       const newProps = {
         ...props,
-        source: INTERNAL_MAPPING_DEFAULT_SOURCE,
       };
       const url = '/test/url';
 
@@ -495,7 +282,7 @@ describe('Test suite for dictionary concepts components', () => {
       expect(props.updateEventListener).toHaveBeenCalledTimes(2);
       expect(props.updateEventListener.mock.calls[0]).toEqual([{
         target: {
-          value: concept.display_name,
+          value: `ID(${concept.id}) - ${concept.display_name}`,
           name: 'to_concept_name',
         },
       }, url]);

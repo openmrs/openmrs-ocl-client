@@ -113,15 +113,6 @@ describe('Test suite for dictionary concepts components', () => {
     expect(instance.state.mappings[1].retired).toEqual(true);
   });
 
-  it('should call updateAsyncSelectValue function', () => {
-    const value = { index: '1234', value: 'malaria 1', label: 'malaria 1' };
-    const instance = wrapper.find('CreateConcept').instance();
-    instance.updateAsyncSelectValue(null);
-    expect(instance.state.mappings[0].to_concept_name).toEqual(null);
-    instance.updateAsyncSelectValue(value);
-    expect(instance.state.mappings[0].to_concept_name).toEqual('malaria 1');
-  });
-
   it('should call updateEventListener function', () => {
     const event = {
       target: {
@@ -410,7 +401,7 @@ describe('Test suite for dictionary concepts components', () => {
       source: 'MapTypes',
       url,
     };
-    instance.updateSourceEventListener(event, url);
+    instance.updateSourceEventListener(event, url, { url: '/not/ciel/' });
     setImmediate(() => {
       expect(instance.state.mappings[1].map_type).toEqual('NARROWER-THAN');
     });

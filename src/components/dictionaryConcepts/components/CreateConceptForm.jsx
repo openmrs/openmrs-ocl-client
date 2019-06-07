@@ -32,7 +32,6 @@ const CreateConceptForm = (props) => {
     isEditConcept,
     allSources,
     removeMappingRow,
-    updateAsyncSelectValue,
     removeCurrentAnswer,
   } = props;
 
@@ -299,7 +298,6 @@ const CreateConceptForm = (props) => {
                       updateEventListener={updateEventListener}
                       updateSourceEventListener={updateSourceEventListener}
                       removeMappingRow={removeMappingRow}
-                      updateAsyncSelectValue={updateAsyncSelectValue}
                       key={mapping.id}
                       index={i}
                       isEditConcept={isEditConcept}
@@ -366,7 +364,6 @@ CreateConceptForm.propTypes = {
   updateSourceEventListener: PropTypes.func,
   showModal: PropTypes.func,
   removeMappingRow: PropTypes.func,
-  updateAsyncSelectValue: PropTypes.func,
   allSources: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   addAnswerRow: PropTypes.func,
   removeAnswerRow: PropTypes.func,
@@ -393,7 +390,6 @@ CreateConceptForm.defaultProps = {
   updateEventListener: null,
   updateSourceEventListener: null,
   removeMappingRow: null,
-  updateAsyncSelectValue: null,
   addAnswerRow: () => {},
   removeAnswerRow: () => {},
   currentDictionaryName: '',
