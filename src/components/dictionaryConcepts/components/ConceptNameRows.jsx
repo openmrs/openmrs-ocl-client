@@ -130,7 +130,7 @@ class ConceptNameRows extends Component {
             id="type"
             name="name_type"
             value={this.state.name_type}
-            className="form-control"
+            className="custom-select"
             onChange={this.handleChange}
             required
           >
@@ -140,7 +140,7 @@ class ConceptNameRows extends Component {
             <option>Search Term</option>
           </select>
         </td>
-        <th scope="row" className="concept-language">
+        <td className="concept-language">
           <Select
             id="locale_full"
             name="locale_full"
@@ -149,13 +149,13 @@ class ConceptNameRows extends Component {
             options={locale}
             required
           />
-        </th>
+        </td>
         <td>
           <select
             id="locale_preferred"
             name="locale_preferred"
             value={this.state.locale_preferred}
-            className="form-control"
+            className="custom-select"
             onChange={this.handleChange}
           >
             <option>No</option>
@@ -164,7 +164,7 @@ class ConceptNameRows extends Component {
         </td>
         <td>
           <button
-            className="btn btn-danger concept-form-table-link"
+            className="btn btn-outline-danger concept-form-table-link"
             id="remove-name"
             type="button"
             onClick={event => this.handleRemove(event, rowId)}

@@ -8,7 +8,7 @@ class DescriptionTable extends PureComponent {
     const descriptions = existingConcept.descriptions || description;
     return (
       <table className="table table-striped table-bordered concept-form-table">
-        <thead className="header text-white">
+        <thead className="concept-form-table-header">
           <tr>
             <th scope="col">Description</th>
             <th scope="col">Language</th>

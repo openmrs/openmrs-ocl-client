@@ -111,7 +111,7 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const instance = wrapper.find('EditConcept').instance();
     const spy = jest.spyOn(instance, 'selectConfirm');
-    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('.btn-outline-danger').at(2).simulate('click');
     wrapper.find('Button #generalConfirmButton').simulate('click');
     expect(spy).toHaveBeenCalled();
     expect(history.push).toHaveBeenCalledWith('/concepts/users/admin/CCL/CASE CLINIC/en');
@@ -126,7 +126,7 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const instance = wrapper.find('EditConcept').instance();
     const spy = jest.spyOn(instance, 'selectConfirm');
-    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('.btn-outline-danger').at(2).simulate('click');
     wrapper.find('Button #generalConfirmButton').simulate('click');
     expect(spy).toHaveBeenCalled();
     expect(notify.show).toHaveBeenCalledWith('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
@@ -138,7 +138,7 @@ describe('Test suite for dictionary concepts components', () => {
     </Router>);
     const instance = wrapper.find('EditConcept').instance();
     const spy = jest.spyOn(instance, 'hideModal');
-    wrapper.find('.btn-danger').at(2).simulate('click');
+    wrapper.find('.btn-outline-danger').at(2).simulate('click');
     wrapper.find('Button #sub-cancel').simulate('click');
     expect(instance.state.show).toEqual(false);
     expect(spy).toHaveBeenCalled();
@@ -510,7 +510,7 @@ describe('Test suite for mappings on existing concepts', () => {
     };
     const spy = jest.spyOn(instance, 'confirmRemoveMappingRow');
     instance.removeMappingRow(url);
-    wrapper.find('.btn-danger').at(0).simulate('click');
+    wrapper.find('.btn-outline-danger').at(0).simulate('click');
     wrapper.find('Button #generalConfirmButton').simulate('click');
     expect(spy).toHaveBeenCalled();
     expect(props.removeConceptMappingAction).toHaveBeenCalled();
@@ -544,7 +544,7 @@ describe('Test suite for mappings on existing concepts', () => {
     };
     const spy = jest.spyOn(instance, 'hideGeneralModal');
     instance.removeMappingRow(url);
-    wrapper.find('.btn-danger').at(0).simulate('click');
+    wrapper.find('.btn-outline-danger').at(0).simulate('click');
     wrapper.find('Button #sub-cancel').simulate('click');
     expect(spy).toHaveBeenCalled();
   });

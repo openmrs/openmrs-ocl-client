@@ -117,9 +117,6 @@ td, th {
     text-align: left;
     padding: 8px;
 }
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
 a {
     text-decoration: none;
 }
@@ -135,7 +132,7 @@ fieldset {
     padding-bottom: 0.625em;
     padding-left: 0.75em;
     padding-right: 0.75em;
-    border: 2px solid #000000 !important;
+    border: 2px solid #000000;
 }
 legend {
     padding: 0.2em 0.5em;

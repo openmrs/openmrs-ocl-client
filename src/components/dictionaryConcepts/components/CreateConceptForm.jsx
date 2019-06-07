@@ -46,157 +46,161 @@ const CreateConceptForm = (props) => {
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <form className="form-wrapper" onKeyPress={preventFormSubmit} onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
-        <div className="form-row">
-          <div className="form-group col-md-7">
+        <div className="concept-info card">
+          <div className="form-row">
             <label htmlFor="external_id"><h5>OpenMRS UUID (OCL External ID)</h5></label>
-            <input
-              type="text"
-              className="form-control"
-              readOnly={props.editable}
-              onChange={props.handleChange}
-              name="external_id"
-              value={props.state.external_id}
-              id="uuid"
-              required
-            />
-            <small className="form-text text-muted">
-            Only alphanumeric characters, hyphens, periods, and underscores are allowed.
-            </small>
           </div>
-          {(!isEditConcept) && (
-          <div className="form-group col-md-3 custom-field">
-            <button
-              type="submit"
-              className="btn btn-sm btn-light"
-              id="toggleUUID"
-              onClick={props.toggleUUID}
-            >
-                click here to manually enter
-            </button>
+          <div className="form-row">
+            <div className="form-group col-md-7">
+              <input
+                type="text"
+                className="form-control"
+                readOnly={props.editable}
+                onChange={props.handleChange}
+                name="external_id"
+                value={props.state.external_id}
+                id="uuid"
+                required
+              />
+              <small className="form-text text-muted">
+              Only alphanumeric characters, hyphens, periods, and underscores are allowed.
+              </small>
+            </div>
+            {(!isEditConcept) && (
+            <div className="form-group col-md-3 custom-field">
+              <button
+                type="submit"
+                className="btn btn-light"
+                id="toggleUUID"
+                onClick={props.toggleUUID}
+              >
+                  click here to manually enter
+              </button>
+            </div>
+            )}
           </div>
-          )}
-        </div>
-        <div className="form-row">
-          <div className="form-group col-md-7">
-            <label htmlFor="id"><h5>OCL ID</h5></label>
-            <input
-              type="text"
-              className="form-control"
-              onChange={props.handleChange}
-              value={props.state.id}
-              readOnly={isEditConcept}
-              name="id"
-              id="id"
-            />
-            <small className="form-text text-muted">
-              This ID is used when viewing your concept in OCL,
-              but it will not be reflected when you download it to OpenMRS.
-              This ID must be unique within your dictionary,
-              and it cannot be changed after creating the concept.
-            </small>
-          </div>
-        </div>
-        <div className="form-row">
-          {!props.concept && (
-          <div className="form-group col-md-5">
-            <label htmlFor="class"><h5>Class</h5></label>
-            <select
-              id="class"
-              name="concept_class"
-              value={props.state.concept_class}
-              className="form-control"
-              required
-              onChange={props.handleChange}
-            >
-              <option value="N/A" />
-              {classes.map(option => <option key={option}>{option}</option>)}
-            </select>
-          </div>
-          )}
-          {props.concept && (
-          <div className="form-group col-md-5">
-            <label htmlFor="class"><h5>Class</h5></label>
-            <div>
-              { (props.concept.toString().trim() === 'Symptom-Finding')
-              && (
-              <React.Fragment>
-                <select
-                  id="class"
-                  name="concept_class"
-                  value={props.state.concept_class}
-                  className="form-control symptom-finding"
-                  required
-                  onChange={props.handleChange}
-                >
-                  <option key="Symptom-Finding">Symptom-Finding</option>
-                  <option key="Symptom">Symptom</option>
-                  <option key="Finding">Finding</option>
-
-                </select>
-              </React.Fragment>
-              )
-              }
-
-              { isSetConcept(props.concept.toString().trim())
-              && (
-              <React.Fragment>
-                <select
-                  id="class"
-                  name="concept_class"
-                  value={props.state.concept_class}
-                  className="form-control set"
-                  required
-                  onChange={props.handleChange}
-                >
-                  <option value="" key="default" />
-                  <option value="LabSet" key="LabSet">LabSet</option>
-                  <option value="ConvSet" key="ConvSet">ConvSet</option>
-                  <option value="MedSet" key="MedSet">MedSet</option>
-
-                </select>
-              </React.Fragment>
-              )
-              }
-
-              {(
-                props.concept.toString().trim() !== 'Symptom-Finding'
-                && props.concept.toString().trim() !== Set) && (
-                <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
-                  {props.concept}
-                </span>
-              )}
+          <div className="form-row">
+            <div className="form-group col-md-7">
+              <label htmlFor="id"><h5>OCL ID</h5></label>
+              <input
+                type="text"
+                className="form-control"
+                onChange={props.handleChange}
+                value={props.state.id}
+                readOnly={isEditConcept}
+                name="id"
+                id="id"
+              />
+              <small className="form-text text-muted">
+                This ID is used when viewing your concept in OCL,
+                but it will not be reflected when you download it to OpenMRS.
+                This ID must be unique within your dictionary,
+                and it cannot be changed after creating the concept.
+              </small>
             </div>
           </div>
-          )}
+          <div className="form-row">
+            {!props.concept && (
+            <div className="form-group col-md-5">
+              <label htmlFor="class"><h5>Class</h5></label>
+              <select
+                id="class"
+                name="concept_class"
+                value={props.state.concept_class}
+                className="custom-select"
+                required
+                onChange={props.handleChange}
+              >
+                <option value="N/A" />
+                {classes.map(option => <option key={option}>{option}</option>)}
+              </select>
+            </div>
+            )}
+            {props.concept && (
+            <div className="form-group col-md-5">
+              <label htmlFor="class"><h5>Class</h5></label>
+              <div>
+                { (props.concept.toString().trim() === 'Symptom-Finding')
+                && (
+                <React.Fragment>
+                  <select
+                    id="class"
+                    name="concept_class"
+                    value={props.state.concept_class}
+                    className="custom-select symptom-finding"
+                    required
+                    onChange={props.handleChange}
+                  >
+                    <option key="Symptom-Finding">Symptom-Finding</option>
+                    <option key="Symptom">Symptom</option>
+                    <option key="Finding">Finding</option>
+
+                  </select>
+                </React.Fragment>
+                )
+                    }
+
+                { isSetConcept(props.concept.toString().trim())
+                    && (
+                      <React.Fragment>
+                        <select
+                          id="class"
+                          name="concept_class"
+                          value={props.state.concept_class}
+                          className="custom-select set"
+                          required
+                          onChange={props.handleChange}
+                        >
+                          <option value="" key="default" />
+                          <option value="LabSet" key="LabSet">LabSet</option>
+                          <option value="ConvSet" key="ConvSet">ConvSet</option>
+                          <option value="MedSet" key="MedSet">MedSet</option>
+
+                        </select>
+                      </React.Fragment>
+                    )
+                    }
+
+                {(
+                  props.concept.toString().trim() !== 'Symptom-Finding'
+                      && props.concept.toString().trim() !== Set) && (
+                      <span className="btn btn-light normal-cursor col-12 text-capitalize pt-3">
+                        {props.concept}
+                      </span>
+                )}
+              </div>
+            </div>
+            )}
+          </div>
+          <div className="datatypefield">
+            <label htmlFor="datatype"><h5>Datatype</h5></label>
+            <select
+              id="datatype"
+              name="datatype"
+              required
+              value={props.state.datatype}
+              className="custom-select"
+              onChange={props.handleChange}
+            >
+              <option>Numeric</option>
+              <option>Text</option>
+              <option>None</option>
+              <option>Document</option>
+              <option>Date</option>
+              <option>Time</option>
+              <option>Datetime</option>
+              <option>Boolean</option>
+              <option>Rule</option>
+              <option>Structured-Numeric</option>
+              <option>Complex</option>
+              <option>to_concept_coded</option>
+            </select>
+          </div>
         </div>
-        <div className="datatypefield">
-          <label htmlFor="datatype"><h5>Datatype</h5></label>
-          <select
-            id="datatype"
-            name="datatype"
-            required
-            value={props.state.datatype}
-            className="form-control "
-            onChange={props.handleChange}
-          >
-            <option>Numeric</option>
-            <option>Text</option>
-            <option>None</option>
-            <option>Document</option>
-            <option>Date</option>
-            <option>Time</option>
-            <option>Datetime</option>
-            <option>Boolean</option>
-            <option>Rule</option>
-            <option>Structured-Numeric</option>
-            <option>Complex</option>
-            <option>to_concept_coded</option>
-          </select>
-        </div>
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Names</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="text-left section-header">Names</legend>
               <CreateConceptTable {...props} />
               <button
                 type="button"
@@ -206,13 +210,13 @@ const CreateConceptForm = (props) => {
               >
                 Add another name...
               </button>
-            </div>
+            </fieldset>
           </div>
         </div>
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Descriptions</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="text-left section-header">Descriptions</legend>
               <DescriptionTable {...props} />
               <button
                 type="button"
@@ -222,13 +226,13 @@ const CreateConceptForm = (props) => {
               >
                 {descriptions.length > 0 ? 'Add another description...' : 'Add a description'}
               </button>
-            </div>
+            </fieldset>
           </div>
         </div>
         {(isSetConcept(props.concept.toString().trim()) || !concept || isEditConcept) && (
-          <div className="form-group set">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Set Members</h5>
+          <div className="form-group set card">
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Set Members</legend>
               <AnswersTable
                 handleAsyncSelectChange={handleSetAsyncSelectChange}
                 selectedAnswers={selectedSets}
@@ -246,13 +250,13 @@ const CreateConceptForm = (props) => {
               >
                 Add set...
               </button>
-            </div>
+            </fieldset>
           </div>
         )}
         {(concept.toString().trim() === CONCEPT_CLASS.question || !concept || isEditConcept) && (
-          <div className="form-group answer">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Answers</h5>
+          <div className="form-group answer card">
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Answers</legend>
               <AnswersTable
                 handleAsyncSelectChange={handleAsyncSelectChange}
                 selectedAnswers={selectedAnswers}
@@ -270,15 +274,15 @@ const CreateConceptForm = (props) => {
               >
                 Add answer...
               </button>
-            </div>
+            </fieldset>
           </div>
         )}
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Mappings</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Mappings</legend>
               <table className=" table-striped table-bordered concept-form-table">
-                <thead className="header text-white">
+                <thead className="concept-form-table-header">
                   <tr>
                     <th>Source</th>
                     <th>Relationship</th>
@@ -315,15 +319,15 @@ const CreateConceptForm = (props) => {
               >
                   Add another Mapping...
               </button>
-            </div>
+            </fieldset>
           </div>
           <br />
         </div>
-        <div className="submit-button text-left">
-          <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
+        <div className="submit-button text-right">
+          <button className="btn btn-outline-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
-          <button id="remove" className="btn btn-danger cancelButton" type="button" onClick={props.showModal}>
+          <button id="remove" className="btn btn-outline-danger cancelButton" type="button" onClick={props.showModal}>
             Cancel
           </button>
         </div>

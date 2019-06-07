@@ -195,7 +195,6 @@ border-radius: .5rem;
 
 .custom-concept-list .table {
   box-shadow: 0 4px 15px 1px #00000012;
-  border-style: hidden;
   font-size: .8rem;
 }
 
@@ -288,7 +287,6 @@ input:-webkit-autofill:active {
 
 .concept-form-body .custom-concept-list .table {
   box-shadow: none;
-  border-style: hidden;
   font-size: .8rem;
 }
 
@@ -321,7 +319,6 @@ input:-webkit-autofill:active {
 }
 
 .custom-field {
-  margin-top: 2rem;
   margin-left: 2rem;
 }
 
@@ -404,6 +401,10 @@ input:-webkit-autofill:active {
 }
 .concept-code {
   margin-top: 5px;
+
+  .mb-2 {
+    padding-left: 0;
+  }
 }
 
 input[type=text] {
@@ -467,4 +468,64 @@ input[type=text] {
   animation: rotate 0.6s linear infinite;
   margin-right: 10px;
   border-bottom: transparent;
+}
+
+.concept-form-table-header {
+  font-size: medium;
+  line-height: 0.6;
+}
+
+.concept-form-table{
+  line-height: normal;
+  border-style: none;
+}
+
+.concept-form-table thead th {
+  font-weight: normal;
+  text-align: center;
+  border-style: none;
+  border-bottom: 1px solid #dee2e6;
+  padding: .75rem;
+}
+
+.concept-form-table td {
+  text-align: center;
+  border-style: none;
+  vertical-align: middle;
+}
+
+.concept-form-table tbody tr:nth-child(even) {
+  background-color: white;
+}
+
+.concept-form-table tbody tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+#createConceptForm fieldset {
+  border-width: 0;
+}
+
+#createConceptForm .row {
+  margin-left: unset;
+}
+
+#createConceptForm .form-control[readonly] {
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+#createConceptForm {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+#createConceptForm .card {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  box-shadow: 5px 6px 7px -9px rgba(0,0,0,0.471);
+}
+
+.concept-info {
+  padding: 1rem;
 }

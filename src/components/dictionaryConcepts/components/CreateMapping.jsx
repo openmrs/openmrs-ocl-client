@@ -93,7 +93,7 @@ class CreateMapping extends Component {
           {<select
             id="source"
             tabIndex={index}
-            className="form-control"
+            className="custom-select"
             name="source"
             onChange={(event) => {
               updateSourceEventListener(event, url, allSources[event.target.selectedIndex - 1]);
@@ -196,7 +196,7 @@ class CreateMapping extends Component {
         <td className="table-remove-link">
           <button
             id="remove"
-            className="btn btn-danger "
+            className="btn btn-outline-danger "
             tabIndex={index}
             onClick={() => removeMappingRow(url, to_concept_name, to_concept_code)}
             type="button"

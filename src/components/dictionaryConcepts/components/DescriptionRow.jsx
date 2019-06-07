@@ -101,7 +101,7 @@ class DescriptionRow extends Component {
       <tr>
         <td>
           <textarea
-            rows="3"
+            rows="2"
             className="form-control concept-description"
             onChange={this.handleChange}
             name="description"
@@ -110,7 +110,7 @@ class DescriptionRow extends Component {
             required
           />
         </td>
-        <th scope="row" className="concept-language">
+        <td className="concept-language">
           <Select
             name="locale_full"
             id="description-locale"
@@ -119,11 +119,11 @@ class DescriptionRow extends Component {
             options={locale}
             required
           />
-        </th>
+        </td>
         <td>
           <button
             href="#!"
-            className=" btn btn-danger concept-form-table-link"
+            className=" btn btn-outline-danger concept-form-table-link"
             id="remove-description"
             type="button"
             onClick={event => this.handleRemove(event, this.props.newRow)}
