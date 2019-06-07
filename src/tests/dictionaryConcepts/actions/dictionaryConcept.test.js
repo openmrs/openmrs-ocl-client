@@ -745,6 +745,16 @@ describe('Testing Edit concept actions ', () => {
     });
   });
 
+  it('updateConcept should still return the updated concept if updating the mappings fails', async () => {
+    const dispatchMock = jest.fn();
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: existingConcept });
+    });
+    const result = await updateConcept()(dispatchMock);
+    expect(result).toEqual(existingConcept);
+  });
+
   it('should handle error in FETCH_EXISTING_CONCEPT_ERROR for update concept', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
