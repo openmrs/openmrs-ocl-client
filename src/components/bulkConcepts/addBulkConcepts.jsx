@@ -7,6 +7,7 @@ import {
   FormGroup,
   Input,
 } from 'reactstrap';
+import Loader from '../Loader';
 import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
 import ResultModal from './component/addBulkConceptResultModal';
@@ -109,6 +110,7 @@ export class AddBulkConcepts extends Component {
           type, typeName, collectionName, language,
         },
       },
+      isFetching,
     } = this.props;
     const disableButton = (conceptIds.length < 1);
     return (
@@ -153,11 +155,24 @@ export class AddBulkConcepts extends Component {
             </div>
           </div>
           <div className="preferred-concepts">
-            <Form className="bulkForm">
-              <FormGroup>
-                <Input type="textarea" name="text" id="idsText" value={conceptIds} rows="10" onChange={this.textChange} />
-              </FormGroup>
-            </Form>
+            {isFetching ? (
+              <div className="mt-150 mb-100 text-center">
+                <Loader />
+              </div>
+            ) : (
+              <Form className="bulkForm">
+                <FormGroup>
+                  <Input
+                    type="textarea"
+                    name="text"
+                    id="idsText"
+                    value={conceptIds}
+                    rows="10"
+                    onChange={this.textChange}
+                  />
+                </FormGroup>
+              </Form>
+            )}
           </div>
           <br />
           <div className="add-all-btn">

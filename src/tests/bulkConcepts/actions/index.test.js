@@ -80,10 +80,20 @@ describe('Test suite for source concepts actions', () => {
       });
     });
 
-    const returnedAction = [{
-      type: ADD_EXISTING_BULK_CONCEPTS,
-      payload: [{ data: { data: [{ added: true }] } }],
-    }];
+    const returnedAction = [
+      {
+        type: IS_FETCHING,
+        payload: true,
+      },
+      {
+        type: ADD_EXISTING_BULK_CONCEPTS,
+        payload: [{ data: { data: [{ added: true }] } }],
+      },
+      {
+        type: IS_FETCHING,
+        payload: false,
+      },
+    ];
     const url = 'uuu';
     const conceptIdList = [123];
     const conceptData = { url, data: { data: { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] } }, conceptIdList };

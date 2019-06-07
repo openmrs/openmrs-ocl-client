@@ -60,8 +60,6 @@ export const previewConcept = id => (dispatch, getState) => {
   return dispatch(isSuccess(payload[0], PREVIEW_CONCEPT));
 };
 
-
-
 export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsToCheck) => {
   const startingConceptMappings = await api.mappings.fetchFromPublicSources(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
@@ -81,6 +79,7 @@ export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsTo
 };
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
+  dispatch(isFetching(true));
   const { type, typeName, collectionName } = params;
   const url = `${type}/${typeName}/collections/${collectionName}/references/?cascade=sourcemappings`;
   try {
@@ -97,6 +96,7 @@ export const addConcept = (params, data, conceptName, id) => async (dispatch) =>
   } catch (e) {
     notify.show(`Failed to add ${conceptName}. Please Retry`, 'error', 3000);
   }
+  dispatch(isFetching(false));
 };
 
 export const setCurrentPage = currentPage => async (dispatch) => {

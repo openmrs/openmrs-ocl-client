@@ -53,7 +53,18 @@ describe('Test suite for addBulkConcepts async actions', () => {
     });
 
     const expectedActions = [
-      { type: ADD_EXISTING_CONCEPTS, payload: [{ concepts, ...{ added: true } }] },
+      {
+        type: IS_FETCHING,
+        payload: true,
+      },
+      {
+        type: ADD_EXISTING_CONCEPTS,
+        payload: [{ concepts, ...{ added: true } }],
+      },
+      {
+        type: IS_FETCHING,
+        payload: false,
+      },
     ];
 
     const store = mockStore({});
@@ -77,7 +88,18 @@ describe('Test suite for addBulkConcepts async actions', () => {
     });
 
     const expectedActions = [
-      { type: ADD_EXISTING_CONCEPTS, payload: [{ concepts, ...{ added: false } }] },
+      {
+        type: IS_FETCHING,
+        payload: true,
+      },
+      {
+        type: ADD_EXISTING_CONCEPTS,
+        payload: [{ concepts, ...{ added: false } }],
+      },
+      {
+        type: IS_FETCHING,
+        payload: false,
+      },
     ];
 
     const store = mockStore({});
