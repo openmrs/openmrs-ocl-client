@@ -22,7 +22,6 @@ export class BulkConceptsPage extends Component {
     setCurrentPage: PropTypes.func.isRequired,
     currentPage: PropTypes.number.isRequired,
     fetchFilteredConcepts: PropTypes.func.isRequired,
-    fetchBulkConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
     loading: PropTypes.bool.isRequired,
     preview: PropTypes.shape({
@@ -113,8 +112,7 @@ export class BulkConceptsPage extends Component {
       target: { value },
     } = event;
     if (!value) {
-      const { fetchBulkConcepts: bulkConceptsFetched } = this.props;
-      bulkConceptsFetched(1);
+      this.getBulkConcepts();
     }
     this.setState(() => ({ searchInput: value }));
   };
