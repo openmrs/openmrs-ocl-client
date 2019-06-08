@@ -141,6 +141,25 @@ describe('Test suite for Paginations component', () => {
     expect(instance.props.setPreviousPage).toHaveBeenCalled();
   });
 
+  it('should disable the next page icon when the current page is equal to the last page ', () => {
+    const props = {
+      setCurrentPage: jest.fn(),
+      currentPage: 2,
+      firstDictionaryIndex: 1,
+      dictionaries: 10,
+      lastPage: 2,
+      setNextPage: jest.fn(),
+      setPreviousPage: jest.fn(),
+      view: true,
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <Paginations {...props} />
+      </Router>
+    </Provider>);
+    expect(wrapper.find('.fa-angle-double-left.disabled')).toBeTruthy();
+  });
+
   it('should test mapStateToProps', () => {
     const initialState = {
       bulkConcepts: {
