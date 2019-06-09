@@ -1,6 +1,7 @@
+/* eslint-disable react/jsx-indent */
 import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import store from './redux/reducers/store';
 import Login from './components/login/container';
@@ -19,10 +20,11 @@ import AddBulkConcepts from './components/bulkConcepts/addBulkConcepts';
 import BulkConceptPage from './components/bulkConcepts/container/BulkConceptsPage';
 import { Signup } from './components/Signup/components/container';
 import Notifications from './components/Notifications';
+import history from './config/history';
 
 const App = () => (
   <Provider store={store}>
-    <BrowserRouter>
+    <Router history={history}>
       <Fragment>
         <div className="App">
           <Navbar />
@@ -80,7 +82,7 @@ const App = () => (
           </Switch>
         </div>
       </Fragment>
-    </BrowserRouter>
+    </Router>
   </Provider>
 );
 export default App;

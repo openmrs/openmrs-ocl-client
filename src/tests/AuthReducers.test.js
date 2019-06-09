@@ -93,6 +93,8 @@ describe('AuthReducer', () => {
 
     expect(authReducer(state, action)).toEqual({
       loggedIn: false,
+      loading: false,
+      payload: undefined,
     });
   });
 });

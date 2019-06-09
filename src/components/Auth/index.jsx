@@ -1,12 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { notify } from 'react-notify-toast';
+import history from '../../config/history';
 
-export const mapStateToProps = ({ users: { loggedIn } }) => ({
-  loggedIn,
-});
+export const checkAuth = (event) => {
+  if (event.key === null) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      notify.show('You have been logged out', 'warning', 3000);
+      history.go(0);
+    }
+  }
+  if (event.key === 'token') {
+    const token = localStorage.getItem('token');
+    if (token) {
+      notify.show('Logged in successfully', 'success', 3000);
+      history.go(0);
+    }
+  }
+};
 
 export const AuthWrapper = (WrappedComponent) => {
+  window.addEventListener('storage', event => checkAuth(event));
   class Authenticate extends Component {
     static propTypes = {
       loggedIn: PropTypes.bool,
@@ -41,4 +57,8 @@ export const AuthWrapper = (WrappedComponent) => {
   return Authenticate;
 };
 
-export default Authenticate => connect(mapStateToProps, null)(AuthWrapper(Authenticate));
+export const mapStateToProps = ({ users: { loggedIn } }) => ({
+  loggedIn,
+});
+
+export default Authenticate => connect(mapStateToProps)(AuthWrapper(Authenticate));

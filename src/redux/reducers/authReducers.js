@@ -10,7 +10,6 @@ const initialState = {
   user: {},
   loginAction: () => {},
   logoutAction: () => {},
-  history: {},
   loading: false,
 };
 
@@ -30,14 +29,13 @@ export default (state = initialState, action) => {
         loading: false,
       };
     case AUTHENTICATION_FAILED:
+    case LOGGED_OUT:
       return {
         ...state,
         payload: action.payload,
         loggedIn: false,
         loading: false,
       };
-    case LOGGED_OUT:
-      return { loggedIn: false };
     default:
       return state;
   }
