@@ -355,22 +355,6 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   dispatch(isFetching(false));
 };
 
-export const fetchSourceConcepts = async (source, query, index) => {
-  try {
-    const url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
-    const response = await instance.get(url);
-    const options = response.data.map(concept => ({
-      value: concept.url,
-      label: `ID(${concept.id}) - ${concept.display_name}`,
-      to_concept_code: concept.id,
-      index,
-    }));
-    return options;
-  } catch (error) {
-    return [];
-  }
-};
-
 export const buildNewMappingData = (mapping, fromConceptUrl) => {
   const {
     sourceObject,

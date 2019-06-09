@@ -118,16 +118,6 @@ describe('Test suite for dictionary concept actions', () => {
     moxios.uninstall(instance);
   });
 
-  it('should call the fetchSourceConcepts and fetch concepts', async () => {
-    const expectedPosts = ['malaria', 'tuberclosis'];
-
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 200, response: expectedPosts });
-    });
-    await fetchSourceConcepts('source', 'query');
-  });
-
   it('should query possible answer concepts', async () => {
     const expectedAnswers = [{
       id: 'Answer 1',
@@ -620,15 +610,6 @@ describe('Test suite for dictionary concept actions', () => {
     return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
-  });
-
-  it('should handle errors if fetching Source Concepts fails', async () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 200, response: '' });
-    });
-    const expectedResult = [];
-    expect(await fetchSourceConcepts('expect', 'to', 'fail')).toEqual(expectedResult);
   });
 });
 

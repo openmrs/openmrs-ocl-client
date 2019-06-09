@@ -30,7 +30,7 @@ import {
   unpopulateSet,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
-  INTERNAL_MAPPING_DEFAULT_SOURCE, CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
+  CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
   CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
   MAP_TYPES_DEFAULTS,
 } from '../components/helperFunction';
@@ -332,7 +332,7 @@ export class EditConcept extends Component {
       if (modifyMap.url === url) {
         modifyMap[name] = value;
         modifyMap.sourceObject = source;
-        if (modifyMap.source !== INTERNAL_MAPPING_DEFAULT_SOURCE) {
+        if (source && source.url !== CIEL_SOURCE_URL) {
           modifyMap.map_type = defaultRelationship;
         } else {
           modifyMap.map_type = relationship;
@@ -358,20 +358,6 @@ export class EditConcept extends Component {
       return modifyMap;
     });
     this.setState({ mappings: newMappings });
-  }
-
-  updateAsyncSelectValue = (value) => {
-    const { mappings } = this.state;
-    const updateAsyncMappings = mappings.map((map) => {
-      const updatedMap = map;
-      if (value !== null && value.index !== undefined && updatedMap.url === value.index) {
-        updatedMap.to_source_url = value.value;
-        updatedMap.to_concept_name = value.label;
-        updatedMap.to_concept_code = value.to_concept_code;
-      }
-      return updatedMap;
-    });
-    this.setState({ mappings: updateAsyncMappings });
   }
 
   hideGeneralModal = () => this.setState({ openGeneralModal: false });
@@ -469,32 +455,17 @@ export class EditConcept extends Component {
 
   organizeMappings = (mappings) => {
     const { allSources } = this.props;
-    const filteredMappings = mappings.map((mapping, i) => {
-      if (mapping.to_source_url === CIEL_SOURCE_URL) {
-        return {
-          id: i,
-          map_type: mapping.map_type,
-          source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-          sourceObject: find(allSources, { url: mapping.to_source_url }),
-          to_concept_code: mapping.to_concept_code,
-          to_concept_name: mapping.to_concept_name,
-          to_source_url: mapping.to_concept_url,
-          url: mapping.url,
-          retired: mapping.retired,
-        };
-      }
-      return {
-        id: i,
-        map_type: mapping.map_type,
-        source: mapping.to_source_url,
-        sourceObject: find(allSources, { url: mapping.to_source_url }),
-        to_concept_code: mapping.to_concept_code,
-        to_concept_name: mapping.to_concept_name,
-        to_source_url: mapping.to_concept_url,
-        url: mapping.url,
-        retired: mapping.retired,
-      };
-    });
+    const filteredMappings = mappings.map((mapping, i) => ({
+      id: i,
+      map_type: mapping.map_type,
+      source: mapping.to_source_url,
+      sourceObject: find(allSources, { url: mapping.to_source_url }),
+      to_concept_code: mapping.to_concept_code,
+      to_concept_name: mapping.to_concept_name,
+      to_source_url: mapping.to_concept_url,
+      url: mapping.url,
+      retired: mapping.retired,
+    }));
     this.setState({
       mappings: filteredMappings,
       from_concept_url: mappings[0].from_concept_url,
@@ -662,7 +633,6 @@ Concept
                 updateEventListener={this.updateEventListener}
                 updateSourceEventListener={this.updateSourceEventListener}
                 removeMappingRow={this.removeMappingRow}
-                updateAsyncSelectValue={this.updateAsyncSelectValue}
                 allSources={this.props.allSources}
                 handleAsyncSelectChange={this.handleAsyncSelectChange}
                 selectedAnswers={selectedAnswers}
