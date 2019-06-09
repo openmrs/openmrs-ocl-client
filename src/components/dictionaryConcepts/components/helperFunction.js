@@ -87,3 +87,8 @@ export const isExternalSource = source => source && includes(['External', 'exter
 export const preventFormSubmit = event => event.target.type !== 'textarea'
     && event.which === KEY_CODE_FOR_ENTER
     && event.preventDefault();
+export const compareConceptsByUpdateDate = (firstConcept, nextConcept) => {
+  if (firstConcept.updated_on < nextConcept.updated_on) return 1;
+  if (firstConcept.updated_on > nextConcept.updated_on) return -1;
+  return 0;
+};

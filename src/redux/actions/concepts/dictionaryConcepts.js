@@ -6,6 +6,7 @@ import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE,
   isExternalSource,
+  compareConceptsByUpdateDate,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
@@ -58,13 +59,8 @@ export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch,
   if (!concepts) {
     conceptList = getState().concepts.dictionaryConcepts;
   }
-  const compare = (firstConcept, nextConcept) => {
-    if (firstConcept.updated_on < nextConcept.updated_on) return 1;
-    if (firstConcept.updated_on > nextConcept.updated_on) return -1;
-    return 0;
-  };
 
-  conceptList.sort(compare);
+  conceptList.sort(compareConceptsByUpdateDate);
   const payload = conceptList.slice(offset, limit);
   const conceptCount = conceptList.length;
   dispatch(isSuccess(conceptCount, TOTAL_CONCEPT_COUNT));
