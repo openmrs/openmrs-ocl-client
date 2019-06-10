@@ -39,7 +39,7 @@ export default {
         .then(response => response.data),
 
     addReferencesToCollection: (type, owner, collection, expressions) =>
-      instance.put(`${type}/${owner}/collections/${collection}/references/`, {
+      instance.put(`${type}/${owner}/collections/${collection}/references/?cascade=sourcemappings`, {
         data: { expressions }
       }),
 
@@ -82,6 +82,11 @@ export default {
     instance
       .put(url, data)
       .then(response => response.data),
+    references: {
+          delete: {
+            fromACollection: (collectionUrl, references) => instance.delete(`${collectionUrl}references/`, { data: { references }}),
+          },
+    },
   },
   organizations: {
     fetchOrganizations: () =>
@@ -98,5 +103,8 @@ export default {
   },
   mappings: {
     fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}&limit=0`),
+    list: {
+      fromAConceptInACollection: (collectionUrl, fromConceptCode) => instance.get(`${collectionUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`),
+    }
   },
 };

@@ -349,28 +349,29 @@ describe('Test suite for dictionary concept actions', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
+      { type: ADD_CONCEPT_TO_DICTIONARY, payload: newConcept },
+      { type: IS_FETCHING, payload: false },
       { type: CREATE_NEW_CONCEPT, payload: newConcept },
+      { type: IS_FETCHING, payload: false },
     ];
 
     store.dispatch(createNewConcept(newConceptDataWithAnswerAndSetMappings, url)).then(() => {
       const actions = store.getActions();
-      expect(actions.slice(0, 2)).toEqual(expectedActions);
-      expect(actions[actions.length - 1]).toEqual({ type: IS_FETCHING, payload: false });
+      expect(actions).toEqual(expectedActions);
       done();
     });
   });
 
   it('should handle CREATE_NEW_CONCEPT', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 201,
-        response: newConcept,
-      });
+    moxios.stubRequest(/(.*?)/, {
+      status: 201,
+      response: newConcept,
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
+      { type: ADD_CONCEPT_TO_DICTIONARY, payload: newConcept },
+      { type: IS_FETCHING, payload: false },
       { type: CREATE_NEW_CONCEPT, payload: newConcept },
       { type: IS_FETCHING, payload: false },
     ];
@@ -701,12 +702,15 @@ describe('Testing Edit concept actions ', () => {
   });
 
   it('should handle UPDATE_CONCEPT', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: existingConcept,
-      });
+    const listReferencesInCollectionMock = jest.fn(() => ({ data: [{ version_url: '/test/url/' }] }));
+    const deleteReferencesFromCollectionMock = jest.fn();
+
+    api.mappings.list.fromAConceptInACollection = listReferencesInCollectionMock;
+    api.dictionaries.references.delete.fromACollection = deleteReferencesFromCollectionMock;
+
+    moxios.stubRequest(/(.*?)/, {
+      status: 200,
+      response: existingConcept,
     });
 
     const history = {
@@ -721,7 +725,10 @@ describe('Testing Edit concept actions ', () => {
 
     const store = mockStore(mockConceptStore);
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+
+    expect(deleteReferencesFromCollectionMock).not.toHaveBeenCalled();
     return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
+      expect(deleteReferencesFromCollectionMock).toHaveBeenCalledTimes(1);
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
@@ -1097,20 +1104,16 @@ describe('Add answer mappings to concept', () => {
     moxios.uninstall(instance);
   });
 
-  it('should add all chosen answer mappings', () => {
+  it('should add all chosen answer mappings', async () => {
+    const url = '/url/test/';
+
+    let data;
+
     const mappingData = [
       {
         url: 'some/test.url',
         map_scope: 'Internal',
         map_type: 'Same as',
-        to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
-        to_concept_name: 'CIEL: MALARIAL SMEAR',
-        to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
-      },
-      {
-        url: 'some/test.url',
-        map_scope: 'EXternal',
-        map_type: 'Narrower than',
         to_concept_code: '429b6715-774d-4d64-b043-ae5e177df57f',
         to_concept_name: 'CIEL: MALARIAL SMEAR',
         to_concept_source: '/orgs/CIEL/sources/CIEL/concepts/32/',
@@ -1149,45 +1152,41 @@ describe('Add answer mappings to concept', () => {
         url: '/users/admin/sources/2197623',
       },
     },
-    {
-      data: {
-        created_at: '2018-12-17T13:32:26.644',
-        created_by: 'admin',
-        external_id: null,
-        extras: null,
-        from_concept_code: 'd06c3088-29e4-495a-9a67-62f41e2ab28f',
-        from_concept_name: 'jfjf',
-        from_concept_url: '/url/test/',
-        from_source_name: '2197623860455254',
-        from_source_owner: 'admin',
-        from_source_owner_type: 'User',
-        from_source_url: null,
-        id: '5c17ebba389b5a0050817d89',
-        map_type: 'Narrower than',
-        owner: 'admin',
-        owner_type: 'User',
-        retired: false,
-        source: '2197623860455254',
-        to_concept_code: '1366',
-        to_concept_name: 'MALARIA SMEAR, QUALITATIVE',
-        to_concept_url: '/orgs/CIEL/sources/CIEL/concepts/1366/',
-        to_source_name: 'CIEL',
-        to_source_owner: 'CIEL',
-        to_source_owner_type: 'Organization',
-        to_source_url: CIEL_SOURCE_URL,
-        type: 'Mapping',
-        updated_at: '2018-12-17T13:32:26.769',
-        updated_by: 'admin',
-        url: '/users/admin/sources/2197623',
-      },
-    },
     ];
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 201, response: expected });
+      data = request.config.data;
+      request.respondWith({
+        status: 201,
+        response: expected,
+      });
     });
-    addAnswerMappingToConcept('/url/test/', '2434435454545', mappingData);
+    await addAnswerMappingToConcept(url, '2434435454545', mappingData);
+    expect(data).toEqual(JSON.stringify({
+      map_type: mappingData[0].map_type,
+      from_concept_url: url,
+      to_concept_url: mappingData[0].url,
+      external_id: '1',
+    }));
+  });
+
+  it('should handle error while creating answer mappings', async () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({ status: 400, response: {} });
+    });
+
+    expect(notifyMock).not.toHaveBeenCalled();
+    await addAnswerMappingToConcept('/test/url', 'testSource', [{
+      map_type: 'Q-AND-A',
+      from_concept_url: '/test/from/url/',
+      to_concept_url: '/test/to/url/',
+    }]);
+    expect(notifyMock).toHaveBeenCalled();
   });
 });
 

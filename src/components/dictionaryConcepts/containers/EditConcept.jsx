@@ -233,9 +233,12 @@ export class EditConcept extends Component {
     const {
       removeEditedConceptMappingAction,
       history,
-      match: { params: { collectionName } },
+      match: { params: { collectionName, type: ownerType, typeName: owner } },
       existingConcept: concept,
     } = this.props;
+
+    const collectionUrl = `${ownerType}/${owner}/collections/${collectionName}/`;
+
     const retired = mappings.filter(mapping => mapping.retired);
     const freshMappings = mappings.filter(mapping => mapping.isNew);
     const editedAns = this.editedAnswers;
@@ -254,9 +257,15 @@ export class EditConcept extends Component {
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
       const unRetiredMappings = mappings.filter(m => m.retired === false);
-      this.props.updateConcept(this.conceptUrl, this.state, history, collectionName, concept)
-        .then(result => result && this.updateConceptReference(result, unRetiredMappings)
-          .then(() => history.goBack()));
+      this.props.updateConcept(
+        this.conceptUrl,
+        this.state,
+        history,
+        collectionName,
+        concept,
+        collectionUrl,
+      ).then(result => result && this.updateConceptReference(result, unRetiredMappings)
+        .then(() => history.goBack()));
     } else {
       if (!regx.test(this.state.id)) {
         notify.show('enter a valid uuid', 'error', 3000);

@@ -7,6 +7,7 @@ import {
   MAP_TYPE,
   isExternalSource,
   compareConceptsByUpdateDate,
+  removeBlankMappings,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
@@ -345,7 +346,7 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   const sourceName = urlConstruct[4];
   const username = urlConstruct[2];
   const data = { data: { expressions: [newConcept] } };
-  const url = `${userType}/${username}/collections/${sourceName}/references/`;
+  const url = `${userType}/${username}/collections/${sourceName}/references/?cascade=sourcemappings`;
   try {
     const response = await instance.put(url, data);
     dispatch(isSuccess(response.data, ADD_CONCEPT_TO_DICTIONARY));
@@ -396,7 +397,7 @@ export const fetchConceptsFromASource = async (sourceUrl, query) => {
 export const CreateMapping = (data, from_concept_url, source) => {
   const url = `/users/${localStorage.getItem('username')}/sources/${source}/mappings/`;
   const newMappings = data.filter(mapping => mapping && mapping.isNew);
-  axios.all(newMappings.map((mapping) => {
+  return axios.all(newMappings.map((mapping) => {
     const mappingData = buildNewMappingData(mapping, from_concept_url);
     return instance.post(url, mappingData);
   }));
@@ -405,19 +406,28 @@ export const CreateMapping = (data, from_concept_url, source) => {
 export const createNewConcept = (data, dataUrl) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = dataUrl;
+  let createdConcept;
   try {
     notify.show('creating concept, please wait...', 'warning');
     const response = await instance.post(url, data);
-    dispatch(isSuccess(response.data, CREATE_NEW_CONCEPT));
-    dispatch(addConceptToDictionary(response.data.id, dataUrl));
-    notify.show('creating concept, please wait...', 'warning');
-    CreateMapping(data.mappings, response.data.url, response.data.source);
+    createdConcept = response.data;
     if (data.answers) {
-      await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
+      await addAnswerMappingToConcept(
+        response.data.url,
+        response.data.source,
+        removeBlankMappings(data.answers),
+      );
     }
     if (data.sets) {
-      await addSetMappingToConcept(response.data.url, response.data.source, data.sets);
+      await addSetMappingToConcept(
+        response.data.url,
+        response.data.source,
+        removeBlankMappings(data.sets),
+      );
     }
+    await CreateMapping(
+      removeBlankMappings(data.mappings), response.data.url, response.data.source,
+    );
   } catch (error) {
     notify.hide();
     if (error.response) {
@@ -431,6 +441,11 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
       dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     } else {
       notify.show('An error occurred when creating a concept. Please retry.', 'error', 2000);
+    }
+  } finally {
+    if (createdConcept) {
+      await dispatch(addConceptToDictionary(createdConcept.id, dataUrl));
+      dispatch(isSuccess(createdConcept, CREATE_NEW_CONCEPT));
     }
   }
   return dispatch(isFetching(false));
@@ -482,24 +497,45 @@ export const buildUpdateMappingData = (mapping) => {
 
 export const UpdateMapping = (data) => {
   const updatedMappings = data.filter(mapping => mapping && !mapping.isNew);
-  axios.all(updatedMappings.map((mapping) => {
+  return axios.all(updatedMappings.map((mapping) => {
     const mappingData = buildUpdateMappingData(mapping);
     return instance.put(mapping.url, mappingData);
   }));
 };
 
-export const updateConcept = (conceptUrl, data, history, source, concept) => async (dispatch) => {
+export const updateConcept = (conceptUrl, data, history, source, concept, collectionUrl) => async (dispatch) => {
   dispatch(isFetching(true));
   let updatedConcept;
   const url = conceptUrl;
   try {
     const response = await instance.put(url, data);
     updatedConcept = response.data;
-    CreateMapping(data.mappings, concept.url, source);
-    UpdateMapping(data.mappings);
+
+    const currentMappings = await api.mappings.list.fromAConceptInACollection(
+      collectionUrl,
+      concept.id,
+    );
+    // we delete all of this concept's mappings references in the collection
+    // so we can take advantage of cascadeMappings when updating the concept in the collection later
+    await api.dictionaries.references.delete.fromACollection(
+      collectionUrl,
+      currentMappings.data.map(mapping => mapping.version_url),
+    );
+
+    await CreateMapping(removeBlankMappings(data.mappings), concept.url, source);
+    await UpdateMapping(removeBlankMappings(data.mappings));
+    await addAnswerMappingToConcept(
+      response.data.url,
+      response.data.source,
+      removeBlankMappings(data.answers),
+    );
+    await addSetMappingToConcept(
+      response.data.url,
+      response.data.source,
+      removeBlankMappings(data.sets),
+    );
+
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
-    await addAnswerMappingToConcept(response.data.url, response.data.source, data.answers);
-    await addSetMappingToConcept(response.data.url, response.data.source, data.sets);
     notify.show('Concept successfully updated', 'success', 3000);
     dispatch(isFetching(false));
     return response.data;
