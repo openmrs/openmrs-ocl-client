@@ -10,7 +10,7 @@ const ConceptTable = ({
   concepts, loading, location, preview, previewConcept, addConcept, conceptLimit, currentPage,
   modalId, openModal, closeModal,
 }) => {
-  if (loading) {
+  if (loading && !concepts.length) {
     return (
       <div className="mt-200 text-center">
         <Loader />

@@ -31,6 +31,7 @@ const fetchSourceConcepts = url => async (dispatch) => {
 export default fetchSourceConcepts;
 
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
+  dispatch(isFetching(true));
   const { url, data, conceptIdList: fromConceptIds } = conceptData;
   try {
     const referencesToAdd = await recursivelyFetchConceptMappings(
@@ -53,6 +54,7 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
       notify.show('Failed to add concepts. Please retry', 'error', 3000);
     }
   }
+  dispatch(isFetching(false));
 };
 
 export const isConceptValid = async ({ url }) => {
