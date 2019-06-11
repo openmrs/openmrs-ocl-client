@@ -95,6 +95,7 @@ export const compareConceptsByUpdateDate = (firstConcept, nextConcept) => {
 export const removeBlankMappings = (mappings) => {
   if (!mappings) return [];
   return mappings.filter(
-    mapping => mapping.to_concept_url || (mapping.to_source_url && mapping.to_concept_code),
+    mapping => mapping.to_concept_url
+      || (mapping.sourceObject && mapping.sourceObject.url && mapping.to_concept_code),
   );
 };

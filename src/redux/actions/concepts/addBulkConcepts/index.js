@@ -60,8 +60,12 @@ export const previewConcept = id => (dispatch, getState) => {
   return dispatch(isSuccess(payload[0], PREVIEW_CONCEPT));
 };
 
-export const recursivelyFetchConceptMappings = async (fromConceptCodes, levelsToCheck) => {
-  const startingConceptMappings = await api.mappings.fetchFromPublicSources(fromConceptCodes.join(','));
+export const recursivelyFetchConceptMappings = async (
+  fromConceptCodes,
+  levelsToCheck,
+  fetchMappings = api.mappings.fetchFromPublicSources,
+) => {
+  const startingConceptMappings = await fetchMappings(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsList[i].map(

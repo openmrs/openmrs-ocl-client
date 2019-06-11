@@ -38,8 +38,8 @@ export default {
         .get(`${data}`)
         .then(response => response.data),
 
-    addReferencesToCollection: (type, owner, collection, expressions) =>
-      instance.put(`${type}/${owner}/collections/${collection}/references/?cascade=sourcemappings`, {
+    addReferencesToCollection: (type, owner, collection, expressions, cascadeMappings = true) =>
+      instance.put(`${type}/${owner}/collections/${collection}/references/?${cascadeMappings ? 'cascade=sourcemappings' : ''}`, {
         data: { expressions }
       }),
 
@@ -105,6 +105,7 @@ export default {
     fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}&limit=0`),
     list: {
       fromAConceptInACollection: (collectionUrl, fromConceptCode) => instance.get(`${collectionUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`),
+      fromAConceptInASource: (sourceUrl, fromConceptCode) => instance.get(`${sourceUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`),
     }
   },
 };

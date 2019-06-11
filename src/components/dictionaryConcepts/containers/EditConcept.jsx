@@ -40,6 +40,8 @@ import {
   removeEditedConceptMapping, addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
+import { recursivelyFetchConceptMappings } from '../../../redux/actions/concepts/addBulkConcepts';
+import api from '../../../redux/api';
 
 export class EditConcept extends Component {
   static propTypes = {
@@ -221,7 +223,20 @@ export class EditConcept extends Component {
     ]);
     if (!response) return false;
 
+    const toConceptReferences = await recursivelyFetchConceptMappings(
+      [conceptRef.id],
+      0,
+      fromConceptCodes => api.mappings.list.fromAConceptInASource(
+        conceptRef.source_url, fromConceptCodes,
+      ),
+    );
+
     response = await addReferenceToCollection(type, typeName, collectionName, [conceptRef.url]);
+    if (toConceptReferences.length) {
+      response = await addReferenceToCollection(
+        type, typeName, collectionName, toConceptReferences, false,
+      );
+    }
     if (!response) return false;
 
     return true;
