@@ -298,7 +298,7 @@ describe('concepts', () => {
         });
 
         await api.concepts.list.conceptsInASource(url, query);
-        expect(requestUrl).toContain(`${url}concepts/?q=${query}*`);
+        expect(requestUrl).toContain(`${url}concepts/?limit=0&q=${query}*`);
       });
 
       it('should call the fetchConcepts endpoint with no query term if it is not provided', async ()=> {
@@ -315,7 +315,7 @@ describe('concepts', () => {
         });
 
         await api.concepts.list.conceptsInASource(url);
-        expect(requestUrl).toContain(`${url}concepts/?q=*`);
+        expect(requestUrl).toContain(`${url}concepts/?limit=0&q=*`);
       });
     });
   });

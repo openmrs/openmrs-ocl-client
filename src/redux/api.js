@@ -98,7 +98,7 @@ export default {
     retireConcept: (conceptUrl, retire) => instance.put(conceptUrl, { retired: retire }),
     list: {
       conceptsInASource: (sourceUrl, query='') =>
-        instance.get(`${sourceUrl}concepts/?q=${query}*`)
+        instance.get(`${sourceUrl}concepts/?limit=0&q=${query}*`)
     },
   },
   mappings: {
