@@ -426,20 +426,9 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(1);
   });
 
-  it('should correctly set an unsaved mapping as retired', () => {
+  it('should call removeUnsavedMappingRow function', () => {
     const url = '9999';
     const instance = wrapper.find('EditConcept').instance();
-    instance.state.mappings[0] = {
-      map_type: 'Same as',
-      source: INTERNAL_MAPPING_DEFAULT_SOURCE,
-      to_concept_code: null,
-      to_concept_name: null,
-      id: 3,
-      to_source_url: null,
-      isNew: true,
-      retired: false,
-      url: '101010',
-    };
     instance.state.mappings[1] = {
       map_type: 'Same as',
       source: INTERNAL_MAPPING_DEFAULT_SOURCE,
@@ -451,9 +440,8 @@ describe('Test suite for mappings on existing concepts', () => {
       retired: false,
       url: '9999',
     };
-    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(2);
+    expect(instance.state.mappings.filter(_ => _ != null).length).toEqual(1);
     instance.removeUnsavedMappingRow(url);
-    expect(instance.state.mappings[0].retired).toEqual(false);
     expect(instance.state.mappings[1].retired).toEqual(true);
   });
 
@@ -672,7 +660,7 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(props.removeAnswer).toHaveBeenCalledWith(props.selectedAnswers[0].frontEndUniqueKey);
   });
   it('should set `NARROWER-THAN` as the default relationship when the source is changed to `Datatype`'
-  + 'while editing a concept', () => {
+    + 'while editing a concept', () => {
     const event = {
       target: {
         tabIndex: 0,
@@ -691,7 +679,7 @@ describe('Test suite for mappings on existing concepts', () => {
     expect(instance.state.mappings[0].map_type).toEqual('NARROWER-THAN');
   });
   it('should set `SAME-AS` as the default relationship when the source is changed to `CIEL`'
-  + 'while editing a concept', (done) => {
+    + 'while editing a concept', () => {
     const event = {
       target: {
         tabIndex: 0,
@@ -704,17 +692,8 @@ describe('Test suite for mappings on existing concepts', () => {
     instance.state.mappings[1] = {
       url,
     };
-
-    instance.setState(
-      {
-        mappings: [{ ...newMappings[0], url: 'doesNotExist' }, { url }],
-      },
-      () => {
-        instance.updateSourceEventListener(event, url, { url: CIEL_SOURCE_URL });
-        expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
-        done();
-      },
-    );
+    instance.updateSourceEventListener(event, url, { url: CIEL_SOURCE_URL });
+    expect(instance.state.mappings[1].map_type).toEqual('SAME-AS');
   });
 
   it('should call removeEditedConceptMappingAction function to remove mapping', () => {

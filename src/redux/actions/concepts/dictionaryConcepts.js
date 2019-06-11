@@ -54,6 +54,7 @@ import {
 
 import instance from '../../../config/axiosConfig';
 import api from '../../api';
+import { recursivelyFetchConceptMappings } from './addBulkConcepts';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
   let conceptList = concepts;
@@ -345,10 +346,26 @@ export const addConceptToDictionary = (id, dataUrl) => async (dispatch) => {
   const userType = urlConstruct[1];
   const sourceName = urlConstruct[4];
   const username = urlConstruct[2];
-  const data = { data: { expressions: [newConcept] } };
-  const url = `${userType}/${username}/collections/${sourceName}/references/?cascade=sourcemappings`;
+  const sourceUrl = `${userType}/${username}/sources/${sourceName}/`;
   try {
-    const response = await instance.put(url, data);
+    const toConceptReferences = await recursivelyFetchConceptMappings(
+      [id],
+      0,
+      fromConceptCodes => api.mappings.list.fromAConceptInASource(sourceUrl, fromConceptCodes),
+    );
+    if (toConceptReferences.length) {
+      await api.dictionaries.addReferencesToCollection(
+        userType, username, sourceName, toConceptReferences, false,
+      );
+    }
+  } catch (e) {
+    notify.show('Some mapping concepts were not added to the collection', 'error', 3000);
+  }
+
+  try {
+    const response = await api.dictionaries.addReferencesToCollection(
+      userType, username, sourceName, [newConcept],
+    );
     dispatch(isSuccess(response.data, ADD_CONCEPT_TO_DICTIONARY));
   } catch (error) {
     notify.show('An error occurred', 'error', 3000);

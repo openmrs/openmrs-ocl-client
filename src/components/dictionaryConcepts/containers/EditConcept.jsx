@@ -562,18 +562,6 @@ export class EditConcept extends Component {
     return true;
   };
 
-  unRetireExistingMappings = async (freshMappings, retired) => {
-    const toBeUnRetired = [];
-    freshMappings.forEach((mapping) => {
-      const mappingToUnBeRetired = retired.find(m => m.to_concept_code === mapping.to_concept_code);
-      if (mappingToUnBeRetired) toBeUnRetired.push(mappingToUnBeRetired.url);
-    });
-    for (let i = 0; i < toBeUnRetired.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      await this.props.unretireMapping(toBeUnRetired[i]);
-    }
-  };
-
   render() {
     const {
       match: {
@@ -605,10 +593,10 @@ export class EditConcept extends Component {
           <div className="col-lg-12">
             <h3>
               {dictionaryName}
-: Edit a
+              : Edit a
               <span className="text-capitalize">{concept}</span>
               {' '}
-Concept
+              Concept
               {' '}
               <br />
             </h3>
@@ -619,47 +607,47 @@ Concept
             <div className="col-lg-12 col-md-10 col-sm-12">
               { existingConcept
               && (
-              <CreateConceptForm
-                handleNewName={this.handleNewName}
-                nameRows={this.props.newName}
-                removeRow={this.removeNewName}
-                description={this.props.description}
-                editable={this.state.notEditable}
-                addDescription={this.addNewDescription}
-                removeDescription={this.removeDescription}
-                toggleUUID={this.handleUUID}
-                concept={concept}
-                path={path}
-                state={this.state}
-                handleChange={this.handleChange}
-                handleSelections={this.handleNameLocale}
-                handleDescription={this.handleDescriptionLocale}
-                handleSubmit={this.handleSubmit}
-                addDataFromRow={this.addDataFromRow}
-                addDataFromDescription={this.addDataFromDescription}
-                removeDataFromRow={this.removeDataFromRow}
-                pathName={this.props.match.params}
-                existingConcept={existingConcept}
-                isEditConcept={this.state.isEditConcept}
-                disableButton={loading}
-                mappings={mappings}
-                addMappingRow={this.addMappingRow}
-                updateEventListener={this.updateEventListener}
-                updateSourceEventListener={this.updateSourceEventListener}
-                removeMappingRow={this.removeMappingRow}
-                allSources={this.props.allSources}
-                handleAsyncSelectChange={this.handleAsyncSelectChange}
-                selectedAnswers={selectedAnswers}
-                addAnswerRow={this.addAnswerRow}
-                removeAnswerRow={this.removeAnswerRow}
-                currentDictionaryName={dictionaryName}
-                showModal={this.showModal}
-                removeCurrentAnswer={this.removeCurrentAnswer}
-                handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}
-                selectedSets={selectedSets}
-                removeSetRow={this.removeSetRow}
-                addSetRow={this.addSetRow}
-              />
+                <CreateConceptForm
+                  handleNewName={this.handleNewName}
+                  nameRows={this.props.newName}
+                  removeRow={this.removeNewName}
+                  description={this.props.description}
+                  editable={this.state.notEditable}
+                  addDescription={this.addNewDescription}
+                  removeDescription={this.removeDescription}
+                  toggleUUID={this.handleUUID}
+                  concept={concept}
+                  path={path}
+                  state={this.state}
+                  handleChange={this.handleChange}
+                  handleSelections={this.handleNameLocale}
+                  handleDescription={this.handleDescriptionLocale}
+                  handleSubmit={this.handleSubmit}
+                  addDataFromRow={this.addDataFromRow}
+                  addDataFromDescription={this.addDataFromDescription}
+                  removeDataFromRow={this.removeDataFromRow}
+                  pathName={this.props.match.params}
+                  existingConcept={existingConcept}
+                  isEditConcept={this.state.isEditConcept}
+                  disableButton={loading}
+                  mappings={mappings}
+                  addMappingRow={this.addMappingRow}
+                  updateEventListener={this.updateEventListener}
+                  updateSourceEventListener={this.updateSourceEventListener}
+                  removeMappingRow={this.removeMappingRow}
+                  allSources={this.props.allSources}
+                  handleAsyncSelectChange={this.handleAsyncSelectChange}
+                  selectedAnswers={selectedAnswers}
+                  addAnswerRow={this.addAnswerRow}
+                  removeAnswerRow={this.removeAnswerRow}
+                  currentDictionaryName={dictionaryName}
+                  showModal={this.showModal}
+                  removeCurrentAnswer={this.removeCurrentAnswer}
+                  handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}
+                  selectedSets={selectedSets}
+                  removeSetRow={this.removeSetRow}
+                  addSetRow={this.addSetRow}
+                />
               )
               }
               <GeneralModel
@@ -701,6 +689,18 @@ Concept
         </div>
       </div>
     );
+  }
+
+  unRetireExistingMappings = async (freshMappings, retired) => {
+    const toBeUnRetired = [];
+    freshMappings.forEach((mapping) => {
+      const mappingToUnBeRetired = retired.find(m => m.to_concept_code === mapping.to_concept_code);
+      if (mappingToUnBeRetired) toBeUnRetired.push(mappingToUnBeRetired.url);
+    });
+    for (let i = 0; i < toBeUnRetired.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.props.unretireMapping(toBeUnRetired[i]);
+    }
   }
 }
 
