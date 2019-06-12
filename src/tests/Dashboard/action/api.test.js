@@ -8,7 +8,6 @@ import {
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import organizations from '../../__mocks__/organizations';
 import api from '../../../redux/api';
-import { recursivelyFetchConceptMappings } from '../../../redux/actions/concepts/addBulkConcepts/index';
 
 const mockStore = configureStore([thunk]);
 
@@ -350,5 +349,58 @@ describe('mappings', () => {
           .toContain(`${collectionUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`);
       });
     });
+  });
+});
+
+describe('dictionaries', () => {
+  describe('addReferencesToCollection', () => {
+    beforeEach(() => {
+      moxios.install(instance);
+    });
+
+    afterEach(() => {
+      moxios.uninstall(instance);
+    });
+
+    it('should call addReferencesToCollection with the right parameters', async () => {
+      const type = 'user';
+      const owner ='admin';
+      const collection = 'TEST';
+      const expressions = ['/orgs/CIEL/sources/TEST/concepts/1/'];
+      const cascadeMappings = false;
+      let requestUrl;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        requestUrl = request.url;
+        request.respondWith({
+          status: 200,
+        });
+      });
+
+      await api.dictionaries.addReferencesToCollection(type, owner, collection, expressions, cascadeMappings);
+      expect(requestUrl).toContain(`${type}/${owner}/collections/${collection}/references/?`);
+
+    })
+
+    it('should should append \'cascade=sourcemappings\' to the url if \'cascadeMappings\' is true', async () => {
+      const type = 'user';
+      const owner ='admin';
+      const collection = 'TEST';
+      const expressions = ['/orgs/CIEL/sources/TEST/concepts/1/'];
+      const cascadeMappings = true;
+      let requestUrl;
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        requestUrl = request.url;
+        request.respondWith({
+          status: 200,
+        });
+      });
+
+      await api.dictionaries.addReferencesToCollection(type, owner, collection, expressions, cascadeMappings);
+      expect(requestUrl).toContain(`${type}/${owner}/collections/${collection}/references/?cascade=sourcemappings`);
+
+    })
+
   });
 });

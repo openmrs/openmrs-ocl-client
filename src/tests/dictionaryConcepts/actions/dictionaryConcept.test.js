@@ -104,6 +104,7 @@ import {
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 import api from '../../../redux/api';
 import { externalSource, internalSource } from '../../__mocks__/sources';
+import mappings from '../../__mocks__/mappings';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -528,13 +529,19 @@ describe('Test suite for dictionary concept actions', () => {
   });
 
   it('should handle ADD_CONCEPT_TO_DICTIONARY', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: { added: true },
-      });
+    const listMappingsFromAConceptInASourceMock = jest.fn(() => []);
+    listMappingsFromAConceptInASourceMock.mockResolvedValueOnce({
+      data: [mappings[0]],
     });
+    const addReferencesToCollectionMock = jest.fn();
+    addReferencesToCollectionMock.mockResolvedValue({
+      data: {
+        added: true,
+      },
+    });
+
+    api.mappings.list.fromAConceptInASource = listMappingsFromAConceptInASourceMock;
+    api.dictionaries.addReferencesToCollection = addReferencesToCollectionMock;
 
     const expectedActions = [
       { type: ADD_CONCEPT_TO_DICTIONARY, payload: { added: true } },
@@ -548,13 +555,15 @@ describe('Test suite for dictionary concept actions', () => {
     });
   });
   it('should handle error in ADD_CONCEPT_TO_DICTIONARY', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: 'bad request',
-      });
+    const listMappingsFromAConceptInASourceMock = jest.fn(() => []);
+    listMappingsFromAConceptInASourceMock.mockResolvedValueOnce({
+      data: [mappings[0]],
     });
+    const addReferencesToCollectionMock = jest.fn();
+    addReferencesToCollectionMock.mockRejectedValueOnce({ response: 'bad request' });
+
+    api.mappings.list.fromAConceptInASource = listMappingsFromAConceptInASourceMock;
+    api.dictionaries.addReferencesToCollection = addReferencesToCollectionMock;
 
     const expectedActions = [{ type: IS_FETCHING, payload: false }];
 

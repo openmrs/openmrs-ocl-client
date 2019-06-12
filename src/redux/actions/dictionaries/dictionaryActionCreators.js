@@ -281,9 +281,9 @@ export const retireConcept = (conceptUrl, retire) => async (dispatch) => {
   }
 }
 
-export const addReferenceToCollectionAction = (type, owner, collection, expressions) => async (dispatch) => {
+export const addReferenceToCollectionAction = (type, owner, collection, expressions, cascadeMappings = true) => async (dispatch) => {
   try {
-    return await api.dictionaries.addReferencesToCollection(type, owner, collection, expressions);
+    return await api.dictionaries.addReferencesToCollection(type, owner, collection, expressions, cascadeMappings);
   } catch (e) {
     if(e && e.response && e.response.data){
       notify.show(e.response.data, 'error', 3000);

@@ -16,6 +16,7 @@ import {
   CONCEPT_TYPE,
   MAP_TYPE,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
+import api from '../../../redux/api';
 
 
 jest.mock('uuid/v4', () => jest.fn(() => '1234'));
@@ -761,6 +762,19 @@ describe('Test suite for mappings on existing concepts', () => {
 
   describe('updateConceptReference', () => {
     it('should return true on success', async () => {
+      const listMappingsFromAConceptInASourceMock = jest.fn(() => []);
+      listMappingsFromAConceptInASourceMock.mockResolvedValueOnce({
+        data: [mockMappings[0]],
+      });
+      const addReferencesToCollectionMock = jest.fn();
+      addReferencesToCollectionMock.mockResolvedValue({
+        data: {
+          added: true,
+        },
+      });
+      api.mappings.list.fromAConceptInASource = listMappingsFromAConceptInASourceMock;
+      api.dictionaries.addReferencesToCollection = addReferencesToCollectionMock;
+
       const editConceptInstance = wrapper.find('EditConcept').instance();
       expect(await editConceptInstance.updateConceptReference(sampleConcept)).toBeTruthy();
     });
@@ -777,6 +791,16 @@ describe('Test suite for mappings on existing concepts', () => {
     });
 
     it('should return false on add reference failure', async () => {
+      const listMappingsFromAConceptInASourceMock = jest.fn(() => []);
+      listMappingsFromAConceptInASourceMock.mockResolvedValueOnce({
+        data: [mockMappings[0]],
+      });
+      const addReferencesToCollectionMock = jest.fn();
+      addReferencesToCollectionMock.mockRejectedValueOnce({ response: 'bad request' });
+
+      api.mappings.list.fromAConceptInASource = listMappingsFromAConceptInASourceMock;
+      api.dictionaries.addReferencesToCollection = addReferencesToCollectionMock;
+
       const editConceptWrapper = mount(<Router>
         <EditConcept
           {...props}
