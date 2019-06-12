@@ -99,3 +99,9 @@ export const removeBlankMappings = (mappings) => {
       || (mapping.sourceObject && mapping.sourceObject.url && mapping.to_concept_code),
   );
 };
+export const removeBlankSetsOrAnswers = (items) => {
+  if (!items) return [];
+  return items.filter(
+    item => item.url,
+  );
+};

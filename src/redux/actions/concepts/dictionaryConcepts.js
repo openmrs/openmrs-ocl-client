@@ -7,7 +7,7 @@ import {
   MAP_TYPE,
   isExternalSource,
   compareConceptsByUpdateDate,
-  removeBlankMappings,
+  removeBlankMappings, removeBlankSetsOrAnswers,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
@@ -433,14 +433,14 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
       await addAnswerMappingToConcept(
         response.data.url,
         response.data.source,
-        removeBlankMappings(data.answers),
+        removeBlankSetsOrAnswers(data.answers),
       );
     }
     if (data.sets) {
       await addSetMappingToConcept(
         response.data.url,
         response.data.source,
-        removeBlankMappings(data.sets),
+        removeBlankSetsOrAnswers(data.sets),
       );
     }
     await CreateMapping(
@@ -545,12 +545,12 @@ export const updateConcept = (conceptUrl, data, history, source, concept, collec
     await addAnswerMappingToConcept(
       response.data.url,
       response.data.source,
-      removeBlankMappings(data.answers),
+      removeBlankSetsOrAnswers(data.answers),
     );
     await addSetMappingToConcept(
       response.data.url,
       response.data.source,
-      removeBlankMappings(data.sets),
+      removeBlankSetsOrAnswers(data.sets),
     );
 
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
