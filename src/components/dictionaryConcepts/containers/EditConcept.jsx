@@ -30,7 +30,7 @@ import {
   unpopulateSet,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
-  CIEL_SOURCE_URL, MAP_TYPE, ATTRIBUTE_NAME_SOURCE,
+  CIEL_SOURCE_URL, MAP_TYPE,
   CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
   MAP_TYPES_DEFAULTS,
 } from '../components/helperFunction';
@@ -249,10 +249,7 @@ export class EditConcept extends Component {
       removeEditedConceptMappingAction(data);
     });
 
-    freshMappings.forEach((mapping) => {
-      const toBeUnRetired = retired.find(m => m.to_concept_name === mapping.to_concept_name);
-      if (toBeUnRetired) this.props.unretireMapping(toBeUnRetired.url);
-    });
+    this.unRetireExistingMappings(freshMappings, retired);
 
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && this.state.datatype && this.state.concept_class) {
@@ -359,10 +356,6 @@ export class EditConcept extends Component {
       const modifyMap = map;
       if (modifyMap.url === url) {
         modifyMap[name] = value;
-      }
-      if (name === ATTRIBUTE_NAME_SOURCE) {
-        modifyMap.to_concept_code = '';
-        modifyMap.to_concept_name = '';
       }
       return modifyMap;
     });
@@ -567,6 +560,18 @@ export class EditConcept extends Component {
     }
     removeSet(uniqueKey);
     return true;
+  };
+
+  unRetireExistingMappings = async (freshMappings, retired) => {
+    const toBeUnRetired = [];
+    freshMappings.forEach((mapping) => {
+      const mappingToUnBeRetired = retired.find(m => m.to_concept_code === mapping.to_concept_code);
+      if (mappingToUnBeRetired) toBeUnRetired.push(mappingToUnBeRetired.url);
+    });
+    for (let i = 0; i < toBeUnRetired.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.props.unretireMapping(toBeUnRetired[i]);
+    }
   };
 
   render() {
