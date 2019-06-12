@@ -535,10 +535,12 @@ export const updateConcept = (conceptUrl, data, history, source, concept, collec
     );
     // we delete all of this concept's mappings references in the collection
     // so we can take advantage of cascadeMappings when updating the concept in the collection later
-    await api.dictionaries.references.delete.fromACollection(
-      collectionUrl,
-      currentMappings.data.map(mapping => mapping.version_url),
-    );
+    if (currentMappings && currentMappings.data && currentMappings.data.length) {
+      await api.dictionaries.references.delete.fromACollection(
+        collectionUrl,
+        currentMappings.data.map(mapping => mapping.version_url),
+      );
+    }
 
     await CreateMapping(removeBlankMappings(data.mappings), concept.url, source);
     await UpdateMapping(removeBlankMappings(data.mappings));

@@ -742,6 +742,38 @@ describe('Testing Edit concept actions ', () => {
     });
   });
 
+  it('should not attempt to delete references when the data is empty', () => {
+    const listReferencesInCollectionMock = jest.fn(() => ({ data: [] }));
+    const deleteReferencesFromCollectionMock = jest.fn();
+
+    api.mappings.list.fromAConceptInACollection = listReferencesInCollectionMock;
+    api.dictionaries.references.delete.fromACollection = deleteReferencesFromCollectionMock;
+
+    moxios.stubRequest(/(.*?)/, {
+      status: 200,
+      response: existingConcept,
+    });
+
+    const history = {
+      goBack: () => '',
+    };
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: UPDATE_CONCEPT, payload: existingConcept },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+
+    expect(deleteReferencesFromCollectionMock).not.toHaveBeenCalled();
+    return store.dispatch(updateConcept(conceptUrl, existingConcept, history, 'HMIS-Indicators', existingConcept)).then(() => {
+      expect(deleteReferencesFromCollectionMock).not.toHaveBeenCalled();
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
   it('updateConcept should still return the updated concept if updating the mappings fails', async () => {
     const dispatchMock = jest.fn();
     moxios.wait(() => {
