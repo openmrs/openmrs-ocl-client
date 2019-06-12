@@ -2,8 +2,9 @@ import {
   compareConceptsByUpdateDate,
   KEY_CODE_FOR_ENTER,
   KEY_CODE_FOR_SPACE,
-  preventFormSubmit
+  preventFormSubmit, removeBlankMappings, removeBlankSetsOrAnswers,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { answer } from '../../__mocks__/answers';
 
 describe('preventFormSubmit', () => {
   it('should return false when target is textarea', () => {
@@ -48,5 +49,30 @@ describe('compareConceptsByUpdateDate', () => {
 
   it('should return 0 if the concepts have the same update time', () => {
     expect(compareConceptsByUpdateDate(olderConcept, olderConcept)).toEqual(0);
+  });
+});
+
+describe('removeBlankMappings', () => {
+  it('should return an empty list when there are no mappings', () => {
+    expect(removeBlankMappings(null)).toEqual([]);
+  });
+});
+
+describe('removeBlankSetsOrAnswers', () => {
+  it('should remove blank mappings', () => {
+    const data = [
+      answer,
+      { ...answer, url: '' },
+    ];
+
+    const expectedResult = [
+      answer,
+    ];
+
+    expect(removeBlankSetsOrAnswers(data)).toEqual(expectedResult);
+  });
+
+  it('should return an empty list when there are no mappings', () => {
+    expect(removeBlankSetsOrAnswers(null)).toEqual([]);
   });
 });
