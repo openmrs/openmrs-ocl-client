@@ -27,40 +27,39 @@ import {
   REMOVE_CONCEPT,
 } from '../../../redux/actions/types';
 
-let state;
-let action;
-
-beforeEach(() => {
-  state = {
-    concepts: [],
-    loading: false,
-    dictionaryConcepts: [paginatedConcepts.concepts],
-    paginatedConcepts: [paginatedConcepts.concepts],
-    filteredSources: [],
-    filteredClass: [],
-    filteredList: [],
-    filteredByClass: [],
-    filteredBySource: [],
-    sourceList: [],
-    classList: [],
-    newName: ['456'],
-    description: [{ uuid: '456' }],
-    answer: ['123y'],
-    newConcept: {},
-    addConceptToDictionary: [],
-    existingConcept: {
-      descriptions: [{
-        uuid: '1234',
-      }],
-      names: [{
-        uuid: '5678',
-      }],
-    },
-  };
-  action = {};
-});
-
 describe('Test suite for single dictionary concepts', () => {
+  let state;
+  let action;
+
+  beforeEach(() => {
+    state = {
+      concepts: [],
+      loading: false,
+      dictionaryConcepts: [paginatedConcepts.concepts],
+      paginatedConcepts: [paginatedConcepts.concepts],
+      filteredSources: [],
+      filteredClass: [],
+      filteredList: [],
+      filteredByClass: [],
+      filteredBySource: [],
+      sourceList: [],
+      classList: [],
+      newName: ['456'],
+      description: [{ uuid: '456' }],
+      answer: ['123y'],
+      newConcept: {},
+      addConceptToDictionary: [],
+      existingConcept: {
+        descriptions: [{
+          uuid: '1234',
+        }],
+        names: [{
+          uuid: '5678',
+        }],
+      },
+    };
+    action = {};
+  });
   it('should not change state if no action passed', () => {
     expect(reducer(state, action)).toBe(state);
   });
@@ -98,6 +97,28 @@ describe('Test suite for single dictionary concepts', () => {
       filteredBySource: ['dev-col'],
     });
   });
+
+  it('should handle removing a source from sourcelist', () => {
+    action = {
+      type: FILTER_BY_SOURCES,
+      payload: 'test',
+    };
+
+    state = {
+      ...state,
+      sourceList: ['test'],
+    };
+
+    deepFreeze(state);
+    deepFreeze(action);
+
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      sourceList: [],
+      filteredBySource: [],
+    });
+  });
+
   it('should handle search filtering by class', () => {
     action = {
       type: FILTER_BY_CLASS,
