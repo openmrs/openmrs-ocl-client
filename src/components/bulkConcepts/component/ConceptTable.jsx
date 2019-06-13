@@ -24,7 +24,8 @@ const ConceptTable = ({
         currentPage={currentPage}
         loading={loading}
         PaginationComponent={ConceptPagination}
-        defaultPageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
+        defaultPageSize={conceptLimit}
+        pageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
         noDataText="No concepts found!"
         minRows={2}
         limitCount={10}
