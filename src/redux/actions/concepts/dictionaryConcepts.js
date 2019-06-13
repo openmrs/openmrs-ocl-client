@@ -146,7 +146,7 @@ export const fetchDictionaryConcepts = (
     // version is not removed after an update. Pending backend fix.
     // ticket: https://github.com/OpenConceptLab/ocl_issues/issues/115
     const concepts = response.data.filter(
-      concept => concept.external_id || concept.is_latest_version,
+      concept => concept.is_latest_version,
     );
     dispatch(getDictionaryConcepts(concepts, FETCH_DICTIONARY_CONCEPT));
     dispatch(paginateConcepts(concepts));

@@ -94,7 +94,7 @@ import concepts, {
   newConceptData,
   multipleConceptsMockStore,
   newConceptDataWithAnswerAndSetMappings,
-  existingConcept, sampleConcept, conceptWithoutMappings,
+  existingConcept, sampleConcept, conceptWithoutMappings, conceptThatIsNotTheLatestVersion,
 } from '../../__mocks__/concepts';
 import {
   CIEL_SOURCE_URL,
@@ -194,6 +194,27 @@ describe('Test suite for dictionary concept actions', () => {
 
     return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should return only the latest version of each concept', () => {
+    const conceptData = [concepts, conceptThatIsNotTheLatestVersion];
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: conceptData,
+      });
+    });
+
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchDictionaryConcepts()).then(() => {
+      expect(store.getActions()[1]).toEqual({
+        type: FETCH_DICTIONARY_CONCEPT,
+        payload: [concepts],
+      });
     });
   });
 

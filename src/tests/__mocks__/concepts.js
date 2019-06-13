@@ -768,3 +768,8 @@ export const conceptWithoutMappings = {
   ...sampleConcept,
   mappings: null,
 };
+
+export const conceptThatIsNotTheLatestVersion = {
+  ...sampleConcept,
+  is_latest_version: false,
+};
