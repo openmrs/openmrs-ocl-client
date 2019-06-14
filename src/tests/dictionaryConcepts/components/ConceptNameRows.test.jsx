@@ -38,6 +38,7 @@ describe('Test suite for ConceptNameRows ', () => {
         name: 'testing',
         locale_full: { value: 'en', label: 'English [en]' },
         name_type: 'test',
+        locale_preferred: true,
       },
       locale: ['fr', 'sw'],
       existingConcept: {
@@ -65,7 +66,7 @@ describe('Test suite for ConceptNameRows ', () => {
         name: 'testing',
         locale: 'la',
         locale_full: { value: 'en', label: 'English [en]' },
-        locale_preferred: 'No',
+        locale_preferred: false,
         name_type: 'test',
       },
       index: 0,
@@ -80,6 +81,7 @@ describe('Test suite for ConceptNameRows ', () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.length).toBe(1);
     expect(wrapper.find('#concept-name').props().value).toEqual(newProps.newRow.name);
+    expect(wrapper.find('#locale_preferred').props().value).toEqual(newProps.newRow.locale_preferred ? 'Yes' : 'No');
   });
 
   it('should call update state with selected value when handleNameLocale is invoked', () => {
@@ -106,5 +108,33 @@ describe('Test suite for ConceptNameRows ', () => {
     expect(spy).toHaveBeenCalled();
     expect(instance.state.locale).toEqual(selectedOptions.value);
     expect(instance.state.locale_full).toEqual(selectedOptions);
+  });
+
+  it('should update state and call sendToTopComponent when the name type is updated', () => {
+    const newProps = {
+      ...props,
+      newRow: {
+        id: '5',
+        name: 'testing',
+        locale_full: { value: 'en', label: 'English [en]' },
+        name_type: 'test',
+      },
+      locale: ['fr', 'sw'],
+      existingConcept: {
+        id: 9,
+      },
+    };
+    wrapper = mount(<table><tbody><ConceptNameRows {...newProps} /></tbody></table>);
+    const instance = wrapper.find('ConceptNameRows').instance();
+    const spy = jest.spyOn(instance, 'sendToTopComponent');
+
+    expect(spy).not.toHaveBeenCalled();
+    instance.handleChange({ target: { name: 'locale_preferred', value: 'Yes' } });
+    expect(instance.state.locale_preferred).toEqual(true);
+
+    instance.handleChange({ target: { name: 'locale_preferred', value: 'No' } });
+    expect(instance.state.locale_preferred).toEqual(false);
+
+    expect(spy).toHaveBeenCalled();
   });
 });

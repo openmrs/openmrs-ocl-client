@@ -44,7 +44,7 @@ class ConceptNameRows extends Component {
       name: '',
       locale: defaultLocale.value,
       locale_full: defaultLocale,
-      locale_preferred: 'Yes',
+      locale_preferred: true,
       name_type: 'Fully Specified',
     };
     autoBind(this);
@@ -74,14 +74,19 @@ class ConceptNameRows extends Component {
       locale: newRow.locale || defaultLocale.value,
       locale_full: defaultLocale,
       name_type: newRow.name_type || 'Fully Specified',
-      locale_preferred: newRow.locale_preferred || 'Yes',
+      locale_preferred: !!newRow.locale_preferred,
     });
   }
 
   handleChange(event) {
     const {
-      target: { value, name },
+      target: { name },
     } = event;
+    let {
+      target: { value },
+    } = event;
+
+    if (name === 'locale_preferred') value = value === 'Yes';
 
     this.setState(() => ({ [name]: value }));
     this.sendToTopComponent();
@@ -154,7 +159,7 @@ class ConceptNameRows extends Component {
           <select
             id="locale_preferred"
             name="locale_preferred"
-            value={this.state.locale_preferred}
+            value={this.state.locale_preferred ? 'Yes' : 'No'}
             className="form-control"
             onChange={this.handleChange}
           >
