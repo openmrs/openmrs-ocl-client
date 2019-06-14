@@ -84,6 +84,31 @@ describe('Test suite for ConceptNameRows ', () => {
     expect(wrapper.find('#locale_preferred').props().value).toEqual(newProps.newRow.locale_preferred ? 'Yes' : 'No');
   });
 
+  it('should update state with the right values from the props', () => {
+    const newProps = {
+      ...props,
+      newRow: {
+        id: '5',
+        name: 'testing',
+        locale: 'la',
+        locale_full: { value: 'en', label: 'English [en]' },
+        locale_preferred: 'No',
+        name_type: 'test',
+        external_id: 'externalId',
+      },
+      index: 0,
+      nameRows: [],
+      rowId: '3',
+      locale: ['fr', 'sw'],
+      existingConcept: {
+        id: 9,
+      },
+    };
+    wrapper = mount(<table><tbody><ConceptNameRows {...newProps} /></tbody></table>);
+    const instance = wrapper.find('ConceptNameRows').instance();
+    expect(instance.state.external_id).toEqual(newProps.newRow.external_id);
+  });
+
   it('should call update state with selected value when handleNameLocale is invoked', () => {
     const newProps = {
       ...props,
