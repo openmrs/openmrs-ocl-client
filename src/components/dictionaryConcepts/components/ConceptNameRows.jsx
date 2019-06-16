@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
 import Select from 'react-select';
@@ -75,6 +76,7 @@ class ConceptNameRows extends Component {
       locale_full: defaultLocale,
       name_type: newRow.name_type || 'Fully Specified',
       locale_preferred: !!newRow.locale_preferred,
+      external_id: newRow.external_id || uuid(),
     });
   }
 

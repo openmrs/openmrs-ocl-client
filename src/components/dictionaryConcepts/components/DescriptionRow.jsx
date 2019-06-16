@@ -1,3 +1,4 @@
+import uuid from 'uuid/v4';
 import React, { Component } from 'react';
 import Select from 'react-select';
 import autoBind from 'react-autobind';
@@ -67,6 +68,7 @@ class DescriptionRow extends Component {
       locale: newRow.locale || 'en',
       locale_full: defaultLocale,
       description: newRow.description,
+      external_id: newRow.external_id || uuid(),
     });
   }
 
