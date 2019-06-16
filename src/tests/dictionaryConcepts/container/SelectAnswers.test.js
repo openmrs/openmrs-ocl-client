@@ -138,4 +138,14 @@ describe('<SelectAnswers />', () => {
     expect(wrapper.state().inputValue).toEqual('');
     expect(props.removeCurrentAnswer).toHaveBeenCalled();
   });
+
+  it('should handle change when a user clicks in the search input', () => {
+    wrapper.setState({ hasReset: true });
+    const spy = jest.spyOn(wrapper.instance(), 'handleInputChange');
+    expect(wrapper.instance().state.hasReset).toEqual(true);
+    wrapper.find('#searchInputCiel').simulate('change');
+    expect(spy).toHaveBeenCalled();
+    expect(wrapper.instance().state.hasReset).toEqual(false);
+  });
+
 });
