@@ -565,8 +565,10 @@ describe('Test suite for dictionary concepts components', () => {
         <DictionaryConcepts {...props} />
       </Router>
     </Provider>);
+    props.fetchDictionaryConcepts.mockClear();
+    expect(wrapper.find('DictionaryConcepts').props().fetchDictionaryConcepts).not.toHaveBeenCalled();
     wrapper.find('#submit-search-form').simulate('submit');
-    expect(wrapper.find('DictionaryConcepts').props().searchByName).toHaveBeenCalled();
+    expect(wrapper.find('DictionaryConcepts').props().fetchDictionaryConcepts).toHaveBeenCalled();
   });
 
   describe('Retire/Unretire Concepts', () => {

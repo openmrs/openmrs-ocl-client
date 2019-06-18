@@ -11,7 +11,6 @@ import { conceptsProps } from '../proptypes';
 import { getUsername } from '../components/helperFunction';
 import {
   fetchDictionaryConcepts,
-  fetchConceptsByName,
   filterBySource,
   filterByClass,
   paginateConcepts,
@@ -51,7 +50,6 @@ export class DictionaryConcepts extends Component {
     userIsMember: PropTypes.bool.isRequired,
     removeDictionaryConcept: PropTypes.func.isRequired,
     removeConceptMappingAction: PropTypes.func.isRequired,
-    searchByName: PropTypes.func.isRequired,
     retireCurrentConcept: PropTypes.func.isRequired,
     getOriginalConcept: PropTypes.func.isRequired,
     originalConcept: PropTypes.shape({}).isRequired,
@@ -134,6 +132,9 @@ export class DictionaryConcepts extends Component {
       );
     }
 
+    const query = `${searchInput.trim()}*`;
+    this.fetchConcepts(query);
+
     this.setState({
       [inputName]: eventAction,
     });
@@ -210,9 +211,8 @@ export class DictionaryConcepts extends Component {
   handleSearchByName = (event) => {
     event.preventDefault();
     const { searchInput } = this.state;
-    const query = `q=${searchInput.trim()}`;
-    const { searchByName } = this.props;
-    searchByName(query);
+    const query = `${searchInput.trim()}*`;
+    this.fetchConcepts(query);
   };
 
   handleRetireConcept = async (id, retired) => {
@@ -348,7 +348,6 @@ export default connect(
   mapStateToProps,
   {
     fetchDictionaryConcepts,
-    searchByName: fetchConceptsByName,
     filterBySource,
     filterByClass,
     paginateConcepts,
