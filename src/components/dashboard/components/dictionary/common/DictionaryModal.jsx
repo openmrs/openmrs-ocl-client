@@ -298,7 +298,6 @@ export class DictionaryModal extends React.Component {
                       value={data.preferred_source}
                     >
                       <option value="CIEL">CIEL (default source)</option>
-                      <option value="PIH">PIH</option>
                       {
                         isEditingDictionary
                         && (
