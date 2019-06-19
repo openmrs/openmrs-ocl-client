@@ -743,5 +743,30 @@ describe('Test suite for dictionary concepts components', () => {
         expect(result).toEqual(false);
       });
     });
+
+    describe('clearAllFilters', () => {
+      it('should call clearFilters and fetchConcepts', () => {
+        const newProps = {
+          ...props,
+          clearAllFilters: jest.fn(),
+        };
+        wrapper = mount(<Provider store={store}>
+          <Router>
+            <DictionaryConcepts {...newProps} />
+          </Router>
+        </Provider>);
+        const dictionaryConcepts = wrapper.find('DictionaryConcepts');
+        const instance = dictionaryConcepts.instance();
+        instance.fetchConcepts = jest.fn();
+
+        expect(instance.fetchConcepts).not.toHaveBeenCalled();
+        expect(newProps.clearAllFilters).not.toHaveBeenCalled();
+
+        instance.clearAllFilters();
+
+        expect(instance.fetchConcepts).toHaveBeenCalledTimes(1);
+        expect(newProps.clearAllFilters).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 });

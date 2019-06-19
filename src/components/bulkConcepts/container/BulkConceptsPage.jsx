@@ -12,6 +12,7 @@ import {
   addConcept,
   fetchFilteredConcepts,
   setCurrentPage,
+  clearAllBulkFilters,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
@@ -42,12 +43,14 @@ export class BulkConceptsPage extends Component {
     }).isRequired,
     datatypeList: PropTypes.array,
     classList: PropTypes.array,
+    clearAllBulkFilters: PropTypes.func,
   };
 
   static defaultProps = {
     preview: {},
     datatypeList: [],
     classList: [],
+    clearAllBulkFilters: () => {},
   };
 
   constructor(props) {
@@ -100,6 +103,12 @@ export class BulkConceptsPage extends Component {
     } else {
       this.props.addToFilterList(targetName[0], 'classes', query, currentPage);
     }
+  };
+
+  clearBulkFilters = (filterType) => {
+    const { clearAllBulkFilters: clearFilters, currentPage } = this.props;
+    const query = `q=${this.state.searchInput}`;
+    clearFilters(filterType, query, currentPage);
   };
 
   getBulkConcepts = () => {
@@ -181,6 +190,7 @@ export class BulkConceptsPage extends Component {
             handleChange={this.handleFilter}
             datatypeList={datatypeList}
             classList={classList}
+            clearAllBulkFilters={this.clearBulkFilters}
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
             <SearchBar
@@ -225,5 +235,6 @@ export default connect(
     addConcept,
     fetchFilteredConcepts,
     setCurrentPage,
+    clearAllBulkFilters,
   },
 )(BulkConceptsPage);

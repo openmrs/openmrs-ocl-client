@@ -27,6 +27,7 @@ export const CREATING_RELEASED_VERSION_FAILED = '[dictionary] creating a release
 
 export const FILTER_BY_SOURCES = '[concepts] filter concepts by sources';
 export const FILTER_BY_CLASS = '[concepts] filter concepts by class';
+export const CLEAR_FILTERS = '[concepts] clear filters';
 export const POPULATE_SIDEBAR = '[concepts] populate sidebar';
 export const CREATE_NEW_NAMES = '[concepts] create_new_name';
 export const REMOVE_ONE_NAME = '[concepts] remove_one_name';
@@ -62,6 +63,7 @@ export const CLEAR_SOURCE_CONCEPTS = '[concepts] clear source_concept_sources';
 export const FETCH_BULK_CONCEPTS = '[concept] fetch_bulk_concepts';
 export const ADD_EXISTING_BULK_CONCEPTS = '[concept] add_existing_bulk_concepts';
 export const ADD_TO_DATATYPE_LIST = '[concept] add_to_datatype_list';
+export const CLEAR_BULK_FILTERS = '[bulk concept] clear bulk filters';
 export const ADD_TO_CLASS_LIST = '[concept] add_to_class_list';
 export const FETCH_FILTERED_CONCEPTS = '[concept] fetch_filtered_concepts';
 export const PREVIEW_CONCEPT = '[concept] preview_concept';

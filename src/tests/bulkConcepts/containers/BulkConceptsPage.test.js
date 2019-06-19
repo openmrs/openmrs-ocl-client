@@ -316,4 +316,24 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(mapStateToProps(initialState).preview).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
   });
+
+  describe('clearBulkFilters', () => {
+    it('should call clearAllBulkFilters', () => {
+      const newProps = {
+        ...props,
+        clearAllBulkFilters: jest.fn(),
+      };
+      const wrapper = mount(<Provider store={store}>
+        <Router>
+          <BulkConceptsPage {...newProps} />
+        </Router>
+      </Provider>);
+
+      const instance = wrapper.find('BulkConceptsPage').instance();
+
+      expect(newProps.clearAllBulkFilters).not.toHaveBeenCalled();
+      instance.clearBulkFilters();
+      expect(newProps.clearAllBulkFilters).toHaveBeenCalled();
+    });
+  });
 });

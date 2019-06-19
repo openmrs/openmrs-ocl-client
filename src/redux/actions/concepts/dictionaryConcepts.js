@@ -43,7 +43,7 @@ import {
   ADD_SELECTED_SETS,
   PRE_POPULATE_SETS,
   UNPOPULATE_PRE_POPULATED_SETS,
-  UNPOPULATE_SET,
+  UNPOPULATE_SET, CLEAR_FILTERS,
 } from '../types';
 import {
   isFetching,
@@ -168,6 +168,10 @@ export const filterBySource = keyword => (dispatch) => {
 
 export const filterByClass = keyword => (dispatch) => {
   dispatch({ type: FILTER_BY_CLASS, payload: keyword });
+};
+
+export const clearAllFilters = filterType => (dispatch) => {
+  dispatch({ type: CLEAR_FILTERS, payload: filterType });
 };
 
 export const queryAnswers = async (source, query, mapType = MAP_TYPE.questionAndAnswer) => {
