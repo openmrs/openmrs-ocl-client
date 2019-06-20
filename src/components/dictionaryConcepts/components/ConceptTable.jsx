@@ -26,6 +26,8 @@ const ConceptTable = ({
   handleDeleteMapping,
   retireConcept,
   isOwner,
+  page,
+  onPageChange,
 }) => (
   <div className="row col-12 custom-concept-list">
     <RemoveConcept
@@ -45,6 +47,8 @@ const ConceptTable = ({
       defaultPageSize={conceptLimit}
       noDataText="No concepts found!"
       minRows={2}
+      page={page}
+      onPageChange={onPageChange}
       columns={[
         {
           Header: 'Name',
@@ -106,6 +110,8 @@ ConceptTable.propTypes = {
   showDeleteMappingModal: PropTypes.func.isRequired,
   retireConcept: PropTypes.func,
   isOwner: PropTypes.bool,
+  page: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
 };
 ConceptTable.defaultProps = {
   openDeleteModal: false,

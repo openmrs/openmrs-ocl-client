@@ -71,6 +71,66 @@ describe('Test suite for dictionary concepts components', () => {
     jest.runAllTimers();
 
     expect(wrapper).toMatchSnapshot();
+    wrapper.unmount();
+  });
+
+
+  it('should update the current page in the component state', () => {
+    const props = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      loading: false,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
+      ...retireMockProps,
+    };
+    const newProps = {
+      ...props,
+      concepts: [{
+        id: '1', concept_class: 'MedSet', version_url: '/url', url: 'url', display_name: '1',
+      }, {
+        id: '3', concept_class: 'MedSet', version_url: '/url', url: 'url', display_name: '1',
+      }],
+    };
+    const wrapper = mount(<Provider store={store}>
+      <Router>
+        <DictionaryConcepts {...props} />
+      </Router>
+    </Provider>);
+    const instance = wrapper.find('DictionaryConcepts').instance();
+    expect(instance.state.page).toEqual(0);
+    instance.setPage(1);
+    expect(instance.state.page).toEqual(1);
+    wrapper.setProps({
+      children: <Router>
+        <DictionaryConcepts {...newProps} />
+      </Router>,
+    });
+    instance.forceUpdate();
+    expect(instance.state.page).toEqual(0);
+    wrapper.unmount();
   });
 
   it('should contain strikethrough text for retired concepts', () => {
@@ -85,6 +145,8 @@ describe('Test suite for dictionary concepts components', () => {
       closeDeleteModal: jest.fn(),
       handleDeleteMapping: jest.fn(),
       showDeleteMappingModal: jest.fn(),
+      page: 0,
+      onPageChange: jest.fn(),
     };
     const wrapper = mount(<ConceptTable {...props} />);
     expect(wrapper).toMatchSnapshot();
@@ -105,6 +167,8 @@ describe('Test suite for dictionary concepts components', () => {
         closeDeleteModal: jest.fn(),
         handleDeleteMapping: jest.fn(),
         showDeleteMappingModal: jest.fn(),
+        page: 0,
+        onPageChange: jest.fn(),
       };
 
       localStorage.setItem('username', props.concepts[0].owner);
@@ -124,11 +188,34 @@ describe('Test suite for dictionary concepts components', () => {
         closeDeleteModal: jest.fn(),
         handleDeleteMapping: jest.fn(),
         showDeleteMappingModal: jest.fn(),
+        page: 0,
+        onPageChange: jest.fn(),
       };
 
       localStorage.setItem('username', 'notTheOwner');
       const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
       expect(wrapper.find('#retire')).toHaveLength(0);
+    });
+
+    it('should handle change in pages when the \'next \' button is clicked', () => {
+      const props = {
+        concepts: [{ ...concepts, id: '1' }, { ...concepts, id: '2' }, { ...concepts, id: '3' }],
+        loading: false,
+        org: {},
+        locationPath: {},
+        showDeleteModal: jest.fn(),
+        handleDelete: jest.fn(),
+        conceptLimit: 1,
+        closeDeleteModal: jest.fn(),
+        handleDeleteMapping: jest.fn(),
+        showDeleteMappingModal: jest.fn(),
+        page: 0,
+        onPageChange: jest.fn(),
+      };
+
+      const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
+      wrapper.find('button').at(2).simulate('click');
+      expect(props.onPageChange).toHaveBeenCalled();
     });
   });
 
