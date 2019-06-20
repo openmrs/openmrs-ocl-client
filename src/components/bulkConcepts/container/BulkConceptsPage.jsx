@@ -56,7 +56,7 @@ export class BulkConceptsPage extends Component {
       datatypeInput: '',
       classInput: '',
       searchInput: '',
-      conceptLimit: 10,
+      conceptLimit: 20,
       searchingOn: false,
       modalId: '',
     };
@@ -104,7 +104,8 @@ export class BulkConceptsPage extends Component {
 
   getBulkConcepts = () => {
     const { currentPage, fetchFilteredConcepts: bulkConceptsFetched } = this.props;
-    bulkConceptsFetched(undefined, undefined, currentPage);
+    const { conceptLimit } = this.state;
+    bulkConceptsFetched(undefined, undefined, currentPage, conceptLimit);
   }
 
   handleChange = (event) => {
@@ -122,7 +123,8 @@ export class BulkConceptsPage extends Component {
     if ((searchInput && searchInput.trim().length > 2) || (searchInput.trim().length === 0)) {
       const query = `q=${searchInput.trim()}*`; // The asterisk permits partial search
       const { currentPage, fetchFilteredConcepts: fetchedFilteredConcepts } = this.props;
-      fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage);
+      const { conceptLimit } = this.state;
+      fetchedFilteredConcepts(INTERNAL_MAPPING_DEFAULT_SOURCE, query, currentPage, conceptLimit);
     } else notify.show(MIN_CHARACTERS_WARNING, 'error', MILLISECONDS_TO_SHOW_WARNING);
   }
 
