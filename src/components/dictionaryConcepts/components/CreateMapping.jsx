@@ -129,12 +129,12 @@ class CreateMapping extends Component {
                 <input
                   autoComplete="off"
                   tabIndex={index}
-                  value={to_concept_name || ''}
+                  value={to_concept_code || ''}
                   className="form-control"
-                  placeholder="Concept name (optional)"
+                  placeholder="To concept code"
                   type="text"
-                  id={`to-concept-name-${url}`}
-                  name="to_concept_name"
+                  name="to_concept_code"
+                  id="to_concept_code"
                   onChange={(event) => { updateEventListener(event, url); }}
                 />
               </div>
@@ -142,12 +142,12 @@ class CreateMapping extends Component {
                 <input
                   autoComplete="off"
                   tabIndex={index}
-                  value={to_concept_code || ''}
+                  value={to_concept_name || ''}
                   className="form-control"
-                  placeholder="To concept code"
+                  placeholder="Concept name (optional)"
                   type="text"
-                  name="to_concept_code"
-                  id="to_concept_code"
+                  id={`to-concept-name-${url}`}
+                  name="to_concept_name"
                   onChange={(event) => { updateEventListener(event, url); }}
                 />
               </div>
