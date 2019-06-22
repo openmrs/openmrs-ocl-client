@@ -28,7 +28,7 @@ const ConceptTable = ({
         pageSize={concepts.length <= conceptLimit ? concepts.length : conceptLimit}
         noDataText="No concepts found!"
         minRows={2}
-        limitCount={10}
+        limitCount={conceptLimit}
         columns={[
           {
             Header: 'Name',

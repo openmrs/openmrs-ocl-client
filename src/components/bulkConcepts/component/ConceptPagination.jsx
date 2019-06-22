@@ -21,8 +21,8 @@ class ConceptPagination extends Component {
   }
 
   getLastPage = () => {
-    const { data, currentPage } = this.props;
-    const lastPage = data.length === 10 ? (currentPage + 1) : currentPage;
+    const { data, currentPage, limitCount } = this.props;
+    const lastPage = data.length === limitCount ? (currentPage + 1) : currentPage;
     return lastPage;
   }
 

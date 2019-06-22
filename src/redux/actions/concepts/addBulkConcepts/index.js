@@ -15,7 +15,7 @@ import {
 import api from '../../../api';
 import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
 
-export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1) => async (
+export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1, conceptLimit = 10) => async (
   dispatch,
   getState,
 ) => {
@@ -23,7 +23,7 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
   const {
     bulkConcepts: { datatypeList, classList },
   } = getState();
-  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=10&page=${currentPage}&verbose=true&includeMappings=1`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
 
   if (datatypeList.length > 0) {
     url = `${url}&datatype=${datatypeList.join(',')}`;
