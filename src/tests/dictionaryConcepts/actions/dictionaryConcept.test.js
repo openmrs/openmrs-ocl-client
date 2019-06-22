@@ -104,6 +104,7 @@ import {
 import api from '../../../redux/api';
 import { externalSource, internalSource } from '../../__mocks__/sources';
 import mappings from '../../__mocks__/mappings';
+import { PROCEDURE_CLASS } from '../../../constants';
 
 jest.mock('uuid/v4', () => jest.fn(() => 1));
 jest.mock('react-notify-toast');
@@ -260,7 +261,7 @@ describe('Test suite for dictionary concept actions', () => {
     ];
 
     mockConceptStore.concepts.filteredBySource = [];
-    mockConceptStore.concepts.filteredByClass = ['procedure'];
+    mockConceptStore.concepts.filteredByClass = [PROCEDURE_CLASS];
     const store = mockStore(mockConceptStore);
 
     return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
@@ -286,8 +287,8 @@ describe('Test suite for dictionary concept actions', () => {
     ];
 
     mockConceptStore.concepts.filteredBySource = ['CIEL'];
-    mockConceptStore.concepts.filteredByClass = ['procedure'];
-    const store = mockStore({ ...mockConceptStore, filteredByClass: ['procedure'] });
+    mockConceptStore.concepts.filteredByClass = [PROCEDURE_CLASS];
+    const store = mockStore({ ...mockConceptStore, filteredByClass: [PROCEDURE_CLASS] });
 
     return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);

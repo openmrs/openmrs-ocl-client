@@ -8,6 +8,7 @@ import {
 } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
 import GeneralModel from './common/GeneralModal';
+import { DIAGNOSIS_CLASS, PROCEDURE_CLASS } from '../../../../constants';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -188,14 +189,14 @@ export class DictionaryOverview extends Component {
       concept => concept.owner !== 'CIEL',
     ).length.toString();
     const diagnosisConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class === 'diagnosis',
+      concept => concept.concept_class === DIAGNOSIS_CLASS,
     ).length.toString();
     const procedureConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class === 'procedure',
+      concept => concept.concept_class === PROCEDURE_CLASS,
     ).length.toString();
     const otherConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class !== 'diagnosis'
-      && concept.concept_class !== 'procedure',
+      concept => concept.concept_class !== DIAGNOSIS_CLASS
+      && concept.concept_class !== PROCEDURE_CLASS,
     ).length.toString();
     const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
     const headVersionIdObj = Object.assign({}, headVersion);
