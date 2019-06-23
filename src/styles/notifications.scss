@@ -1,0 +1,33 @@
+.notifications {
+    .notification-container {
+        float: right;
+        position: fixed;
+        margin: 5px;
+        right: 0;
+        z-index: 20;
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .notification {
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.176) 0 3px 8px;
+        display: flex;
+        margin-bottom: 8px;
+        width: 360px;
+        transform: translate3d(0px, 0px, 0px);
+        flex-grow: 1;
+        font-size: 14px;
+        line-height: 1.4;
+        min-height: 56px;
+        padding: 8px 12px;
+        justify-content: space-between;
+        white-space: pre;
+        text-align: left;
+    }
+
+    .notification-info {
+      background-color: $light;
+      color: rgb(80, 95, 121);
+    }
+}

@@ -18,6 +18,7 @@ import LoginDetails from './components/login/container/LoginDetails';
 import AddBulkConcepts from './components/bulkConcepts/addBulkConcepts';
 import BulkConceptPage from './components/bulkConcepts/container/BulkConceptsPage';
 import { Signup } from './components/Signup/components/container';
+import Notifications from './components/Notifications';
 
 const App = () => (
   <Provider store={store}>
@@ -25,6 +26,7 @@ const App = () => (
       <Fragment>
         <div className="App">
           <Navbar />
+          <Notifications />
           <Switch>
             <Route exact path="/" component={Authenticate(Login)} />
             <Route exact path="/home" component={Authenticate(UserDashboard)} />
