@@ -25,6 +25,7 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   REMOVE_CONCEPT,
+  CLEAR_FILTERS,
 } from '../../../redux/actions/types';
 
 describe('Test suite for single dictionary concepts', () => {
@@ -132,6 +133,56 @@ describe('Test suite for single dictionary concepts', () => {
       ...state,
       classList: ['dev-col'],
       filteredByClass: ['dev-col'],
+    });
+  });
+
+  describe('CLEAR_FILTERS', () => {
+    it('should handle CLEAR_FILTERS for classes', () => {
+      state = {
+        classList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_FILTERS,
+        payload: 'classes',
+      };
+
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        classList: [],
+        filteredByClass: [],
+      });
+    });
+
+    it('should handle CLEAR_FILTERS for sources', () => {
+      state = {
+        sourceList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_FILTERS,
+        payload: 'sources',
+      };
+
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        sourceList: [],
+        filteredBySource: [],
+      });
+    });
+
+    it('should return the same state if the filterType is unknown', () => {
+      state = {
+        sourceList: [1, 2, 3],
+        classList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_FILTERS,
+        payload: 'unknownType',
+      };
+
+      expect(reducer(state, action)).toEqual(state);
     });
   });
 

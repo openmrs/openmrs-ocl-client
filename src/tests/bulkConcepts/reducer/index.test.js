@@ -9,6 +9,7 @@ import {
   SET_CURRENT_PAGE,
   SET_NEXT_PAGE,
   SET_PERVIOUS_PAGE,
+  CLEAR_BULK_FILTERS,
 } from '../../../redux/actions/types';
 import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
 import { classes as classList, DATA_TYPES as dataTypesList } from '../../../components/dictionaryConcepts/components/helperFunction';
@@ -117,6 +118,53 @@ describe('Test suite for bulkConcepts reducer', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       classList: ['Diagnosis'],
+    });
+  });
+  describe('CLEAR_BULK_FILTERS', () => {
+    it('should handle CLEAR_BULK_FILTERS for classes', () => {
+      state = {
+        classList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_BULK_FILTERS,
+        payload: 'classes',
+      };
+
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        classList: [],
+      });
+    });
+
+    it('should handle CLEAR_BULK_FILTERS for datatype', () => {
+      state = {
+        datatypeList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_BULK_FILTERS,
+        payload: 'datatype',
+      };
+
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        datatypeList: [],
+      });
+    });
+
+    it('should return the same state if the filterType is unknown', () => {
+      state = {
+        sourceList: [1, 2, 3],
+        datatypeList: [1, 2, 3],
+      };
+
+      action = {
+        type: CLEAR_BULK_FILTERS,
+        payload: 'unknownType',
+      };
+
+      expect(reducer(state, action)).toEqual(state);
     });
   });
   it('should handle FETCH_FILTERED_CONCEPTS', () => {

@@ -37,6 +37,7 @@ import {
   UNPOPULATE_PRE_POPULATED_SETS,
   REPLACE_CONCEPT,
   UNPOPULATE_SET,
+  CLEAR_FILTERS,
 } from '../actions/types';
 import {
   filterSources,
@@ -48,6 +49,7 @@ import {
   updatePopulatedAnswers,
   addDescription,
 } from './util';
+import { FILTER_TYPES } from '../../constants';
 
 const initialState = {
   concepts: [],
@@ -145,6 +147,12 @@ export default (state = initialState, action) => {
         classList: normalizeList(action.payload, [action.payload, ...state.classList]),
         filteredByClass: filterList(action.payload, state.classList),
       };
+    case CLEAR_FILTERS:
+      switch (action.payload) {
+        case FILTER_TYPES.SOURCES: return { ...state, filteredBySource: [], sourceList: [] };
+        case FILTER_TYPES.CLASSES: return { ...state, filteredByClass: [], classList: [] };
+        default: return state;
+      }
     case FETCH_DICTIONARY_CONCEPT:
       return {
         ...state,

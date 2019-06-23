@@ -41,6 +41,7 @@ import {
   PRE_POPULATE_SETS,
   UNPOPULATE_PRE_POPULATED_SETS,
   UNPOPULATE_SET,
+  CLEAR_FILTERS,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -80,6 +81,7 @@ import {
   unpopulateSet,
   buildNewMappingData,
   fetchConceptsFromASource, buildUpdateMappingData,
+  clearAllFilters,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -931,6 +933,19 @@ describe('test for search filter by source', () => {
 
   store.dispatch(filterBySource('MapType', 'users', 'emasys', 'dev-col', 'source', ''));
   expect(store.getActions()).toEqual(expectedActions);
+});
+
+describe('clearAllFilters', () => {
+  it('should dispatch CLEAR_FILTERS with the right type', () => {
+    const store = mockStore(mockConceptStore);
+    const filterType = 'sources';
+    const expectedActions = [
+      { type: CLEAR_FILTERS, payload: filterType },
+    ];
+
+    store.dispatch(clearAllFilters(filterType));
+    expect(store.getActions()).toEqual(expectedActions);
+  });
 });
 
 describe('test suite for synchronous action creators', () => {

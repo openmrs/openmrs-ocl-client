@@ -1,14 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'reactstrap';
 import SideNavItem from './SideNavItem';
+import { FILTER_TYPES } from '../../../constants';
 
 const Sidenav = ({
-  filteredClass, filteredSources, handleChange, toggleCheck,
+  filteredClass, filteredSources, handleChange, toggleCheck, clearAllFilters,
 }) => (
   <div className="col-12 col-md-2 custom-full-width">
     <div className="sidenav-container">
       <div className="row">
-        <h6 className="sidenav-header">Source</h6>
+        <h5 className="sidenav-header">
+          Source
+          {filteredSources.length && (
+            <Button id="clear-source-filters" onClick={() => clearAllFilters(FILTER_TYPES.SOURCES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
+          )}
+        </h5>
       </div>
       {filteredSources.map(source => (
         <SideNavItem
@@ -20,7 +27,12 @@ const Sidenav = ({
         />
       ))}
       <div className="row mt-3">
-        <h6 className="sidenav-header">Class</h6>
+        <h5 className="sidenav-header">
+          Class
+          {filteredClass.length && (
+            <Button id="clear-class-filters" onClick={() => clearAllFilters(FILTER_TYPES.CLASSES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
+          )}
+        </h5>
       </div>
       {filteredClass.map(classItem => (
         <SideNavItem
@@ -41,10 +53,12 @@ Sidenav.propTypes = {
   toggleCheck: PropTypes.array.isRequired,
   filteredClass: PropTypes.array.isRequired,
   handleChange: PropTypes.func.isRequired,
+  clearAllFilters: PropTypes.func,
 };
 
 Sidenav.defaultProps = {
-  toggleCheck: []
+  toggleCheck: [],
+  clearAllFilters: () => {},
 }
 
 export default Sidenav;

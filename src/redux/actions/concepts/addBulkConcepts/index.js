@@ -11,9 +11,11 @@ import {
   SET_PERVIOUS_PAGE,
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
+  CLEAR_BULK_FILTERS,
 } from '../../types';
 import api from '../../../api';
 import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
+import { FILTER_TYPES } from '../../../../constants';
 
 export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1, conceptLimit = 10) => async (
   dispatch,
@@ -44,12 +46,17 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
 };
 
 export const addToFilterList = (item, type, query, currentPage) => (dispatch) => {
-  if (type === 'datatype') {
+  if (type === FILTER_TYPES.DATATYPE) {
     dispatch(isSuccess(item, ADD_TO_DATATYPE_LIST));
     return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
   }
   dispatch(isSuccess(item, ADD_TO_CLASS_LIST));
   return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
+};
+
+export const clearAllBulkFilters = (filterType, query, currentPage) => (dispatch) => {
+  dispatch({ type: CLEAR_BULK_FILTERS, payload: filterType });
+  dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
 };
 
 export const previewConcept = id => (dispatch, getState) => {

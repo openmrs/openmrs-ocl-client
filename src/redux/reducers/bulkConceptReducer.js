@@ -7,9 +7,11 @@ import {
   SET_PERVIOUS_PAGE,
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
+  CLEAR_BULK_FILTERS,
 } from '../actions/types';
 import { normalizeList } from './util';
 import { classes as classList, DATA_TYPES as dataTypesList } from '../../components/dictionaryConcepts/components/helperFunction';
+import { FILTER_TYPES } from '../../constants';
 
 const userInitialState = {
   bulkConcepts: [],
@@ -65,6 +67,12 @@ const bulkConcepts = (state = userInitialState, action) => {
         ...state,
         classList: normalizeList(action.payload, [action.payload, ...state.classList]),
       };
+    case CLEAR_BULK_FILTERS:
+      switch (action.payload) {
+        case FILTER_TYPES.DATATYPE: return { ...state, datatypeList: [] };
+        case FILTER_TYPES.CLASSES: return { ...state, classList: [] };
+        default: return state;
+      }
     default:
       return state;
   }

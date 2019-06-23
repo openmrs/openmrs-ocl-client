@@ -1,17 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { includes } from 'lodash';
+import { Button } from 'reactstrap';
 import SideNavItems from './SideNavItems';
+import { FILTER_TYPES } from '../../../constants';
 
 const Sidenav = (props) => {
   const {
-    classes, datatypes, datatypeInput, classInput, handleChange, datatypeList, classList,
+    classes,
+    datatypes,
+    datatypeInput,
+    classInput,
+    handleChange,
+    datatypeList,
+    classList,
+    clearAllBulkFilters,
   } = props;
   return (
     <div className="col-12 col-md-3 custom-full-width">
       <div className="sidenav-container">
         <div className="row">
-          <h6 className="sidenav-header">Datatypes</h6>
+          <h5 className="sidenav-header">
+            Datatypes
+            {datatypes.length && (
+              <Button id="clear-datatype-filters" onClick={() => clearAllBulkFilters(FILTER_TYPES.DATATYPE)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
+            )}
+          </h5>
         </div>
         {datatypes.map(datatype => (
           <SideNavItems
@@ -24,7 +38,12 @@ const Sidenav = (props) => {
           />
         ))}
         <div className="row mt-3">
-          <h6 className="sidenav-header">Classes</h6>
+          <h5 className="sidenav-header">
+            Classes
+            {classes.length && (
+              <Button id="clear-class-filters" onClick={() => clearAllBulkFilters(FILTER_TYPES.CLASSES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
+            )}
+          </h5>
         </div>
         {classes.map(classItem => (
           <SideNavItems
@@ -49,6 +68,7 @@ Sidenav.propTypes = {
   handleChange: PropTypes.func.isRequired,
   datatypeList: PropTypes.array,
   classList: PropTypes.array,
+  clearAllBulkFilters: PropTypes.func,
 };
 
 Sidenav.defaultProps = {
@@ -56,6 +76,7 @@ Sidenav.defaultProps = {
   classInput: '',
   datatypeList: [],
   classList: [],
+  clearAllBulkFilters: () => {},
 };
 
 export default Sidenav;

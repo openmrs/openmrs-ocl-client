@@ -15,6 +15,7 @@ import {
   filterByClass,
   paginateConcepts,
   fetchExistingConcept,
+  clearAllFilters,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -55,6 +56,7 @@ export class DictionaryConcepts extends Component {
     originalConcept: PropTypes.shape({}).isRequired,
     addReferenceToCollection: PropTypes.func.isRequired,
     deleteReferenceFromCollection: PropTypes.func.isRequired,
+    clearAllFilters: PropTypes.func,
   };
 
   constructor(props) {
@@ -94,12 +96,16 @@ export class DictionaryConcepts extends Component {
     });
   }
 
-  fetchConcepts(query = '', limit = 0) {
+  fetchConcepts(limit = 0) {
     const {
       match: {
         params: { collectionName, type, typeName },
       },
     } = this.props;
+
+    const { searchInput } = this.state;
+    const query = `${searchInput.trim()}*`;
+
     this.props.fetchDictionaryConcepts(type, typeName, collectionName, query, limit);
   }
 
@@ -132,12 +138,17 @@ export class DictionaryConcepts extends Component {
       );
     }
 
-    const query = `${searchInput.trim()}*`;
-    this.fetchConcepts(query);
+    this.fetchConcepts();
 
     this.setState({
       [inputName]: eventAction,
     });
+  }
+
+  clearAllFilters(filterType) {
+    const { clearAllFilters: clearFilters } = this.props;
+    clearFilters(filterType);
+    this.fetchConcepts();
   }
 
   checkMembershipStatus(username) {
@@ -210,9 +221,7 @@ export class DictionaryConcepts extends Component {
 
   handleSearchByName = (event) => {
     event.preventDefault();
-    const { searchInput } = this.state;
-    const query = `${searchInput.trim()}*`;
-    this.fetchConcepts(query);
+    this.fetchConcepts();
   };
 
   handleRetireConcept = async (id, retired) => {
@@ -295,6 +304,7 @@ export class DictionaryConcepts extends Component {
             filteredSources={filteredSources}
             handleChange={this.handleSearch}
             toggleCheck={filters}
+            clearAllFilters={this.clearAllFilters}
           />
           <div className="col-12 col-md-10 custom-full-width">
             <SearchBar
@@ -328,6 +338,7 @@ export class DictionaryConcepts extends Component {
 DictionaryConcepts.defaultProps = {
   filteredByClass: [],
   filteredBySource: [],
+  clearAllFilters: () => {},
 };
 
 export const mapStateToProps = state => ({
@@ -358,5 +369,6 @@ export default connect(
     removeConceptMappingAction: removeConceptMapping,
     retireCurrentConcept: retireConcept,
     getOriginalConcept: fetchExistingConcept,
+    clearAllFilters,
   },
 )(DictionaryConcepts);

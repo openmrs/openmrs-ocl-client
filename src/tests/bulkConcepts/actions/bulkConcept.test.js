@@ -14,6 +14,7 @@ import {
   SET_CURRENT_PAGE,
   SET_NEXT_PAGE,
   SET_PERVIOUS_PAGE,
+  CLEAR_BULK_FILTERS,
 } from '../../../redux/actions/types';
 import {
   addToFilterList,
@@ -23,6 +24,7 @@ import {
   setCurrentPage,
   setNextPage,
   setPreviousPage, recursivelyFetchConceptMappings,
+  clearAllBulkFilters,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import concepts, { mockConceptStore } from '../../__mocks__/concepts';
 import mappings from '../../__mocks__/mappings';
@@ -370,6 +372,36 @@ describe('test suite for addBulkConcepts synchronous action creators', () => {
     expect(store.getActions()[0]).toEqual(expectedActions[0]);
     expect(store.getActions()[1]).toEqual(expectedActions[1]);
   });
+
+  describe('clearAllBulkFilters', () => {
+    beforeEach(() => {
+      moxios.install(instance);
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: {},
+        });
+      });
+    });
+
+    afterEach(() => {
+      moxios.uninstall(instance);
+    });
+
+    it('should dispatch CLEAR_BULK_FILTERS with the right filterType', async () => {
+      const filterType = 'classes';
+      const store = mockStore(mockConceptStore);
+      const expectedActions = [
+        { type: CLEAR_BULK_FILTERS, payload: filterType },
+        { payload: true, type: '[ui] toggle spinner' },
+      ];
+      await store.dispatch(clearAllBulkFilters(filterType));
+      expect(store.getActions()[0]).toEqual(expectedActions[0]);
+      expect(store.getActions()[1]).toEqual(expectedActions[1]);
+    });
+  });
+
   it('should handle PREVIEW_CONCEPT', async () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: PREVIEW_CONCEPT, payload: { id: 123 } }];
