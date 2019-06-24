@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import autoBind from 'react-autobind';
 import PropTypes from 'prop-types';
-import locale from '../../dashboard/components/dictionary/common/Languages';
+import locale, { findLocale } from '../../dashboard/components/dictionary/common/Languages';
 
 class DescriptionRow extends Component {
   static propTypes = {
@@ -32,9 +32,7 @@ class DescriptionRow extends Component {
 
   constructor(props) {
     super(props);
-    const defaultLocale = locale.find(
-      currentLocale => currentLocale.value === props.pathName.language,
-    );
+    const defaultLocale = findLocale(props.pathName.language);
     const { rowId } = this.props;
     this.state = {
       id: rowId,
@@ -59,13 +57,11 @@ class DescriptionRow extends Component {
 
   updateState() {
     const { newRow } = this.props;
-    const defaultLocale = locale.find(
-      currentLocale => currentLocale.value === newRow.locale,
-    );
+    const defaultLocale = findLocale(newRow.locale, 'en');
     this.setState({
       ...this.state,
       uuid: newRow.uuid,
-      locale: newRow.locale || 'en',
+      locale: defaultLocale.value,
       locale_full: defaultLocale,
       description: newRow.description,
       external_id: newRow.external_id || uuid(),
