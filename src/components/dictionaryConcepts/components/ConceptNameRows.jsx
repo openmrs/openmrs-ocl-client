@@ -74,7 +74,7 @@ class ConceptNameRows extends Component {
       name: newRow.name || '',
       locale: newRow.locale || defaultLocale.value,
       locale_full: defaultLocale,
-      name_type: newRow.name_type || 'Fully Specified',
+      name_type: newRow.name_type,
       locale_preferred: !!newRow.locale_preferred,
       external_id: newRow.external_id || uuid(),
     });
@@ -89,6 +89,7 @@ class ConceptNameRows extends Component {
     } = event;
 
     if (name === 'locale_preferred') value = value === 'Yes';
+    else if (name === 'name_type') value = value === 'null' ? null : value;
 
     this.setState(() => ({ [name]: value }));
     this.sendToTopComponent();
@@ -136,15 +137,16 @@ class ConceptNameRows extends Component {
           <select
             id="type"
             name="name_type"
-            value={this.state.name_type}
+            value={this.state.name_type === null ? 'null' : this.state.name_type}
             className="form-control"
             onChange={this.handleChange}
             required
           >
             <option />
-            <option>Fully Specified</option>
-            <option>Synonym</option>
-            <option>Search Term</option>
+            <option value="Fully Specified">Fully Specified</option>
+            <option value="null">Synonym</option>
+            <option value="Short">Short</option>
+            <option value="Index Term">Index Term</option>
           </select>
         </td>
         <th scope="row" className="concept-language">

@@ -135,7 +135,7 @@ describe('Test suite for ConceptNameRows ', () => {
     expect(instance.state.locale_full).toEqual(selectedOptions);
   });
 
-  it('should update state and call sendToTopComponent when the name type is updated', () => {
+  it('should update state and call sendToTopComponent when the locale_preferred is updated', () => {
     const newProps = {
       ...props,
       newRow: {
@@ -159,6 +159,34 @@ describe('Test suite for ConceptNameRows ', () => {
 
     instance.handleChange({ target: { name: 'locale_preferred', value: 'No' } });
     expect(instance.state.locale_preferred).toEqual(false);
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should update the name_type in state with null when a synonym is selected and the selected value otherwise', () => {
+    const newProps = {
+      ...props,
+      newRow: {
+        id: '5',
+        name: 'testing',
+        locale_full: { value: 'en', label: 'English [en]' },
+        name_type: 'test',
+      },
+      locale: ['fr', 'sw'],
+      existingConcept: {
+        id: 9,
+      },
+    };
+    wrapper = mount(<table><tbody><ConceptNameRows {...newProps} /></tbody></table>);
+    const instance = wrapper.find('ConceptNameRows').instance();
+    const spy = jest.spyOn(instance, 'sendToTopComponent');
+
+    expect(spy).not.toHaveBeenCalled();
+    instance.handleChange({ target: { name: 'name_type', value: 'null' } });
+    expect(instance.state.name_type).toEqual(null);
+
+    instance.handleChange({ target: { name: 'name_type', value: 'Fully Specified' } });
+    expect(instance.state.name_type).toEqual('Fully Specified');
 
     expect(spy).toHaveBeenCalled();
   });
