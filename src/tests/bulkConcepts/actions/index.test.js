@@ -17,6 +17,7 @@ fetchCielConcepts,
 { addExistingBulkConcepts, addDictionaryReference, fetchConceptSources } from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
 import api from '../../../redux/api';
+import { DELETE_NOTIFICATION, UPSERT_NOTIFICATION } from '../../../redux/actions/notifications';
 
 const mockStore = configureStore([thunk]);
 jest.mock('react-notify-toast');
@@ -79,23 +80,43 @@ describe('Test suite for source concepts actions', () => {
         response: [{ data: { data: [{ added: true }] } }],
       });
     });
+    const conceptIdList = [123];
+    const notificationId = `adding-${conceptIdList}`;
 
     const returnedAction = [
       {
-        type: IS_FETCHING,
-        payload: true,
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${conceptIdList}\nFinding dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${conceptIdList}\nFound 0 dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${conceptIdList}\nFinalizing...`,
+        },
       },
       {
         type: ADD_EXISTING_BULK_CONCEPTS,
         payload: [{ data: { data: [{ added: true }] } }],
       },
       {
-        type: IS_FETCHING,
-        payload: false,
+        type: DELETE_NOTIFICATION,
+        payload: {
+          id: notificationId,
+        },
       },
     ];
     const url = 'uuu';
-    const conceptIdList = [123];
     const conceptData = { url, data: { data: { expressions: ['/orgs/WHO/sources/ICD-10/concepts/A15.1/'] } }, conceptIdList };
 
     const store = mockStore({});

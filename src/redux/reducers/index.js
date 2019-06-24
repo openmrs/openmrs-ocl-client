@@ -7,6 +7,7 @@ import generalSearch from './generalSearchReducer';
 import user from './user';
 import sourceConcepts from './bulkConcepts/index';
 import bulkConcepts from './bulkConceptReducer';
+import notificationsReducer from './notificationsReducer';
 
 // combined reducer to give a global state
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   user,
   sourceConcepts,
   bulkConcepts,
+  notifications: notificationsReducer,
 });
 
 export default rootReducer;

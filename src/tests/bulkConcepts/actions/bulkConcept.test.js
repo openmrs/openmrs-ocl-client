@@ -29,14 +29,14 @@ import {
 import concepts, { mockConceptStore } from '../../__mocks__/concepts';
 import mappings from '../../__mocks__/mappings';
 import api from '../../../redux/api';
+import { DELETE_NOTIFICATION, UPSERT_NOTIFICATION } from '../../../redux/actions/notifications';
 
 jest.mock('react-notify-toast');
 const mockStore = configureStore([thunk]);
 
 describe('Test suite for addBulkConcepts async actions', () => {
-
-  api.mappings.fetchFromPublicSources = jest.fn(() => ({ data: [] }));
   beforeEach(() => {
+    api.mappings.fetchFromPublicSources = jest.fn(() => ({ data: [] }));
     moxios.install(instance);
   });
 
@@ -53,31 +53,90 @@ describe('Test suite for addBulkConcepts async actions', () => {
         response: [{ concepts, ...{ added: true } }],
       });
     });
+    const notificationId = `adding-${concepts.id}`;
 
     const expectedActions = [
       {
-        type: IS_FETCHING,
-        payload: true,
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFinding dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFound 0 dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFinalizing...`,
+        },
       },
       {
         type: ADD_EXISTING_CONCEPTS,
         payload: [{ concepts, ...{ added: true } }],
       },
       {
-        type: IS_FETCHING,
-        payload: false,
+        type: DELETE_NOTIFICATION,
+        payload: {
+          id: `adding-${concepts.id}`,
+        },
       },
     ];
 
     const store = mockStore({});
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    store.dispatch(addConcept(params, { data: { expressions: ['test'] } }, 'lob dev')).then(() => {
+    const action = addConcept(
+      params,
+      { data: { expressions: [concepts.url] } },
+      concepts.display_name,
+      concepts.id,
+    );
+
+    store.dispatch(action).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
-      expect(notifyMock).toHaveBeenCalledWith('Just Added - lob dev', 'success', 3000);
+      expect(notifyMock).toHaveBeenCalledWith(`Just Added - ${concepts.display_name}`, 'success', 3000);
       done();
     });
   });
+
+  it('should let the user know how many concepts were added when more than one concept is added', (done) => {
+    api.mappings.fetchFromPublicSources = jest.fn()
+      .mockReturnValueOnce({ data: [mappings[0]] })
+      .mockReturnValueOnce({ data: [] });
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: [{ concepts, ...{ added: true } }],
+      });
+    });
+
+    const store = mockStore({});
+    const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
+    const action = addConcept(
+      params,
+      { data: { expressions: [concepts.url] } },
+      concepts.display_name,
+      concepts.id,
+    );
+
+    store.dispatch(action).then(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith(`Just Added - ${concepts.display_name} and 1 dependent concepts`, 'success', 3000);
+      done();
+    });
+  });
+
   it('should notify user when one tries to add a duplicate concept', (done) => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
@@ -88,28 +147,55 @@ describe('Test suite for addBulkConcepts async actions', () => {
         response: [{ concepts, ...{ added: false } }],
       });
     });
+    const notificationId = `adding-${concepts.id}`;
 
     const expectedActions = [
       {
-        type: IS_FETCHING,
-        payload: true,
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFinding dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFound 0 dependent concepts...`,
+        },
+      },
+      {
+        type: UPSERT_NOTIFICATION,
+        payload: {
+          id: notificationId,
+          message: `Adding ${concepts.display_name}\nFinalizing...`,
+        },
       },
       {
         type: ADD_EXISTING_CONCEPTS,
         payload: [{ concepts, ...{ added: false } }],
       },
       {
-        type: IS_FETCHING,
-        payload: false,
+        type: DELETE_NOTIFICATION,
+        payload: {
+          id: `adding-${concepts.id}`,
+        },
       },
     ];
 
     const store = mockStore({});
     const params = { type: 'user', typeName: 'emasys', collectionName: 'dev jam' };
-    store.dispatch(addConcept(params, {data: {expressions: ['test']}}, 'lob dev')).then(() => {
+    const action = addConcept(
+      params,
+      { data: { expressions: [concepts.url] } },
+      concepts.display_name,
+      concepts.id,
+    );
+
+    store.dispatch(action).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
-      expect(notifyMock).toHaveBeenCalledWith('lob dev already added', 'error', 3000);
+      expect(notifyMock).toHaveBeenCalledWith(`${concepts.display_name} already added`, 'error', 3000);
       done();
     });
   });

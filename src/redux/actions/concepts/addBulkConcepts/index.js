@@ -16,6 +16,7 @@ import {
 import api from '../../../api';
 import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
 import { FILTER_TYPES } from '../../../../constants';
+import { deleteNotification, upsertNotification } from '../../notifications';
 
 export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1, conceptLimit = 10) => async (
   dispatch,
@@ -71,9 +72,12 @@ export const recursivelyFetchConceptMappings = async (
   fromConceptCodes,
   levelsToCheck,
   fetchMappings = api.mappings.fetchFromPublicSources,
+  updateNotification = () => {},
 ) => {
+  updateNotification('Finding dependent concepts...');
   const startingConceptMappings = await fetchMappings(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
+  updateNotification(`Found ${union(...mappingsList).length} dependent concepts...`);
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsList[i].map(
       mapping => mapping.to_concept_code,
@@ -81,6 +85,7 @@ export const recursivelyFetchConceptMappings = async (
     if (!toConceptCodes.length) break;
     const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
     mappingsList.push(conceptMappings.data);
+    updateNotification(`Found ${union(...mappingsList).length} dependent concepts...`);
   }
   const toConceptUrls = union(...mappingsList).map((mapping) => {
     return mapping.to_concept_url;
@@ -90,24 +95,40 @@ export const recursivelyFetchConceptMappings = async (
 };
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
-  dispatch(isFetching(true));
+  const updateNotification = message => dispatch(upsertNotification(
+    `adding-${id}`, `Adding ${conceptName}\n${message}`,
+  ));
+
   const { type, typeName, collectionName } = params;
   const url = `${type}/${typeName}/collections/${collectionName}/references/?cascade=sourcemappings`;
   try {
-    const referencesToAdd = await recursivelyFetchConceptMappings([id], MAPPINGS_RECURSION_DEPTH);
+    const referencesToAdd = await recursivelyFetchConceptMappings(
+      [id],
+      MAPPINGS_RECURSION_DEPTH,
+      undefined,
+      updateNotification,
+    );
     data.data.expressions.push(...referencesToAdd);
+
+    updateNotification('Finalizing...');
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
     if (payload.data[0].added === true) {
-      notify.show(`Just Added - ${conceptName}`, 'success', 3000);
+      const dependentConceptCount = data.data.expressions.length - 1;
+      if (dependentConceptCount) {
+        notify.show(`Just Added - ${conceptName} and ${dependentConceptCount} dependent concepts`, 'success', 3000);
+      } else {
+        notify.show(`Just Added - ${conceptName}`, 'success', 3000);
+      }
     } else {
       notify.show(`${conceptName} already added`, 'error', 3000);
     }
   } catch (e) {
     notify.show(`Failed to add ${conceptName}. Please Retry`, 'error', 3000);
+  } finally {
+    dispatch(deleteNotification(`adding-${id}`));
   }
-  dispatch(isFetching(false));
 };
 
 export const setCurrentPage = currentPage => async (dispatch) => {

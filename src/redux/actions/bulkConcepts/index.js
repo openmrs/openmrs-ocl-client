@@ -15,6 +15,7 @@ import {
 } from '../types';
 import { recursivelyFetchConceptMappings } from '../concepts/addBulkConcepts';
 import { MAPPINGS_RECURSION_DEPTH } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { deleteNotification, upsertNotification } from '../notifications';
 
 const fetchSourceConcepts = url => async (dispatch) => {
   dispatch(clear(CLEAR_SOURCE_CONCEPTS));
@@ -31,13 +32,18 @@ const fetchSourceConcepts = url => async (dispatch) => {
 export default fetchSourceConcepts;
 
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
-  dispatch(isFetching(true));
   const { url, data, conceptIdList: fromConceptIds } = conceptData;
+  const updateNotification = message => dispatch(upsertNotification(
+    `adding-${fromConceptIds}`, `Adding ${fromConceptIds}\n${message}`,
+  ));
+
   try {
     const referencesToAdd = await recursivelyFetchConceptMappings(
-      fromConceptIds, MAPPINGS_RECURSION_DEPTH,
+      fromConceptIds, MAPPINGS_RECURSION_DEPTH, undefined, updateNotification,
     );
     data.data.expressions.push(...referencesToAdd);
+
+    updateNotification('Finalizing...');
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_BULK_CONCEPTS));
@@ -53,8 +59,9 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
     } else {
       notify.show('Failed to add concepts. Please retry', 'error', 3000);
     }
+  } finally {
+    dispatch(deleteNotification(`adding-${fromConceptIds}`));
   }
-  dispatch(isFetching(false));
 };
 
 export const isConceptValid = async ({ url }) => {
