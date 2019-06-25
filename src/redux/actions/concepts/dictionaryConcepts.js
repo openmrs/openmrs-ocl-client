@@ -122,7 +122,7 @@ export const fetchDictionaryConcepts = (
   conceptType = 'users',
   conceptOwner = 'emasys',
   conceptName = 'dev-col',
-  query = '',
+  query = '*',
   limit = 0,
   page = 1,
 ) => async (dispatch, getState) => {
@@ -150,7 +150,7 @@ export const fetchDictionaryConcepts = (
     );
     dispatch(getDictionaryConcepts(concepts, FETCH_DICTIONARY_CONCEPT));
     dispatch(paginateConcepts(concepts));
-    if (query === '' && filterByClass.length === 0 && filterBySource.length === 0) {
+    if (query === '*' && filterByClass.length === 0 && filterBySource.length === 0) {
       dispatch(populateSidenav());
     }
   } catch (error) {
