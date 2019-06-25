@@ -88,7 +88,8 @@ export const searchDictionaries = searchItem => async (dispatch) => {
   try {
     const payload = await api.dictionaries
       .searchDictionaries(searchItem);
-    dispatch(isSuccess(payload));
+    const result = filterPayload(payload);
+    dispatch(isSuccess(result));
     dispatch(isFetching(false));
   }
   catch (error) {
