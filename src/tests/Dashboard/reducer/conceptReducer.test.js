@@ -13,8 +13,10 @@ import {
   ADD_NEW_SET_ROW,
   REMOVE_SELECTED_SET,
   ADD_SELECTED_SETS,
-  PRE_POPULATE_SETS, UNPOPULATE_PRE_POPULATED_SETS,
+  PRE_POPULATE_SETS,
+  UNPOPULATE_PRE_POPULATED_SETS,
   REPLACE_CONCEPT,
+  UNPOPULATE_SET
 } from '../../../redux/actions/types';
 import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 import { replaceConcept } from '../../../redux/actions/dictionaries/dictionaryActions';
@@ -296,4 +298,41 @@ describe('Test suite for concepts reducer', () => {
       expect(state.paginatedConcepts[0]).toEqual(newConcept);
     });
   });
+
+    it('should replace an existing concepts with the updated one in the selected sets', () => {
+    const payload = {
+      frontEndUniqueKey: 'initialKey',
+      prePopulated: false,
+    };
+    const state = {
+      ...initialState,
+      selectedSets: [
+        {
+          frontEndUniqueKey: 'initialKey',
+          prePopulated: true,
+        },
+        {
+          frontEndUniqueKey: 'initialKey1',
+          prePopulated: true,
+        },
+      ],
+    };
+    const expected = [
+      {
+        frontEndUniqueKey: 'initialKey',
+        prePopulated: false,
+      },
+      {
+        frontEndUniqueKey: 'initialKey1',
+        prePopulated: true,
+      },
+    ];
+    const newState = reducer(state, {
+      type: UNPOPULATE_SET,
+      payload
+    });
+    expect(newState.selectedSets)
+      .toEqual(expected);
+  });
+
 });
