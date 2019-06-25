@@ -16,28 +16,6 @@ export class EditDictionary extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.preSelectDefaultLocale();
-  }
-
-  preSelectDefaultLocale = () => {
-    const { dictionary } = this.props;
-    for (let i = 0; i < languages.length; i += 1) {
-      if (languages[i].value === dictionary.default_locale) {
-        const option = (
-          <option value={languages[i].value} selected>
-            {languages[i].label}
-          </option>
-        );
-        this.setState({
-          ...this.state,
-          defaultLocaleOption: option,
-        });
-      }
-    }
-    return null;
-  }
-
   submit = (data) => {
     const {
       dictionary: {

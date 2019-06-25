@@ -373,7 +373,7 @@ export class DictionaryModal extends React.Component {
                       id="default_locale"
                       placeholder="English"
                       onChange={this.onChange}
-                      value={this.props.defaultLocaleOption}
+                      value={data.default_locale}
                     >
                       {languages
                       && languages.map(language => (
