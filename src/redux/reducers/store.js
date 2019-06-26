@@ -4,7 +4,7 @@ import reduxThunk from 'redux-thunk';
 import logger from 'redux-logger';
 import rootReducer from './index';
 
-export const STORE_VERSION = '2';
+export const STORE_VERSION = '3';
 export const CURRENT_STORE_VERSION_KEY = 'currentStoreVersion';
 
 const saveState = (state) => {

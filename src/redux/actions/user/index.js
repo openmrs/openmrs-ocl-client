@@ -1,4 +1,6 @@
 import { notify } from 'react-notify-toast';
+import axios from 'axios';
+import { union } from 'lodash';
 import { isSuccess, isFetching, isErrored } from '../globalActionCreators';
 import {
   GET_USER,
@@ -8,10 +10,12 @@ import {
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
   NETWORK_ERROR,
+  SET_DICTIONARIES_OWNED_BY_A_USERS_ORGS,
 } from '../types';
 import instance from '../../../config/axiosConfig';
 import { filterUserPayload } from '../../reducers/util';
 import { logout } from '../auth/authActionCreators';
+import api from '../../api';
 
 const REQUEST_DENIED_MESSAGE = 'Request failed with status code 401';
 
@@ -64,11 +68,34 @@ export const fetchsUserDictionaries = (username, props) => async (dispatch) => {
   }
 };
 
-export const fetchUserData = (username, props) => async (dispatch) => {
+export const setDictionariesOwnedByAUsersOrgs = dictionaries => ({
+  type: SET_DICTIONARIES_OWNED_BY_A_USERS_ORGS,
+  payload: dictionaries,
+});
+
+export const fetchOrganizationDictionaries = organizationUrls => async (dispatch) => {
+  try {
+    const requests = organizationUrls.map(
+      organizationUrl => api.dictionaries.list.fromAnOrganization(organizationUrl),
+    );
+    const results = await axios.all(requests);
+    const dictionaries = union(...results.map(result => result.data));
+    dispatch(setDictionariesOwnedByAUsersOrgs(dictionaries));
+  } catch (e) {
+    notify.show('Dictionaries owned by your organizations could not be loaded. Try reloading the page.', 'error', '3000');
+    dispatch(setDictionariesOwnedByAUsersOrgs([]));
+  }
+};
+
+export const fetchUserData = (username, props) => async (dispatch, getState) => {
   dispatch(isFetching(true));
   await dispatch(fetchUser(username, props));
   await dispatch(fetchsUserDictionaries(username, props));
   await dispatch(fetchUserOrganizations(username, props));
+  const userOrganisations = getState().user.userOrganization;
+  await dispatch(fetchOrganizationDictionaries(
+    userOrganisations.map(organization => organization.url),
+  ));
   dispatch(isFetching(false));
 };
 

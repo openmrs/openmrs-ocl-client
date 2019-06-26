@@ -54,6 +54,28 @@ describe('Test suite for dictionary actions', () => {
     moxios.uninstall(instance);
   });
 
+  describe('list', () => {
+    describe('fromAnOrganization', () => {
+      it('should call the correct endpoint', async () => {
+        let url;
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          url = request.url;
+          request.respondWith({
+            status: 200,
+            response: {
+              data: [],
+            }
+          });
+        });
+
+        const orgUrl = '/test/url/';
+        await api.dictionaries.list.fromAnOrganization(orgUrl);
+        expect(url).toContain(`${orgUrl}collections/?limit=0&verbose=true`);
+      });
+    });
+  });
+
   it('should dispatch ADD_DICTIONARY for organization', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
