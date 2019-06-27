@@ -182,8 +182,15 @@ export class DictionaryConcepts extends Component {
 
   handleDeleteMapping = () => {
     const { data } = this.state;
-    const { removeConceptMappingAction } = this.props;
-    removeConceptMappingAction(data);
+    const {
+      match: {
+        params: {
+          type: ownerType, typeName: owner, collectionName,
+        },
+      },
+      removeConceptMappingAction,
+    } = this.props;
+    removeConceptMappingAction(data, ownerType, owner, collectionName);
   }
 
   handleShowDeleteMapping = (url) => {

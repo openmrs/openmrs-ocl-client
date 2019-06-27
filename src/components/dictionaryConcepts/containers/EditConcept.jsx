@@ -276,6 +276,8 @@ export class EditConcept extends Component {
         collectionName,
         concept,
         collectionUrl,
+        ownerType,
+        owner,
       ).then(result => result && this.updateConceptReference(result, unRetiredMappings)
         .then(() => history.goBack()));
     } else {
@@ -415,11 +417,15 @@ export class EditConcept extends Component {
 
   confirmRemoveMappingRow = async (uniqueKey) => {
     const { url } = this.state;
-    const { removeConceptMappingAction, removeAnswer } = this.props;
+    const {
+      removeConceptMappingAction,
+      removeAnswer,
+      match: { params: { type: ownerType, typeName: owner, collectionName } },
+    } = this.props;
     const data = {
       references: [url],
     };
-    await removeConceptMappingAction(data);
+    await removeConceptMappingAction(data, ownerType, owner, collectionName);
     this.removeUnsavedMappingRow(url);
     removeAnswer(uniqueKey);
     this.hideGeneralModal();
@@ -427,11 +433,15 @@ export class EditConcept extends Component {
 
   confirmRemoveSetRow = async (uniqueKey) => {
     const { url } = this.state;
-    const { removeConceptMappingAction, removeSet } = this.props;
+    const {
+      removeConceptMappingAction,
+      removeSet,
+      match: { params: { type: ownerType, typeName: owner, collectionName } },
+    } = this.props;
     const data = {
       references: [url],
     };
-    await removeConceptMappingAction(data);
+    await removeConceptMappingAction(data, ownerType, owner, collectionName);
     this.removeUnsavedMappingRow(url);
     removeSet(uniqueKey);
     this.hideDeleteSetModal();

@@ -128,7 +128,9 @@ export const removeDictionaryConcept = (data, type, owner, collectionId) => disp
       });
     };
 
-export const removeConceptMapping = (data, source) => dispatch => {
+// todo picking the source from localStorage is not good and is
+//  only here until we are sure no other part of the code depends on it
+export const removeConceptMapping = (data, ownerType, owner, source=localStorage.getItem('dictionaryId')) => dispatch => {
   return api.dictionaries
     .removeConceptMapping(data)
     .then(
@@ -138,7 +140,7 @@ export const removeConceptMapping = (data, source) => dispatch => {
           'Successfully removed mapping from concept',
           'success', 1000
           );
-        const ConceptsToFetch = `/users/${localStorage.getItem('username')}/sources/${localStorage.getItem('dictionaryId')}/concepts/?includeMappings=true&q=&limit=0&page=1&verbose=true`
+        const ConceptsToFetch = `/${ownerType}/${owner}/sources/${source}/concepts/?includeMappings=true&q=&limit=0&page=1&verbose=true`;
           dispatch(fetchDictionaryConcepts(ConceptsToFetch));
       }
     )
