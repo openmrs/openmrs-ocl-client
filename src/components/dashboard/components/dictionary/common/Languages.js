@@ -185,4 +185,8 @@ const locale = [
   { value: 'zu', label: 'Zulu [zu]' },
 ];
 
+export const findLocale = (localeCode, fallback = 'en') => locale.find(
+  currentLocale => currentLocale.value === localeCode,
+) || locale.find(currentLocale => currentLocale.value === fallback);
+
 export default locale;
