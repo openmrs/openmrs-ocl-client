@@ -95,6 +95,8 @@ describe('replaceConcept', () => {
 describe('Test suite for dictionary actions', () => {
   beforeEach(() => {
     moxios.install(instance);
+    localStorage.setItem('token', 'Token mytoken');
+    localStorage.setItem('username', 'Dann');
   });
   const responseDict = {
     type: CLEAR_DICTIONARY,
@@ -182,6 +184,18 @@ describe('Test suite for dictionary actions', () => {
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchDictionary('/users/chriskala/collections/over/')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should alert a user and cancel the request if not logged in', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    localStorage.clear();
+    const store = mockStore({ payload: {} });
+    return store.dispatch(fetchDictionary('/users/Dann/collections/over/')).catch((error) => {
+      expect(error.message).toEqual('Request cancelled. Authentication required');
+      expect(notifyMock).toHaveBeenCalledWith('Please log in first', 'warning', 3000);
+      notifyMock.mockClear();
     });
   });
 

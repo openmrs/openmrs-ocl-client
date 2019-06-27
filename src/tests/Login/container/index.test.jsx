@@ -43,6 +43,7 @@ describe('Login Component', () => {
   it('should handle UNSAFE_componentWillReceiveProps when logged in', () => {
     jest.mock('react-notify-toast');
     notify.show = jest.fn();
+    localStorage.setItem('token', 'Token token');
 
     const nextProps = {
       payload: {},
@@ -53,6 +54,7 @@ describe('Login Component', () => {
     wrapper.find(Login).instance().UNSAFE_componentWillReceiveProps(nextProps);
 
     expect(notify.show).toHaveBeenCalledWith('Logged in successfully as ', 'success', 3000);
+    localStorage.clear();
   });
 
   it('should handle UNSAFE_componentWillReceiveProps when loading', () => {

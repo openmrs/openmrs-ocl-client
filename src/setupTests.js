@@ -26,3 +26,5 @@ global.uuid = uuid;
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 global.XMLHttpRequest = undefined;
+localStorage.setItem('token', 'Token mytoken');
+localStorage.setItem('username', 'Dann');

@@ -53,7 +53,6 @@ import {
   removeDescription,
   clearSelections,
   createNewConcept,
-  fetchSourceConcepts,
   queryAnswers,
   addConceptToDictionary,
   paginateConcepts,
@@ -102,6 +101,7 @@ import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE,
   MAP_TYPES_DEFAULTS,
+  getUsername,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 import api from '../../../redux/api';
 import { externalSource, internalSource } from '../../__mocks__/sources';
@@ -1247,7 +1247,8 @@ describe('Add set mappings to concept', () => {
 
     const url = '/url/test/';
     const source = '2434435454545';
-    const mappingUrl = `/users/null/sources/${source}/mappings/`;
+    const username = getUsername()
+    const mappingUrl = `/users/${username}/sources/${source}/mappings/`;
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
