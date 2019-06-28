@@ -37,6 +37,16 @@ describe('Test suite for dictionary modal', () => {
     wrapper.unmount();
   });
 
+  it('should set focus on the name input when the form to create a new dictionary is rendered', () => {
+    wrapper = mount(<DictionaryModal {...props} />);
+    const instance = wrapper.instance();
+    const spy = jest.spyOn(instance, 'focusInput');
+    expect(instance.state.inputFocus).toBe(false);
+    instance.forceUpdate();
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(instance.state.inputFocus).toBe(true);
+  });
+
   it('should take a snapshot', () => {
     expect(wrapper).toMatchSnapshot();
     expect(wrapper.instance().componentDidMount());
@@ -237,23 +247,6 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.instance().state.errors).toEqual({});
   });
 
-  it('it should handle search input values', () => {
-    props.isEditingDictionary = false;
-    wrapper = mount(<DictionaryModal {...props} />);
-    const spy = jest.spyOn(wrapper.find('DictionaryModal').instance(), 'searchInputValues');
-    wrapper.find('input#react-select-3-input').simulate('change');
-    expect(spy).toHaveBeenCalledTimes(1);
-    wrapper.instance().searchInputValues('dictionary');
-    expect(props.searchDictionaries).toBeCalled();
-  });
-
-  it('it should handle dictionary copying', () => {
-    const item = {
-      value: '123',
-    };
-    wrapper.find('#copy_dictionary').simulate('change', item);
-  });
-
   it('it should disable button if there is no error', () => {
     wrapper.setState({
       data: {
@@ -272,15 +265,5 @@ describe('Test suite for dictionary modal', () => {
     const submitButtonWrapper = wrapper.find('#addDictionary');
     submitButtonWrapper.simulate('click', preventDefault);
     expect(wrapper.state().disableButton).toBeTruthy();
-  });
-
-  it('should set focus on the name input when the form to create a new dictionary is rendered', () => {
-    wrapper = mount(<DictionaryModal {...props} />);
-    const instance = wrapper.instance();
-    const spy = jest.spyOn(instance, 'focusInput');
-    expect(instance.state.inputFocus).toBe(false);
-    instance.forceUpdate();
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(instance.state.inputFocus).toBe(true);
   });
 });
