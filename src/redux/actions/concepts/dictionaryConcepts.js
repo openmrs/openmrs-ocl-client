@@ -221,10 +221,9 @@ export const removeSelectedSet = uniqueKey => (dispatch) => {
   dispatch({ type: REMOVE_SELECTED_SET, payload: uniqueKey });
 };
 
-export const addAnswerMappingToConcept = async (url, source, answers) => {
+export const addAnswerMappingToConcept = async (url, source, answers, ownerType = 'users', owner = localStorage.getItem('username')) => {
   try {
-    const user = localStorage.getItem('username');
-    const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
+    const mappingUrl = `/${ownerType}/${owner}/sources/${source}/mappings/`;
     const answerMappings = answers.map(answer => ({
       map_type: answer.map_type,
       from_concept_url: url,
@@ -240,10 +239,9 @@ export const addAnswerMappingToConcept = async (url, source, answers) => {
   }
 };
 
-export const addSetMappingToConcept = async (url, source, sets) => {
+export const addSetMappingToConcept = async (url, source, sets, ownerType = 'users', owner = localStorage.getItem('username')) => {
   try {
-    const user = localStorage.getItem('username');
-    const mappingUrl = `/users/${user}/sources/${source}/mappings/`;
+    const mappingUrl = `/${ownerType}/${owner}/sources/${source}/mappings/`;
     const setMappings = sets.map(set => ({
       map_type: set.map_type,
       from_concept_url: url,
@@ -385,8 +383,8 @@ export const fetchConceptsFromASource = async (sourceUrl, query) => {
   }
 };
 
-export const CreateMapping = (data, from_concept_url, source) => {
-  const url = `/users/${localStorage.getItem('username')}/sources/${source}/mappings/`;
+export const CreateMapping = (data, from_concept_url, source, ownerType, owner) => {
+  const url = `/${ownerType}/${owner}/sources/${source}/mappings/`;
   const newMappings = data.filter(mapping => mapping && mapping.isNew);
   return axios.all(newMappings.map((mapping) => {
     const mappingData = buildNewMappingData(mapping, from_concept_url);
@@ -394,7 +392,7 @@ export const CreateMapping = (data, from_concept_url, source) => {
   }));
 };
 
-export const createNewConcept = (data, dataUrl) => async (dispatch) => {
+export const createNewConcept = (data, dataUrl, ownerType = 'users', owner = localStorage.getItem('username')) => async (dispatch) => {
   dispatch(isFetching(true));
   const url = dataUrl;
   let createdConcept;
@@ -407,6 +405,8 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
         response.data.url,
         response.data.source,
         removeBlankSetsOrAnswers(data.answers),
+        ownerType,
+        owner,
       );
     }
     if (data.sets) {
@@ -414,10 +414,12 @@ export const createNewConcept = (data, dataUrl) => async (dispatch) => {
         response.data.url,
         response.data.source,
         removeBlankSetsOrAnswers(data.sets),
+        ownerType,
+        owner,
       );
     }
     await CreateMapping(
-      removeBlankMappings(data.mappings), response.data.url, response.data.source,
+      removeBlankMappings(data.mappings), response.data.url, response.data.source, ownerType, owner,
     );
   } catch (error) {
     notify.hide();
@@ -494,7 +496,7 @@ export const UpdateMapping = (data) => {
   }));
 };
 
-export const updateConcept = (conceptUrl, data, history, source, concept, collectionUrl) => async (dispatch) => {
+export const updateConcept = (conceptUrl, data, history, source, concept, collectionUrl, ownerType = 'users', owner = localStorage.getItem('username')) => async (dispatch) => {
   dispatch(isFetching(true));
   let updatedConcept;
   const url = conceptUrl;
@@ -515,17 +517,21 @@ export const updateConcept = (conceptUrl, data, history, source, concept, collec
       );
     }
 
-    await CreateMapping(removeBlankMappings(data.mappings), concept.url, source);
+    await CreateMapping(removeBlankMappings(data.mappings), concept.url, source, ownerType, owner);
     await UpdateMapping(removeBlankMappings(data.mappings));
     await addAnswerMappingToConcept(
       response.data.url,
       response.data.source,
       removeBlankSetsOrAnswers(data.answers),
+      ownerType,
+      owner,
     );
     await addSetMappingToConcept(
       response.data.url,
       response.data.source,
       removeBlankSetsOrAnswers(data.sets),
+      ownerType,
+      owner,
     );
 
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));

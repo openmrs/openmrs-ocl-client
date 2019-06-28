@@ -245,7 +245,7 @@ export class CreateConcept extends Component {
     const regx = /^[a-zA-Z\d-_]+$/;
     if (regx.test(this.state.id) && regx.test(this.state.external_id)
       && this.state.datatype && this.state.concept_class) {
-      this.props.createNewConcept(this.state, url);
+      this.props.createNewConcept(this.state, url, type, typeName);
     } else {
       if (!regx.test(this.state.external_id)) {
         notify.show('enter a valid uuid for the OpenMRS UUID field', 'error', 3000);
