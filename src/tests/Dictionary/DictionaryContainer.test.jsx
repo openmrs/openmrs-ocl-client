@@ -11,6 +11,7 @@ import {
 import dictionary from '../__mocks__/dictionaries';
 import versions, { customVersion, HeadVersion } from '../__mocks__/versions';
 import concepts, { conceptWithoutDescriptions } from '../__mocks__/concepts';
+import { ORGANIZATIONS } from '../../constants';
 
 const store = createMockStore({
   organizations: {
@@ -29,8 +30,42 @@ const store = createMockStore({
 
 jest.mock('../../components/dashboard/components/dictionary/AddDictionary');
 describe('DictionaryOverview', () => {
+  const defaultProps = {
+    dictionary,
+    versions: [],
+    match: {},
+    dictionaryConcepts: [],
+    fetchDictionary: jest.fn(),
+    loader: false,
+    fetchVersions: jest.fn(),
+    fetchDictionaryConcepts: jest.fn(),
+    createVersion: jest.fn(() => Promise.resolve(true)),
+    error: [],
+    releaseHead: jest.fn(),
+    isReleased: false,
+  };
+
   beforeEach(() => {
     window.URL.createObjectURL = sinon.stub().returns('/url');
+  });
+
+  it('should dispatch the fetchMemberShipStatus if the ownerType is an organization', () => {
+    const props = {
+      ...defaultProps,
+      dictionary: { ...defaultProps.dictionary, ownerType: ORGANIZATIONS },
+      fetchMemberStatus: jest.fn(),
+      match: {
+        params: {
+          ownerType: ORGANIZATIONS,
+          owner: defaultProps.dictionary.owner,
+          type: defaultProps.dictionary.type,
+          name: defaultProps.dictionary.name,
+        },
+      },
+    };
+    expect(props.fetchMemberStatus).not.toHaveBeenCalled();
+    shallow(<DictionaryOverview {...props} />);
+    expect(props.fetchMemberStatus).toHaveBeenCalled();
   });
 
   it('should render without any data', () => {
@@ -130,7 +165,7 @@ describe('DictionaryOverview', () => {
       match: {
         params: {
           ownerType: 'testing',
-          owner: 'tester',
+          owner: dictionary.owner,
           type: 'collection',
           name: 'chris',
         },
@@ -373,7 +408,7 @@ describe('DictionaryOverview', () => {
       match: {
         params: {
           ownerType: 'users',
-          owner: 'nesh',
+          owner: dictionary.owner,
           type: 'collection',
           name: 'test',
         },
@@ -416,7 +451,7 @@ describe('DictionaryOverview', () => {
       match: {
         params: {
           ownerType: 'users',
-          owner: 'nesh',
+          owner: dictionary.owner,
           type: 'collection',
           name: 'test',
         },
@@ -462,7 +497,7 @@ describe('DictionaryOverview', () => {
       match: {
         params: {
           ownerType: 'users',
-          owner: 'nesh',
+          owner: dictionary.owner,
           type: 'collection',
           name: 'test',
         },
@@ -508,7 +543,7 @@ describe('DictionaryOverview', () => {
       match: {
         params: {
           ownerType: 'users',
-          owner: 'nesh',
+          owner: dictionary.owner,
           type: 'collection',
           name: 'test',
         },
@@ -601,6 +636,8 @@ describe('DictionaryOverview', () => {
       error: [],
       isReleased: true,
     };
+    localStorage.setItem('username', props.match.params.owner);
+
     const wrapper = mount(<Provider store={store}>
       <MemoryRouter>
         <DictionaryOverview {...props} />
@@ -662,6 +699,7 @@ describe('DictionaryOverview', () => {
       dictionaries: {
         dictionary,
       },
+      user: { userIsMember: false },
     };
     expect(mapStateToProps(initialState).dictionaryConcepts).toEqual([]);
   });

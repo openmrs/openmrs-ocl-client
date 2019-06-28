@@ -1,6 +1,7 @@
 import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { notify } from 'react-notify-toast';
 
 import instance from '../../../config/axiosConfig';
 import {
@@ -20,9 +21,11 @@ import {
   fetchUser,
   fetchUserOrganizations,
   clearDictionaryData,
-  fetchMemberStatus,
+  fetchMemberStatus, fetchOrganizationDictionaries, setDictionariesOwnedByAUsersOrgs,
 } from '../../../redux/actions/user';
 import dictionary from '../../__mocks__/dictionaries';
+import api from '../../../redux/api';
+import { isFetching } from '../../../redux/actions/globalActionCreators';
 
 jest.mock('react-notify-toast');
 const mockStore = configureStore([thunk]);
@@ -274,6 +277,64 @@ describe('Test suite for user dashboard actions', () => {
     const url = '/orgs/EthiopiaNHDD/members/emmabaye';
     return store.dispatch(fetchMemberStatus(url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('fetchUserData', () => {
+    const dispatchMock = jest.fn();
+    const getStateMock = jest.fn().mockReturnValueOnce({
+      user: {
+        userOrganization: [],
+      },
+    });
+
+    beforeEach(() => {
+      dispatchMock.mockClear();
+      getStateMock.mockClear();
+    });
+
+    it('should dispatch set fetching to true before dispatching other actions and to false afterwards', async () => {
+      const action = fetchUserData();
+      await action(dispatchMock, getStateMock);
+      expect(dispatchMock).toHaveBeenCalledTimes(6);
+      expect(dispatchMock.mock.calls[0]).toEqual([isFetching(true)]);
+      expect(dispatchMock.mock.calls[dispatchMock.mock.calls.length - 1])
+        .toEqual([isFetching(false)]);
+    });
+  });
+
+  describe('fetchOrganizationDictionaries', () => {
+    const organizationUrls = ['/test/url/'];
+    const dispatchMock = jest.fn();
+
+    beforeEach(() => {
+      dispatchMock.mockClear();
+    });
+
+    it('should call the expected endpoint and dispatch SET_DICTIONARIES_OWNED_BY_A_USERS_ORGS', async () => {
+      api.dictionaries.list.fromAnOrganization = jest.fn()
+        .mockResolvedValueOnce({ data: [dictionary] });
+
+      const action = fetchOrganizationDictionaries(organizationUrls);
+      await action(dispatchMock);
+      expect(api.dictionaries.list.fromAnOrganization).toHaveBeenCalledWith(organizationUrls[0]);
+      expect(dispatchMock).toHaveBeenCalledWith(setDictionariesOwnedByAUsersOrgs([dictionary]));
+    });
+
+    it('should notify the user in case of an error', async () => {
+      api.dictionaries.list.fromAnOrganization = jest.fn()
+        .mockRejectedValueOnce({});
+      notify.show = jest.fn();
+
+      const action = fetchOrganizationDictionaries(organizationUrls);
+      await action(dispatchMock);
+      expect(api.dictionaries.list.fromAnOrganization).toHaveBeenCalledWith(organizationUrls[0]);
+      expect(dispatchMock).toHaveBeenCalledWith(setDictionariesOwnedByAUsersOrgs([]));
+      expect(notify.show).toHaveBeenCalledWith(
+        'Dictionaries owned by your organizations could not be loaded. Try reloading the page.',
+        'error',
+        '3000',
+      );
     });
   });
 });

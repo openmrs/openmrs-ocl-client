@@ -1,4 +1,4 @@
-import reducer from '../../../redux/reducers/dictionaryReducer';
+import reducer, { defaultState as initialState } from '../../../redux/reducers/dictionaryReducer';
 import dictionaryreducer from '../../../redux/reducers/dictionaryReducers';
 import userReducer from '../../../redux/reducers/user/index';
 import {
@@ -16,7 +16,6 @@ import {
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
 
-const initialState = {};
 describe('Test suite for vote reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);

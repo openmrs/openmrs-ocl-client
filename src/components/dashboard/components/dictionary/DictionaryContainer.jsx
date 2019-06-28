@@ -8,7 +8,9 @@ import {
 } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
 import GeneralModel from './common/GeneralModal';
-import { DIAGNOSIS_CLASS, PROCEDURE_CLASS } from '../../../../constants';
+import { DIAGNOSIS_CLASS, ORGANIZATIONS, PROCEDURE_CLASS } from '../../../../constants';
+import { getLoggedInUsername } from '../../../../helperFunctions';
+import { fetchMemberStatus } from '../../../../redux/actions/user';
 
 export class DictionaryOverview extends Component {
   static propTypes = {
@@ -27,10 +29,14 @@ export class DictionaryOverview extends Component {
     createVersion: propTypes.func.isRequired,
     error: propTypes.array,
     isReleased: propTypes.bool.isRequired,
+    fetchMemberStatus: propTypes.func,
+    userIsOrganizationMember: propTypes.bool,
   };
 
   static defaultProps = {
     error: null,
+    fetchMemberStatus: () => {},
+    userIsOrganizationMember: false,
   };
 
   constructor(props) {
@@ -53,12 +59,18 @@ export class DictionaryOverview extends Component {
           ownerType, owner, type, name,
         },
       },
+      fetchMemberStatus: fetchUsersMembershipStatus,
     } = this.props;
 
     const url = `/${ownerType}/${owner}/${type}/${name}/`;
     const versionUrl = `/${ownerType}/${owner}/${type}/${name}/versions/?verbose=true`;
     this.props.fetchDictionary(url);
     this.props.fetchVersions(versionUrl);
+
+    if (ownerType === ORGANIZATIONS) {
+      const checkMembershipUrl = `/orgs/${owner}/members/${getLoggedInUsername()}/`;
+      fetchUsersMembershipStatus(checkMembershipUrl);
+    }
 
     const conceptsUrl = `/${ownerType}/${owner}/collections/${name}/concepts/?includeRetired=true&q=&limit=0&page=1&verbose=true&is_latest_version=true`;
     this.props.fetchDictionaryConcepts(conceptsUrl);
@@ -177,6 +189,19 @@ export class DictionaryOverview extends Component {
     this.setState({ openGeneralModal: true });
   }
 
+  userCanEditDictionary = () => {
+    const {
+      match: {
+        params: {
+          ownerType, owner,
+        },
+      },
+      userIsOrganizationMember,
+    } = this.props;
+    if (ownerType === ORGANIZATIONS) return userIsOrganizationMember;
+    return owner === getLoggedInUsername();
+  };
+
   render() {
     const { loader } = this.props;
     const {
@@ -235,6 +260,7 @@ export class DictionaryOverview extends Component {
                 versionDescription={this.state.versionDescription}
                 inputLength={inputLength}
                 download={this.download}
+                userCanEditDictionary={this.userCanEditDictionary()}
               />
               <EditDictionary
                 show={this.state.showEditModal}
@@ -264,6 +290,7 @@ export const mapStateToProps = state => ({
   versions: state.dictionaries.versions,
   error: state.dictionaries.error,
   isReleased: state.dictionaries.isReleased,
+  userIsOrganizationMember: state.user.userIsMember,
 });
 
 export default connect(
@@ -274,5 +301,6 @@ export default connect(
     fetchVersions,
     createVersion,
     releaseHead,
+    fetchMemberStatus,
   },
 )(DictionaryOverview);

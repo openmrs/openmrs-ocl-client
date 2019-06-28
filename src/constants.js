@@ -6,3 +6,5 @@ export const FILTER_TYPES = {
   CLASSES: 'classes',
   SOURCES: 'sources',
 };
+
+export const ORGANIZATIONS = 'orgs';

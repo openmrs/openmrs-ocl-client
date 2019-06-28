@@ -42,9 +42,9 @@ const DictionaryDetailCard = (props) => {
     versionId,
     inputLength,
     download,
+    userCanEditDictionary,
   } = props;
 
-  const username = localStorage.getItem('username');
 
   const DATE_OPTIONS = {
     weekday: 'long',
@@ -124,7 +124,7 @@ Dictionary
               {' '}
               {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
-            {owner === username && (
+            {userCanEditDictionary && (
               <button
                 type="button"
                 className="btn btn-primary m-3"
@@ -196,7 +196,7 @@ Dictionary
 Browse in traditional OCL
                 </a>
               </li>
-              { owner === username
+              { userCanEditDictionary
                 ? (
                   <li>
                     <a
@@ -289,6 +289,11 @@ DictionaryDetailCard.propTypes = {
   versionDescription: PropTypes.string.isRequired,
   versionId: PropTypes.string.isRequired,
   disableButton: PropTypes.bool.isRequired,
+  userCanEditDictionary: PropTypes.bool,
+};
+
+DictionaryDetailCard.defaultProps = {
+  userCanEditDictionary: false,
 };
 
 export default DictionaryDetailCard;

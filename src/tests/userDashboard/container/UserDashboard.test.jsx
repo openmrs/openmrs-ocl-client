@@ -8,11 +8,10 @@ import dictionary, { mockDictionaries } from '../../__mocks__/dictionaries';
 import UserDashboard, {
   mapStateToProps,
 } from '../../../components/userDasboard/container/UserDashboard';
+import { defaultState as organizationsDefaultState } from '../../../redux/reducers/dictionaryReducer';
 
 const storeObject = {
-  organizations: {
-    organizations: [],
-  },
+  organizations: organizationsDefaultState,
   sources: {
     sources: [],
   },
@@ -257,6 +256,7 @@ describe('Test suite for dictionary concepts components', () => {
           public_collections: 0,
         },
       },
+      organizations: organizationsDefaultState,
     };
     expect(mapStateToProps(initialState).user).toEqual({
       name: '',

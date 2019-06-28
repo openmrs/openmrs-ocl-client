@@ -2,6 +2,9 @@ import instance from '../config/axiosConfig';
 
 export default {
   dictionaries: {
+    list: {
+      fromAnOrganization: organizationUrl => instance.get(`${organizationUrl}collections/?limit=0&verbose=true`),
+    },
     createDictionary: data => instance
       .post(`orgs/${data.owner}/collections/`, data)
     /* eslint-disable */

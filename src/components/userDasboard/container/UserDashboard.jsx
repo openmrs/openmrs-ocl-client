@@ -129,7 +129,7 @@ New Dictionary
 
 export const mapStateToProps = state => ({
   user: state.user.user,
-  userDictionary: state.user.userDictionary,
+  userDictionary: state.user.userDictionary.concat(state.organizations.dictionariesOwnedByUsersOrg),
   userOrganization: state.user.userOrganization,
   loading: state.user.loading,
   networkError: state.user.networkError,
