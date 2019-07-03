@@ -29,6 +29,7 @@ const ConceptTable = ({
         noDataText="No concepts found!"
         minRows={2}
         limitCount={conceptLimit}
+        sortable={false}
         columns={[
           {
             Header: 'Name',
