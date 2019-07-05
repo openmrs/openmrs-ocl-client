@@ -71,7 +71,7 @@ describe('Test suite for dictionary actions', () => {
 
         const orgUrl = '/test/url/';
         await api.dictionaries.list.fromAnOrganization(orgUrl);
-        expect(url).toContain(`${orgUrl}collections/?limit=0&verbose=true`);
+        expect(url).toContain(`${orgUrl}collections/?limit=0`);
       });
     });
   });

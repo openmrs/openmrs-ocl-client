@@ -59,17 +59,6 @@ export const filterPayload = (payload) => {
   return filteredDictionaries;
 };
 
-export const filterUserPayload = (user, payload) => {
-  const filteredDictionaries = [];
-  payload.map((dictionary) => {
-    if (dictionary.created_by === user) {
-      return filteredDictionaries.push(dictionary);
-    }
-    return filteredDictionaries;
-  });
-  return filteredDictionaries;
-};
-
 export const removeItem = (item, list) => {
   const newList = list ? list.filter(listItem => listItem.uuid !== item) : [];
   return newList;

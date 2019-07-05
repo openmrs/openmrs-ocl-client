@@ -7,8 +7,6 @@ const DictionaryCard = (dictionary) => {
       name,
       owner,
       owner_type,
-      active_concepts,
-      created_by,
       url,
     },
     gotoDictionary,
@@ -40,21 +38,6 @@ const DictionaryCard = (dictionary) => {
                 </small>
               </a>
             </div>
-          </div>
-          <div className="description col-12 text-left">
-            <p>
-              <span className="source-type">
-Active Concepts:
-                {' '}
-                {active_concepts}
-              </span>
-              <br />
-              <a className="source-type" id="cardCapitalize">
-                Created By:
-                {' '}
-                {created_by}
-              </a>
-            </p>
           </div>
         </div>
         <div className="source-card-footer">

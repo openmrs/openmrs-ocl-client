@@ -52,12 +52,11 @@ export const fetchUserOrganizations = (username, props) => async (dispatch) => {
 };
 
 export const fetchsUserDictionaries = (username, props) => async (dispatch) => {
-  const url = `/users/${username}/collections/?q=${''}&limit=${0}&page=${1}&verbose=true`;
+  const url = `/users/${username}/collections/?q=${''}&limit=${0}`;
   dispatch(isFetching(true));
   try {
     const response = await instance.get(url);
-    const result = filterUserPayload(username, response.data);
-    dispatch(isSuccess(result, FETCH_USER_DICTIONARY));
+    dispatch(isSuccess(response.data, FETCH_USER_DICTIONARY));
   } catch (error) {
     if (error.message === REQUEST_DENIED_MESSAGE) {
       dispatch(logout());
