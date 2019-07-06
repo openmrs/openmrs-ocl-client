@@ -442,21 +442,17 @@ describe('test suite for addBulkConcepts synchronous action creators', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [
       { type: ADD_TO_DATATYPE_LIST, payload: 'text' },
-      { payload: true, type: '[ui] toggle spinner' },
     ];
     await store.dispatch(addToFilterList('text', 'datatype'));
     expect(store.getActions()[0]).toEqual(expectedActions[0]);
-    expect(store.getActions()[1]).toEqual(expectedActions[1]);
   });
   it('should handle ADD_TO_CLASS_LIST', async () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [
       { type: ADD_TO_CLASS_LIST, payload: 'drug' },
-      { payload: true, type: '[ui] toggle spinner' },
     ];
     await store.dispatch(addToFilterList('drug', 'class'));
     expect(store.getActions()[0]).toEqual(expectedActions[0]);
-    expect(store.getActions()[1]).toEqual(expectedActions[1]);
   });
 
   describe('clearAllBulkFilters', () => {
@@ -480,11 +476,9 @@ describe('test suite for addBulkConcepts synchronous action creators', () => {
       const store = mockStore(mockConceptStore);
       const expectedActions = [
         { type: CLEAR_BULK_FILTERS, payload: filterType },
-        { payload: true, type: '[ui] toggle spinner' },
       ];
       await store.dispatch(clearAllBulkFilters(filterType));
       expect(store.getActions()[0]).toEqual(expectedActions[0]);
-      expect(store.getActions()[1]).toEqual(expectedActions[1]);
     });
   });
 

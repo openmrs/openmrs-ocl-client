@@ -177,6 +177,36 @@ describe('Test suite for BulkConceptsPage component', () => {
     expect(instance.componentDidUpdate(2)).toEqual(undefined);
   });
 
+  describe('returnToFirstPageAndSearch', () => {
+    it('it should set the currentPage to the first page if it is not', () => {
+      const nextProps = {
+        ...props,
+        currentPage: 2,
+        setCurrentPage: jest.fn(),
+      };
+      const wrapper = shallow(<BulkConceptsPage {...nextProps} />);
+      const instance = wrapper.instance();
+
+      expect(nextProps.setCurrentPage).not.toHaveBeenCalled();
+      instance.returnToFirstPageAndSearch();
+      expect(nextProps.setCurrentPage).toHaveBeenCalledWith(1);
+    });
+
+    it('it should call getBulkConcepts if the currentPage is already page 1', () => {
+      const nextProps = {
+        ...props,
+        currentPage: 1,
+      };
+      const wrapper = shallow(<BulkConceptsPage {...nextProps} />);
+      const instance = wrapper.instance();
+      instance.getBulkConcepts = jest.fn();
+
+      expect(instance.getBulkConcepts).not.toHaveBeenCalled();
+      instance.returnToFirstPageAndSearch();
+      expect(instance.getBulkConcepts).toHaveBeenCalled();
+    });
+  });
+
   it('should refresh page when search input is empty', () => {
     const nextProps = {
       ...props,
