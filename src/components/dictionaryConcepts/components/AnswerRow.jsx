@@ -81,7 +81,7 @@ class AnswerRow extends React.Component {
             ) : (
               <select
                 name="map_scope"
-                className="form-control"
+                className="custom-select"
                 onChange={event => this.handleChangeInSource(event)}
                 defaultValue={toSourceName}
                 required
@@ -116,7 +116,7 @@ class AnswerRow extends React.Component {
         </td>
         <td>
           <button
-            className="btn btn-danger"
+            className="btn btn-outline-danger"
             type="button"
             onClick={() => removeAnswerRow(
               frontEndUniqueKey,

@@ -1,9 +1,10 @@
 .App{
   text-align: center;
   min-height: 85vh;
+  background-color: #f8f9fa;
 }
 .nav {
-  background-color: rgba(0, 0, 0, 0.856) !important;
+  background-color: #252526 !important;
   position: inherit;
 }
 .navbar-brand {
@@ -23,7 +24,7 @@
 }
 .navbar {
   line-height: 2 !important;
-  background-color: rgba(0, 0, 0, 0.856) !important;
+  background-color: #252526 !important;
 }
 
 .navbar-light .navbar-toggler-icon {
@@ -113,7 +114,7 @@
 }
 
 .custom-bg-dark {
-  background-color: rgb(5, 5, 5) !important;
+  background-color: #252526 !important;
 }
 
 .edit-button-link {

@@ -4,7 +4,7 @@ import ConceptNameRows from './ConceptNameRows';
 
 const CreateConceptTable = props => (
   <table className="table table-striped table-bordered concept-form-table">
-    <thead className="header text-white">
+    <thead className="concept-form-table-header">
       <tr>
         <th scope="col">Name</th>
         <th scope="col">Type</th>
