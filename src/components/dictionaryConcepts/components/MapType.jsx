@@ -11,7 +11,7 @@ const mapType = (props) => {
     <select
       tabIndex={index}
       value={map_type}
-      className="form-control"
+      className="custom-select"
       placeholder="map type"
       type="text"
       name="map_type"

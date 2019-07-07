@@ -16,7 +16,7 @@ const AnswersTable = (props) => {
   } = props;
   return (
     <table className="table table-striped table-bordered concept-form-table">
-      <thead className="header text-white">
+      <thead className="concept-form-table-header">
         <tr>
           <th scope="col">Source</th>
           <th scope="col">Concept</th>

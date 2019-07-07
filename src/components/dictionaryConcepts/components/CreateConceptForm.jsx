@@ -46,9 +46,14 @@ const CreateConceptForm = (props) => {
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
     <form className="form-wrapper" onKeyPress={preventFormSubmit} onSubmit={props.handleSubmit} id="createConceptForm">
       <div className="concept-form-body">
-        <div className="form-row">
-          <div className="form-group col-md-7">
+        <div className="concept-info card">
+          <legend id="concept-details-title" className="text-left section-header">Concept Details</legend>
+          <div id="concept-details">
+          <div className="form-row">
             <label htmlFor="external_id"><h5>OpenMRS UUID (OCL External ID)</h5></label>
+            </div>
+            <div className="form-row">
+              <div className="form-group col-md-7">
             <input
               type="text"
               className="form-control"
@@ -67,7 +72,7 @@ const CreateConceptForm = (props) => {
           <div className="form-group col-md-3 custom-field">
             <button
               type="submit"
-              className="btn btn-sm btn-light"
+              className="btn btn-light"
               id="toggleUUID"
               onClick={props.toggleUUID}
             >
@@ -104,7 +109,7 @@ const CreateConceptForm = (props) => {
               id="class"
               name="concept_class"
               value={props.state.concept_class}
-              className="form-control"
+              className="custom-select"
               required
               onChange={props.handleChange}
             >
@@ -124,7 +129,7 @@ const CreateConceptForm = (props) => {
                   id="class"
                   name="concept_class"
                   value={props.state.concept_class}
-                  className="form-control symptom-finding"
+                  className="custom-select symptom-finding"
                   required
                   onChange={props.handleChange}
                 >
@@ -144,7 +149,7 @@ const CreateConceptForm = (props) => {
                   id="class"
                   name="concept_class"
                   value={props.state.concept_class}
-                  className="form-control set"
+                  className="custom-select set"
                   required
                   onChange={props.handleChange}
                 >
@@ -161,7 +166,7 @@ const CreateConceptForm = (props) => {
               {(
                 props.concept.toString().trim() !== 'Symptom-Finding'
                 && props.concept.toString().trim() !== Set) && (
-                <span className="btn btn-sm btn-light normal-cursor col-12 text-capitalize pt-3">
+                <span className="btn btn-light normal-cursor col-12 text-capitalize pt-3">
                   {props.concept}
                 </span>
               )}
@@ -176,7 +181,7 @@ const CreateConceptForm = (props) => {
             name="datatype"
             required
             value={props.state.datatype}
-            className="form-control "
+            className="custom-select"
             onChange={props.handleChange}
           >
             <option>Numeric</option>
@@ -192,11 +197,13 @@ const CreateConceptForm = (props) => {
             <option>Complex</option>
             <option>to_concept_coded</option>
           </select>
+            </div>
+          </div>
         </div>
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Names</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="text-left section-header">Names</legend>
               <CreateConceptTable {...props} />
               <button
                 type="button"
@@ -206,13 +213,13 @@ const CreateConceptForm = (props) => {
               >
                 Add another name...
               </button>
-            </div>
+            </fieldset>
           </div>
         </div>
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Descriptions</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="text-left section-header">Descriptions</legend>
               <DescriptionTable {...props} />
               <button
                 type="button"
@@ -222,13 +229,13 @@ const CreateConceptForm = (props) => {
               >
                 {descriptions.length > 0 ? 'Add another description...' : 'Add a description'}
               </button>
-            </div>
+            </fieldset>
           </div>
         </div>
         {(isSetConcept(props.concept.toString().trim()) || !concept || isEditConcept) && (
-          <div className="form-group set">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Set Members</h5>
+          <div className="form-group set card">
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Set Members</legend>
               <AnswersTable
                 handleAsyncSelectChange={handleSetAsyncSelectChange}
                 selectedAnswers={selectedSets}
@@ -246,13 +253,13 @@ const CreateConceptForm = (props) => {
               >
                 Add set...
               </button>
-            </div>
+            </fieldset>
           </div>
         )}
         {(concept.toString().trim() === CONCEPT_CLASS.question || !concept || isEditConcept) && (
-          <div className="form-group answer">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Answers</h5>
+          <div className="form-group answer card">
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Answers</legend>
               <AnswersTable
                 handleAsyncSelectChange={handleAsyncSelectChange}
                 selectedAnswers={selectedAnswers}
@@ -270,15 +277,15 @@ const CreateConceptForm = (props) => {
               >
                 Add answer...
               </button>
-            </div>
+            </fieldset>
           </div>
         )}
-        <div className="concept-table ">
+        <div className="concept-table card">
           <div className="form-group">
-            <div className="row col-12 custom-concept-list">
-              <h5 className="text-left section-header">Mappings</h5>
+            <fieldset className="row col-12 custom-concept-list">
+              <legend className="section-header">Mappings</legend>
               <table className=" table-striped table-bordered concept-form-table">
-                <thead className="header text-white">
+                <thead className="concept-form-table-header">
                   <tr>
                     <th>Source</th>
                     <th>Relationship</th>
@@ -315,15 +322,15 @@ const CreateConceptForm = (props) => {
               >
                   Add another Mapping...
               </button>
-            </div>
+            </fieldset>
           </div>
           <br />
         </div>
-        <div className="submit-button text-left">
-          <button className="btn btn-primary mr-1" type="submit" disabled={props.disableButton}>
+        <div className="submit-button text-right">
+          <button className="btn btn-outline-primary mr-1" type="submit" disabled={props.disableButton}>
             {props.isEditConcept ? 'Update' : 'Create' }
           </button>
-          <button id="remove" className="btn btn-danger cancelButton" type="button" onClick={props.showModal}>
+          <button id="remove" className="btn btn-outline-danger cancelButton" type="button" onClick={props.showModal}>
             Cancel
           </button>
         </div>
