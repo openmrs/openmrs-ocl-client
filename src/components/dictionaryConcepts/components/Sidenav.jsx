@@ -40,7 +40,7 @@ const Sidenav = ({
           key={classItem}
           filterType="classes"
           handleChange={handleChange}
-          checkValue={toggleCheck.includes(`"${classItem}"`)}
+          checkValue={toggleCheck.includes(`${classItem}`)}
         />
       ))}
     </div>

@@ -70,6 +70,7 @@ export class DictionaryConcepts extends Component {
       },
       openDeleteModal: false,
       isOwner: false,
+      page: 0,
     };
     autoBind(this);
   }
@@ -95,6 +96,15 @@ export class DictionaryConcepts extends Component {
       typeName,
     });
   }
+
+  componentDidUpdate = (prevProps) => {
+    const { concepts } = this.props;
+    if (prevProps.concepts !== concepts) {
+      this.setState({
+        page: 0,
+      });
+    }
+  };
 
   fetchConcepts(limit = 0) {
     const {
@@ -130,7 +140,7 @@ export class DictionaryConcepts extends Component {
     }
     if (type === 'checkbox' && filterType === 'classes') {
       this.props.filterByClass(
-        `"${inputName}"`,
+        inputName,
         this.state.type,
         typeName,
         collectionName,
@@ -256,6 +266,12 @@ export class DictionaryConcepts extends Component {
     return true;
   };
 
+  setPage = (index) => {
+    this.setState({
+      page: index,
+    });
+  };
+
   render() {
     const {
       match: {
@@ -272,6 +288,8 @@ export class DictionaryConcepts extends Component {
       filteredByClass,
       filteredBySource,
     } = this.props;
+
+    const { page } = this.state;
 
     const myConcepts = this.handleConcepts(concepts);
     const hasPermission = typeName === getUsername() || userIsMember;
@@ -334,6 +352,8 @@ export class DictionaryConcepts extends Component {
               closeDeleteModal={this.closeDeleteModal}
               retireConcept={this.handleRetireConcept}
               isOwner={this.state.isOwner}
+              page={page}
+              onPageChange={this.setPage}
             />
           </div>
         </section>
