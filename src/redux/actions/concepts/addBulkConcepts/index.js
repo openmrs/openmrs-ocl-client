@@ -69,10 +69,16 @@ export const recursivelyFetchConceptMappings = async (
   fetchMappings = api.mappings.fetchFromPublicSources,
   updateNotification = () => {},
 ) => {
+  const getInternalConceptUrlsInMappings = (mappingsLists) => {
+    const toConceptUrls = union(...mappingsLists).map(mapping => mapping.to_concept_url);
+    const filteredToConceptUrls = pull(toConceptUrls, null);
+    return removeDuplicates(filteredToConceptUrls);
+  };
+
   updateNotification('Finding dependent concepts...');
   const startingConceptMappings = await fetchMappings(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
-  updateNotification(`Found ${union(...mappingsList).length} dependent concepts...`);
+  updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts...`);
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsList[i].map(
       mapping => mapping.to_concept_code,
@@ -80,13 +86,9 @@ export const recursivelyFetchConceptMappings = async (
     if (!toConceptCodes.length) break;
     const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
     mappingsList.push(conceptMappings.data);
-    updateNotification(`Found ${union(...mappingsList).length} dependent concepts...`);
+    updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts...`);
   }
-  const toConceptUrls = union(...mappingsList).map((mapping) => {
-    return mapping.to_concept_url;
-  });
-  const filteredToConceptUrls = pull(toConceptUrls, null);
-  return removeDuplicates(filteredToConceptUrls);
+  return getInternalConceptUrlsInMappings(mappingsList);
 };
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
