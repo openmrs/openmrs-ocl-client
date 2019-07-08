@@ -1,6 +1,7 @@
 .user-info {
-  box-shadow: 0px 2px 20px 15px #b1b1b114;
+  box-shadow: 0 1px 3px $shadow, 0 1px 2px $secondary;
   padding: 2rem;
+  margin-top: 2rem;
 }
 
 .user-info .user-data {
@@ -19,13 +20,13 @@
 .user-dictionary-wrapper {
   margin-top: 2rem;
   margin-bottom: 2rem;
-  box-shadow: 0px 2px 20px 15px #b1b1b114;
+  box-shadow: 0 1px 3px $shadow, 0 1px 2px $secondary;;
   padding: .5rem;
 }
 
 .user-data a {
   font-size: 0.9rem;
-  color: rgb(17, 88, 180);
+  color: $primary;
   font-weight: 400;
 }
 
@@ -47,7 +48,7 @@
   display: inline-block;
   height: .3rem;
   width: 8rem;
-  background: #343a40;
+  background: $secondary;
   margin-left: 1rem;
   border-radius: 100rem;
   -webkit-border-radius: 100rem;
@@ -57,7 +58,7 @@
 }
 
 .view-details-link {
-  color: #343a40;
+  color: $secondary;
   padding: .1rem .5rem;
   border-radius: .2rem;
   transition: all 400ms ease-in-out;
@@ -69,9 +70,4 @@
   -moz-border-radius: .2rem;
   -ms-border-radius: .2rem;
   -o-border-radius: .2rem;
-}
-
-.view-details-link:hover {
-  color: #000000;
-  background: #8080801f;
 }

@@ -98,7 +98,7 @@ Your
                 <h6 className="see-more-link">
                   <button
                     type="submit"
-                    className="btn btn-success btn-sm"
+                    className="btn btn-outline-primary btn-sm"
                     id="add-dictionary"
                     onClick={this.handleShow}
                   >

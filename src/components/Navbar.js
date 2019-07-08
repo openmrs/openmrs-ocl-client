@@ -40,7 +40,28 @@ export class Navbar extends Component {
     const { loggedIn } = this.props;
     return (
       <div className="custom-bg-dark">
-        <Notification options={{ zIndex: 10000, top: '200px' }} />
+        <Notification
+          options={
+            {
+              zIndex: 10000,
+              top: '200px',
+              colors: {
+                error: {
+                  color: '#ffffff',
+                  backgroundColor: '#e16262',
+                },
+                success: {
+                  color: '#ffffff',
+                  backgroundColor: '#009384',
+                },
+                warning: {
+                  color: '#ffffff',
+                  backgroundColor: '#6c757d',
+                },
+              },
+            }
+          }
+        />
         <Navigation color="light" light expand="xl" className="custom-max-width">
           <NavbarBrand href="/">OCL for OpenMRS</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />

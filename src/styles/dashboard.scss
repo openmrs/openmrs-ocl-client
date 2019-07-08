@@ -16,8 +16,8 @@ nav {
   position: fixed;
   padding: 0.5rem;
   z-index: 1;
-  color: #181717;
-  background: rgba(168, 166, 166, 0.171);
+  color: $shadow;
+  background: $secondary;
 }
 
 .side-nav .nav {
@@ -25,20 +25,20 @@ nav {
 }
 
 .side-nav a {
-  color: #181717;
+  color: $shadow;
   padding: 0.2rem 0.5rem;
   margin: 0.2rem;
 }
 
 .side-nav a:hover {
-  background: rgba(0, 0, 0, 0.29);
+  background: $dark;
   border-radius: 0.4rem;
 }
 
 .activeStyle {
-  background-color: rgb(173, 170, 170);
-  border-bottom-color: white;
-  color: white;
+  background-color: $secondary;
+  border-bottom-color: $light;
+  color: $light;
   border-radius: 10px;
 }
 
@@ -52,12 +52,12 @@ nav {
 }
 
 .search-bar-wrapper:hover {
-  box-shadow: 0px 8px 20px -8px rgba(0, 0, 0, 0.471);
+  box-shadow: 0px 8px 20px -8px $dark;
 }
 
 .search-bar-wrapper {
   transition: all 400ms ease-in-out;
-  background: rgb(233, 233, 233);
+  background: $light;
   border-radius: 10rem;
   padding: 0.3rem;
   margin-right: 54%;
@@ -68,7 +68,7 @@ nav {
 }
 
 .search-bar-wrapper i {
-  color: #757575;
+  color: $secondary;
 }
 
 .btn {
@@ -87,7 +87,7 @@ nav {
 
 .mini-sort-btn a,
 .mini-source-btn a {
-  color: #757575;
+  color: $secondary;
 }
 
 .item-list {
@@ -97,12 +97,12 @@ nav {
   align-items: center;
   box-shadow: none;
   border-radius: 0.2rem;
-  box-shadow: 5px 5px 20px 2px rgba(0, 0, 0, 0.07);
+  box-shadow: 5px 5px 20px 2px $dark;
   transition: all 400ms ease-in-out;
 }
 
 .item-list:hover {
-  box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 0 20px 0px $dark;
 }
 
 .card-header {
@@ -111,7 +111,7 @@ nav {
 
 .source-header {
   padding-top: 2rem;
-  color: #757575;
+  color: $secondary;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
@@ -125,9 +125,8 @@ nav {
   display: flex;
   padding: 1rem 1rem 0;
   margin: 0;
-  color: white;
-  background: #4f6196;
-  border-radius: 0.2rem 0.2rem 0 0;
+  color: $light;
+  background: $primary;
 }
 
 .source-name p {
@@ -139,7 +138,7 @@ nav {
 
 .source-name p,
 .source-name i {
-  color: #949494;
+  color: $secondary;
 }
 
 .source-name a {
@@ -152,7 +151,6 @@ nav {
 
 .source-card-footer {
   position: absolute;
-  background: #80808012;
   left: 0;
   right: 0;
   bottom: 0;
@@ -164,8 +162,7 @@ nav {
 
 .float-created-at {
   position: absolute;
-  background: rgb(14, 127, 232);
-  color: white;
+  background: $primary;
   top: 2.2rem;
   right: -0.2rem;
   font-size: 0.8rem;
@@ -175,16 +172,12 @@ nav {
   box-shadow: -2px 2px 4px 0px #0000004d;
 }
 
-.float-created-at a {
-  color: white;
-}
-
 .name-url {
-  color: #757575;
+  color: $secondary;
 }
 
 .name-url:hover {
-  color: #414141;
+  color: $secondary;
 }
 
 .owner-type {
@@ -208,7 +201,7 @@ nav {
 }
 
 .key-icons a {
-  color: #414141;
+  color: $shadow;
   padding: 0 1rem;
 }
 
@@ -221,19 +214,15 @@ nav {
   height: 10rem;
   /* min-width: 20rem; */
   border-radius: 0.2rem 0.2rem 0 0;
-  background: white;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.08);
+  background: $light;
   transition: all 400ms ease-in-out;
-}
-
-.card-container:hover {
-  box-shadow: 0px 8px 20px -8px rgba(0, 0, 0, 0.471);
+  box-shadow: 0 1px 3px $shadow, 0 1px 2px $secondary;
 }
 
 .card-divider {
   height: 0.06rem;
   border-radius: 20rem;
-  background: #757575;
+  background: $secondary;
   width: 98%;
   margin: 0.2rem auto;
 }
@@ -279,15 +268,14 @@ nav {
 .description .source-type {
   padding-top: 0.5rem;
   font-size: 0.6rem;
-  color: rgb(80, 80, 80);
 }
 
 .description a {
-  color: rgb(80, 80, 80);
+  color: $secondary;
 }
 
 .description a:hover {
-  color: rgb(100, 100, 100);
+  color: $secondary;
   text-decoration: underline;
 }
 
@@ -324,7 +312,7 @@ nav {
 #date-updated {
   display: inline-block;
   font-size: 0.7rem;
-  background: #ebebeb;
+  background: $light;
   border-radius: 0.2rem;
   margin-top: 0.5rem;
   padding: 0.2rem 0.5rem;
@@ -339,6 +327,11 @@ nav {
   text-align: left !important;
 }
 
+.header {
+  background-color: $primary;
+  font-size: medium;
+}
+
 .display-name {
   font-size: 20px;
 }
@@ -348,11 +341,11 @@ nav {
 }
 
 #dictionaryHeader {
-  background: #2b6d27;
+  background: $primary;
 }
 
 #dictionary-owner {
-  background: #225a21;
+  background: $primary;
 }
 
 #viewDetails {
@@ -361,7 +354,7 @@ nav {
   border: none;
 }
 .head {
-  color: #ffff;
+  color: $light;
 }
 
 .table1 {
@@ -385,26 +378,22 @@ nav {
 
 .add-btn {
   font-size: 1rem;
-  color: #4f6196;
-}
-
-.add-btn:hover {
-  border-bottom: thin solid #4f6196;
+  color: $primary;
 }
 
 #dictionary-link {
   text-align: left !important;
   font-size: 0.9rem;
-  color: #4f6196;
+  color: $primary;
 }
 
 .modal-header {
-  background-color: rgba(192, 189, 189, 0.733) !important;
+  background-color: $light !important;
 }
 
 .dashboard-alert {
-  background: #e9e9e9;
-  color: #000000 !important;
+  background: $light;
+  color: $shadow !important;
   text-align: center;
 }
 
@@ -413,8 +402,8 @@ nav {
   float: right;
 }
 .add-dictionaries {
-  border-color: green;
-  background-color: whitesmoke;
+  border-color: $primary;
+  background-color: $light;
   margin-top: 10px;
   float: right;
   margin-right: 37%;
@@ -422,8 +411,8 @@ nav {
 
 }
 .add-dictionaries:hover {
-  background-color: #2b6d27;
-  color: white;
+  background-color: $primary;
+  color: $light;
 }
 .dashboard-head{
   display: inline;
@@ -434,10 +423,10 @@ nav {
 }
 
 .viewdetailslink{
-  color: #343434;
+  color: $shadow;
 }
 .viewdetailslink:hover{
-  color: #dedcdc;
+  color: $light;
 }
 
 #generalSearch{
@@ -445,14 +434,14 @@ nav {
   padding-top: 0%;
   padding-bottom: 0.4%;
   border-radius: 10rem;
-  border-color: #e9e9e942;
+  border-color: $secondary;
   background-color:#494a4a42;
   transition: all 400ms ease-in-out;
 }
 
 #generalSearch:hover, #generalSearch:focus {
-  border-color: #e9e9e9;
-  background-color: #e9e9e9;
+  border-color: $light;
+  background-color: $light;
 }
 
 #generalSearchForm{
@@ -463,7 +452,7 @@ nav {
 
 #navbarDropdown{
   padding: 0rem 0rem;
-  color: white;
+  color: $light;
 }
 
 .navBarItems{
@@ -478,10 +467,10 @@ nav {
   margin-left: 5%;
   margin-right: 5%;
   padding: 0rem 0rem;
-  color: white;
+  color: $light;
   border-left: solid 1px;
   border-right: solid 1px;
-  border-color: #e9e9e942;
+  border-color: $secondary;
 }
 p{
   font-size: 1.5em;
@@ -505,7 +494,7 @@ p{
 }
 
 #generalSearch::placeholder{
-  color: #f5f5f5e3;
+  color: $light;
 }
 
 #container{
@@ -550,4 +539,12 @@ p{
     min-width: 320px;
     margin-bottom: .7rem;
   }
+}
+
+#add-dictionary {
+  box-shadow: none;
+}
+
+#add-dictionary:hover {
+  color: white;
 }

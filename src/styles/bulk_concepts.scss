@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Slabo+27px');
 .scheduler-border {
-  border: 0px groove #ddd !important;
+  border: 0px groove $light !important;
   padding: 0 1.6em 1.6em 1.9em !important;
   margin-bottom: 10px;
   margin-top: 10px;
-  -webkit-box-shadow: 0px 0px 0px 0px #000;
-  box-shadow: 0px 0px 0px 0px #000;
+  -webkit-box-shadow: 0px 0px 0px 0px $shadow;
+  box-shadow: 0px 0px 0px 0px $shadow;
 }
 
 .scheduler-border h3 {
@@ -54,11 +54,11 @@
 }
 
 .search-bar:hover {
-  box-shadow: 0px 8px 20px -8px rgba(0, 0, 0, 0.471);
+  box-shadow: 0px 8px 20px -8px $dark;
 }
 
 .search-bar {
-  background: rgb(233, 233, 233);
+  background: $light;
   border-radius: 10rem;
   padding: 0 0.6rem;
   float: right;
@@ -66,7 +66,7 @@
 }
 
 .search-bar i {
-  color: #757575;
+  color: $secondary;
 }
 
 .no-padding-top {
@@ -89,7 +89,7 @@
 }
 
 .pagination-container .add-all-concepts-btn:hover {
-  background: rgb(221, 220, 220);
+  background: $light;
 }
 
 .pagination-container .btn {
@@ -97,7 +97,7 @@
 }
 
 .bg-gray {
-  background: #506096;
+  background: $primary;
   color: white;
 }
 
@@ -112,13 +112,16 @@
 
 .bulk-concepts .sidenav-container {
   padding: .5rem 2rem;
-  border-radius: .4rem;
 }
 
 .bulk-concept-label {
   cursor: pointer;
   font-size: 1rem;
   margin-top: -.23rem;
+}
+
+.custom-control-label::before {
+  background: unset;
 }
 
 .bulk-concepts .sidenav-header {
@@ -151,12 +154,11 @@
   width: 2rem;
   height: .3rem;
   border-radius: 10rem;
-  background: #5c6273;
+  background: $secondary;
 }
 
 .pop-up-description {
-  background: #e8e9eb;
-  color: #2c2e35;
+  background: $light;
   padding: .4rem;
   font-size: .9rem;
   white-space: normal;
@@ -212,10 +214,10 @@
 }
 
 .search-ul-li{
-  border: 1px solid #bbb;
+  border: 1px solid $secondary;
   border-radius: 3px;
   padding: 1px;
-  background: #F4f4f4;
+  background: $light;
   z-index: 1;
   max-height:210px;
   max-width: 300px;
@@ -235,14 +237,14 @@
 .mapping-preview{
   font-size: .9rem;
   font-weight: 200;
-  border: #e8e9eb solid 2px;
+  border: $light solid 2px;
   .rt-table{
     text-align: justify;
     .rt-thead{
       font-weight: 600;
     }
     .rt-td, .rt-th{
-      border-right: 1px solid #bbb;
+      border-right: 1px solid $secondary;
     }
   }
 }
