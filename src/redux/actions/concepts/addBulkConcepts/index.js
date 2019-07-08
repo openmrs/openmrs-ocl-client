@@ -46,18 +46,13 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
   }
 };
 
-export const addToFilterList = (item, type, query, currentPage) => (dispatch) => {
-  if (type === FILTER_TYPES.DATATYPE) {
-    dispatch(isSuccess(item, ADD_TO_DATATYPE_LIST));
-    return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
-  }
-  dispatch(isSuccess(item, ADD_TO_CLASS_LIST));
-  return dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
+export const addToFilterList = (item, type) => (dispatch) => {
+  if (type === FILTER_TYPES.DATATYPE) dispatch(isSuccess(item, ADD_TO_DATATYPE_LIST));
+  else dispatch(isSuccess(item, ADD_TO_CLASS_LIST));
 };
 
-export const clearAllBulkFilters = (filterType, query, currentPage) => (dispatch) => {
+export const clearAllBulkFilters = (filterType) => (dispatch) => {
   dispatch({ type: CLEAR_BULK_FILTERS, payload: filterType });
-  dispatch(fetchFilteredConcepts('CIEL', query, currentPage));
 };
 
 export const previewConcept = id => (dispatch, getState) => {

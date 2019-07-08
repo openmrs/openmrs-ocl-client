@@ -90,25 +90,38 @@ export class BulkConceptsPage extends Component {
     return null;
   }
 
+  returnToFirstPageAndSearch = () => {
+    const { searchingOn } = this.state;
+    const { currentPage, setCurrentPage: setPage } = this.props;
+
+    if (currentPage === 1) {
+      if (searchingOn) return this.searchOption();
+      return this.getBulkConcepts();
+    }
+    // search is triggered in componentDidUpdate
+    return setPage(1);
+  };
+
   handleFilter = (event) => {
     const {
       target: { name },
     } = event;
     const targetName = name.split(',');
-    const query = `q=${this.state.searchInput}`;
     this.setState({ searchingOn: true });
-    const { currentPage } = this.props;
     if ((targetName[1]).trim() === 'datatype') {
-      this.props.addToFilterList(targetName[0], 'datatype', query, currentPage);
+      this.props.addToFilterList(targetName[0], 'datatype');
     } else {
-      this.props.addToFilterList(targetName[0], 'classes', query, currentPage);
+      this.props.addToFilterList(targetName[0], 'classes');
     }
+
+    this.returnToFirstPageAndSearch();
   };
 
   clearBulkFilters = (filterType) => {
-    const { clearAllBulkFilters: clearFilters, currentPage } = this.props;
-    const query = `q=${this.state.searchInput}`;
-    clearFilters(filterType, query, currentPage);
+    const { clearAllBulkFilters: clearFilters } = this.props;
+    clearFilters(filterType);
+
+    this.returnToFirstPageAndSearch();
   };
 
   getBulkConcepts = () => {
