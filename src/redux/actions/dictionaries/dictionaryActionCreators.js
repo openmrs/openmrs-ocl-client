@@ -13,7 +13,9 @@ import {
   realisingHeadSuccess,
   editDictionarySuccess,
   creatingVersionsSuccess,
-  creatingVersionsError, replaceConcept,
+  creatingVersionsError,
+  replaceConcept,
+  toggleDictionaryFetching,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
@@ -36,7 +38,7 @@ export const createDictionary = data => async dispatch =>
         notify.show(
           'Successfully added dictionary to your organization',
           'success', 6000,
-        ), 
+        ),
       )})
     .catch(error => {
       error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000):
@@ -58,7 +60,7 @@ export const createDictionaryUser = data => dispatch =>
         ),
       )})
     .catch(error => {
-      error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) : 
+      error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) :
       showNetworkError();
     });
 
@@ -100,13 +102,13 @@ export const searchDictionaries = searchItem => async (dispatch) => {
 };
 
 export const fetchDictionary = data => (dispatch) => {
-  dispatch(isFetching(true));
+  dispatch(toggleDictionaryFetching(true));
   return api.dictionaries
     .fetchDictionary(data)
     .then(
       (payload) => {
       dispatch(dictionaryIsSuccess(payload));
-      dispatch(isFetching(false));
+      dispatch(toggleDictionaryFetching(false));
     });
   };
 

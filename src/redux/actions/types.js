@@ -4,6 +4,7 @@ export const AUTHENTICATION_IN_PROGRESS = '[auth] login progess';
 export const LOGGED_OUT = '[auth] logout';
 export const LOGOUT_FAILED = '[auth] logout failed';
 export const IS_FETCHING = '[ui] toggle spinner';
+export const TOGGLE_DICTIONARY_FETCHING = '[dictionary] toggle dictionary fetching';
 export const FETCH_CONCEPTS = '[concepts] fetch concepts';
 export const SEARCH_CONCEPTS = '[concepts] search concepts';
 export const CLEAR_CONCEPTS = '[concepts] clear concepts';

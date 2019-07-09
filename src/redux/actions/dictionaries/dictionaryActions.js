@@ -14,7 +14,7 @@ import {
   REMOVE_MAPPING,
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
-  RELEASING_HEAD_VERSION, REPLACE_CONCEPT,
+  RELEASING_HEAD_VERSION, REPLACE_CONCEPT, TOGGLE_DICTIONARY_FETCHING,
 } from '../types';
 
 export const addDictionary = response => ({
@@ -104,5 +104,10 @@ export const creatingVersionsSuccess = payload => ({
 
 export const creatingVersionsError = payload => ({
   type: CREATING_RELEASED_VERSION_FAILED,
+  payload,
+});
+
+export const toggleDictionaryFetching = payload => ({
+  type: TOGGLE_DICTIONARY_FETCHING,
   payload,
 });

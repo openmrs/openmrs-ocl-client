@@ -8,10 +8,17 @@ import {
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
   RELEASING_HEAD_VERSION,
+  TOGGLE_DICTIONARY_FETCHING,
 } from '../actions/types';
 
 const initalState = {
-  versions: [], dictionaries: [], loading: false, dictionary: {}, isReleased: false, error: [],
+  versions: [],
+  dictionaries: [],
+  loading: false,
+  dictionary: {},
+  isReleased: false,
+  error: [],
+  fetchingDictionary: false,
 };
 
 export default (state = initalState, action) => {
@@ -60,6 +67,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case TOGGLE_DICTIONARY_FETCHING:
+      return {
+        ...state,
+        fetchingDictionary: action.payload,
       };
     default:
       return state;

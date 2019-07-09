@@ -17,6 +17,7 @@ import {
   REMOVE_CONCEPT,
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED, REPLACE_CONCEPT,
+  TOGGLE_DICTIONARY_FETCHING,
 } from '../../../redux/actions/types';
 import {
   fetchOrganizations,
@@ -177,9 +178,9 @@ describe('Test suite for dictionary actions', () => {
       });
     });
     const expectedActions = [
-      { type: IS_FETCHING, payload: true },
+      { type: TOGGLE_DICTIONARY_FETCHING, payload: true },
       { type: FETCHING_DICTIONARY, payload: [dictionaries] },
-      { type: IS_FETCHING, payload: false },
+      { type: TOGGLE_DICTIONARY_FETCHING, payload: false },
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(fetchDictionary('/users/chriskala/collections/over/')).then(() => {
