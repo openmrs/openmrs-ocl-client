@@ -18,6 +18,7 @@ fetchCielConcepts,
 import cielConcepts from '../../__mocks__/concepts';
 import api from '../../../redux/api';
 import { DELETE_NOTIFICATION, UPSERT_NOTIFICATION } from '../../../redux/actions/notifications';
+import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
 
 const mockStore = configureStore([thunk]);
 jest.mock('react-notify-toast');
@@ -88,21 +89,21 @@ describe('Test suite for source concepts actions', () => {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${conceptIdList}\nFinding dependent concepts...`,
+          message: `Adding ${conceptIdList}\n\nFinding dependent concepts...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${conceptIdList}\nFound 0 dependent concepts...`,
+          message: `Adding ${conceptIdList}\n\nFound 0 dependent concepts to add...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${conceptIdList}\nFinalizing...`,
+          message: `Adding ${conceptIdList}\n\nAdding these and 0 dependent concepts...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {

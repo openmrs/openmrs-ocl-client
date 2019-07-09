@@ -30,6 +30,7 @@ import concepts, { mockConceptStore } from '../../__mocks__/concepts';
 import mappings from '../../__mocks__/mappings';
 import api from '../../../redux/api';
 import { DELETE_NOTIFICATION, UPSERT_NOTIFICATION } from '../../../redux/actions/notifications';
+import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
 
 jest.mock('react-notify-toast');
 const mockStore = configureStore([thunk]);
@@ -60,21 +61,21 @@ describe('Test suite for addBulkConcepts async actions', () => {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFinding dependent concepts...`,
+          message: `Adding ${concepts.display_name}\n\nFinding dependent concepts...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFound 0 dependent concepts...`,
+          message: `Adding ${concepts.display_name}\n\nFound 0 dependent concepts to add...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFinalizing...`,
+          message: `Adding ${concepts.display_name}\n\nAdding concept...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
@@ -154,21 +155,21 @@ describe('Test suite for addBulkConcepts async actions', () => {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFinding dependent concepts...`,
+          message: `Adding ${concepts.display_name}\n\nFinding dependent concepts...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFound 0 dependent concepts...`,
+          message: `Adding ${concepts.display_name}\n\nFound 0 dependent concepts to add...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {
         type: UPSERT_NOTIFICATION,
         payload: {
           id: notificationId,
-          message: `Adding ${concepts.display_name}\nFinalizing...`,
+          message: `Adding ${concepts.display_name}\n\nAdding concept...${ADDING_CONCEPTS_WARNING_MESSAGE}`,
         },
       },
       {

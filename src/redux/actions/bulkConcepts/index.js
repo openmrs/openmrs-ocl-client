@@ -16,6 +16,7 @@ import {
 import { recursivelyFetchConceptMappings } from '../concepts/addBulkConcepts';
 import { MAPPINGS_RECURSION_DEPTH } from '../../../components/dictionaryConcepts/components/helperFunction';
 import { deleteNotification, upsertNotification } from '../notifications';
+import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
 
 const fetchSourceConcepts = url => async (dispatch) => {
   dispatch(clear(CLEAR_SOURCE_CONCEPTS));
@@ -34,7 +35,7 @@ export default fetchSourceConcepts;
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
   const { url, data, conceptIdList: fromConceptIds } = conceptData;
   const updateNotification = message => dispatch(upsertNotification(
-    `adding-${fromConceptIds}`, `Adding ${fromConceptIds}\n${message}`,
+    `adding-${fromConceptIds}`, `Adding ${fromConceptIds}\n\n${message}${ADDING_CONCEPTS_WARNING_MESSAGE}`,
   ));
 
   try {
@@ -43,7 +44,9 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
     );
     data.data.expressions.push(...referencesToAdd);
 
-    updateNotification('Finalizing...');
+    updateNotification(
+      `Adding these and ${referencesToAdd.length} dependent concepts...`,
+    );
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_BULK_CONCEPTS));
