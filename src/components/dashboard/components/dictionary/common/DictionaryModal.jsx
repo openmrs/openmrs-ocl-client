@@ -57,12 +57,9 @@ export class DictionaryModal extends React.Component {
   };
 
   onChange = (e) => {
-    const { organizations } = this.props;
-    const { owner } = this.state.data;
     this.setState({
       data: {
         ...this.state.data,
-        owner: (organizations && organizations.length === 0) ? 'Individual' : owner,
         [e.target.name]: e.target.value,
       },
     });
@@ -282,14 +279,6 @@ export class DictionaryModal extends React.Component {
                       value={data.preferred_source}
                     >
                       <option value="CIEL">CIEL (default source)</option>
-                      {
-                        isEditingDictionary
-                        && (
-                        <option value={dictionary.preferred_source}>
-                          {dictionary.preferred_source}
-                        </option>
-                        )
-                      }
                     </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
@@ -298,18 +287,16 @@ export class DictionaryModal extends React.Component {
                     <b className="text-danger">*</b>
                     {errors && <InlineError text={errors.owner} />}
                     <Input
-                      type="select"
+                      type={isEditingDictionary ? 'text' : 'select'}
                       id="owner"
-                      placeholder="Individual"
+                      placeholder="Individual/ Organisation"
                       name="owner"
                       onChange={this.onChange}
                       value={data.owner}
+                      disabled={isEditingDictionary}
                     >
-                      {isEditingDictionary
-                      && <option value={data.owner}>{data.owner}</option>
-                      }
                       { organizations && organizations.length !== 0 && <option value="" />}
-                      <option value="Individual" style={{ textTransform: 'capitalize' }}>
+                      <option value={localStorage.getItem('username')}>
                         {' '}
                         {localStorage.getItem('username')}
                         {' '}
