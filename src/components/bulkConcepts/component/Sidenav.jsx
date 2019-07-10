@@ -22,9 +22,9 @@ const Sidenav = (props) => {
         <div className="row">
           <h5 className="sidenav-header">
             Datatypes
-            {datatypes.length && (
+            {datatypes.length > 0 ? (
               <Button id="clear-datatype-filters" onClick={() => clearAllBulkFilters(FILTER_TYPES.DATATYPE)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
-            )}
+            ) : ('')}
           </h5>
         </div>
         {datatypes.map(datatype => (
@@ -40,9 +40,9 @@ const Sidenav = (props) => {
         <div className="row mt-3">
           <h5 className="sidenav-header">
             Classes
-            {classes.length && (
+            {classes.length > 0 ? (
               <Button id="clear-class-filters" onClick={() => clearAllBulkFilters(FILTER_TYPES.CLASSES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
-            )}
+            ) : ('')}
           </h5>
         </div>
         {classes.map(classItem => (

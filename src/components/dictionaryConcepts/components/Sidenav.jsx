@@ -12,9 +12,9 @@ const Sidenav = ({
       <div className="row">
         <h5 className="sidenav-header">
           Source
-          {filteredSources.length && (
+          {filteredSources.length > 0 ? (
             <Button id="clear-source-filters" onClick={() => clearAllFilters(FILTER_TYPES.SOURCES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
-          )}
+          ) : ('')}
         </h5>
       </div>
       {filteredSources.map(source => (
@@ -29,9 +29,9 @@ const Sidenav = ({
       <div className="row mt-3">
         <h5 className="sidenav-header">
           Class
-          {filteredClass.length && (
+          {filteredClass.length > 0 ? (
             <Button id="clear-class-filters" onClick={() => clearAllFilters(FILTER_TYPES.CLASSES)} className="btn btn-sm btn-outline-secondary clear-filter-button">Clear all</Button>
-          )}
+          ) : ('')}
         </h5>
       </div>
       {filteredClass.map(classItem => (
