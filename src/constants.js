@@ -8,3 +8,6 @@ export const FILTER_TYPES = {
 };
 
 export const ORGANIZATIONS = 'orgs';
+
+export const ADDING_CONCEPTS_WARNING_MESSAGE = '\nThis may take several minutes.\n'
+  + 'DO NOT NAVIGATE AWAY FROM THE APPLICATION UNTIL THIS IS COMPLETE.';

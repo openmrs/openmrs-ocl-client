@@ -15,7 +15,7 @@ import {
 } from '../../types';
 import api from '../../../api';
 import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
-import { FILTER_TYPES } from '../../../../constants';
+import { ADDING_CONCEPTS_WARNING_MESSAGE, FILTER_TYPES } from '../../../../constants';
 import { deleteNotification, upsertNotification } from '../../notifications';
 
 export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1, conceptLimit = 10) => async (
@@ -78,7 +78,7 @@ export const recursivelyFetchConceptMappings = async (
   updateNotification('Finding dependent concepts...');
   const startingConceptMappings = await fetchMappings(fromConceptCodes.join(','));
   const mappingsList = [startingConceptMappings.data];
-  updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts...`);
+  updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts to add...`);
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsList[i].map(
       mapping => mapping.to_concept_code,
@@ -86,14 +86,14 @@ export const recursivelyFetchConceptMappings = async (
     if (!toConceptCodes.length) break;
     const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
     mappingsList.push(conceptMappings.data);
-    updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts...`);
+    updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts to add...`);
   }
   return getInternalConceptUrlsInMappings(mappingsList);
 };
 
 export const addConcept = (params, data, conceptName, id) => async (dispatch) => {
   const updateNotification = message => dispatch(upsertNotification(
-    `adding-${id}`, `Adding ${conceptName}\n${message}`,
+    `adding-${id}`, `Adding ${conceptName}\n\n${message}${ADDING_CONCEPTS_WARNING_MESSAGE}`,
   ));
 
   const { type, typeName, collectionName } = params;
@@ -107,7 +107,13 @@ export const addConcept = (params, data, conceptName, id) => async (dispatch) =>
     );
     data.data.expressions.push(...referencesToAdd);
 
-    updateNotification('Finalizing...');
+    if (referencesToAdd.length) {
+      updateNotification(
+        `Adding this and ${referencesToAdd.length} dependent concepts...`,
+      );
+    } else {
+      updateNotification('Adding concept...');
+    }
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
