@@ -17,6 +17,7 @@ import api from '../../../api';
 import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
 import { ADDING_CONCEPTS_WARNING_MESSAGE, FILTER_TYPES } from '../../../../constants';
 import { deleteNotification, upsertNotification } from '../../notifications';
+import { buildPartialSearchQuery } from '../../../../helperFunctions';
 
 export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage = 1, conceptLimit = 10) => async (
   dispatch,
@@ -26,7 +27,9 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
   const {
     bulkConcepts: { datatypeList, classList },
   } = getState();
-  let url = `orgs/${source}/sources/${source}/concepts/?${query}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
+
+  const searchQuery = buildPartialSearchQuery(query);
+  let url = `orgs/${source}/sources/${source}/concepts/?${searchQuery}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
 
   if (datatypeList.length > 0) {
     url = `${url}&datatype=${datatypeList.join(',')}`;

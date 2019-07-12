@@ -55,6 +55,7 @@ import {
 import instance from '../../../config/axiosConfig';
 import api from '../../api';
 import { recursivelyFetchConceptMappings } from './addBulkConcepts';
+import { buildPartialSearchQuery } from '../../../helperFunctions';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
   let conceptList = concepts;
@@ -127,18 +128,18 @@ export const fetchDictionaryConcepts = (
   page = 1,
 ) => async (dispatch, getState) => {
   dispatch(isFetching(true));
-  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?includeMappings=true&q=${query}&limit=${limit}&page=${page}&verbose=true`;
+
+  const searchQuery = buildPartialSearchQuery(query);
+  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${searchQuery}&limit=${limit}&page=${page}&verbose=true&includeMappings=1`;
   const filterBySource = getState().concepts.filteredBySource;
   const filterByClass = getState().concepts.filteredByClass;
 
-  if (filterBySource.length > 0 && filterByClass.length > 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&source=${filterBySource.join(',')}&conceptClass=${filterByClass.join(',')}`;
+  if (filterBySource.length > 0) {
+    url = `${url}&source=${filterBySource.join(',')}`;
   }
-  if (filterBySource.length > 0 && filterByClass.length === 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&source=${filterBySource.join(',')}`;
-  }
-  if (filterBySource.length === 0 && filterByClass.length > 0) {
-    url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${query}&limit=${limit}&page=${page}&verbose=true&conceptClass=${filterByClass.join(',')}`;
+
+  if (filterByClass.length > 0) {
+    url = `${url}&conceptClass=${filterByClass.join(',')}`;
   }
   try {
     const response = await instance.get(`${url}&includeRetired=1`);
