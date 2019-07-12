@@ -149,25 +149,30 @@ describe('Test suite for source concepts actions', () => {
   });
 
   it('should dispatch ADD_EXISTING_BULK_CONCEPTS  action type when adding a dictionary reference', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: {
-          data: [],
-        },
-      });
-    });
-
-    const expectedAction = [];
-
     const conceptUrl = '/orgs/WHO/sources/ICD-10/concepts/A15.2/';
     const ownerUrl = '/orgs/WHO/';
     const dictionaryId = 'ICD-10';
     const store = mockStore({});
 
+    moxios.stubRequest(new RegExp(`.*${conceptUrl}`), {
+      status: 200,
+      response: [cielConcepts],
+    });
+
+    moxios.stubRequest(new RegExp(`.*${ownerUrl}collections/${dictionaryId}/references/`), {
+      status: 200,
+      response: 'Added',
+    });
+
+    const expectedAction = [
+      {
+        type: ADD_EXISTING_BULK_CONCEPTS,
+        payload: 'Added',
+      },
+    ];
+
     return store.dispatch(addDictionaryReference(conceptUrl, ownerUrl, dictionaryId))
-      .then(() => expect(store.getActions()).toEqual(expectedAction));
+      .then(() => expect(store.getActions()[0].type).toEqual(expectedAction[0].type));
   });
   it('should dispatch an error when adding bulk concepts', () => {
     moxios.wait(() => {
