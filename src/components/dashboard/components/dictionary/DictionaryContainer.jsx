@@ -286,7 +286,7 @@ export class DictionaryOverview extends Component {
 export const mapStateToProps = state => ({
   dictionary: state.dictionaries.dictionary,
   dictionaryConcepts: state.concepts.dictionaryConcepts,
-  loader: state.dictionaries.loading,
+  loader: state.dictionaries.loading || state.dictionaries.fetchingDictionary,
   versions: state.dictionaries.versions,
   error: state.dictionaries.error,
   isReleased: state.dictionaries.isReleased,

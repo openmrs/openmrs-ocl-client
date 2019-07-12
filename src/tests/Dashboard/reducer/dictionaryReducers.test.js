@@ -12,6 +12,7 @@ import {
   RELEASING_HEAD_VERSION,
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
+  TOGGLE_DICTIONARY_FETCHING,
 } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
@@ -41,6 +42,7 @@ const state = {
   error: [],
   loading: false,
   isReleased: false,
+  fetchingDictionary: false,
 };
 const dictionary = dictionaries;
 
@@ -67,6 +69,19 @@ describe('Test suite for dictionaries reducers', () => {
       },
     )).toEqual({
       loading: false,
+    });
+  });
+  describe('TOGGLE_DICTIONARY_FETCHING', () => {
+    it('should correctly set the fetchingDictionary to the payload value', () => {
+      expect(dictionaryreducer(
+        {},
+        {
+          type: TOGGLE_DICTIONARY_FETCHING,
+          payload: false,
+        },
+      )).toEqual({
+        fetchingDictionary: false,
+      });
     });
   });
   it('should fetch a dictionary', () => {
