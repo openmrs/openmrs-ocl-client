@@ -5,6 +5,20 @@ import { TRADITIONAL_OCL_HOST } from '../../dictionaryConcepts/components/helper
 const DashboardDetails = ({ numberOfOrgs, numberOfDictionary, organizations }) => {
   const nameOfOrganizations = organizations.map(organization => organization.name).join(',');
   const dictionary = numberOfDictionary === 1 ? 'dictionary' : 'dictionaries';
+
+  const dictionaryCountMarkup = (
+    <p className="lead">
+      You currently have
+      {' '}
+      {numberOfDictionary}
+      {' '}
+      personal
+      {' '}
+      {dictionary}
+      .
+    </p>
+  );
+
   if (numberOfOrgs === 1) {
     return (
       <div className="user-data">
@@ -22,6 +36,7 @@ organization. This can be changed via
 .
           </span>
         </p>
+        {dictionaryCountMarkup}
       </div>
     );
   }
@@ -61,6 +76,7 @@ organizations:
 .
           </span>
         </p>
+        {dictionaryCountMarkup}
       </div>
     );
   }
@@ -75,16 +91,7 @@ organizations:
           </a>
 .
         </p>
-        <p className="lead">
-        You currently have
-          {' '}
-          {numberOfDictionary}
-          {' '}
-personal
-          {' '}
-          {dictionary}
-.
-        </p>
+        {dictionaryCountMarkup}
       </span>
     </div>
   );
