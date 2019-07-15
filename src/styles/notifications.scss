@@ -11,7 +11,7 @@
 
     .notification {
         border-radius: 4px;
-        box-shadow: rgba(0, 0, 0, 0.176) 0 3px 8px;
+        box-shadow: 0 1px 3px $shadow, 0 1px 2px $secondary;
         display: flex;
         margin-bottom: 8px;
         width: 360px;
@@ -27,7 +27,7 @@
     }
 
     .notification-info {
-      background-color: $light;
-      color: rgb(80, 95, 121);
+      background-color: $lighter;
+      color: $secondary;
     }
 }

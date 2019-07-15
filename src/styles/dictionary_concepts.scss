@@ -18,18 +18,14 @@
   margin-left: -8%;
 }
 
-body {
-  background: rgba(230, 230, 230, 0.12);
-}
-
 .rounded-edge {
   border-radius: 2rem;
   -webkit-border-radius: 2rem;
   -moz-border-radius: 2rem;
   -ms-border-radius: 2rem;
   -o-border-radius: 2rem;
-  background-color: white;
-  color: black;
+  background-color: $light;
+  color: $dark;
 }
 
 .concept-header {
@@ -44,14 +40,28 @@ body {
   margin: .5rem;
 }
 
-.concept-dropdown .btn {
-  box-shadow: none;
+.concept-dropdown {
+  .btn {
+    box-shadow: none;
+  }
+
+  .btn.dropdown-toggle:hover, .btn.dropdown-toggle:active {
+    background-color: transparent;
+    color: $dark;
+  }
+
+  .show {
+    .btn.dropdown-toggle {
+      background-color: transparent;
+      color: $dark;
+    }
+  }
 }
 
 .sidenav-container {
-  background: white;
+  background: $light;
   padding: .5rem .7rem;
-  box-shadow: 0 4px 15px 1px #00000012;
+  box-shadow: 0 1px 3px $shadow, 0 1px 2px $secondary;
   font-size: medium;
   margin-bottom: 2rem;
 
@@ -85,7 +95,7 @@ body {
 }
 
 .search-container .concept-search-wrapper {
-  background: rgb(240, 240, 240);
+  background: $shadow;
   padding: .2rem 1rem;
   border-radius: 2rem;
   -webkit-border-radius: 2rem;
@@ -131,21 +141,21 @@ body {
 }
 
 .paginate-controllers i:hover {
-  background: rgb(240, 240, 240);
+  background: $light;
 }
 
 .disabled-pagination-button {
-  color: lightgray;
+  color: $light;
 }
 
 .-pagination .-btn:not([disabled]){
-  color: #ffffff;
-  background: #007bff;
+  color: $light;
+  background: $primary;
 }
 
 .-pagination .-btn:not([disabled]):hover{
-  color: #fff;
-  background: #6c757d !important;
+  color: $light;
+  background: $secondary !important;
 }
 
 .ReactTable .-pagination .-previous,
@@ -208,13 +218,14 @@ border-radius: .5rem;
 }
 
 .custom-concept-list .table {
-  box-shadow: 0 4px 15px 1px #00000012;
+  box-shadow: 0 4px 15px 1px $shadow;
+  border-style: hidden;
   font-size: .8rem;
 }
 
 .custom-concept-list a,
 .dummy-link {
-  color: #4f6196;
+  color: $primary;
   padding-right: .5rem;
 }
 
@@ -234,7 +245,7 @@ input:-webkit-autofill:active {
 }
 
 .concept-form-header {
-  background: #4f6196;
+  background: $primary;
   padding: .5rem;
   display: flex;
   justify-content: space-between;
@@ -265,7 +276,7 @@ input:-webkit-autofill:active {
 }
 
 .concept-form-header .concept-back-button:hover {
-  background: rgba(255, 255, 255, 0.247);
+  background: $secondary;
 }
 
 .concept-form-wrapper .form-wrapper {
@@ -292,7 +303,7 @@ input:-webkit-autofill:active {
 
 .concept-form-table .form-control:not(textarea) {
   height: 2.4rem !important;
-  background: #fafafa;
+  background: $lighter;
 }
 
 .concept-form-table-link {
@@ -310,8 +321,8 @@ input:-webkit-autofill:active {
 }
 
 .bg-blue {
-  background: #4f6196;
-  color: white;
+  background: $primary;
+  color: $light;
   transition: ease-in-out 400ms;
   -webkit-transition: ease-in-out 400ms;
   -moz-transition: ease-in-out 400ms;
@@ -320,11 +331,11 @@ input:-webkit-autofill:active {
 }
 
 .bg-blue:hover {
-  background: #4f6dc7;
+  background: $primary;
 }
 
 .add-more-names {
-  color: #4f6196;
+  color: $primary;
   text-decoration: none !important;
   cursor: pointer !important;
 }
@@ -370,7 +381,7 @@ input:-webkit-autofill:active {
 }
 
 .add-more-answers{
-  color: #4f6196;
+  color: $primary;
   text-decoration: none !important;
   cursor: pointer !important;
   font-size: .8rem;
@@ -430,10 +441,10 @@ input[type=text] {
   max-height: 80px;
 }
 .cielConceptsList {
-  border: 1px solid #bbb;
+  border: 1px solid $secondary;
   border-radius: 3px;
   padding: 5px;
-  background: #F4f4f4;
+  background: $light;
   z-index: 10;
   max-height:210px;
   overflow:auto;
@@ -445,7 +456,7 @@ input[type=text] {
     padding: 5px;
   }
   li:hover:not(.message) {
-    background: #cccccc;
+    background: $light;
   }
   button {
     background: transparent;
@@ -479,7 +490,7 @@ input[type=text] {
   width: 20px;
   height: 20px;
   border-radius: 200px;
-  border: 1px solid #459ad7;
+  border: 1px solid $primary;
   animation: rotate 0.6s linear infinite;
   margin-right: 10px;
   border-bottom: transparent;
@@ -514,11 +525,11 @@ input[type=text] {
 }
 
 .concept-form-table tbody tr:nth-child(odd) {
-  background-color: #f8f9fa;
+  background-color: $light;
 }
 
 #createConceptForm fieldset {
-  border-width: 0;
+  border-width: 0 !important;
 }
 
 #createConceptForm .row {
@@ -526,12 +537,12 @@ input[type=text] {
 }
 
 #createConceptForm .form-control[readonly] {
-  background-color: #f8f9fa;
-  border-color: #f8f9fa;
+  background-color: $light;
+  border-color: $light;
 }
 
 #createConceptForm {
-  background-color: white;
+  background-color: $lighter;
   box-shadow: none;
   border-radius: 5px;
 

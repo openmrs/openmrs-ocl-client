@@ -23,6 +23,14 @@ const ActionButtons = ({
     <React.Fragment>
       {source !== CUSTOM_SOURCE && (
         <React.Fragment>
+          <a
+            href={`${TRADITIONAL_OCL_HOST}${url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="edit-button-link btn btn-sm mb-1"
+          >
+            View in traditional OCL
+          </a>
           <button
             type="button"
             className="btn btn-sm mb-1 actionButtons action-btn-style"
@@ -33,19 +41,17 @@ const ActionButtons = ({
           >
             Remove
           </button>
-          <a
-            href={`${TRADITIONAL_OCL_HOST}${url}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="edit-button-link btn btn-sm mb-1"
-          >
-            View in traditional OCL
-          </a>
         </React.Fragment>
       )}
       {!retired && <React.Fragment>
         {showExtra && (
           <React.Fragment>
+            <Link
+              className="edit-button-link btn btn-sm mb-1 actionButtons"
+              to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
+            >
+              Edit
+            </Link>
             <button
               className="btn btn-sm mb-1 actionButtons"
               type="button"
@@ -54,12 +60,6 @@ const ActionButtons = ({
             >
               Retire
             </button>
-            <Link
-              className="edit-button-link btn btn-sm mb-1 actionButtons"
-              to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
-            >
-            Edit
-            </Link>
           </React.Fragment>
         )}
       </React.Fragment>}

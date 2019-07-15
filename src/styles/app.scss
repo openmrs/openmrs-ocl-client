@@ -1,10 +1,10 @@
 .App{
   text-align: center;
   min-height: 85vh;
-  background-color: #f8f9fa;
+  background-color: $light;
 }
 .nav {
-  background-color: #252526 !important;
+  background-color: $dark !important;
   position: inherit;
 }
 .navbar-brand {
@@ -12,7 +12,7 @@
 }
 
 .nav-item.nav-link:hover {
-  background-color: rgb(70, 65, 65);
+  background-color: $dark;
   padding-right: .5rem;
   padding-left: .5rem;
 }
@@ -24,7 +24,7 @@
 }
 .navbar {
   line-height: 2 !important;
-  background-color: #252526 !important;
+  background-color: $dark !important;
 }
 
 .navbar-light .navbar-toggler-icon {
@@ -33,7 +33,7 @@
 
 @media only screen and (max-width: 992px) {
   .nav-item.nav-link:hover {
-    color: #ccc !important;
+    color: $light !important;
     background: none;
   }
 }
@@ -49,8 +49,8 @@
 }
 
 .loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #3498db;
+  border: 5px solid $light;
+  border-top: 5px solid $primary;
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -80,8 +80,8 @@
   position: relative;
 }
 .btn-not-found {
-  background-color: #495056;
-  border-color: white;
+  background-color: $secondary;
+  border-color: $light;
   margin-bottom: -310% !important;
 }
 .error-template {
@@ -92,13 +92,13 @@
   cursor: pointer;
 }
 .ver-table{
-  color:#3498db;
+  color: $primary;
   margin: auto;
 }
 
 .version-msg{
   text-align: center;
-  color: #0d1699;
+  color: $primary;
 }
 
 .fa-cloud-upload-alt{
@@ -114,12 +114,12 @@
 }
 
 .custom-bg-dark {
-  background-color: #252526 !important;
+  background-color: $dark !important;
 }
 
 .edit-button-link {
-  color: #000000 !important;
-  background-color: #ffffff;
+  color: $dark !important;
+  background-color: $light;
   margin-right: 5px;
 }
 
