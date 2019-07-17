@@ -7,10 +7,12 @@ import {
   createDictionaryUser,
   fetchingOrganizations,
 } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
+import { getLoggedInUsername } from '../../../../helperFunctions';
 
 export class AddDictionary extends React.Component {
   submit = data => (
-    data.owner === 'Individual' ? this.props.createDictionaryUser(data).then(this.props.handleHide)
+    data.owner === getLoggedInUsername()
+      ? this.props.createDictionaryUser(data).then(this.props.handleHide)
       : this.props.createDictionary(data).then(this.props.handleHide))
 
   render() {
