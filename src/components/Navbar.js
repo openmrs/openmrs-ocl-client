@@ -73,7 +73,7 @@ export class Navbar extends Component {
                   <Link className="nav-link text-white" to="/home">Home</Link>
                 </NavItem>
                 <NavItem>
-                  <Link className="nav-link text-white" to="/dashboard/dictionaries">All Dictionaries</Link>
+                  <Link className="nav-link text-white" to="/dashboard/dictionaries">Public Dictionaries</Link>
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret className="text-white">
