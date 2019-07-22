@@ -12,7 +12,6 @@ import CreateConcept from './components/dictionaryConcepts/containers/CreateConc
 import EditConcept from './components/dictionaryConcepts/containers/EditConcept';
 import NotFound from './components/NotFound';
 import DictionaryOverview from './components/dashboard/components/dictionary/DictionaryContainer';
-import OwnerDictionary from './components/dashboard/container/OwnerDictionary';
 import GeneralSearchContainer from './components/GeneralSearch/GeneralSearchContainer';
 import UserDashboard from './components/userDasboard/container/UserDashboard';
 import LoginDetails from './components/login/container/LoginDetails';
@@ -33,14 +32,8 @@ const App = () => (
             <Route exact path="/" component={Authenticate(Login)} />
             <Route exact path="/home" component={Authenticate(UserDashboard)} />
             <Route exact path="/loginDetails" component={LoginDetails} />
-            <Route exact path="/home" component={Authenticate(OwnerDictionary)} />
             <Route exact path="/signup" component={Signup} />
             <Route exact path="/dashboard/dictionaries" component={Authenticate(DictionaryDisplay)} />
-            <Route
-              exact
-              path="/dashboard/userdictionaries"
-              component={Authenticate(OwnerDictionary)}
-            />
             <Route
               exact
               path="/bulk/concepts/:type/:typeName/:collectionName/:dictionaryName/:language"
