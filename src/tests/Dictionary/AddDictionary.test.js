@@ -35,17 +35,21 @@ describe('Test suite for Edit Dictionary', () => {
     expect(wrapper.length).toEqual(1);
   });
 
-  it('should handle submit from an individual', async (done) => {
+  it('should correctly create a collection belonging to a user', () => {
+    const username = 'Individual';
+    localStorage.setItem('username', username);
+
+    props.createDictionaryUser.mockClear();
     const data = {
-      owner: 'Individual',
+      owner: username,
     };
     const wrapper = mount(<Provider store={store}><AddDictionary {...props} /></Provider>);
 
+    expect(props.createDictionaryUser).not.toHaveBeenCalled();
+
     wrapper.find(AddDictionary).instance().submit(data);
 
-    await expect(props.createDictionaryUser).toHaveBeenCalled();
-    expect(props.handleHide).toHaveBeenCalled();
-    done();
+    expect(props.createDictionaryUser).toHaveBeenCalled();
   });
 
   it('should handle submit from anywhere', async (done) => {
