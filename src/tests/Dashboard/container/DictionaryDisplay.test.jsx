@@ -16,6 +16,22 @@ import DictionaryCard from '../../../components/dashboard/components/dictionary/
 jest.mock('react-notify-toast');
 
 describe('DictionaryDisplay', () => {
+  let initialProps;
+
+  beforeEach(() => {
+    initialProps = {
+      fetchDictionaries: jest.fn(),
+      dictionaries: [],
+      isFetching: true,
+      clearDictionaries: jest.fn(),
+      searchDictionaries: jest.fn(),
+      onSearch: jest.fn(),
+      onSubmit: jest.fn(),
+      organizations: [organizations],
+      history: { push: jest.fn() },
+    };
+  });
+
   it('should render without any dictionary data', () => {
     const props = {
       fetchDictionaries: jest.fn(),
@@ -139,6 +155,35 @@ describe('DictionaryDisplay', () => {
     expect(wrapper.state().searchInput).toEqual('test');
     expect(searchDictionaries).toHaveBeenCalledWith(`${wrapper.state().searchInput}*`);
   });
+
+  it('should set searchHasBeenDone to true when a search is triggered', (done) => {
+    const wrapper = mount(<DictionaryDisplay {...initialProps} />);
+    wrapper.setState({ searchInput: 'test' }, () => {
+      expect(wrapper.state().searchHasBeenDone).toBeFalsy();
+      wrapper.instance().onSubmit({ preventDefault: jest.fn() });
+      setImmediate(() => {
+        expect(wrapper.state().searchHasBeenDone).toBeTruthy();
+        done();
+      });
+    });
+  });
+
+  it('should clearDictionaries and set searchHasBeenDone to false when the search box is reset', (done) => {
+    const wrapper = mount(<DictionaryDisplay {...initialProps} />);
+    const event = { target: { name: 'searchInput', value: '' } };
+
+    wrapper.setState({ searchHasBeenDone: true }, () => {
+      expect(wrapper.state().searchHasBeenDone).toBeTruthy();
+      expect(initialProps.clearDictionaries).toHaveBeenCalledTimes(1);
+      wrapper.instance().onSearch(event);
+      setImmediate(() => {
+        expect(wrapper.state().searchHasBeenDone).toBeFalsy();
+        expect(initialProps.clearDictionaries).toHaveBeenCalledTimes(2);
+        done();
+      });
+    });
+  });
+
   it('should render the Dictionary search component', () => {
     const properties = {
       onSearch: jest.fn(),

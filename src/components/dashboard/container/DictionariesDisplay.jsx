@@ -4,10 +4,10 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { notify } from 'react-notify-toast';
 import {
+  clearDictionariesAction,
   fetchDictionaries,
   searchDictionaries,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
-import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
 import ListDictionaries from '../components/dictionary/ListDictionaries';
 import SearchDictionaries from '../components/dictionary/DictionariesSearch';
 import Paginations from '../components/DictionariesPaginations';
@@ -34,12 +34,13 @@ export class DictionaryDisplay extends Component {
       searchInput: '',
       currentPage: 1,
       limit: 24,
+      searchHasBeenDone: false,
     };
     autoBind(this);
   }
 
   componentDidMount() {
-    this.props.fetchDictionaries();
+    this.props.clearDictionaries();
   }
 
   onSubmit = (event) => {
@@ -48,6 +49,9 @@ export class DictionaryDisplay extends Component {
     const { searchInput } = this.state;
     if (searchInput && searchInput.trim().length > 2) {
       this.props.searchDictionaries(`${searchInput}*`); // asterisk added to allow partial search
+      this.setState({
+        searchHasBeenDone: true,
+      });
     } else notify.show(MIN_CHARACTERS_WARNING, 'error', MILLISECONDS_TO_SHOW_WARNING);
   }
 
@@ -57,7 +61,9 @@ export class DictionaryDisplay extends Component {
     this.setState({ [name]: trueValue });
     if (name === 'searchInput' && value.length <= 0) {
       this.props.clearDictionaries();
-      this.props.fetchDictionaries(value);
+      this.setState({
+        searchHasBeenDone: false,
+      });
     }
   }
 
@@ -72,7 +78,7 @@ export class DictionaryDisplay extends Component {
   };
 
   render() {
-    const { currentPage, searchInput } = this.state;
+    const { currentPage, searchInput, searchHasBeenDone } = this.state;
     const { dictionaries, isFetching } = this.props;
     const dictionariesPerPage = this.state.limit;
     const indexOfLastDictionary = currentPage * dictionariesPerPage;
@@ -110,6 +116,7 @@ export class DictionaryDisplay extends Component {
           dictionaries={currentDictionaries}
           fetching={isFetching}
           gotoDictionary={this.gotoDictionary}
+          searchHasBeenDone={searchHasBeenDone}
         />
       </Fragment>
     );
@@ -127,6 +134,6 @@ export default connect(
   {
     fetchDictionaries,
     searchDictionaries,
-    clearDictionaries,
+    clearDictionaries: clearDictionariesAction,
   },
 )(DictionaryDisplay);

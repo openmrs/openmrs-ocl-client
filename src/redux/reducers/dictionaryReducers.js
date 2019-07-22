@@ -9,6 +9,7 @@ import {
   CREATING_RELEASED_VERSION_FAILED,
   RELEASING_HEAD_VERSION,
   TOGGLE_DICTIONARY_FETCHING,
+  CLEAR_DICTIONARIES,
 } from '../actions/types';
 
 const initalState = {
@@ -27,6 +28,11 @@ export default (state = initalState, action) => {
       return {
         ...state,
         dictionaries: [...action.payload],
+      };
+    case CLEAR_DICTIONARIES:
+      return {
+        ...state,
+        dictionaries: [],
       };
     case IS_FETCHING:
       return {

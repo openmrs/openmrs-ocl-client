@@ -13,9 +13,11 @@ import {
   CREATING_RELEASED_VERSION,
   CREATING_RELEASED_VERSION_FAILED,
   TOGGLE_DICTIONARY_FETCHING,
+  CLEAR_DICTIONARIES,
 } from '../../../redux/actions/types';
 import dictionaries from '../../__mocks__/dictionaries';
 import versions from '../../__mocks__/versions';
+import { clearDictionaries } from '../../../redux/actions/dictionaries/dictionaryActions';
 
 describe('Test suite for vote reducer', () => {
   it('should return the initial state', () => {
@@ -49,6 +51,15 @@ const dictionary = dictionaries;
 describe('Test suite for dictionaries reducers', () => {
   it('should return initial state', () => {
     expect(dictionaryreducer(undefined, {})).toEqual(state);
+  });
+
+  describe(CLEAR_DICTIONARIES, () => {
+    it('should clear all dictionaries in state', () => {
+      expect(dictionaryreducer(
+        { dictionaries: [dictionaries] },
+        clearDictionaries(),
+      )).toEqual({ dictionaries: [] });
+    });
   });
 
   it('should handle FETCH_DICTIONARIES', () => {
