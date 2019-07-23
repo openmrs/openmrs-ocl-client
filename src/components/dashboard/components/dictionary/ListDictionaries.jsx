@@ -4,7 +4,7 @@ import Card from './DictionaryCard';
 import Loader from '../../../Loader';
 
 const ListDictionaries = (props) => {
-  const { dictionaries, fetching } = props;
+  const { dictionaries, fetching, searchHasBeenDone } = props;
   if (fetching) {
     return (
       <div className="row jusify-content-center">
@@ -28,14 +28,7 @@ const ListDictionaries = (props) => {
   return (
     <div className="text-center mt-3">
       <h5>
-        No Dictionaries Found
-        {' '}
-        <span aria-label="sad-emoji" role="img">
-          {' '}
-          😞
-          {' '}
-        </span>
-        {' '}
+        {searchHasBeenDone ? 'No Dictionaries Found' : 'Search to find Public Dictionaries'}
       </h5>
     </div>
   );
@@ -46,5 +39,11 @@ ListDictionaries.propTypes = {
   dictionaries: PropTypes.arrayOf(PropTypes.shape({
     dictionaryName: PropTypes.string,
   })).isRequired,
+  searchHasBeenDone: PropTypes.bool,
 };
+
+ListDictionaries.defaultProps = {
+  searchHasBeenDone: true,
+};
+
 export default ListDictionaries;

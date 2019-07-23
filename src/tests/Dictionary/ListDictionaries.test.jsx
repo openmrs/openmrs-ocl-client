@@ -33,4 +33,15 @@ describe('Test ListDictionary component', () => {
     const wrapper = mount(<ListDictionaries {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
+
+  it('should display "Search to find Public Dictionaries" if a user has not yet started a search', () => {
+    const props = {
+      dictionaries: [],
+      fetching: false,
+      searchHasBeenDone: false,
+    };
+
+    const wrapper = mount(<ListDictionaries {...props} />);
+    expect(wrapper.find('div.mt-3 h5').text()).toEqual('Search to find Public Dictionaries');
+  });
 });

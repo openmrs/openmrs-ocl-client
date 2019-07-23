@@ -16,6 +16,7 @@ import {
   creatingVersionsError,
   replaceConcept,
   toggleDictionaryFetching,
+  clearDictionaries,
 } from './dictionaryActions';
 import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
@@ -99,6 +100,10 @@ export const searchDictionaries = searchItem => async (dispatch) => {
     error.response ? dispatch(isErrored(error.response.data)):
     showNetworkError();
   }
+};
+
+export const clearDictionariesAction = () => (dispatch) => {
+  dispatch(clearDictionaries());
 };
 
 export const fetchDictionary = data => (dispatch) => {

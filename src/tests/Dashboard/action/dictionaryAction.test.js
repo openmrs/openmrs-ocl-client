@@ -38,7 +38,10 @@ import {
   editDictionary,
   createVersion,
   editMapping,
-  retireConcept, addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
+  retireConcept,
+  addReferenceToCollectionAction,
+  deleteReferenceFromCollectionAction,
+  clearDictionariesAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
@@ -103,6 +106,15 @@ describe('Test suite for dictionary actions', () => {
     type: CLEAR_DICTIONARY,
     payload: {},
   };
+
+  describe('clearDictionariesAction', () => {
+    it('should dispatch the clearDictionaries action', () => {
+      const dispatchMock = jest.fn();
+
+      clearDictionariesAction()(dispatchMock);
+      expect(dispatchMock).toHaveBeenCalledWith(clearDictionaries());
+    });
+  });
 
   it('should return an array of dictionaries', () => {
     moxios.wait(() => {
