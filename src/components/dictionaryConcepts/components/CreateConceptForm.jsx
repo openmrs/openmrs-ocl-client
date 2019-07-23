@@ -195,6 +195,7 @@ const CreateConceptForm = (props) => {
             <option>Rule</option>
             <option>Structured-Numeric</option>
             <option>Complex</option>
+            <option>Coded</option>
           </select>
             </div>
           </div>
