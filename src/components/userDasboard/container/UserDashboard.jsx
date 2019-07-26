@@ -65,7 +65,9 @@ export class UserDashboard extends Component {
     return (
       <div className="container custom-max-width">
         <Title title="Home" />
-        <AddDictionary show={this.state.show} handleHide={this.handleHide} />
+        {this.state.show ? (
+          <AddDictionary show={this.state.show} handleHide={this.handleHide} />
+        ) : ''}
         <div className="row justify-content-center">
           <div className="col-12 user-info">
             <div className="row">
@@ -101,6 +103,7 @@ Your
                     className="btn btn-outline-primary btn-sm"
                     id="add-dictionary"
                     onClick={this.handleShow}
+                    disabled={loading}
                   >
                     <i className="fas fa-plus fa-fw" />
                     {' '}

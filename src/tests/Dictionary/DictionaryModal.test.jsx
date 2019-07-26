@@ -104,6 +104,7 @@ describe('Test suite for dictionary modal', () => {
         default_locale: '',
         supported_locales: '',
         public_access: '',
+        owner: '',
       },
     });
     const submitButtonWrapper = wrapper.find('#addDictionary');
@@ -112,6 +113,7 @@ describe('Test suite for dictionary modal', () => {
     expect(wrapper.state().errors.preferred_source).toEqual('Required');
     expect(wrapper.state().errors.default_locale).toEqual('Required');
     expect(wrapper.state().errors.public_access).toEqual('Required');
+    expect(wrapper.state().errors.owner).toEqual('Required');
     expect(wrapper.state().errors.supported_locales).toEqual(
       'Preferred language must not be included in other languages',
     );
@@ -265,5 +267,19 @@ describe('Test suite for dictionary modal', () => {
     const submitButtonWrapper = wrapper.find('#addDictionary');
     submitButtonWrapper.simulate('click', preventDefault);
     expect(wrapper.state().disableButton).toBeTruthy();
+  });
+
+  it('should set the owner value to an empty string when a user is a part of organizations', () => {
+    const newProps = { ...props, organizations: [organizations], isEditingDictionary: false };
+    wrapper = shallow(<DictionaryModal {...newProps} />);
+    expect(wrapper.instance().state.data.owner).toEqual('');
+  });
+
+  it('should set the owner value to the username when a user is not a part of any organization', () => {
+    const username = 'test_username';
+    localStorage.setItem('username', username);
+    const newProps = { ...props, organizations: [], isEditingDictionary: false };
+    wrapper = shallow(<DictionaryModal {...newProps} />);
+    expect(wrapper.instance().state.data.owner).toEqual(username);
   });
 });
