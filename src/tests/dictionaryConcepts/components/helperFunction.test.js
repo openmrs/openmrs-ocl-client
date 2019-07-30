@@ -1,5 +1,5 @@
 import {
-  compareConceptsByUpdateDate,
+  compareConceptsByUpdateDate, convertToFrontendNameType,
   KEY_CODE_FOR_ENTER,
   KEY_CODE_FOR_SPACE,
   preventFormSubmit, removeBlankMappings, removeBlankSetsOrAnswers,
@@ -74,5 +74,18 @@ describe('removeBlankSetsOrAnswers', () => {
 
   it('should return an empty list when there are no mappings', () => {
     expect(removeBlankSetsOrAnswers(null)).toEqual([]);
+  });
+});
+
+describe('convertToFrontendNameType', () => {
+  it('should convert the name to the expected frontend types', () => {
+    expect(convertToFrontendNameType('FULLY_SPECIFIED')).toEqual('Fully Specified');
+    expect(convertToFrontendNameType('SHORT')).toEqual('Short');
+    expect(convertToFrontendNameType('INDEX_TERM')).toEqual('Index Term');
+    expect(convertToFrontendNameType(null)).toEqual('Synonym');
+  });
+
+  it('should return the same name if a match is not found', () => {
+    expect(convertToFrontendNameType('Not Known')).toEqual('Not Known');
   });
 });

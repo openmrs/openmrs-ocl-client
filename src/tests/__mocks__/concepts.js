@@ -11,6 +11,25 @@ export default {
   datatype: 'N/A',
   retired: false,
   source: INTERNAL_MAPPING_DEFAULT_SOURCE,
+  names: [
+    {
+      type: 'ConceptName',
+      uuid: 'akdiejf93jf939f9',
+      external_id: '14',
+      name: 'Malaria smear',
+      locale: 'en',
+      locale_preferred: 'true',
+      name_type: 'Designated Preferred Name',
+    },
+    {
+      type: 'ConceptName',
+      uuid: 'akdiejf93jf939f9',
+      external_id: '176',
+      name: 'Malaria smear (procedure)',
+      locale: 'en',
+      name_type: 'Full Form of Descriptor',
+    },
+  ],
   descriptions: [
     {
       uuid: '453aa9941e824becaad4b374899e8bcb',
