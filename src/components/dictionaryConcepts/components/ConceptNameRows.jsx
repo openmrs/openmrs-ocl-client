@@ -24,8 +24,8 @@ class ConceptNameRows extends Component {
     newRow: {
       id: '',
       name: '',
-      locale: 'en',
-      locale_full: { value: 'en', label: 'English [en]' },
+      locale: '',
+      locale_full: {},
       locale_preferred: true,
       name_type: '',
     },
@@ -62,8 +62,8 @@ class ConceptNameRows extends Component {
   }
 
   updateState() {
-    const { newRow } = this.props;
-    const defaultLocale = findLocale(newRow.locale);
+    const { newRow, pathName } = this.props;
+    const defaultLocale = findLocale(newRow.locale || pathName.language);
     this.setState({
       ...this.state,
       uuid: newRow.uuid || '',
