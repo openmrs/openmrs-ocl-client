@@ -14,7 +14,7 @@ export const classes = [
   'ConvSet',
   'Misc',
   'Symptom',
-  'Symptom-Finding',
+  'Symptom/Finding',
   'Specimen',
   'Misc-Order',
   'Workflow',

@@ -850,4 +850,18 @@ describe('Test suite for mappings on existing concepts', () => {
       expect(newProps.unretireMapping).toHaveBeenCalledWith(retired[0].url);
     });
   });
+  it('should set the concept_class to Symptom/Finding when it receives an initial state of Symptom-Finding', () => {
+    const newProps = {
+      ...props,
+      match: {
+        params: {
+          conceptType: 'Symptom-Finding',
+        },
+      },
+    };
+    const editWrapper = mount(<EditConcept {...newProps} />);
+    const instance = editWrapper.instance();
+    expect(instance.state.concept_class).toEqual('Symptom/Finding');
+  });
 });
+

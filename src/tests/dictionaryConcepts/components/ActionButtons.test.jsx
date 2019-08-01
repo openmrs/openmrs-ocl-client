@@ -5,7 +5,7 @@ import ActionButtons from '../../../components/dictionaryConcepts/components/Act
 const props = {
   actionButtons: true,
   id: '1',
-  concept_class: 'drug',
+  concept_class: 'Symptom/Finding',
   version_url: '/url',
   displayName: ' ',
   showDeleteModal: jest.fn(),

@@ -64,6 +64,7 @@ describe('Test suite for CreateConceptForm', () => {
     const props = {
       state: {
         id: '1',
+        concept_class: 'Symptom-Finding',
       },
       concept: 'Symptom-Finding',
       addDescription: jest.fn(),
