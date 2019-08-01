@@ -1,5 +1,7 @@
 import {
-  compareConceptsByUpdateDate, convertToFrontendNameType,
+  compareConceptsByUpdateDate,
+  convertToFrontendNameType,
+  buildAddConceptToCollectionMessage,
   KEY_CODE_FOR_ENTER,
   KEY_CODE_FOR_SPACE,
   preventFormSubmit, removeBlankMappings, removeBlankSetsOrAnswers,
@@ -87,5 +89,48 @@ describe('convertToFrontendNameType', () => {
 
   it('should return the same name if a match is not found', () => {
     expect(convertToFrontendNameType('Not Known')).toEqual('Not Known');
+  });
+});
+
+describe('buildAddConceptToCollectionMessage', () => {
+  const conceptName = 'testConceptName';
+
+  it('should build the right message for whether or not a concept was added', () => {
+    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: true }])).toEqual(`Added ${conceptName}.`);
+    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: false }])).toEqual(`${conceptName} already in collection.`);
+  });
+
+  it('should return a message with the right count for added and already added concepts', () => {
+    const results = [
+      { added: true },
+      { added: false },
+      { added: true },
+    ];
+
+    expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
+      `Added ${conceptName}. 1 dependent concepts were added. 1 already added concepts were skipped`,
+    );
+  });
+
+  it('should not include added concepts if there are none', () => {
+    const results = [
+      { added: true },
+      { added: false },
+    ];
+
+    expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
+      `Added ${conceptName}. 1 already added concepts were skipped`,
+    );
+  });
+
+  it('should not include skipped concepts if there are none', () => {
+    const results = [
+      { added: true },
+      { added: true },
+    ];
+
+    expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
+      `Added ${conceptName}. 1 dependent concepts were added.`,
+    );
   });
 });

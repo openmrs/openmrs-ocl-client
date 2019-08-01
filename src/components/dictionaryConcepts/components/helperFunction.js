@@ -114,3 +114,16 @@ export const convertToFrontendNameType = (nameType) => {
     default: return nameType;
   }
 };
+export const buildAddConceptToCollectionMessage = (conceptName, results) => {
+  const conceptResult = results[0];
+  const otherResults = results.slice(1);
+
+  const addedCount = otherResults.filter(result => result.added).length;
+  const alreadyInCollectionCount = otherResults.length - addedCount;
+
+  const conceptMessage = conceptResult.added ? `Added ${conceptName}.` : `${conceptName} already in collection.`;
+  const addedConceptsMessage = addedCount > 0 ? ` ${addedCount} dependent concepts were added.` : '';
+  const alreadyAddedMessage = alreadyInCollectionCount > 0 ? ` ${alreadyInCollectionCount} already added concepts were skipped` : '';
+
+  return conceptMessage + addedConceptsMessage + alreadyAddedMessage;
+};

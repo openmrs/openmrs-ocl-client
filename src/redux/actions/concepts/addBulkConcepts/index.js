@@ -14,7 +14,11 @@ import {
   CLEAR_BULK_FILTERS,
 } from '../../types';
 import api from '../../../api';
-import { MAPPINGS_RECURSION_DEPTH, removeDuplicates } from '../../../../components/dictionaryConcepts/components/helperFunction';
+import {
+  buildAddConceptToCollectionMessage,
+  MAPPINGS_RECURSION_DEPTH,
+  removeDuplicates
+} from '../../../../components/dictionaryConcepts/components/helperFunction';
 import { ADDING_CONCEPTS_WARNING_MESSAGE, FILTER_TYPES } from '../../../../constants';
 import { deleteNotification, upsertNotification } from '../../notifications';
 import { buildPartialSearchQuery } from '../../../../helperFunctions';
@@ -120,16 +124,7 @@ export const addConcept = (params, data, conceptName, id) => async (dispatch) =>
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_CONCEPTS));
-    if (payload.data[0].added === true) {
-      const dependentConceptCount = data.data.expressions.length - 1;
-      if (dependentConceptCount) {
-        notify.show(`Just Added - ${conceptName} and ${dependentConceptCount} dependent concepts`, 'success', 3000);
-      } else {
-        notify.show(`Just Added - ${conceptName}`, 'success', 3000);
-      }
-    } else {
-      notify.show(`${conceptName} already added`, 'error', 3000);
-    }
+    notify.show(buildAddConceptToCollectionMessage(conceptName, payload.data), 'success', 5000);
   } catch (e) {
     notify.show(`Failed to add ${conceptName}. Please Retry`, 'error', 3000);
   } finally {
