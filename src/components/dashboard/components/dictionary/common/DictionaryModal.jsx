@@ -6,22 +6,21 @@ import {
 import Select from 'react-select';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import {
-  fetchingOrganizations,
-} from '../../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import InlineError from '../messages/InlineError';
 import languages from './Languages';
+import { getLoggedInUsername } from '../../../../../helperFunctions';
 
 export class DictionaryModal extends React.Component {
   constructor(props) {
     super(props);
+    const { organizations } = this.props;
     this.state = {
       data: {
         id: '',
         preferred_source: 'CIEL',
         public_access: 'View',
         name: '',
-        owner: '',
+        owner: (organizations && organizations.length) ? '' : getLoggedInUsername(),
         custom_validation_schema: 'OpenMRS',
         description: '',
         default_locale: 'en',
@@ -37,7 +36,6 @@ export class DictionaryModal extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchingOrganizations();
     const { isEditingDictionary } = this.props;
     if (isEditingDictionary) {
       this.populateFields();
@@ -411,7 +409,6 @@ DictionaryModal.propTypes = {
   title: PropTypes.string,
   show: PropTypes.bool,
   buttonname: PropTypes.string,
-  fetchingOrganizations: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   organizations: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
@@ -434,10 +431,9 @@ DictionaryModal.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    organizations: state.organizations.organizations,
+    organizations: state.user.userOrganization,
   };
 }
 export default connect(
   mapStateToProps,
-  { fetchingOrganizations },
 )(DictionaryModal);
