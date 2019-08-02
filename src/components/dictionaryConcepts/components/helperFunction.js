@@ -105,3 +105,12 @@ export const removeBlankSetsOrAnswers = (items) => {
     item => item.url,
   );
 };
+export const convertToFrontendNameType = (nameType) => {
+  switch (nameType) {
+    case 'FULLY_SPECIFIED': return 'Fully Specified';
+    case 'SHORT': return 'Short';
+    case 'INDEX_TERM': return 'Index Term';
+    case null: return 'Synonym';
+    default: return nameType;
+  }
+};

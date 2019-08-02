@@ -10,6 +10,7 @@ import DictionaryDisplay from './components/dashboard/container/DictionariesDisp
 import DictionaryConcepts from './components/dictionaryConcepts/containers/DictionaryConcepts';
 import CreateConcept from './components/dictionaryConcepts/containers/CreateConcept';
 import EditConcept from './components/dictionaryConcepts/containers/EditConcept';
+import ViewConcept from './components/dictionaryConcepts/containers/ViewConceptContainer';
 import NotFound from './components/NotFound';
 import DictionaryOverview from './components/dashboard/components/dictionary/DictionaryContainer';
 import GeneralSearchContainer from './components/GeneralSearch/GeneralSearchContainer';
@@ -65,6 +66,11 @@ const App = () => (
               // eslint-disable-next-line max-len
               path="/edit/:conceptType?/:conceptId/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/"
               component={Authenticate(EditConcept)}
+            />
+            <Route
+              exact
+              path="/:ownerType/:owner/sources/:source/concepts/:conceptId/"
+              component={Authenticate(ViewConcept)}
             />
             <Route
               exact

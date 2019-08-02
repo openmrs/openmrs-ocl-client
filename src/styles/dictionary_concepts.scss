@@ -528,12 +528,16 @@ input[type=text] {
   background-color: $light;
 }
 
-#createConceptForm fieldset {
-  border-width: 0 !important;
+#createConceptForm, .concept-form {
+  fieldset {
+    border-width: 0 !important;
+  }
 }
 
-#createConceptForm .row {
-  margin-left: unset;
+#createConceptForm, .concept-form {
+  .row {
+    margin-left: unset;
+  }
 }
 
 #createConceptForm .form-control[readonly] {
@@ -543,6 +547,9 @@ input[type=text] {
 
 #createConceptForm {
   background-color: $lighter;
+}
+
+#createConceptForm, .concept-form {
   box-shadow: none;
   border-radius: 5px;
 
@@ -555,12 +562,38 @@ input[type=text] {
   }
 }
 
-#createConceptForm .card {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  box-shadow: 5px 6px 7px -9px rgba(0,0,0,0.471);
+#createConceptForm, .concept-form {
+  .card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    box-shadow: 5px 6px 7px -9px rgba(0,0,0,0.471);
+  }
 }
 
 .concept-info {
   padding: 1rem;
+}
+
+#view-concept-form {
+  table.concept-form-table {
+    margin-left: 3%;
+    margin-right: 3%;
+    max-width: 94%;
+
+    td, th {
+      text-align: left;
+      width: min-content;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .text-none {
+    padding-left: 2vw;
+  }
+}
+
+.create-concept-header .backLink {
+  color: $primary;
+  cursor: pointer;
 }

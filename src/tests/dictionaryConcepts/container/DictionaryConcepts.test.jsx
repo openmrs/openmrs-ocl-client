@@ -148,7 +148,7 @@ describe('Test suite for dictionary concepts components', () => {
       page: 0,
       onPageChange: jest.fn(),
     };
-    const wrapper = mount(<ConceptTable {...props} />);
+    const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
     expect(wrapper).toMatchSnapshot();
     const strikethroughText = wrapper.find('del.text-muted');
     expect(strikethroughText.length).toBeGreaterThan(0);
