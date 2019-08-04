@@ -102,7 +102,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
     store.dispatch(action).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
-      expect(notifyMock).toHaveBeenCalledWith(`Just Added - ${concepts.display_name}`, 'success', 3000);
+      expect(notifyMock).toHaveBeenCalledWith(`Added ${concepts.display_name}.`, 'success', 5000);
       done();
     });
   });
@@ -118,7 +118,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: [{ concepts, ...{ added: true } }],
+        response: [{ concepts, ...{ added: true } }, { added: true }],
       });
     });
 
@@ -133,7 +133,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
 
     store.dispatch(action).then(() => {
       expect(notifyMock).toHaveBeenCalledTimes(1);
-      expect(notifyMock).toHaveBeenCalledWith(`Just Added - ${concepts.display_name} and 1 dependent concepts`, 'success', 3000);
+      expect(notifyMock).toHaveBeenCalledWith(`Added ${concepts.display_name}. 1 dependent concepts were added.`, 'success', 5000);
       done();
     });
   });
@@ -196,7 +196,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
     store.dispatch(action).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
       expect(notifyMock).toHaveBeenCalledTimes(1);
-      expect(notifyMock).toHaveBeenCalledWith(`${concepts.display_name} already added`, 'error', 3000);
+      expect(notifyMock).toHaveBeenCalledWith(`${concepts.display_name} already in collection.`, 'success', 5000);
       done();
     });
   });
