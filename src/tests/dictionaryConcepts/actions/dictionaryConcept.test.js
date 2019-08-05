@@ -466,17 +466,19 @@ describe('Test suite for dictionary concept actions', () => {
   });
 
   it('should handle error in CREATE_NEW_CONCEPT', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'bad request',
+        response: { __all__: 'Could not create concept' },
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: CREATE_NEW_CONCEPT, payload: 'bad request' },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -484,6 +486,9 @@ describe('Test suite for dictionary concept actions', () => {
     const url = '/orgs/IHTSDO/sources/SNOMED-CT/concepts/';
     return store.dispatch(createNewConcept(newConceptData, url)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledWith(
+        'An error occurred when creating a concept.\n Could not create concept for __all__', 'error', 5000,
+      );
     });
   });
 
@@ -863,6 +868,24 @@ describe('Testing Edit concept actions ', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_EXISTING_CONCEPT_ERROR, payload: 'bad request' },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+    const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
+    return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('should not dispatch the error object if it is empty', () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({});
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
       { type: IS_FETCHING, payload: false },
     ];
 

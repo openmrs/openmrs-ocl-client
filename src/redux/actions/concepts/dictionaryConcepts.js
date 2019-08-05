@@ -432,7 +432,6 @@ export const createNewConcept = (data, dataUrl, ownerType = 'users', owner = loc
 } for ${
   Object.keys(error.response.data).toString()
 }`, 'error', 5000);
-      dispatch(isErrored(error.response.data, CREATE_NEW_CONCEPT));
     } else {
       notify.show('An error occurred when creating a concept. Please retry.', 'error', 2000);
     }
