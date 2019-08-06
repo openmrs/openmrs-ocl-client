@@ -353,48 +353,6 @@ describe('DictionaryOverview', () => {
     expect(spyOnHandleHideSub).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle downloading of dictionary concepts', () => {
-    const props = {
-      dictionary: { dictionary },
-      versions: [versions, customVersion],
-      headVersion: [versions],
-      url: '',
-      dictionaryConcepts: [concepts, conceptWithoutDescriptions],
-      showEditModal: jest.fn(),
-      hideSubModal: jest.fn(),
-      showSubModal: jest.fn(),
-      handleRelease: jest.fn(),
-      match: {
-        params: {
-          ownerType: 'testing',
-          owner: 'mochu',
-          type: 'collection',
-          name: 'mochu',
-        },
-      },
-      fetchDictionary: jest.fn(),
-      fetchVersions: jest.fn(),
-      fetchDictionaryConcepts: jest.fn(),
-      download: jest.fn(),
-      createVersion: jest.fn(() => Promise.resolve(true)),
-      error: [],
-      releaseHead: jest.fn(),
-      isReleased: false,
-      loader: false,
-    };
-
-    const wrapper = mount(<Provider store={store}>
-      <MemoryRouter>
-        <DictionaryOverview {...props} />
-      </MemoryRouter>
-    </Provider>);
-    const spy = jest.spyOn(wrapper.find('DictionaryOverview').instance(), 'download');
-    wrapper.instance().forceUpdate();
-    expect(wrapper.find('.downloadConcepts').at(0).exists()).toBe(true);
-    wrapper.find('.downloadConcepts').at(0).simulate('click');
-    expect(spy).toHaveBeenCalledTimes(1);
-  });
-
   it('should handle a new version release without error', () => {
     const props = {
       dictionary,

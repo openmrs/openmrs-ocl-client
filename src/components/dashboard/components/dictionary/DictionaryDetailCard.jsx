@@ -41,7 +41,6 @@ const DictionaryDetailCard = (props) => {
     versionDescription,
     versionId,
     inputLength,
-    download,
     userCanEditDictionary,
   } = props;
 
@@ -230,7 +229,6 @@ Browse in traditional OCL
                         version={version}
                         key={version.id}
                         showSubModal={showSubModal}
-                        download={download}
                       />
                     ))
                   ) : (
@@ -285,7 +283,6 @@ DictionaryDetailCard.propTypes = {
   handleCreateVersion: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   inputLength: PropTypes.number.isRequired,
-  download: PropTypes.func.isRequired,
   versionDescription: PropTypes.string.isRequired,
   versionId: PropTypes.string.isRequired,
   disableButton: PropTypes.bool.isRequired,

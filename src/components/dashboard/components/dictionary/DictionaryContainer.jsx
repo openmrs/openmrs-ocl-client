@@ -110,55 +110,6 @@ export class DictionaryOverview extends Component {
     this.setState({ [name]: value });
   }
 
-  objectToCsv = (data) => {
-    const csvRows = [];
-
-    const headers = Object.keys(data[0]);
-    csvRows.push(headers.join(','));
-
-    for (const row of data) {
-      const values = headers.map((header) => {
-        const escaped = (`${row[header]}`).replace(/"/g, '\\"');
-        return `"${escaped}"`;
-      });
-      csvRows.push(values.join(','));
-    }
-    return csvRows.join('\n');
-  }
-
-  downloadConcept = (data) => {
-    const blob = new Blob([data], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.setAttribute('hidden', '');
-    a.setAttribute('href', url);
-    a.setAttribute('download', 'dictionaryConcepts.csv');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-
-  download = () => {
-    const { dictionaryConcepts } = this.props;
-
-    const data = dictionaryConcepts.map(row => ({
-      owner: row.owner,
-      source: row.source,
-      preferredName: row.display_name,
-      description: row.descriptions ? row.descriptions.map(
-        description => description.description,
-      ).join(' ') : '',
-      conceptClass: row.concept_class,
-      datatype: row.datatype,
-      retired: row.retired,
-      externalId: row.external_id,
-      mappings: row.mappings,
-      url: row.url,
-    }));
-    const csvData = this.objectToCsv(data);
-    this.downloadConcept(csvData);
-  }
-
   confirmRelease = () => {
     const {
       match: {
@@ -259,7 +210,6 @@ export class DictionaryOverview extends Component {
                 versionId={this.state.versionId}
                 versionDescription={this.state.versionDescription}
                 inputLength={inputLength}
-                download={this.download}
                 userCanEditDictionary={this.userCanEditDictionary()}
               />
               <EditDictionary
