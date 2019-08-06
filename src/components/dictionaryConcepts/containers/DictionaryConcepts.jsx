@@ -16,12 +16,14 @@ import {
   paginateConcepts,
   fetchExistingConcept,
   clearAllFilters,
+  updateConceptInCollectionAction,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
   removeConceptMapping,
   retireConcept,
-  addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
+  addReferenceToCollectionAction,
+  deleteReferenceFromCollectionAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
 
@@ -57,6 +59,7 @@ export class DictionaryConcepts extends Component {
     addReferenceToCollection: PropTypes.func.isRequired,
     deleteReferenceFromCollection: PropTypes.func.isRequired,
     clearAllFilters: PropTypes.func,
+    updateConceptInCollection: PropTypes.func,
   };
 
   constructor(props) {
@@ -266,6 +269,17 @@ export class DictionaryConcepts extends Component {
     return true;
   };
 
+  updateConcept = (versionUrl, conceptUrl) => {
+    const {
+      updateConceptInCollection,
+      match: {
+        params: { collectionName, type, typeName },
+      },
+    } = this.props;
+
+    updateConceptInCollection(versionUrl, conceptUrl, type, typeName, collectionName);
+  };
+
   setPage = (index) => {
     this.setState({
       page: index,
@@ -351,6 +365,7 @@ export class DictionaryConcepts extends Component {
               openDeleteModal={openDeleteModal}
               closeDeleteModal={this.closeDeleteModal}
               retireConcept={this.handleRetireConcept}
+              updateConcept={this.updateConcept}
               isOwner={this.state.isOwner}
               page={page}
               onPageChange={this.setPage}
@@ -366,6 +381,7 @@ DictionaryConcepts.defaultProps = {
   filteredByClass: [],
   filteredBySource: [],
   clearAllFilters: () => {},
+  updateConceptInCollection: () => {},
 };
 
 export const mapStateToProps = state => ({
@@ -397,5 +413,7 @@ export default connect(
     retireCurrentConcept: retireConcept,
     getOriginalConcept: fetchExistingConcept,
     clearAllFilters,
+    fetchExistingConcept,
+    updateConceptInCollection: updateConceptInCollectionAction,
   },
 )(DictionaryConcepts);

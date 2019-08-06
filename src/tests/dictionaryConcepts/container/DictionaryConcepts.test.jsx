@@ -692,6 +692,7 @@ describe('Test suite for dictionary concepts components', () => {
         removeDictionaryConcept: jest.fn(),
         removeConceptMappingAction: jest.fn(),
         searchByName: jest.fn(),
+        updateConceptInCollection: jest.fn(),
         ...retireMockProps,
       };
       wrapper = mount(<Provider store={store}>
@@ -699,6 +700,18 @@ describe('Test suite for dictionary concepts components', () => {
           <DictionaryConcepts {...props} />
         </Router>
       </Provider>);
+    });
+
+    it('should call the updateConceptInCollection prop when updateConcept is called', () => {
+      const versionUrl = '/test/version/url/';
+      const url = '/test/url/';
+      const { type, typeName, collectionName } = props.match.params;
+
+      const instance = wrapper.find('DictionaryConcepts').instance();
+      instance.updateConcept(versionUrl, url);
+      expect(props.updateConceptInCollection).toHaveBeenCalledWith(
+        versionUrl, url, type, typeName, collectionName,
+      );
     });
 
     it('should call the handleRetireConcept method when retiring', () => {

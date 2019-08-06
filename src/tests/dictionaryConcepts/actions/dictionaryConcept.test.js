@@ -79,22 +79,24 @@ import {
   unpopulatePrepopulatedSets,
   unpopulateSet,
   buildNewMappingData,
-  fetchConceptsFromASource, buildUpdateMappingData,
+  fetchConceptsFromASource,
+  buildUpdateMappingData,
   clearAllFilters,
+  updateConceptInCollectionAction,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
   removeConceptMapping,
   removeEditedConceptMapping,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
-import { removeMapping } from '../../../redux/actions/dictionaries/dictionaryActions';
+import { removeMapping, replaceConcept } from '../../../redux/actions/dictionaries/dictionaryActions';
 import concepts, {
   mockConceptStore,
   newConcept,
   newConceptData,
   multipleConceptsMockStore,
   newConceptDataWithAnswerAndSetMappings,
-  existingConcept, sampleConcept, conceptWithoutMappings, conceptThatIsNotTheLatestVersion,
+  existingConcept, sampleConcept, conceptWithoutMappings,
 } from '../../__mocks__/concepts';
 import {
   CIEL_SOURCE_URL,
@@ -196,27 +198,6 @@ describe('Test suite for dictionary concept actions', () => {
 
     return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
-    });
-  });
-
-  it('should return only the latest version of each concept', () => {
-    const conceptData = [concepts, conceptThatIsNotTheLatestVersion];
-
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: conceptData,
-      });
-    });
-
-    const store = mockStore(mockConceptStore);
-
-    return store.dispatch(fetchDictionaryConcepts()).then(() => {
-      expect(store.getActions()[1]).toEqual({
-        type: FETCH_DICTIONARY_CONCEPT,
-        payload: [concepts],
-      });
     });
   });
 
@@ -1408,5 +1389,89 @@ describe('fetchConceptsFromASource', () => {
     });
     await fetchConceptsFromASource(sourceUrl, query);
     expect(notifyMock).toHaveBeenCalledWith('Could not load concepts: error. Please retry.', 'error', 2000);
+  });
+});
+
+
+describe('updateConceptInCollectionAction', () => {
+  const dispatchMock = jest.fn();
+  dispatchMock.mockResolvedValue(true);
+
+  const versionUrl = '/version/url/';
+  const conceptUrl = '/concept/url/';
+  const type = 'user';
+  const typeName = 'admin';
+  const collectionName = 'collection';
+
+  beforeEach(() => {
+    moxios.install(instance);
+    dispatchMock.mockClear();
+  });
+
+  afterEach(() => {
+    moxios.uninstall(instance);
+  });
+
+  it('should delete the old reference and add a new one', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: existingConcept });
+    });
+
+    await updateConceptInCollectionAction(
+      versionUrl, conceptUrl, type, typeName, collectionName,
+    )(dispatchMock);
+
+    expect(dispatchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('should update the existing concept in state', async () => {
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({ status: 200, response: existingConcept });
+    });
+
+    await updateConceptInCollectionAction(
+      versionUrl, conceptUrl, type, typeName, collectionName,
+    )(dispatchMock);
+
+    expect(dispatchMock).toHaveBeenCalledWith(replaceConcept(existingConcept));
+  });
+
+  it('should notify the user if a concepts details cannot be retrieved', async () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject();
+    });
+
+    await updateConceptInCollectionAction(
+      versionUrl, conceptUrl, type, typeName, collectionName,
+    )(dispatchMock);
+
+    expect(notifyMock).toHaveBeenCalledWith('Could not retrieve concept details. Please reload this page', 'error', 3000);
+  });
+
+  it('should return false if deleting the old reference fails', async () => {
+    dispatchMock.mockResolvedValue(false);
+
+    const result = await updateConceptInCollectionAction(
+      versionUrl, conceptUrl, type, typeName, collectionName,
+    )(dispatchMock);
+
+    expect(result).toEqual(false);
+  });
+
+  it('should return false if adding the new reference fails', async () => {
+    dispatchMock.mockResolvedValueOnce(true);
+    dispatchMock.mockResolvedValueOnce(false);
+
+    const result = await updateConceptInCollectionAction(
+      versionUrl, conceptUrl, type, typeName, collectionName,
+    )(dispatchMock);
+
+    expect(result).toEqual(false);
   });
 });

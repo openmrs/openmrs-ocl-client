@@ -50,4 +50,33 @@ describe('Test suite for ActionButton', () => {
     wrapper.find('#retireConcept').simulate('click');
     expect(props.showDeleteModal).toBeCalled();
   });
+
+  describe('Update Concept Button', () => {
+    it('should be displayed if the concept we are viewing is not the latest version', () => {
+      wrapper = shallow(<ActionButtons {...props} is_latest_version={false} />);
+      expect(wrapper.exists('#update')).toBeTruthy();
+    });
+
+    it('should not be displayed if the concept we are viewing is the latest version', () => {
+      wrapper = shallow(<ActionButtons {...props} is_latest_version />);
+      expect(wrapper.exists('#update')).toBeFalsy();
+    });
+
+    it('should not be displayed if actionsButtons should not be shown', () => {
+      wrapper = shallow(
+        <ActionButtons {...props} is_latest_version={false} actionButtons={false} />,
+      );
+      expect(wrapper.exists('#update')).toBeFalsy();
+    });
+
+    it('should call updateConcept when clicked', () => {
+      const updateConceptMock = jest.fn();
+      wrapper = shallow(
+        <ActionButtons {...props} is_latest_version={false} updateConcept={updateConceptMock} />,
+      );
+      expect(updateConceptMock).not.toHaveBeenCalled();
+      wrapper.find('#update').simulate('click');
+      expect(updateConceptMock).toHaveBeenCalledWith(props.version_url, props.url);
+    });
+  });
 });

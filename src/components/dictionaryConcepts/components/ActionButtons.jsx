@@ -12,7 +12,9 @@ const ActionButtons = ({
   version_url,
   retired,
   retireConcept,
+  updateConcept,
   url,
+  is_latest_version: isLatestVersion,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -69,6 +71,16 @@ const ActionButtons = ({
       >
         Unretire
       </button>}
+      {!isLatestVersion && showExtra ? (
+        <button
+          className="btn btn-sm mb-1 actionButtons"
+          type="button"
+          id="update"
+          onClick={() => updateConcept(version_url, url)}
+        >
+          Update
+        </button>
+      ) : ''}
     </React.Fragment>
   );
 };
@@ -88,6 +100,8 @@ ActionButtons.propTypes = {
   mappingLimit: PropTypes.number,
   retired: PropTypes.bool,
   retireConcept: PropTypes.func,
+  updateConcept: PropTypes.func,
+  is_latest_version: PropTypes.bool,
 };
 
 ActionButtons.defaultProps = {
@@ -96,6 +110,8 @@ ActionButtons.defaultProps = {
   mappingLimit: null,
   retired: false,
   retireConcept: () => {},
+  updateConcept: () => {},
+  is_latest_version: true,
 };
 
 export default ActionButtons;

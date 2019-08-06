@@ -25,6 +25,7 @@ const ConceptTable = ({
   showDeleteMappingModal,
   handleDeleteMapping,
   retireConcept,
+  updateConcept,
   isOwner,
   page,
   onPageChange,
@@ -80,6 +81,7 @@ const ConceptTable = ({
               mappingLimit: conceptLimit,
               showDeleteMappingModal,
               retireConcept,
+              updateConcept,
             };
             const username = getUsername();
             const renderButtons = username === concept.owner || (
@@ -109,6 +111,7 @@ ConceptTable.propTypes = {
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   retireConcept: PropTypes.func,
+  updateConcept: PropTypes.func,
   isOwner: PropTypes.bool,
   page: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
@@ -118,6 +121,7 @@ ConceptTable.defaultProps = {
   url: '',
   original: {},
   retireConcept: () => {},
+  updateConcept: () => {},
   isOwner: false,
 };
 

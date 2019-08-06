@@ -1,7 +1,11 @@
 import uuid from 'uuid/v4';
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
-import { showNetworkError } from '../dictionaries/dictionaryActionCreators';
+import {
+  addReferenceToCollectionAction,
+  deleteReferenceFromCollectionAction,
+  showNetworkError,
+} from '../dictionaries/dictionaryActionCreators';
 import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE,
@@ -56,6 +60,7 @@ import instance from '../../../config/axiosConfig';
 import api from '../../api';
 import { recursivelyFetchConceptMappings } from './addBulkConcepts';
 import { buildPartialSearchQuery } from '../../../helperFunctions';
+import { replaceConcept } from '../dictionaries/dictionaryActions';
 
 export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
   let conceptList = concepts;
@@ -143,12 +148,7 @@ export const fetchDictionaryConcepts = (
   }
   try {
     const response = await instance.get(`${url}&includeRetired=1`);
-    // this filter is to account for situations where a ref to a concept
-    // version is not removed after an update. Pending backend fix.
-    // ticket: https://github.com/OpenConceptLab/ocl_issues/issues/115
-    const concepts = response.data.filter(
-      concept => concept.is_latest_version,
-    );
+    const concepts = response.data;
     dispatch(getDictionaryConcepts(concepts, FETCH_DICTIONARY_CONCEPT));
     dispatch(paginateConcepts(concepts));
     if (query === '*' && filterByClass.length === 0 && filterBySource.length === 0) {
@@ -575,4 +575,32 @@ export const unretireMapping = url => async (dispatch) => {
     dispatch(isFetching(false));
     return null;
   }
+};
+
+export const updateConceptInCollectionAction = (
+  conceptVersionUrl, conceptUrl, type, typeName, collectionName,
+) => async (dispatch) => {
+  notify.show('Updating concept...', 'info', 3000);
+
+  let response = await dispatch(deleteReferenceFromCollectionAction(
+    type, typeName, collectionName, [conceptVersionUrl],
+  ));
+  if (!response) return false;
+
+  response = await dispatch(
+    addReferenceToCollectionAction(type, typeName, collectionName, [conceptUrl]),
+  );
+  if (!response) return false;
+
+  let result;
+  try {
+    result = await instance.get(`${conceptUrl}?verbose=true`);
+  } catch (e) {
+    notify.show('Could not retrieve concept details. Please reload this page', 'error', 3000);
+    return false;
+  }
+
+  dispatch(replaceConcept(result.data));
+  notify.show('Concept Updated', 'success', 3000);
+  return true;
 };
