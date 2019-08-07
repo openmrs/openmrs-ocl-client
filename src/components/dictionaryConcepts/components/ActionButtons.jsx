@@ -19,6 +19,7 @@ const ActionButtons = ({
   if (actionButtons === true) {
     showExtra = true;
   }
+  const conceptClass = (concept_class === 'Symptom/Finding' ? 'Symptom-Finding' : concept_class);
   return (
     <React.Fragment>
       <Link
@@ -46,7 +47,7 @@ const ActionButtons = ({
           <React.Fragment>
             <Link
               className="edit-button-link btn btn-sm mb-1 actionButtons"
-              to={`/edit/${concept_class}/${id}${dictionaryPathName}`}
+              to={`/edit/${conceptClass}/${id}${dictionaryPathName}`}
             >
               Edit
             </Link>

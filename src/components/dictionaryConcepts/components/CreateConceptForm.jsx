@@ -122,7 +122,7 @@ const CreateConceptForm = (props) => {
           <div className="form-group col-md-5">
             <label htmlFor="class"><h5>Class</h5></label>
             <div>
-              { (props.concept.toString().trim() === 'Symptom-Finding')
+              { (!isEditConcept) && (props.concept.toString().trim() === 'Symptom-Finding')
               && (
               <React.Fragment>
                 <select
@@ -133,7 +133,8 @@ const CreateConceptForm = (props) => {
                   required
                   onChange={props.handleChange}
                 >
-                  <option key="Symptom-Finding">Symptom-Finding</option>
+                  <option value="" key="default" />
+                  <option key="Symptom/Finding">Symptom/Finding</option>
                   <option key="Symptom">Symptom</option>
                   <option key="Finding">Finding</option>
 
@@ -141,6 +142,16 @@ const CreateConceptForm = (props) => {
               </React.Fragment>
               )
               }
+              {(isEditConcept) && (
+                <input
+                  type="text"
+                  className="form-control col-12 text-capitalize pt-3"
+                  value={ props.state.concept_class}
+                  readOnly={isEditConcept}
+                  name="concept_class"
+                  id="class"
+                />
+              )}
 
               { isSetConcept(props.concept.toString().trim())
               && (
@@ -162,10 +173,9 @@ const CreateConceptForm = (props) => {
               </React.Fragment>
               )
               }
-
-              {(
+              {(!isEditConcept) && (
                 props.concept.toString().trim() !== 'Symptom-Finding'
-                && props.concept.toString().trim() !== Set) && (
+                && props.concept.toString().trim() !== 'Set') && (
                 <span className="btn btn-light normal-cursor col-12 text-capitalize pt-3">
                   {props.concept}
                 </span>

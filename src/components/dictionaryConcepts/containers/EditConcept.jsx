@@ -167,7 +167,8 @@ export class EditConcept extends Component {
       },
       existingConcept: { datatype },
     } = this.props;
-    const concept = conceptType || '';
+    const conceptClass = (conceptType === 'Symptom-Finding' ? 'Symptom/Finding' : conceptType);
+    const concept = conceptClass || '';
     this.setState({
       id: conceptId,
       concept_class: concept,
