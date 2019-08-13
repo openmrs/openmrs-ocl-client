@@ -69,7 +69,7 @@ const App = () => (
             />
             <Route
               exact
-              path="/:ownerType/:owner/sources/:source/concepts/:conceptId/"
+              path="/:ownerType/:owner/sources/:source/concepts/:conceptId/:version?/"
               component={Authenticate(ViewConcept)}
             />
             <Route

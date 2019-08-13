@@ -19,6 +19,7 @@ describe('ViewConcept', () => {
     expect(viewConcept.find('#external-id').text()).toEqual(props.concept.external_id);
     expect(viewConcept.find('#id').text()).toEqual(props.concept.id);
     expect(viewConcept.find('#class').text()).toEqual(props.concept.concept_class);
+    expect(viewConcept.find('#version-id').text()).toEqual(props.concept.uuid);
     expect(viewConcept.find('#datatype').text()).toEqual(props.concept.datatype);
     expect(viewConcept.exists('#descriptions')).toBeTruthy();
   });

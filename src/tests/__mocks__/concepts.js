@@ -6,6 +6,7 @@ import { externalSource, internalSource } from './sources';
 
 export default {
   id: '1468667',
+  uuid: '1234',
   external_id: '146869AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
   concept_class: 'Diagnosis',
   datatype: 'N/A',

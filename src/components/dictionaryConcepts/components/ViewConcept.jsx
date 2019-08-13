@@ -13,6 +13,7 @@ const ViewConcept = (props) => {
       datatype,
       names,
       external_id,
+      uuid,
     },
     qaMappings,
     setMappings,
@@ -28,22 +29,26 @@ const ViewConcept = (props) => {
           </legend>
           <div id="concept-details">
             <div className="row">
-              <div className="col-md-6">
-                <label htmlFor="external-id"><u>OpenMRS UUID (OCL External ID)</u></label>
-                <div id="external-id">{external_id}</div>
-              </div>
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="id"><u>OCL ID</u></label>
                 <div id="id">{id}</div>
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="version-id"><u>Version ID</u></label>
+                <div id="version-id">{uuid}</div>
+              </div>
+              <div className="col-md-4">
+                <label htmlFor="external-id"><u>OpenMRS UUID (OCL External ID)</u></label>
+                <div id="external-id">{external_id}</div>
               </div>
             </div>
             <br />
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="class"><u>Class</u></label>
                 <div id="class">{concept_class}</div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <label htmlFor="datatype"><u>Datatype</u></label>
                 <div id="datatype">{datatype}</div>
               </div>
