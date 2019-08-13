@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { CUSTOM_SOURCE, TRADITIONAL_OCL_HOST } from './helperFunction';
+import { CUSTOM_SOURCE } from './helperFunction';
 
 const ActionButtons = ({
   actionButtons,
@@ -12,7 +12,6 @@ const ActionButtons = ({
   version_url,
   retired,
   retireConcept,
-  url,
 }) => {
   const dictionaryPathName = localStorage.getItem('dictionaryPathName');
   let showExtra;
@@ -23,7 +22,7 @@ const ActionButtons = ({
   return (
     <React.Fragment>
       <Link
-        to={url}
+        to={version_url}
         className="edit-button-link btn btn-sm mb-1"
       >
         View
@@ -80,7 +79,6 @@ ActionButtons.propTypes = {
   concept_class: PropTypes.string.isRequired,
   showDeleteModal: PropTypes.func.isRequired,
   version_url: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
   handleDeleteMapping: PropTypes.func.isRequired,
   showDeleteMappingModal: PropTypes.func.isRequired,
   display_name: PropTypes.string.isRequired,
