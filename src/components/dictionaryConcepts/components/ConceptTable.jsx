@@ -28,6 +28,8 @@ const ConceptTable = ({
   isOwner,
   page,
   onPageChange,
+  onPageSizeChange,
+  fetchData,
 }) => (
   <div className="row col-12 custom-concept-list">
     <RemoveConcept
@@ -42,13 +44,21 @@ const ConceptTable = ({
     />
     <ReactTable
       data={concepts}
+      manual
+      sortable={false}
+      pageSizeOptions={[5, 20, 50, 100]}
+      pageSize={conceptLimit}
+      pages={concepts.length < conceptLimit ? page : page + 2}
+      ofText=""
       loading={loading}
-      pageSizeOptions={[5, 10, 20, 25, 50, 100]}
-      defaultPageSize={conceptLimit}
       noDataText="No concepts found!"
       minRows={2}
       page={page}
       onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      onFetchData={() => fetchData()}
+      renderTotalPagesCount={() => ''} // this and ofText="" helps us disable the page count
+      renderPageJump={() => page + 1}
       columns={[
         {
           Header: 'Name',
@@ -112,6 +122,8 @@ ConceptTable.propTypes = {
   isOwner: PropTypes.bool,
   page: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
+  onPageSizeChange: PropTypes.func.isRequired,
+  fetchData: PropTypes.func.isRequired,
 };
 ConceptTable.defaultProps = {
   openDeleteModal: false,

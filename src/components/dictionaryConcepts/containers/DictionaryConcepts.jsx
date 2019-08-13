@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import autoBind from 'react-autobind';
+import { debounce } from 'lodash';
 import Header from '../components/Header';
 import ConceptDropdown from '../components/ConceptDropdown';
 import SideNav from '../components/Sidenav';
 import ConceptTable from '../components/ConceptTable';
 import SearchBar from '../../bulkConcepts/component/SearchBar';
 import { conceptsProps } from '../proptypes';
-import { getUsername } from '../components/helperFunction';
+import { getUsername, classes as CLASSES, SOURCES } from '../components/helperFunction';
 import {
   fetchDictionaryConcepts,
   filterBySource,
   filterByClass,
-  paginateConcepts,
   fetchExistingConcept,
   clearAllFilters,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
@@ -40,8 +40,6 @@ export class DictionaryConcepts extends Component {
     }).isRequired,
     fetchDictionaryConcepts: PropTypes.func.isRequired,
     concepts: PropTypes.arrayOf(PropTypes.shape(conceptsProps)).isRequired,
-    filteredSources: PropTypes.arrayOf(PropTypes.string).isRequired,
-    filteredClass: PropTypes.arrayOf(PropTypes.string).isRequired,
     loading: PropTypes.bool.isRequired,
     filterBySource: PropTypes.func.isRequired,
     filteredByClass: PropTypes.array,
@@ -76,8 +74,22 @@ export class DictionaryConcepts extends Component {
   }
 
   componentDidMount() {
-    setTimeout(this.fetchConcepts, 600);
     this.checkMembershipStatus(getUsername());
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      filteredByClass: prevFilteredByClass, filteredBySource: prevFilteredBySource,
+    } = prevProps;
+    const { filteredByClass, filteredBySource } = this.props;
+    const { searchInput: prevSearchTerm } = prevState;
+    const { searchInput: searchTerm } = this.state;
+
+    if (prevFilteredByClass !== filteredByClass || prevFilteredBySource !== filteredBySource) {
+      this.setPage(0, true);
+    } else if (prevSearchTerm !== searchTerm && searchTerm.length === 0) {
+      this.setPage(0, true);
+    }
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -97,27 +109,22 @@ export class DictionaryConcepts extends Component {
     });
   }
 
-  componentDidUpdate = (prevProps) => {
-    const { concepts } = this.props;
-    if (prevProps.concepts !== concepts) {
-      this.setState({
-        page: 0,
-      });
-    }
-  };
-
-  fetchConcepts(limit = 0) {
+  fetchConcepts() {
     const {
       match: {
         params: { collectionName, type, typeName },
       },
     } = this.props;
 
-    const { searchInput } = this.state;
+    const { searchInput, page, conceptLimit } = this.state;
     const query = `${searchInput.trim()}*`;
 
-    this.props.fetchDictionaryConcepts(type, typeName, collectionName, query, limit);
+    this.props.fetchDictionaryConcepts(
+      type, typeName, collectionName, query, conceptLimit, page + 1,
+    );
   }
+
+  debouncedFetchConcepts = debounce(() => this.fetchConcepts(), 100);
 
   handleSearch(event) {
     const {
@@ -148,8 +155,6 @@ export class DictionaryConcepts extends Component {
       );
     }
 
-    this.fetchConcepts();
-
     this.setState({
       [inputName]: eventAction,
     });
@@ -158,7 +163,6 @@ export class DictionaryConcepts extends Component {
   clearAllFilters(filterType) {
     const { clearAllFilters: clearFilters } = this.props;
     clearFilters(filterType);
-    this.fetchConcepts();
   }
 
   checkMembershipStatus(username) {
@@ -231,15 +235,12 @@ export class DictionaryConcepts extends Component {
       target: { value },
     } = event;
     this.setState(() => ({ searchInput: value }));
-    if (value.length === 0) {
-      this.fetchConcepts();
-    }
   };
 
-  handleSearchByName = (event) => {
+  handleSearchByName(event) {
     event.preventDefault();
-    this.fetchConcepts();
-  };
+    this.setPage(0, true);
+  }
 
   handleRetireConcept = async (id, retired) => {
     const {
@@ -266,11 +267,22 @@ export class DictionaryConcepts extends Component {
     return true;
   };
 
-  setPage = (index) => {
+  setPage(index, reFetchData = false) {
     this.setState({
       page: index,
+    }, () => {
+      if (reFetchData) {
+        this.debouncedFetchConcepts();
+      }
     });
-  };
+  }
+
+  setPageSize(pageSize) {
+    this.setState({
+      conceptLimit: pageSize,
+      page: 0,
+    });
+  }
 
   render() {
     const {
@@ -281,8 +293,6 @@ export class DictionaryConcepts extends Component {
       },
       location: { pathname },
       concepts,
-      filteredClass,
-      filteredSources,
       loading,
       userIsMember,
       filteredByClass,
@@ -309,7 +319,7 @@ export class DictionaryConcepts extends Component {
       <div className="container-fluid custom-dictionary-concepts custom-max-width">
         <Header locationPath={this.props.match.params} />
         <section className="row mt-2">
-          <div className="col-12 col-md-2 pt-1">
+          <div className="col-12 col-md-3 pt-1">
             <h4>Concepts</h4>
           </div>
           {hasPermission && (
@@ -325,13 +335,13 @@ export class DictionaryConcepts extends Component {
         <section className="row mt-3">
           <SideNav
             typeName={typeName}
-            filteredClass={filteredClass}
-            filteredSources={filteredSources}
+            filteredClass={[...CLASSES].sort()}
+            filteredSources={[...SOURCES, collectionName]}
             handleChange={this.handleSearch}
             toggleCheck={filters}
             clearAllFilters={this.clearAllFilters}
           />
-          <div className="col-12 col-md-10 custom-full-width">
+          <div className="col-12 col-md-9 custom-full-width">
             <SearchBar
               handleSearch={this.handleSearchByName}
               handleChange={this.handleChange}
@@ -354,6 +364,8 @@ export class DictionaryConcepts extends Component {
               isOwner={this.state.isOwner}
               page={page}
               onPageChange={this.setPage}
+              onPageSizeChange={this.setPageSize}
+              fetchData={this.debouncedFetchConcepts}
             />
           </div>
         </section>
@@ -370,11 +382,8 @@ DictionaryConcepts.defaultProps = {
 
 export const mapStateToProps = state => ({
   concepts: state.concepts.dictionaryConcepts,
-  totalConceptCount: state.concepts.totalConceptCount,
-  filteredClass: state.concepts.filteredClass,
   filteredByClass: state.concepts.filteredByClass,
   filteredBySource: state.concepts.filteredBySource,
-  filteredSources: state.concepts.filteredSources,
   loading: state.concepts.loading,
   filteredList: state.concepts.filteredList,
   dictionaries: state.dictionaries.dictionary,
@@ -388,7 +397,6 @@ export default connect(
     fetchDictionaryConcepts,
     filterBySource,
     filterByClass,
-    paginateConcepts,
     fetchMemberStatus,
     removeDictionaryConcept,
     addReferenceToCollection: addReferenceToCollectionAction,

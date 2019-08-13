@@ -186,21 +186,6 @@ describe('Test suite for single dictionary concepts', () => {
     });
   });
 
-  it('should handle sidebar items', () => {
-    action = {
-      type: POPULATE_SIDEBAR,
-      payload: [concepts, concept2],
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      filteredSources: ['CIEL'],
-      filteredClass: ['Diagnosis'],
-    });
-  });
   it('should handle CREATE_NEW_NAMES', () => {
     action = {
       type: CREATE_NEW_NAMES,
@@ -301,34 +286,6 @@ describe('Test suite for single dictionary concepts', () => {
     expect(reducer(state, action)).toEqual({
       ...state,
       addConceptToDictionary: action.payload,
-    });
-  });
-  it('should handle FETCH_NEXT_CONCEPT', () => {
-    action = {
-      type: FETCH_NEXT_CONCEPTS,
-      payload: [concepts],
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      paginatedConcepts: action.payload,
-    });
-  });
-  it('should handle TOTAL_CONCEPT_COUNT', () => {
-    action = {
-      type: TOTAL_CONCEPT_COUNT,
-      payload: 1,
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
-      totalConceptCount: action.payload,
     });
   });
 

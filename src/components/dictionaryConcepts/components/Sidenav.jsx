@@ -7,7 +7,7 @@ import { FILTER_TYPES } from '../../../constants';
 const Sidenav = ({
   filteredClass, filteredSources, handleChange, toggleCheck, clearAllFilters,
 }) => (
-  <div className="col-12 col-md-2 custom-full-width">
+  <div className="col-12 col-md-3 custom-full-width">
     <div className="sidenav-container">
       <div className="row">
         <h5 className="sidenav-header">

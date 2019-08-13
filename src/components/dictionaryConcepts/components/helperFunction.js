@@ -76,6 +76,7 @@ export const LEAVE_PAGE = 'Leave';
 export const STAY_ON_PAGE = 'Stay';
 export const INTERNET_ERROR = 'An error occurred with your internet connection, please fix it and try reloading the page.';
 export const CUSTOM_SOURCE = 'Custom';
+export const SOURCES = [INTERNAL_MAPPING_DEFAULT_SOURCE];
 export const ATTRIBUTE_NAME_SOURCE = 'source';
 export const KEY_CODE_FOR_ENTER = 13;
 export const KEY_CODE_FOR_ESCAPE = 27;

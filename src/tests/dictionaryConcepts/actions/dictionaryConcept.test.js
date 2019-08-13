@@ -7,7 +7,6 @@ import instance from '../../../config/axiosConfig';
 import {
   IS_FETCHING,
   FETCH_DICTIONARY_CONCEPT,
-  POPULATE_SIDEBAR,
   FILTER_BY_CLASS,
   FILTER_BY_SOURCES,
   CREATE_NEW_NAMES,
@@ -17,8 +16,6 @@ import {
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
-  TOTAL_CONCEPT_COUNT,
-  FETCH_NEXT_CONCEPTS,
   FETCH_EXISTING_CONCEPT,
   EDIT_CONCEPT_ADD_DESCRIPTION,
   EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
@@ -186,9 +183,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_DICTIONARY_CONCEPT, payload: expectedConcepts },
-      { type: TOTAL_CONCEPT_COUNT, payload: 2 },
-      { type: FETCH_NEXT_CONCEPTS, payload: expectedConcepts },
-      { type: POPULATE_SIDEBAR, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -232,8 +226,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
-      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
-      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -257,8 +249,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
-      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
-      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -283,8 +273,6 @@ describe('Test suite for dictionary concept actions', () => {
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: FETCH_DICTIONARY_CONCEPT, payload: [concepts] },
-      { type: TOTAL_CONCEPT_COUNT, payload: 1 },
-      { type: FETCH_NEXT_CONCEPTS, payload: [concepts] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -298,17 +286,20 @@ describe('Test suite for dictionary concept actions', () => {
   });
 
   it('should handle error in FETCH_DICTIONARY_CONCEPT', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'bad request',
+        response: { detail: 'bad request' },
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCH_DICTIONARY_CONCEPT, payload: 'bad request' },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [] },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -316,6 +307,32 @@ describe('Test suite for dictionary concept actions', () => {
 
     return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledWith('bad request', 'error', 3000);
+    });
+  });
+
+  it('should handle any unknown error in FETCH_DICTIONARY_CONCEPT', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+      });
+    });
+
+    const expectedActions = [
+      { type: IS_FETCHING, payload: true },
+      { type: FETCH_DICTIONARY_CONCEPT, payload: [] },
+      { type: IS_FETCHING, payload: false },
+    ];
+
+    const store = mockStore(mockConceptStore);
+
+    return store.dispatch(fetchDictionaryConcepts('orgs', 'CIEL', 'CIEL')).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledWith('Network Error. Please try again later!', 'error', 6000);
     });
   });
 
@@ -986,15 +1003,7 @@ describe('test suite for synchronous action creators', () => {
     store.dispatch(createNewName());
     expect(store.getActions()).toEqual(expectedActions);
   });
-  it('should handle FETCH_NEXT_CONCEPTS', () => {
-    const expectedActions = [
-      { type: TOTAL_CONCEPT_COUNT, payload: 30 },
-      { type: FETCH_NEXT_CONCEPTS, payload: multipleConceptsMockStore.concepts.dictionaryConcepts },
-    ];
-    const store = mockStore(multipleConceptsMockStore);
-    store.dispatch(paginateConcepts(undefined, 30, 0));
-    expect(store.getActions()).toEqual(expectedActions);
-  });
+
   it('should handle REMOVE_ONE_NAME', () => {
     const store = mockStore(mockConceptStore);
     const expectedActions = [{ type: REMOVE_ONE_NAME, payload: 1 }];

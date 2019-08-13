@@ -3,7 +3,6 @@ import {
   FILTER_BY_CLASS,
   FILTER_BY_SOURCES,
   FETCH_DICTIONARY_CONCEPT,
-  POPULATE_SIDEBAR,
   IS_FETCHING,
   SEARCH_CONCEPTS,
   CLEAR_CONCEPTS,
@@ -14,8 +13,6 @@ import {
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
-  FETCH_NEXT_CONCEPTS,
-  TOTAL_CONCEPT_COUNT,
   FETCH_EXISTING_CONCEPT,
   FETCH_EXISTING_CONCEPT_ERROR,
   EDIT_CONCEPT_ADD_DESCRIPTION,
@@ -40,8 +37,6 @@ import {
   CLEAR_FILTERS,
 } from '../actions/types';
 import {
-  filterSources,
-  filterClass,
   filterList,
   normalizeList,
   filterNames,
@@ -67,7 +62,6 @@ const initialState = {
   description: [],
   newConcept: {},
   addConceptToDictionary: [],
-  paginatedConcepts: [],
   totalConceptCount: 0,
   existingConcept: {
     descriptions: [],
@@ -104,11 +98,6 @@ export default (state = initialState, action) => {
         ...state,
         loading: action.payload,
       };
-    case FETCH_NEXT_CONCEPTS:
-      return {
-        ...state,
-        paginatedConcepts: action.payload,
-      };
     case REMOVE_CONCEPT:
       return {
         ...state,
@@ -124,11 +113,6 @@ export default (state = initialState, action) => {
           .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
         dictionaryConcepts: state.dictionaryConcepts
           .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
-      };
-    case TOTAL_CONCEPT_COUNT:
-      return {
-        ...state,
-        totalConceptCount: action.payload,
       };
     case ADD_CONCEPT_TO_DICTIONARY:
       return {
@@ -157,12 +141,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         dictionaryConcepts: action.payload,
-      };
-    case POPULATE_SIDEBAR:
-      return {
-        ...state,
-        filteredSources: filterSources(action.payload),
-        filteredClass: filterClass(action.payload),
       };
     case CREATE_NEW_NAMES:
       return {
