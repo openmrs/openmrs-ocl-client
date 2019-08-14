@@ -421,6 +421,17 @@ describe('recursivelyFetchConceptMappings', () => {
     expect(fetchFromPublicSourcesMock.mock.calls[1][0]).toEqual(mappings[0].to_concept_code);
     expect(result).toEqual([mappings[0].to_concept_url]);
   });
+
+  it('should not recurse on external mappings', async () => {
+    fetchFromPublicSourcesMock = jest.fn()
+      .mockReturnValueOnce({ data: [{ ...mappings[0], to_concept_url: null }] })
+      .mockReturnValueOnce({ data: [mappings[1]] });
+    api.mappings.fetchFromPublicSources = fetchFromPublicSourcesMock;
+    const result = await recursivelyFetchConceptMappings([conceptCode], 1);
+    expect(fetchFromPublicSourcesMock).toHaveBeenCalledTimes(1);
+    expect(fetchFromPublicSourcesMock.mock.calls[0][0]).toEqual(conceptCode.toString());
+    expect(result).toEqual([]);
+  });
 });
 
 describe('test suite for addBulkConcepts synchronous action creators', () => {
