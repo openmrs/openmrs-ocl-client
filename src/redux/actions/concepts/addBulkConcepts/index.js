@@ -33,7 +33,7 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
   } = getState();
 
   const searchQuery = buildPartialSearchQuery(query);
-  let url = `orgs/${source}/sources/${source}/concepts/?${searchQuery}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${searchQuery}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1&sortAsc=name`;
 
   if (datatypeList.length > 0) {
     url = `${url}&datatype=${datatypeList.join(',')}`;
