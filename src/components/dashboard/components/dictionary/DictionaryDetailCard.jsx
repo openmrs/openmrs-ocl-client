@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import DictionaryVersionsTable from './DictionaryVersionsTable';
 import ReleaseVersionModal from './common/ReleaseVersionModal';
 import SubscriptionModal from './common/SubscriptionModal';
-import { TRADITIONAL_OCL_HOST } from '../../../dictionaryConcepts/components/helperFunction';
+import {
+  CIEL_SOURCE_URL,
+  TRADITIONAL_OCL_HOST,
+} from '../../../dictionaryConcepts/components/helperFunction';
+import { findLocale } from './common/Languages';
 
 const DictionaryDetailCard = (props) => {
   const {
@@ -19,15 +23,12 @@ const DictionaryDetailCard = (props) => {
       owner_url,
       short_code,
       default_locale,
+      supported_locales,
       url,
+      references,
     },
     versions,
     showEditModal,
-    customConcepts,
-    cielConcepts,
-    diagnosisConcepts,
-    procedureConcepts,
-    otherConcepts,
     hideSubModal,
     showSubModal,
     subModal,
@@ -56,6 +57,12 @@ const DictionaryDetailCard = (props) => {
 
   const traditionalUrl = `${TRADITIONAL_OCL_HOST}${url}`;
   const releasedVersions = versions.filter(version => version.released === true);
+
+  const conceptReferences = references ? references.filter(({ reference_type }) => reference_type === 'concepts') : [];
+  const cielConceptCount = conceptReferences.filter(
+    ({ expression }) => expression.includes(CIEL_SOURCE_URL),
+  ).length;
+  const otherConceptCount = conceptReferences.length - cielConceptCount;
 
   return (
     <div className="dictionaryDetails">
@@ -123,6 +130,18 @@ Dictionary
               {' '}
               {new Date(updated_on).toLocaleDateString('en-US', DATE_OPTIONS)}
             </p>
+            <p className="paragraph">
+              <b>Preferred Language</b>
+              :
+              {' '}
+              {findLocale(default_locale).label}
+            </p>
+            <p className="paragraph">
+              <b>Other Languages</b>
+              :
+              {' '}
+              <span>{supported_locales ? supported_locales.map(locale => findLocale(locale).label).join(', ') : 'None'}</span>
+            </p>
             {userCanEditDictionary && (
               <button
                 type="button"
@@ -140,41 +159,19 @@ Dictionary
               <b>Total Concepts</b>
 :
               {' '}
-              {Number(customConcepts) + Number(cielConcepts)}
-            </p>
-            <p className="points">
-              <b>Custom Concepts</b>
-:
-              {' '}
-              {customConcepts}
+              {conceptReferences.length}
             </p>
             <p className="points">
               <b>From CIEL</b>
 :
               {' '}
-              {cielConcepts}
-            </p>
-            <p>
-              <b>By class</b>
-:
+              {cielConceptCount}
             </p>
             <p className="points">
-              <b>Diagnosis</b>
-:
+              <b>Other Concepts</b>
+              :
               {' '}
-              {diagnosisConcepts}
-            </p>
-            <p className="points">
-              <b>Procedure</b>
-:
-              {' '}
-              {procedureConcepts}
-            </p>
-            <p className="points">
-              <b>Others</b>
-:
-              {' '}
-              {otherConcepts}
+              {otherConceptCount}
             </p>
             <Link
               className="btn btn-primary m-3"
@@ -268,11 +265,6 @@ DictionaryDetailCard.propTypes = {
   dictionary: PropTypes.object.isRequired,
   versions: PropTypes.array.isRequired,
   showEditModal: PropTypes.func.isRequired,
-  customConcepts: PropTypes.string.isRequired,
-  cielConcepts: PropTypes.string.isRequired,
-  diagnosisConcepts: PropTypes.string.isRequired,
-  procedureConcepts: PropTypes.string.isRequired,
-  otherConcepts: PropTypes.string.isRequired,
   hideSubModal: PropTypes.func.isRequired,
   showSubModal: PropTypes.func.isRequired,
   subModal: PropTypes.bool.isRequired,
