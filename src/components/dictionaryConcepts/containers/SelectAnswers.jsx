@@ -15,6 +15,7 @@ class SelectAnswers extends Component {
     isVisible: false,
     isClicked: false,
     hasReset: false,
+    conceptsLoading: false,
   }
 
   componentDidMount() {
@@ -51,8 +52,11 @@ class SelectAnswers extends Component {
       }
       if (isClicked && (event.keyCode === KEY_CODE_FOR_ENTER) && inputValue.length >= 3) {
         const { source } = this.props;
+        this.setState({
+          conceptsLoading: true,
+        });
         const options = await queryAnswers(source, inputValue, mapType);
-        this.setState({ options, isVisible: true });
+        this.setState({ options, isVisible: true, conceptsLoading: false });
       } else if (isClicked && (event.keyCode === KEY_CODE_FOR_ENTER) && (inputValue.length < 3)) {
         notify.show(MIN_CHARACTERS_WARNING, 'error', MILLISECONDS_TO_SHOW_WARNING);
         this.setState({ isVisible: false });
@@ -68,21 +72,23 @@ class SelectAnswers extends Component {
     };
 
     render() {
-      const { inputValue } = this.state;
+      const { inputValue, conceptsLoading } = this.state;
       const { index, isShown } = this.props;
       return (
         <div className="conceptDetails">
-          <input
-            tabIndex={index}
-            className="form-control"
-            placeholder="Search"
-            type="text"
-            id="searchInputCiel"
-            name="to_concept_name"
-            value={inputValue}
-            onChange={e => this.handleInputChange(e.target.value)}
-            onKeyDown={e => this.handleKeyDown(e, inputValue)}
-          />
+          <span className={conceptsLoading ? 'loading' : ''}>
+            <input
+              tabIndex={index}
+              className="form-control"
+              placeholder="Search"
+              type="text"
+              id="searchInputCiel"
+              name="to_concept_name"
+              value={inputValue}
+              onChange={e => this.handleInputChange(e.target.value)}
+              onKeyDown={e => this.handleKeyDown(e, inputValue)}
+            />
+            </span>
           {(this.state.isVisible || isShown) && <ul className="cielConceptsList">
             {this.state.options.map(result => <li key={result.uuid}>
               <button
