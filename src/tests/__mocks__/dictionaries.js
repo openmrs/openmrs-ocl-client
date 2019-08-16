@@ -29,7 +29,7 @@ const dictionary = {
   created_by: 'chriskala',
   updated_by: 'chriskala',
   extras: null,
-  references: [],
+  references: [{ reference_type: 'concepts', expression: '/orgs/CIEL/sources/CIEL/mappings/5d53f0a52ac7120143e8ea59/1/' }],
   active_concepts: 0,
   active_mappings: 0,
 };

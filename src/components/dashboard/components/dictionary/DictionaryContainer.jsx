@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import DictionaryDetailCard from './DictionaryDetailCard';
 import Loader from '../../../Loader';
 import {
-  fetchDictionary, fetchVersions, fetchDictionaryConcepts, releaseHead, createVersion,
+  fetchDictionary, fetchVersions, releaseHead, createVersion,
 } from '../../../../redux/actions/dictionaries/dictionaryActionCreators';
 import EditDictionary from './EditDictionary';
 import GeneralModel from './common/GeneralModal';
-import { DIAGNOSIS_CLASS, ORGANIZATIONS, PROCEDURE_CLASS } from '../../../../constants';
+import { ORGANIZATIONS } from '../../../../constants';
 import { getLoggedInUsername } from '../../../../helperFunctions';
 import { fetchMemberStatus } from '../../../../redux/actions/user';
 
@@ -20,7 +20,6 @@ export class DictionaryOverview extends Component {
       }),
     }).isRequired,
     dictionary: propTypes.object.isRequired,
-    dictionaryConcepts: propTypes.array.isRequired,
     versions: propTypes.array.isRequired,
     fetchDictionary: propTypes.func.isRequired,
     loader: propTypes.bool.isRequired,
@@ -71,9 +70,6 @@ export class DictionaryOverview extends Component {
       const checkMembershipUrl = `/orgs/${owner}/members/${getLoggedInUsername()}/`;
       fetchUsersMembershipStatus(checkMembershipUrl);
     }
-
-    const conceptsUrl = `/${ownerType}/${owner}/collections/${name}/concepts/?includeRetired=true&q=&limit=0&page=1&verbose=true&is_latest_version=true`;
-    this.props.fetchDictionaryConcepts(conceptsUrl);
   }
 
   componentDidUpdate = (prevProps) => {
@@ -158,22 +154,6 @@ export class DictionaryOverview extends Component {
     const {
       url, showSubModal, versionId, openGeneralModal,
     } = this.state;
-    const cielConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.owner === 'CIEL',
-    ).length.toString();
-    const customConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.owner !== 'CIEL',
-    ).length.toString();
-    const diagnosisConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class === DIAGNOSIS_CLASS,
-    ).length.toString();
-    const procedureConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class === PROCEDURE_CLASS,
-    ).length.toString();
-    const otherConcepts = this.props.dictionaryConcepts.filter(
-      concept => concept.concept_class !== DIAGNOSIS_CLASS
-      && concept.concept_class !== PROCEDURE_CLASS,
-    ).length.toString();
     const headVersion = this.props.versions.filter(version => version.id === 'HEAD')[0];
     const headVersionIdObj = Object.assign({}, headVersion);
     const inputLength = versionId.length;
@@ -190,11 +170,6 @@ export class DictionaryOverview extends Component {
               <DictionaryDetailCard
                 dictionary={this.props.dictionary}
                 versions={this.props.versions}
-                cielConcepts={cielConcepts}
-                customConcepts={customConcepts}
-                diagnosisConcepts={diagnosisConcepts}
-                procedureConcepts={procedureConcepts}
-                otherConcepts={otherConcepts}
                 headVersion={headVersionIdObj}
                 showEditModal={this.handleShow}
                 hideSubModal={this.handleHideSub}
@@ -235,7 +210,6 @@ export class DictionaryOverview extends Component {
 }
 export const mapStateToProps = state => ({
   dictionary: state.dictionaries.dictionary,
-  dictionaryConcepts: state.concepts.dictionaryConcepts,
   loader: state.dictionaries.loading || state.dictionaries.fetchingDictionary,
   versions: state.dictionaries.versions,
   error: state.dictionaries.error,
@@ -246,7 +220,6 @@ export const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   {
-    fetchDictionaryConcepts,
     fetchDictionary,
     fetchVersions,
     createVersion,

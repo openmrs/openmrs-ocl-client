@@ -33,7 +33,14 @@ describe('DictionaryOverview', () => {
   const defaultProps = {
     dictionary,
     versions: [],
-    match: {},
+    match: {
+      params: {
+        ownerType: 'testing',
+        owner: 'tester',
+        type: 'collection',
+        name: 'chris',
+      },
+    },
     dictionaryConcepts: [],
     fetchDictionary: jest.fn(),
     loader: false,
@@ -150,9 +157,22 @@ describe('DictionaryOverview', () => {
       </MemoryRouter>
     </Provider>);
     expect(wrapper.find('#headingDict')).toHaveLength(1);
-    expect(wrapper.find('.paragraph')).toHaveLength(5);
+    expect(wrapper.find('.paragraph')).toHaveLength(7);
     expect(wrapper.find('tr')).toHaveLength(2);
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('it should display none under supported languages of there are no additional supported locales', () => {
+    const props = {
+      ...defaultProps,
+      dictionary: { ...dictionary, description: null, supported_locales: null },
+    };
+    const wrapper = mount(<Provider store={store}>
+      <MemoryRouter>
+        <DictionaryOverview {...props} />
+      </MemoryRouter>
+    </Provider>);
+    expect(wrapper.find('.paragraph').at(5).find('span').text()).toEqual('None');
   });
 
   it('should handle HEAD version release', () => {
@@ -309,7 +329,7 @@ describe('DictionaryOverview', () => {
 
   it('should handle opening/closing of subscription modal', () => {
     const props = {
-      dictionary: { dictionary },
+      dictionary,
       versions: [versions, customVersion],
       headVersion: [versions],
       url: '',
@@ -648,7 +668,6 @@ describe('DictionaryOverview', () => {
   it('should test mapStateToProps', () => {
     const initialState = {
       concepts: {
-        loading: false,
         dictionaryConcepts: [],
         paginatedConcepts: [],
         filteredSources: [],
@@ -656,9 +675,21 @@ describe('DictionaryOverview', () => {
       },
       dictionaries: {
         dictionary,
+        versions: [],
+        error: 'error',
+        isReleased: false,
+        loading: false,
+        fetchingDictionary: true,
       },
       user: { userIsMember: false },
     };
-    expect(mapStateToProps(initialState).dictionaryConcepts).toEqual([]);
+    expect(mapStateToProps(initialState)).toEqual({
+      dictionary,
+      loader: true,
+      versions: [],
+      error: 'error',
+      isReleased: false,
+      userIsOrganizationMember: false,
+    });
   });
 });
