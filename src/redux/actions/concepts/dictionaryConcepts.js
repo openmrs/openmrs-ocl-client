@@ -6,12 +6,10 @@ import {
   INTERNAL_MAPPING_DEFAULT_SOURCE,
   MAP_TYPE,
   isExternalSource,
-  compareConceptsByUpdateDate,
   removeBlankMappings, removeBlankSetsOrAnswers,
 } from '../../../components/dictionaryConcepts/components/helperFunction';
 
 import {
-  POPULATE_SIDEBAR,
   FILTER_BY_SOURCES,
   FILTER_BY_CLASS,
   FETCH_DICTIONARY_CONCEPT,
@@ -22,8 +20,6 @@ import {
   CLEAR_FORM_SELECTIONS,
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
-  FETCH_NEXT_CONCEPTS,
-  TOTAL_CONCEPT_COUNT,
   FETCH_EXISTING_CONCEPT,
   FETCH_EXISTING_CONCEPT_ERROR,
   UPDATE_CONCEPT,
@@ -56,24 +52,6 @@ import instance from '../../../config/axiosConfig';
 import api from '../../api';
 import { recursivelyFetchConceptMappings } from './addBulkConcepts';
 import { buildPartialSearchQuery } from '../../../helperFunctions';
-
-export const paginateConcepts = (concepts, limit = 10, offset = 0) => (dispatch, getState) => {
-  let conceptList = concepts;
-  if (!concepts) {
-    conceptList = getState().concepts.dictionaryConcepts;
-  }
-
-  conceptList.sort(compareConceptsByUpdateDate);
-  const payload = conceptList.slice(offset, limit);
-  const conceptCount = conceptList.length;
-  dispatch(isSuccess(conceptCount, TOTAL_CONCEPT_COUNT));
-  dispatch(isSuccess(payload, FETCH_NEXT_CONCEPTS));
-};
-
-export const populateSidenav = () => (dispatch, getState) => {
-  const payload = getState().concepts.dictionaryConcepts;
-  dispatch({ type: POPULATE_SIDEBAR, payload });
-};
 
 export const createNewName = () => (dispatch) => {
   const payload = uuid();
@@ -130,7 +108,7 @@ export const fetchDictionaryConcepts = (
   dispatch(isFetching(true));
 
   const searchQuery = buildPartialSearchQuery(query);
-  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${searchQuery}&limit=${limit}&page=${page}&verbose=true&includeMappings=1`;
+  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${searchQuery}&limit=${limit}&page=${page}&verbose=true&includeMappings=1&sortDesc=lastUpdate`;
   const filterBySource = getState().concepts.filteredBySource;
   const filterByClass = getState().concepts.filteredByClass;
 
@@ -150,15 +128,13 @@ export const fetchDictionaryConcepts = (
       concept => concept.is_latest_version,
     );
     dispatch(getDictionaryConcepts(concepts, FETCH_DICTIONARY_CONCEPT));
-    dispatch(paginateConcepts(concepts));
-    if (query === '*' && filterByClass.length === 0 && filterBySource.length === 0) {
-      dispatch(populateSidenav());
-    }
   } catch (error) {
-    if (error.response !== undefined) {
-      dispatch(isErrored(error.response.data, FETCH_DICTIONARY_CONCEPT));
+    if (error.response && error.response.data && error.response.data.detail) {
+      notify.show(error.response.data.detail, 'error', 3000);
+    } else {
+      showNetworkError();
     }
-    showNetworkError();
+    dispatch(getDictionaryConcepts([], FETCH_DICTIONARY_CONCEPT));
   }
   dispatch(isFetching(false));
 };

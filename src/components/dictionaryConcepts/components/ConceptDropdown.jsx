@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 
 const ConceptDropdown = props => (
-  <div className="col-12 col-md-10 concept-dropdown">
+  <div className="col-12 col-md-9 concept-dropdown">
     <div className="btn-group concept-btn">
       <UncontrolledDropdown>
         <DropdownToggle className="rounded-edge" caret>

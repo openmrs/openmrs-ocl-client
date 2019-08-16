@@ -31,6 +31,40 @@ const retireMockProps = {
 jest.useFakeTimers();
 
 describe('Test suite for dictionary concepts components', () => {
+  let defaultProps;
+  beforeEach(() => {
+    defaultProps = {
+      match: {
+        params: {
+          typeName: 'dev-col',
+          type: 'orgs',
+          collectionName: 'dev-col',
+          dictionaryName: 'dev-col',
+        },
+      },
+      location: {
+        pathname: '/random/path',
+      },
+      fetchDictionaryConcepts: jest.fn(),
+      concepts: [],
+      filteredClass: ['Diagnosis'],
+      filteredSources: ['CIEL'],
+      filteredByClass: [],
+      loading: false,
+      conceptsCount: 1,
+      totalConceptsCount: 1,
+      filterBySource: jest.fn(),
+      filterByClass: jest.fn(),
+      fetchMemberStatus: jest.fn(),
+      paginateConcepts: jest.fn(),
+      totalConceptCount: 20,
+      userIsMember: true,
+      removeDictionaryConcept: jest.fn(),
+      removeConceptMappingAction: jest.fn(),
+      searchByName: jest.fn(),
+      ...retireMockProps,
+    };
+  });
   it('should render component without breaking', () => {
     const props = {
       match: {
@@ -92,6 +126,7 @@ describe('Test suite for dictionary concepts components', () => {
       concepts: [],
       filteredClass: ['Diagnosis'],
       filteredSources: ['CIEL'],
+      filteredByClass: [],
       loading: false,
       conceptsCount: 1,
       totalConceptsCount: 1,
@@ -108,11 +143,7 @@ describe('Test suite for dictionary concepts components', () => {
     };
     const newProps = {
       ...props,
-      concepts: [{
-        id: '1', concept_class: 'MedSet', version_url: '/url', url: 'url', display_name: '1',
-      }, {
-        id: '3', concept_class: 'MedSet', version_url: '/url', url: 'url', display_name: '1',
-      }],
+      filteredByClass: ['Diagnosis'],
     };
     const wrapper = mount(<Provider store={store}>
       <Router>
@@ -133,6 +164,20 @@ describe('Test suite for dictionary concepts components', () => {
     wrapper.unmount();
   });
 
+  it('setPageSize should set right the conceptLimit and reset the page to 0', (done) => {
+    const wrapper = mount(<Router><DictionaryConcepts {...defaultProps} /></Router>);
+    const instance = wrapper.find('DictionaryConcepts').instance();
+    expect(instance.state.conceptLimit).toEqual(20);
+
+    instance.setPageSize(50);
+
+    setImmediate(() => {
+      expect(instance.state.conceptLimit).toEqual(50);
+      expect(instance.state.page).toEqual(0);
+      done();
+    });
+  });
+
   it('should contain strikethrough text for retired concepts', () => {
     const props = {
       concepts: [{ ...concepts, retired: true }],
@@ -147,6 +192,8 @@ describe('Test suite for dictionary concepts components', () => {
       showDeleteMappingModal: jest.fn(),
       page: 0,
       onPageChange: jest.fn(),
+      onPageSizeChange: jest.fn(),
+      fetchData: jest.fn(),
     };
     const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
     expect(wrapper).toMatchSnapshot();
@@ -169,6 +216,8 @@ describe('Test suite for dictionary concepts components', () => {
         showDeleteMappingModal: jest.fn(),
         page: 0,
         onPageChange: jest.fn(),
+        onPageSizeChange: jest.fn(),
+        fetchData: jest.fn(),
       };
 
       localStorage.setItem('username', props.concepts[0].owner);
@@ -190,6 +239,8 @@ describe('Test suite for dictionary concepts components', () => {
         showDeleteMappingModal: jest.fn(),
         page: 0,
         onPageChange: jest.fn(),
+        onPageSizeChange: jest.fn(),
+        fetchData: jest.fn(),
       };
 
       localStorage.setItem('username', 'notTheOwner');
@@ -211,10 +262,12 @@ describe('Test suite for dictionary concepts components', () => {
         showDeleteMappingModal: jest.fn(),
         page: 0,
         onPageChange: jest.fn(),
+        onPageSizeChange: jest.fn(),
+        fetchData: jest.fn(),
       };
 
       const wrapper = mount(<Router><ConceptTable {...props} /></Router>);
-      wrapper.find('button').at(2).simulate('click');
+      wrapper.find('.-pagination button').at(1).simulate('click');
       expect(props.onPageChange).toHaveBeenCalled();
     });
   });
@@ -555,8 +608,6 @@ describe('Test suite for dictionary concepts components', () => {
         loading: false,
         dictionaryConcepts: [],
         paginatedConcepts: [],
-        filteredSources: [],
-        filteredClass: [],
       },
       dictionaries: {
         dictionary: [],
@@ -566,8 +617,6 @@ describe('Test suite for dictionary concepts components', () => {
       },
     };
     expect(mapStateToProps(initialState).concepts).toEqual([]);
-    expect(mapStateToProps(initialState).filteredClass).toEqual([]);
-    expect(mapStateToProps(initialState).filteredSources).toEqual([]);
     expect(mapStateToProps(initialState).loading).toEqual(false);
     expect(mapStateToProps(initialState).dictionaries).toEqual([]);
   });
@@ -616,7 +665,7 @@ describe('Test suite for dictionary concepts components', () => {
     expect(wrapper.find('DictionaryConcepts').state().searchInput).toEqual('');
   });
 
-  it('should call the search function when search form is submitted', () => {
+  it('should reset the page to 0 and trigger search when search form is submitted', () => {
     const props = {
       match: {
         params: {
@@ -652,10 +701,12 @@ describe('Test suite for dictionary concepts components', () => {
         <DictionaryConcepts {...props} />
       </Router>
     </Provider>);
-    props.fetchDictionaryConcepts.mockClear();
-    expect(wrapper.find('DictionaryConcepts').props().fetchDictionaryConcepts).not.toHaveBeenCalled();
+    const instance = wrapper.find('DictionaryConcepts').instance();
+    const setPageMock = jest.spyOn(instance, 'setPage');
+
+    expect(setPageMock).not.toHaveBeenCalled();
     wrapper.find('#submit-search-form').simulate('submit');
-    expect(wrapper.find('DictionaryConcepts').props().fetchDictionaryConcepts).toHaveBeenCalled();
+    expect(setPageMock).toHaveBeenCalledWith(0, true);
   });
 
   describe('Retire/Unretire Concepts', () => {
@@ -832,7 +883,7 @@ describe('Test suite for dictionary concepts components', () => {
     });
 
     describe('clearAllFilters', () => {
-      it('should call clearFilters and fetchConcepts', () => {
+      it('should dispatch the clearFilters action', () => {
         const newProps = {
           ...props,
           clearAllFilters: jest.fn(),
@@ -844,14 +895,11 @@ describe('Test suite for dictionary concepts components', () => {
         </Provider>);
         const dictionaryConcepts = wrapper.find('DictionaryConcepts');
         const instance = dictionaryConcepts.instance();
-        instance.fetchConcepts = jest.fn();
 
-        expect(instance.fetchConcepts).not.toHaveBeenCalled();
         expect(newProps.clearAllFilters).not.toHaveBeenCalled();
 
         instance.clearAllFilters();
 
-        expect(instance.fetchConcepts).toHaveBeenCalledTimes(1);
         expect(newProps.clearAllFilters).toHaveBeenCalledTimes(1);
       });
     });
