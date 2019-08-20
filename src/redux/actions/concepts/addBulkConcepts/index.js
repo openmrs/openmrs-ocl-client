@@ -82,17 +82,21 @@ export const recursivelyFetchConceptMappings = async (
     return removeDuplicates(filteredToConceptUrls);
   };
 
+  const removeExternalMappings = mappingsList => mappingsList.filter(
+    mapping => mapping.to_concept_url,
+  );
+
   updateNotification('Finding dependent concepts...');
   const startingConceptMappings = await fetchMappings(fromConceptCodes.join(','));
-  const mappingsList = [startingConceptMappings.data];
+  const mappingsList = [removeExternalMappings(startingConceptMappings.data)];
   updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts to add...`);
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsList[i].map(
       mapping => mapping.to_concept_code,
     );
     if (!toConceptCodes.length) break;
-    const conceptMappings = await api.mappings.fetchFromPublicSources(toConceptCodes.join(','));
-    mappingsList.push(conceptMappings.data);
+    const conceptMappings = await fetchMappings(toConceptCodes.join(','));
+    mappingsList.push(removeExternalMappings(conceptMappings.data));
     updateNotification(`Found ${getInternalConceptUrlsInMappings(mappingsList).length} dependent concepts to add...`);
   }
   return getInternalConceptUrlsInMappings(mappingsList);
