@@ -1,6 +1,7 @@
 import moxios from 'moxios';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
 import {
   ADDING_DICTIONARY,
@@ -23,7 +24,6 @@ import {
   fetchOrganizations,
   addDictionary,
   clearDictionaries,
-  isErrored,
   isSuccess,
   clearDictionary,
   removeConcept, replaceConcept,
@@ -46,7 +46,6 @@ import {
 import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
 import concepts, { sampleConcept, sampleRetiredConcept } from '../../__mocks__/concepts';
-import { notify } from 'react-notify-toast';
 import api from '../../../redux/api';
 
 jest.mock('react-notify-toast');
@@ -163,13 +162,11 @@ describe('Test suite for dictionary actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'could not complete this request',
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCHING_DICTIONARIES, payload: 'could not complete this request' },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -251,6 +248,24 @@ describe('Test suite for dictionary actions', () => {
     });
   });
 
+  it('fetchDictionaryConcepts should return an notify error message', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchDictionaryConcepts('/users/chriskala/collections/over/')).then(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Could not retrieve dictionary concept', 'error', 3000);
+    });
+  });
+
   it('should handle edit mapping and fail', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -329,13 +344,11 @@ describe('Test suite for dictionary actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'could not complete this request',
       });
     });
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
       { type: IS_FETCHING, payload: false },
-      { type: '[dictionaries] fetch dictionaries', payload: 'could not complete this request' },
     ];
     const store = mockStore({ payload: {} });
     return store.dispatch(
@@ -344,6 +357,43 @@ describe('Test suite for dictionary actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
+
+  it('should return an notify error from the db data message ', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { data: 'Request failed' },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(searchDictionaries()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Request failed', 'error', 3000);
+    });
+  });
+
+  it('should return an notify error from the db data detail message ', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { data: { detail: 'Request failed' } },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(searchDictionaries()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Request failed', 'error', 3000);
+    });
+  });
+
   it('should return a network error message if failed search', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -468,18 +518,18 @@ describe('Test suite for dictionary actions', () => {
     });
   });
 
-  it('should handle retire/unretire errors', () => {
-    const message = 'Sample Error message';
+  it('should return null if retireConcept action is triggered and if fails', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.reject({
+      request.respondWith({
         status: 400,
-        response: { data: message },
       });
     });
+
     const store = mockStore({ payload: {} });
-    return store.dispatch(retireConcept(sampleConcept.url, { retired: false })).then(() => {
-      expect(store.getActions()).toEqual([{ type: FETCHING_DICTIONARIES, payload: message }]);
+
+    return store.dispatch(retireConcept()).then((result) => {
+      expect(result).toEqual(null);
     });
   });
 });
@@ -501,10 +551,6 @@ describe('Test for successful dictionaries fetch, failure and refresh', () => {
     expect(clearDictionaries(response)).toEqual(clearDictionariesData);
   });
 
-  it('should show errors when isErrored is called', () => {
-    expect(isErrored(response)).toEqual(responseData);
-    expect(isErrored(response)).toBeTruthy();
-  });
 
   it('should show data when isSuccess is called', () => {
     expect(isSuccess(response)).toEqual(responseData);

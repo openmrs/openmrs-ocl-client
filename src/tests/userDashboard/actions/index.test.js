@@ -12,7 +12,6 @@ import {
   CLEAR_DICTIONARY,
   USER_IS_MEMBER,
   USER_IS_NOT_MEMBER,
-  NETWORK_ERROR,
   LOGGED_OUT,
 } from '../../../redux/actions/types';
 import {
@@ -194,24 +193,19 @@ describe('Test suite for user dashboard actions', () => {
     });
   });
   it('should handle error in GET_USER', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'an error occurred',
       });
     });
 
-    const expectedActions = [
-      {
-        type: NETWORK_ERROR,
-        payload: 'An error occurred with your internet connection, please fix it and try reloading the page.',
-      },
-    ];
-
     const store = mockStore({});
     return store.dispatch(fetchUser('emasys')).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('An error occurred with your internet connection, please fix it and try reloading the page.', 'error', 3000);
     });
   });
   it('should handle request failure of status code 401 in GET_USER', () => {
@@ -256,27 +250,40 @@ describe('Test suite for user dashboard actions', () => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
-  it('should dispatch USER_IS_NOT_MEMBER', () => {
+
+  it('fetchMemberStatus should return an notify error message when status is 404', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.reject({
-        status: 404,
-        response: {
-          status: 404,
-        },
+        response: { status: 404 },
       });
     });
 
-    const expectedActions = [
-      { type: IS_FETCHING, payload: true },
-      { type: IS_FETCHING, payload: false },
-      { type: USER_IS_NOT_MEMBER, payload: false },
-    ];
+    const store = mockStore({ payload: {} });
 
-    const store = mockStore({});
-    const url = '/orgs/EthiopiaNHDD/members/emmabaye';
-    return store.dispatch(fetchMemberStatus(url)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
+    return store.dispatch(fetchMemberStatus()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('User not found', 'error', 3000);
+    });
+  });
+
+  it('fetchMemberStatus should return an notify error message when status is 403', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { status: 403 },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchMemberStatus()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('You have no access', 'error', 3000);
     });
   });
 

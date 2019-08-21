@@ -23,7 +23,6 @@ import {
   EDIT_CONCEPT_CREATE_NEW_NAMES,
   EDIT_CONCEPT_REMOVE_ONE_NAME,
   UPDATE_CONCEPT,
-  FETCH_EXISTING_CONCEPT_ERROR,
   REMOVE_CONCEPT,
   REMOVE_MAPPING,
   ADD_SELECTED_ANSWERS,
@@ -787,7 +786,7 @@ describe('Testing Edit concept actions ', () => {
     expect(result).toEqual(existingConcept);
   });
 
-  it('should handle error in FETCH_EXISTING_CONCEPT_ERROR for update concept', () => {
+  it('should handle error for update concept', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
@@ -802,7 +801,6 @@ describe('Testing Edit concept actions ', () => {
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCH_EXISTING_CONCEPT_ERROR, payload: 'bad request' },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -873,18 +871,16 @@ describe('Testing Edit concept actions ', () => {
     });
   });
 
-  it('should handle error in FETCH_EXISTING_CONCEPT_ERROR for fetching exing concepts', () => {
+  it('should handle error for fetching exing concepts', () => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 400,
-        response: 'bad request',
       });
     });
 
     const expectedActions = [
       { type: IS_FETCHING, payload: true },
-      { type: FETCH_EXISTING_CONCEPT_ERROR, payload: 'bad request' },
       { type: IS_FETCHING, payload: false },
     ];
 
@@ -910,6 +906,42 @@ describe('Testing Edit concept actions ', () => {
     const conceptUrl = '/orgs/EthiopiaNHDD/sources/HMIS-Indicators/concepts/C1.1.1.1/';
     return store.dispatch(fetchExistingConcept(conceptUrl)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('fetchExistingConcept should return an notify error from the db data message ', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { data: 'Request failed' },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchExistingConcept()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Request failed', 'error', 3000);
+    });
+  });
+
+  it('fetchExistingConcept should return an notify error from the db data detail message ', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { data: { detail: 'Request failed' } },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchExistingConcept()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Request failed', 'error', 3000);
     });
   });
 

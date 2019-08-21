@@ -66,7 +66,6 @@ export const ADD_TO_CLASS_LIST = '[concept] add_to_class_list';
 export const FETCH_FILTERED_CONCEPTS = '[concept] fetch_filtered_concepts';
 export const PREVIEW_CONCEPT = '[concept] preview_concept';
 export const FETCH_EXISTING_CONCEPT = '[concept] fetch_existing_concept';
-export const FETCH_EXISTING_CONCEPT_ERROR = '[concept] fetch_existing_concept_error';
 export const CLEAR_PREVIOUS_CONCEPT = '[concept] clear_previous_concept';
 export const UPDATE_CONCEPT = '[concept] update_concept';
 export const EDIT_CONCEPT_ADD_DESCRIPTION = '[concept] edit_concept_add_description';

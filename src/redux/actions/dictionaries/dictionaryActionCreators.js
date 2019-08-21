@@ -5,7 +5,6 @@ import {
   isSuccess,
   isFetching,
   dictionaryIsSuccess,
-  isErrored,
   removeConcept,
   removeMapping,
   fetchingVersions,
@@ -21,6 +20,7 @@ import {
 import { filterPayload } from '../../reducers/util';
 import { addDictionaryReference } from '../bulkConcepts';
 import api from '../../api';
+import { checkErrorMessage } from '../../../helperFunctions';
 import axiosInstance from '../../../config/axiosConfig';
 
 export const showNetworkError = () => (
@@ -80,7 +80,8 @@ export const fetchDictionaries = () => (dispatch) => {
       dispatch(isFetching(false));
     })
     .catch((error) => {
-      error.response ? dispatch(isErrored(error.response.data)):
+      const defaultMessage = 'Could not retrieve the dictionaries';
+      checkErrorMessage(error, defaultMessage);
       showNetworkError();
       dispatch(isFetching(false));
     });
@@ -97,8 +98,8 @@ export const searchDictionaries = searchItem => async (dispatch) => {
   }
   catch (error) {
     dispatch(isFetching(false));
-    error.response ? dispatch(isErrored(error.response.data)):
-    showNetworkError();
+    const defaultMessage = 'Could not retrieve the dictionaries';
+    checkErrorMessage(error, defaultMessage);
   }
 };
 
@@ -192,8 +193,11 @@ export const fetchDictionaryConcepts = data => (dispatch) => {
       dispatch(isFetching(false));
       })
       .catch((error) => {
-        error.response ? dispatch(isErrored(error.response.data)):
-        showNetworkError();
+        if (error && error.response) {
+          notify.show('Could not retrieve dictionary concept', 'error', 3000);
+        } else {
+          showNetworkError();
+        }
         dispatch(isFetching(false));
       });
 };
@@ -298,7 +302,6 @@ export const retireConcept = (conceptUrl, retire) => async (dispatch) => {
     notify.show(`Concept successfully ${retiredMessage}`, 'success', 3000);
     return response.data;
   } catch (error) {
-    error && error.response && error.response.data && dispatch(isErrored(error.response.data));
     notify.show(`Failed to ${retiredMessage} the concept`, 'error', 3000);
     return null;
   }

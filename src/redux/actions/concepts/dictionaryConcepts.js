@@ -21,7 +21,6 @@ import {
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
   FETCH_EXISTING_CONCEPT,
-  FETCH_EXISTING_CONCEPT_ERROR,
   UPDATE_CONCEPT,
   EDIT_CONCEPT_ADD_DESCRIPTION,
   EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
@@ -44,14 +43,13 @@ import {
 import {
   isFetching,
   getDictionaryConcepts,
-  isErrored,
   isSuccess,
 } from '../globalActionCreators/index';
 
 import instance from '../../../config/axiosConfig';
 import api from '../../api';
 import { recursivelyFetchConceptMappings } from './addBulkConcepts';
-import { buildPartialSearchQuery } from '../../../helperFunctions';
+import { buildPartialSearchQuery, checkErrorMessage } from '../../../helperFunctions';
 
 export const createNewName = () => (dispatch) => {
   const payload = uuid();
@@ -436,10 +434,8 @@ export const fetchExistingConcept = conceptUrl => async (dispatch) => {
     dispatch(prepopulateAnswers(answers));
     dispatch(prePopulateSets(sets));
   } catch (error) {
-    notify.show('Could not retrieve concept details', 'error', 3000);
-    if (error.response) {
-      dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
-    }
+    const defaultMessage = 'Could not retrieve concept details';
+    checkErrorMessage(error, defaultMessage);
   }
   dispatch(isFetching(false));
 };
@@ -523,7 +519,6 @@ export const updateConcept = (conceptUrl, data, history, source, concept, collec
 } for ${
   Object.keys(error.response.data).toString()
 }`, 'error', 3000);
-      dispatch(isErrored(error.response.data, FETCH_EXISTING_CONCEPT_ERROR));
     } else {
       notify.show('An error occurred when updating the concept. Please retry.', 'error', 2000);
     }

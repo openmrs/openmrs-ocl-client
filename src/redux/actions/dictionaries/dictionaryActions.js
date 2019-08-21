@@ -37,11 +37,6 @@ export const isSuccess = payload => ({
   payload,
 });
 
-export const isErrored = payload => ({
-  type: FETCHING_DICTIONARIES,
-  payload,
-});
-
 export const isFetching = payload => ({
   type: IS_FETCHING,
   payload,

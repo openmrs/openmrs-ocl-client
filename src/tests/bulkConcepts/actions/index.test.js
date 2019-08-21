@@ -8,11 +8,14 @@ import {
   IS_FETCHING,
   ADD_EXISTING_BULK_CONCEPTS,
   CLEAR_SOURCE_CONCEPTS,
-  FETCH_CONCEPT_SOURCES,
+  IS_LOADING,
 } from '../../../redux/actions/types';
 import
 fetchCielConcepts,
-{ addExistingBulkConcepts, addDictionaryReference, fetchConceptSources } from '../../../redux/actions/bulkConcepts';
+{
+  addExistingBulkConcepts, addDictionaryReference, fetchConceptSources,
+  fetchSourceConcepts,
+} from '../../../redux/actions/bulkConcepts';
 import cielConcepts from '../../__mocks__/concepts';
 import api from '../../../redux/api';
 import { DELETE_NOTIFICATION, UPSERT_NOTIFICATION } from '../../../redux/actions/notifications';
@@ -36,19 +39,54 @@ describe('Test suite for source concepts actions', () => {
       const request = moxios.requests.mostRecent();
       request.reject({
         status: 400,
-        response: { data: 'error' },
       });
     });
     const returnedAction = [
       { type: IS_FETCHING, payload: true },
       { type: CLEAR_SOURCE_CONCEPTS },
-      { type: FETCH_CONCEPT_SOURCES, payload: 'error' },
       { type: IS_FETCHING, payload: false },
     ];
     const store = mockStore({});
     return store.dispatch(fetchConceptSources())
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
+
+  it('fetchConceptSources should return an notify error message', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 400,
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchConceptSources()).then(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Failed to fetch source concepts', 'error', 3000);
+    });
+  });
+
+  it('fetchConceptSources should return an notify error message from data', () => {
+    const notifyMock = jest.fn();
+    notify.show = notifyMock;
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.reject({
+        response: { data: 'Request failed' },
+      });
+    });
+
+    const store = mockStore({ payload: {} });
+
+    return store.dispatch(fetchConceptSources()).catch(() => {
+      expect(notifyMock).toHaveBeenCalledTimes(1);
+      expect(notifyMock).toHaveBeenCalledWith('Request failed', 'error', 3000);
+    });
+  });
+
 
   it('should dispatch ADD_EXISTING_BULK_CONCEPTS  action type on response from server', () => {
     const notifyMock = jest.fn();
