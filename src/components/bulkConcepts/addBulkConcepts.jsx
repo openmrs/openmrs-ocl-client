@@ -154,6 +154,11 @@ export class AddBulkConcepts extends Component {
               <h3>Concept IDs to add</h3>
             </div>
           </div>
+          <small className="form-text text-muted">
+            Please provide IDs for the CIEL concepts to add. IDs should be separated with a space, comma or new lines.
+            For example, you can copy and paste from a spreadsheet column.
+            e.g 1000, 1001, 1002.
+          </small>
           <div className="preferred-concepts">
             {isFetching ? (
               <div className="mt-150 mb-100 text-center">
