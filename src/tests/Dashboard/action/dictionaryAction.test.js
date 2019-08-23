@@ -47,6 +47,7 @@ import dictionaries, { sampleDictionaries } from '../../__mocks__/dictionaries';
 import versions, { HeadVersion } from '../../__mocks__/versions';
 import concepts, { sampleConcept, sampleRetiredConcept } from '../../__mocks__/concepts';
 import { notify } from 'react-notify-toast';
+import api from '../../../redux/api';
 
 jest.mock('react-notify-toast');
 
@@ -370,6 +371,7 @@ describe('Test suite for dictionary actions', () => {
   });
 
   it('should dispatch EDIT_DICTIONARY_SUCCESS on success response', () => {
+    api.sources.edit = jest.fn().mockResolvedValueOnce(true);
     const dictionary = dictionaries;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -387,6 +389,7 @@ describe('Test suite for dictionary actions', () => {
     });
   });
   it('should dispatch nothing on edit dictionary failure response', () => {
+    api.sources.edit = jest.fn().mockResolvedValueOnce(true);
     const dictionary = dictionaries;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -407,6 +410,7 @@ describe('Test suite for dictionary actions', () => {
   });
 
   it('should display error message when offline', () => {
+    api.sources.edit = jest.fn().mockResolvedValueOnce(true);
     const dictionary = dictionaries;
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
@@ -418,6 +422,21 @@ describe('Test suite for dictionary actions', () => {
     const store = mockStore({ payload: {} });
     return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('editDictionary should notify a user when an error occurs while editing the source', () => {
+    const dictionary = dictionaries;
+    const notifyMock = jest.fn();
+    const editDictionaryMock = jest.fn();
+    api.dictionaries.editDictionary = editDictionaryMock;
+    api.sources.edit = jest.fn().mockRejectedValueOnce(false);
+    notify.show = notifyMock;
+
+    const store = mockStore({ payload: {} });
+    return store.dispatch(editDictionary('/dictionary-url', dictionary)).then(() => {
+      expect(notifyMock).toHaveBeenCalledWith('An error occurred while updating the source. Please retry', 'error', 3000);
+      expect(editDictionaryMock).not.toHaveBeenCalled();
     });
   });
 

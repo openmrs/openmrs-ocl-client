@@ -216,20 +216,33 @@ export const releaseHead = (url, data) => (dispatch) => {
       notify.show("Network Error. Please try again later!", 'error', 6000);
       });
 };
-  export const editDictionary = (url, data) => dispatch => {
-    return api.dictionaries
-      .editDictionary(url, data)
-      .then(payload => {
-        notify.show(
-          'Successfully updated dictionary',
-          'success', 6000,
-        );
-        return dispatch(editDictionarySuccess(payload));
-      })
-      .catch(error => {
-        error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) :
+  export const editDictionary = (url, data) => async dispatch => {
+    const editSource = async (url, data) =>  {
+      try {
+        await api.sources.edit(url, data);
+        return true;
+      } catch (error) {
+        notify.hide();
+        notify.show('An error occurred while updating the source. Please retry', 'error', 3000);
+        return false;
+      }
+    };
+    try {
+      const updateSourceResult = await editSource(url.replace('collections', 'sources', data));
+      if (!updateSourceResult) {
+        return
+      }
+
+      const payload =  await api.dictionaries.editDictionary(url, data);
+      notify.show(
+        'Successfully updated dictionary',
+        'success', 6000,
+      );
+      return dispatch(editDictionarySuccess(payload));
+    } catch (error) {
+      error.response ? notify.show(`${error.response.data.__all__[0]}`, 'error', 6000) :
         showNetworkError();
-      })
+    }
 };
 
 export const editMapping = (url, data, source) => dispatch => {
