@@ -23,7 +23,6 @@ describe('Add Bulk Concepts', () => {
   const props = {
     fetchSourceConcepts: jest.fn(),
     addExistingBulkConcepts: jest.fn(),
-    fetchConceptSources: jest.fn(),
     sourceConcepts: mockConcepts,
     conceptSources: [{ id: 1, name: 'testSource', url: '/org/testSource/' },
       { id: 2, name: 'testSource', url: '/org/testSource/' }],

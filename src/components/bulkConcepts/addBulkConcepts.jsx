@@ -8,18 +8,13 @@ import {
   Input,
 } from 'reactstrap';
 import Loader from '../Loader';
-import fetchSourceConcepts, { addExistingBulkConcepts, isConceptValid, fetchConceptSources } from '../../redux/actions/bulkConcepts';
+import { addExistingBulkConcepts, isConceptValid } from '../../redux/actions/bulkConcepts';
 import Header from './container/Header';
 import ResultModal from './component/addBulkConceptResultModal';
 
 export class AddBulkConcepts extends Component {
   static propTypes = {
-    fetchSourceConcepts: PropTypes.func.isRequired,
-    fetchConceptSources: PropTypes.func.isRequired,
     addExistingBulkConcepts: PropTypes.func.isRequired,
-    sourceConcepts: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string,
-    })).isRequired,
     conceptSources: PropTypes.array.isRequired,
     match: PropTypes.shape({
       params: PropTypes.shape({
@@ -43,11 +38,6 @@ export class AddBulkConcepts extends Component {
     this.sourceUrl = 'orgs/CIEL/sources/CIEL/';
   }
 
-  componentDidMount() {
-    this.props.fetchConceptSources();
-    this.props.fetchSourceConcepts(this.sourceUrl);
-  }
-
   handleSelected = (selected) => {
     const { conceptIds } = this.state;
     this.setState({ conceptIds: conceptIds ? `${conceptIds}, ${selected.id}` : selected.id });
@@ -55,7 +45,6 @@ export class AddBulkConcepts extends Component {
 
   handleCielClick = (e) => {
     this.sourceUrl = e.target.value;
-    this.props.fetchSourceConcepts(this.sourceUrl);
     this.reset();
   };
 
@@ -209,5 +198,5 @@ export const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { fetchSourceConcepts, addExistingBulkConcepts, fetchConceptSources },
+  { addExistingBulkConcepts },
 )(AddBulkConcepts);
