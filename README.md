@@ -95,7 +95,7 @@ $ npm run watch:css
 
 ## How to contribute to this project?
  - Please read [OpenMRS wiki](https://wiki.openmrs.org/) for awareness on the code of conduct used in OpenMRS organization 
- - And to get you started with the project please use the OpenMRS-OCL [documentation](https://docs.google.com/document/d/1R_Fgr5SBl4xFNJgj6yMJNVY63b5H_OUqM55o1GFqFKs/edit#heading=h.rc908wooykzg)
+ - And to get you started with the project please use the OpenMRS-OCL [documentation](https://wiki.openmrs.org/x/1gJiDQ)
 
 ## Support
 
