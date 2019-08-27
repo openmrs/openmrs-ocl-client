@@ -374,6 +374,38 @@ describe('mappings', () => {
   });
 });
 
+describe('sources', () => {
+  describe('edit', () => {
+    beforeEach(() => {
+      moxios.install(instance);
+    });
+
+    afterEach(() => {
+      moxios.uninstall(instance);
+    });
+
+    it('should call the edit source endpoint with the right data', async () => {
+      const sourceUrl = '/test/source/url/';
+      const data = {};
+      let requestUrl;
+      let requestData;
+
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        requestUrl = request.url;
+        requestData = request.config.data;
+        request.respondWith({
+          status: 200,
+        });
+      });
+
+      await api.sources.edit(sourceUrl, data);
+      expect(requestUrl).toContain(`${sourceUrl}`);
+      expect(requestData).toEqual(JSON.stringify(data));
+    });
+  });
+});
+
 describe('dictionaries', () => {
   describe('addReferencesToCollection', () => {
     beforeEach(() => {

@@ -1,6 +1,9 @@
 import instance from '../config/axiosConfig';
 
 export default {
+  sources: {
+    edit: (url, data) => instance.put(url, data),
+  },
   dictionaries: {
     list: {
       fromAnOrganization: organizationUrl => instance.get(`${organizationUrl}collections/?limit=0&verbose=true`),
