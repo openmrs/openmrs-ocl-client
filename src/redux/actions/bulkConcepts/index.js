@@ -7,7 +7,6 @@ import {
   clear,
 } from '../globalActionCreators';
 import {
-  FETCH_SOURCE_CONCEPTS,
   ADD_EXISTING_BULK_CONCEPTS,
   FETCH_CONCEPT_SOURCES,
   CLEAR_SOURCE_CONCEPTS,
@@ -17,20 +16,6 @@ import { recursivelyFetchConceptMappings } from '../concepts/addBulkConcepts';
 import { MAPPINGS_RECURSION_DEPTH } from '../../../components/dictionaryConcepts/components/helperFunction';
 import { deleteNotification, upsertNotification } from '../notifications';
 import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
-
-const fetchSourceConcepts = url => async (dispatch) => {
-  dispatch(clear(CLEAR_SOURCE_CONCEPTS));
-  dispatch(isSuccess(true, IS_LOADING));
-  try {
-    const response = await instance.get(`${url}concepts/?limit=0`);
-    dispatch(isSuccess(response.data, FETCH_SOURCE_CONCEPTS));
-    dispatch(isSuccess(false, IS_LOADING));
-  } catch (error) {
-    dispatch(isErrored(error.response.data, FETCH_SOURCE_CONCEPTS));
-    dispatch(isSuccess(false, IS_LOADING));
-  }
-};
-export default fetchSourceConcepts;
 
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
   const { url, data, conceptIdList: fromConceptIds } = conceptData;

@@ -5,12 +5,10 @@ import thunk from 'redux-thunk';
 
 import instance from '../../../config/axiosConfig';
 import {
-  FETCH_SOURCE_CONCEPTS,
   IS_FETCHING,
   ADD_EXISTING_BULK_CONCEPTS,
   CLEAR_SOURCE_CONCEPTS,
   FETCH_CONCEPT_SOURCES,
-  IS_LOADING,
 } from '../../../redux/actions/types';
 import
 fetchCielConcepts,
@@ -52,25 +50,6 @@ describe('Test suite for source concepts actions', () => {
       .then(() => expect(store.getActions()).toEqual(returnedAction));
   });
 
-  it('should dispatch FETCH_SOURCE_CONCEPTS  action type on response from server', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: [{ cielConcepts: { cielConcepts } }],
-      });
-    });
-
-    const returnedAction = [
-      { type: CLEAR_SOURCE_CONCEPTS },
-      { type: IS_LOADING, payload: true },
-      { type: FETCH_SOURCE_CONCEPTS, payload: [{ cielConcepts: { cielConcepts } }] },
-      { type: IS_LOADING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchCielConcepts())
-      .then(() => expect(store.getActions()).toEqual(returnedAction));
-  });
   it('should dispatch ADD_EXISTING_BULK_CONCEPTS  action type on response from server', () => {
     const notifyMock = jest.fn();
     notify.show = notifyMock;
@@ -122,27 +101,6 @@ describe('Test suite for source concepts actions', () => {
 
     const store = mockStore({});
     return store.dispatch(addExistingBulkConcepts(conceptData))
-      .then(() => {
-        expect(store.getActions()).toEqual(returnedAction);
-      });
-  });
-  it('should dispatch an error message when a response is errored', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 400,
-        response: 'could not complete this request',
-      });
-    });
-
-    const returnedAction = [
-      { type: CLEAR_SOURCE_CONCEPTS },
-      { type: IS_LOADING, payload: true },
-      { type: FETCH_SOURCE_CONCEPTS, payload: 'could not complete this request' },
-      { type: IS_LOADING, payload: false },
-    ];
-    const store = mockStore({});
-    return store.dispatch(fetchCielConcepts())
       .then(() => {
         expect(store.getActions()).toEqual(returnedAction);
       });
