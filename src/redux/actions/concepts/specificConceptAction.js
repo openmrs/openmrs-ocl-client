@@ -1,6 +1,7 @@
 import instance from '../../../config/axiosConfig';
 
-import { isErrored, fetchConcepts, isFetching } from './ConceptActionCreators';
+import { fetchConcepts, isFetching } from './ConceptActionCreators';
+import { checkErrorMessage } from '../../../helperFunctions';
 
 const fetchConceptsActionTypes = (
   owner,
@@ -21,13 +22,8 @@ const fetchConceptsActionTypes = (
     dispatch(isFetching(false));
   } catch (error) {
     dispatch(isFetching(false));
-    if (error.response) {
-      dispatch(isErrored(error.response.data));
-      dispatch(isFetching(false));
-    } else {
-      dispatch(isErrored("Request can't be made"));
-      dispatch(isFetching(false));
-    }
+    const defaultMessage = "Request can't be made";
+    checkErrorMessage(error, defaultMessage);
   }
 };
 export default fetchConceptsActionTypes;

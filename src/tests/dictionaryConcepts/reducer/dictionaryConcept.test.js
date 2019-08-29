@@ -18,7 +18,6 @@ import {
   FETCH_NEXT_CONCEPTS,
   TOTAL_CONCEPT_COUNT,
   FETCH_EXISTING_CONCEPT,
-  FETCH_EXISTING_CONCEPT_ERROR,
   EDIT_CONCEPT_ADD_DESCRIPTION,
   EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
   CLEAR_PREVIOUS_CONCEPT,
@@ -339,18 +338,6 @@ describe('Test suite for single dictionary concepts', () => {
           { uuid: action.payload },
         ],
       },
-    });
-  });
-  it('should handle FETCH_EXISTING_CONCEPT_ERROR', () => {
-    action = {
-      type: FETCH_EXISTING_CONCEPT_ERROR,
-    };
-
-    deepFreeze(state);
-    deepFreeze(action);
-
-    expect(reducer(state, action)).toEqual({
-      ...state,
     });
   });
   it('should handle EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION', () => {

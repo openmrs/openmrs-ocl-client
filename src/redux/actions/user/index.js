@@ -1,15 +1,13 @@
 import { notify } from 'react-notify-toast';
 import axios from 'axios';
 import { union } from 'lodash';
-import { isSuccess, isFetching, isErrored } from '../globalActionCreators';
+import { isSuccess, isFetching } from '../globalActionCreators';
 import {
   GET_USER,
   FETCH_USER_DICTIONARY,
   FETCH_USER_ORGANIZATION,
   CLEAR_DICTIONARY,
   USER_IS_MEMBER,
-  USER_IS_NOT_MEMBER,
-  NETWORK_ERROR,
   SET_DICTIONARIES_OWNED_BY_A_USERS_ORGS,
 } from '../types';
 import instance from '../../../config/axiosConfig';
@@ -32,7 +30,6 @@ export const fetchUser = (username, props) => async (dispatch) => {
     }
     const message = 'An error occurred with your internet connection, please fix it and try reloading the page.';
     notify.show(message, 'error', 3000);
-    dispatch(isErrored(message, NETWORK_ERROR));
   }
 };
 
@@ -109,9 +106,12 @@ export const fetchMemberStatus = url => async (dispatch) => {
   try {
     response = await instance.get(url);
   } catch (error) {
-    if (error.response.status === 403 || error.response.status === 404) {
+    if (error.response.status === 404) {
       dispatch(isFetching(false));
-      return dispatch(isErrored(false, USER_IS_NOT_MEMBER));
+      notify.show('User not found', 'error', 3000);
+    } else if (error.response.status === 403) {
+      dispatch(isFetching(false));
+      notify.show('You have no access', 'error', 3000);
     }
   }
   if (response.data === '' && response.status === 204) {

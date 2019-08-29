@@ -14,7 +14,6 @@ import {
   CREATE_NEW_CONCEPT,
   ADD_CONCEPT_TO_DICTIONARY,
   FETCH_EXISTING_CONCEPT,
-  FETCH_EXISTING_CONCEPT_ERROR,
   EDIT_CONCEPT_ADD_DESCRIPTION,
   EDIT_CONCEPT_REMOVE_ONE_DESCRIPTION,
   CLEAR_PREVIOUS_CONCEPT,
@@ -234,10 +233,6 @@ export default (state = initialState, action) => {
           ...state.existingConcept,
           names: removeItem(action.payload, state.existingConcept.names),
         },
-      };
-    case FETCH_EXISTING_CONCEPT_ERROR:
-      return {
-        ...state,
       };
     case PRE_POPULATE_ANSWERS: {
       return {

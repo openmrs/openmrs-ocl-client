@@ -2,7 +2,6 @@ import { notify } from 'react-notify-toast';
 import instance from '../../../config/axiosConfig';
 import {
   isSuccess,
-  isErrored,
   isFetching,
   clear,
 } from '../globalActionCreators';
@@ -10,12 +9,12 @@ import {
   ADD_EXISTING_BULK_CONCEPTS,
   FETCH_CONCEPT_SOURCES,
   CLEAR_SOURCE_CONCEPTS,
-  IS_LOADING,
 } from '../types';
 import { recursivelyFetchConceptMappings } from '../concepts/addBulkConcepts';
 import { MAPPINGS_RECURSION_DEPTH } from '../../../components/dictionaryConcepts/components/helperFunction';
 import { deleteNotification, upsertNotification } from '../notifications';
 import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
+import { checkErrorMessage } from '../../../helperFunctions';
 
 export const addExistingBulkConcepts = conceptData => async (dispatch) => {
   const { url, data, conceptIdList: fromConceptIds } = conceptData;
@@ -42,11 +41,8 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
       notify.show(`${payload.data.length} Concept(s) Added`, 'success', 4000);
     }
   } catch (error) {
-    if (error && error.response) {
-      notify.show(error.response.data.detail, 'error', 3000);
-    } else {
-      notify.show('Failed to add concepts. Please retry', 'error', 3000);
-    }
+    const defaultMessage = 'Failed to add concepts. Please retry';
+    checkErrorMessage(error, defaultMessage);
   } finally {
     dispatch(deleteNotification(`adding-${fromConceptIds}`));
   }
@@ -71,9 +67,8 @@ export const addDictionaryReference = (conceptUrl, ownerUrl, dictionaryId) => as
     };
     payload = await instance.put(url, references);
   } catch (error) {
-    return notify.show(
-      'There was an error in referencing concepts in the new dictionary', 'error', 3000,
-    );
+    const defaultMessage = 'There was an error in referencing concepts in the new dictionary';
+    return checkErrorMessage(error, defaultMessage);
   }
   return dispatch(isSuccess(payload, ADD_EXISTING_BULK_CONCEPTS));
 };
@@ -86,7 +81,8 @@ export const fetchConceptSources = () => async (dispatch) => {
     dispatch(isSuccess(response.data, FETCH_CONCEPT_SOURCES));
     dispatch(isFetching(false));
   } catch (error) {
-    dispatch(isErrored(error.response.data, FETCH_CONCEPT_SOURCES));
+    const defaultMessage = 'Failed to fetch source concepts';
+    checkErrorMessage(error, defaultMessage);
     dispatch(isFetching(false));
   }
 };

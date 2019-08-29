@@ -10,11 +10,6 @@ export const isSuccess = (payload, type) => ({
   payload,
 });
 
-export const isErrored = (payload, type) => ({
-  type,
-  payload,
-});
-
 export const isFetching = payload => ({
   type: IS_FETCHING,
   payload,
