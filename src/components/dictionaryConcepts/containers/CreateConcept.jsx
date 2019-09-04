@@ -26,6 +26,7 @@ import {
   MAP_TYPE, CANCEL_WARNING, LEAVE_PAGE, STAY_ON_PAGE, LEAVE_PAGE_POPUP_TITLE,
   MAP_TYPES_DEFAULTS, CIEL_SOURCE_URL,
 } from '../components/helperFunction';
+import { sourcePriorityOrder, prioritiseItems } from '../../../helperFunctions';
 import GeneralModel from '../../dashboard/components/dictionary/common/GeneralModal';
 
 export class CreateConcept extends Component {
@@ -376,6 +377,7 @@ export class CreateConcept extends Component {
   }
 
   render() {
+    const allSources = prioritiseItems(this.props.allSources, sourcePriorityOrder, 'id');
     const {
       match: {
         params: {
@@ -438,7 +440,7 @@ export class CreateConcept extends Component {
                 updateEventListener={this.updateEventListener}
                 updateSourceEventListener={this.updateSourceEventListener}
                 removeMappingRow={this.removeMappingRow}
-                allSources={this.props.allSources}
+                allSources={allSources}
                 showModal={this.showModal}
                 handleSetAsyncSelectChange={this.handleSetAsyncSelectChange}
                 selectedSets={selectedSets}

@@ -12,6 +12,7 @@ import {
 } from '../types';
 import { recursivelyFetchConceptMappings } from '../concepts/addBulkConcepts';
 import { MAPPINGS_RECURSION_DEPTH } from '../../../components/dictionaryConcepts/components/helperFunction';
+import { sourcePriorityOrder } from '../../../helperFunctions';
 import { deleteNotification, upsertNotification } from '../notifications';
 import { ADDING_CONCEPTS_WARNING_MESSAGE } from '../../../constants';
 import { checkErrorMessage } from '../../../helperFunctions';
