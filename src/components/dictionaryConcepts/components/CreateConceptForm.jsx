@@ -41,7 +41,6 @@ const CreateConceptForm = (props) => {
         && map.map_type !== MAP_TYPE.conceptSet,
   );
   const descriptions = props.existingConcept.descriptions || props.description;
-  const showCodedOption = concept === CONCEPT_CLASS.question || concept === '' || isEditConcept;
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
@@ -206,7 +205,7 @@ const CreateConceptForm = (props) => {
             <option>Rule</option>
             <option>Structured-Numeric</option>
             <option>Complex</option>
-            {showCodedOption && <option>Coded</option>}
+            <option>Coded</option>
           </select>
             </div>
           </div>
