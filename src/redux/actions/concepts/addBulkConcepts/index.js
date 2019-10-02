@@ -12,6 +12,8 @@ import {
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
   CLEAR_BULK_FILTERS,
+  SET_SORT_CRITERIA,
+  SET_SORT_DIRECTION,
 } from '../../types';
 import api from '../../../api';
 import {
@@ -29,11 +31,11 @@ export const fetchFilteredConcepts = (source = 'CIEL', query = '', currentPage =
 ) => {
   dispatch(isFetching(true));
   const {
-    bulkConcepts: { datatypeList, classList },
+    bulkConcepts: { datatypeList, classList, sortCriteria = 'name', sortDirection = 'sortAsc' },
   } = getState();
 
   const searchQuery = buildPartialSearchQuery(query);
-  let url = `orgs/${source}/sources/${source}/concepts/?${searchQuery}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
+  let url = `orgs/${source}/sources/${source}/concepts/?${searchQuery}&${sortDirection}=${sortCriteria}&limit=${conceptLimit}&page=${currentPage}&verbose=true&includeMappings=1`;
 
   if (datatypeList.length > 0) {
     url = `${url}&datatype=${datatypeList.join(',')}`;
@@ -60,6 +62,14 @@ export const addToFilterList = (item, type) => (dispatch) => {
 
 export const clearAllBulkFilters = (filterType) => (dispatch) => {
   dispatch({ type: CLEAR_BULK_FILTERS, payload: filterType });
+};
+
+export const setSortCriteriaAction = criteria => (dispatch) => {
+  dispatch({ type: SET_SORT_CRITERIA, payload: criteria });
+};
+
+export const setSortDirectionAction = direction => (dispatch) => {
+  dispatch({ type: SET_SORT_DIRECTION, payload: direction });
 };
 
 export const previewConcept = id => (dispatch, getState) => {

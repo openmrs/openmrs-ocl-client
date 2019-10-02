@@ -10,6 +10,8 @@ import {
   SET_NEXT_PAGE,
   SET_PERVIOUS_PAGE,
   CLEAR_BULK_FILTERS,
+  SET_SORT_CRITERIA,
+  SET_SORT_DIRECTION,
 } from '../../../redux/actions/types';
 import concepts, { concept2, multipleConceptsMockStore } from '../../__mocks__/concepts';
 import { classes as classList, DATA_TYPES as dataTypesList } from '../../../components/dictionaryConcepts/components/helperFunction';
@@ -196,5 +198,17 @@ describe('Test suite for bulkConcepts reducer', () => {
       ...state,
       preview: action.payload,
     });
+  });
+
+  it('should set the right sort criteria', () => {
+    let currentState = reducer(undefined, { type: 'init' });
+    currentState = reducer(currentState, { type: SET_SORT_CRITERIA, payload: 'id' });
+    expect(currentState.sortCriteria).toEqual('id');
+  });
+
+  it('should set the right sort direction', () => {
+    let currentState = reducer(undefined, { type: 'init' });
+    currentState = reducer(currentState, { type: SET_SORT_DIRECTION, payload: 'sortDesc' });
+    expect(currentState.sortDirection).toEqual('sortDesc');
   });
 });

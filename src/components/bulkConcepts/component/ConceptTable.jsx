@@ -18,7 +18,7 @@ const ConceptTable = ({
     );
   }
   return (
-    <div className="row col-12 custom-concept-list">
+    <div className="row custom-concept-list">
       <ReactTable
         data={concepts}
         currentPage={currentPage}

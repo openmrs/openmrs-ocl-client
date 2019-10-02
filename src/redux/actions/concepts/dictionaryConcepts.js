@@ -39,6 +39,8 @@ import {
   PRE_POPULATE_SETS,
   UNPOPULATE_PRE_POPULATED_SETS,
   UNPOPULATE_SET, CLEAR_FILTERS,
+  CHANGE_SORT_CRITERIA,
+  CHANGE_SORT_DIRECTION,
 } from '../types';
 import {
   isFetching,
@@ -102,11 +104,13 @@ export const fetchDictionaryConcepts = (
   query = '*',
   limit = 0,
   page = 1,
+  sortCriteria = 'lastUpdate',
+  sortDirection = 'sortDesc',
 ) => async (dispatch, getState) => {
   dispatch(isFetching(true));
 
   const searchQuery = buildPartialSearchQuery(query);
-  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${searchQuery}&limit=${limit}&page=${page}&verbose=true&includeMappings=1&sortDesc=lastUpdate`;
+  let url = `${conceptType}/${conceptOwner}/collections/${conceptName}/concepts/?q=${searchQuery}&limit=${limit}&page=${page}&verbose=true&includeMappings=1&${sortDirection}=${sortCriteria}`;
   const filterBySource = getState().concepts.filteredBySource;
   const filterByClass = getState().concepts.filteredByClass;
 
@@ -545,4 +549,12 @@ export const unretireMapping = url => async (dispatch) => {
     dispatch(isFetching(false));
     return null;
   }
+};
+
+export const setSortCriteriaAction = criteria => (dispatch) => {
+  dispatch({ type: CHANGE_SORT_CRITERIA, payload: criteria });
+};
+
+export const setSortDirectionAction = direction => (dispatch) => {
+  dispatch({ type: CHANGE_SORT_DIRECTION, payload: direction });
 };
