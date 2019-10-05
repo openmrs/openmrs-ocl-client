@@ -48,7 +48,8 @@ describe('Test suite for ActionButton in BulkConceptsPage component', () => {
       <PreviewCard {...newProps} />
     </Router>);
     expect(wrapper.length).toEqual(1);
-    expect(wrapper.find('Cell').getElement(0).props.original).toEqual(newProps.concept.mappings[0]);
+    expect(wrapper.find('MappingPreview TrComponent.-odd TdComponent').at(1).text()).toEqual(newProps.concept.mappings[0].to_concept_name);
+    expect(wrapper.find('MappingPreview TrComponent.-odd TdComponent').at(3).text()).toEqual(newProps.concept.mappings[0].to_concept_code);
   });
 
   it('should render with mappings containing set members', () => {
