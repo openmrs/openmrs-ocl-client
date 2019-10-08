@@ -11,3 +11,5 @@ export const checkErrorMessage = (error, message) => {
     notify.show(message, 'error', 3000);
   }
 };
+
+export const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
