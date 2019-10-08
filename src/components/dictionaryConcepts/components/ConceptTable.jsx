@@ -31,7 +31,7 @@ const ConceptTable = ({
   onPageSizeChange,
   fetchData,
 }) => (
-  <div className="row col-12 custom-concept-list">
+  <div className="row custom-concept-list">
     <RemoveConcept
       collectionName={locationPath.collectionName}
       conceptOwner={locationPath.typeName}

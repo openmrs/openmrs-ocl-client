@@ -253,3 +253,19 @@
   max-height: 40rem;
   overflow: auto;
 }
+
+#sort-bar {
+  text-align: end;
+  vertical-align: middle;
+
+  .custom-select {
+    width: unset;
+    background-color: transparent;
+    border-width: .5px;
+    margin-left: .3rem;
+  }
+
+  .label {
+    margin: 0 .8rem;
+  }
+}

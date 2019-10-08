@@ -16,6 +16,8 @@ import {
   filterByClass,
   fetchExistingConcept,
   clearAllFilters,
+  setSortCriteriaAction,
+  setSortDirectionAction,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -24,6 +26,7 @@ import {
   addReferenceToCollectionAction, deleteReferenceFromCollectionAction,
 } from '../../../redux/actions/dictionaries/dictionaryActionCreators';
 import { fetchMemberStatus } from '../../../redux/actions/user/index';
+import SortBar from '../../bulkConcepts/component/SortBar';
 
 export class DictionaryConcepts extends Component {
   static propTypes = {
@@ -55,6 +58,10 @@ export class DictionaryConcepts extends Component {
     addReferenceToCollection: PropTypes.func.isRequired,
     deleteReferenceFromCollection: PropTypes.func.isRequired,
     clearAllFilters: PropTypes.func,
+    sortCriteria: PropTypes.string,
+    sortDirection: PropTypes.string,
+    setSortCriteria: PropTypes.func,
+    setSortDirection: PropTypes.func,
   };
 
   constructor(props) {
@@ -79,13 +86,22 @@ export class DictionaryConcepts extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const {
-      filteredByClass: prevFilteredByClass, filteredBySource: prevFilteredBySource,
+      filteredByClass: prevFilteredByClass,
+      filteredBySource: prevFilteredBySource,
+      sortCriteria: prevSortCriteria,
+      sortDirection: prevSortDirection,
     } = prevProps;
-    const { filteredByClass, filteredBySource } = this.props;
+    const {
+      filteredByClass,
+      filteredBySource,
+      sortCriteria,
+      sortDirection,
+    } = this.props;
     const { searchInput: prevSearchTerm } = prevState;
     const { searchInput: searchTerm } = this.state;
 
-    if (prevFilteredByClass !== filteredByClass || prevFilteredBySource !== filteredBySource) {
+    // eslint-disable-next-line max-len
+    if (prevFilteredByClass !== filteredByClass || prevFilteredBySource !== filteredBySource || prevSortCriteria !== sortCriteria || prevSortDirection !== sortDirection) {
       this.setPage(0, true);
     } else if (prevSearchTerm !== searchTerm && searchTerm.length === 0) {
       this.setPage(0, true);
@@ -114,13 +130,15 @@ export class DictionaryConcepts extends Component {
       match: {
         params: { collectionName, type, typeName },
       },
+      sortCriteria,
+      sortDirection,
     } = this.props;
 
     const { searchInput, page, conceptLimit } = this.state;
     const query = `${searchInput.trim()}*`;
 
     this.props.fetchDictionaryConcepts(
-      type, typeName, collectionName, query, conceptLimit, page + 1,
+      type, typeName, collectionName, query, conceptLimit, page + 1, sortCriteria, sortDirection,
     );
   }
 
@@ -297,6 +315,10 @@ export class DictionaryConcepts extends Component {
       userIsMember,
       filteredByClass,
       filteredBySource,
+      sortCriteria,
+      sortDirection,
+      setSortCriteria,
+      setSortDirection,
     } = this.props;
 
     const { page } = this.state;
@@ -342,11 +364,19 @@ export class DictionaryConcepts extends Component {
             clearAllFilters={this.clearAllFilters}
           />
           <div className="col-12 col-md-9 custom-full-width">
-            <SearchBar
-              handleSearch={this.handleSearchByName}
-              handleChange={this.handleChange}
-              searchInput={searchInput}
-            />
+            <div className="row search-container">
+              <SearchBar
+                handleSearch={this.handleSearchByName}
+                handleChange={this.handleChange}
+                searchInput={searchInput}
+              />
+              <SortBar
+                sortCriteria={sortCriteria}
+                setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+              />
+            </div>
             <ConceptTable
               concepts={myConcepts}
               loading={loading}
@@ -378,6 +408,10 @@ DictionaryConcepts.defaultProps = {
   filteredByClass: [],
   filteredBySource: [],
   clearAllFilters: () => {},
+  sortCriteria: 'name',
+  sortDirection: 'sortAsc',
+  setSortCriteria: () => {},
+  setSortDirection: () => {},
 };
 
 export const mapStateToProps = state => ({
@@ -389,6 +423,8 @@ export const mapStateToProps = state => ({
   dictionaries: state.dictionaries.dictionary,
   userIsMember: state.user.userIsMember,
   originalConcept: state.concepts.existingConcept,
+  sortCriteria: state.concepts.sortCriteria,
+  sortDirection: state.concepts.sortDirection,
 });
 
 export default connect(
@@ -405,5 +441,7 @@ export default connect(
     retireCurrentConcept: retireConcept,
     getOriginalConcept: fetchExistingConcept,
     clearAllFilters,
+    setSortCriteria: setSortCriteriaAction,
+    setSortDirection: setSortDirectionAction,
   },
 )(DictionaryConcepts);

@@ -34,6 +34,8 @@ import {
   REPLACE_CONCEPT,
   UNPOPULATE_SET,
   CLEAR_FILTERS,
+  CHANGE_SORT_CRITERIA,
+  CHANGE_SORT_DIRECTION,
 } from '../actions/types';
 import {
   filterList,
@@ -72,6 +74,8 @@ const initialState = {
   selectedSets: [{
     frontEndUniqueKey: 'intialKey',
   }],
+  sortCriteria: 'name',
+  sortDirection: 'sortAsc',
 };
 
 export default (state = initialState, action) => {
@@ -141,6 +145,10 @@ export default (state = initialState, action) => {
         ...state,
         dictionaryConcepts: action.payload,
       };
+    case CHANGE_SORT_CRITERIA:
+      return { ...state, sortCriteria: action.payload };
+    case CHANGE_SORT_DIRECTION:
+      return { ...state, sortDirection: action.payload };
     case CREATE_NEW_NAMES:
       return {
         ...state,

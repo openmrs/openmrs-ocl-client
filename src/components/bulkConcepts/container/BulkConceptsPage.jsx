@@ -13,10 +13,13 @@ import {
   fetchFilteredConcepts,
   setCurrentPage,
   clearAllBulkFilters,
+  setSortDirectionAction,
+  setSortCriteriaAction,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import { conceptsProps } from '../../dictionaryConcepts/proptypes';
 import { MIN_CHARACTERS_WARNING, MILLISECONDS_TO_SHOW_WARNING } from '../../../redux/reducers/generalSearchReducer';
 import { INTERNAL_MAPPING_DEFAULT_SOURCE } from '../../dictionaryConcepts/components/helperFunction';
+import SortBar from '../component/SortBar';
 
 export class BulkConceptsPage extends Component {
   static propTypes = {
@@ -44,6 +47,10 @@ export class BulkConceptsPage extends Component {
     datatypeList: PropTypes.array,
     classList: PropTypes.array,
     clearAllBulkFilters: PropTypes.func,
+    sortCriteria: PropTypes.string,
+    sortDirection: PropTypes.string,
+    setSortCriteria: PropTypes.func,
+    setSortDirection: PropTypes.func,
   };
 
   static defaultProps = {
@@ -51,6 +58,10 @@ export class BulkConceptsPage extends Component {
     datatypeList: [],
     classList: [],
     clearAllBulkFilters: () => {},
+    sortCriteria: 'name',
+    sortDirection: 'sortAsc',
+    setSortCriteria: () => {},
+    setSortDirection: () => {},
   };
 
   constructor(props) {
@@ -80,8 +91,9 @@ export class BulkConceptsPage extends Component {
 
   componentDidUpdate(prevProps) {
     const { searchingOn } = this.state;
-    const { currentPage } = this.props;
-    if (currentPage !== prevProps.currentPage) {
+    const { currentPage, sortCriteria, sortDirection } = this.props;
+    // eslint-disable-next-line max-len
+    if (currentPage !== prevProps.currentPage || sortCriteria !== prevProps.sortCriteria || sortDirection !== prevProps.sortDirection) {
       if (searchingOn) {
         return this.searchOption();
       }
@@ -182,6 +194,10 @@ export class BulkConceptsPage extends Component {
       addConcept: addedConcept,
       datatypeList,
       classList,
+      sortCriteria,
+      sortDirection,
+      setSortCriteria,
+      setSortDirection,
     } = this.props;
     const {
       datatypeInput, classInput, searchInput, conceptLimit,
@@ -206,11 +222,19 @@ export class BulkConceptsPage extends Component {
             clearAllBulkFilters={this.clearBulkFilters}
           />
           <div className="col-10 col-md-9 bulk-concept-wrapper custom-full-width">
-            <SearchBar
-              handleSearch={this.handleSearch}
-              handleChange={this.handleChange}
-              searchInput={searchInput}
-            />
+            <div className="row search-container">
+              <SearchBar
+                handleSearch={this.handleSearch}
+                handleChange={this.handleChange}
+                searchInput={searchInput}
+              />
+              <SortBar
+                sortCriteria={sortCriteria}
+                setSortCriteria={setSortCriteria}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+              />
+            </div>
             <ConceptTable
               concepts={concepts}
               loading={loading}
@@ -238,6 +262,8 @@ export const mapStateToProps = ({ bulkConcepts, concepts }) => ({
   ...bulkConcepts,
   datatypeList: bulkConcepts.datatypeList,
   classList: bulkConcepts.classList,
+  sortCriteria: bulkConcepts.sortCriteria,
+  sortDirection: bulkConcepts.sortDirection,
 });
 
 export default connect(
@@ -249,5 +275,7 @@ export default connect(
     fetchFilteredConcepts,
     setCurrentPage,
     clearAllBulkFilters,
+    setSortCriteria: setSortCriteriaAction,
+    setSortDirection: setSortDirectionAction,
   },
 )(BulkConceptsPage);

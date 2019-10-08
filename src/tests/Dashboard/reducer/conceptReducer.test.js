@@ -16,7 +16,9 @@ import {
   PRE_POPULATE_SETS,
   UNPOPULATE_PRE_POPULATED_SETS,
   REPLACE_CONCEPT,
-  UNPOPULATE_SET
+  UNPOPULATE_SET,
+  CHANGE_SORT_CRITERIA,
+  CHANGE_SORT_DIRECTION,
 } from '../../../redux/actions/types';
 import concepts, { multipleConceptsMockStore } from '../../__mocks__/concepts';
 import { replaceConcept } from '../../../redux/actions/dictionaries/dictionaryActions';
@@ -48,6 +50,8 @@ const initialState = {
   selectedSets: [{
     frontEndUniqueKey: 'intialKey',
   }],
+  sortCriteria: 'name',
+  sortDirection: 'sortAsc',
 };
 describe('Test suite for concepts reducer', () => {
   it('should return the initial state', () => {
@@ -334,4 +338,17 @@ describe('Test suite for concepts reducer', () => {
       .toEqual(expected);
   });
 
+  it('should set the right sort criteria', () => {
+    let state = reducer(initialState, { type: 'init' });
+    expect(state.sortCriteria).toEqual(initialState.sortCriteria);
+    state = reducer(state, { type: CHANGE_SORT_CRITERIA, payload: 'id' });
+    expect(state.sortCriteria).toEqual('id');
+  });
+
+  it('should set the right sort direction', () => {
+    let state = reducer(initialState, { type: 'init' });
+    expect(state.sortDirection).toEqual(initialState.sortDirection);
+    state = reducer(state, { type: CHANGE_SORT_DIRECTION, payload: 'sortDesc' });
+    expect(state.sortDirection).toEqual('sortDesc');
+  });
 });

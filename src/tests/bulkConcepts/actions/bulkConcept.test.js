@@ -15,6 +15,8 @@ import {
   SET_NEXT_PAGE,
   SET_PERVIOUS_PAGE,
   CLEAR_BULK_FILTERS,
+  SET_SORT_CRITERIA,
+  SET_SORT_DIRECTION,
 } from '../../../redux/actions/types';
 import {
   addToFilterList,
@@ -24,7 +26,7 @@ import {
   setCurrentPage,
   setNextPage,
   setPreviousPage, recursivelyFetchConceptMappings,
-  clearAllBulkFilters,
+  clearAllBulkFilters, setSortDirectionAction, setSortCriteriaAction,
 } from '../../../redux/actions/concepts/addBulkConcepts';
 import concepts, { mockConceptStore } from '../../__mocks__/concepts';
 import mappings from '../../__mocks__/mappings';
@@ -499,5 +501,17 @@ describe('test suite for addBulkConcepts synchronous action creators', () => {
     const expectedActions = [{ type: PREVIEW_CONCEPT, payload: { id: 123 } }];
     await store.dispatch(previewConcept(123));
     expect(store.getActions()).toEqual(expectedActions);
+  });
+
+  it('setSortCriteriaAction should dispatch the correct action type', () => {
+    const mock = jest.fn();
+    setSortCriteriaAction('criteria')(mock);
+    expect(mock).toHaveBeenCalledWith({ type: SET_SORT_CRITERIA, payload: 'criteria' });
+  });
+
+  it('setSortDirectionAction should dispatch the correct action type', () => {
+    const mock = jest.fn();
+    setSortDirectionAction('direction')(mock);
+    expect(mock).toHaveBeenCalledWith({ type: SET_SORT_DIRECTION, payload: 'direction' });
   });
 });

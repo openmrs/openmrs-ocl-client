@@ -62,6 +62,8 @@ export const FETCH_BULK_CONCEPTS = '[concept] fetch_bulk_concepts';
 export const ADD_EXISTING_BULK_CONCEPTS = '[concept] add_existing_bulk_concepts';
 export const ADD_TO_DATATYPE_LIST = '[concept] add_to_datatype_list';
 export const CLEAR_BULK_FILTERS = '[bulk concept] clear bulk filters';
+export const SET_SORT_CRITERIA = '[bulk concept] set sort criteria';
+export const SET_SORT_DIRECTION = '[bulk concept] set sort direction';
 export const ADD_TO_CLASS_LIST = '[concept] add_to_class_list';
 export const FETCH_FILTERED_CONCEPTS = '[concept] fetch_filtered_concepts';
 export const PREVIEW_CONCEPT = '[concept] preview_concept';
@@ -79,5 +81,7 @@ export const SET_CURRENT_PAGE = '[page] current_page';
 export const IS_LOADING = '[ui] loader_spinning';
 export const UN_POPULATE_THIS_ANSWER = '[concept] unpopulate an answer';
 export const UNPOPULATE_SET = '[concept] unpopulate a set';
+export const CHANGE_SORT_CRITERIA = '[dictionary concepts] change sort criteria';
+export const CHANGE_SORT_DIRECTION = '[dictionary concepts] change sort direction';
 
 export const SET_DICTIONARIES_OWNED_BY_A_USERS_ORGS = '[dictionaries] set dictionaries owned by a user\'s orgs';

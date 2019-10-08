@@ -8,6 +8,8 @@ import {
   SET_NEXT_PAGE,
   SET_CURRENT_PAGE,
   CLEAR_BULK_FILTERS,
+  SET_SORT_CRITERIA,
+  SET_SORT_DIRECTION,
 } from '../actions/types';
 import { normalizeList } from './util';
 import { classes as classList, DATA_TYPES as dataTypesList } from '../../components/dictionaryConcepts/components/helperFunction';
@@ -20,6 +22,8 @@ const userInitialState = {
   datatypeList: [],
   classList: [],
   currentPage: 1,
+  sortCriteria: 'name',
+  sortDirection: 'sortAsc',
 };
 const bulkConcepts = (state = userInitialState, action) => {
   switch (action.type) {
@@ -73,6 +77,10 @@ const bulkConcepts = (state = userInitialState, action) => {
         case FILTER_TYPES.CLASSES: return { ...state, classList: [] };
         default: return state;
       }
+    case SET_SORT_CRITERIA:
+      return { ...state, sortCriteria: action.payload };
+    case SET_SORT_DIRECTION:
+      return { ...state, sortDirection: action.payload };
     default:
       return state;
   }

@@ -38,6 +38,8 @@ import {
   UNPOPULATE_PRE_POPULATED_SETS,
   UNPOPULATE_SET,
   CLEAR_FILTERS,
+  CHANGE_SORT_CRITERIA,
+  CHANGE_SORT_DIRECTION,
 } from '../../../redux/actions/types';
 import {
   fetchDictionaryConcepts,
@@ -77,6 +79,8 @@ import {
   buildNewMappingData,
   fetchConceptsFromASource, buildUpdateMappingData,
   clearAllFilters,
+  setSortCriteriaAction,
+  setSortDirectionAction,
 } from '../../../redux/actions/concepts/dictionaryConcepts';
 import {
   removeDictionaryConcept,
@@ -1472,5 +1476,17 @@ describe('fetchConceptsFromASource', () => {
     });
     await fetchConceptsFromASource(sourceUrl, query);
     expect(notifyMock).toHaveBeenCalledWith('Could not load concepts: error. Please retry.', 'error', 2000);
+  });
+
+  it('setSortCriteriaAction should dispatch the correct action type', () => {
+    const mock = jest.fn();
+    setSortCriteriaAction('criteria')(mock);
+    expect(mock).toHaveBeenCalledWith({ type: CHANGE_SORT_CRITERIA, payload: 'criteria' });
+  });
+
+  it('setSortDirectionAction should dispatch the correct action type', () => {
+    const mock = jest.fn();
+    setSortDirectionAction('direction')(mock);
+    expect(mock).toHaveBeenCalledWith({ type: CHANGE_SORT_DIRECTION, payload: 'direction' });
   });
 });
