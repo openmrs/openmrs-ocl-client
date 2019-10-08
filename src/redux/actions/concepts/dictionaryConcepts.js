@@ -49,7 +49,7 @@ import {
 import instance from '../../../config/axiosConfig';
 import api from '../../api';
 import { recursivelyFetchConceptMappings } from './addBulkConcepts';
-import { buildPartialSearchQuery, checkErrorMessage } from '../../../helperFunctions';
+import { buildPartialSearchQuery, checkErrorMessage, delay } from '../../../helperFunctions';
 
 export const createNewName = () => (dispatch) => {
   const payload = uuid();
@@ -412,6 +412,7 @@ export const createNewConcept = (data, dataUrl, ownerType = 'users', owner = loc
   } finally {
     if (createdConcept) {
       await dispatch(addConceptToDictionary(createdConcept.id, dataUrl));
+      await delay(1000);
       dispatch(isSuccess(createdConcept, CREATE_NEW_CONCEPT));
     }
   }
@@ -508,6 +509,7 @@ export const updateConcept = (conceptUrl, data, history, source, concept, collec
 
     dispatch(isSuccess(response.data, UPDATE_CONCEPT));
     notify.show('Concept successfully updated', 'success', 3000);
+    await delay(1000);
     dispatch(isFetching(false));
     return response.data;
   } catch (error) {
