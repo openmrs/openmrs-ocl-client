@@ -108,7 +108,7 @@ export default {
     },
   },
   mappings: {
-    fetchFromPublicSources: (fromConcepts) => instance.get(`mappings/?fromConcept=${fromConcepts}&limit=0`),
+    fetchFromPublicSources: (fromConcepts) => instance.get(`/orgs/CIEL/sources/CIEL/mappings/?fromConcept=${fromConcepts}&limit=0`),
     list: {
       fromAConceptInACollection: (collectionUrl, fromConceptCode) => instance.get(`${collectionUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`),
       fromAConceptInASource: (sourceUrl, fromConceptCode) => instance.get(`${sourceUrl}mappings/?limit=0&fromConcept=${fromConceptCode}`),
