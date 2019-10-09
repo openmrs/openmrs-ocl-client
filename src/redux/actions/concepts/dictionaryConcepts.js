@@ -160,7 +160,7 @@ export const queryAnswers = async (source, query, mapType = MAP_TYPE.questionAnd
 
     let url = `${CONCEPT_TYPE}/${USER_TYPE_NAME}/collections/${source}/concepts/?${query}*&verbose=true`;
     if (source === INTERNAL_MAPPING_DEFAULT_SOURCE) {
-      url = `/orgs/${source}/sources/${source}/concepts/?q=${query}*&limit=0&verbose=true`;
+      url = `/orgs/${source}/sources/${source}/latest/concepts/?q=${query}*&limit=0&verbose=true`;
     }
     const response = await instance.get(url);
     const defaults = { map_type: mapType };
@@ -350,7 +350,7 @@ export const buildNewMappingData = (mapping, fromConceptUrl) => {
 
 export const fetchConceptsFromASource = async (sourceUrl, query) => {
   try {
-    const response = await api.concepts.list.conceptsInASource(sourceUrl, query);
+    const response = await api.concepts.list.conceptsInASource(`${sourceUrl}latest/`, query);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {

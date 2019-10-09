@@ -1450,7 +1450,7 @@ describe('buildUpdateMappingData', () => {
 describe('fetchConceptsFromASource', () => {
   const conceptsInASourceMock = jest.fn();
   const notifyMock = jest.fn();
-  const sourceUrl = 'test/url';
+  const sourceUrl = 'test/url/';
   const query = '/test query';
 
   beforeEach(() => {
@@ -1463,7 +1463,7 @@ describe('fetchConceptsFromASource', () => {
   it('should call the fetch concepts endpoint method with the right arguments', async () => {
     await fetchConceptsFromASource(sourceUrl, query);
     expect(conceptsInASourceMock).toHaveBeenCalledTimes(1);
-    expect(conceptsInASourceMock).toHaveBeenCalledWith(sourceUrl, query);
+    expect(conceptsInASourceMock).toHaveBeenCalledWith(`${sourceUrl}latest/`, query);
   });
 
   it('should notify the user in case of an unknown error', async () => {
