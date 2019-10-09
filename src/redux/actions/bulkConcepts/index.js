@@ -34,11 +34,12 @@ export const addExistingBulkConcepts = conceptData => async (dispatch) => {
 
     const payload = await instance.put(url, data);
     dispatch(isSuccess(payload.data, ADD_EXISTING_BULK_CONCEPTS));
-    const existing = payload.data.filter(pay => pay.added === false);
+    const results = payload.data.filter(result => result.expression.indexOf('/concepts/') !== -1);
+    const existing = results.filter(pay => pay.added === false);
     if (existing.length > 0) {
-      notify.show(`Only ${payload.data.length - existing.length} of ${payload.data.length} concept(s) were added. Skipped ${existing.length} already added`, 'error', 3000);
+      notify.show(`Only ${results.length - existing.length} of ${results.length} concept(s) were added. Skipped ${existing.length} already added`, 'error', 3000);
     } else {
-      notify.show(`${payload.data.length} Concept(s) Added`, 'success', 4000);
+      notify.show(`${results.length} Concept(s) Added`, 'success', 4000);
     }
   } catch (error) {
     const defaultMessage = 'Failed to add concepts. Please retry';

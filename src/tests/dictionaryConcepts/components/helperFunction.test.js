@@ -96,15 +96,15 @@ describe('buildAddConceptToCollectionMessage', () => {
   const conceptName = 'testConceptName';
 
   it('should build the right message for whether or not a concept was added', () => {
-    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: true }])).toEqual(`Added ${conceptName}.`);
-    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: false }])).toEqual(`${conceptName} already in collection.`);
+    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: true, expression: '/concepts/' }])).toEqual(`Added ${conceptName}.`);
+    expect(buildAddConceptToCollectionMessage(conceptName, [{ added: false, expression: '/concepts/' }])).toEqual(`${conceptName} already in collection.`);
   });
 
   it('should return a message with the right count for added and already added concepts', () => {
     const results = [
-      { added: true },
-      { added: false },
-      { added: true },
+      { added: true, expression: '/concepts/' },
+      { added: false, expression: '/concepts/' },
+      { added: true, expression: '/concepts/' },
     ];
 
     expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
@@ -114,8 +114,8 @@ describe('buildAddConceptToCollectionMessage', () => {
 
   it('should not include added concepts if there are none', () => {
     const results = [
-      { added: true },
-      { added: false },
+      { added: true, expression: '/concepts/' },
+      { added: false, expression: '/concepts/' },
     ];
 
     expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
@@ -125,8 +125,20 @@ describe('buildAddConceptToCollectionMessage', () => {
 
   it('should not include skipped concepts if there are none', () => {
     const results = [
-      { added: true },
-      { added: true },
+      { added: true, expression: '/concepts/' },
+      { added: true, expression: '/concepts/' },
+    ];
+
+    expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(
+      `Added ${conceptName}. 1 dependent concepts were added.`,
+    );
+  });
+
+  it('should not include mappings counts', () => {
+    const results = [
+      { added: true, expression: '/concepts/' },
+      { added: true, expression: '/concepts/' },
+      { added: true, expression: '/mappings/' },
     ];
 
     expect(buildAddConceptToCollectionMessage(conceptName, results)).toEqual(

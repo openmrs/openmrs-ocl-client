@@ -120,7 +120,7 @@ describe('Test suite for addBulkConcepts async actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: [{ concepts, ...{ added: true } }, { added: true }],
+        response: [{ concepts, ...{ added: true, expression: '/some/concepts/' } }, { added: true, expression: '/some/concepts/' }],
       });
     });
 

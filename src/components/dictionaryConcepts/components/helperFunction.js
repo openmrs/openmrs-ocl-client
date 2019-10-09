@@ -117,7 +117,7 @@ export const convertToFrontendNameType = (nameType) => {
 };
 export const buildAddConceptToCollectionMessage = (conceptName, results) => {
   const conceptResult = results[0];
-  const otherResults = results.slice(1);
+  const otherResults = results.slice(1).filter(result => result.expression.indexOf('/concepts/') !== -1);
 
   const addedCount = otherResults.filter(result => result.added).length;
   const alreadyInCollectionCount = otherResults.length - addedCount;
