@@ -290,7 +290,7 @@ describe('Test suite for concepts reducer', () => {
   });
 
   describe(REPLACE_CONCEPT, () => {
-    it('should replace a concept in dictionaryConcepts and paginatedConcepts', () => {
+    it('should replace a concept in dictionaryConcepts', () => {
       let state = reducer(multipleConceptsMockStore.concepts, 'init');
       const conceptToReplace = state.dictionaryConcepts[0];
       const newConcept = concepts;
@@ -298,7 +298,6 @@ describe('Test suite for concepts reducer', () => {
       expect(conceptToReplace).not.toEqual(newConcept);
       state = reducer(state, replaceConcept(newConcept));
       expect(state.dictionaryConcepts[0]).toEqual(newConcept);
-      expect(state.paginatedConcepts[0]).toEqual(newConcept);
     });
   });
 
