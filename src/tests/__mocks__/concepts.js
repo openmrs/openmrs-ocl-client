@@ -154,7 +154,6 @@ export const multipleConceptsMockStore = {
   concepts: {
     concepts: [],
     loading: false,
-    paginatedConcepts: mockConcepts.slice(0, 10),
     dictionaryConcepts: mockConcepts,
     filteredSources: ['dev-col', 'MapTypes', 'Classes'],
     filteredClass: ['Diagnosis', 'MapType', 'Concept Class'],

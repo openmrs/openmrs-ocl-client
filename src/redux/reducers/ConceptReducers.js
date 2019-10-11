@@ -104,16 +104,12 @@ export default (state = initialState, action) => {
     case REMOVE_CONCEPT:
       return {
         ...state,
-        paginatedConcepts: state.paginatedConcepts
-          .filter(concept => concept.version_url !== action.payload),
         dictionaryConcepts: state.dictionaryConcepts
           .filter(concept => concept.version_url !== action.payload),
       };
     case REPLACE_CONCEPT:
       return {
         ...state,
-        paginatedConcepts: state.paginatedConcepts
-          .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
         dictionaryConcepts: state.dictionaryConcepts
           .map(concept => (concept.id === action.payload.id ? action.payload : concept)),
       };
