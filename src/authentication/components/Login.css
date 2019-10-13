@@ -1,0 +1,15 @@
+fieldset {
+    border: .5px solid black;
+}
+
+form {
+    padding: 4vh 2vw;
+}
+
+.other-options {
+    text-align: center;
+}
+
+.fields {
+    padding: 2vh 1vw;
+}
