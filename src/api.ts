@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import store from "./store";
-import {logoutAction} from "./authentication";
+import {logoutAction} from "./apps/authentication";
 import {BASE_URL} from "./constants";
 
 const redirectIfNotLoggedIn = (response: AxiosResponse) => {

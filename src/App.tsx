@@ -4,9 +4,10 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import {AuthenticationRequired, LoginPage} from "./authentication";
+import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
+import NavDrawer from './NavDrawer';
 
 const AuthenticatedRoutes: React.FC = () => {
     return (
@@ -29,7 +30,7 @@ const Routes: React.FC = () => {
               </Route>
               <Route path="/">
                   <AuthenticationRequired>
-                      <AuthenticatedRoutes/>
+                      <NavDrawer><AuthenticatedRoutes/></NavDrawer>
                   </AuthenticationRequired>
               </Route>
           </Switch>
@@ -44,6 +45,5 @@ const App: React.FC = () => {
         </Provider>
     );
 };
-
 
 export default App;

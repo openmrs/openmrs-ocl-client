@@ -1,7 +1,7 @@
 import api from "./api";
 import {AnyAction} from "redux";
-import {loadingSelector, createActionType, createActionThunk} from "../redux";
-import {errorSelector} from "../redux/redux";
+import {loadingSelector, createActionType, createActionThunk} from "../../redux";
+import {errorSelector} from "../../redux/redux";
 
 const LOGIN_ACTION = 'authentication/login';
 const LOGOUT_ACTION = 'authentication/logout';
@@ -22,6 +22,8 @@ const reducer = (state=initialState, action: AnyAction) => {
     switch (action.type) {
         case LOGIN_ACTION:
             return {...state, isLoggedIn: true, token: action.payload.token};
+        case LOGOUT_ACTION:
+            return {...state, isLoggedIn: false, token: undefined};
         default:
             return state;
     }

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {Button, Paper, Typography, Link} from "@material-ui/core";
 import './Login.css';
-import {TRADITIONAL_OCL_URL} from "../../constants";
+import {TRADITIONAL_OCL_URL} from "../../../constants";
 import {Field, Form, Formik} from "formik";
 import * as Yup from 'yup';
 import {TextField} from "formik-material-ui";
