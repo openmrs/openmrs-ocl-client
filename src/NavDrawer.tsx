@@ -10,7 +10,7 @@ import {
     ListItemText,
 } from "@material-ui/core";
 import {Menu, ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined} from '@material-ui/icons';
-import './NavDrawer.css';
+import './NavDrawer.scss';
 import {connect} from "react-redux";
 import {logoutAction} from "./apps/authentication";
 import {Link} from "react-router-dom";
@@ -30,7 +30,7 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
     };
 
     return (
-        <div id="main">
+        <div id="nav-drawer">
             <CssBaseline />
             <Drawer id="drawer" variant="permanent">
                 <div id="menu-icon">

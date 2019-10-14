@@ -1,22 +1,24 @@
-fieldset {
+#login-form {
+  fieldset {
     border: .5px solid black;
-}
+  }
 
-form {
+  form {
     padding: 4vh 2vw;
-}
+  }
 
-.other-options {
+  .other-options {
     text-align: center;
-}
+  }
 
-.fields {
+  .fields {
     padding: 2vh 1vw;
     display: inherit;
-}
+  }
 
-.status-message {
+  .status-message {
     display: inline-block;
     width: 100%;
     text-align: center;
+  }
 }

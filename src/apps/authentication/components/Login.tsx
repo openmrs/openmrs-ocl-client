@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import {Button, Paper, Typography, Link} from "@material-ui/core";
-import './Login.css';
-import {TRADITIONAL_OCL_URL} from "../../../constants";
+import './Login.scss';
+import {TRADITIONAL_OCL_URL} from "../../../utils/constants";
 import {Field, Form, Formik} from "formik";
 import * as Yup from 'yup';
 import {TextField} from "formik-material-ui";
@@ -37,7 +37,7 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
     }, [status]);
 
     return (
-        <Paper>
+        <Paper id="login-form">
             <Formik
                 ref={formikRef}
                 initialValues={{ username: '', password: '' }}
@@ -53,12 +53,12 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
                             <div className="fields">
                                 <Field
                                     required
+                                    fullWidth
                                     type="text"
                                     name="username"
                                     id="username"
                                     label="Username"
                                     margin="dense"
-                                    fullWidth
                                     variant="outlined"
                                     component={TextField}
                                 />
@@ -89,7 +89,7 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
                                     Log in
                                 </Button>
                                 {!status ? <br/> : (
-                                    <Typography className="status-message" color="secondary" variant="caption" component="span">
+                                    <Typography className="status-message" color="error" variant="caption" component="span">
                                         {status}
                                     </Typography>
                                 )}

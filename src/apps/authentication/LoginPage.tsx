@@ -2,7 +2,7 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 import {Grid, Container, Typography} from "@material-ui/core";
 import {Login} from "./components";
-import './LoginPage.css';
+import './LoginPage.scss';
 import {connect} from "react-redux";
 import {authErrorsSelector, authLoadingSelector, loginAction} from "./redux";
 
@@ -21,7 +21,7 @@ const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading, errors={}}: Pro
             container
             justify="center"
             alignItems="center"
-            className="login-page"
+            id="login-page"
             component={Container}
         >
             <Grid xs={4} item component="div">

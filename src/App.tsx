@@ -8,11 +8,15 @@ import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
 import NavDrawer from './NavDrawer';
+import DictionaryRoutes from './apps/dictionaries';
 
 const AuthenticatedRoutes: React.FC = () => {
     return (
         <Router>
             <Switch>
+                <Route path="/dictionaries/">
+                    <DictionaryRoutes/>
+                </Route>
                 <Route exact path="/">
                     Home
                 </Route>

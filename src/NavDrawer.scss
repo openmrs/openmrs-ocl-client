@@ -1,0 +1,25 @@
+#nav-drawer {
+    display: flex;
+
+    .list-item-icon svg {
+        width: 100%;
+    }
+
+    #menu-icon {
+        text-align: center;
+    }
+
+    #logout-icon {
+        margin-top: auto;
+    }
+
+    #drawer {
+        flex-shrink: 0;
+    }
+
+    main {
+        flex-grow: 1;
+        margin-left: 4rem;
+        height: 100vh;
+    }
+}
