@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import {AuthenticationRequired, LoginPage} from "./authentication";
 import {Provider} from "react-redux";
-import store from "./redux/store";
+import store from "./store";
 
 const AuthenticatedRoutes: React.FC = () => {
     return (

@@ -1,7 +1,7 @@
-import {actionType, createActionThunk} from "../redux/utils";
 import api from "./api";
 import {AnyAction} from "redux";
-import {loadingSelector} from "../redux/redux";
+import {loadingSelector, createActionType, createActionThunk} from "../redux";
+import {errorSelector} from "../redux/redux";
 
 const LOGIN_ACTION = 'authentication/login';
 const LOGOUT_ACTION = 'authentication/logout';
@@ -16,7 +16,7 @@ const initialState: AuthState = {
 };
 
 const loginAction = createActionThunk(LOGIN_ACTION, api.login);
-const logoutAction = actionType(LOGOUT_ACTION);
+const logoutAction = createActionType(LOGOUT_ACTION);
 
 const reducer = (state=initialState, action: AnyAction) => {
     switch (action.type) {
@@ -27,5 +27,6 @@ const reducer = (state=initialState, action: AnyAction) => {
     }
 };
 const authLoadingSelector = loadingSelector(LOGIN_ACTION);
+const authErrorsSelector = errorSelector(LOGIN_ACTION);
 
-export {reducer as default, loginAction, logoutAction, authLoadingSelector};
+export {reducer as default, loginAction, logoutAction, authLoadingSelector, authErrorsSelector};

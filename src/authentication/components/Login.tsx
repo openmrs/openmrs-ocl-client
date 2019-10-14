@@ -9,6 +9,7 @@ import {TextField} from "formik-material-ui";
 interface Props {
     onSubmit: Function,
     loading: boolean,
+    status?: string,
 }
 
 const LoginSchema = Yup.object().shape({
@@ -18,7 +19,7 @@ const LoginSchema = Yup.object().shape({
         .required('Password is required'),
 });
 
-const Login: React.FC<Props> = ({onSubmit, loading}) => {
+const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
     const formikRef: any = useRef(null);
 
     useEffect(() => {
@@ -28,6 +29,13 @@ const Login: React.FC<Props> = ({onSubmit, loading}) => {
         }
     }, [loading]);
 
+    useEffect(() => {
+        const {current: currentRef} = formikRef;
+        if (currentRef) {
+            currentRef.setStatus(status);
+        }
+    }, [status]);
+
     return (
         <Paper>
             <Formik
@@ -36,7 +44,7 @@ const Login: React.FC<Props> = ({onSubmit, loading}) => {
                 validationSchema={LoginSchema}
                 onSubmit={({username, password}) => onSubmit(username, password)}
             >
-                {({ isSubmitting }) => (
+                {({ isSubmitting, status }) => (
                     <Form>
                         <fieldset>
                             <Typography variant="h6" component="legend">
@@ -80,11 +88,16 @@ const Login: React.FC<Props> = ({onSubmit, loading}) => {
                                 >
                                     Log in
                                 </Button>
+                                {!status ? <br/> : (
+                                    <Typography className="status-message" color="secondary" variant="caption" component="span">
+                                        {status}
+                                    </Typography>
+                                )}
                                 <br/>
                                 <br/>
                                 <div className="other-options">
-                                    <div><Link component="a" variant="body2" href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}>Sign up</Link></div>
-                                    <div><Link component="a" variant="body2" href={TRADITIONAL_OCL_URL}>Go to Traditional OCL</Link></div>
+                                    <div><Link target="_blank" component="a" variant="body2" href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}>Sign up</Link></div>
+                                    <div><Link target="_blank" component="a" variant="body2" href={TRADITIONAL_OCL_URL}>Go to Traditional OCL</Link></div>
                                 </div>
                             </div>
                         </fieldset>

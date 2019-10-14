@@ -12,4 +12,11 @@ form {
 
 .fields {
     padding: 2vh 1vw;
+    display: inherit;
+}
+
+.status-message {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
 }

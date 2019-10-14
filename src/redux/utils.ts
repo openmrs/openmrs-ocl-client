@@ -11,7 +11,7 @@ const START = 'START';
 const FAILURE = 'FAILURE';
 const COMPLETE = 'COMPLETE';
 
-const actionType = (type: string): Function => (): {[key: string]: string} => ({type});
+const createActionType = (type: string): Function => (): {[key: string]: string} => ({type});
 
 const createActionThunk = (action: string, task: (...args: any[]) => Promise<AxiosResponse<any>>) => {
     /*
@@ -57,4 +57,4 @@ const createActionThunk = (action: string, task: (...args: any[]) => Promise<Axi
     }
 };
 
-export {actionType, createActionThunk};
+export {createActionType, createActionThunk};

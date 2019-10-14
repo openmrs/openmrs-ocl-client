@@ -4,22 +4,21 @@ import {Grid, Container, Typography} from "@material-ui/core";
 import {Login} from "./components";
 import './LoginPage.css';
 import {connect} from "react-redux";
-import {authLoadingSelector, loginAction} from "./redux";
+import {authErrorsSelector, authLoadingSelector, loginAction} from "./redux";
 
 
 interface Props {
     isLoggedIn: boolean,
     login: Function,
     loading: boolean,
+    errors?: any,
 }
 
-const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading}: Props) => {
-
+const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading, errors={}}: Props) => {
     if (isLoggedIn) return (<Redirect to="/"/>); // todo add redirect url use
     else return (
         <Grid
             container
-            // direction="column"
             justify="center"
             alignItems="center"
             className="login-page"
@@ -37,7 +36,7 @@ const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading}: Props) => {
                         Use the shared Open Concept Lab to create OpenMRS dictionaries by mixing expert-defined content with your own custom concepts.
                     </Typography>
                 </div>
-                <Login onSubmit={login} loading={loading}/>
+                <Login onSubmit={login} loading={loading} status={errors.detail}/>
             </Grid>
         </Grid>
     );
@@ -46,6 +45,7 @@ const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading}: Props) => {
 const mapStateToProps = (state: any) => ({
     isLoggedIn: state.auth.isLoggedIn,
     loading: authLoadingSelector(state),
+    errors: authErrorsSelector(state),
 });
 const mapDispatchToProps = {login: loginAction};
 
