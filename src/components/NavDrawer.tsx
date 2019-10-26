@@ -6,13 +6,14 @@ import {
     Drawer,
     IconButton,
     List,
-    ListItem, ListItemIcon,
+    ListItem,
+    ListItemIcon,
     ListItemText,
 } from "@material-ui/core";
 import {Menu, ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined} from '@material-ui/icons';
 import './NavDrawer.scss';
 import {connect} from "react-redux";
-import {logoutAction} from "./apps/authentication";
+import {logoutAction} from "../apps/authentication";
 import {Link} from "react-router-dom";
 
 

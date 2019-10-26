@@ -7,7 +7,7 @@ import {
 import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
-import NavDrawer from './NavDrawer';
+import NavDrawer from './components/NavDrawer';
 import DictionaryRoutes from './apps/dictionaries';
 
 const AuthenticatedRoutes: React.FC = () => {
