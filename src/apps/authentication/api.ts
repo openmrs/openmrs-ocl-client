@@ -1,15 +1,9 @@
-import axios from 'axios';
-import {BASE_URL} from "../../utils";
+import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
 
-/*
-* This is the only file in which we use the axios instance directly, in order to avoid a circular dependency
- */
 const api = {
-    login: (username: string, password: string) => axios.post('/users/login/', {username, password}, {baseURL: BASE_URL}),
-    getProfile: () => axios.get('/user/', {
-        baseURL: BASE_URL,
-
-    })
+    login: (username: string, password: string) => unAuthenticatedInstance.post('/users/login/', {username, password}),
+    getProfile: () => authenticatedInstance.get('/user/'),
 };
 
 export default api;
+

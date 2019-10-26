@@ -1,20 +1,6 @@
-import axios, {AxiosResponse} from 'axios';
-import store from "./store";
-import {logoutAction} from "./apps/authentication";
+import axios from 'axios';
 import {BASE_URL} from "./utils";
-
-const redirectIfNotLoggedIn = (response: AxiosResponse) => {
-    if(response.status === 401) {
-        // todo redirect to log in page
-        store.dispatch(logoutAction());
-    }
-    return response;
-};
-
-const addAuthToken = (data: any, headers: any) => {
-    headers['Authorization'] = `Token ${store.getState().auth.token}`;
-    return data;
-};
+import {addAuthToken, redirectIfNotLoggedIn} from "./apps/authentication";
 
 const authenticatedInstance = axios.create({
     baseURL: BASE_URL,
