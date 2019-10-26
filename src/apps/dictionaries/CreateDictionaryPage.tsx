@@ -1,14 +1,38 @@
 import React from 'react';
 import DictionaryForm from "./components";
-import {Grid} from "@material-ui/core";
+import {Grid, Paper} from "@material-ui/core";
 import "./CreateDictionaryPage.scss";
+import {connect} from "react-redux";
+import {
+    createDictionaryLoadingSelector,
+    createDictionaryProgressSelector,
+    createSourceCollectionDictionaryAction
+} from "./redux";
+import {Dictionary} from "./types";
 
-const CreateDictionaryPage: React.FC = () => {
+interface Props {
+    createSourceCollectionDictionary: Function,
+    loading: boolean,
+    errors?: any,
+}
+
+const CreateDictionaryPage: React.FC<Props> = ({createSourceCollectionDictionary, loading}: Props) => {
     return (
         <Grid item xs={6} component="div">
-            <DictionaryForm loading={false} onSubmit={() => {}}/>
+            <Paper>
+                <DictionaryForm loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)}/>
+            </Paper>
         </Grid>
     )
 };
 
-export default CreateDictionaryPage;
+const mapStateToProps = (state: any) => ({
+    loading: createDictionaryLoadingSelector(state),
+    progress: createDictionaryProgressSelector(state),
+    // errors: authErrorsSelector(state),
+});
+const mapDispatchToProps = {
+    createSourceCollectionDictionary: createSourceCollectionDictionaryAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateDictionaryPage);

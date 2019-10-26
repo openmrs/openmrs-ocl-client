@@ -5,6 +5,7 @@ import {errorSelector} from "../../redux/redux";
 
 const LOGIN_ACTION = 'authentication/login';
 const LOGOUT_ACTION = 'authentication/logout';
+const GET_PROFILE_ACTION = 'authentication/getProfile';
 
 interface AuthState {
     isLoggedIn: boolean;

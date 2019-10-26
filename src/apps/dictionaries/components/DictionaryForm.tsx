@@ -6,6 +6,8 @@ import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {TextField, Select} from "formik-material-ui";
 
+import {Dictionary} from "../types";
+
 interface Props {
     onSubmit: Function,
     loading: boolean,
@@ -22,7 +24,7 @@ const DictionarySchema = Yup.object().shape({
     preferredSource: Yup.string()
         .required('Select a preferred source')
         .oneOf(['CIEL'], 'This source is not supported'),
-    owner: Yup.string()
+    ownerUrl: Yup.string()
         .required('Select this dictionary\'s owner'),
     visibility: Yup.string()
         .required('Select who will have access to this dictionary'),
@@ -49,7 +51,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
     }, [status]);
 
     return (
-        <Paper id="dictionary-form">
+        <div id="dictionary-form">
             <Formik
                 ref={formikRef}
                 initialValues={{
@@ -57,14 +59,14 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
                     shortCode: '',
                     description: '',
                     preferredSource: 'CIEL',
-                    owner: '',
+                    ownerUrl: '',
                     visibility: '',
                     preferredLanguage: '',
                     otherLanguages: [],
                 }}
                 validationSchema={DictionarySchema}
                 validateOnChange={false}
-                onSubmit={() => {}}
+                onSubmit={(values: Dictionary) => onSubmit(values)}
             >
                 {({isSubmitting, status}) => (
                     <Form>
@@ -207,7 +209,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
                     </Form>
                 )}
             </Formik>
-        </Paper>
+        </div>
     )
 };
 
