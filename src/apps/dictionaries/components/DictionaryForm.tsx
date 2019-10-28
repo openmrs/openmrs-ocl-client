@@ -1,10 +1,11 @@
 import React, {useEffect, useRef} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Paper, Typography} from "@material-ui/core";
 import './DictionaryForm.scss';
-import {locales} from "../../../utils";
+import {getPrettyError, locales} from "../../../utils";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {TextField, Select} from "formik-material-ui";
+import {snakeCase} from 'lodash';
 
 import {Dictionary} from "../types";
 import {APIOrg, APIProfile} from "../../authentication";
@@ -15,6 +16,7 @@ interface Props {
     status?: string,
     profile?: APIProfile,
     usersOrgs: APIOrg[],
+    errors?: {},
 }
 
 const DictionarySchema = Yup.object().shape({
@@ -36,8 +38,20 @@ const DictionarySchema = Yup.object().shape({
     otherLanguages: Yup.array(Yup.string()),
 });
 
-const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs}) => {
+const initialValues = {
+    dictionaryName: '',
+    shortCode: '',
+    description: '',
+    preferredSource: 'CIEL',
+    ownerUrl: '',
+    visibility: '',
+    preferredLanguage: '',
+    otherLanguages: [],
+};
+
+const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors}) => {
     const formikRef: any = useRef(null);
+    const error: string | undefined = getPrettyError(errors);
 
     useEffect(() => {
         const {current: currentRef} = formikRef;
@@ -53,20 +67,21 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
         }
     }, [status]);
 
+    useEffect(() => {
+        const {current: currentRef} = formikRef;
+        if (!currentRef) return;
+
+        Object.keys(initialValues).forEach((key) => {
+            const error = getPrettyError(errors, snakeCase(key === 'shortCode' ? 'id' : key));
+            if (error) currentRef.setFieldError(key, error);
+        });
+    }, [errors]);
+
     return (
         <div id="dictionary-form">
             <Formik
                 ref={formikRef}
-                initialValues={{
-                    dictionaryName: '',
-                    shortCode: '',
-                    description: '',
-                    preferredSource: 'CIEL',
-                    ownerUrl: '',
-                    visibility: '',
-                    preferredLanguage: '',
-                    otherLanguages: [],
-                }}
+                initialValues={initialValues}
                 validationSchema={DictionarySchema}
                 validateOnChange={false}
                 onSubmit={(values: Dictionary) => onSubmit(values)}
@@ -206,8 +221,13 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 Submit
                             </Button>
                             {!status ? <br/> : (
-                                <Typography color="error" variant="caption" component="span">
+                                <Typography color="textSecondary" variant="caption" component="span">
                                     {status}
+                                </Typography>
+                            )}
+                            {!error ? <br/> : (
+                                <Typography color="error" variant="caption" component="span">
+                                    {error}
                                 </Typography>
                             )}
                         </div>

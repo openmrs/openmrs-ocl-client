@@ -1,9 +1,5 @@
 import {Action} from "./utils";
-
-interface AppState {
-    auth: {},
-    status: { [key: string]: boolean | string | undefined },
-}
+import {AppState} from "./types";
 
 interface LoadingAndErroredState {
     [key: string]: boolean | {} | undefined,

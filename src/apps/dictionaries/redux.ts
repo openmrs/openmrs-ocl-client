@@ -7,14 +7,16 @@ import {
     progressSelector
 } from "../../redux";
 import api from "./api";
-import {createSourceAction as createSource} from "../sources";
+import {createSourceAction as createSource, createSourceErrorSelector} from "../sources";
 import {APIDictionary, Dictionary} from "./types";
 import {APISource} from "../sources/types";
 import {CUSTOM_VALIDATION_SCHEMA} from "../../utils";
 import uuid from "uuid/v4";
 import {APICollection} from "../collections/types";
-import {createCollectionAction as createCollection} from "../collections/redux";
+import {createCollectionAction as createCollection, createCollectionErrorSelector} from "../collections";
 import {AnyAction} from "redux";
+import {AppState} from "../../redux";
+import {errorSelector} from "../../redux/redux";
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
@@ -137,10 +139,22 @@ const reducer = (state=initialState, action: AnyAction) => {
 
 const createDictionaryLoadingSelector = loadingSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
 const createDictionaryProgressSelector = progressSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
+const createDictionaryErrorSelector = errorSelector(CREATE_DICTIONARY_ACTION);
+const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({[key: string]: string[] | undefined} | undefined) => {
+  const createSourceErrors = createSourceErrorSelector(state);
+  if (createSourceErrors) return createSourceErrors;
+
+  const createCollectionErrors = createCollectionErrorSelector(state);
+  if (createCollectionErrors) return createCollectionErrors;
+
+    const createDictionaryErrors = createDictionaryErrorSelector(state);
+    if (createDictionaryErrors) return createDictionaryErrors;
+};
 
 export {
     reducer as default,
     createSourceCollectionDictionaryAction,
     createDictionaryLoadingSelector,
     createDictionaryProgressSelector,
+    createSourceCollectionDictionaryErrorsSelector,
 };

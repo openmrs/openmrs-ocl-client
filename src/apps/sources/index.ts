@@ -1,1 +1,1 @@
-export {createSourceAction} from './redux';
+export {createSourceAction, createSourceErrorSelector} from './redux';

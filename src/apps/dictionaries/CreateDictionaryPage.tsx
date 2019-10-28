@@ -7,7 +7,7 @@ import {Redirect} from "react-router-dom";
 import {
     createDictionaryLoadingSelector,
     createDictionaryProgressSelector,
-    createSourceCollectionDictionaryAction
+    createSourceCollectionDictionaryAction, createSourceCollectionDictionaryErrorsSelector,
 } from "./redux";
 import {APIDictionary, Dictionary} from "./types";
 import {orgsSelector, profileSelector} from "../authentication/redux/reducer";
@@ -15,7 +15,7 @@ import {APIOrg, APIProfile} from "../authentication";
 import {usePrevious} from "../../utils";
 
 interface Props {
-    errors?: any,
+    errors?: {},
     profile?: APIProfile,
     usersOrgs?: APIOrg[],
     createSourceCollectionDictionary: Function,
@@ -33,7 +33,7 @@ const CreateDictionaryPage: React.FC<Props> = ({profile, usersOrgs, errors, crea
     return (
         <Grid item xs={6} component="div">
             <Paper>
-                <DictionaryForm profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)}/>
+                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)}/>
             </Paper>
         </Grid>
     )
@@ -45,6 +45,7 @@ const mapStateToProps = (state: any) => ({
     loading: createDictionaryLoadingSelector(state),
     progress: createDictionaryProgressSelector(state),
     newDictionary: state.dictionaries.newDictionary,
+    errors: createSourceCollectionDictionaryErrorsSelector(state),
 });
 const mapDispatchToProps = {
     createSourceCollectionDictionary: createSourceCollectionDictionaryAction,

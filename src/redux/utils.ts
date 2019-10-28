@@ -62,7 +62,7 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
 
                 dispatch({
                     type: `${action}_${FAILURE}`,
-                    payload: "The action could not be completed (1)",
+                    payload: {'__all__': ["The action could not be completed (1)"]},
                     meta: args
                 });
 
