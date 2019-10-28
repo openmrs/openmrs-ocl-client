@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {BASE_URL} from "./utils";
-import {addAuthToken, redirectIfNotLoggedIn} from "./apps/authentication";
+import {addAuthToken, redirectIfNotLoggedIn} from "./apps/authentication/utils";
+
+console.log(addAuthToken);
 
 const authenticatedInstance = axios.create({
     baseURL: BASE_URL,

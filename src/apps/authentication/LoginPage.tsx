@@ -4,7 +4,8 @@ import {Grid, Container, Typography} from "@material-ui/core";
 import {Login} from "./components";
 import './LoginPage.scss';
 import {connect} from "react-redux";
-import {authErrorsSelector, authLoadingSelector, loginAction} from "./redux";
+import {authErrorsSelector, authLoadingSelector} from "./redux/reducer";
+import {loginAction} from "./redux/actions";
 
 
 interface Props {
