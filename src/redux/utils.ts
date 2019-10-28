@@ -50,7 +50,6 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
 
                     result = response.data;
                 } catch (error) {
-                    console.log(error);
                     dispatch({
                         type: `${action}_${FAILURE}`,
                         payload: error.response.data,
