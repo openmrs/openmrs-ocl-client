@@ -1,4 +1,5 @@
 export interface APICollection {
+    id: string;
     short_code: string;
     external_id: string;
     name: string;

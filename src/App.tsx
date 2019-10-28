@@ -34,7 +34,11 @@ const Routes: React.FC = () => {
               </Route>
               <Route path="/">
                   <AuthenticationRequired>
-                      <NavDrawer><AuthenticatedRoutes/></NavDrawer>
+                      {() => (
+                          <NavDrawer>
+                              <AuthenticatedRoutes/>
+                          </NavDrawer>
+                      )}
                   </AuthenticationRequired>
               </Route>
           </Switch>

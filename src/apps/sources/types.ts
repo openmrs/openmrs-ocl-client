@@ -1,5 +1,6 @@
 export interface APISource {
     external_id: string;
+    id: string,
     short_code: string;
     name: string;
     full_name: string;

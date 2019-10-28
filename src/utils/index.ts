@@ -1,3 +1,4 @@
+export {usePrevious} from './hooks';
 export {findLocale} from './utils';
 export {
     BASE_URL,

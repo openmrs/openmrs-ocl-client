@@ -20,6 +20,7 @@ import {Link} from "react-router-dom";
 interface Props {
     children: any,
     logout: Function,
+
 }
 
 export const NavDrawer: React.FC<Props> = ({children, logout}) => {

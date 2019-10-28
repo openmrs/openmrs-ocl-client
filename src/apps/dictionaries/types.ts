@@ -10,6 +10,7 @@ export interface Dictionary {
 }
 
 export interface APIDictionary {
+    id: string,
     short_code: string;
     external_id: string;
     name: string;
@@ -23,6 +24,7 @@ export interface APIDictionary {
     description: string;
     custom_validation_schema: string;
     extras: {};
+    url?: string;
 }
 
 export {}

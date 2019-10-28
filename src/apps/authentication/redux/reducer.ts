@@ -1,11 +1,14 @@
 import {AnyAction} from "redux";
 import {loadingSelector} from "../../../redux";
 import {errorSelector} from "../../../redux/redux";
-import {GET_PROFILE_ACTION, LOGIN_ACTION, LOGOUT_ACTION} from "./actionTypes";
+import {GET_USER_DETAILS_ACTION, GET_PROFILE_ACTION, GET_USER_ORGS_ACTION, LOGIN_ACTION, LOGOUT_ACTION} from "./actionTypes";
+import {APIOrg, APIProfile} from "../types";
 
 interface AuthState {
     isLoggedIn: boolean;
     token?: string;
+    profile?: APIProfile;
+    orgs?: APIOrg[];
 }
 
 const initialState: AuthState = {
@@ -20,6 +23,8 @@ const reducer = (state=initialState, action: AnyAction) => {
             return {...state, isLoggedIn: false, token: undefined};
         case GET_PROFILE_ACTION:
             return {...state, profile: action.payload};
+        case GET_USER_ORGS_ACTION:
+            return {...state, orgs: action.payload};
         default:
             return state;
     }
@@ -27,8 +32,15 @@ const reducer = (state=initialState, action: AnyAction) => {
 const authLoadingSelector = loadingSelector(LOGIN_ACTION);
 const authErrorsSelector = errorSelector(LOGIN_ACTION);
 
+const getUserDetailsLoadingSelector = loadingSelector(GET_USER_DETAILS_ACTION);
+const profileSelector = ({auth}: {auth: AuthState}) => auth.profile;
+const orgsSelector = ({auth}: {auth: AuthState}) => auth.orgs;
+
 export {
     reducer as default,
     authLoadingSelector,
     authErrorsSelector,
+    getUserDetailsLoadingSelector,
+    profileSelector,
+    orgsSelector,
 };

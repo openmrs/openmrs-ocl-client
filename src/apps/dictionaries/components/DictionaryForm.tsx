@@ -7,11 +7,14 @@ import * as Yup from "yup";
 import {TextField, Select} from "formik-material-ui";
 
 import {Dictionary} from "../types";
+import {APIOrg, APIProfile} from "../../authentication";
 
 interface Props {
     onSubmit: Function,
     loading: boolean,
     status?: string,
+    profile?: APIProfile,
+    usersOrgs: APIOrg[],
 }
 
 const DictionarySchema = Yup.object().shape({
@@ -33,7 +36,7 @@ const DictionarySchema = Yup.object().shape({
     otherLanguages: Yup.array(Yup.string()),
 });
 
-const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
+const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs}) => {
     const formikRef: any = useRef(null);
 
     useEffect(() => {
@@ -118,17 +121,19 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
                             required
                             margin="normal"
                         >
-                            <InputLabel htmlFor="owner">Owner</InputLabel>
+                            <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
                             <Field
                                 value=""
-                                name="owner"
-                                id="owner"
+                                name="ownerUrl"
+                                id="ownerUrl"
                                 component={Select}
                             >
                                 <MenuItem value=""><em>None</em></MenuItem>
+                                {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
+                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="owner" component="span" />
+                                <ErrorMessage name="ownerUrl" component="span" />
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -196,7 +201,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status}) => {
                                 color="primary"
                                 size="medium"
                                 type="submit"
-                                // disabled={isSubmitting}
+                                disabled={isSubmitting}
                             >
                                 Submit
                             </Button>

@@ -14,12 +14,13 @@ import {CUSTOM_VALIDATION_SCHEMA} from "../../utils";
 import uuid from "uuid/v4";
 import {APICollection} from "../collections/types";
 import {createCollectionAction as createCollection} from "../collections/redux";
+import {AnyAction} from "redux";
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
-const createDictionary = createActionThunk(CREATE_DICTIONARY_ACTION, api.create);
-
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
 
+
+const createDictionaryAction = createActionThunk(CREATE_DICTIONARY_ACTION, api.create);
 const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     return async (dispatch: Function) => {
         dispatch(startAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
@@ -50,6 +51,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             name: `${dictionaryName} Source`,
             public_access: 'None',
             short_code: `${shortCode}Source`,
+            id: `${shortCode}Source`,
             source_type: "OCL Client Source",
             supported_locales: otherLanguages.join(','),
             website: ""
@@ -72,6 +74,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             full_name: `${dictionaryName} Collection`,
             name: `${dictionaryName} Collection`,
             public_access: 'None',
+            id: `${shortCode}Collection`,
             short_code: `${shortCode}Collection`,
             supported_locales: otherLanguages.join(','),
             website: ""
@@ -98,11 +101,12 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             full_name: dictionaryName,
             name: dictionaryName,
             public_access: visibility,
+            id: shortCode,
             short_code: shortCode,
             supported_locales: otherLanguages.join(','),
             website: ""
         };
-        dictionaryResponse = await dispatch(createDictionary<APIDictionary>(ownerUrl, dictionary));
+        dictionaryResponse = await dispatch(createDictionaryAction<APIDictionary>(ownerUrl, dictionary));
         if (!dictionaryResponse) { // todo cleanup here would involve hard deleting the source and collection
             dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
             return false;
@@ -112,7 +116,31 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     }
 };
 
+interface DictionaryState {
+    newDictionary?: APIDictionary,
+}
+
+const initialState: DictionaryState = {
+
+};
+
+const reducer = (state=initialState, action: AnyAction) => {
+    switch (action.type) {
+        case startAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION).type:
+            return {...state, newDictionary: undefined};
+        case CREATE_DICTIONARY_ACTION:
+            return {...state, newDictionary: action.payload};
+        default:
+            return state;
+    }
+};
+
 const createDictionaryLoadingSelector = loadingSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
 const createDictionaryProgressSelector = progressSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
 
-export {createSourceCollectionDictionaryAction, createDictionaryLoadingSelector, createDictionaryProgressSelector};
+export {
+    reducer as default,
+    createSourceCollectionDictionaryAction,
+    createDictionaryLoadingSelector,
+    createDictionaryProgressSelector,
+};
