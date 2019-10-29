@@ -7,19 +7,29 @@ import {
     progressSelector
 } from "../../redux";
 import api from "./api";
-import {createSourceAction as createSource, createSourceErrorSelector} from "../sources";
-import {APIDictionary, Dictionary} from "./types";
+import {
+    createSourceAction as createSource,
+    createSourceErrorSelector,
+    retrieveSourceAction,
+    retrieveSourceLoadingSelector
+} from "../sources";
+import {APIDictionary, Dictionary, DictionaryState} from "./types";
 import {APISource} from "../sources/types";
 import {CUSTOM_VALIDATION_SCHEMA} from "../../utils";
 import uuid from "uuid/v4";
 import {APICollection} from "../collections/types";
-import {createCollectionAction as createCollection, createCollectionErrorSelector} from "../collections";
+import {
+    createCollectionAction as createCollection,
+    createCollectionErrorSelector,
+    retrieveCollectionAction, retrieveCollectionLoadingSelector
+} from "../collections";
 import {AnyAction} from "redux";
 import {AppState} from "../../redux";
 import {errorSelector} from "../../redux/redux";
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
+const RETRIEVE_DICTIONARY_ACTION = 'dictionaries/retrieveDictionary';
 
 
 const createDictionaryAction = createActionThunk(CREATE_DICTIONARY_ACTION, api.create);
@@ -117,10 +127,18 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
     }
 };
+const retrieveDictionaryAction = createActionThunk(RETRIEVE_DICTIONARY_ACTION, api.retrieve);
+const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
+    return async (dispatch: Function) => {
+        const retrieveDictionaryResult = await dispatch(retrieveDictionaryAction<APIDictionary>(dictionaryUrl));
+        if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return;
 
-interface DictionaryState {
-    newDictionary?: APIDictionary,
-}
+        await Promise.all([
+            dispatch(retrieveSourceAction(retrieveDictionaryResult.extras.source)),
+            dispatch(retrieveCollectionAction(retrieveDictionaryResult.extras.collection)),
+        ]);
+    }
+};
 
 const initialState: DictionaryState = {
 
@@ -132,6 +150,8 @@ const reducer = (state=initialState, action: AnyAction) => {
             return {...state, newDictionary: undefined};
         case CREATE_DICTIONARY_ACTION:
             return {...state, newDictionary: action.payload};
+        case RETRIEVE_DICTIONARY_ACTION:
+            return {...state, dictionary: action.payload};
         default:
             return state;
     }
@@ -151,10 +171,16 @@ const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({[key
     if (createDictionaryErrors) return createDictionaryErrors;
 };
 
+const retrieveDictionaryLoadingSelector = loadingSelector(RETRIEVE_DICTIONARY_ACTION);
+const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state);
+
 export {
     reducer as default,
     createSourceCollectionDictionaryAction,
     createDictionaryLoadingSelector,
     createDictionaryProgressSelector,
     createSourceCollectionDictionaryErrorsSelector,
+    retrieveDictionaryLoadingSelector,
+    retrieveDictionaryDetailsLoadingSelector,
+    retrieveDictionaryAndDetailsAction,
 };

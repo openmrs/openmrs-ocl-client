@@ -2,14 +2,7 @@ import {AnyAction} from "redux";
 import {loadingSelector} from "../../../redux";
 import {errorSelector} from "../../../redux/redux";
 import {GET_USER_DETAILS_ACTION, GET_PROFILE_ACTION, GET_USER_ORGS_ACTION, LOGIN_ACTION, LOGOUT_ACTION} from "./actionTypes";
-import {APIOrg, APIProfile} from "../types";
-
-interface AuthState {
-    isLoggedIn: boolean;
-    token?: string;
-    profile?: APIProfile;
-    orgs?: APIOrg[];
-}
+import {AuthState} from "../types";
 
 const initialState: AuthState = {
     isLoggedIn: false,

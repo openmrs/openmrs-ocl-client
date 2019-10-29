@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import DictionaryForm from "./components";
 import {Grid, Paper} from "@material-ui/core";
-import "./CreateDictionaryPage.scss";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 import {
@@ -27,13 +26,13 @@ const CreateDictionaryPage: React.FC<Props> = ({profile, usersOrgs, errors, crea
     const previouslyLoading = usePrevious(loading);
 
     if(!loading && previouslyLoading && newDictionary && newDictionary.url) {
-        return <Redirect to={newDictionary.url} />;
+        return <Redirect to={newDictionary.url.replace('/collections/', '/dictionaries/')} />;
     }
 
     return (
-        <Grid item xs={6} component="div">
+        <Grid id="create-dictionary-page" item xs={6} component="div">
             <Paper>
-                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)}/>
+                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)} editing/>
             </Paper>
         </Grid>
     )

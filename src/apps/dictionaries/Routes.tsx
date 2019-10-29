@@ -1,15 +1,18 @@
 import React from "react";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import CreateDictionaryPage from "./CreateDictionaryPage";
+import {BrowserRouter as Router, Route, Switch, useRouteMatch} from "react-router-dom";
 import Header from "../../components/Header";
+import ViewDictionaryPage from "./ViewDictionaryPage";
 
 const Routes: React.FC = () => {
+    // @ts-ignore
+    let { path } = useRouteMatch();
+
     return (
         <Router>
             <Switch>
-                <Route path="/dictionaries/new/">
-                    <Header title="Create Dictionary">
-                        <CreateDictionaryPage/>
+                <Route path={`${path}/:dictionary/`}>
+                    <Header title="Details" justifyChildren='space-around'>
+                        <ViewDictionaryPage/>
                     </Header>
                 </Route>
             </Switch>

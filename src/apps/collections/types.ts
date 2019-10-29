@@ -16,4 +16,8 @@ export interface APICollection {
     url?: string;
 }
 
+export interface CollectionState {
+    collection?: APICollection,
+}
+
 export {};

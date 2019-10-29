@@ -1,5 +1,5 @@
 export {usePrevious} from './hooks';
-export {findLocale, getPrettyError} from './utils';
+export {findLocale, getPrettyError, keysToSnakeCase} from './utils';
 export {
     BASE_URL,
     TRADITIONAL_OCL_URL,

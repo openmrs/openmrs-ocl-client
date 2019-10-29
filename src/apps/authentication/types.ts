@@ -11,4 +11,11 @@ export interface APIOrg {
     url: string,
 }
 
+export interface AuthState {
+    isLoggedIn: boolean;
+    token?: string;
+    profile?: APIProfile;
+    orgs?: APIOrg[];
+}
+
 export {};

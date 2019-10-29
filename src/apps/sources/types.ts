@@ -16,4 +16,8 @@ export interface APISource {
     url?: string;
 }
 
+export interface SourceState {
+    source?: APISource,
+}
+
 export {};

@@ -11,12 +11,14 @@ import {Dictionary} from "../types";
 import {APIOrg, APIProfile} from "../../authentication";
 
 interface Props {
-    onSubmit: Function,
+    onSubmit?: Function,
     loading: boolean,
     status?: string,
     profile?: APIProfile,
     usersOrgs: APIOrg[],
     errors?: {},
+    savedValues?: Dictionary,
+    editing: boolean,
 }
 
 const DictionarySchema = Yup.object().shape({
@@ -38,7 +40,7 @@ const DictionarySchema = Yup.object().shape({
     otherLanguages: Yup.array(Yup.string()),
 });
 
-const initialValues = {
+const initialValues: Dictionary = {
     dictionaryName: '',
     shortCode: '',
     description: '',
@@ -49,7 +51,7 @@ const initialValues = {
     otherLanguages: [],
 };
 
-const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors}) => {
+const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors, editing, savedValues}) => {
     const formikRef: any = useRef(null);
     const error: string | undefined = getPrettyError(errors);
 
@@ -81,15 +83,15 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
         <div id="dictionary-form">
             <Formik
                 ref={formikRef}
-                initialValues={initialValues}
+                initialValues={savedValues || initialValues}
                 validationSchema={DictionarySchema}
                 validateOnChange={false}
-                onSubmit={(values: Dictionary) => onSubmit(values)}
+                onSubmit={(values: Dictionary) => {if (onSubmit) {onSubmit(values)}}}
             >
                 {({isSubmitting, status}) => (
                     <Form>
                         <Field
-                            required
+                            // required
                             fullWidth
                             id="dictionaryName"
                             name="dictionaryName"
@@ -98,7 +100,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             component={TextField}
                         />
                         <Field
-                            required
+                            // required
                             fullWidth
                             id="shortCode"
                             name="shortCode"
@@ -118,7 +120,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         />
                         <FormControl
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                         >
                             <InputLabel htmlFor="preferredSource">Preferred Source</InputLabel>
@@ -133,7 +135,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         </FormControl>
                         <FormControl
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                         >
                             <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
@@ -153,7 +155,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         </FormControl>
                         <FormControl
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                         >
                             <InputLabel htmlFor="visibility">Visibility</InputLabel>
@@ -172,7 +174,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         </FormControl>
                         <FormControl
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                         >
                             <InputLabel htmlFor="preferredLanguage">Preferred Language</InputLabel>
@@ -190,7 +192,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         </FormControl>
                         <FormControl
                             fullWidth
-                            required
+                            // required
                             margin="normal"
                         >
                             <InputLabel htmlFor="otherLanguages">Other Languages</InputLabel>
@@ -211,15 +213,17 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         <br/>
                         <br/>
                         <div id="submit-button">
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                size="medium"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Submit
-                            </Button>
+                            {!editing ? '' : (
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    size="medium"
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                >
+                                    Submit
+                                </Button>
+                            )}
                             {!status ? <br/> : (
                                 <Typography color="textSecondary" variant="caption" component="span">
                                     {status}

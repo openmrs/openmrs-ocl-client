@@ -8,15 +8,19 @@ import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
 import NavDrawer from './components/NavDrawer';
-import DictionaryRoutes from './apps/dictionaries';
+import DictionaryRoutes, {CreateDictionaryPage} from './apps/dictionaries';
+import Header from "./components/Header";
 
 const AuthenticatedRoutes: React.FC = () => {
     return (
         <Router>
             <Switch>
-                <Route path="/dictionaries/">
-                    <DictionaryRoutes/>
+                <Route path="/dictionaries/new/">
+                    <Header title="Create Dictionary">
+                        <CreateDictionaryPage/>
+                    </Header>
                 </Route>
+                <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes} />
                 <Route exact path="/">
                     Home
                 </Route>

@@ -23,8 +23,40 @@ export interface APIDictionary {
     website: string;
     description: string;
     custom_validation_schema: string;
-    extras: {};
+    extras?: {[key: string]: string | undefined};
     url?: string;
+    owner_url?: string,
 }
 
-export {}
+export interface DictionaryState {
+    newDictionary?: APIDictionary,
+    dictionary?: APIDictionary,
+}
+
+const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {
+    if (!apiDictionary) return apiDictionary;
+
+    const {
+        short_code,
+        name,
+        public_access,
+        default_locale,
+        supported_locales,
+        preferred_source,
+        description,
+        owner_url='',
+    } = apiDictionary;
+
+    return {
+        description: description,
+        dictionaryName: name,
+        otherLanguages: supported_locales ? supported_locales.split(',') : [],
+        ownerUrl: owner_url,
+        preferredLanguage: default_locale,
+        preferredSource: preferred_source,
+        shortCode: short_code,
+        visibility: public_access,
+    };
+};
+
+export {apiDictionaryToDictionary};
