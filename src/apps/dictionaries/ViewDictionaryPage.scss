@@ -1,12 +1,10 @@
-#content {
-  #dictionary-form {
-    .MuiInput-formControl {
-      .MuiInput-input.Mui-disabled {
-        color: black;
-      }
-      svg {
-        visibility: hidden;
-      }
+#dictionary-form {
+  .MuiInput-formControl {
+    .MuiInput-input.Mui-disabled {
+      color: black;
+    }
+    svg {
+      visibility: hidden;
     }
   }
 }

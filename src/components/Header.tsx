@@ -1,6 +1,17 @@
 import React from 'react';
-import {Container, Grid, Typography} from "@material-ui/core";
-import "./Header.scss";
+import {AppBar, createStyles, Grid, makeStyles, Theme, Toolbar, Typography} from "@material-ui/core";
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        appBar: {
+            left: theme.spacing(7) + 1,
+        },
+        content: {
+            marginTop: '10vh',
+            height: '100%',
+        },
+    }),
+);
 
 interface Props {
     children: any,
@@ -9,15 +20,23 @@ interface Props {
 }
 
 const Header: React.FC<Props> = ({children, title, justifyChildren='center'}) => {
+    const classes = useStyles();
+
     return (
-        <div id="header-page">
-            <Typography id="heading" variant="h4" gutterBottom>
-                {title}
-            </Typography>
+        <div>
+            <AppBar
+                position="fixed"
+                className={classes.appBar}
+            >
+                <Toolbar>
+                    <Typography variant="h5" noWrap>
+                        {title}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
             <Grid
-                id="content"
                 container
-                className="fill-parent-height"
+                className={classes.content}
                 component="div"
                 // @ts-ignore
                 justify={justifyChildren}
@@ -26,7 +45,7 @@ const Header: React.FC<Props> = ({children, title, justifyChildren='center'}) =>
                 {children}
             </Grid>
         </div>
-    )
+    );
 };
 
 export default Header;

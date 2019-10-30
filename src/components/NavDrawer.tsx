@@ -1,21 +1,71 @@
 import React from 'react';
-import {
-    Button,
-    CssBaseline, Dialog, DialogActions, DialogTitle,
-    Divider,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-} from "@material-ui/core";
-import {Menu, ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined} from '@material-ui/icons';
-import './NavDrawer.scss';
-import {connect} from "react-redux";
-import {logoutAction} from "../apps/authentication";
+import clsx from 'clsx';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import {ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined} from '@material-ui/icons';
 import {Link} from "react-router-dom";
+import {Button, Dialog, DialogActions, DialogTitle} from "@material-ui/core";
+import {logoutAction} from "../apps/authentication/redux";
+import {connect} from "react-redux";
 
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+        },
+        hide: {
+            display: 'none',
+        },
+        drawer: {
+            width: drawerWidth,
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
+        },
+        drawerOpen: {
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        },
+        drawerClose: {
+            transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+            }),
+            overflowX: 'hidden',
+            width: theme.spacing(7) + 1,
+            [theme.breakpoints.up('sm')]: {
+                width: theme.spacing(9) + 1,
+            },
+        },
+        toolbar: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            padding: theme.spacing(0, 2),
+            ...theme.mixins.toolbar,
+        },
+        content: {
+            padding: theme.spacing(3),
+            position: 'absolute',
+        },
+        logoutButton: {
+            marginTop: 'auto',
+        },
+    }),
+);
 
 interface Props {
     children: any,
@@ -24,47 +74,62 @@ interface Props {
 }
 
 export const NavDrawer: React.FC<Props> = ({children, logout}) => {
-    const [menuOpen, setMenuOpen] = React.useState(false);
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
     const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);
 
     const toggleDrawer = () => {
-        setMenuOpen(!menuOpen);
+        setOpen(!open);
     };
 
     return (
-        <div id="nav-drawer">
+        <div className={classes.root}>
             <CssBaseline />
-            <Drawer id="drawer" variant="permanent">
-                <div id="menu-icon">
+            <Drawer
+                variant="permanent"
+                className={clsx(classes.drawer, {
+                    [classes.drawerOpen]: open,
+                    [classes.drawerClose]: !open,
+                })}
+                classes={{
+                    paper: clsx({
+                        [classes.drawerOpen]: open,
+                        [classes.drawerClose]: !open,
+                    }),
+                }}
+                open={open}
+            >
+
+                <div className={classes.toolbar}>
                     <IconButton onClick={toggleDrawer}>
-                        <Menu/>
+                        {open ? <ChevronLeftIcon /> : <MenuIcon />}
                     </IconButton>
                 </div>
-                <Divider component="hr"/>
+                <Divider />
                 <List component="div">
-                    <ListItem button disableGutters={!menuOpen} dense={false} component={Link} to="/" key="Home">
+                    <ListItem button dense={false} component={Link} to="/" key="Home">
                         <ListItemIcon className="list-item-icon"><HomeOutlined/></ListItemIcon>
-                        {menuOpen ? <ListItemText primary="Home" /> : <div/>}
+                        <ListItemText primary="Home" />
                     </ListItem>
                 </List>
                 <Divider component="hr"/>
                 <List component="div">
-                    <ListItem button disableGutters={!menuOpen} dense={false} component={Link} to="/user/dictionaries/" key="Your Dictionaries">
+                    <ListItem button dense={false} component={Link} to="/user/dictionaries/" key="Your Dictionaries">
                         <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
-                        {menuOpen ? <ListItemText primary="Your Dictionaries" /> : <div/>}
+                        <ListItemText primary="Your Dictionaries" />
                     </ListItem>
-                    <ListItem button disableGutters={!menuOpen} dense={false} component={Link} to="/dictionaries/" key="Public Dictionaries">
+                    <ListItem button dense={false} component={Link} to="/dictionaries/" key="Public Dictionaries">
                         <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
-                        {menuOpen ? <ListItemText primary="Public Dictionaries" /> : <div/>}
+                        <ListItemText primary="Public Dictionaries" />
                     </ListItem>
                 </List>
                 <Divider component="hr"/>
-                <div id="logout-icon">
+                <div className={classes.logoutButton}>
                     <Divider component="hr"/>
                     <List component="div">
-                        <ListItem onClick={() => setConfirmLogoutOpen(true)} button disableGutters={!menuOpen} component="div" key={"Logout"}>
+                        <ListItem onClick={() => setConfirmLogoutOpen(true)} button component="div" key={"Logout"}>
                             <ListItemIcon className="list-item-icon"><ExitToApp /></ListItemIcon>
-                            {menuOpen ? <ListItemText primary="Logout" /> : <div/>}
+                            <ListItemText primary="Logout" />
                         </ListItem>
                     </List>
                     <Dialog
@@ -85,7 +150,7 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
                     </Dialog>
                 </div>
             </Drawer>
-            <main>
+            <main className={classes.content}>
                 {children}
             </main>
         </div>
