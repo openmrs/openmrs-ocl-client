@@ -10,7 +10,7 @@ const Routes: React.FC = () => {
     return (
         <Router>
             <Switch>
-                <Route path={`${path}/:dictionary/`}>
+                <Route exact path={`${path}/:dictionary/`}>
                     <Header title="Details" justifyChildren='space-around'>
                         <ViewDictionaryPage/>
                     </Header>

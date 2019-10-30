@@ -9,3 +9,20 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.fieldsetParent {
+  padding: 4vh 2vw;
+
+  fieldset {
+    border: .5px solid black;
+  }
+}
+
+.fab {
+  margin: 0;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed !important;
+};

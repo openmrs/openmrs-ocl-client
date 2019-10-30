@@ -1,4 +1,4 @@
-export interface APICollection {
+export interface NewAPICollection {
     id: string;
     short_code: string;
     external_id: string;
@@ -11,9 +11,13 @@ export interface APICollection {
     website: string;
     description: string;
     custom_validation_schema: string;
-    extras: {};
+}
 
-    url?: string;
+export interface APICollection extends NewAPICollection{
+    extras?: {};
+    active_concepts: number;
+    concepts_url: string;
+    url: string;
 }
 
 export interface CollectionState {

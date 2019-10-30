@@ -1,4 +1,4 @@
-export interface APISource {
+export interface NewAPISource {
     external_id: string;
     id: string,
     short_code: string;
@@ -11,9 +11,13 @@ export interface APISource {
     website: string;
     description: string;
     custom_validation_schema: string;
-    extras: {};
+}
 
-    url?: string;
+export interface APISource extends NewAPISource{
+    url: string;
+    active_concepts: number,
+    concepts_url: string,
+    extras?: {};
 }
 
 export interface SourceState {

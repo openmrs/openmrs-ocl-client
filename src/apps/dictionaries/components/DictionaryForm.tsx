@@ -147,7 +147,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             >
                                 <MenuItem value=""><em>None</em></MenuItem>
                                 {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
-                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
+                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}(Organization)</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="ownerUrl" component="span" />
@@ -212,8 +212,8 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         </FormControl>
                         <br/>
                         <br/>
-                        <div id="submit-button">
-                            {!editing ? '' : (
+                        {!editing ? '' : (
+                            <div id="submit-button">
                                 <Button
                                     variant="outlined"
                                     color="primary"
@@ -223,18 +223,18 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 >
                                     Submit
                                 </Button>
-                            )}
-                            {!status ? <br/> : (
-                                <Typography color="textSecondary" variant="caption" component="span">
-                                    {status}
-                                </Typography>
-                            )}
-                            {!error ? <br/> : (
-                                <Typography color="error" variant="caption" component="span">
-                                    {error}
-                                </Typography>
-                            )}
-                        </div>
+                                {!status ? <br/> : (
+                                    <Typography color="textSecondary" variant="caption" component="span">
+                                        {status}
+                                    </Typography>
+                                )}
+                                {!error ? <br/> : (
+                                    <Typography color="error" variant="caption" component="span">
+                                        {error}
+                                    </Typography>
+                                )}
+                            </div>
+                        )}
                     </Form>
                 )}
             </Formik>

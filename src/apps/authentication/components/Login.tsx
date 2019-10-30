@@ -45,7 +45,7 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
                 onSubmit={({username, password}) => onSubmit(username, password)}
             >
                 {({ isSubmitting, status }) => (
-                    <Form>
+                    <Form className="fieldsetParent">
                         <fieldset>
                             <Typography variant="h6" component="legend">
                                 Log In to Open Concept Lab

@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
-import DictionaryForm from "./components";
-import {Grid, Paper} from "@material-ui/core";
+import {DictionaryDetails, DictionaryForm} from "./components";
+import {Fab, Grid, Paper, Typography} from "@material-ui/core";
+import {Edit as EditIcon} from '@material-ui/icons';
 import "./ViewDictionaryPage.scss";
 import {connect} from "react-redux";
 import {APIDictionary, apiDictionaryToDictionary} from "./types";
@@ -12,7 +13,7 @@ import {
     retrieveDictionaryLoadingSelector
 } from "./redux";
 import {AppState} from "../../redux";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {APISource} from "../sources";
 import {APICollection} from "../collections";
 
@@ -27,7 +28,7 @@ interface Props {
     collection?: APICollection,
 }
 
-const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails}: Props) => {
+const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection}: Props) => {
     let {pathname: url} = useLocation();
 
     useEffect(() => {
@@ -39,13 +40,21 @@ const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoad
     return (
         <>
             <Grid item xs={5} component="div">
-                <Paper>
-                    <DictionaryForm savedValues={apiDictionaryToDictionary(dictionary)} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={true} editing={false}/>
+                <Paper className="fieldsetParent">
+                    <fieldset>
+                        <Typography component="legend" variant="h5" gutterBottom>General Details</Typography>
+                        <DictionaryForm savedValues={apiDictionaryToDictionary(dictionary)} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={true} editing={false}/>
+                    </fieldset>
                 </Paper>
             </Grid>
             <Grid item xs={5} component="div">
-                {dictionaryDetailsLoading ? 'Loading...' : 'Dictionary Content Details'}
+                {dictionaryDetailsLoading ? 'Loading...' : (
+                    <DictionaryDetails source={source} collection={collection} />
+                )}
             </Grid>
+            <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
+                <EditIcon />
+            </Link>
         </>
     )
 };

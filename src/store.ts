@@ -13,6 +13,9 @@ export const CURRENT_STORE_VERSION_KEY = 'currentStoreVersion';
 const saveState = (appState: any) => {
     const doNotPersist = [
         'status',
+        'dictionaries',
+        'collections',
+        'sources',
     ].reduce((previousValue, item) => ({...previousValue, [item]: undefined}), {});
     const state = {
         ...appState,

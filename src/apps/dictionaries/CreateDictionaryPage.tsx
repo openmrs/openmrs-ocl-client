@@ -1,5 +1,5 @@
 import React from 'react';
-import DictionaryForm from "./components";
+import {DictionaryForm} from "./components";
 import {Grid, Paper} from "@material-ui/core";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
