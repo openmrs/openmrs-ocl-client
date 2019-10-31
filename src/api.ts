@@ -5,7 +5,7 @@ import {addAuthToken, redirectIfNotLoggedIn} from "./apps/authentication/utils";
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 const defaultRequestTransformers = (): AxiosTransformer[] => {
-    const { transformRequest } = axios.defaults;
+    const {transformRequest} = axios.defaults;
     if (!transformRequest) {
         return [];
     } else if (transformRequest instanceof Array) {
@@ -16,7 +16,7 @@ const defaultRequestTransformers = (): AxiosTransformer[] => {
 };
 
 const defaultResponseTransformers = (): AxiosTransformer[] => {
-    const { transformResponse } = axios.defaults;
+    const {transformResponse} = axios.defaults;
     if (!transformResponse) {
         return [];
     } else if (transformResponse instanceof Array) {

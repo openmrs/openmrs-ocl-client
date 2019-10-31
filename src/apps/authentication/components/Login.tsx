@@ -40,11 +40,11 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
         <Paper id="login-form">
             <Formik
                 ref={formikRef}
-                initialValues={{ username: '', password: '' }}
+                initialValues={{username: '', password: ''}}
                 validationSchema={LoginSchema}
                 onSubmit={({username, password}) => onSubmit(username, password)}
             >
-                {({ isSubmitting, status }) => (
+                {({isSubmitting, status}) => (
                     <Form className="fieldsetParent">
                         <fieldset>
                             <Typography variant="h6" component="legend">
@@ -89,15 +89,18 @@ const Login: React.FC<Props> = ({onSubmit, loading, status}) => {
                                     Log in
                                 </Button>
                                 {!status ? <br/> : (
-                                    <Typography className="status-message" color="error" variant="caption" component="span">
+                                    <Typography className="status-message" color="error" variant="caption"
+                                                component="span">
                                         {status}
                                     </Typography>
                                 )}
                                 <br/>
                                 <br/>
                                 <div className="other-options">
-                                    <div><Link target="_blank" component="a" variant="body2" href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}>Sign up</Link></div>
-                                    <div><Link target="_blank" component="a" variant="body2" href={TRADITIONAL_OCL_URL}>Go to Traditional OCL</Link></div>
+                                    <div><Link target="_blank" component="a" variant="body2"
+                                               href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}>Sign up</Link></div>
+                                    <div><Link target="_blank" component="a" variant="body2" href={TRADITIONAL_OCL_URL}>Go
+                                        to Traditional OCL</Link></div>
                                 </div>
                             </div>
                         </fieldset>

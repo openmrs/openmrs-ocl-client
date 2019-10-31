@@ -1,11 +1,11 @@
-import {locales} from "./constants";
+import {LOCALES} from "./constants";
 import {snakeCase} from 'lodash';
 
-const findLocale = (localeCode: string, fallback = 'en') => locales.find(
+const findLocale = (localeCode: string, fallback = 'en') => LOCALES.find(
     currentLocale => currentLocale.value === localeCode,
-) || locales.find(currentLocale => currentLocale.value === fallback);
+) || LOCALES.find(currentLocale => currentLocale.value === fallback);
 
-const getPrettyError = (errors: {[key: string]: string[] | undefined} | undefined, field?: string) => {
+const getPrettyError = (errors: { [key: string]: string[] | undefined } | undefined, field?: string) => {
     if (!errors) return;
 
     const errorList: string[] | undefined = field ? errors[field] : errors['__all__'];
@@ -24,7 +24,7 @@ const keysToSnakeCase = (item?: any) => {
     };
 
     if (isObject(item)) {
-        const newItem: {[key: string]: any} = {};
+        const newItem: { [key: string]: any } = {};
 
         Object.keys(item)
             .forEach((k) => {

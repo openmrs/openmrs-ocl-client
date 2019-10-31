@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Button, FormControl, InputLabel, MenuItem, Paper, Typography} from "@material-ui/core";
 import './DictionaryForm.scss';
-import {getPrettyError, locales} from "../../../utils";
+import {getPrettyError, LOCALES} from "../../../utils";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {TextField, Select} from "formik-material-ui";
@@ -86,7 +86,11 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                 initialValues={savedValues || initialValues}
                 validationSchema={DictionarySchema}
                 validateOnChange={false}
-                onSubmit={(values: Dictionary) => {if (onSubmit) {onSubmit(values)}}}
+                onSubmit={(values: Dictionary) => {
+                    if (onSubmit) {
+                        onSubmit(values)
+                    }
+                }}
             >
                 {({isSubmitting, status}) => (
                     <Form>
@@ -150,7 +154,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}(Organization)</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="ownerUrl" component="span" />
+                                <ErrorMessage name="ownerUrl" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -169,7 +173,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 <MenuItem value="None">Private</MenuItem>
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="visibility" component="span" />
+                                <ErrorMessage name="visibility" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -184,10 +188,10 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 component={Select}
                             >
                                 <MenuItem value=""><em>None</em></MenuItem>
-                                {locales.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
+                                {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="preferredLanguage" component="span" />
+                                <ErrorMessage name="preferredLanguage" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -204,10 +208,10 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 component={Select}
                             >
                                 <MenuItem value=""><em>None</em></MenuItem>
-                                {locales.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
+                                {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="otherLanguages" component="span" />
+                                <ErrorMessage name="otherLanguages" component="span"/>
                             </Typography>
                         </FormControl>
                         <br/>

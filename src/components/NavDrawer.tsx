@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
         content: {
             padding: theme.spacing(3),
             position: 'absolute',
+            width: '100vw',
         },
         logoutButton: {
             marginTop: 'auto',
@@ -84,7 +85,7 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
+            <CssBaseline/>
             <Drawer
                 variant="permanent"
                 className={clsx(classes.drawer, {
@@ -102,25 +103,25 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
 
                 <div className={classes.toolbar}>
                     <IconButton onClick={toggleDrawer}>
-                        {open ? <ChevronLeftIcon /> : <MenuIcon />}
+                        {open ? <ChevronLeftIcon/> : <MenuIcon/>}
                     </IconButton>
                 </div>
-                <Divider />
+                <Divider/>
                 <List component="div">
                     <ListItem button dense={false} component={Link} to="/" key="Home">
                         <ListItemIcon className="list-item-icon"><HomeOutlined/></ListItemIcon>
-                        <ListItemText primary="Home" />
+                        <ListItemText primary="Home"/>
                     </ListItem>
                 </List>
                 <Divider component="hr"/>
                 <List component="div">
                     <ListItem button dense={false} component={Link} to="/user/dictionaries/" key="Your Dictionaries">
                         <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
-                        <ListItemText primary="Your Dictionaries" />
+                        <ListItemText primary="Your Dictionaries"/>
                     </ListItem>
                     <ListItem button dense={false} component={Link} to="/dictionaries/" key="Public Dictionaries">
                         <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
-                        <ListItemText primary="Public Dictionaries" />
+                        <ListItemText primary="Public Dictionaries"/>
                     </ListItem>
                 </List>
                 <Divider component="hr"/>
@@ -128,8 +129,8 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
                     <Divider component="hr"/>
                     <List component="div">
                         <ListItem onClick={() => setConfirmLogoutOpen(true)} button component="div" key={"Logout"}>
-                            <ListItemIcon className="list-item-icon"><ExitToApp /></ListItemIcon>
-                            <ListItemText primary="Logout" />
+                            <ListItemIcon className="list-item-icon"><ExitToApp/></ListItemIcon>
+                            <ListItemText primary="Logout"/>
                         </ListItem>
                     </List>
                     <Dialog

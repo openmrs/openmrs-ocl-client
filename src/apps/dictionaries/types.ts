@@ -23,7 +23,7 @@ export interface APIDictionary {
     website: string;
     description: string;
     custom_validation_schema: string;
-    extras?: {[key: string]: string | undefined};
+    extras?: { [key: string]: string | undefined };
     url?: string;
     owner_url?: string,
 }
@@ -44,7 +44,7 @@ const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | 
         supported_locales,
         preferred_source,
         description,
-        owner_url='',
+        owner_url = '',
     } = apiDictionary;
 
     return {

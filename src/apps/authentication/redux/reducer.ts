@@ -1,14 +1,20 @@
 import {AnyAction} from "redux";
 import {loadingSelector} from "../../../redux";
 import {errorSelector} from "../../../redux/redux";
-import {GET_USER_DETAILS_ACTION, GET_PROFILE_ACTION, GET_USER_ORGS_ACTION, LOGIN_ACTION, LOGOUT_ACTION} from "./actionTypes";
+import {
+    GET_USER_DETAILS_ACTION,
+    GET_PROFILE_ACTION,
+    GET_USER_ORGS_ACTION,
+    LOGIN_ACTION,
+    LOGOUT_ACTION
+} from "./actionTypes";
 import {AuthState} from "../types";
 
 const initialState: AuthState = {
     isLoggedIn: false,
 };
 
-const reducer = (state=initialState, action: AnyAction) => {
+const reducer = (state = initialState, action: AnyAction) => {
     switch (action.type) {
         case LOGIN_ACTION:
             return {...state, isLoggedIn: true, token: action.payload.token};
@@ -26,8 +32,8 @@ const authLoadingSelector = loadingSelector(LOGIN_ACTION);
 const authErrorsSelector = errorSelector(LOGIN_ACTION);
 
 const getUserDetailsLoadingSelector = loadingSelector(GET_USER_DETAILS_ACTION);
-const profileSelector = ({auth}: {auth: AuthState}) => auth.profile;
-const orgsSelector = ({auth}: {auth: AuthState}) => auth.orgs;
+const profileSelector = ({auth}: { auth: AuthState }) => auth.profile;
+const orgsSelector = ({auth}: { auth: AuthState }) => auth.orgs;
 
 export {
     reducer as default,

@@ -4,5 +4,8 @@ export {
     BASE_URL,
     TRADITIONAL_OCL_URL,
     CUSTOM_VALIDATION_SCHEMA,
-    locales,
+    LOCALES,
+    CONCEPT_CLASSES,
+    DATA_TYPES,
+    NAME_TYPES,
 } from './constants';

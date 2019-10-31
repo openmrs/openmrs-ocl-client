@@ -15,7 +15,7 @@ interface Props {
     errors?: any,
 }
 
-const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading, errors={}}: Props) => {
+const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading, errors = {}}: Props) => {
     if (isLoggedIn) return (<Redirect to="/"/>); // todo add redirect url use
     else return (
         <Grid
@@ -34,7 +34,8 @@ const LoginPage: React.FC<Props> = ({isLoggedIn, login, loading, errors={}}: Pro
                         for OpenMRS
                     </Typography>
                     <Typography variant="subtitle1" component="span">
-                        Use the shared Open Concept Lab to create OpenMRS dictionaries by mixing expert-defined content with your own custom concepts.
+                        Use the shared Open Concept Lab to create OpenMRS dictionaries by mixing expert-defined content
+                        with your own custom concepts.
                     </Typography>
                 </div>
                 <Login onSubmit={login} loading={loading} status={errors.detail}/>

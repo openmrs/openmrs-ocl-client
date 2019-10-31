@@ -13,7 +13,7 @@ export interface NewAPICollection {
     custom_validation_schema: string;
 }
 
-export interface APICollection extends NewAPICollection{
+export interface APICollection extends NewAPICollection {
     extras?: {};
     active_concepts: number;
     concepts_url: string;

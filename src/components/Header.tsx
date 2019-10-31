@@ -19,7 +19,7 @@ interface Props {
     justifyChildren?: string,
 }
 
-const Header: React.FC<Props> = ({children, title, justifyChildren='center'}) => {
+const Header: React.FC<Props> = ({children, title, justifyChildren = 'center'}) => {
     const classes = useStyles();
 
     return (

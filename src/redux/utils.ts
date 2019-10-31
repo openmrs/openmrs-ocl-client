@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
 import {AnyAction} from "redux";
 
-export interface Action extends AnyAction{
+export interface Action extends AnyAction {
     type: string,
     payload?: {},
     meta: any[],
@@ -12,7 +12,7 @@ const FAILURE = 'FAILURE';
 const PROGRESS = 'PROGRESS';
 const COMPLETE = 'COMPLETE';
 
-const createActionType = (type: string): Function => (): {[key: string]: string} => ({type});
+const createActionType = (type: string): Function => (): { [key: string]: string } => ({type});
 
 const startAction = (action: string, ...args: any[]) => ({
     type: `${action}_${START}`,

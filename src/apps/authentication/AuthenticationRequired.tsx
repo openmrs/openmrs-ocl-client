@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {Redirect} from "react-router-dom";
 import {getUserDetailsAction, getUserDetailsLoadingSelector, profileSelector} from "./redux";
 import {APIProfile} from "./types";
@@ -17,7 +17,8 @@ export const AuthenticationRequired: React.FC<Props> = ({children: Component, is
         if (isLoggedIn) getProfile();
     }, [isLoggedIn, getProfile]);
 
-    return !isLoggedIn ? <Redirect to="/login"/> : (profileLoading ? <span>Loading...</span> : <Component profile={profile} />);
+    return !isLoggedIn ? <Redirect to="/login"/> : (profileLoading ? <span>Loading...</span> :
+        <Component profile={profile}/>);
 };
 
 const mapStateToProps = (state: any) => ({

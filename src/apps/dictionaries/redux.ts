@@ -68,7 +68,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             website: ""
         };
         sourceResponse = await dispatch(createSource<NewAPISource>(ownerUrl, source));
-        if (!sourceResponse){
+        if (!sourceResponse) {
             dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
             return false;
         }
@@ -90,7 +90,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             website: ""
         };
         collectionResponse = await dispatch(createCollection<NewAPICollection>(ownerUrl, collection));
-        if (!collectionResponse){ // todo cleanup here would involve hard deleting the source
+        if (!collectionResponse) { // todo cleanup here would involve hard deleting the source
             dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
             return false;
         }
@@ -138,11 +138,9 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     }
 };
 
-const initialState: DictionaryState = {
+const initialState: DictionaryState = {};
 
-};
-
-const reducer = (state=initialState, action: AnyAction) => {
+const reducer = (state = initialState, action: AnyAction) => {
     switch (action.type) {
         case startAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION).type:
             return {...state, newDictionary: undefined};
@@ -158,12 +156,12 @@ const reducer = (state=initialState, action: AnyAction) => {
 const createDictionaryLoadingSelector = loadingSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
 const createDictionaryProgressSelector = progressSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
 const createDictionaryErrorSelector = errorSelector(CREATE_DICTIONARY_ACTION);
-const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({[key: string]: string[] | undefined} | undefined) => {
-  const createSourceErrors = createSourceErrorSelector(state);
-  if (createSourceErrors) return createSourceErrors;
+const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [key: string]: string[] | undefined } | undefined) => {
+    const createSourceErrors = createSourceErrorSelector(state);
+    if (createSourceErrors) return createSourceErrors;
 
-  const createCollectionErrors = createCollectionErrorSelector(state);
-  if (createCollectionErrors) return createCollectionErrors;
+    const createCollectionErrors = createCollectionErrorSelector(state);
+    if (createCollectionErrors) return createCollectionErrors;
 
     const createDictionaryErrors = createDictionaryErrorSelector(state);
     if (createDictionaryErrors) return createDictionaryErrors;

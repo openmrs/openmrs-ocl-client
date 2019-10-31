@@ -13,7 +13,7 @@ export interface NewAPISource {
     custom_validation_schema: string;
 }
 
-export interface APISource extends NewAPISource{
+export interface APISource extends NewAPISource {
     url: string;
     active_concepts: number,
     concepts_url: string,

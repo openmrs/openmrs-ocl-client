@@ -25,14 +25,16 @@ interface Props {
 const CreateDictionaryPage: React.FC<Props> = ({profile, usersOrgs, errors, createSourceCollectionDictionary, loading, newDictionary}: Props) => {
     const previouslyLoading = usePrevious(loading);
 
-    if(!loading && previouslyLoading && newDictionary && newDictionary.url) {
-        return <Redirect to={newDictionary.url.replace('/collections/', '/dictionaries/')} />;
+    if (!loading && previouslyLoading && newDictionary && newDictionary.url) {
+        return <Redirect to={newDictionary.url.replace('/collections/', '/dictionaries/')}/>;
     }
 
     return (
         <Grid id="create-dictionary-page" item xs={6} component="div">
             <Paper>
-                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []} loading={loading} onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)} editing/>
+                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []}
+                                loading={loading}
+                                onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)} editing/>
             </Paper>
         </Grid>
     )

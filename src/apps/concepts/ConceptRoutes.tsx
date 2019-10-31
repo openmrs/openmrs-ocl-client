@@ -1,7 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Route, Switch, useRouteMatch} from "react-router-dom";
 import Header from "../../components/Header";
-import ViewDictionaryPage from "./ViewDictionaryPage";
+import CreateConceptPage from "./CreateConceptPage";
 
 const Routes: React.FC = () => {
     // @ts-ignore
@@ -10,11 +10,11 @@ const Routes: React.FC = () => {
     return (
         <Router>
             <Switch>
-                <Route exact path={`${path}/:dictionary/`}>
-                    <Header title="Details" justifyChildren='space-around'>
-                        <ViewDictionaryPage/>
-                    </Header>
-                </Route>
+                {/*<Route exact path={`${path}/new/`}>*/}
+                {/*    <Header title="Create concept">*/}
+                {/*        <CreateConceptPage />*/}
+                {/*    </Header>*/}
+                {/*</Route>*/}
             </Switch>
         </Router>
     );
