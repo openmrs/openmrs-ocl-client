@@ -13,7 +13,7 @@ import {
     retrieveSourceAction,
     retrieveSourceLoadingSelector
 } from "../sources";
-import {APIDictionary, Dictionary, DictionaryState} from "./types";
+import { APIDictionary, Dictionary, DictionaryState, NewAPIDictionary } from './types'
 import {APISource} from "../sources";
 import {CUSTOM_VALIDATION_SCHEMA} from "../../utils";
 import uuid from "uuid/v4";
@@ -97,7 +97,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
 
 
         dispatch(progressAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION, 'Creating dictionary...'));
-        const dictionary: APIDictionary = {
+        const dictionary: NewAPIDictionary = {
             collection_type: "OCL Client Dictionary",
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
             default_locale: preferredLanguage,

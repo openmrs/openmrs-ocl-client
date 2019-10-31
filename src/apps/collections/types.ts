@@ -1,4 +1,4 @@
-export interface NewAPICollection {
+export interface BaseAPICollection {
     id: string;
     short_code: string;
     external_id: string;
@@ -7,17 +7,21 @@ export interface NewAPICollection {
     collection_type: string;
     public_access: string;
     default_locale: string;
-    supported_locales: string;
     website: string;
     description: string;
     custom_validation_schema: string;
 }
 
-export interface APICollection extends NewAPICollection {
+export interface NewAPICollection extends BaseAPICollection{
+    supported_locales: string;
+}
+
+export interface APICollection extends BaseAPICollection {
     extras?: {};
     active_concepts: number;
     concepts_url: string;
     url: string;
+    supported_locales: string[];
 }
 
 export interface CollectionState {

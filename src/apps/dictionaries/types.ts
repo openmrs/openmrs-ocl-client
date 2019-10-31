@@ -9,7 +9,7 @@ export interface Dictionary {
     otherLanguages: string[];
 }
 
-export interface APIDictionary {
+interface BaseAPIDictionary {
     id: string,
     short_code: string;
     external_id: string;
@@ -18,7 +18,6 @@ export interface APIDictionary {
     collection_type: string;
     public_access: string;
     default_locale: string;
-    supported_locales: string;
     preferred_source: string;
     website: string;
     description: string;
@@ -26,6 +25,14 @@ export interface APIDictionary {
     extras?: { [key: string]: string | undefined };
     url?: string;
     owner_url?: string,
+}
+
+export interface NewAPIDictionary extends BaseAPIDictionary{
+    supported_locales: string;
+}
+
+export interface APIDictionary extends BaseAPIDictionary{
+    supported_locales: string[];
 }
 
 export interface DictionaryState {
@@ -50,7 +57,7 @@ const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | 
     return {
         description: description,
         dictionaryName: name,
-        otherLanguages: supported_locales ? supported_locales.split(',') : [],
+        otherLanguages: supported_locales,
         ownerUrl: owner_url,
         preferredLanguage: default_locale,
         preferredSource: preferred_source,

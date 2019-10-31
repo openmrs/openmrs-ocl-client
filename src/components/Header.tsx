@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
             left: theme.spacing(7) + 1,
         },
         content: {
-            marginTop: '10vh',
+            marginTop: '6vh',
             height: '100%',
         },
     }),
