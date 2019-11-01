@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
     menuItem: {
       width: '4%',
     },
+    errorContainer: {
+      textAlign: 'center',
+    },
   }),
 );
 
@@ -165,6 +168,9 @@ const NameTable: React.FC<Props> = ({valuesKey, type, title, values, createNewVa
           ))}
         </TableBody>
       </Table>
+      <Typography className={classes.errorContainer} color="error" variant="caption" component="div">
+        <ErrorMessage name={valuesKey} component="span"/>
+      </Typography>
       <br/>
       <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewValue())}>
         Add {title}

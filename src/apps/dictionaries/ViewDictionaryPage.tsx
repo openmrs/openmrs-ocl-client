@@ -29,7 +29,7 @@ interface Props {
 }
 
 const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection}: Props) => {
-    let {pathname: url} = useLocation();
+    const {pathname: url} = useLocation();
 
     useEffect(() => {
         retrieveDictionaryAndDetails(url.replace('/dictionaries/', '/collections/'));

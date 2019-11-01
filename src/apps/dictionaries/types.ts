@@ -23,7 +23,6 @@ interface BaseAPIDictionary {
     description: string;
     custom_validation_schema: string;
     extras?: { [key: string]: string | undefined };
-    url?: string;
     owner_url?: string,
 }
 
@@ -33,6 +32,7 @@ export interface NewAPIDictionary extends BaseAPIDictionary{
 
 export interface APIDictionary extends BaseAPIDictionary{
     supported_locales: string[];
+    url: string;
 }
 
 export interface DictionaryState {

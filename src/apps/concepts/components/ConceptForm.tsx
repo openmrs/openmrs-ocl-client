@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
 import { Concept, ConceptDescription, ConceptName } from '../types'
-import uuid from 'uuid';
+import uuid from 'uuid'
 import {
     Button,
     createStyles,
-    FormControl, IconButton, InputAdornment,
+    FormControl,
+    IconButton,
+    InputAdornment,
     InputLabel,
     makeStyles,
     MenuItem,
@@ -14,9 +16,9 @@ import {
     Typography
 } from '@material-ui/core'
 import { Select, TextField } from 'formik-material-ui'
-import { CONCEPT_CLASSES, DATA_TYPES, NAME_TYPES } from '../../../utils'
+import { CONCEPT_CLASSES, DATA_TYPES, getPrettyError, NAME_TYPES } from '../../../utils'
 import NameTable from './NameTable'
-import {Edit as EditIcon} from '@material-ui/icons';
+import { Edit as EditIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,13 +29,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const castNecessaryValues = (values: Concept) => {
-  values.names.map((name: ConceptName) => {
-      const {name_type} = name;
-      return {
-          ...name,
-          name_type: name_type === 'null' ? null : name_type, // api represents 'Synonym' name_type as null
-      };
-  });
+    const {names} = values;
+    return {
+        ...values,
+        names: names.map((name: ConceptName) => ({
+            ...name,
+            name_type: name.name_type === 'null' ? null : name.name_type, // api represents 'Synonym' name_type as null
+        })),
+    };
 };
 
 const createName = (nameType: string=NAME_TYPES[0].value): ConceptName => ({
@@ -54,23 +57,49 @@ const createDescription = (): ConceptDescription => ({
 const initialValues: Concept = {
     concept_class: "",
     datatype: DATA_TYPES[0],
-    descriptions: [createDescription()],
+    descriptions: [],
     external_id: uuid(),
     id: "",
     mappings: [],
     names: [createName()],
 };
 
-const ConceptForm: React.FC = () => {
+interface Props {
+    loading: boolean,
+    createConcept: Function,
+    errors?: {},
+}
+
+const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
     const classes = useStyles();
+
+    const formikRef: any = useRef(null);
 
     const [isExternalIDEditable, setExternalIDEditable] = useState(false);
     const toggleExternalIDEditable = () => setExternalIDEditable(!isExternalIDEditable);
 
+    useEffect(() => {
+        const {current: currentRef} = formikRef;
+        if (currentRef) {
+            currentRef.setSubmitting(loading);
+        }
+    }, [loading]);
+
+    useEffect(() => {
+        const {current: currentRef} = formikRef;
+        if (!currentRef) return;
+
+        Object.keys(initialValues).forEach((key) => {
+            const error = getPrettyError(errors, key);
+            if (error) currentRef.setFieldError(key, error);
+        });
+    }, [errors]);
+
     return (
         <Formik
+          ref={formikRef}
           initialValues={initialValues}
-          onSubmit={values => {console.log(castNecessaryValues(values))}}
+          onSubmit={values => createConcept(castNecessaryValues(values))}
         >
             {({isSubmitting, status, values}) => (
                 <Form>
@@ -119,7 +148,7 @@ const ConceptForm: React.FC = () => {
                                     {CONCEPT_CLASSES.map(conceptClass => <MenuItem key={conceptClass} value={conceptClass}>{conceptClass}</MenuItem>)}
                                 </Field>
                                 <Typography color="error" variant="caption" component="div">
-                                    <ErrorMessage name="class" component="span"/>
+                                    <ErrorMessage name="concept_class" component="span"/>
                                 </Typography>
                             </FormControl>
                             <FormControl

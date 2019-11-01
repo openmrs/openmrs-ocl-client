@@ -6,6 +6,7 @@ import authReducer from "./apps/authentication/redux/reducer"; // failed to resp
 import {dictionariesReducer} from "./apps/dictionaries";
 import {collectionsReducer} from "./apps/collections";
 import {sourcesReducer} from "./apps/sources";
+import { conceptsReducer } from './apps/concepts'
 
 export const STORE_VERSION = '1';
 export const CURRENT_STORE_VERSION_KEY = 'currentStoreVersion';
@@ -16,6 +17,7 @@ const saveState = (appState: any) => {
         'dictionaries',
         'collections',
         'sources',
+        'concepts',
     ].reduce((previousValue, item) => ({...previousValue, [item]: undefined}), {});
     const state = {
         ...appState,
@@ -55,6 +57,7 @@ const rootReducer = combineReducers({
     'dictionaries': dictionariesReducer,
     'collections': collectionsReducer,
     'sources': sourcesReducer,
+    'concepts': conceptsReducer,
 });
 
 const store = createStore(

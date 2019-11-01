@@ -32,3 +32,12 @@ export interface Concept {
     descriptions: ConceptDescription[],
     mappings: Mapping[],
 }
+
+export interface APIConcept extends Concept{
+    display_name: string,
+    url: string,
+}
+
+export interface ConceptsState {
+    newConcept?: APIConcept,
+}

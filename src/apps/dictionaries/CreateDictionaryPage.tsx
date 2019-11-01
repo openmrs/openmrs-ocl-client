@@ -25,7 +25,7 @@ interface Props {
 const CreateDictionaryPage: React.FC<Props> = ({profile, usersOrgs, errors, createSourceCollectionDictionary, loading, newDictionary}: Props) => {
     const previouslyLoading = usePrevious(loading);
 
-    if (!loading && previouslyLoading && newDictionary && newDictionary.url) {
+    if (!loading && previouslyLoading && newDictionary) {
         return <Redirect to={newDictionary.url.replace('/collections/', '/dictionaries/')}/>;
     }
 
@@ -48,8 +48,8 @@ const mapStateToProps = (state: any) => ({
     newDictionary: state.dictionaries.newDictionary,
     errors: createSourceCollectionDictionaryErrorsSelector(state),
 });
-const mapDispatchToProps = {
+const mapActionsToProps = {
     createSourceCollectionDictionary: createSourceCollectionDictionaryAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateDictionaryPage);
+export default connect(mapStateToProps, mapActionsToProps)(CreateDictionaryPage);
