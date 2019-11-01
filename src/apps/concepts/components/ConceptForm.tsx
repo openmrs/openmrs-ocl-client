@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
-import { Concept, ConceptDescription, ConceptName } from '../types'
+import { Concept, ConceptDescription, ConceptName, Mapping } from '../types'
 import uuid from 'uuid'
 import {
     Button,
@@ -19,6 +19,7 @@ import { Select, TextField } from 'formik-material-ui'
 import { CONCEPT_CLASSES, DATA_TYPES, getPrettyError, NAME_TYPES } from '../../../utils'
 import NameTable from './NameTable'
 import { Edit as EditIcon } from '@material-ui/icons'
+import * as Yup from 'yup'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,6 +65,42 @@ const initialValues: Concept = {
     names: [createName()],
 };
 
+const ConceptSchema = Yup.object().shape<Concept>({
+  concept_class: Yup.string()
+    .required('Required'),
+  datatype: Yup.string()
+    .required('Required'),
+  names: Yup.array().of(Yup.object().shape<ConceptName>({
+    name: Yup.string().required('Required'),
+    name_type: Yup.string().required('Required'),
+    external_id: Yup.string().required(),
+    locale: Yup.string().required('Required'),
+    locale_preferred: Yup.boolean().required('Required'),
+  }))
+    .min(1, 'Concept must have at least one name'),
+  descriptions: Yup.array().of(Yup.object().shape<ConceptDescription>({
+    description: Yup.string().required('Required'),
+    external_id: Yup.string().required(),
+    locale: Yup.string().required('Required'),
+    locale_preferred: Yup.boolean().required('Required'),
+  }))
+    .min(0),
+  external_id: Yup.string()
+    .required(),
+  id: Yup.string()
+    .required('Required'),
+  mappings: Yup.array().of(Yup.object().shape<Mapping>({
+    external_id: Yup.string().required(),
+    from_concept_url: Yup.string().required(),
+    map_type: Yup.string().required('Required'),
+    to_concept_code: Yup.string().notRequired(),
+    to_source_url: Yup.string().notRequired(),
+    to_concept_url: Yup.string().notRequired(),
+    to_concept_name: Yup.string().notRequired(),
+  }))
+    .min(0),
+});
+
 interface Props {
     loading: boolean,
     createConcept: Function,
@@ -99,9 +136,10 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
         <Formik
           ref={formikRef}
           initialValues={initialValues}
+          validationSchema={ConceptSchema}
           onSubmit={values => createConcept(castNecessaryValues(values))}
         >
-            {({isSubmitting, status, values}) => (
+            {({isSubmitting, status, values, errors}) => (
                 <Form>
                     <Paper className="fieldsetParent">
                         <fieldset>
@@ -182,6 +220,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                                     title="Name"
                                     valuesKey="names"
                                     values={values.names}
+                                    errors={errors.names}
                                     arrayHelpers={arrayHelpers}
                                     isSubmitting={isSubmitting}
                                   />
@@ -202,6 +241,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                                     title="Description"
                                     valuesKey="descriptions"
                                     values={values.descriptions}
+                                    errors={errors.descriptions}
                                     arrayHelpers={arrayHelpers}
                                     isSubmitting={isSubmitting}
                                   />

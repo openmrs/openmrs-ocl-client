@@ -32,9 +32,14 @@ const CreateDictionaryPage: React.FC<Props> = ({profile, usersOrgs, errors, crea
     return (
         <Grid id="create-dictionary-page" item xs={6} component="div">
             <Paper>
-                <DictionaryForm errors={errors} profile={profile} usersOrgs={usersOrgs ? usersOrgs : []}
-                                loading={loading}
-                                onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)} editing/>
+                <DictionaryForm
+                  editing
+                  errors={errors}
+                  profile={profile}
+                  usersOrgs={usersOrgs ? usersOrgs : []}
+                  loading={loading}
+                  onSubmit={(values: Dictionary) => createSourceCollectionDictionary(values)}
+                />
             </Paper>
         </Grid>
     )

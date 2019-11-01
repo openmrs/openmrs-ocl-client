@@ -17,10 +17,10 @@ export interface Mapping {
     map_type: string,
     external_id: string,
     from_concept_url: string,
-    to_concept_url: string, // internal mapping
-    to_source_url: string, // external mapping
-    to_concept_code: string, // external mapping
-    to_concept_name: string, // external mapping
+    to_concept_url?: string, // internal mapping
+    to_source_url?: string, // external mapping
+    to_concept_code?: string, // external mapping
+    to_concept_name?: string, // external mapping
 }
 
 export interface Concept {

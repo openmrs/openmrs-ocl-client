@@ -43,8 +43,12 @@ const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoad
                 <Paper className="fieldsetParent">
                     <fieldset>
                         <Typography component="legend" variant="h5" gutterBottom>General Details</Typography>
-                        <DictionaryForm savedValues={apiDictionaryToDictionary(dictionary)} profile={profile}
-                                        usersOrgs={usersOrgs ? usersOrgs : []} loading={true} editing={false}/>
+                        <DictionaryForm
+                          savedValues={apiDictionaryToDictionary(dictionary)}
+                          profile={profile}
+                          usersOrgs={usersOrgs ? usersOrgs : []}
+                          loading={true}
+                        />
                     </fieldset>
                 </Paper>
             </Grid>

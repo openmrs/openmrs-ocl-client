@@ -18,6 +18,9 @@ import { ConceptDescription, ConceptName } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    row: {
+      verticalAlign: 'top',
+    },
     singleCellWidth: {
       width: '24%',
     },
@@ -38,6 +41,7 @@ interface Props {
   title: string,
   valuesKey: string,
   values: (ConceptName|ConceptDescription)[],
+  errors?: {} | string,
   createNewValue: Function,
   arrayHelpers: ArrayHelpers,
   multiline?: boolean,
@@ -45,7 +49,7 @@ interface Props {
   isSubmitting: boolean,
 }
 
-const NameTable: React.FC<Props> = ({valuesKey, type, title, values, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting}) => {
+const NameTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting}) => {
   const classes = useStyles();
 
   const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
@@ -69,7 +73,7 @@ const NameTable: React.FC<Props> = ({valuesKey, type, title, values, createNewVa
         </TableHead>
         <TableBody>
           {values.map((name, index) => (
-            <TableRow key={index}>
+            <TableRow className={classes.row} key={index}>
               <TableCell className={multiline ? classes.doubleCellWidth : classes.singleCellWidth} component="td" scope="row">
                 <Field
                   fullWidth
@@ -168,9 +172,11 @@ const NameTable: React.FC<Props> = ({valuesKey, type, title, values, createNewVa
           ))}
         </TableBody>
       </Table>
-      <Typography className={classes.errorContainer} color="error" variant="caption" component="div">
-        <ErrorMessage name={valuesKey} component="span"/>
-      </Typography>
+      {typeof errors !== 'string' ? null : (
+        <Typography className={classes.errorContainer} color="error" variant="caption" component="div">
+          <ErrorMessage name={valuesKey} component="span"/>
+        </Typography>
+      )}
       <br/>
       <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewValue())}>
         Add {title}

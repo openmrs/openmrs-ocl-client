@@ -18,16 +18,16 @@ interface Props {
     usersOrgs: APIOrg[],
     errors?: {},
     savedValues?: Dictionary,
-    editing: boolean,
+    editing?: boolean,
 }
 
-const DictionarySchema = Yup.object().shape({
+const DictionarySchema = Yup.object().shape<Dictionary>({
     dictionaryName: Yup.string()
         .required('Dictionary name is required'),
     shortCode: Yup.string()
         .required('Short code is required'),
     description: Yup.string()
-        .notRequired(),
+        .min(0),
     preferredSource: Yup.string()
         .required('Select a preferred source')
         .oneOf(['CIEL'], 'This source is not supported'),
@@ -51,7 +51,7 @@ const initialValues: Dictionary = {
     otherLanguages: [],
 };
 
-const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors, editing, savedValues}) => {
+const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors, editing=false, savedValues}) => {
     const formikRef: any = useRef(null);
     const error: string | undefined = getPrettyError(errors);
 
