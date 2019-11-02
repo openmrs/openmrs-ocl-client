@@ -1,5 +1,6 @@
 export {usePrevious} from './hooks';
-export {findLocale, getPrettyError, keysToSnakeCase} from './utils';
+export {findLocale, getPrettyError, keysToSnakeCase, buildPartialSearchQuery} from './utils';
+export {AsyncSelect} from './components';
 export {
     BASE_URL,
     TRADITIONAL_OCL_URL,
@@ -8,4 +9,6 @@ export {
     CONCEPT_CLASSES,
     DATA_TYPES,
     NAME_TYPES,
+    MAP_TYPES,
 } from './constants';
+export * from './types';

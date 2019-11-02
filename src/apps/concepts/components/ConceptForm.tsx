@@ -17,9 +17,10 @@ import {
 } from '@material-ui/core'
 import { Select, TextField } from 'formik-material-ui'
 import { CONCEPT_CLASSES, DATA_TYPES, getPrettyError, NAME_TYPES } from '../../../utils'
-import NameTable from './NameTable'
+import NamesTable from './NamesTable'
 import { Edit as EditIcon } from '@material-ui/icons'
 import * as Yup from 'yup'
+import MappingsTable from './MappingsTable'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,13 +56,19 @@ const createDescription = (): ConceptDescription => ({
     locale_preferred: false,
 });
 
+const createMapping = (): Mapping => ({
+  external_id: uuid(),
+  from_concept_url: '',
+  map_type: '',
+});
+
 const initialValues: Concept = {
     concept_class: "",
     datatype: DATA_TYPES[0],
     descriptions: [],
     external_id: uuid(),
     id: "",
-    mappings: [],
+    mappings: [createMapping()],
     names: [createName()],
 };
 
@@ -90,15 +97,17 @@ const ConceptSchema = Yup.object().shape<Concept>({
   id: Yup.string()
     .required('Required'),
   mappings: Yup.array().of(Yup.object().shape<Mapping>({
-    external_id: Yup.string().required(),
-    from_concept_url: Yup.string().required(),
-    map_type: Yup.string().required('Required'),
-    to_concept_code: Yup.string().notRequired(),
-    to_source_url: Yup.string().notRequired(),
-    to_concept_url: Yup.string().notRequired(),
-    to_concept_name: Yup.string().notRequired(),
-  }))
-    .min(0),
+      external_id: Yup.string().required(),
+      from_concept_url: Yup.string().required(),
+      map_type: Yup.string().required('Required'),
+      to_source_url: Yup.string().required(),
+      to_concept_code: Yup.string().notRequired(),
+      to_concept_url: Yup.string().notRequired(),
+      to_concept_name: Yup.string().notRequired(),
+    })
+      .test('User should select a to concept', 'A to concept is required', (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url),
+  )
+    .min(0)
 });
 
 interface Props {
@@ -213,7 +222,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                             <Typography component="legend" variant="h5" gutterBottom>Names</Typography>
                             <FieldArray name="names">
                                 {arrayHelpers => (
-                                  <NameTable
+                                  <NamesTable
                                     useTypes
                                     createNewValue={() => createName(NAME_TYPES[1].value)}
                                     type="name"
@@ -234,7 +243,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                             <Typography component="legend" variant="h5" gutterBottom>Descriptions</Typography>
                             <FieldArray name="descriptions">
                                 {arrayHelpers => (
-                                  <NameTable
+                                  <NamesTable
                                     multiline
                                     createNewValue={createDescription}
                                     type="description"
@@ -248,6 +257,25 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                                 )}
                             </FieldArray>
                         </fieldset>
+                    </Paper>
+                    <br/>
+                    <Paper className="fieldsetParent">
+                      <fieldset>
+                        <Typography component="legend" variant="h5" gutterBottom>Mappings</Typography>
+                        <FieldArray name="mappings">
+                          {arrayHelpers => (
+                            <MappingsTable
+                              allowChoosingType
+                              createNewValue={createDescription}
+                              valuesKey="mappings"
+                              values={values.mappings}
+                              errors={errors.mappings}
+                              arrayHelpers={arrayHelpers}
+                              isSubmitting={isSubmitting}
+                            />
+                          )}
+                        </FieldArray>
+                      </fieldset>
                     </Paper>
                     <br/>
                     <div className={classes.buttonContainer}>

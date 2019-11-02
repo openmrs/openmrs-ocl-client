@@ -49,7 +49,7 @@ interface Props {
   isSubmitting: boolean,
 }
 
-const NameTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting}) => {
+const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting}) => {
   const classes = useStyles();
 
   const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
@@ -186,4 +186,4 @@ const NameTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, 
 };
 
 
-export default NameTable;
+export default NamesTable;

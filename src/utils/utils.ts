@@ -41,4 +41,6 @@ const keysToSnakeCase = (item?: any) => {
     return item;
 };
 
-export {findLocale, getPrettyError, keysToSnakeCase}
+const buildPartialSearchQuery = (query: string): string => `${query.replace(new RegExp(' ', 'g'), '* ')}*`;
+
+export {findLocale, getPrettyError, keysToSnakeCase, buildPartialSearchQuery}

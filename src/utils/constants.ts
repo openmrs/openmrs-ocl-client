@@ -1,7 +1,11 @@
+import { Option } from './types'
+
 export const BASE_URL: string = 'https://api.qa.openconceptlab.org';
 export const TRADITIONAL_OCL_URL = 'https://qa.openconceptlab.org';
 
 export const CUSTOM_VALIDATION_SCHEMA = 'OpenMRS';
+
+const option = (value: string, label: string=value): Option => ({value, label});
 
 export const LOCALES: {[key: string]: string}[] = [
     {value: 'en', label: 'English (en)'},
@@ -242,4 +246,26 @@ export const NAME_TYPES: {[key: string]: string}[] = [
     {value: 'null', label: 'Synonym'}, // value here should be null but inputs html can't handle null as a value
     {value: 'SHORT', label: 'Short'},
     {value: 'INDEX_TERM', label: 'Index Term'},
+];
+
+export const MAP_TYPES: Option[] = [
+  option('SAME-AS', 'Same as'),
+  option('NARROWER-THAN', 'Narrower than'),
+  option('BROADER-THAN', 'Broader than'),
+  ...(['Associated finding', 'Associated morphology',
+    'Associated procedure', 'Associated with', 'Causative agent', 'Finding site', 'Has specimen', 'Laterality', 'Severity', 'Access', 'After',
+    'Clinical course', 'Component', 'Direct device', 'Direct morphology', 'Direct substance', 'Due to', 'Episodicity', 'Finding context',
+    'Finding informer', 'Finding method', 'Has active ingredient', 'Has definitional manifestation', 'Has dose form', 'Has focus', 'Has intent',
+    'Has interpretation', 'Indirect device', 'Indirect morphology', 'Interprets', 'Measurement method', 'Method', 'Occurrence', 'Part of',
+    'Pathological process', 'Priority', 'Procedure context', 'Procedure device', 'Procedure morphology', 'Procedure site', 'Procedure site - Direct',
+    'Procedure site - Indirect', 'Property', 'Recipient category', 'Revision status', 'Route of administration', 'Scale type', 'Specimen procedure',
+    'Specimen source identity', 'Specimen source morphology', 'Specimen source topography', 'Specimen substance', 'Subject of information',
+    'Subject relationship context', 'Surgical approach', 'Temporal context', 'Time aspect', 'Using access device', 'Using device', 'Using energy',
+    'Using substance'].map((item: string) => option(item))),
+  option('IS A', 'Is a'),
+  option('MAY BE A', 'May be a'),
+  option('MOVED FROM', 'Moved from'),
+  option('MOVED TO', 'Moved to'),
+  option('REPLACED BY', 'Replaced by'),
+  option('WAS A', 'Was a'),
 ];

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Button, FormControl, InputLabel, MenuItem, Paper, Typography} from "@material-ui/core";
+import { Button, FormControl, InputLabel, ListSubheader, MenuItem, Paper, Typography } from '@material-ui/core'
 import './DictionaryForm.scss';
 import {getPrettyError, LOCALES} from "../../../utils";
 import {ErrorMessage, Field, Form, Formik} from "formik";
@@ -151,7 +151,8 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             >
                                 <MenuItem value=""><em>None</em></MenuItem>
                                 {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
-                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}(Organization)</MenuItem>)}
+                                <ListSubheader>Your Organizations</ListSubheader>
+                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="ownerUrl" component="span"/>
