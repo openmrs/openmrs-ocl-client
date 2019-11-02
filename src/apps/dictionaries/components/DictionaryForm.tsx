@@ -133,7 +133,6 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 id="preferredSource"
                                 component={Select}
                             >
-                                <MenuItem value=""><em>None</em></MenuItem>
                                 <MenuItem value="CIEL">CIEL</MenuItem>
                             </Field>
                         </FormControl>
@@ -149,7 +148,6 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 id="ownerUrl"
                                 component={Select}
                             >
-                                <MenuItem value=""><em>None</em></MenuItem>
                                 {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
                                 <ListSubheader>Your Organizations</ListSubheader>
                                 {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
@@ -169,7 +167,6 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 id="visibility"
                                 component={Select}
                             >
-                                <MenuItem value=""><em>None</em></MenuItem>
                                 <MenuItem value="View">Public</MenuItem>
                                 <MenuItem value="None">Private</MenuItem>
                             </Field>
@@ -188,7 +185,6 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 id="preferredLanguage"
                                 component={Select}
                             >
-                                <MenuItem value=""><em>None</em></MenuItem>
                                 {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
@@ -208,7 +204,6 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 id="otherLanguages"
                                 component={Select}
                             >
-                                <MenuItem value=""><em>None</em></MenuItem>
                                 {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">

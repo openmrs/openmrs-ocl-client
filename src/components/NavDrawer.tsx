@@ -13,7 +13,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined} from '@material-ui/icons';
 import {Link} from "react-router-dom";
-import {Button, Dialog, DialogActions, DialogTitle} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogTitle, Typography } from '@material-ui/core'
 import {logoutAction} from "../apps/authentication/redux";
 import {connect} from "react-redux";
 
@@ -102,9 +102,20 @@ export const NavDrawer: React.FC<Props> = ({children, logout}) => {
             >
 
                 <div className={classes.toolbar}>
+                  {open ? (
+                    <span>
+                      <Typography variant="h6" noWrap>
+                        Open Concept Lab
+                        <IconButton onClick={toggleDrawer}>
+                          <ChevronLeftIcon/>
+                        </IconButton>
+                      </Typography>
+                    </span>
+                  ) : (
                     <IconButton onClick={toggleDrawer}>
-                        {open ? <ChevronLeftIcon/> : <MenuIcon/>}
+                      <MenuIcon/>
                     </IconButton>
+                  )}
                 </div>
                 <Divider/>
                 <List component="div">
