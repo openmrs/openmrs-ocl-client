@@ -3,7 +3,7 @@ import {Grid} from "@material-ui/core";
 import { ConceptForm } from './components'
 import { AppState } from '../../redux'
 import { createConceptAction, createConceptErrorsSelector, createConceptLoadingSelector } from './redux'
-import { APIConcept, Concept } from './types'
+import { APIConcept, BaseConcept } from './types'
 import { usePrevious } from '../../utils'
 import { Redirect, useLocation } from 'react-router'
 import { connect } from 'react-redux'
@@ -27,7 +27,7 @@ const CreateConceptPage: React.FC<Props> = ({createConcept, newConcept, loading,
 
   return (
       <Grid item xs={8} component="div">
-          <ConceptForm createConcept={(data: Concept) => createConcept(sourceConceptsUrl, data)} loading={loading} errors={errors} />
+          <ConceptForm createConcept={(data: BaseConcept) => createConcept(sourceConceptsUrl, data)} loading={loading} errors={errors} />
       </Grid>
   )
 };

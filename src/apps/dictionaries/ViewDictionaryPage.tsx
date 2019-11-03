@@ -39,7 +39,7 @@ const ViewDictionaryPage: React.FC<Props> = ({profile, usersOrgs, dictionaryLoad
 
     return (
         <>
-            <Grid item xs={5} component="div">
+            <Grid id="viewDictionaryPage" item xs={5} component="div">
                 <Paper className="fieldsetParent">
                     <fieldset>
                         <Typography component="legend" variant="h5" gutterBottom>General Details</Typography>

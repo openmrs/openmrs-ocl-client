@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
-import { Concept, ConceptDescription, ConceptName, Mapping } from '../types'
+import { ConceptDescription, ConceptName, Mapping, Concept } from '../types'
 import uuid from 'uuid'
 import {
     Button,
@@ -16,7 +16,14 @@ import {
     Typography
 } from '@material-ui/core'
 import { Select, TextField } from 'formik-material-ui'
-import { CONCEPT_CLASSES, DATA_TYPES, getPrettyError, NAME_TYPES } from '../../../utils'
+import {
+  CONCEPT_CLASSES,
+  DATA_TYPES,
+  getPrettyError,
+  MAP_TYPE_CONCEPT_SET,
+  MAP_TYPE_Q_AND_A,
+  NAME_TYPES
+} from '../../../utils'
 import NamesTable from './NamesTable'
 import { Edit as EditIcon } from '@material-ui/icons'
 import * as Yup from 'yup'
@@ -56,10 +63,11 @@ const createDescription = (): ConceptDescription => ({
     locale_preferred: false,
 });
 
-const createMapping = (): Mapping => ({
+const createMapping = (map_type: string=''): Mapping => ({
   external_id: uuid(),
   from_concept_url: '',
-  map_type: '',
+  to_source_url: '',
+  map_type,
 });
 
 const initialValues: Concept = {
@@ -68,9 +76,22 @@ const initialValues: Concept = {
     descriptions: [],
     external_id: uuid(),
     id: "",
+    answers: [],
+    sets: [],
     mappings: [createMapping()],
     names: [createName()],
 };
+
+const MappingSchema = Yup.object().shape<Mapping>({
+    external_id: Yup.string(),
+    from_concept_url: Yup.string(),
+    map_type: Yup.string().required('Required'),
+    to_source_url: Yup.string().required('Required'),
+    to_concept_code: Yup.string().notRequired(),
+    to_concept_url: Yup.string().notRequired(),
+    to_concept_name: Yup.string().notRequired(),
+  })
+    .test('User should select a to concept', 'A to concept is required', (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url);
 
 const ConceptSchema = Yup.object().shape<Concept>({
   concept_class: Yup.string()
@@ -96,18 +117,12 @@ const ConceptSchema = Yup.object().shape<Concept>({
     .required(),
   id: Yup.string()
     .required('Required'),
-  mappings: Yup.array().of(Yup.object().shape<Mapping>({
-      external_id: Yup.string().required(),
-      from_concept_url: Yup.string().required(),
-      map_type: Yup.string().required('Required'),
-      to_source_url: Yup.string().required(),
-      to_concept_code: Yup.string().notRequired(),
-      to_concept_url: Yup.string().notRequired(),
-      to_concept_name: Yup.string().notRequired(),
-    })
-      .test('User should select a to concept', 'A to concept is required', (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url),
-  )
-    .min(0)
+  answers: Yup.array().of(MappingSchema)
+    .min(0),
+  sets: Yup.array().of(MappingSchema)
+    .min(0),
+  mappings: Yup.array().of(MappingSchema)
+    .min(0),
 });
 
 interface Props {
@@ -148,7 +163,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
           validationSchema={ConceptSchema}
           onSubmit={values => createConcept(castNecessaryValues(values))}
         >
-            {({isSubmitting, status, values, errors}) => (
+            {({isSubmitting, status, values, errors, handleChange}) => (
                 <Form>
                     <Paper className="fieldsetParent">
                         <fieldset>
@@ -258,6 +273,50 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                             </FieldArray>
                         </fieldset>
                     </Paper>
+                  <br/>
+                  <Paper className="fieldsetParent">
+                    <fieldset>
+                      <Typography component="legend" variant="h5" gutterBottom>Answers</Typography>
+                      <FieldArray name="answers">
+                        {arrayHelpers => (
+                          <MappingsTable
+                            allowChoosingType
+                            createNewMapping={() => createMapping(MAP_TYPE_Q_AND_A.value)}
+                            valuesKey="answers"
+                            values={values.answers}
+                            errors={errors.answers}
+                            arrayHelpers={arrayHelpers}
+                            isSubmitting={isSubmitting}
+                            handleChange={handleChange}
+                            title="answer"
+                            fixedMappingType={MAP_TYPE_Q_AND_A}
+                          />
+                        )}
+                      </FieldArray>
+                    </fieldset>
+                  </Paper>
+                  <br/>
+                  <Paper className="fieldsetParent">
+                    <fieldset>
+                      <Typography component="legend" variant="h5" gutterBottom>Sets</Typography>
+                      <FieldArray name="sets">
+                        {arrayHelpers => (
+                          <MappingsTable
+                            allowChoosingType
+                            createNewMapping={() => createMapping(MAP_TYPE_CONCEPT_SET.value)}
+                            valuesKey="sets"
+                            values={values.sets}
+                            errors={errors.sets}
+                            arrayHelpers={arrayHelpers}
+                            isSubmitting={isSubmitting}
+                            handleChange={handleChange}
+                            title="set"
+                            fixedMappingType={MAP_TYPE_CONCEPT_SET}
+                          />
+                        )}
+                      </FieldArray>
+                    </fieldset>
+                  </Paper>
                     <br/>
                     <Paper className="fieldsetParent">
                       <fieldset>
@@ -266,12 +325,14 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
                           {arrayHelpers => (
                             <MappingsTable
                               allowChoosingType
-                              createNewValue={createDescription}
+                              createNewMapping={createMapping}
                               valuesKey="mappings"
                               values={values.mappings}
                               errors={errors.mappings}
                               arrayHelpers={arrayHelpers}
                               isSubmitting={isSubmitting}
+                              handleChange={handleChange}
+                              title="mapping"
                             />
                           )}
                         </FieldArray>

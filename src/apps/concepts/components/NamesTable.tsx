@@ -12,7 +12,7 @@ import {
 import { ArrayHelpers, ErrorMessage, Field } from 'formik'
 import { Select, TextField } from 'formik-material-ui'
 import { LOCALES, NAME_TYPES } from '../../../utils'
-import { MoreVert as MoreVertIcon } from '@material-ui/icons'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
 import React from 'react'
 import { ConceptDescription, ConceptName } from '../types'
 
@@ -72,7 +72,7 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
           </TableRow>
         </TableHead>
         <TableBody>
-          {values.map((name, index) => (
+          {values.map((value, index) => (
             <TableRow className={classes.row} key={index}>
               <TableCell className={multiline ? classes.doubleCellWidth : classes.singleCellWidth} component="td" scope="row">
                 <Field
@@ -165,7 +165,7 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
                   open={index === menu.index}
                   onClose={() => toggleNameMenu(index)}
                 >
-                  <MenuItem onClick={() => {arrayHelpers.remove(index); toggleNameMenu(index);}}>Delete</MenuItem>
+                  <MenuItem onClick={() => {arrayHelpers.remove(index); toggleNameMenu(index);}}><DeleteOutlineIcon /> Delete</MenuItem>
                 </Menu>
               </TableCell>
             </TableRow>

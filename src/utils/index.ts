@@ -10,5 +10,8 @@ export {
     DATA_TYPES,
     NAME_TYPES,
     MAP_TYPES,
+    MAP_TYPE_Q_AND_A,
+    MAP_TYPE_CONCEPT_SET,
+    option,
 } from './constants';
 export * from './types';

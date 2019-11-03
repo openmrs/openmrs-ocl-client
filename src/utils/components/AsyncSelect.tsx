@@ -11,18 +11,21 @@ import { OptionProps } from 'react-select/src/components/Option';
 import { PlaceholderProps } from 'react-select/src/components/Placeholder';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import { Omit } from '@material-ui/types';
-import { components as ReactSelectComponents } from 'react-select';
+import { components as ReactSelectComponents, IndicatorProps } from 'react-select'
 import AsyncPaginate from 'react-select-async-paginate'
 import {Option} from '../types'
-import { ArrowDropDown } from '@material-ui/icons'
+import { ArrowDropDown as ArrowDropDownIcon, Close as CloseIcon } from '@material-ui/icons'
 import { CircularProgress } from '@material-ui/core'
+import { LoadingIconProps } from 'react-select/src/components/indicators'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     input: {
       display: 'flex',
+      paddingTop: theme.spacing(.5),
+    },
+    icon: {
       padding: 0,
-      height: 'auto',
     },
     valueContainer: {
       display: 'flex',
@@ -152,8 +155,8 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
 
   const DropdownIndicator = (props: any) => {
     return (
-      <ReactSelectComponents.DropdownIndicator {...props}>
-        <ArrowDropDown color="action" />
+      <ReactSelectComponents.DropdownIndicator className={props.selectProps.classes.icon} {...props}>
+        <ArrowDropDownIcon color="action" />
       </ReactSelectComponents.DropdownIndicator>
     );
   };
@@ -162,11 +165,19 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
     return null;
   };
 
-  const LoadingIndicator = (props: {}) => {
+  const LoadingIndicator = (props: LoadingIconProps<Option>) => {
     return (
-      <CircularProgress {...props} size={20} />
+      <CircularProgress className={props.selectProps.classes.icon} {...props.innerProps} size={20} />
     );
   };
+
+const ClearIndicator = (props: IndicatorProps<Option>) => {
+  return (
+    <ReactSelectComponents.ClearIndicator className={props.selectProps.classes.icon} {...props}>
+      <CloseIcon color="action" />
+    </ReactSelectComponents.ClearIndicator>
+  );
+};
 
   function Menu(props: MenuProps<Option>) {
     return (
@@ -188,17 +199,20 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
     DropdownIndicator,
     IndicatorSeparator,
     LoadingIndicator,
+    ClearIndicator,
   };
 
   interface Props {
     placeholder: string,
-    value: string,
+    value: any,
     onChange: Function,
     loadOptions: Function,
     additional: {},
+    isDisabled: boolean,
+    onBlur: Function,
   }
 
-  const AsyncSelect: React.FC<Props> = ({value, onChange, placeholder, loadOptions, additional}) => {
+  const AsyncSelect: React.FC<Props> = (props) => {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -215,14 +229,11 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
     return (
       // @ts-ignore
       <AsyncPaginate
+        isClearable={true}
         classes={classes}
         styles={selectStyles}
-        placeholder={placeholder}
         components={components}
-        value={value}
-        onChange={onChange}
-        loadOptions={loadOptions}
-        additional={additional}
+        {...props}
       />
     );
   }

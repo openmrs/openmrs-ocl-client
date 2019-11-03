@@ -1,11 +1,11 @@
 import { Option } from './types'
 
-export const BASE_URL: string = 'https://api.qa.openconceptlab.org';
-export const TRADITIONAL_OCL_URL = 'https://qa.openconceptlab.org';
+export const BASE_URL: string = 'https://api.demo.openconceptlab.org';
+export const TRADITIONAL_OCL_URL = 'https://demo.openconceptlab.org';
 
 export const CUSTOM_VALIDATION_SCHEMA = 'OpenMRS';
 
-const option = (value: string, label: string=value): Option => ({value, label});
+export const option = (value: string, label: string=value): Option => ({value, label});
 
 export const LOCALES: {[key: string]: string}[] = [
     {value: 'en', label: 'English (en)'},
@@ -269,3 +269,5 @@ export const MAP_TYPES: Option[] = [
   option('REPLACED BY', 'Replaced by'),
   option('WAS A', 'Was a'),
 ];
+export const MAP_TYPE_Q_AND_A = option('Q-AND-A');
+export const MAP_TYPE_CONCEPT_SET = option('CONCEPT-SET');
