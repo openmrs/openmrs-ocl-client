@@ -57,7 +57,7 @@ const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | 
     return {
         description: description,
         dictionaryName: name,
-        otherLanguages: supported_locales,
+        otherLanguages: supported_locales || [],
         ownerUrl: owner_url,
         preferredLanguage: default_locale,
         preferredSource: preferred_source,

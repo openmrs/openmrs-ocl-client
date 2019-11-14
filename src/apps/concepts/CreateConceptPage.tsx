@@ -17,7 +17,7 @@ interface Props {
 
 const CreateConceptPage: React.FC<Props> = ({createConcept, newConcept, loading, errors}) => {
   const {pathname: url} = useLocation();
-  const sourceConceptsUrl = url.replace('new/', '');
+  const sourceUrl = url.replace('concepts/new/', '');
 
   const previouslyLoading = usePrevious(loading);
 
@@ -27,7 +27,7 @@ const CreateConceptPage: React.FC<Props> = ({createConcept, newConcept, loading,
 
   return (
       <Grid item xs={8} component="div">
-          <ConceptForm createConcept={(data: BaseConcept) => createConcept(sourceConceptsUrl, data)} loading={loading} errors={errors} />
+          <ConceptForm createConcept={(data: BaseConcept) => createConcept(sourceUrl, data)} loading={loading} errors={errors} />
       </Grid>
   )
 };
