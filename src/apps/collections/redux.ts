@@ -1,4 +1,4 @@
-import {createActionThunk, loadingSelector} from "../../redux";
+import { createActionThunk, indexedAction, loadingSelector } from '../../redux'
 import api from "./api";
 import {errorSelector} from "../../redux/redux";
 import {AnyAction} from "redux";
@@ -7,8 +7,8 @@ import {CollectionState} from "./types";
 const CREATE_COLLECTION_ACTION = 'collections/create';
 const RETRIEVE_COLLECTION_ACTION = 'collections/retrieve';
 
-const createCollectionAction = createActionThunk(CREATE_COLLECTION_ACTION, api.create);
-const retrieveCollectionAction = createActionThunk(RETRIEVE_COLLECTION_ACTION, api.retrieve);
+const createCollectionAction = createActionThunk(indexedAction(CREATE_COLLECTION_ACTION), api.create);
+const retrieveCollectionAction = createActionThunk(indexedAction(RETRIEVE_COLLECTION_ACTION), api.retrieve);
 
 const initialState: CollectionState = {};
 
@@ -21,8 +21,8 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 };
 
-const createCollectionErrorSelector = errorSelector(CREATE_COLLECTION_ACTION);
-const retrieveCollectionLoadingSelector = loadingSelector(RETRIEVE_COLLECTION_ACTION);
+const createCollectionErrorSelector = errorSelector(indexedAction(CREATE_COLLECTION_ACTION));
+const retrieveCollectionLoadingSelector = loadingSelector(indexedAction(RETRIEVE_COLLECTION_ACTION));
 
 export {
     reducer as default,

@@ -4,8 +4,8 @@ import {
     loadingSelector,
     startAction,
     progressAction,
-    progressSelector
-} from "../../redux";
+    progressSelector, indexedAction
+} from '../../redux'
 import api from "./api";
 import {
     createSourceAction as createSource,
@@ -32,10 +32,10 @@ const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCol
 const RETRIEVE_DICTIONARY_ACTION = 'dictionaries/retrieveDictionary';
 
 
-const createDictionaryAction = createActionThunk(CREATE_DICTIONARY_ACTION, api.create);
+const createDictionaryAction = createActionThunk(indexedAction(CREATE_DICTIONARY_ACTION), api.create);
 const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     return async (dispatch: Function) => {
-        dispatch(startAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+        dispatch(startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
 
         const {
             description,
@@ -52,7 +52,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         let collectionResponse: APICollection | boolean;
         let dictionaryResponse;
 
-        dispatch(progressAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION, 'Creating source...'));
+        dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating source...'));
         const source: NewAPISource = {
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
             default_locale: preferredLanguage,
@@ -69,12 +69,12 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         };
         sourceResponse = await dispatch(createSource<NewAPISource>(ownerUrl, source));
         if (!sourceResponse) {
-            dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+            dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;
         }
 
 
-        dispatch(progressAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION, 'Creating collection...'));
+        dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating collection...'));
         const collection: NewAPICollection = {
             collection_type: "OCL Client Collection",
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
@@ -91,12 +91,12 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         };
         collectionResponse = await dispatch(createCollection<NewAPICollection>(ownerUrl, collection));
         if (!collectionResponse) { // todo cleanup here would involve hard deleting the source
-            dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+            dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;
         }
 
 
-        dispatch(progressAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION, 'Creating dictionary...'));
+        dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating dictionary...'));
         const dictionary: NewAPIDictionary = {
             collection_type: "OCL Client Dictionary",
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
@@ -118,14 +118,14 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         };
         dictionaryResponse = await dispatch(createDictionaryAction<APIDictionary>(ownerUrl, dictionary));
         if (!dictionaryResponse) { // todo cleanup here would involve hard deleting the source and collection
-            dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+            dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;
         }
 
-        dispatch(completeAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+        dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
     }
 };
-const retrieveDictionaryAction = createActionThunk(RETRIEVE_DICTIONARY_ACTION, api.retrieve);
+const retrieveDictionaryAction = createActionThunk(indexedAction(RETRIEVE_DICTIONARY_ACTION), api.retrieve);
 const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     return async (dispatch: Function) => {
         const retrieveDictionaryResult = await dispatch(retrieveDictionaryAction<APIDictionary>(dictionaryUrl));
@@ -142,7 +142,7 @@ const initialState: DictionaryState = {};
 
 const reducer = (state = initialState, action: AnyAction) => {
     switch (action.type) {
-        case startAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION).type:
+        case startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)).type:
             return {...state, newDictionary: undefined};
         case CREATE_DICTIONARY_ACTION:
             return {...state, newDictionary: action.payload};
@@ -153,9 +153,9 @@ const reducer = (state = initialState, action: AnyAction) => {
     }
 };
 
-const createDictionaryLoadingSelector = loadingSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
-const createDictionaryProgressSelector = progressSelector(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION);
-const createDictionaryErrorSelector = errorSelector(CREATE_DICTIONARY_ACTION);
+const createDictionaryLoadingSelector = loadingSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+const createDictionaryProgressSelector = progressSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
+const createDictionaryErrorSelector = errorSelector(indexedAction(CREATE_DICTIONARY_ACTION));
 const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [key: string]: string[] | undefined } | undefined) => {
     const createSourceErrors = createSourceErrorSelector(state);
     if (createSourceErrors) return createSourceErrors;
@@ -167,7 +167,7 @@ const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [ke
     if (createDictionaryErrors) return createDictionaryErrors;
 };
 
-const retrieveDictionaryLoadingSelector = loadingSelector(RETRIEVE_DICTIONARY_ACTION);
+const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION));
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state);
 
 export {

@@ -1,13 +1,15 @@
-import {Action} from "./utils";
+import {cloneDeep} from 'lodash';
+
+import { Action, IndexedAction } from './utils'
 import {AppState} from "./types";
 
 interface LoadingAndErroredState {
-    [key: string]: boolean | {} | undefined,
+    [key: string]:  (boolean | {} | undefined)[],
 }
 
 // todo improve these action types args
 const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Action) => {
-    const {type, payload} = action;
+    const {type, payload, actionIndex} = action;
     const matches = /(.*)_(START|PROGRESS|FAILURE|COMPLETE)/.exec(type);
 
     if (!matches) return state;
@@ -17,35 +19,38 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
     const progressName = actionName + "Progress";
     const errorName = actionName + "Errors";
 
+    const newState = cloneDeep(state);
+
     switch (requestState) {
-        case 'START':
-            return {
-                ...state,
-                [loadingName]: true,
-                [progressName]: undefined,
-                [errorName]: undefined,
-            };
-        case 'COMPLETE':
-            return {
-                ...state,
-                [loadingName]: false,
-            };
-        case 'PROGRESS':
-            return {
-                ...state,
-                [progressName]: payload,
-            };
-        case 'FAILURE':
-            return {
-                ...state,
-                [errorName]: payload,
-            };
+        case 'START': {
+            if (!newState[loadingName]) newState[loadingName] = [];
+            if (!newState[progressName]) newState[progressName] = [];
+            if (!newState[errorName]) newState[errorName] = [];
+
+            newState[loadingName][actionIndex] = true;
+            newState[progressName][actionIndex] = undefined;
+            newState[errorName][actionIndex] = undefined;
+
+            return newState;
+        }
+        case 'COMPLETE': {
+            newState[loadingName][actionIndex] = false;
+            return newState;
+        }
+        case 'PROGRESS': {
+            newState[progressName][actionIndex] = payload;
+            return newState;
+        }
+        case 'FAILURE': {
+            newState[errorName][actionIndex] = payload;
+            return newState;
+        }
         default:
             return state;
     }
 };
-const loadingSelector = (...actions: string[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, currentValue: string): boolean => previousValue || Boolean(state.status[`${currentValue}Loading`]), false);
-const progressSelector = (action: string) => (state: AppState): any => state.status[`${action}Progress`];
-const errorSelector = (action: string) => (state: AppState): any => state.status[`${action}Errors`];
+const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, {action, actionIndex}: IndexedAction): boolean => previousValue || Boolean(state.status[`${action}Loading`] ? state.status[`${action}Loading`][actionIndex] : false), false);
+const progressSelector = ({action, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${action}Progress`] ? state.status[`${action}Progress`][actionIndex] : undefined;
+const errorSelector = ({action, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${action}Progress`] ? state.status[`${action}Errors`][actionIndex] : undefined;
 
 export {loadingSelector, progressSelector, errorSelector, loadingAndErroredReducer};

@@ -3,8 +3,14 @@ import {AnyAction} from "redux";
 
 export interface Action extends AnyAction {
     type: string,
-    payload?: {},
+    payload?: any,
+    actionIndex: number,
     meta: any[],
+}
+
+export interface IndexedAction {
+    action: string,
+    actionIndex: number,
 }
 
 const START = 'START';
@@ -14,22 +20,27 @@ const COMPLETE = 'COMPLETE';
 
 const createActionType = (type: string): Function => (): { [key: string]: string } => ({type});
 
-const startAction = (action: string, ...args: any[]) => ({
+const indexedAction = (action: string, actionIndex: number=0): IndexedAction => ({action, actionIndex});
+
+const startAction = ({action, actionIndex}: IndexedAction, ...args: any[]) => ({
     type: `${action}_${START}`,
+    actionIndex,
     meta: args,
 });
 
-const progressAction = (action: string, payload: string) => ({
+const progressAction = ({action, actionIndex}: IndexedAction, payload: string) => ({
     type: `${action}_${PROGRESS}`,
+    actionIndex,
     payload,
 });
 
-const completeAction = (action: string, ...args: any[]) => ({
+const completeAction = ({action, actionIndex}: IndexedAction, ...args: any[]) => ({
     type: `${action}_${COMPLETE}`,
+    actionIndex,
     meta: args,
 });
 
-const createActionThunk = <T extends any[]>(action: string, task: (...args: T) => Promise<AxiosResponse<any>>) => {
+const createActionThunk = <T extends any[]>(action: IndexedAction, task: (...args: T) => Promise<AxiosResponse<any>>) => {
     /*
     ** Create an redux thunk that dispatches start, runs task, dispatched success/failure and completed actions
      */
@@ -44,6 +55,7 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
                     const response = await task(...args);
                     dispatch({
                         type: action,
+                        actionIndex: action.actionIndex,
                         payload: response.data,
                         meta: args,
                     });
@@ -52,6 +64,7 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
                 } catch (error) {
                     dispatch({
                         type: `${action}_${FAILURE}`,
+                        actionIndex: action.actionIndex,
                         payload: error.response.data,
                         meta: args
                     });
@@ -62,6 +75,7 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
 
                 dispatch({
                     type: `${action}_${FAILURE}`,
+                    actionIndex: action.actionIndex,
                     payload: {'__all__': ["The action could not be completed (1)"]},
                     meta: args
                 });
@@ -75,4 +89,4 @@ const createActionThunk = <T extends any[]>(action: string, task: (...args: T) =
     }
 };
 
-export {createActionType, createActionThunk, startAction, progressAction, completeAction};
+export {createActionType, createActionThunk, startAction, progressAction, completeAction, indexedAction};
