@@ -87,9 +87,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                 validationSchema={DictionarySchema}
                 validateOnChange={false}
                 onSubmit={(values: Dictionary) => {
-                    if (onSubmit) {
-                        onSubmit(values)
-                    }
+                    if (onSubmit) onSubmit(values);
                 }}
             >
                 {({isSubmitting, status}) => (

@@ -1,3 +1,5 @@
+import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from '../../utils'
+
 export interface ConceptName {
     name: string,
     locale: string,
@@ -53,4 +55,21 @@ export interface APIConcept extends BaseConcept{
 
 export interface ConceptsState {
     newConcept?: APIConcept,
+    concept?: APIConcept,
 }
+
+const apiConceptToConcept = (apiConcept: APIConcept|undefined): Concept|undefined => {
+  if (!apiConcept) return apiConcept;
+
+  const {mappings, url, display_name, ...baseConcept} = apiConcept;
+  return {
+      ...baseConcept,
+      answers: mappings.filter(mapping => mapping.map_type === MAP_TYPE_Q_AND_A.value),
+      sets: mappings.filter(mapping => mapping.map_type === MAP_TYPE_CONCEPT_SET.value),
+      mappings: mappings.filter(mapping => mapping.map_type !== MAP_TYPE_Q_AND_A.value && mapping.map_type !== MAP_TYPE_CONCEPT_SET.value),
+  };
+};
+
+export {
+    apiConceptToConcept,
+};

@@ -127,11 +127,13 @@ const ConceptSchema = Yup.object().shape<Concept>({
 
 interface Props {
     loading: boolean,
-    createConcept: Function,
+    createConcept?: Function,
     errors?: {},
+    editing? : boolean,
+    savedValues?: Concept,
 }
 
-const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
+const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=false, savedValues}) => {
     const classes = useStyles();
 
     const formikRef: any = useRef(null);
@@ -159,9 +161,11 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors}) => {
     return (
         <Formik
           ref={formikRef}
-          initialValues={initialValues}
+          initialValues={savedValues || initialValues}
           validationSchema={ConceptSchema}
-          onSubmit={values => createConcept(castNecessaryValues(values))}
+          onSubmit={values => {
+            if (createConcept) createConcept(castNecessaryValues(values));
+          }}
         >
             {({isSubmitting, status, values, errors, handleChange}) => (
                 <Form>

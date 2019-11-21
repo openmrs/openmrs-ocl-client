@@ -9,6 +9,7 @@ import {Provider} from "react-redux";
 import store from "./store";
 import NavDrawer from './components/NavDrawer';
 import DictionaryRoutes, {CreateDictionaryPage} from './apps/dictionaries';
+import ConceptRoutes from './apps/concepts';
 import Header from "./components/Header";
 import {CreateConceptPage} from "./apps/concepts";
 
@@ -27,6 +28,7 @@ const AuthenticatedRoutes: React.FC = () => {
                         <CreateConceptPage/>
                     </Header>
                 </Route>
+                <Route path="/:ownerType/:owner/sources/:source/concepts/:concept/" component={ConceptRoutes}/>
                 <Route exact path="/">
                     Home
                 </Route>
