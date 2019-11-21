@@ -42,6 +42,7 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
             return newState;
         }
         case 'FAILURE': {
+            console.log(newState, type);
             newState[errorName][actionIndex] = payload;
             return newState;
         }
@@ -49,8 +50,8 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
             return state;
     }
 };
-const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, {action, actionIndex}: IndexedAction): boolean => previousValue || Boolean(state.status[`${action}Loading`] ? state.status[`${action}Loading`][actionIndex] : false), false);
-const progressSelector = ({action, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${action}Progress`] ? state.status[`${action}Progress`][actionIndex] : undefined;
-const errorSelector = ({action, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${action}Progress`] ? state.status[`${action}Errors`][actionIndex] : undefined;
+const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, {actionType, actionIndex}: IndexedAction): boolean => previousValue || Boolean(state.status[`${actionType}Loading`] ? state.status[`${actionType}Loading`][actionIndex] : false), false);
+const progressSelector = ({actionType, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Progress`][actionIndex] : undefined;
+const errorSelector = ({actionType, actionIndex}: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Errors`][actionIndex] : undefined;
 
 export {loadingSelector, progressSelector, errorSelector, loadingAndErroredReducer};

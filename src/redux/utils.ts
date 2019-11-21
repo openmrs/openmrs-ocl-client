@@ -9,7 +9,7 @@ export interface Action extends AnyAction {
 }
 
 export interface IndexedAction {
-    action: string,
+    actionType: string,
     actionIndex: number,
 }
 
@@ -18,34 +18,38 @@ const FAILURE = 'FAILURE';
 const PROGRESS = 'PROGRESS';
 const COMPLETE = 'COMPLETE';
 
-const createActionType = (type: string): Function => (): { [key: string]: string } => ({type});
+const createActionType = (actionType: string): Function => (): { [key: string]: string } => ({type: actionType});
 
-const indexedAction = (action: string, actionIndex: number=0): IndexedAction => ({action, actionIndex});
+const indexedAction = (action: string, actionIndex: number=0): IndexedAction => ({actionType: action, actionIndex});
 
-const startAction = ({action, actionIndex}: IndexedAction, ...args: any[]) => ({
-    type: `${action}_${START}`,
+const startAction = ({actionType, actionIndex}: IndexedAction, ...args: any[]) => ({
+    type: `${actionType}_${START}`,
     actionIndex,
     meta: args,
 });
 
-const progressAction = ({action, actionIndex}: IndexedAction, payload: string) => ({
-    type: `${action}_${PROGRESS}`,
+const progressAction = ({actionType, actionIndex}: IndexedAction, payload: string) => ({
+    type: `${actionType}_${PROGRESS}`,
     actionIndex,
     payload,
 });
 
-const completeAction = ({action, actionIndex}: IndexedAction, ...args: any[]) => ({
-    type: `${action}_${COMPLETE}`,
+const completeAction = ({actionType, actionIndex}: IndexedAction, ...args: any[]) => ({
+    type: `${actionType}_${COMPLETE}`,
     actionIndex,
     meta: args,
 });
 
-const createActionThunk = <T extends any[]>(action: IndexedAction, task: (...args: T) => Promise<AxiosResponse<any>>) => {
+const createActionThunk = <T extends any[]>(actionOrActionType: IndexedAction|string, task: (...args: T) => Promise<AxiosResponse<any>>) => {
     /*
     ** Create an redux thunk that dispatches start, runs task, dispatched success/failure and completed actions
      */
+
+    const action: IndexedAction = typeof actionOrActionType === 'string' ? indexedAction(actionOrActionType) : actionOrActionType;
+    const {actionType, actionIndex} = action;
+
     return <S>(...args: T) => {
-        return async (dispatch: Function): Promise<boolean | S> => {
+        return async (dispatch: (action: Action) => {}): Promise<boolean | S> => {
             let result = true;
 
             try {
@@ -54,8 +58,8 @@ const createActionThunk = <T extends any[]>(action: IndexedAction, task: (...arg
                 try {
                     const response = await task(...args);
                     dispatch({
-                        type: action,
-                        actionIndex: action.actionIndex,
+                        type: actionType,
+                        actionIndex: actionIndex,
                         payload: response.data,
                         meta: args,
                     });
@@ -63,8 +67,8 @@ const createActionThunk = <T extends any[]>(action: IndexedAction, task: (...arg
                     result = response.data;
                 } catch (error) {
                     dispatch({
-                        type: `${action}_${FAILURE}`,
-                        actionIndex: action.actionIndex,
+                        type: `${actionType}_${FAILURE}`,
+                        actionIndex: actionIndex,
                         payload: error.response.data,
                         meta: args
                     });
@@ -74,8 +78,8 @@ const createActionThunk = <T extends any[]>(action: IndexedAction, task: (...arg
                 console.log("should not happen", error);
 
                 dispatch({
-                    type: `${action}_${FAILURE}`,
-                    actionIndex: action.actionIndex,
+                    type: `${actionType}_${FAILURE}`,
+                    actionIndex: actionIndex,
                     payload: {'__all__': ["The action could not be completed (1)"]},
                     meta: args
                 });
