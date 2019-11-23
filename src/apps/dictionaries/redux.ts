@@ -39,13 +39,13 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
 
         const {
             description,
-            dictionaryName,
-            otherLanguages,
-            ownerUrl,
-            preferredLanguage,
-            preferredSource,
-            shortCode,
-            visibility,
+            name,
+            supported_locales,
+            owner_url,
+            default_locale,
+            preferred_source,
+            short_code,
+            public_access,
         } = dictionaryData;
 
         let sourceResponse: APISource | boolean;
@@ -55,19 +55,19 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating source...'));
         const source: NewAPISource = {
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-            default_locale: preferredLanguage,
+            default_locale: default_locale,
             description: description,
             external_id: uuid(),
-            full_name: `${dictionaryName} Source`,
-            name: `${dictionaryName} Source`,
+            full_name: `${name} Source`,
+            name: `${name} Source`,
             public_access: 'None',
-            short_code: `${shortCode}Source`,
-            id: `${shortCode}Source`,
+            short_code: `${short_code}Source`,
+            id: `${short_code}Source`,
             source_type: "OCL Client Source",
-            supported_locales: otherLanguages.join(','),
+            supported_locales: supported_locales.join(','),
             website: ""
         };
-        sourceResponse = await dispatch(createSource<NewAPISource>(ownerUrl, source));
+        sourceResponse = await dispatch(createSource<NewAPISource>(owner_url, source));
         if (!sourceResponse) {
             dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;
@@ -78,18 +78,18 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         const collection: NewAPICollection = {
             collection_type: "OCL Client Collection",
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-            default_locale: preferredLanguage,
+            default_locale: default_locale,
             description: description,
             external_id: uuid(),
-            full_name: `${dictionaryName} Collection`,
-            name: `${dictionaryName} Collection`,
+            full_name: `${name} Collection`,
+            name: `${name} Collection`,
             public_access: 'None',
-            id: `${shortCode}Collection`,
-            short_code: `${shortCode}Collection`,
-            supported_locales: otherLanguages.join(','),
+            id: `${short_code}Collection`,
+            short_code: `${short_code}Collection`,
+            supported_locales: supported_locales.join(','),
             website: ""
         };
-        collectionResponse = await dispatch(createCollection<NewAPICollection>(ownerUrl, collection));
+        collectionResponse = await dispatch(createCollection<NewAPICollection>(owner_url, collection));
         if (!collectionResponse) { // todo cleanup here would involve hard deleting the source
             dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;
@@ -100,23 +100,23 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         const dictionary: NewAPIDictionary = {
             collection_type: "OCL Client Dictionary",
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-            default_locale: preferredLanguage,
+            default_locale: default_locale,
             description: description,
             external_id: uuid(),
             extras: {
                 source: (sourceResponse as APISource).url,
                 collection: (collectionResponse as APICollection).url,
             },
-            preferred_source: preferredSource,
-            full_name: dictionaryName,
-            name: dictionaryName,
-            public_access: visibility,
-            id: shortCode,
-            short_code: shortCode,
-            supported_locales: otherLanguages.join(','),
+            preferred_source: preferred_source,
+            full_name: name,
+            name: name,
+            public_access: public_access,
+            id: short_code,
+            short_code: short_code,
+            supported_locales: supported_locales.join(','),
             website: ""
         };
-        dictionaryResponse = await dispatch(createDictionaryAction<APIDictionary>(ownerUrl, dictionary));
+        dictionaryResponse = await dispatch(createDictionaryAction<APIDictionary>(owner_url, dictionary));
         if (!dictionaryResponse) { // todo cleanup here would involve hard deleting the source and collection
             dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)));
             return false;

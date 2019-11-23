@@ -22,33 +22,33 @@ interface Props {
 }
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
-    dictionaryName: Yup.string()
+    name: Yup.string()
         .required('Dictionary name is required'),
-    shortCode: Yup.string()
+    short_code: Yup.string()
         .required('Short code is required'),
     description: Yup.string()
         .min(0),
-    preferredSource: Yup.string()
+    preferred_source: Yup.string()
         .required('Select a preferred source')
         .oneOf(['CIEL'], 'This source is not supported'),
-    ownerUrl: Yup.string()
+    owner_url: Yup.string()
         .required('Select this dictionary\'s owner'),
-    visibility: Yup.string()
+    public_access: Yup.string()
         .required('Select who will have access to this dictionary'),
-    preferredLanguage: Yup.string()
+    default_locale: Yup.string()
         .required('Select a preferred language'),
-    otherLanguages: Yup.array(Yup.string()),
+    supported_locales: Yup.array(Yup.string()),
 });
 
 const initialValues: Dictionary = {
-    dictionaryName: '',
-    shortCode: '',
+    name: '',
+    short_code: '',
     description: '',
-    preferredSource: 'CIEL',
-    ownerUrl: '',
-    visibility: '',
-    preferredLanguage: '',
-    otherLanguages: [],
+    preferred_source: 'CIEL',
+    owner_url: '',
+    public_access: '',
+    default_locale: '',
+    supported_locales: [],
 };
 
 const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors, editing=false, savedValues}) => {
@@ -95,8 +95,8 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         <Field
                             // required
                             fullWidth
-                            id="dictionaryName"
-                            name="dictionaryName"
+                            id="name"
+                            name="name"
                             label="Dictionary Name"
                             margin="normal"
                             component={TextField}
@@ -104,8 +104,8 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         <Field
                             // required
                             fullWidth
-                            id="shortCode"
-                            name="shortCode"
+                            id="short_code"
+                            name="short_code"
                             label="Short Code"
                             margin="normal"
                             component={TextField}
@@ -125,10 +125,10 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             // required
                             margin="normal"
                         >
-                            <InputLabel htmlFor="preferredSource">Preferred Source</InputLabel>
+                            <InputLabel htmlFor="preferred_source">Preferred Source</InputLabel>
                             <Field
-                                name="preferredSource"
-                                id="preferredSource"
+                                name="preferred_source"
+                                id="preferred_source"
                                 component={Select}
                             >
                                 <MenuItem value="CIEL">CIEL</MenuItem>
@@ -142,8 +142,8 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
                             <Field
                                 value=""
-                                name="ownerUrl"
-                                id="ownerUrl"
+                                name="owner_url"
+                                id="owner_url"
                                 component={Select}
                             >
                                 {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
@@ -151,7 +151,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                                 {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="ownerUrl" component="span"/>
+                                <ErrorMessage name="owner_url" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -159,17 +159,17 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             // required
                             margin="normal"
                         >
-                            <InputLabel htmlFor="visibility">Visibility</InputLabel>
+                            <InputLabel htmlFor="public_access">Visibility</InputLabel>
                             <Field
-                                name="visibility"
-                                id="visibility"
+                                name="public_access"
+                                id="public_access"
                                 component={Select}
                             >
                                 <MenuItem value="View">Public</MenuItem>
                                 <MenuItem value="None">Private</MenuItem>
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="visibility" component="span"/>
+                                <ErrorMessage name="public_access" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -177,16 +177,16 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             // required
                             margin="normal"
                         >
-                            <InputLabel htmlFor="preferredLanguage">Preferred Language</InputLabel>
+                            <InputLabel htmlFor="default_locale">Preferred Language</InputLabel>
                             <Field
-                                name="preferredLanguage"
-                                id="preferredLanguage"
+                                name="default_locale"
+                                id="default_locale"
                                 component={Select}
                             >
                                 {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="preferredLanguage" component="span"/>
+                                <ErrorMessage name="default_locale" component="span"/>
                             </Typography>
                         </FormControl>
                         <FormControl
@@ -194,18 +194,18 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                             // required
                             margin="normal"
                         >
-                            <InputLabel htmlFor="otherLanguages">Other Languages</InputLabel>
+                            <InputLabel htmlFor="supported_locales">Other Languages</InputLabel>
                             <Field
                                 multiple
                                 value={[]}
-                                name="otherLanguages"
-                                id="otherLanguages"
+                                name="supported_locales"
+                                id="supported_locales"
                                 component={Select}
                             >
                                 {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="otherLanguages" component="span"/>
+                                <ErrorMessage name="supported_locales" component="span"/>
                             </Typography>
                         </FormControl>
                         <br/>

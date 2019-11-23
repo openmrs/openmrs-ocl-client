@@ -1,29 +1,25 @@
-export interface Dictionary {
-    dictionaryName: string;
-    shortCode: string;
-    description: string;
-    preferredSource: string;
-    ownerUrl: string;
-    visibility: string;
-    preferredLanguage: string;
-    otherLanguages: string[];
-}
-
-interface BaseAPIDictionary {
-    id: string,
-    short_code: string;
-    external_id: string;
+export interface BaseDictionary {
     name: string;
-    full_name: string;
-    collection_type: string;
+    short_code: string;
+    description: string;
+    preferred_source: string;
     public_access: string;
     default_locale: string;
-    preferred_source: string;
+}
+
+export interface Dictionary extends BaseDictionary{
+    supported_locales: string[];
+    owner_url: string;
+}
+
+interface BaseAPIDictionary extends BaseDictionary{
+    id: string,
+    external_id: string;
+    full_name: string;
+    collection_type: string;
     website: string;
-    description: string;
     custom_validation_schema: string;
     extras?: { [key: string]: string | undefined };
-    owner_url?: string,
 }
 
 export interface NewAPIDictionary extends BaseAPIDictionary{
@@ -32,6 +28,7 @@ export interface NewAPIDictionary extends BaseAPIDictionary{
 
 export interface APIDictionary extends BaseAPIDictionary{
     supported_locales: string[];
+    owner_url: string;
     url: string;
 }
 
@@ -44,25 +41,14 @@ const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | 
     if (!apiDictionary) return apiDictionary;
 
     const {
-        short_code,
-        name,
-        public_access,
-        default_locale,
+        url,
         supported_locales,
-        preferred_source,
-        description,
-        owner_url = '',
+        ...theRest
     } = apiDictionary;
 
     return {
-        description: description,
-        dictionaryName: name,
-        otherLanguages: supported_locales || [],
-        ownerUrl: owner_url,
-        preferredLanguage: default_locale,
-        preferredSource: preferred_source,
-        shortCode: short_code,
-        visibility: public_access,
+        supported_locales: supported_locales || [],
+        ...theRest,
     };
 };
 
