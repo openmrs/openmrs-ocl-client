@@ -1,14 +1,11 @@
-export interface BaseAPICollection {
+import { BaseConceptContainer } from '../../utils'
+
+export interface BaseAPICollection extends BaseConceptContainer{
     id: string;
-    short_code: string;
     external_id: string;
-    name: string;
     full_name: string;
     collection_type: string;
-    public_access: string;
-    default_locale: string;
     website: string;
-    description: string;
     custom_validation_schema: string;
 }
 

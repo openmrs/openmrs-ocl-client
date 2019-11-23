@@ -1,14 +1,11 @@
-interface BaseAPISource {
+import { BaseConceptContainer } from '../../utils'
+
+interface BaseAPISource extends BaseConceptContainer{
     external_id: string;
     id: string,
-    short_code: string;
-    name: string;
     full_name: string;
     source_type: string;
-    public_access: string;
-    default_locale: string;
     website: string;
-    description: string;
     custom_validation_schema: string;
 }
 

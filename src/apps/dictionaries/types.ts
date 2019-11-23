@@ -1,10 +1,7 @@
-export interface BaseDictionary {
-    name: string;
-    short_code: string;
-    description: string;
+import { BaseConceptContainer } from '../../utils'
+
+interface BaseDictionary extends BaseConceptContainer{
     preferred_source: string;
-    public_access: string;
-    default_locale: string;
 }
 
 export interface Dictionary extends BaseDictionary{

@@ -9,4 +9,12 @@ export interface OptionResponse{
   additional: {},
 }
 
+export interface BaseConceptContainer {
+  name: string;
+  short_code: string;
+  description: string;
+  public_access: string;
+  default_locale: string;
+}
+
 export {};
