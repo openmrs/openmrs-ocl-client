@@ -55,7 +55,7 @@ interface SourceResults {
 
 const fetchSourceOptions = async (query: string, _:{}, {page}: {page: number}): Promise<SourceResults> => {
   try {
-    const response = await api.concepts.retrievePublicSources(page, 10, query);
+    const response = await api.retrievePublicSources(page, 10, query);
     const {data, headers: {next='None'}} = response;
 
     return {
@@ -94,7 +94,7 @@ interface ConceptResults {
 
 const fetchConceptOptions = async (sourceUrl: string, query: string, page: number): Promise<ConceptResults> => {
   try {
-    const response = await api.concepts.retrieveConcepts(sourceUrl, page, 10, query);
+    const response = await api.concepts.retrieve(sourceUrl, page, 10, query);
     const {data, headers: {next='None'}} = response;
 
     return {

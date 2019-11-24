@@ -1,6 +1,7 @@
 import {AxiosResponse} from "axios";
 import store from "../../store";
 import {logoutAction} from "./redux";
+import { AppState } from '../../redux'
 
 
 const redirectIfNotLoggedIn = (response: AxiosResponse) => {
@@ -12,7 +13,7 @@ const redirectIfNotLoggedIn = (response: AxiosResponse) => {
 };
 
 const addAuthToken = (data: any, headers: any) => {
-    headers['Authorization'] = `Token ${store.getState().auth.token}`;
+    headers['Authorization'] = `Token ${(store.getState() as AppState).auth.token}`;
     return data;
 };
 

@@ -15,9 +15,10 @@ const CREATE_CONCEPT_ACTION = 'concepts/createConcept';
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept';
 const CREATE_MAPPING_ACTION = 'concepts/createMapping';
 const CREATE_CONCEPT_AND_MAPPINGS = 'concepts/createConceptAndMappings';
+const RETRIEVE_CONCEPTS_ACTION = 'concepts/retrieveConcepts';
 
 const createConceptAction = createActionThunk(indexedAction(CREATE_CONCEPT_ACTION), api.concepts.create);
-const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concepts.retrieve);
+const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concept.retrieve);
 const createConceptAndMappingsAction = (sourceUrl: string, data: Concept) => {
   return async (dispatch: Function) => {
     dispatch(startAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS)));
@@ -70,6 +71,7 @@ const createConceptAndMappingsAction = (sourceUrl: string, data: Concept) => {
     dispatch(completeAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS)));
   }
 };
+const retrieveConceptsAction = createActionThunk(RETRIEVE_CONCEPTS_ACTION, api.concepts.retrieve);
 
 const initialState: ConceptsState = {
 
@@ -83,6 +85,8 @@ const reducer = (state=initialState, action: Action) => {
       return {...state, newConcept: action.payload};
     case RETRIEVE_CONCEPT_ACTION:
       return {...state, concept: action.payload};
+    case RETRIEVE_CONCEPTS_ACTION:
+      return {...state, concepts: {items: (action.payload as APIConcept[]), responseMeta: action.responseMeta}};
     default:
       return state;
   }
@@ -92,6 +96,8 @@ const createConceptLoadingSelector = loadingSelector(indexedAction(CREATE_CONCEP
 const createConceptErrorsSelector = errorSelector(indexedAction(CREATE_CONCEPT_ACTION));
 const viewConceptLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEPT_ACTION));
 const viewConceptErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPT_ACTION));
+const viewConceptsLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION));
+const viewConceptsErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION));
 
 export {
   reducer as default,
@@ -101,4 +107,7 @@ export {
   createConceptErrorsSelector,
   viewConceptLoadingSelector,
   viewConceptErrorsSelector,
+  retrieveConceptsAction,
+  viewConceptsLoadingSelector,
+  viewConceptsErrorsSelector,
 };

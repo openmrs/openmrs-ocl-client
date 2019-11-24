@@ -1,4 +1,4 @@
-export {usePrevious} from './hooks';
+export {usePrevious, useQuery} from './hooks';
 export {findLocale, getPrettyError, keysToSnakeCase, buildPartialSearchQuery} from './utils';
 export {AsyncSelect} from './components';
 export {

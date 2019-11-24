@@ -6,6 +6,7 @@ export interface Action extends AnyAction {
     payload?: any,
     actionIndex: number,
     meta: any[],
+    responseMeta?: {},
 }
 
 export interface IndexedAction {
@@ -67,6 +68,7 @@ const createActionThunk = <T extends any[]>(actionOrActionType: IndexedAction|st
                         actionIndex: actionIndex,
                         payload: response.data,
                         meta: args,
+                        responseMeta: response.headers,
                     });
 
                     result = response.data;

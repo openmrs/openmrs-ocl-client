@@ -18,128 +18,73 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import { APIConcept, QueryParams, SortableField } from '../types'
+import { Link } from 'react-router-dom'
 
-interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
-}
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-): Data {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
-
-function desc<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function stableSort<T>(array: T[], cmp: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
-
-type Order = 'asc' | 'desc';
-
-function getSorting<K extends keyof any>(
-  order: Order,
-  orderBy: K,
-): (a: { [key in K]: number | string }, b: { [key in K]: number | string }) => number {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+interface Props extends QueryParams{
+  concepts: APIConcept[],
+  buildUrl: Function,
+  goTo: Function,
+  count: number,
 }
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: SortableField;
   label: string;
-  numeric: boolean;
 }
 
 const headCells: HeadCell[] = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'name', disablePadding: false, label: 'Name' },
+  { id: 'conceptClass', disablePadding: false, label: 'Class' },
+  { id: 'datatype', disablePadding: false, label: 'Datatype' },
+  { id: 'id', disablePadding: false, label: 'ID' },
 ];
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: SortableField) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  order: Order;
+  order: 'sortAsc' | 'sortDesc';
   orderBy: string;
   rowCount: number;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
-  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: SortableField) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ 'aria-label': 'select all desserts' }}
-          />
-        </TableCell>
+        {numSelected <= 0 ? '' : (
+          <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{ 'aria-label': 'select all desserts' }}
+            />
+          </TableCell>
+        )}
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            sortDirection={orderBy === headCell.id ? (order === 'sortAsc' ? 'asc' : 'desc') : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={order}
+              direction={(order === 'sortAsc' ? 'asc' : 'desc')}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === 'sortDesc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
               ) : null}
             </TableSortLabel>
@@ -243,35 +188,34 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function EnhancedTable() {
+const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, limit, sortBy, sortDirection}) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
-    const isDesc = orderBy === property && order === 'desc';
-    setOrder(isDesc ? 'asc' : 'desc');
-    setOrderBy(property);
+  const setPage = (page: number) => goTo(buildUrl({page: page + 1}));
+  const setOrder = (sortBy: string, sortDirection: string) => goTo(buildUrl({sortDirection, sortBy, page: 1}));
+  const setRowsPerPage = (limit: number) => goTo(buildUrl({limit, page: 1}));
+
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: SortableField) => {
+    const isDesc = sortBy === property && sortDirection === 'sortDesc';
+    setOrder(property, isDesc ? 'sortAsc' : 'sortDesc');
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.name);
+      const newSelecteds = concepts.map(concept => concept.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -292,12 +236,9 @@ export default function EnhancedTable() {
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -313,59 +254,52 @@ export default function EnhancedTable() {
             <EnhancedTableHead
               classes={classes}
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
+              order={sortDirection}
+              orderBy={sortBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={concepts.length}
             />
             <TableBody>
-              {stableSort(rows, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {concepts
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.name)}
+                      onClick={event => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      {selected.length <= 0 ? '' : (
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                          />
+                        </TableCell>
+                      )}
+                      <TableCell><Link onClick={e => e.stopPropagation()} to={row.url}>{row.display_name}</Link></TableCell>
+                      <TableCell>{row.concept_class}</TableCell>
+                      <TableCell>{row.datatype}</TableCell>
+                      <TableCell>{row.id}</TableCell>
                     </TableRow>
                   );
                 })}
-              {/*{emptyRows > 0 && (*/}
-              {/*  <TableRow style={{ height: (53) * emptyRows }}>*/}
-              {/*    <TableCell colSpan={6} />*/}
-              {/*  </TableRow>*/}
-              {/*)}*/}
             </TableBody>
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50]}
           component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
+          count={count}
+          rowsPerPage={limit}
+          page={page - 1}
           backIconButtonProps={{
             'aria-label': 'previous page',
           }}
@@ -379,3 +313,5 @@ export default function EnhancedTable() {
     </div>
   );
 }
+
+export default ConceptsTable;

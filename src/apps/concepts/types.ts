@@ -56,6 +56,7 @@ export interface APIConcept extends BaseConcept{
 export interface ConceptsState {
     newConcept?: APIConcept,
     concept?: APIConcept,
+    concepts?: {items: APIConcept[], responseMeta?: {}},
 }
 
 const apiConceptToConcept = (apiConcept: APIConcept|undefined): Concept|undefined => {
@@ -73,6 +74,24 @@ const apiConceptToConcept = (apiConcept: APIConcept|undefined): Concept|undefine
       mappings: mappings.filter(mapping => mapping.map_type !== MAP_TYPE_Q_AND_A.value && mapping.map_type !== MAP_TYPE_CONCEPT_SET.value),
   };
 };
+
+export type SortableField = 'bestMatch' | 'lastUpdate' | 'name' | 'id' | 'datatype' | 'conceptClass';
+
+export interface OptionalQueryParams {
+    q?: string,
+    page?: number,
+    sortDirection?: 'sortAsc' | 'sortDesc',
+    sortBy?: SortableField,
+    limit?: number,
+}
+
+export interface QueryParams {
+    q: string,
+    page: number,
+    sortDirection: 'sortAsc' | 'sortDesc',
+    sortBy: SortableField,
+    limit: number,
+}
 
 export {
     apiConceptToConcept,
