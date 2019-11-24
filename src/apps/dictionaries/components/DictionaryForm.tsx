@@ -95,6 +95,7 @@ const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, us
                         <Field
                             // required
                             fullWidth
+                            autoComplete="off"
                             id="name"
                             name="name"
                             label="Dictionary Name"

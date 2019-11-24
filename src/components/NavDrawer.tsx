@@ -59,8 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         content: {
             padding: theme.spacing(3),
-            position: 'absolute',
+            // position: 'absolute',
             width: '100vw',
+            // marginLeft: theme.spacing(7) + 1,
         },
         logoutButton: {
             marginTop: 'auto',

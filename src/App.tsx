@@ -23,12 +23,7 @@ const AuthenticatedRoutes: React.FC = () => {
                     </Header>
                 </Route>
                 <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
-                <Route exact path="/:ownerType/:owner/sources/:source/concepts/new/">
-                    <Header title="Create concept">
-                        <CreateConceptPage/>
-                    </Header>
-                </Route>
-                <Route path="/:ownerType/:owner/sources/:source/concepts/:concept/" component={ConceptRoutes}/>
+                <Route path="/:ownerType/:owner/sources/:source/concepts" component={ConceptRoutes}/>
                 <Route exact path="/">
                     Home
                 </Route>
