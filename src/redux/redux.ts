@@ -10,7 +10,7 @@ interface LoadingAndErroredState {
 // todo improve these action types args
 const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Action) => {
     const {type, payload, actionIndex} = action;
-    const matches = /(.*)_(START|PROGRESS|FAILURE|COMPLETE)/.exec(type);
+    const matches = /(.*)_(START|PROGRESS|FAILURE|COMPLETE|RESET)/.exec(type);
 
     if (!matches) return state;
 
@@ -22,6 +22,13 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
     const newState = cloneDeep(state);
 
     switch (requestState) {
+        case 'RESET': {
+            newState[loadingName] = [];
+            newState[progressName] = [];
+            newState[errorName] = [];
+
+            return newState;
+        }
         case 'START': {
             if (!newState[loadingName]) newState[loadingName] = [];
             if (!newState[progressName]) newState[progressName] = [];

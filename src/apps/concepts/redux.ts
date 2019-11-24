@@ -3,20 +3,21 @@ import {
   createActionThunk,
   indexedAction,
   loadingSelector,
-  progressAction,
+  progressAction, resetAction,
   startAction
 } from '../../redux'
 import api from './api'
-import { APIConcept, Concept, ConceptsState } from './types'
+import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorSelector } from '../../redux/redux'
 import { Action } from '../../redux/utils'
 
 const CREATE_CONCEPT_ACTION = 'concepts/createConcept';
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept';
+const CREATE_MAPPING_ACTION = 'concepts/createMapping';
 const CREATE_CONCEPT_AND_MAPPINGS = 'concepts/createConceptAndMappings';
 
-const createConceptAction = createActionThunk(indexedAction(CREATE_CONCEPT_ACTION), api.create);
-const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.retrieve);
+const createConceptAction = createActionThunk(indexedAction(CREATE_CONCEPT_ACTION), api.concepts.create);
+const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concepts.retrieve);
 const createConceptAndMappingsAction = (sourceUrl: string, data: Concept) => {
   return async (dispatch: Function) => {
     dispatch(startAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS)));
@@ -28,10 +29,43 @@ const createConceptAndMappingsAction = (sourceUrl: string, data: Concept) => {
     dispatch(progressAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS), 'Creating concept...'));
     conceptResponse = await dispatch(createConceptAction<APIConcept>(sourceUrl, concept));
 
-    if (!conceptResponse) {
+    if (typeof conceptResponse === 'boolean') {
+      // we have no url to work with, so there's no point going forward, todo could improve
       dispatch(completeAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS)));
       return false;
     }
+
+    const newConcept: APIConcept = conceptResponse;
+    await dispatch(resetAction(CREATE_MAPPING_ACTION));
+
+    const createMappings = async (rawMappings: Mapping[], batchIndex: number) => {
+      const mappings = rawMappings.map(mapping => {
+        const {to_source_url, to_concept_code, to_concept_url, ...theRest} = mapping;
+        return to_concept_code ?
+          {
+            ...theRest,
+            from_concept_url: newConcept.url,
+            to_source_url,
+            to_concept_code,
+          } :
+          {
+            ...theRest,
+            from_concept_url: newConcept.url,
+            to_concept_url,
+          };
+      });
+
+      const actions: [Mapping, CallableFunction][] = mappings.map((mapping, index) => [mapping, createActionThunk(indexedAction(CREATE_MAPPING_ACTION, Number(`${batchIndex}${index}`)), api.mappings.create)]);
+      await Promise.all(actions.map(([mapping, action]) => dispatch(action(sourceUrl, mapping))));
+    };
+
+    // I know you're thinking, oh, we could have done these in parallel
+    // I see your in-parallel and raise you my race-condition
+    // If a user duplicates a mapping say in answers and sets, we want to be able to sequentially point this out
+    // todo some more robust error handling
+    await createMappings(answers, 1);
+    await createMappings(sets, 2);
+    await createMappings(mappings, 3);
 
     dispatch(completeAction(indexedAction(CREATE_CONCEPT_AND_MAPPINGS)));
   }

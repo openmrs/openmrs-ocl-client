@@ -13,6 +13,7 @@ export interface IndexedAction {
     actionIndex: number,
 }
 
+const RESET = 'RESET';
 const START = 'START';
 const FAILURE = 'FAILURE';
 const PROGRESS = 'PROGRESS';
@@ -21,6 +22,10 @@ const COMPLETE = 'COMPLETE';
 const createActionType = (actionType: string): Function => (): { [key: string]: string } => ({type: actionType});
 
 const indexedAction = (action: string, actionIndex: number=0): IndexedAction => ({actionType: action, actionIndex});
+
+const resetAction = (actionType: string) => ({
+    type: `${actionType}_${RESET}`,
+});
 
 const startAction = ({actionType, actionIndex}: IndexedAction, ...args: any[]) => ({
     type: `${actionType}_${START}`,
@@ -93,4 +98,12 @@ const createActionThunk = <T extends any[]>(actionOrActionType: IndexedAction|st
     }
 };
 
-export {createActionType, createActionThunk, startAction, progressAction, completeAction, indexedAction};
+export {
+    createActionType,
+    createActionThunk,
+    resetAction,
+    startAction,
+    progressAction,
+    completeAction,
+    indexedAction,
+};

@@ -11,9 +11,7 @@ const Routes: React.FC = () => {
         <Router>
             <Switch>
                 <Route exact path={path}>
-                    <Header title="View concept">
-                        <ViewConceptPage />
-                    </Header>
+                    <ViewConceptPage />
                 </Route>
             </Switch>
         </Router>

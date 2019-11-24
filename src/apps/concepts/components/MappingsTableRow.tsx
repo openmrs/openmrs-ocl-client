@@ -55,7 +55,7 @@ interface SourceResults {
 
 const fetchSourceOptions = async (query: string, _:{}, {page}: {page: number}): Promise<SourceResults> => {
   try {
-    const response = await api.retrievePublicSources(page, 10, query);
+    const response = await api.concepts.retrievePublicSources(page, 10, query);
     const {data, headers: {next='None'}} = response;
 
     return {
@@ -94,7 +94,7 @@ interface ConceptResults {
 
 const fetchConceptOptions = async (sourceUrl: string, query: string, page: number): Promise<ConceptResults> => {
   try {
-    const response = await api.retrieveConcepts(sourceUrl, page, 10, query);
+    const response = await api.concepts.retrieveConcepts(sourceUrl, page, 10, query);
     const {data, headers: {next='None'}} = response;
 
     return {
@@ -164,7 +164,7 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
   const valueKey = `${valuesKey}[${index}]`;
   const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl);
 
-  const [isInternalMapping, setIsInternalMapping] = useState(!toConceptCode);
+  const [isInternalMapping, setIsInternalMapping] = useState(toConceptUrl !== null);
 
   // reset to_concept on to_source change
   useEffect(() => {
@@ -208,6 +208,7 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
               placeholder="Select a source"
               loadOptions={fetchSourceOptions}
               additional={{page: 1}}
+              isDisabled={!editing}
             />
             <Typography color="error" variant="caption" component="div">
               <NestedErrorMessage name={`${valueKey}.to_source_url`}/>
@@ -263,7 +264,7 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
                 }}
                 value={toConceptUrl ? option(toConceptUrl, conceptLabel) : undefined}
                 placeholder="Select a concept"
-                isDisabled={!toSourceUrl}
+                isDisabled={!editing || !toSourceUrl}
                 loadOptions={
                   async (query: string, _:{}, {page}: {page: number}) => {
                     if (!toSourceUrl) return {
