@@ -61,9 +61,13 @@ export interface ConceptsState {
 const apiConceptToConcept = (apiConcept: APIConcept|undefined): Concept|undefined => {
   if (!apiConcept) return apiConcept;
 
-  const {mappings, url, display_name, ...baseConcept} = apiConcept;
+  let {descriptions, mappings, url, display_name, ...theRest} = apiConcept;
+  mappings = mappings || [];
+  descriptions = descriptions || [];
+
   return {
-      ...baseConcept,
+      descriptions,
+      ...theRest,
       answers: mappings.filter(mapping => mapping.map_type === MAP_TYPE_Q_AND_A.value),
       sets: mappings.filter(mapping => mapping.map_type === MAP_TYPE_CONCEPT_SET.value),
       mappings: mappings.filter(mapping => mapping.map_type !== MAP_TYPE_Q_AND_A.value && mapping.map_type !== MAP_TYPE_CONCEPT_SET.value),

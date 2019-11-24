@@ -35,9 +35,10 @@ interface Props {
   handleChange: Function,
   title: string,
   fixedMappingType?: Option,
+  editing: boolean,
 }
 
-const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNewMapping, arrayHelpers, allowChoosingType=false, useTypes=false, isSubmitting, handleChange, title, fixedMappingType}) => {
+const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNewMapping, arrayHelpers, allowChoosingType=false, useTypes=false, isSubmitting, handleChange, title, fixedMappingType, editing}) => {
   const classes = useStyles();
 
   const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
@@ -70,6 +71,7 @@ const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNew
               arrayHelpers={arrayHelpers}
               fixedMappingType={fixedMappingType}
               errors={Array.isArray(errors) ? errors[index] : undefined}
+              editing={editing}
             />
           ))}
         </TableBody>
@@ -80,9 +82,11 @@ const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNew
         </Typography>
       )}
       <br/>
-      <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewMapping())}>
-        Add {title}
-      </Button>
+      {!editing ? '' : (
+        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewMapping())}>
+          Add {title}
+        </Button>
+      )}
   </div>
   );
 };

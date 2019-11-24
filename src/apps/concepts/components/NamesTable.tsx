@@ -47,9 +47,10 @@ interface Props {
   multiline?: boolean,
   useTypes?: boolean,
   isSubmitting: boolean,
+  editing: boolean,
 }
 
-const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting}) => {
+const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting, editing}) => {
   const classes = useStyles();
 
   const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
@@ -156,9 +157,11 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
                 </FormControl>
               </TableCell>
               <TableCell className={classes.menuItem} component="td" scope="row">
-                <IconButton id={`${valuesKey}[${index}].menu-icon`} aria-controls={`${valuesKey}[${index}].menu`} aria-haspopup="true" onClick={event => toggleNameMenu(index, event)}>
-                  <MoreVertIcon />
-                </IconButton>
+                {!editing ? '' : (
+                  <IconButton id={`${valuesKey}[${index}].menu-icon`} aria-controls={`${valuesKey}[${index}].menu`} aria-haspopup="true" onClick={event => toggleNameMenu(index, event)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                )}
                 <Menu
                   anchorEl={menu.anchor}
                   id={`${valuesKey}[${index}].menu`}
@@ -178,9 +181,11 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
         </Typography>
       )}
       <br/>
-      <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewValue())}>
-        Add {title}
-      </Button>
+      {!editing ? '' : (
+        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewValue())}>
+          Add {title}
+        </Button>
+      )}
     </div>
   );
 };

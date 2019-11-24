@@ -1,6 +1,6 @@
 import { Option } from './types'
 
-export const BASE_URL: string = 'https://api.demo.openconceptlab.org';
+export const BASE_URL: string = 'http://localhost:8000';
 export const TRADITIONAL_OCL_URL = 'https://demo.openconceptlab.org';
 
 export const CUSTOM_VALIDATION_SCHEMA = 'OpenMRS';

@@ -17,13 +17,13 @@ const AuthenticatedRoutes: React.FC = () => {
     return (
         <Router>
             <Switch>
-                <Route path="/dictionaries/new/">
+                <Route exact path="/dictionaries/new/">
                     <Header title="Create Dictionary">
                         <CreateDictionaryPage/>
                     </Header>
                 </Route>
                 <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
-                <Route path="/:ownerType/:owner/sources/:source/concepts/new/">
+                <Route exact path="/:ownerType/:owner/sources/:source/concepts/new/">
                     <Header title="Create concept">
                         <CreateConceptPage/>
                     </Header>

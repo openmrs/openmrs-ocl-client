@@ -168,7 +168,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
           }}
         >
             {({isSubmitting, status, values, errors, handleChange}) => (
-                <Form>
+                <Form id="conceptForm">
                     <Paper className="fieldsetParent">
                         <fieldset>
                             <Typography component="legend" variant="h5" gutterBottom>Concept Details</Typography>
@@ -184,6 +184,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                                   endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
+                                          disabled={!editing}
                                           aria-label="toggle external id editable"
                                           onClick={toggleExternalIDEditable}
                                         >
@@ -251,6 +252,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                                     errors={errors.names}
                                     arrayHelpers={arrayHelpers}
                                     isSubmitting={isSubmitting}
+                                    editing={editing}
                                   />
                                 )}
                             </FieldArray>
@@ -272,6 +274,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                                     errors={errors.descriptions}
                                     arrayHelpers={arrayHelpers}
                                     isSubmitting={isSubmitting}
+                                    editing={editing}
                                   />
                                 )}
                             </FieldArray>
@@ -294,6 +297,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                             handleChange={handleChange}
                             title="answer"
                             fixedMappingType={MAP_TYPE_Q_AND_A}
+                            editing={editing}
                           />
                         )}
                       </FieldArray>
@@ -316,6 +320,7 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                             handleChange={handleChange}
                             title="set"
                             fixedMappingType={MAP_TYPE_CONCEPT_SET}
+                            editing={editing}
                           />
                         )}
                       </FieldArray>
@@ -337,23 +342,26 @@ const ConceptForm: React.FC<Props> = ({loading, createConcept, errors, editing=f
                               isSubmitting={isSubmitting}
                               handleChange={handleChange}
                               title="mapping"
+                              editing={editing}
                             />
                           )}
                         </FieldArray>
                       </fieldset>
                     </Paper>
                     <br/>
-                    <div className={classes.buttonContainer}>
+                    {!editing ? '' : (
+                      <div className={classes.buttonContainer}>
                         <Button
-                          variant="outlined"
-                          color="primary"
-                          size="large"
-                          type="submit"
-                          disabled={isSubmitting}
+                        variant="outlined"
+                        color="primary"
+                        size="large"
+                        type="submit"
+                        disabled={isSubmitting}
                         >
-                            Submit
+                          Submit
                         </Button>
-                    </div>
+                      </div>
+                    )}
                 </Form>
             )}
         </Formik>

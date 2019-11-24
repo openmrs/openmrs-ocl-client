@@ -154,9 +154,10 @@ interface Props {
   arrayHelpers: ArrayHelpers,
   fixedMappingType?: Option,
   errors?: any,
+  editing: boolean,
 }
 
-const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChange, toggleMenu, menu, arrayHelpers, fixedMappingType, errors}) => {
+const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChange, toggleMenu, menu, arrayHelpers, fixedMappingType, errors, editing}) => {
   const classes = useStyles();
 
   const {to_source_url: toSourceUrl, to_concept_url: toConceptUrl, to_concept_name: toConceptName, to_concept_code: toConceptCode, url} = value;
@@ -302,9 +303,11 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
           </TableCell>
         )}
         <TableCell className={classes.menuItem} component="td" scope="row">
-          <IconButton id={`${valueKey}.menu-icon`} aria-controls={`${valueKey}.menu`} aria-haspopup="true" onClick={event => toggleMenu(index, event)}>
-            <MoreVertIcon />
-          </IconButton>
+          {!editing ? '' : (
+            <IconButton id={`${valueKey}.menu-icon`} aria-controls={`${valueKey}.menu`} aria-haspopup="true" onClick={event => toggleMenu(index, event)}>
+              <MoreVertIcon />
+            </IconButton>
+          )}
           <Menu
             anchorEl={menu.anchor}
             id={`${valuesKey}[${index}].menu`}
