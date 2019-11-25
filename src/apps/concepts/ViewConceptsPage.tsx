@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import { Grid } from '@material-ui/core'
 import { ConceptsTable } from './components'
@@ -10,6 +10,7 @@ import { useLocation, useHistory } from 'react-router'
 import {useQuery } from '../../utils'
 import qs from 'qs'
 import { ProgressOverlay } from '../../utils/components'
+import FilterOptions from './components/FilterOptions'
 
 interface Props {
   concepts?: APIConcept[],
@@ -25,7 +26,11 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
   const sourceUrl = url.replace('/concepts/', '');
 
   const queryParams: QueryParams = useQuery(); // todo get limit from settings
-  const {q='', page=1, sortDirection='sortAsc', sortBy='id', limit=10} = queryParams;
+  const {q='', page=1, sortDirection='sortAsc', sortBy='id', limit=10, classFilters=[], dataTypeFilters=[]} = queryParams;
+
+  console.log(classFilters, dataTypeFilters);
+
+  const [showOptions, setShowOptions] = useState(true);
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = {...queryParams, ...params};
@@ -33,13 +38,13 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
   };
 
   useEffect(() => {
-    retrieveConcepts(sourceUrl, page, limit, q, sortDirection, sortBy);
-  }, [retrieveConcepts, sourceUrl, page, limit, q, sortDirection, sortBy]);
+    retrieveConcepts(sourceUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters);
+  }, [retrieveConcepts, sourceUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters.toString(), classFilters.toString()]);
 
   return (
-    <Header title="Concepts">
+    <Header title="Concepts" justifyChildren="space-around">
       <ProgressOverlay loading={loading}>
-        <Grid id="viewConceptsPage" item xs={12} component="div">
+        <Grid id="viewConceptsPage" item xs={showOptions ? 9 : 12} component="div">
           <ConceptsTable
             concepts={concepts || []}
             q={q}
@@ -50,8 +55,14 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
             buildUrl={gimmeAUrl}
             goTo={goTo}
             count={meta.num_found ? Number(meta.num_found) : (concepts ? concepts.length : 0)}
+            toggleShowOptions={() => setShowOptions(!showOptions)}
           />
         </Grid>
+        {!showOptions ? '' : (
+          <Grid item xs={2} component="div">
+            <FilterOptions buildUrl={gimmeAUrl} classFilters={classFilters} dataTypeFilters={dataTypeFilters} />
+          </Grid>
+        )}
       </ProgressOverlay>
     </Header>
   );

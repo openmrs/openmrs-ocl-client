@@ -10,6 +10,7 @@ import './ViewConceptPage.scss'
 import { Edit as EditIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
+import {startCase, toLower} from 'lodash'
 
 interface Props {
   loading: boolean,
@@ -30,7 +31,7 @@ const ViewConceptPage: React.FC<Props> = ({retrieveConcept, concept, loading, er
   }
 
   return (
-    <Header title={concept ? concept.display_name : "View concept"}>
+    <Header title={startCase(toLower(concept ? concept.display_name : "View concept"))}>
       <Grid id="viewConceptPage" item xs={8} component="div">
         <ConceptForm savedValues={apiConceptToConcept(concept)} loading={true} errors={errors} />
       </Grid>

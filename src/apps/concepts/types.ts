@@ -83,6 +83,8 @@ export interface OptionalQueryParams {
     sortDirection?: 'sortAsc' | 'sortDesc',
     sortBy?: SortableField,
     limit?: number,
+    classFilters? : string[],
+    dataTypeFilters?: string[],
 }
 
 export interface QueryParams {

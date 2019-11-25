@@ -26,6 +26,7 @@ interface Props extends QueryParams{
   buildUrl: Function,
   goTo: Function,
   count: number,
+  toggleShowOptions: Function,
 }
 
 interface HeadCell {
@@ -119,11 +120,12 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  toggleShowOptions: Function;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, toggleShowOptions } = props;
 
   return (
     <Toolbar
@@ -137,7 +139,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Nutrition
+          Search
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -149,7 +151,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       ) : (
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
-            <FilterListIcon />
+            <FilterListIcon onClick={() => toggleShowOptions()} />
           </IconButton>
         </Tooltip>
       )}
@@ -172,7 +174,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     tableWrapper: {
       overflowX: 'auto',
-      height: '70vh',
+      height: '74vh',
     },
     visuallyHidden: {
       border: 0,
@@ -188,7 +190,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, limit, sortBy, sortDirection}) => {
+const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, limit, sortBy, sortDirection, toggleShowOptions}) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
 
@@ -243,7 +245,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} toggleShowOptions={toggleShowOptions} />
         <div className={classes.tableWrapper}>
           <Table
             stickyHeader
