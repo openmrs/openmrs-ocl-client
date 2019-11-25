@@ -20,6 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { APIConcept, QueryParams, SortableField } from '../types'
 import { Link } from 'react-router-dom'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
+import { Button, Menu, MenuItem } from '@material-ui/core'
 
 interface Props extends QueryParams{
   concepts: APIConcept[],
@@ -91,6 +93,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell padding="checkbox" />
       </TableRow>
     </TableHead>
   );
@@ -187,12 +190,22 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 20,
       width: 1,
     },
+    buttonLink: {
+      textDecoration: 'none',
+    },
   }),
 );
 
 const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, limit, sortBy, sortDirection, toggleShowOptions}) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
+  const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
+
+  const toggleMenu = (index: number, event?: React.MouseEvent<HTMLButtonElement>) => {
+
+    if (index === menu.index) setMenu({index: -1, anchor: null});
+    else if (event) setMenu({index: index, anchor: event.currentTarget});
+  };
 
   const setPage = (page: number) => goTo(buildUrl({page: page + 1}));
   const setOrder = (sortBy: string, sortDirection: string) => goTo(buildUrl({sortDirection, sortBy, page: 1}));
@@ -212,7 +225,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+  const toggleSelect = (event: React.MouseEvent<unknown>, id: string) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: string[] = [];
 
@@ -271,7 +284,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
                   return (
                     <TableRow
                       hover
-                      onClick={event => handleClick(event, row.id)}
+                      onDoubleClick={event => toggleSelect(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -281,6 +294,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
                       {selected.length <= 0 ? '' : (
                         <TableCell padding="checkbox">
                           <Checkbox
+                            onClick={event => toggleSelect(event, row.id)}
                             checked={isItemSelected}
                             inputProps={{ 'aria-labelledby': labelId }}
                           />
@@ -290,6 +304,24 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
                       <TableCell>{row.concept_class}</TableCell>
                       <TableCell>{row.datatype}</TableCell>
                       <TableCell>{row.id}</TableCell>
+                      <TableCell padding="checkbox">
+                        <IconButton id={`${index}.menu-icon`} aria-controls={`${index}.menu`} aria-haspopup="true" onClick={event => toggleMenu(index, event)}>
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          anchorEl={menu.anchor}
+                          id={`${index}.menu`}
+                          open={index === menu.index}
+                          onClose={() => toggleMenu(index)}
+                        >
+                          <MenuItem onClick={event => {toggleSelect(event, row.id); toggleMenu(index);}}>
+                            {isSelected(row.id) ? 'Deselect' : 'Select'}
+                          </MenuItem>
+                          <MenuItem onClick={() => toggleMenu(index)}>
+                            <Link className={classes.buttonLink} to={`${row.url}edit`}>Edit</Link>
+                          </MenuItem>
+                        </Menu>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -297,7 +329,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 50]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
           count={count}
           rowsPerPage={limit}
