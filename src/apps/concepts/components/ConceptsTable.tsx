@@ -214,6 +214,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     buttonLink: {
       textDecoration: 'none',
+      color: 'inherit',
     },
   }),
 );

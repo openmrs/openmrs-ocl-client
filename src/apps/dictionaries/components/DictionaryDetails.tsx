@@ -1,7 +1,7 @@
 import React from 'react';
 import {APISource} from "../../sources";
 import {APICollection} from "../../collections";
-import {Button, ButtonGroup, Paper, Typography} from "@material-ui/core";
+import { Button, ButtonGroup, makeStyles, Paper, Typography } from '@material-ui/core'
 import './DictionaryDetails.scss';
 import {Link} from "react-router-dom";
 
@@ -10,7 +10,16 @@ interface Props {
     collection?: APICollection,
 }
 
+const useStyles = makeStyles({
+    link: {
+        textDecoration: 'none',
+        color: 'inherit',
+    },
+});
+
 const DictionaryDetails: React.FC<Props> = ({source, collection}) => {
+    const classes = useStyles();
+
     if (!(source && collection)) {
         return <span>Could not retrieve dictionary details</span>
     }
@@ -30,8 +39,12 @@ const DictionaryDetails: React.FC<Props> = ({source, collection}) => {
                     Custom Concepts: {sourceConceptCount}
                 </Typography>
                 <ButtonGroup variant="text" fullWidth>
-                    <Link to={sourceConceptsUrl} component={Button} color="primary">View Custom Concepts</Link>
-                    <Link to={collectionConceptsUrl} component={Button} color="primary">View CIEL Concepts</Link>
+                    <Button color='primary'>
+                        <Link className={classes.link} to={sourceConceptsUrl}>View Custom Concepts</Link>
+                    </Button>
+                    <Button color='primary'>
+                        <Link className={classes.link} to={collectionConceptsUrl}>View CIEL Concepts</Link>
+                    </Button>
                 </ButtonGroup>
             </fieldset>
         </Paper>

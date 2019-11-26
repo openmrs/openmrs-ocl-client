@@ -26,7 +26,7 @@ import {
 import {AnyAction} from "redux";
 import {AppState} from "../../redux";
 import {errorSelector} from "../../redux/redux";
-import { OCL_DICTIONARY_TYPE } from './constants'
+import { OCL_COLLECTION_TYPE, OCL_DICTIONARY_TYPE, OCL_SOURCE_TYPE } from './constants'
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
@@ -65,7 +65,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
             public_access: 'None',
             short_code: `${short_code}Source`,
             id: `${short_code}Source`,
-            source_type: "OCL Client Source",
+            source_type: OCL_SOURCE_TYPE,
             supported_locales: supported_locales.join(','),
             website: ""
         };
@@ -78,7 +78,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
 
         dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating collection...'));
         const collection: NewAPICollection = {
-            collection_type: "OCL Client Collection",
+            collection_type: OCL_COLLECTION_TYPE,
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
             default_locale: default_locale,
             description: description,
