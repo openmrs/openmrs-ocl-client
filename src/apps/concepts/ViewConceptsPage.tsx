@@ -23,23 +23,32 @@ interface Props {
 const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveConcepts, meta={}}) => {
   const {push: goTo} = useHistory();
   const {pathname: url} = useLocation();
-  const sourceUrl = url.replace('/concepts/', '');
 
   const queryParams: QueryParams = useQuery(); // todo get limit from settings
-  const {q='', page=1, sortDirection='sortAsc', sortBy='id', limit=10, classFilters=[], dataTypeFilters=[]} = queryParams;
+  const {
+    page=1,
+    sortDirection='sortAsc',
+    sortBy='id',
+    limit=25,
+    q: initialQ='',
+    classFilters: initialClassFilters=[],
+    dataTypeFilters: initialDataTypeFilters=[],
+  } = queryParams;
 
-  console.log(classFilters, dataTypeFilters);
 
   const [showOptions, setShowOptions] = useState(true);
+  const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters);
+  const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters);
+  const [q, setQ] = useState(initialQ);
 
   const gimmeAUrl = (params: QueryParams) => {
-    const newParams: QueryParams = {...queryParams, ...params};
+    const newParams: QueryParams = {...queryParams, ...{classFilters: classFilters, dataTypeFilters: dataTypeFilters, page: 1, q}, ...params};
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   useEffect(() => {
-    retrieveConcepts(sourceUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters);
-  }, [retrieveConcepts, sourceUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters.toString(), classFilters.toString()]);
+    retrieveConcepts(url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters, initialClassFilters);
+  }, [retrieveConcepts, url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters.toString(), initialClassFilters.toString()]);
 
   return (
     <Header title="Concepts" justifyChildren="space-around">
@@ -48,6 +57,7 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
           <ConceptsTable
             concepts={concepts || []}
             q={q}
+            setQ={setQ}
             page={page}
             sortDirection={sortDirection}
             sortBy={sortBy}
@@ -60,7 +70,7 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
         </Grid>
         {!showOptions ? '' : (
           <Grid item xs={2} component="div">
-            <FilterOptions buildUrl={gimmeAUrl} classFilters={classFilters} dataTypeFilters={dataTypeFilters} />
+            <FilterOptions checkedClasses={classFilters} setCheckedClasses={setClassFilters} checkedDataTypes={dataTypeFilters} setCheckedDataTypes={setInitialDataTypeFilters} url={gimmeAUrl({})} />
           </Grid>
         )}
       </ProgressOverlay>

@@ -49,7 +49,6 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
             return newState;
         }
         case 'FAILURE': {
-            console.log(newState, type);
             newState[errorName][actionIndex] = payload;
             return newState;
         }

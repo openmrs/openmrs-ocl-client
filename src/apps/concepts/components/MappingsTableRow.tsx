@@ -94,7 +94,7 @@ interface ConceptResults {
 
 const fetchConceptOptions = async (sourceUrl: string, query: string, page: number): Promise<ConceptResults> => {
   try {
-    const response = await api.concepts.retrieve(sourceUrl, page, 10, query);
+    const response = await api.concepts.retrieve(`${sourceUrl}concepts/`, page, 10, query);
     const {data, headers: {next='None'}} = response;
 
     return {

@@ -99,16 +99,16 @@ const FilterGroup: React.FC<FilterGroupProps> = ({items, title, searchText, chec
 };
 
 interface FilterOptionsProps {
-  classFilters : string[],
-  dataTypeFilters: string[],
-  buildUrl: Function,
+  url: string,
+  checkedClasses: string[],
+  setCheckedClasses: Function,
+  checkedDataTypes: string[],
+  setCheckedDataTypes: Function,
 }
 
-const FilterOptions: React.FC<FilterOptionsProps> = ({classFilters, dataTypeFilters, buildUrl}) => {
+const FilterOptions: React.FC<FilterOptionsProps> = ({url, checkedClasses, checkedDataTypes, setCheckedClasses, setCheckedDataTypes}) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState('');
-  const [checkedClasses, setCheckedClasses] = useState<string[]>(classFilters);
-  const [checkedDataTypes, setCheckedDataTypes] = useState<string[]>(dataTypeFilters);
 
   const clearAllFilters = () => {
     setCheckedClasses([]);
@@ -121,7 +121,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({classFilters, dataTypeFilt
         <div className={classes.center}>
           <ButtonGroup variant="text" fullWidth>
             <Button className={classes.applyFilters} variant="text" color='primary'>
-              <Link className={classes.applyFiltersLink} to={buildUrl({classFilters: checkedClasses, dataTypeFilters: checkedDataTypes, page: 1})}>Apply Filters</Link>
+              <Link className={classes.applyFiltersLink} to={url}>Apply Filters</Link>
             </Button>
             <Button onClick={clearAllFilters} className={classes.applyFilters} variant="text" color='primary'>Clear all</Button>
           </ButtonGroup>

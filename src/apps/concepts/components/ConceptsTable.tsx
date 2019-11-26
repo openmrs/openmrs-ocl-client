@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'
 import clsx from 'clsx';
 import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -20,8 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { APIConcept, QueryParams, SortableField } from '../types'
 import { Link } from 'react-router-dom'
-import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
-import { Button, Menu, MenuItem } from '@material-ui/core'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon, Search as SearchIcon } from '@material-ui/icons'
+import { Button, Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 
 interface Props extends QueryParams{
   concepts: APIConcept[],
@@ -29,6 +29,8 @@ interface Props extends QueryParams{
   goTo: Function,
   count: number,
   toggleShowOptions: Function,
+  q: string,
+  setQ: Function,
 }
 
 interface HeadCell {
@@ -124,11 +126,15 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
 interface EnhancedTableToolbarProps {
   numSelected: number;
   toggleShowOptions: Function;
+  search: Function;
+  q: string;
+  setQ: Function;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
+  const { numSelected, toggleShowOptions, search, q, setQ } = props;
+
   const classes = useToolbarStyles();
-  const { numSelected, toggleShowOptions } = props;
 
   return (
     <Toolbar
@@ -142,7 +148,23 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Search
+          <form onSubmit={e => {e.preventDefault(); search(q);}}>
+            <Input
+              fullWidth
+              placeholder="Search"
+              value={q}
+              onChange={e => setQ(e.target.value)}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => search(q)}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </form>
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -196,7 +218,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, limit, sortBy, sortDirection, toggleShowOptions}) => {
+const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions}) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
   const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
@@ -210,6 +232,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
   const setPage = (page: number) => goTo(buildUrl({page: page + 1}));
   const setOrder = (sortBy: string, sortDirection: string) => goTo(buildUrl({sortDirection, sortBy, page: 1}));
   const setRowsPerPage = (limit: number) => goTo(buildUrl({limit, page: 1}));
+  const search = (q: string) => goTo(buildUrl({q, page: 1}));
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: SortableField) => {
     const isDesc = sortBy === property && sortDirection === 'sortDesc';
@@ -258,7 +281,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, page, 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} toggleShowOptions={toggleShowOptions} />
+        <EnhancedTableToolbar q={q} setQ={setQ} search={search} numSelected={selected.length} toggleShowOptions={toggleShowOptions} />
         <div className={classes.tableWrapper}>
           <Table
             stickyHeader
