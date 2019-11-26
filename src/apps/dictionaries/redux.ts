@@ -26,10 +26,12 @@ import {
 import {AnyAction} from "redux";
 import {AppState} from "../../redux";
 import {errorSelector} from "../../redux/redux";
+import { OCL_DICTIONARY_TYPE } from './constants'
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
 const RETRIEVE_DICTIONARY_ACTION = 'dictionaries/retrieveDictionary';
+const RETRIEVE_DICTIONARIES_ACTION = 'dictionaries/retrieveDictionaries';
 
 
 const createDictionaryAction = createActionThunk(indexedAction(CREATE_DICTIONARY_ACTION), api.create);
@@ -98,7 +100,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
 
         dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating dictionary...'));
         const dictionary: NewAPIDictionary = {
-            collection_type: "OCL Client Dictionary",
+            collection_type: OCL_DICTIONARY_TYPE,
             custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
             default_locale: default_locale,
             description: description,
@@ -137,6 +139,7 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
         ]);
     }
 };
+const retrieveDictionariesAction = createActionThunk(RETRIEVE_DICTIONARIES_ACTION, api.dictionaries.retrieve);
 
 const initialState: DictionaryState = {};
 
@@ -148,6 +151,8 @@ const reducer = (state = initialState, action: AnyAction) => {
             return {...state, newDictionary: action.payload};
         case RETRIEVE_DICTIONARY_ACTION:
             return {...state, dictionary: action.payload};
+        case RETRIEVE_DICTIONARIES_ACTION:
+            return {...state, dictionaries: {items: action.payload, responseMeta: action.responseMeta}};
         default:
             return state;
     }
@@ -169,6 +174,7 @@ const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [ke
 
 const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION));
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state);
+const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION));
 
 export {
     reducer as default,
@@ -179,4 +185,6 @@ export {
     retrieveDictionaryLoadingSelector,
     retrieveDictionaryDetailsLoadingSelector,
     retrieveDictionaryAndDetailsAction,
+    retrieveDictionariesAction,
+    retrieveDictionariesLoadingSelector,
 };

@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     applyFiltersLink: {
       textDecoration: 'none',
+      color: 'inherit',
     },
   }),
 );
@@ -119,11 +120,11 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({url, checkedClasses, check
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <div className={classes.center}>
-          <ButtonGroup variant="text" fullWidth>
-            <Button className={classes.applyFilters} variant="text" color='primary'>
+          <ButtonGroup size="small" variant="text" fullWidth>
+            <Button className={classes.applyFilters} color='primary'>
               <Link className={classes.applyFiltersLink} to={url}>Apply Filters</Link>
             </Button>
-            <Button onClick={clearAllFilters} className={classes.applyFilters} variant="text" color='primary'>Clear all</Button>
+            <Button onClick={clearAllFilters} className={classes.applyFilters} color='primary'>Clear all</Button>
           </ButtonGroup>
           <Input
             placeholder='Search'

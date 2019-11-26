@@ -35,23 +35,27 @@ interface Props {
   delayRender?: boolean,
 }
 
-const ProgressOverlay: React.FC<Props> = ({children, loading, loadingMessage="Loading...", delayRender=false}) => {
+const Loader = ({loadingMessage}: {loadingMessage: string}) => {
   const classes = useStyles();
 
-  if (loading && delayRender) return <span>{loadingMessage}</span>;
+  return (
+    <div className={classes.overlay}>
+      <div className={classes.overlayContent}>
+        <CircularProgress thickness={.8} size={50} />
+        <br/>
+        {loadingMessage}
+      </div>
+    </div>
+  )
+};
+
+const ProgressOverlay: React.FC<Props> = ({children, loading, loadingMessage="Loading...", delayRender=false}) => {
+  if (loading && delayRender) return <Loader loadingMessage={loadingMessage} />;
 
   return (
     <>
       {children}
-      {!loading ? '' : (
-        <div className={classes.overlay}>
-          <div className={classes.overlayContent}>
-            <CircularProgress thickness={.8} size={50} />
-            <br/>
-            {loadingMessage}
-          </div>
-        </div>
-        )}
+      {!loading ? '' : <Loader loadingMessage={loadingMessage} />}
     </>
   );
 };

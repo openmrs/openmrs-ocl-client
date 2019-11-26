@@ -8,28 +8,30 @@ import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
 import NavDrawer from './components/NavDrawer';
-import DictionaryRoutes, {CreateDictionaryPage} from './apps/dictionaries';
+import DictionaryRoutes, { CreateDictionaryPage, ViewDictionariesPage } from './apps/dictionaries'
 import ConceptRoutes, { ViewConceptsPage } from './apps/concepts'
 import Header from "./components/Header";
-import {CreateConceptPage} from "./apps/concepts";
 
 const AuthenticatedRoutes: React.FC = () => {
     return (
-        <Router>
-            <Switch>
-                <Route exact path="/dictionaries/new/">
-                    <Header title="Create Dictionary">
-                        <CreateDictionaryPage/>
-                    </Header>
-                </Route>
-                <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
-                <Route path="/:ownerType/:owner/sources/:source/concepts" component={ConceptRoutes}/>
-                <Route path="/:ownerType/:owner/collections/:collection/concepts/" component={ViewConceptsPage}/>
-                <Route exact path="/">
-                    Home
-                </Route>
-            </Switch>
-        </Router>
+      <Switch>
+          <Route exact path="/dictionaries/new/">
+              <Header title="Create Dictionary">
+                  <CreateDictionaryPage/>
+              </Header>
+          </Route>
+          <Route exact path="/dictionaries/">
+              <Header title="Public Dictionaries">
+                  <ViewDictionariesPage/>
+              </Header>
+          </Route>
+          <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
+          <Route path="/:ownerType/:owner/sources/:source/concepts" component={ConceptRoutes}/>
+          <Route path="/:ownerType/:owner/collections/:collection/concepts/" component={ViewConceptsPage}/>
+          <Route exact path="/">
+              Home
+          </Route>
+      </Switch>
     );
 };
 

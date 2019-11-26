@@ -25,6 +25,9 @@ export interface NewAPIDictionary extends BaseAPIDictionary{
 
 export interface APIDictionary extends BaseAPIDictionary{
     supported_locales: string[];
+    short_code: string;
+    owner: string;
+    owner_type: string;
     owner_url: string;
     url: string;
 }
@@ -32,6 +35,7 @@ export interface APIDictionary extends BaseAPIDictionary{
 export interface DictionaryState {
     newDictionary?: APIDictionary,
     dictionary?: APIDictionary,
+    dictionaries?: {items: APIDictionary[], responseMeta?: {}},
 }
 
 const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {
