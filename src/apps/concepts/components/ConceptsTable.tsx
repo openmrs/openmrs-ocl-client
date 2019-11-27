@@ -1,29 +1,29 @@
 import React, { useState } from 'react'
-import clsx from 'clsx';
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import clsx from 'clsx'
+import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TablePagination from '@material-ui/core/TablePagination'
+import TableRow from '@material-ui/core/TableRow'
+import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import Checkbox from '@material-ui/core/Checkbox'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import DeleteIcon from '@material-ui/icons/Delete'
+import FilterListIcon from '@material-ui/icons/FilterList'
 import { APIConcept, QueryParams, SortableField } from '../types'
 import { Link } from 'react-router-dom'
 import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon, Search as SearchIcon } from '@material-ui/icons'
 import { Button, Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 
-interface Props extends QueryParams{
+interface Props extends QueryParams {
   concepts: APIConcept[],
   buildUrl: Function,
   goTo: Function,
@@ -44,7 +44,7 @@ const headCells: HeadCell[] = [
   { id: 'conceptClass', disablePadding: false, label: 'Class' },
   { id: 'datatype', disablePadding: false, label: 'Datatype' },
   { id: 'id', disablePadding: false, label: 'ID' },
-];
+]
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
@@ -56,11 +56,11 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+function EnhancedTableHead (props: EnhancedTableProps) {
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props
   const createSortHandler = (property: SortableField) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property);
-  };
+    onRequestSort(event, property)
+  }
 
   return (
     <TableHead>
@@ -95,10 +95,10 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell padding="checkbox" />
+        <TableCell padding="checkbox"/>
       </TableRow>
     </TableHead>
-  );
+  )
 }
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
@@ -121,7 +121,7 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
       flex: '1 1 100%',
     },
   }),
-);
+)
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
@@ -132,9 +132,9 @@ interface EnhancedTableToolbarProps {
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected, toggleShowOptions, search, q, setQ } = props;
+  const { numSelected, toggleShowOptions, search, q, setQ } = props
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles()
 
   return (
     <Toolbar
@@ -148,7 +148,10 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          <form onSubmit={e => {e.preventDefault(); search(q);}}>
+          <form onSubmit={e => {
+            e.preventDefault()
+            search(q)
+          }}>
             <Input
               fullWidth
               placeholder="Search"
@@ -159,7 +162,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                   <IconButton
                     onClick={() => search(q)}
                   >
-                    <SearchIcon />
+                    <SearchIcon/>
                   </IconButton>
                 </InputAdornment>
               }
@@ -170,19 +173,19 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
-            <DeleteIcon />
+            <DeleteIcon/>
           </IconButton>
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
-            <FilterListIcon onClick={() => toggleShowOptions()} />
+            <FilterListIcon onClick={() => toggleShowOptions()}/>
           </IconButton>
         </Tooltip>
       )}
     </Toolbar>
-  );
-};
+  )
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -217,72 +220,73 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'inherit',
     },
   }),
-);
+)
 
-const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions}) => {
-  const classes = useStyles();
-  const [selected, setSelected] = React.useState<string[]>([]);
-  const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
+const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions }) => {
+  const classes = useStyles()
+  const [selected, setSelected] = React.useState<string[]>([])
+  const [menu, setMenu] = React.useState<{ index: number, anchor: null | HTMLElement }>({ index: -1, anchor: null })
 
   const toggleMenu = (index: number, event?: React.MouseEvent<HTMLButtonElement>) => {
 
-    if (index === menu.index) setMenu({index: -1, anchor: null});
-    else if (event) setMenu({index: index, anchor: event.currentTarget});
-  };
+    if (index === menu.index) setMenu({ index: -1, anchor: null })
+    else if (event) setMenu({ index: index, anchor: event.currentTarget })
+  }
 
-  const setPage = (page: number) => goTo(buildUrl({page: page + 1}));
-  const setOrder = (sortBy: string, sortDirection: string) => goTo(buildUrl({sortDirection, sortBy, page: 1}));
-  const setRowsPerPage = (limit: number) => goTo(buildUrl({limit, page: 1}));
-  const search = (q: string) => goTo(buildUrl({q, page: 1}));
+  const setPage = (page: number) => goTo(buildUrl({ page: page + 1 }))
+  const setOrder = (sortBy: string, sortDirection: string) => goTo(buildUrl({ sortDirection, sortBy, page: 1 }))
+  const setRowsPerPage = (limit: number) => goTo(buildUrl({ limit, page: 1 }))
+  const search = (q: string) => goTo(buildUrl({ q, page: 1 }))
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: SortableField) => {
-    const isDesc = sortBy === property && sortDirection === 'sortDesc';
-    setOrder(property, isDesc ? 'sortAsc' : 'sortDesc');
-  };
+    const isDesc = sortBy === property && sortDirection === 'sortDesc'
+    setOrder(property, isDesc ? 'sortAsc' : 'sortDesc')
+  }
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = concepts.map(concept => concept.id);
-      setSelected(newSelecteds);
-      return;
+      const newSelecteds = concepts.map(concept => concept.id)
+      setSelected(newSelecteds)
+      return
     }
-    setSelected([]);
-  };
+    setSelected([])
+  }
 
   const toggleSelect = (event: React.MouseEvent<unknown>, id: string) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: string[] = [];
+    const selectedIndex = selected.indexOf(id)
+    let newSelected: string[] = []
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, id)
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
+      newSelected = newSelected.concat(selected.slice(1))
     } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelected = newSelected.concat(selected.slice(0, -1))
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1),
-      );
+      )
     }
 
-    setSelected(newSelected);
-  };
+    setSelected(newSelected)
+  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
+    setRowsPerPage(parseInt(event.target.value, 10))
+  }
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (name: string) => selected.indexOf(name) !== -1
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar q={q} setQ={setQ} search={search} numSelected={selected.length} toggleShowOptions={toggleShowOptions} />
+        <EnhancedTableToolbar q={q} setQ={setQ} search={search} numSelected={selected.length}
+                              toggleShowOptions={toggleShowOptions}/>
         <div className={classes.tableWrapper}>
           <Table
             stickyHeader
@@ -302,8 +306,8 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, set
             <TableBody>
               {concepts
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  const isItemSelected = isSelected(row.id)
+                  const labelId = `enhanced-table-checkbox-${index}`
 
                   return (
                     <TableRow
@@ -324,13 +328,15 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, set
                           />
                         </TableCell>
                       )}
-                      <TableCell><Link onClick={e => e.stopPropagation()} to={row.url}>{row.display_name}</Link></TableCell>
+                      <TableCell><Link onClick={e => e.stopPropagation()}
+                                       to={row.url}>{row.display_name}</Link></TableCell>
                       <TableCell>{row.concept_class}</TableCell>
                       <TableCell>{row.datatype}</TableCell>
                       <TableCell>{row.id}</TableCell>
                       <TableCell padding="checkbox">
-                        <IconButton id={`${index}.menu-icon`} aria-controls={`${index}.menu`} aria-haspopup="true" onClick={event => toggleMenu(index, event)}>
-                          <MoreVertIcon />
+                        <IconButton id={`${index}.menu-icon`} aria-controls={`${index}.menu`} aria-haspopup="true"
+                                    onClick={event => toggleMenu(index, event)}>
+                          <MoreVertIcon/>
                         </IconButton>
                         <Menu
                           anchorEl={menu.anchor}
@@ -338,7 +344,10 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, set
                           open={index === menu.index}
                           onClose={() => toggleMenu(index)}
                         >
-                          <MenuItem onClick={event => {toggleSelect(event, row.id); toggleMenu(index);}}>
+                          <MenuItem onClick={event => {
+                            toggleSelect(event, row.id)
+                            toggleMenu(index)
+                          }}>
                             {isSelected(row.id) ? 'Deselect' : 'Select'}
                           </MenuItem>
                           <MenuItem onClick={() => toggleMenu(index)}>
@@ -347,7 +356,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, set
                         </Menu>
                       </TableCell>
                     </TableRow>
-                  );
+                  )
                 })}
             </TableBody>
           </Table>
@@ -369,7 +378,7 @@ const ConceptsTable: React.FC<Props> = ({concepts, buildUrl, goTo, count, q, set
         />
       </Paper>
     </div>
-  );
+  )
 }
 
-export default ConceptsTable;
+export default ConceptsTable

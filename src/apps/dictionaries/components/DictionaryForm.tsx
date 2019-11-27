@@ -1,244 +1,244 @@
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react'
 import { Button, FormControl, InputLabel, ListSubheader, MenuItem, Paper, Typography } from '@material-ui/core'
-import './DictionaryForm.scss';
-import {getPrettyError, LOCALES} from "../../../utils";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import * as Yup from "yup";
-import {TextField, Select} from "formik-material-ui";
-import {snakeCase} from 'lodash';
+import './DictionaryForm.scss'
+import { getPrettyError, LOCALES } from '../../../utils'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import { TextField, Select } from 'formik-material-ui'
+import { snakeCase } from 'lodash'
 
-import {Dictionary} from "../types";
-import {APIOrg, APIProfile} from "../../authentication";
+import { Dictionary } from '../types'
+import { APIOrg, APIProfile } from '../../authentication'
 
 interface Props {
-    onSubmit?: Function,
-    loading: boolean,
-    status?: string,
-    profile?: APIProfile,
-    usersOrgs: APIOrg[],
-    errors?: {},
-    savedValues?: Dictionary,
-    editing?: boolean,
+  onSubmit?: Function,
+  loading: boolean,
+  status?: string,
+  profile?: APIProfile,
+  usersOrgs: APIOrg[],
+  errors?: {},
+  savedValues?: Dictionary,
+  editing?: boolean,
 }
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
-    name: Yup.string()
-        .required('Dictionary name is required'),
-    short_code: Yup.string()
-        .required('Short code is required'),
-    description: Yup.string()
-        .min(0),
-    preferred_source: Yup.string()
-        .required('Select a preferred source')
-        .oneOf(['CIEL'], 'This source is not supported'),
-    owner_url: Yup.string()
-        .required('Select this dictionary\'s owner'),
-    public_access: Yup.string()
-        .required('Select who will have access to this dictionary'),
-    default_locale: Yup.string()
-        .required('Select a preferred language'),
-    supported_locales: Yup.array(Yup.string()),
-});
+  name: Yup.string()
+    .required('Dictionary name is required'),
+  short_code: Yup.string()
+    .required('Short code is required'),
+  description: Yup.string()
+    .min(0),
+  preferred_source: Yup.string()
+    .required('Select a preferred source')
+    .oneOf(['CIEL'], 'This source is not supported'),
+  owner_url: Yup.string()
+    .required('Select this dictionary\'s owner'),
+  public_access: Yup.string()
+    .required('Select who will have access to this dictionary'),
+  default_locale: Yup.string()
+    .required('Select a preferred language'),
+  supported_locales: Yup.array(Yup.string()),
+})
 
 const initialValues: Dictionary = {
-    name: '',
-    short_code: '',
-    description: '',
-    preferred_source: 'CIEL',
-    owner_url: '',
-    public_access: '',
-    default_locale: '',
-    supported_locales: [],
-};
+  name: '',
+  short_code: '',
+  description: '',
+  preferred_source: 'CIEL',
+  owner_url: '',
+  public_access: '',
+  default_locale: '',
+  supported_locales: [],
+}
 
-const DictionaryForm: React.FC<Props> = ({onSubmit, loading, status, profile, usersOrgs, errors, editing=false, savedValues}) => {
-    const formikRef: any = useRef(null);
-    const error: string | undefined = getPrettyError(errors);
+const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, usersOrgs, errors, editing = false, savedValues }) => {
+  const formikRef: any = useRef(null)
+  const error: string | undefined = getPrettyError(errors)
 
-    useEffect(() => {
-        const {current: currentRef} = formikRef;
-        if (currentRef) {
-            currentRef.setSubmitting(loading);
-        }
-    }, [loading]);
+  useEffect(() => {
+    const { current: currentRef } = formikRef
+    if (currentRef) {
+      currentRef.setSubmitting(loading)
+    }
+  }, [loading])
 
-    useEffect(() => {
-        const {current: currentRef} = formikRef;
-        if (currentRef) {
-            currentRef.setStatus(status);
-        }
-    }, [status]);
+  useEffect(() => {
+    const { current: currentRef } = formikRef
+    if (currentRef) {
+      currentRef.setStatus(status)
+    }
+  }, [status])
 
-    useEffect(() => {
-        const {current: currentRef} = formikRef;
-        if (!currentRef) return;
+  useEffect(() => {
+    const { current: currentRef } = formikRef
+    if (!currentRef) return
 
-        Object.keys(initialValues).forEach((key) => {
-            const error = getPrettyError(errors, snakeCase(key === 'shortCode' ? 'id' : key));
-            if (error) currentRef.setFieldError(key, error);
-        });
-    }, [errors]);
+    Object.keys(initialValues).forEach((key) => {
+      const error = getPrettyError(errors, snakeCase(key === 'shortCode' ? 'id' : key))
+      if (error) currentRef.setFieldError(key, error)
+    })
+  }, [errors])
 
-    return (
-        <div id="dictionary-form">
-            <Formik
-                ref={formikRef}
-                initialValues={savedValues || initialValues}
-                validationSchema={DictionarySchema}
-                validateOnChange={false}
-                onSubmit={(values: Dictionary) => {
-                    if (onSubmit) onSubmit(values);
-                }}
+  return (
+    <div id="dictionary-form">
+      <Formik
+        ref={formikRef}
+        initialValues={savedValues || initialValues}
+        validationSchema={DictionarySchema}
+        validateOnChange={false}
+        onSubmit={(values: Dictionary) => {
+          if (onSubmit) onSubmit(values)
+        }}
+      >
+        {({ isSubmitting, status }) => (
+          <Form>
+            <Field
+              // required
+              fullWidth
+              autoComplete="off"
+              id="name"
+              name="name"
+              label="Dictionary Name"
+              margin="normal"
+              component={TextField}
+            />
+            <Field
+              // required
+              fullWidth
+              id="short_code"
+              name="short_code"
+              label="Short Code"
+              margin="normal"
+              component={TextField}
+            />
+            <Field
+              fullWidth
+              multiline
+              rowsMax={4}
+              id="description"
+              name="description"
+              label="Description"
+              margin="normal"
+              component={TextField}
+            />
+            <FormControl
+              fullWidth
+              // required
+              margin="normal"
             >
-                {({isSubmitting, status}) => (
-                    <Form>
-                        <Field
-                            // required
-                            fullWidth
-                            autoComplete="off"
-                            id="name"
-                            name="name"
-                            label="Dictionary Name"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <Field
-                            // required
-                            fullWidth
-                            id="short_code"
-                            name="short_code"
-                            label="Short Code"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <Field
-                            fullWidth
-                            multiline
-                            rowsMax={4}
-                            id="description"
-                            name="description"
-                            label="Description"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <FormControl
-                            fullWidth
-                            // required
-                            margin="normal"
-                        >
-                            <InputLabel htmlFor="preferred_source">Preferred Source</InputLabel>
-                            <Field
-                                name="preferred_source"
-                                id="preferred_source"
-                                component={Select}
-                            >
-                                <MenuItem value="CIEL">CIEL</MenuItem>
-                            </Field>
-                        </FormControl>
-                        <FormControl
-                            fullWidth
-                            // required
-                            margin="normal"
-                        >
-                            <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
-                            <Field
-                                value=""
-                                name="owner_url"
-                                id="owner_url"
-                                component={Select}
-                            >
-                                {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
-                                <ListSubheader>Your Organizations</ListSubheader>
-                                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
-                            </Field>
-                            <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="owner_url" component="span"/>
-                            </Typography>
-                        </FormControl>
-                        <FormControl
-                            fullWidth
-                            // required
-                            margin="normal"
-                        >
-                            <InputLabel htmlFor="public_access">Visibility</InputLabel>
-                            <Field
-                                name="public_access"
-                                id="public_access"
-                                component={Select}
-                            >
-                                <MenuItem value="View">Public</MenuItem>
-                                <MenuItem value="None">Private</MenuItem>
-                            </Field>
-                            <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="public_access" component="span"/>
-                            </Typography>
-                        </FormControl>
-                        <FormControl
-                            fullWidth
-                            // required
-                            margin="normal"
-                        >
-                            <InputLabel htmlFor="default_locale">Preferred Language</InputLabel>
-                            <Field
-                                name="default_locale"
-                                id="default_locale"
-                                component={Select}
-                            >
-                                {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
-                            </Field>
-                            <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="default_locale" component="span"/>
-                            </Typography>
-                        </FormControl>
-                        <FormControl
-                            fullWidth
-                            // required
-                            margin="normal"
-                        >
-                            <InputLabel htmlFor="supported_locales">Other Languages</InputLabel>
-                            <Field
-                                multiple
-                                value={[]}
-                                name="supported_locales"
-                                id="supported_locales"
-                                component={Select}
-                            >
-                                {LOCALES.map(({value, label}) => <MenuItem value={value}>{label}</MenuItem>)}
-                            </Field>
-                            <Typography color="error" variant="caption" component="div">
-                                <ErrorMessage name="supported_locales" component="span"/>
-                            </Typography>
-                        </FormControl>
-                        <br/>
-                        <br/>
-                        {!editing ? '' : (
-                            <div id="submit-button">
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    size="medium"
-                                    type="submit"
-                                    disabled={isSubmitting}
-                                >
-                                    Submit
-                                </Button>
-                                {!status ? <br/> : (
-                                    <Typography color="textSecondary" variant="caption" component="span">
-                                        {status}
-                                    </Typography>
-                                )}
-                                {!error ? <br/> : (
-                                    <Typography color="error" variant="caption" component="span">
-                                        {error}
-                                    </Typography>
-                                )}
-                            </div>
-                        )}
-                    </Form>
+              <InputLabel htmlFor="preferred_source">Preferred Source</InputLabel>
+              <Field
+                name="preferred_source"
+                id="preferred_source"
+                component={Select}
+              >
+                <MenuItem value="CIEL">CIEL</MenuItem>
+              </Field>
+            </FormControl>
+            <FormControl
+              fullWidth
+              // required
+              margin="normal"
+            >
+              <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
+              <Field
+                value=""
+                name="owner_url"
+                id="owner_url"
+                component={Select}
+              >
+                {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
+                <ListSubheader>Your Organizations</ListSubheader>
+                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
+              </Field>
+              <Typography color="error" variant="caption" component="div">
+                <ErrorMessage name="owner_url" component="span"/>
+              </Typography>
+            </FormControl>
+            <FormControl
+              fullWidth
+              // required
+              margin="normal"
+            >
+              <InputLabel htmlFor="public_access">Visibility</InputLabel>
+              <Field
+                name="public_access"
+                id="public_access"
+                component={Select}
+              >
+                <MenuItem value="View">Public</MenuItem>
+                <MenuItem value="None">Private</MenuItem>
+              </Field>
+              <Typography color="error" variant="caption" component="div">
+                <ErrorMessage name="public_access" component="span"/>
+              </Typography>
+            </FormControl>
+            <FormControl
+              fullWidth
+              // required
+              margin="normal"
+            >
+              <InputLabel htmlFor="default_locale">Preferred Language</InputLabel>
+              <Field
+                name="default_locale"
+                id="default_locale"
+                component={Select}
+              >
+                {LOCALES.map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
+              </Field>
+              <Typography color="error" variant="caption" component="div">
+                <ErrorMessage name="default_locale" component="span"/>
+              </Typography>
+            </FormControl>
+            <FormControl
+              fullWidth
+              // required
+              margin="normal"
+            >
+              <InputLabel htmlFor="supported_locales">Other Languages</InputLabel>
+              <Field
+                multiple
+                value={[]}
+                name="supported_locales"
+                id="supported_locales"
+                component={Select}
+              >
+                {LOCALES.map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
+              </Field>
+              <Typography color="error" variant="caption" component="div">
+                <ErrorMessage name="supported_locales" component="span"/>
+              </Typography>
+            </FormControl>
+            <br/>
+            <br/>
+            {!editing ? '' : (
+              <div id="submit-button">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </Button>
+                {!status ? <br/> : (
+                  <Typography color="textSecondary" variant="caption" component="span">
+                    {status}
+                  </Typography>
                 )}
-            </Formik>
-        </div>
-    )
-};
+                {!error ? <br/> : (
+                  <Typography color="error" variant="caption" component="span">
+                    {error}
+                  </Typography>
+                )}
+              </div>
+            )}
+          </Form>
+        )}
+      </Formik>
+    </div>
+  )
+}
 
-export default DictionaryForm;
+export default DictionaryForm

@@ -7,7 +7,7 @@ import { retrieveConceptsAction, viewConceptsLoadingSelector, viewConceptsErrors
 import { AppState } from '../../redux'
 import { APIConcept, OptionalQueryParams as QueryParams } from './types'
 import { useLocation, useHistory } from 'react-router'
-import {useQuery } from '../../utils'
+import { useQuery } from '../../utils'
 import qs from 'qs'
 import { ProgressOverlay } from '../../utils/components'
 import FilterOptions from './components/FilterOptions'
@@ -17,38 +17,44 @@ interface Props {
   loading: boolean,
   errors?: {},
   retrieveConcepts: Function,
-  meta?: {num_found?: number},
+  meta?: { num_found?: number },
 }
 
-const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveConcepts, meta={}}) => {
-  const {push: goTo} = useHistory();
-  const {pathname: url} = useLocation();
+const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {} }) => {
+  const { push: goTo } = useHistory()
+  const { pathname: url } = useLocation()
 
-  const queryParams: QueryParams = useQuery(); // todo get limit from settings
+  const queryParams: QueryParams = useQuery() // todo get limit from settings
   const {
-    page=1,
-    sortDirection='sortAsc',
-    sortBy='id',
-    limit=25,
-    q: initialQ='',
-    classFilters: initialClassFilters=[],
-    dataTypeFilters: initialDataTypeFilters=[],
-  } = queryParams;
+    page = 1,
+    sortDirection = 'sortAsc',
+    sortBy = 'id',
+    limit = 25,
+    q: initialQ = '',
+    classFilters: initialClassFilters = [],
+    dataTypeFilters: initialDataTypeFilters = [],
+  } = queryParams
 
-
-  const [showOptions, setShowOptions] = useState(true);
-  const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters);
-  const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters);
-  const [q, setQ] = useState(initialQ);
+  const [showOptions, setShowOptions] = useState(true)
+  const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters)
+  const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters)
+  const [q, setQ] = useState(initialQ)
 
   const gimmeAUrl = (params: QueryParams) => {
-    const newParams: QueryParams = {...queryParams, ...{classFilters: classFilters, dataTypeFilters: dataTypeFilters, page: 1, q}, ...params};
-    return `${url}?${qs.stringify(newParams)}`;
-  };
+    const newParams: QueryParams = {
+      ...queryParams, ...{
+        classFilters: classFilters,
+        dataTypeFilters: dataTypeFilters,
+        page: 1,
+        q
+      }, ...params
+    }
+    return `${url}?${qs.stringify(newParams)}`
+  }
 
   useEffect(() => {
-    retrieveConcepts(url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters, initialClassFilters);
-  }, [retrieveConcepts, url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters.toString(), initialClassFilters.toString()]);
+    retrieveConcepts(url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters, initialClassFilters)
+  }, [retrieveConcepts, url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters.toString(), initialClassFilters.toString()])
 
   return (
     <Header title="Concepts" justifyChildren="space-around">
@@ -70,23 +76,25 @@ const ViewConceptsPage: React.FC<Props> = ({concepts, loading, errors, retrieveC
         </Grid>
         {!showOptions ? '' : (
           <Grid item xs={2} component="div">
-            <FilterOptions checkedClasses={classFilters} setCheckedClasses={setClassFilters} checkedDataTypes={dataTypeFilters} setCheckedDataTypes={setInitialDataTypeFilters} url={gimmeAUrl({})} />
+            <FilterOptions checkedClasses={classFilters} setCheckedClasses={setClassFilters}
+                           checkedDataTypes={dataTypeFilters} setCheckedDataTypes={setInitialDataTypeFilters}
+                           url={gimmeAUrl({})}/>
           </Grid>
         )}
       </ProgressOverlay>
     </Header>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state: AppState) => ({
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
   meta: state.concepts.concepts ? state.concepts.concepts.responseMeta : undefined,
   loading: viewConceptsLoadingSelector(state),
   errors: viewConceptsErrorsSelector(state),
-});
+})
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
-};
+}
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);
+export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage)

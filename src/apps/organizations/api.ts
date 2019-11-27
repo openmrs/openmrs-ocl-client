@@ -1,8 +1,8 @@
-import {authenticatedInstance} from "../../api";
-import {AxiosResponse} from "axios";
+import { authenticatedInstance } from '../../api'
+import { AxiosResponse } from 'axios'
 
 const api = {
-    // fetchMyOrgs =
-};
+  // fetchMyOrgs =
+}
 
-export default api;
+export default api

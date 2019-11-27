@@ -16,32 +16,32 @@ import React, { useEffect, useState } from 'react'
 import { Mapping } from '../types'
 import api from '../api'
 import { APISource } from '../../sources'
-import {includes} from 'lodash';
+import { includes } from 'lodash'
 import { MoreVert as MoreVertIcon, DeleteOutline as DeleteOutlineIcon } from '@material-ui/icons'
 
-interface ConceptOption extends Option{
+interface ConceptOption extends Option {
   displayName: string,
 }
 
-const buildEvent = (name: string, value?: any) => ({target: {name, value}});
+const buildEvent = (name: string, value?: any) => ({ target: { name, value } })
 
-const option = (value?: string, label?: string) => ({value, label});
+const option = (value?: string, label?: string) => ({ value, label })
 
 const buildConceptLabel = (toConceptName?: string, toConceptUrl?: string) => (toConceptName && toConceptUrl) ? `${nameFromUrl(toConceptUrl)}- ${toConceptName}` : ''
 
-export const isExternalSource = ({source_type: sourceType}: APISource) => includes(['External', 'externalDictionary'], sourceType);
+export const isExternalSource = ({ source_type: sourceType }: APISource) => includes(['External', 'externalDictionary'], sourceType)
 
 const nameFromUrl = (url: string): string => {
-  let letters = url.split('');
-  letters.reverse();
-  letters.splice(0, 1);
-  letters.splice(letters.indexOf('/'));
-  letters.reverse();
+  let letters = url.split('')
+  letters.reverse()
+  letters.splice(0, 1)
+  letters.splice(letters.indexOf('/'))
+  letters.reverse()
 
-  return letters.join("");
+  return letters.join('')
 }
 
-interface SourceOption extends Option{
+interface SourceOption extends Option {
   isInternalSource: boolean,
 }
 
@@ -53,14 +53,14 @@ interface SourceResults {
   }
 }
 
-const fetchSourceOptions = async (query: string, _:{}, {page}: {page: number}): Promise<SourceResults> => {
+const fetchSourceOptions = async (query: string, _: {}, { page }: { page: number }): Promise<SourceResults> => {
   try {
-    const response = await api.retrievePublicSources(page, 10, query);
-    const {data, headers: {next='None'}} = response;
+    const response = await api.retrievePublicSources(page, 10, query)
+    const { data, headers: { next = 'None' } } = response
 
     return {
       options: data.map((source: APISource) => {
-        const {name, url} = source;
+        const { name, url } = source
 
         return {
           label: name,
@@ -70,9 +70,9 @@ const fetchSourceOptions = async (query: string, _:{}, {page}: {page: number}): 
       }),
       hasMore: next !== 'None',
       additional: {
-        page: page+1,
+        page: page + 1,
       },
-    };
+    }
   } catch (e) {
     return {
       options: [],
@@ -80,9 +80,9 @@ const fetchSourceOptions = async (query: string, _:{}, {page}: {page: number}): 
       additional: {
         page: 1,
       },
-    };
+    }
   }
-};
+}
 
 interface ConceptResults {
   options: ConceptOption[],
@@ -94,11 +94,11 @@ interface ConceptResults {
 
 const fetchConceptOptions = async (sourceUrl: string, query: string, page: number): Promise<ConceptResults> => {
   try {
-    const response = await api.concepts.retrieve(`${sourceUrl}concepts/`, page, 10, query);
-    const {data, headers: {next='None'}} = response;
+    const response = await api.concepts.retrieve(`${sourceUrl}concepts/`, page, 10, query)
+    const { data, headers: { next = 'None' } } = response
 
     return {
-      options: data.map(({display_name, url}: {display_name: string, url: string}) => (
+      options: data.map(({ display_name, url }: { display_name: string, url: string }) => (
         {
           label: buildConceptLabel(display_name, url),
           value: url,
@@ -107,9 +107,9 @@ const fetchConceptOptions = async (sourceUrl: string, query: string, page: numbe
       ),
       hasMore: next !== 'None',
       additional: {
-        page: page+1,
+        page: page + 1,
       },
-    };
+    }
   } catch (e) {
     return {
       options: [],
@@ -117,9 +117,9 @@ const fetchConceptOptions = async (sourceUrl: string, query: string, page: numbe
       additional: {
         page: 1,
       },
-    };
+    }
   }
-};
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
   }),
-);
+)
 
 interface Props {
   value: Mapping,
@@ -150,43 +150,44 @@ interface Props {
   valuesKey: string,
   handleChange: Function,
   toggleMenu: Function,
-  menu: {index: number, anchor: null | HTMLElement},
+  menu: { index: number, anchor: null | HTMLElement },
   arrayHelpers: ArrayHelpers,
   fixedMappingType?: Option,
   errors?: any,
   editing: boolean,
 }
 
-const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChange, toggleMenu, menu, arrayHelpers, fixedMappingType, errors, editing}) => {
-  const classes = useStyles();
+const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChange, toggleMenu, menu, arrayHelpers, fixedMappingType, errors, editing }) => {
+  const classes = useStyles()
 
-  const {to_source_url: toSourceUrl, to_concept_url: toConceptUrl, to_concept_name: toConceptName, to_concept_code: toConceptCode, url} = value;
-  const valueKey = `${valuesKey}[${index}]`;
-  const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl);
+  const { to_source_url: toSourceUrl, to_concept_url: toConceptUrl, to_concept_name: toConceptName, to_concept_code: toConceptCode, url } = value
+  const valueKey = `${valuesKey}[${index}]`
+  const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl)
 
-  const [isInternalMapping, setIsInternalMapping] = useState(toConceptUrl !== null);
+  const [isInternalMapping, setIsInternalMapping] = useState(toConceptUrl !== null)
 
   // reset to_concept on to_source change
   useEffect(() => {
-    handleChange(buildEvent( `${valueKey}.to_concept_url`, undefined));
-    handleChange(buildEvent( `${valueKey}.to_concept_code`, undefined));
-    handleChange(buildEvent( `${valueKey}.to_concept_name`, undefined));
-  }, [toSourceUrl]);
+    handleChange(buildEvent(`${valueKey}.to_concept_url`, undefined))
+    handleChange(buildEvent(`${valueKey}.to_concept_code`, undefined))
+    handleChange(buildEvent(`${valueKey}.to_concept_name`, undefined))
+  }, [toSourceUrl])
 
   // update default map_type
   useEffect(() => {
-    if (!fixedMappingType) handleChange(buildEvent( `${valueKey}.map_type`, MAP_TYPES[isInternalMapping ? 0 : 1].value));
-  }, [isInternalMapping]);
+    if (!fixedMappingType) handleChange(buildEvent(`${valueKey}.map_type`, MAP_TYPES[isInternalMapping ? 0 : 1].value))
+  }, [isInternalMapping])
 
   // update map_type from fixed map_type
   useEffect(() => {
-    if (fixedMappingType) handleChange(buildEvent( `${valueKey}.map_type`, fixedMappingType.value));
-  }, [fixedMappingType]);
+    if (fixedMappingType) handleChange(buildEvent(`${valueKey}.map_type`, fixedMappingType.value))
+  }, [fixedMappingType])
 
   return (
     <>
       <TableRow className={classes.row}>
-        <TableCell className={fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth} component="td" scope="row">
+        <TableCell className={fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth} component="td"
+                   scope="row">
           <FormControl
             fullWidth
             margin="dense"
@@ -197,17 +198,17 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
               component={AsyncSelect}
               onChange={(option: SourceOption | null) => {
                 if (option) {
-                  handleChange(buildEvent( `${valueKey}.to_source_url`, option.value));
-                  setIsInternalMapping(option.isInternalSource);
+                  handleChange(buildEvent(`${valueKey}.to_source_url`, option.value))
+                  setIsInternalMapping(option.isInternalSource)
                 } else {
-                  handleChange(buildEvent( `${valueKey}.to_source_url`, undefined));
-                  setIsInternalMapping(true);
+                  handleChange(buildEvent(`${valueKey}.to_source_url`, undefined))
+                  setIsInternalMapping(true)
                 }
               }}
               value={toSourceUrl ? option(toSourceUrl, nameFromUrl(toSourceUrl)) : undefined}
               placeholder="Select a source"
               loadOptions={fetchSourceOptions}
-              additional={{page: 1}}
+              additional={{ page: 1 }}
               isDisabled={!editing}
             />
             <Typography color="error" variant="caption" component="div">
@@ -255,29 +256,29 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
                 component={AsyncSelect}
                 onChange={(option: ConceptOption | null) => {
                   if (option) {
-                    handleChange(buildEvent( `${valueKey}.to_concept_url`, option.value))
-                    handleChange(buildEvent( `${valueKey}.to_concept_name`, option.displayName))
+                    handleChange(buildEvent(`${valueKey}.to_concept_url`, option.value))
+                    handleChange(buildEvent(`${valueKey}.to_concept_name`, option.displayName))
                   } else {
-                    handleChange(buildEvent( `${valueKey}.to_concept_url`, undefined))
-                    handleChange(buildEvent( `${valueKey}.to_concept_name`, undefined))
+                    handleChange(buildEvent(`${valueKey}.to_concept_url`, undefined))
+                    handleChange(buildEvent(`${valueKey}.to_concept_name`, undefined))
                   }
                 }}
                 value={toConceptUrl ? option(toConceptUrl, conceptLabel) : undefined}
                 placeholder="Select a concept"
                 isDisabled={!editing || !toSourceUrl}
                 loadOptions={
-                  async (query: string, _:{}, {page}: {page: number}) => {
+                  async (query: string, _: {}, { page }: { page: number }) => {
                     if (!toSourceUrl) return {
                       options: [],
                       hasMore: false,
                       additional: {
                         page: 1,
                       },
-                    };
-                    return fetchConceptOptions(toSourceUrl, query, page);
+                    }
+                    return fetchConceptOptions(toSourceUrl, query, page)
                   }
                 }
-                additional={{page: 1}}
+                additional={{ page: 1 }}
                 cacheUniq={toSourceUrl}
               />
             </FormControl>
@@ -305,8 +306,9 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
         )}
         <TableCell className={classes.menuItem} component="td" scope="row">
           {!editing ? '' : (
-            <IconButton id={`${valueKey}.menu-icon`} aria-controls={`${valueKey}.menu`} aria-haspopup="true" onClick={event => toggleMenu(index, event)}>
-              <MoreVertIcon />
+            <IconButton id={`${valueKey}.menu-icon`} aria-controls={`${valueKey}.menu`} aria-haspopup="true"
+                        onClick={event => toggleMenu(index, event)}>
+              <MoreVertIcon/>
             </IconButton>
           )}
           <Menu
@@ -316,9 +318,15 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
             onClose={() => toggleMenu(index)}
           >
             {url ? (
-              <MenuItem onClick={() => {handleChange(buildEvent( `${valueKey}.retired`, true)); toggleMenu(index);}}><DeleteOutlineIcon /> Retire</MenuItem>
+              <MenuItem onClick={() => {
+                handleChange(buildEvent(`${valueKey}.retired`, true))
+                toggleMenu(index)
+              }}><DeleteOutlineIcon/> Retire</MenuItem>
             ) : (
-              <MenuItem onClick={() => {arrayHelpers.remove(index); toggleMenu(index);}}><DeleteOutlineIcon /> Delete</MenuItem>
+              <MenuItem onClick={() => {
+                arrayHelpers.remove(index)
+                toggleMenu(index)
+              }}><DeleteOutlineIcon/> Delete</MenuItem>
             )}
           </Menu>
         </TableCell>
@@ -326,7 +334,7 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
       {typeof errors !== 'string' ? null : (
         <Typography className={classes.errorContainer} color="error" variant="caption" component="tr">
           <td/>
-          {fixedMappingType ? null : <td />}
+          {fixedMappingType ? null : <td/>}
           <ErrorMessage name={valueKey} component="td"/>
         </Typography>
       )}
@@ -334,5 +342,4 @@ const MappingsTableRow: React.FC<Props> = ({value, index, valuesKey, handleChang
   )
 }
 
-
-export default MappingsTableRow;
+export default MappingsTableRow

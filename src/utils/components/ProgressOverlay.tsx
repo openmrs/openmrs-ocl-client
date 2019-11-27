@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { AppBar, createStyles, Grid, CircularProgress, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
   }),
-);
+)
 
 interface Props {
   children: any,
@@ -35,29 +35,29 @@ interface Props {
   delayRender?: boolean,
 }
 
-const Loader = ({loadingMessage}: {loadingMessage: string}) => {
-  const classes = useStyles();
+const Loader = ({ loadingMessage }: { loadingMessage: string }) => {
+  const classes = useStyles()
 
   return (
     <div className={classes.overlay}>
       <div className={classes.overlayContent}>
-        <CircularProgress thickness={.8} size={50} />
+        <CircularProgress thickness={.8} size={50}/>
         <br/>
         {loadingMessage}
       </div>
     </div>
   )
-};
+}
 
-const ProgressOverlay: React.FC<Props> = ({children, loading, loadingMessage="Loading...", delayRender=false}) => {
-  if (loading && delayRender) return <Loader loadingMessage={loadingMessage} />;
+const ProgressOverlay: React.FC<Props> = ({ children, loading, loadingMessage = 'Loading...', delayRender = false }) => {
+  if (loading && delayRender) return <Loader loadingMessage={loadingMessage}/>
 
   return (
     <>
       {children}
-      {!loading ? '' : <Loader loadingMessage={loadingMessage} />}
+      {!loading ? '' : <Loader loadingMessage={loadingMessage}/>}
     </>
-  );
-};
+  )
+}
 
-export default ProgressOverlay;
+export default ProgressOverlay

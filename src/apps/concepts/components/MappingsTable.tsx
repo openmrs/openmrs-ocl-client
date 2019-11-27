@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
   }),
-);
+)
 
 interface Props {
   valuesKey: string,
@@ -38,14 +38,14 @@ interface Props {
   editing: boolean,
 }
 
-const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNewMapping, arrayHelpers, allowChoosingType=false, useTypes=false, isSubmitting, handleChange, title, fixedMappingType, editing}) => {
-  const classes = useStyles();
+const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, createNewMapping, arrayHelpers, allowChoosingType = false, useTypes = false, isSubmitting, handleChange, title, fixedMappingType, editing }) => {
+  const classes = useStyles()
 
-  const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
+  const [menu, setMenu] = React.useState<{ index: number, anchor: null | HTMLElement }>({ index: -1, anchor: null })
   const toggleMappingMenu = (index: number, event?: React.MouseEvent<HTMLButtonElement>) => {
-    if (index === menu.index) setMenu({index: -1, anchor: null});
-    else if (event) setMenu({index: index, anchor: event.currentTarget});
-  };
+    if (index === menu.index) setMenu({ index: -1, anchor: null })
+    else if (event) setMenu({ index: index, anchor: event.currentTarget })
+  }
 
   return (
     <div>
@@ -55,7 +55,7 @@ const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNew
             <TableCell>Source</TableCell>
             {fixedMappingType ? null : <TableCell>Relationship</TableCell>}
             <TableCell>Concept</TableCell>
-            <TableCell />
+            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,13 +83,13 @@ const MappingsTable: React.FC<Props> = ({valuesKey, values, errors={}, createNew
       )}
       <br/>
       {!editing ? '' : (
-        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewMapping())}>
+        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting}
+                onClick={() => arrayHelpers.push(createNewMapping())}>
           Add {title}
         </Button>
       )}
-  </div>
-  );
-};
+    </div>
+  )
+}
 
-
-export default MappingsTable;
+export default MappingsTable

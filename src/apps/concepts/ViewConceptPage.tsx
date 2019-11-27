@@ -10,7 +10,7 @@ import './ViewConceptPage.scss'
 import { Edit as EditIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
-import {startCase, toLower} from 'lodash'
+import { startCase, toLower } from 'lodash'
 
 interface Props {
   loading: boolean,
@@ -19,37 +19,37 @@ interface Props {
   retrieveConcept: Function,
 }
 
-const ViewConceptPage: React.FC<Props> = ({retrieveConcept, concept, loading, errors}) => {
-  const {pathname: url} = useLocation();
+const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, errors }) => {
+  const { pathname: url } = useLocation()
 
   useEffect(() => {
-    retrieveConcept(url);
-  }, [url, retrieveConcept]);
+    retrieveConcept(url)
+  }, [url, retrieveConcept])
 
   if (loading) {
-    return <span>Loading...</span>;
+    return <span>Loading...</span>
   }
 
   return (
-    <Header title={startCase(toLower(concept ? concept.display_name : "View concept"))}>
+    <Header title={startCase(toLower(concept ? concept.display_name : 'View concept'))}>
       <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm savedValues={apiConceptToConcept(concept)} loading={true} errors={errors} />
+        <ConceptForm savedValues={apiConceptToConcept(concept)} loading={true} errors={errors}/>
       </Grid>
       <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
         <EditIcon/>
       </Link>
     </Header>
   )
-};
+}
 
 const mapStateToProps = (state: AppState) => ({
   concept: state.concepts.concept,
   loading: viewConceptLoadingSelector(state),
   errors: viewConceptErrorsSelector(state),
-});
+})
 
 const mapActionsToProps = {
   retrieveConcept: retrieveConceptAction,
-};
+}
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage);
+export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage)

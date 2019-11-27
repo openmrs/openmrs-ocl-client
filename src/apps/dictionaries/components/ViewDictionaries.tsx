@@ -15,9 +15,9 @@ import IconButton from '@material-ui/core/IconButton'
 import { Search as SearchIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { APIDictionary } from '../types'
-import clsx from  'clsx';
+import clsx from 'clsx'
 
-const PER_PAGE = 20;
+const PER_PAGE = 20
 
 interface Props {
   dictionaries: APIDictionary[],
@@ -27,7 +27,7 @@ interface Props {
   page: number,
   initialQ: string,
   title?: string,
-};
+}
 
 const useStyles = makeStyles({
   card: {
@@ -61,11 +61,11 @@ const useStyles = makeStyles({
     textDecoration: 'none',
     color: 'inherit',
   },
-});
+})
 
-const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange, onSearch, page, initialQ, title}) => {
-  const classes = useStyles();
-  const [q, setQ] = useState(initialQ);
+const ViewDictionaries: React.FC<Props> = ({ dictionaries, numFound, onPageChange, onSearch, page, initialQ, title }) => {
+  const classes = useStyles()
+  const [q, setQ] = useState(initialQ)
 
   return (
     <>
@@ -84,7 +84,10 @@ const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange
         item
         xs={12}
       >
-        <form onSubmit={e => {e.preventDefault(); onSearch(q);}}>
+        <form onSubmit={e => {
+          e.preventDefault()
+          onSearch(q)
+        }}>
           <Input
             onChange={e => setQ(e.target.value)}
             value={q}
@@ -95,7 +98,7 @@ const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange
                 <IconButton
                   onClick={() => onSearch(q)}
                 >
-                  <SearchIcon />
+                  <SearchIcon/>
                 </IconButton>
               </InputAdornment>
             }
@@ -110,7 +113,7 @@ const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange
         justify="center"
       >
         {dictionaries.length === 0 ? <Typography component="span" variant="h6">No dictionaries</Typography> : ''}
-        {dictionaries.map(({name, short_code: shortCode, owner, owner_type: ownerType, description, url}) => (
+        {dictionaries.map(({ name, short_code: shortCode, owner, owner_type: ownerType, description, url }) => (
           <Grid
             item
             xs={3}
@@ -139,7 +142,8 @@ const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange
           </Grid>
         ))}
       </Grid>
-      <Grid item xs={12} className={clsx(classes.pagination, (title ? classes.paginationSingle : classes.paginationDouble))}>
+      <Grid item xs={12}
+            className={clsx(classes.pagination, (title ? classes.paginationSingle : classes.paginationDouble))}>
         <TablePagination
           rowsPerPageOptions={[PER_PAGE]}
           count={numFound}
@@ -155,8 +159,7 @@ const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange
         />
       </Grid>
     </>
-  );
+  )
 }
 
-
-export default ViewDictionaries;
+export default ViewDictionaries

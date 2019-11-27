@@ -34,13 +34,13 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
   }),
-);
+)
 
 interface Props {
   type: string,
   title: string,
   valuesKey: string,
-  values: (ConceptName|ConceptDescription)[],
+  values: (ConceptName | ConceptDescription)[],
   errors?: {} | string,
   createNewValue: Function,
   arrayHelpers: ArrayHelpers,
@@ -50,15 +50,15 @@ interface Props {
   editing: boolean,
 }
 
-const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={}, createNewValue, arrayHelpers, multiline=false, useTypes=false, isSubmitting, editing}) => {
-  const classes = useStyles();
+const NamesTable: React.FC<Props> = ({ valuesKey, type, title, values, errors = {}, createNewValue, arrayHelpers, multiline = false, useTypes = false, isSubmitting, editing }) => {
+  const classes = useStyles()
 
-  const [menu, setMenu] = React.useState<{index: number, anchor: null | HTMLElement}>({index: -1, anchor: null});
+  const [menu, setMenu] = React.useState<{ index: number, anchor: null | HTMLElement }>({ index: -1, anchor: null })
 
   const toggleNameMenu = (index: number, event?: React.MouseEvent<HTMLButtonElement>) => {
-    if (index === menu.index) setMenu({index: -1, anchor: null});
-    else if (event) setMenu({index: index, anchor: event.currentTarget});
-  };
+    if (index === menu.index) setMenu({ index: -1, anchor: null })
+    else if (event) setMenu({ index: index, anchor: event.currentTarget })
+  }
 
   return (
     <div>
@@ -69,13 +69,14 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
             {useTypes ? <TableCell>Type</TableCell> : null}
             <TableCell>Language</TableCell>
             <TableCell>Preferred in language</TableCell>
-            <TableCell />
+            <TableCell/>
           </TableRow>
         </TableHead>
         <TableBody>
           {values.map((value, index) => (
             <TableRow className={classes.row} key={index}>
-              <TableCell className={multiline ? classes.doubleCellWidth : classes.singleCellWidth} component="td" scope="row">
+              <TableCell className={multiline ? classes.doubleCellWidth : classes.singleCellWidth} component="td"
+                         scope="row">
                 <Field
                   fullWidth
                   id={`${valuesKey}[${index}].${type}`}
@@ -158,8 +159,9 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
               </TableCell>
               <TableCell className={classes.menuItem} component="td" scope="row">
                 {!editing ? '' : (
-                  <IconButton id={`${valuesKey}[${index}].menu-icon`} aria-controls={`${valuesKey}[${index}].menu`} aria-haspopup="true" onClick={event => toggleNameMenu(index, event)}>
-                    <MoreVertIcon />
+                  <IconButton id={`${valuesKey}[${index}].menu-icon`} aria-controls={`${valuesKey}[${index}].menu`}
+                              aria-haspopup="true" onClick={event => toggleNameMenu(index, event)}>
+                    <MoreVertIcon/>
                   </IconButton>
                 )}
                 <Menu
@@ -168,7 +170,10 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
                   open={index === menu.index}
                   onClose={() => toggleNameMenu(index)}
                 >
-                  <MenuItem onClick={() => {arrayHelpers.remove(index); toggleNameMenu(index);}}><DeleteOutlineIcon /> Delete</MenuItem>
+                  <MenuItem onClick={() => {
+                    arrayHelpers.remove(index)
+                    toggleNameMenu(index)
+                  }}><DeleteOutlineIcon/> Delete</MenuItem>
                 </Menu>
               </TableCell>
             </TableRow>
@@ -182,13 +187,13 @@ const NamesTable: React.FC<Props> = ({valuesKey, type, title, values, errors={},
       )}
       <br/>
       {!editing ? '' : (
-        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting} onClick={() => arrayHelpers.push(createNewValue())}>
+        <Button variant="outlined" color="primary" size="small" disabled={isSubmitting}
+                onClick={() => arrayHelpers.push(createNewValue())}>
           Add {title}
         </Button>
       )}
     </div>
-  );
-};
+  )
+}
 
-
-export default NamesTable;
+export default NamesTable

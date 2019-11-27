@@ -3,7 +3,7 @@ export interface Option {
   value: string;
 }
 
-export interface OptionResponse{
+export interface OptionResponse {
   options: Option[],
   hasMore: boolean,
   additional: {},
@@ -17,4 +17,4 @@ export interface BaseConceptContainer {
   default_locale: string;
 }
 
-export {};
+export {}

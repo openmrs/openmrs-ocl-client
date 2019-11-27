@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'inherit',
     },
   }),
-);
+)
 
 interface FilterGroupProps {
   items: string[],
@@ -51,21 +51,21 @@ interface FilterGroupProps {
   setChecked: Function,
 }
 
-const FilterGroup: React.FC<FilterGroupProps> = ({items, title, searchText, checked, setChecked}) => {
-  const classes = useStyles();
+const FilterGroup: React.FC<FilterGroupProps> = ({ items, title, searchText, checked, setChecked }) => {
+  const classes = useStyles()
 
   const handleToggle = (value: string) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const currentIndex = checked.indexOf(value)
+    const newChecked = [...checked]
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value)
     } else {
-      newChecked.splice(currentIndex, 1);
+      newChecked.splice(currentIndex, 1)
     }
 
-    setChecked(newChecked);
-  };
+    setChecked(newChecked)
+  }
 
   return (
     <>
@@ -77,7 +77,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({items, title, searchText, chec
         }
       >
         {items.filter(item => item.toLowerCase().indexOf(searchText.toLowerCase()) >= 0).map(value => {
-          const labelId = `checkbox-list-label-${value}`;
+          const labelId = `checkbox-list-label-${value}`
 
           return (
             <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
@@ -90,14 +90,14 @@ const FilterGroup: React.FC<FilterGroupProps> = ({items, title, searchText, chec
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={value} />
+              <ListItemText id={labelId} primary={value}/>
             </ListItem>
-          );
+          )
         })}
       </List>
     </>
   )
-};
+}
 
 interface FilterOptionsProps {
   url: string,
@@ -107,14 +107,14 @@ interface FilterOptionsProps {
   setCheckedDataTypes: Function,
 }
 
-const FilterOptions: React.FC<FilterOptionsProps> = ({url, checkedClasses, checkedDataTypes, setCheckedClasses, setCheckedDataTypes}) => {
-  const classes = useStyles();
-  const [searchText, setSearchText] = useState('');
+const FilterOptions: React.FC<FilterOptionsProps> = ({ url, checkedClasses, checkedDataTypes, setCheckedClasses, setCheckedDataTypes }) => {
+  const classes = useStyles()
+  const [searchText, setSearchText] = useState('')
 
   const clearAllFilters = () => {
-    setCheckedClasses([]);
-    setCheckedDataTypes([]);
-  };
+    setCheckedClasses([])
+    setCheckedDataTypes([])
+  }
 
   return (
     <div className={classes.root}>
@@ -132,11 +132,13 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({url, checkedClasses, check
             onChange={(e) => setSearchText(e.target.value)}
           />
         </div>
-        <FilterGroup checked={checkedClasses} setChecked={setCheckedClasses} searchText={searchText} title="Classes" items={CONCEPT_CLASSES}/>
-        <FilterGroup checked={checkedDataTypes} setChecked={setCheckedDataTypes} searchText={searchText} title="Data types" items={DATA_TYPES}/>
+        <FilterGroup checked={checkedClasses} setChecked={setCheckedClasses} searchText={searchText} title="Classes"
+                     items={CONCEPT_CLASSES}/>
+        <FilterGroup checked={checkedDataTypes} setChecked={setCheckedDataTypes} searchText={searchText}
+                     title="Data types" items={DATA_TYPES}/>
       </Paper>
     </div>
   )
-};
+}
 
-export default FilterOptions;
+export default FilterOptions
