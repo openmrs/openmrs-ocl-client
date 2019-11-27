@@ -35,7 +35,7 @@ export interface APIDictionary extends BaseAPIDictionary{
 export interface DictionaryState {
     newDictionary?: APIDictionary,
     dictionary?: APIDictionary,
-    dictionaries?: {items: APIDictionary[], responseMeta?: {}},
+    dictionaries: {items: APIDictionary[], responseMeta?: {}}[],
 }
 
 const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {

@@ -8,18 +8,34 @@ const api = {
     create: (ownerUrl: string, data: NewAPIDictionary): Promise<AxiosResponse<any>> => authenticatedInstance.post(`${ownerUrl}collections/`, data),
     retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> => authenticatedInstance.get(dictionaryUrl, {params: {verbose: true}}),
     dictionaries: {
-        retrieve: (dictionariesUrl: string, q: string='', limit=20, page=1): Promise<AxiosResponse<any>> => unAuthenticatedInstance.get(dictionariesUrl,
-          {
+        retrieve: {
+          public: (dictionariesUrl: string, q: string='', limit=20, page=1): Promise<AxiosResponse<any>> => unAuthenticatedInstance.get(dictionariesUrl,
+            {
               params: {
-                  limit,
-                  page,
-                  verbose: true,
-                  q: buildPartialSearchQuery(q),
-                  collection_type: OCL_DICTIONARY_TYPE,
-                  customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
+                limit,
+                page,
+                verbose: true,
+                q: buildPartialSearchQuery(q),
+                collection_type: OCL_DICTIONARY_TYPE,
+                customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
+                timestamp: new Date().getTime(),
               }
-          }
-      ),
+            }
+          ),
+          private: (dictionariesUrl: string, q: string='', limit=20, page=1): Promise<AxiosResponse<any>> => authenticatedInstance.get(dictionariesUrl,
+            {
+              params: {
+                limit,
+                page,
+                verbose: true,
+                q: buildPartialSearchQuery(q),
+                collection_type: OCL_DICTIONARY_TYPE,
+                customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
+                timestamp: new Date().getTime()
+              }
+            }
+          ),
+        }
     },
 };
 

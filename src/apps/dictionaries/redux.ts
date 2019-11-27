@@ -23,10 +23,14 @@ import {
     createCollectionErrorSelector,
     retrieveCollectionAction, retrieveCollectionLoadingSelector
 } from "../collections";
-import {AnyAction} from "redux";
 import {AppState} from "../../redux";
 import {errorSelector} from "../../redux/redux";
 import { OCL_COLLECTION_TYPE, OCL_DICTIONARY_TYPE, OCL_SOURCE_TYPE } from './constants'
+import { createReducer } from '@reduxjs/toolkit'
+import { Action } from '../../redux/utils'
+
+const PERSONAL_DICTIONARIES_ACTION_INDEX = 1;
+const ORG_DICTIONARIES_ACTION_INDEX = 2;
 
 const CREATE_DICTIONARY_ACTION = 'dictionaries/create';
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary';
@@ -139,24 +143,23 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
         ]);
     }
 };
-const retrieveDictionariesAction = createActionThunk(RETRIEVE_DICTIONARIES_ACTION, api.dictionaries.retrieve);
+const retrievePublicDictionariesAction = createActionThunk(RETRIEVE_DICTIONARIES_ACTION, api.dictionaries.retrieve.public);
+const retrievePersonalDictionariesAction = createActionThunk(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), api.dictionaries.retrieve.private);
+const retrieveOrgDictionariesAction = createActionThunk(indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX), api.dictionaries.retrieve.private);
 
-const initialState: DictionaryState = {};
-
-const reducer = (state = initialState, action: AnyAction) => {
-    switch (action.type) {
-        case startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)).type:
-            return {...state, newDictionary: undefined};
-        case CREATE_DICTIONARY_ACTION:
-            return {...state, newDictionary: action.payload};
-        case RETRIEVE_DICTIONARY_ACTION:
-            return {...state, dictionary: action.payload};
-        case RETRIEVE_DICTIONARIES_ACTION:
-            return {...state, dictionaries: {items: action.payload, responseMeta: action.responseMeta}};
-        default:
-            return state;
-    }
+const initialState: DictionaryState = {
+    dictionaries: [],
 };
+
+const reducer = createReducer(initialState, {
+    [startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)).type]: (state, action) => ({...state, newDictionary: undefined}),
+    [CREATE_DICTIONARY_ACTION]: (state, action) => ({...state, newDictionary: action.payload}),
+    [RETRIEVE_DICTIONARY_ACTION]: (state, action) => ({...state, dictionary: action.payload}),
+    [RETRIEVE_DICTIONARIES_ACTION]: (state, {actionIndex, payload, responseMeta}: Action) => {
+        state.dictionaries[actionIndex] = {items: payload, responseMeta};
+    },
+});
+
 
 const createDictionaryLoadingSelector = loadingSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
 const createDictionaryProgressSelector = progressSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION));
@@ -174,7 +177,10 @@ const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [ke
 
 const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION));
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state);
-const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION));
+
+const retrievePublicDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION));
+const retrievePersonalDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX));
+const retrieveOrgDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX));
 
 export {
     reducer as default,
@@ -185,6 +191,12 @@ export {
     retrieveDictionaryLoadingSelector,
     retrieveDictionaryDetailsLoadingSelector,
     retrieveDictionaryAndDetailsAction,
-    retrieveDictionariesAction,
-    retrieveDictionariesLoadingSelector,
+    retrievePublicDictionariesAction,
+    retrievePublicDictionariesLoadingSelector,
+    retrievePersonalDictionariesAction,
+    retrievePersonalDictionariesLoadingSelector,
+    retrieveOrgDictionariesAction,
+    retrieveOrgDictionariesLoadingSelector,
+    PERSONAL_DICTIONARIES_ACTION_INDEX,
+    ORG_DICTIONARIES_ACTION_INDEX,
 };

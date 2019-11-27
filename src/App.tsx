@@ -8,7 +8,11 @@ import {AuthenticationRequired, LoginPage} from "./apps/authentication";
 import {Provider} from "react-redux";
 import store from "./store";
 import NavDrawer from './components/NavDrawer';
-import DictionaryRoutes, { CreateDictionaryPage, ViewDictionariesPage } from './apps/dictionaries'
+import DictionaryRoutes, {
+  CreateDictionaryPage,
+  ViewDictionariesPage,
+  ViewPublicDictionariesPage
+} from './apps/dictionaries'
 import ConceptRoutes, { ViewConceptsPage } from './apps/concepts'
 import Header from "./components/Header";
 
@@ -22,8 +26,13 @@ const AuthenticatedRoutes: React.FC = () => {
           </Route>
           <Route exact path="/dictionaries/">
               <Header title="Public Dictionaries">
-                  <ViewDictionariesPage/>
+                  <ViewPublicDictionariesPage/>
               </Header>
+          </Route>
+          <Route exact path="/user/dictionaries/">
+            <Header title="Your Dictionaries">
+              <ViewDictionariesPage/>
+            </Header>
           </Route>
           <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
           <Route path="/:ownerType/:owner/sources/:source/concepts" component={ConceptRoutes}/>

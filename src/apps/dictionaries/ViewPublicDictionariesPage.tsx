@@ -1,29 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AppState } from '../../redux'
 import {
-  retrieveDictionariesAction, retrieveDictionariesLoadingSelector
+  retrievePublicDictionariesAction, retrievePublicDictionariesLoadingSelector
 } from './redux'
 import { connect } from 'react-redux'
 import { APIDictionary } from './types'
 import { ProgressOverlay } from '../../utils/components'
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  Input,
-  InputAdornment,
-  makeStyles,
-  Typography
-} from '@material-ui/core'
-import TablePagination from '@material-ui/core/TablePagination'
 import { useQuery } from '../../utils'
 import { useHistory, useLocation } from 'react-router'
 import qs from 'qs'
-import IconButton from '@material-ui/core/IconButton'
-import { Search as SearchIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
 import ViewDictionaries from './components/ViewDictionaries'
 
 const PER_PAGE = 20;
@@ -64,13 +49,13 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({dictionaries=[], loading, 
 
 
 const mapStateToProps = (state: AppState) => ({
-  loading: retrieveDictionariesLoadingSelector(state),
-  dictionaries: state.dictionaries.dictionaries ? state.dictionaries.dictionaries.items : [],
-  meta: state.dictionaries.dictionaries ? state.dictionaries.dictionaries.responseMeta : {},
+  loading: retrievePublicDictionariesLoadingSelector(state),
+  dictionaries: state.dictionaries.dictionaries[0]?.items,
+  meta: state.dictionaries.dictionaries[0]?.responseMeta,
 });
 
 const mapDispatchToProps = {
-  retrieveDictionaries: retrieveDictionariesAction,
+  retrieveDictionaries: retrievePublicDictionariesAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewPublicDictionariesPage);
