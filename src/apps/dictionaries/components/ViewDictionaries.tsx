@@ -1,11 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { AppState } from '../../redux'
-import {
-  retrieveDictionariesAction, retrieveDictionariesLoadingSelector
-} from './redux'
-import { connect } from 'react-redux'
-import { APIDictionary } from './types'
-import { ProgressOverlay } from '../../utils/components'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -18,20 +11,20 @@ import {
   Typography
 } from '@material-ui/core'
 import TablePagination from '@material-ui/core/TablePagination'
-import { useQuery } from '../../utils'
-import { useHistory, useLocation } from 'react-router'
-import qs from 'qs'
 import IconButton from '@material-ui/core/IconButton'
 import { Search as SearchIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
+import { APIDictionary } from '../types'
 
 const PER_PAGE = 20;
 
 interface Props {
-  loading: boolean,
-  dictionaries?: APIDictionary[],
-  meta?: {num_found?: number},
-  retrieveDictionaries: Function,
+  dictionaries: APIDictionary[],
+  numFound: number,
+  onPageChange: Function,
+  onSearch: Function,
+  page: number,
+  initialQ: string,
 };
 
 const useStyles = makeStyles({
@@ -60,37 +53,18 @@ const useStyles = makeStyles({
   },
 });
 
-const ViewDictionariesPage: React.FC<Props> = ({dictionaries=[], loading, meta={}, retrieveDictionaries}) => {
+const ViewDictionaries: React.FC<Props> = ({dictionaries, numFound, onPageChange, onSearch, page, initialQ}) => {
   const classes = useStyles();
-  const {push: goTo} = useHistory();
-  const {pathname: url} = useLocation();
-  const {num_found: numFound = dictionaries.length} = meta;
-
-  const queryParams: {page?: number, q?: string} = useQuery();
-  const {
-    page=1,
-    q: initialQ='',
-  } = queryParams;
-
   const [q, setQ] = useState(initialQ);
 
-  useEffect(() => {
-    retrieveDictionaries('/collections/', initialQ, PER_PAGE, page);
-  }, [retrieveDictionaries, initialQ, page]);
-
-  const gimmeAUrl = (params: {page?: number, q?: string}) => {
-    const newParams: {page?: number, q?: string} = {...queryParams, ...params};
-    return `${url}?${qs.stringify(newParams)}`;
-  };
-
   return (
-    <ProgressOverlay loading={loading}>
+    <>
       <Grid
         className={classes.search}
         item
         xs={5}
       >
-        <form onSubmit={e => {e.preventDefault(); goTo(gimmeAUrl({q}));}}>
+        <form onSubmit={e => {e.preventDefault(); onSearch(q);}}>
           <Input
             onChange={e => setQ(e.target.value)}
             value={q}
@@ -99,7 +73,7 @@ const ViewDictionariesPage: React.FC<Props> = ({dictionaries=[], loading, meta={
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
-                  onClick={() => goTo(gimmeAUrl({q}))}
+                  onClick={() => onSearch(q)}
                 >
                   <SearchIcon />
                 </IconButton>
@@ -160,22 +134,12 @@ const ViewDictionariesPage: React.FC<Props> = ({dictionaries=[], loading, meta={
           nextIconButtonProps={{
             'aria-label': 'next page',
           }}
-          onChangePage={(_: any, page: number) => goTo(gimmeAUrl({page: page - 1}))}
+          onChangePage={(_: any, page: number) => onPageChange(page + 1)}
         />
       </Grid>
-    </ProgressOverlay>
+    </>
   );
 }
 
 
-const mapStateToProps = (state: AppState) => ({
-  loading: retrieveDictionariesLoadingSelector(state),
-  dictionaries: state.dictionaries.dictionaries ? state.dictionaries.dictionaries.items : [],
-  meta: state.dictionaries.dictionaries ? state.dictionaries.dictionaries.responseMeta : {},
-});
-
-const mapDispatchToProps = {
-  retrieveDictionaries: retrieveDictionariesAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionariesPage);
+export default ViewDictionaries;
