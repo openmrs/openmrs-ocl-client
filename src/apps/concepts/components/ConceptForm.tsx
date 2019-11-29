@@ -126,14 +126,14 @@ const ConceptSchema = Yup.object().shape<Concept>({
 })
 
 interface Props {
-  loading: boolean,
+  loading?: boolean,
   createConcept?: Function,
   errors?: {},
   editing?: boolean,
   savedValues?: Concept,
 }
 
-const ConceptForm: React.FC<Props> = ({ loading, createConcept, errors, editing = false, savedValues }) => {
+const ConceptForm: React.FC<Props> = ({ loading=false, createConcept, errors, editing = false, savedValues }) => {
   const classes = useStyles()
 
   const formikRef: any = useRef(null)
@@ -144,9 +144,9 @@ const ConceptForm: React.FC<Props> = ({ loading, createConcept, errors, editing 
   useEffect(() => {
     const { current: currentRef } = formikRef
     if (currentRef) {
-      currentRef.setSubmitting(loading)
+      currentRef.setSubmitting(loading || !editing)
     }
-  }, [loading])
+  }, [loading, editing])
 
   useEffect(() => {
     const { current: currentRef } = formikRef

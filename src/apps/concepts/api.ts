@@ -1,6 +1,6 @@
 import { authenticatedInstance } from '../../api'
 import { AxiosResponse } from 'axios'
-import { BaseConcept } from './types'
+import { BaseConcept, Mapping } from './types'
 import { buildPartialSearchQuery } from '../../utils'
 
 // https://stackoverflow.com/a/40560953/6448384
@@ -36,9 +36,13 @@ const api = {
         includeMappings: true,
       }
     }),
+    update: (conceptUrl: string, data: BaseConcept): Promise<AxiosResponse<any>> => authenticatedInstance.post(conceptUrl, data),
   },
   mappings: {
-    create: (sourceUrl: string, data: BaseConcept): Promise<AxiosResponse<any>> => authenticatedInstance.post(`${sourceUrl}mappings/`, data),
+    create: (sourceUrl: string, data: Mapping): Promise<AxiosResponse<any>> => authenticatedInstance.post(`${sourceUrl}mappings/`, data),
+  },
+  mapping: {
+    update: (mappingUrl: string, data: Mapping): Promise<AxiosResponse<any>> => authenticatedInstance.post(mappingUrl, data),
   },
 }
 

@@ -39,6 +39,7 @@ export interface BaseConcept {
   datatype: string,
   names: ConceptName[],
   descriptions: ConceptDescription[],
+  url?: string,
 }
 
 export interface Concept extends BaseConcept {
@@ -54,7 +55,7 @@ export interface APIConcept extends BaseConcept {
 }
 
 export interface ConceptsState {
-  newConcept?: APIConcept,
+  upsertedConcept?: APIConcept,
   concept?: APIConcept,
   concepts?: { items: APIConcept[], responseMeta?: {} },
 }

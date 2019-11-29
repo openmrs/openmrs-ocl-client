@@ -202,7 +202,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     tableWrapper: {
       overflowX: 'auto',
-      height: '74vh',
+      height: '72vh',
     },
     visuallyHidden: {
       border: 0,

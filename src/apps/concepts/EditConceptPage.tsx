@@ -23,7 +23,7 @@ const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, e
   const { pathname: url } = useLocation()
 
   useEffect(() => {
-    retrieveConcept(url)
+    retrieveConcept(url.replace('edit/', ''))
   }, [url, retrieveConcept])
 
   if (loading) {
@@ -31,14 +31,12 @@ const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, e
   }
 
   return (
-    <Header title={startCase(toLower(concept ? concept.display_name : 'View concept'))}>
+    <Header title={'Edit ' + startCase(toLower(concept ? concept.display_name : 'concept'))}>
       <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm savedValues={apiConceptToConcept(concept)} errors={errors}/>
+        <ConceptForm editing savedValues={apiConceptToConcept(concept)} loading={false} errors={errors}/>
       </Grid>
-      <Link to={`${url}edit/`}>
-        <Fab color="primary" className="fab">
-          <EditIcon/>
-        </Fab>
+      <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
+        <EditIcon/>
       </Link>
     </Header>
   )

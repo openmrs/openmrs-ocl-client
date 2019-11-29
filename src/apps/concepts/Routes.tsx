@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 import ViewConceptPage from './ViewConceptPage'
 import { CreateConceptPage } from './index'
 import ViewConceptsPage from './ViewConceptsPage'
+import EditConceptPage from './EditConceptPage'
 
 const Routes: React.FC = () => {
   // @ts-ignore
@@ -21,6 +22,9 @@ const Routes: React.FC = () => {
       </Route>
       <Route exact path={`${path}/:concept/`}>
         <ViewConceptPage/>
+      </Route>
+      <Route exact path={`${path}/:concept/edit/`}>
+        <EditConceptPage/>
       </Route>
     </Switch>
   )
