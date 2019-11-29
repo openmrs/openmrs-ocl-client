@@ -60,14 +60,21 @@ export interface ConceptsState {
   concepts?: { items: APIConcept[], responseMeta?: {} },
 }
 
+const apiNamesToName = (names: ConceptName[]) => names.map((name: ConceptName) => ({
+  ...name,
+  name_type: name.name_type === null ? 'null' : name.name_type, // api represents 'Synonym' name_type as null
+}));
+
 const apiConceptToConcept = (apiConcept: APIConcept | undefined): Concept | undefined => {
+  console.log(apiConcept, 'concept');
   if (!apiConcept) return apiConcept
 
-  let { descriptions, mappings, url, display_name, ...theRest } = apiConcept
+  let { names, descriptions, mappings, display_name, ...theRest } = apiConcept
   mappings = mappings || []
   descriptions = descriptions || []
 
   return {
+    names: apiNamesToName(names),
     descriptions,
     ...theRest,
     answers: mappings.filter(mapping => mapping.map_type === MAP_TYPE_Q_AND_A.value),

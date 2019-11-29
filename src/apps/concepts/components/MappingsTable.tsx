@@ -9,7 +9,7 @@ import {
   TableRow, Theme,
   Typography
 } from '@material-ui/core'
-import { ArrayHelpers, ErrorMessage } from 'formik'
+import { ArrayHelpers, ErrorMessage, FormikTouched } from 'formik'
 import React from 'react'
 import { Mapping } from '../types'
 import MappingsTableRow from './MappingsTableRow'

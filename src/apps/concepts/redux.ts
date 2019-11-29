@@ -27,6 +27,7 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
     let response: APIConcept | boolean
 
     dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), 'Upserting concept...'))
+    console.log(concept)
     const [action, url] = concept.url ?
       [createActionThunk(UPSERT_CONCEPT_ACTION, api.concept.update), concept.url] :
       [createActionThunk(UPSERT_CONCEPT_ACTION, api.concepts.create), sourceUrl];
@@ -44,18 +45,19 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
 
     const upsertMappings = async (rawMappings: Mapping[], batchIndex: number) => {
       const mappings = rawMappings.map(mapping => {
-        const { to_source_url, to_concept_code, to_concept_url, ...theRest } = mapping
-        return to_concept_code ?
+        const { to_source_url, to_concept_code, to_concept_url, external_id, map_type, to_concept_name, retired, url } = mapping
+        const common = {external_id, map_type, to_concept_name, retired, url};
+        return to_concept_url ?
           {
-            ...theRest,
+            ...common,
+            from_concept_url: conceptResponse.url,
+            to_concept_url,
+          } :
+          {
+            ...common,
             from_concept_url: conceptResponse.url,
             to_source_url,
             to_concept_code,
-          } :
-          {
-            ...theRest,
-            from_concept_url: conceptResponse.url,
-            to_concept_url,
           }
       });
 

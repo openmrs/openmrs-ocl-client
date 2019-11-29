@@ -21,13 +21,13 @@ const CreateConceptPage: React.FC<Props> = ({ createConcept, newConcept, loading
 
   const previouslyLoading = usePrevious(loading)
 
-  if (!loading && previouslyLoading && newConcept) {
+  if (!loading && previouslyLoading && !errors && newConcept) {
     return <Redirect to={newConcept.url}/>
   }
 
   return (
     <Grid item xs={8} component="div">
-      <ConceptForm editing createConcept={(data: BaseConcept) => createConcept(data, sourceUrl)} loading={loading}
+      <ConceptForm editing onSubmit={(data: BaseConcept) => createConcept(data, sourceUrl)} loading={loading}
                    errors={errors}/>
     </Grid>
   )

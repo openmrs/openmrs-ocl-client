@@ -36,13 +36,13 @@ const api = {
         includeMappings: true,
       }
     }),
-    update: (conceptUrl: string, data: BaseConcept): Promise<AxiosResponse<any>> => authenticatedInstance.post(conceptUrl, data),
+    update: (conceptUrl: string, data: BaseConcept): Promise<AxiosResponse<any>> => authenticatedInstance.put(conceptUrl, data),
   },
   mappings: {
     create: (sourceUrl: string, data: Mapping): Promise<AxiosResponse<any>> => authenticatedInstance.post(`${sourceUrl}mappings/`, data),
   },
   mapping: {
-    update: (mappingUrl: string, data: Mapping): Promise<AxiosResponse<any>> => authenticatedInstance.post(mappingUrl, data),
+    update: (mappingUrl: string, data: Mapping): Promise<AxiosResponse<any>> => authenticatedInstance.put(mappingUrl, data),
   },
 }
 

@@ -166,12 +166,12 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
 
   const [isInternalMapping, setIsInternalMapping] = useState(toConceptUrl !== null)
 
-  // reset to_concept on to_source change
-  useEffect(() => {
+  const resetToConcept = () => {
+    // I don't like doing this imperatively, but I failed to use the useEffect hook for this
     handleChange(buildEvent(`${valueKey}.to_concept_url`, undefined))
     handleChange(buildEvent(`${valueKey}.to_concept_code`, undefined))
     handleChange(buildEvent(`${valueKey}.to_concept_name`, undefined))
-  }, [toSourceUrl])
+  }
 
   // update default map_type
   useEffect(() => {
@@ -197,6 +197,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
               name={`${valueKey}.to_source_url`}
               component={AsyncSelect}
               onChange={(option: SourceOption | null) => {
+                resetToConcept();
                 if (option) {
                   handleChange(buildEvent(`${valueKey}.to_source_url`, option.value))
                   setIsInternalMapping(option.isInternalSource)
@@ -251,6 +252,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
               margin="dense"
             >
               <Field
+                key={toSourceUrl}
                 id={`${valueKey}.to_concept_url`}
                 name={`${valueKey}.to_concept_url`}
                 component={AsyncSelect}
@@ -286,6 +288,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
         ) : (
           <TableCell className={classes.doubleCellWidth} component="td" scope="row">
             <Field
+              key={toSourceUrl}
               fullWidth
               id={`${valueKey}.to_concept_code`}
               name={`${valueKey}.to_concept_code`}
@@ -295,6 +298,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
             />
             <br/>
             <Field
+              key={toSourceUrl}
               fullWidth
               id={`${valueKey}.to_concept_name`}
               name={`${valueKey}.to_concept_name`}

@@ -1,55 +1,77 @@
 import React, { useEffect } from 'react'
-import { Fab, Grid } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import { ConceptForm } from './components'
 import { AppState } from '../../redux'
-import { viewConceptLoadingSelector, viewConceptErrorsSelector, retrieveConceptAction } from './redux'
-import { APIConcept, apiConceptToConcept } from './types'
-import { useLocation } from 'react-router'
+import {
+  viewConceptLoadingSelector,
+  viewConceptErrorsSelector,
+  retrieveConceptAction,
+  upsertConceptAndMappingsLoadingSelector, createConceptErrorsSelector, upsertConceptAndMappingsAction
+} from './redux'
+import { APIConcept, apiConceptToConcept, BaseConcept } from './types'
+import { Redirect, useLocation, useParams } from 'react-router'
 import { connect } from 'react-redux'
-import './ViewConceptPage.scss'
-import { Edit as EditIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
 import { startCase, toLower } from 'lodash'
+import { usePrevious } from '../../utils'
 
 interface Props {
-  loading: boolean,
+  fetchLoading: boolean,
+  updateLoading: boolean,
+  updatedConcept?: APIConcept,
   concept?: APIConcept,
-  errors?: {},
+  fetchErrors?: {},
+  updateErrors?: {},
   retrieveConcept: Function,
+  updateConcept: Function,
 }
 
-const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, errors }) => {
-  const { pathname: url } = useLocation()
+const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoading, fetchErrors, updatedConcept, updateErrors, updateLoading, updateConcept }) => {
+  const { pathname: url } = useLocation();
+  const { ownerType, owner, source } = useParams();
+
 
   useEffect(() => {
     retrieveConcept(url.replace('edit/', ''))
   }, [url, retrieveConcept])
 
-  if (loading) {
+  const updatePreviouslyLoading = usePrevious(updateLoading);
+
+  if (fetchLoading) {
     return <span>Loading...</span>
+  }
+
+  if (!updateLoading && updatePreviouslyLoading && !updateErrors && updatedConcept) {
+    return <Redirect to={updatedConcept.url}/>
   }
 
   return (
     <Header title={'Edit ' + startCase(toLower(concept ? concept.display_name : 'concept'))}>
-      <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm editing savedValues={apiConceptToConcept(concept)} loading={false} errors={errors}/>
+      <Grid id="editConceptPage" item xs={8} component="div">
+        <ConceptForm
+          editing
+          savedValues={apiConceptToConcept(concept)}
+          loading={updateLoading}
+          errors={updateErrors}
+          onSubmit={(data: BaseConcept) => updateConcept(data, `/${ownerType}/${owner}/sources/${source}/`)}
+        />
       </Grid>
-      <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
-        <EditIcon/>
-      </Link>
     </Header>
   )
 }
 
 const mapStateToProps = (state: AppState) => ({
   concept: state.concepts.concept,
-  loading: viewConceptLoadingSelector(state),
-  errors: viewConceptErrorsSelector(state),
+  updatedConcept: state.concepts.upsertedConcept,
+  updateLoading: upsertConceptAndMappingsLoadingSelector(state),
+  fetchLoading: viewConceptLoadingSelector(state),
+  fetchErrors: viewConceptErrorsSelector(state),
+  updateErrors: createConceptErrorsSelector(state),
 })
 
 const mapActionsToProps = {
   retrieveConcept: retrieveConceptAction,
+  updateConcept: upsertConceptAndMappingsAction,
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage)
+export default connect(mapStateToProps, mapActionsToProps)(EditConceptPage)
