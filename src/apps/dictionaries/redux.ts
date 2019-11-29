@@ -149,7 +149,7 @@ const initialState: DictionaryState = {
 }
 
 const reducer = createReducer(initialState, {
-  [startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)).type]: (state, action) => ({
+  [startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)).type]: (state) => ({
     ...state,
     newDictionary: undefined
   }),

@@ -7,13 +7,15 @@ import { useQuery } from '../../utils'
 import { useHistory, useLocation } from 'react-router'
 import qs from 'qs'
 import ViewDictionaries from './components/ViewDictionaries'
-import { Grid } from '@material-ui/core'
+import { Fab, Grid } from '@material-ui/core'
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX, retrieveOrgDictionariesAction,
   retrieveOrgDictionariesLoadingSelector, retrievePersonalDictionariesAction,
   retrievePersonalDictionariesLoadingSelector
 } from './redux'
+import { Add as AddIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
 
 const PER_PAGE = 20
 
@@ -73,31 +75,38 @@ const ViewDictionariesPage: React.FC<Props> = ({
   }
 
   return (
-    <Grid item container xs={12}>
-      <ProgressOverlay loading={loadingPersonal || loadingOrgs}>
-        <Grid item xs={6}>
-          <ViewDictionaries
-            title="Personal dictionaries"
-            initialQ={initialPersonalQ}
-            page={personalPage}
-            onSearch={(personalQ: string) => goTo(gimmeAUrl({ personalQ }))}
-            onPageChange={(page: number) => goTo(gimmeAUrl({ personalPage }))}
-            dictionaries={personalDictionaries}
-            numFound={numFoundPersonal}
-          />
-        </Grid>
-        <Grid item xs={6}>
-          <ViewDictionaries
-            title="Your organizations' dictionaries"
-            initialQ={initialOrgQ}
-            page={orgPage}
-            onSearch={(orgQ: string) => goTo(gimmeAUrl({ orgQ }))}
-            onPageChange={(page: number) => goTo(gimmeAUrl({ orgPage }))}
-            dictionaries={orgDictionaries} numFound={numFoundOrgs}
-          />
-        </Grid>
-      </ProgressOverlay>
-    </Grid>
+    <>
+      <Grid item container xs={12}>
+        <ProgressOverlay loading={loadingPersonal || loadingOrgs}>
+          <Grid item xs={6}>
+            <ViewDictionaries
+              title="Personal dictionaries"
+              initialQ={initialPersonalQ}
+              page={Number(personalPage)}
+              onSearch={(personalQ: string) => goTo(gimmeAUrl({ personalQ }))}
+              onPageChange={(page: number) => goTo(gimmeAUrl({ personalPage }))}
+              dictionaries={personalDictionaries}
+              numFound={numFoundPersonal}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <ViewDictionaries
+              title="Your organizations' dictionaries"
+              initialQ={initialOrgQ}
+              page={Number(orgPage)}
+              onSearch={(orgQ: string) => goTo(gimmeAUrl({ orgQ }))}
+              onPageChange={(page: number) => goTo(gimmeAUrl({ orgPage }))}
+              dictionaries={orgDictionaries} numFound={numFoundOrgs}
+            />
+          </Grid>
+        </ProgressOverlay>
+      </Grid>
+      <Link to={`/dictionaries/new/`}>
+        <Fab color="primary" className="fab">
+          <AddIcon/>
+        </Fab>
+      </Link>
+    </>
   )
 }
 

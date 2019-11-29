@@ -30,9 +30,6 @@ interface Props {
 }
 
 const useStyles = makeStyles({
-  card: {
-    minWidth: 275,
-  },
   pagination: {
     justifyItems: 'center',
     display: 'grid',
@@ -116,14 +113,15 @@ const ViewDictionaries: React.FC<Props> = ({ dictionaries, numFound, onPageChang
         {dictionaries.map(({ name, short_code: shortCode, owner, owner_type: ownerType, description, url }) => (
           <Grid
             item
-            xs={3}
+            key={shortCode}
+            // xs={3}
           >
-            <Card className={classes.card}>
+            <Card>
               <CardContent>
                 <Typography variant="body1" color="textSecondary" gutterBottom>
                   {shortCode}
                 </Typography>
-                <Typography variant="h5">
+                <Typography noWrap variant="h5">
                   {name}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
@@ -146,7 +144,8 @@ const ViewDictionaries: React.FC<Props> = ({ dictionaries, numFound, onPageChang
             className={clsx(classes.pagination, (title ? classes.paginationSingle : classes.paginationDouble))}>
         <TablePagination
           rowsPerPageOptions={[PER_PAGE]}
-          count={numFound}
+          component="div"
+          count={Number(numFound)}
           rowsPerPage={PER_PAGE}
           page={page - 1}
           backIconButtonProps={{

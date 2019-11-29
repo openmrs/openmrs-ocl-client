@@ -14,7 +14,6 @@ const api = {
           params: {
             limit,
             page,
-            verbose: true,
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
@@ -27,7 +26,6 @@ const api = {
           params: {
             limit,
             page,
-            verbose: true,
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
