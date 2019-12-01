@@ -30,9 +30,9 @@ import * as Yup from 'yup'
 import MappingsTable from './MappingsTable'
 import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from '../redux'
 
-const ANSWERS_VALUE_KEY = 'answers';
-const SETS_VALUE_KEY = 'sets';
-const MAPPINGS_VALUE_KEY = 'mappings';
+const ANSWERS_VALUE_KEY = 'answers'
+const SETS_VALUE_KEY = 'sets'
+const MAPPINGS_VALUE_KEY = 'mappings'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -136,14 +136,14 @@ interface Props {
   errors?: {},
   editing?: boolean,
   savedValues?: Concept,
-  allMappingErrors?: {errors: string}[],
+  allMappingErrors?: { errors: string }[],
   status?: string,
 }
 
-const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, status, errors, allMappingErrors=[], editing = false, savedValues }) => {
+const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, errors, allMappingErrors = [], editing = false, savedValues }) => {
   const classes = useStyles()
 
-  const error: string | undefined = getPrettyError(errors);
+  const error: string | undefined = getPrettyError(errors)
 
   const formikRef: any = useRef(null)
 
@@ -162,7 +162,7 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, status, errors,
     if (currentRef) {
       currentRef.setStatus(status)
     }
-  }, [status]);
+  }, [status])
 
   useEffect(() => {
     const { current: currentRef } = formikRef
@@ -184,12 +184,12 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, status, errors,
       [MAPPINGS_VALUE_KEY, MAPPINGS_BATCH_INDEX],
     ].forEach(([key, batchIndex]) => {
       currentRef.state.values[key].forEach((_: Mapping, index: number) => {
-        const error = allMappingErrors[Number(`${batchIndex}${index}`)];
-        if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
-      });
+        const error = allMappingErrors[Number(`${batchIndex}${index}`)]
+        if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors)
+      })
     })
-    console.log(currentRef);
-  }, [allMappingErrors.toString()]);
+    console.log(currentRef)
+  }, [allMappingErrors.toString()])
 
   return (
     <Formik

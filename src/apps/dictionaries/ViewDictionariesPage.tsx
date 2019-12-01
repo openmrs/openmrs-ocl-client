@@ -58,8 +58,8 @@ const ViewDictionariesPage: React.FC<Props> = ({
   } = queryParams
 
   useEffect(() => {
-    retrieveDictionaries('/user/collections/', initialPersonalQ, PER_PAGE, personalPage, '/user/orgs/collections/', initialOrgQ, PER_PAGE, orgPage);
-  }, [retrieveDictionaries, initialPersonalQ, personalPage, initialOrgQ, orgPage]);
+    retrieveDictionaries('/user/collections/', initialPersonalQ, PER_PAGE, personalPage, '/user/orgs/collections/', initialOrgQ, PER_PAGE, orgPage)
+  }, [retrieveDictionaries, initialPersonalQ, personalPage, initialOrgQ, orgPage])
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = { ...queryParams, ...params }

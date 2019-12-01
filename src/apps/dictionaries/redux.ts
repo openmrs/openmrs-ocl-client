@@ -147,9 +147,9 @@ const retrieveDictionariesAction = (personalDictionariesUrl: string, personalQ: 
   // Yes, we would have loved for these to be individual actions, but I encountered a weird race condition issue
   // Backend mixes up results for the two calls when they are started simultaneously
   return async (dispatch: Function) => {
-    await dispatch(retrievePersonalDictionariesAction(personalDictionariesUrl, personalQ, personalLimit, personalPage));
-    await dispatch(retrieveOrgDictionariesAction(orgDictionariesUrl, orgQ, orgLimit, orgPage));
-  };
+    await dispatch(retrievePersonalDictionariesAction(personalDictionariesUrl, personalQ, personalLimit, personalPage))
+    await dispatch(retrieveOrgDictionariesAction(orgDictionariesUrl, orgQ, orgLimit, orgPage))
+  }
 }
 
 const initialState: DictionaryState = {
@@ -186,7 +186,7 @@ const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state)
 
 const retrievePublicDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION))
-const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX));
+const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX))
 
 export {
   reducer as default,

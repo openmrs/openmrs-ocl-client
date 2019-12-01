@@ -63,10 +63,10 @@ export interface ConceptsState {
 const apiNamesToName = (names: ConceptName[]) => names.map((name: ConceptName) => ({
   ...name,
   name_type: name.name_type === null ? 'null' : name.name_type, // api represents 'Synonym' name_type as null
-}));
+}))
 
 const apiConceptToConcept = (apiConcept: APIConcept | undefined): Concept | undefined => {
-  console.log(apiConcept, 'concept');
+  console.log(apiConcept, 'concept')
   if (!apiConcept) return apiConcept
 
   let { names, descriptions, mappings, display_name, ...theRest } = apiConcept

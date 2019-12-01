@@ -5,8 +5,8 @@ export const TRADITIONAL_OCL_URL = 'https://demo.openconceptlab.org'
 
 export const CUSTOM_VALIDATION_SCHEMA = 'OpenMRS'
 
-export const USER_TYPE = 'users';
-export const ORG_TYPE = 'orgs';
+export const USER_TYPE = 'users'
+export const ORG_TYPE = 'orgs'
 
 export const option = (value: string, label: string = value): Option => ({ value, label })
 

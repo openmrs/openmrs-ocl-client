@@ -197,7 +197,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
               name={`${valueKey}.to_source_url`}
               component={AsyncSelect}
               onChange={(option: SourceOption | null) => {
-                resetToConcept();
+                resetToConcept()
                 if (option) {
                   handleChange(buildEvent(`${valueKey}.to_source_url`, option.value))
                   setIsInternalMapping(option.isInternalSource)

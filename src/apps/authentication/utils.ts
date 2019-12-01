@@ -18,6 +18,6 @@ const addAuthToken = (data: any, headers: any) => {
   return data
 }
 
-const canModifyContainer= (ownerType: string, owner: string, profile?: APIProfile, usersOrgs: APIOrg[]=[]) => Boolean(ownerType === USER_TYPE ? profile?.username === owner : profile?.username && usersOrgs.map(org => org.id).indexOf(profile.username) > -1);
+const canModifyContainer = (ownerType: string, owner: string, profile?: APIProfile, usersOrgs: APIOrg[] = []) => Boolean(ownerType === USER_TYPE ? profile?.username === owner : profile?.username && usersOrgs.map(org => org.id).indexOf(profile.username) > -1)
 
 export { redirectIfNotLoggedIn, addAuthToken, canModifyContainer }

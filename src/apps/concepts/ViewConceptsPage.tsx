@@ -31,7 +31,7 @@ interface Props {
 const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType }) => {
   const { push: goTo } = useHistory()
   const { pathname: url } = useLocation()
-  const {ownerType, owner}  = useParams<{ownerType: string, owner: string}>();
+  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
   const queryParams: QueryParams = useQuery() // todo get limit from settings
   const {
@@ -49,7 +49,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
   const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters)
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters)
   const [q, setQ] = useState(initialQ)
-  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs);
+  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs)
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = {

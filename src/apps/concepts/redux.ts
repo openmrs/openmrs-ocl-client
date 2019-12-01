@@ -17,9 +17,9 @@ const UPSERT_MAPPING_ACTION = 'concepts/upsertMapping'
 const UPSERT_CONCEPT_AND_MAPPINGS = 'concepts/createConceptAndMappings'
 const RETRIEVE_CONCEPTS_ACTION = 'concepts/retrieveConcepts'
 
-const ANSWERS_BATCH_INDEX = 0;
-const SETS_BATCH_INDEX = 1;
-const MAPPINGS_BATCH_INDEX = 2;
+const ANSWERS_BATCH_INDEX = 0
+const SETS_BATCH_INDEX = 1
+const MAPPINGS_BATCH_INDEX = 2
 
 const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concept.retrieve)
 const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
@@ -29,15 +29,15 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
 
     const { answers, sets, mappings, ...concept } = data
 
-    const updating: boolean = !!concept.url;
+    const updating: boolean = !!concept.url
 
     let response: APIConcept | boolean
 
     dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), `${updating ? 'Updating' : 'Creating'} concept...`))
     const [action, url] = concept.url ?
       [createActionThunk(UPSERT_CONCEPT_ACTION, api.concept.update), concept.url] :
-      [createActionThunk(UPSERT_CONCEPT_ACTION, api.concepts.create), sourceUrl];
-    response = await dispatch(action<APIConcept>(url, concept));
+      [createActionThunk(UPSERT_CONCEPT_ACTION, api.concepts.create), sourceUrl]
+    response = await dispatch(action<APIConcept>(url, concept))
 
     if (typeof response === 'boolean') {
       // I think that at this point, it is generally sane not to try dealing with the mappings if the concept can't be updated. todo could improve.
@@ -54,7 +54,7 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
 
       const mappings = rawMappings.map(mapping => {
         const { to_source_url, to_concept_code, to_concept_url, external_id, map_type, to_concept_name, retired, url } = mapping
-        const common = {external_id, map_type, to_concept_name, retired, url};
+        const common = { external_id, map_type, to_concept_name, retired, url }
         return to_concept_url ?
           {
             ...common,
@@ -67,13 +67,13 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
             to_source_url,
             to_concept_code,
           }
-      });
+      })
 
       const actions: [Mapping, CallableFunction, string][] = mappings.map((mapping, index) => [
         mapping,
         createActionThunk(indexedAction(UPSERT_MAPPING_ACTION, Number(`${batchIndex}${index}`)), mapping.url ? api.mapping.update : api.mappings.create),
         mapping.url ? mapping.url : sourceUrl,
-      ]);
+      ])
       await Promise.all(actions.map(([mapping, action, url]) => dispatch(action(url, mapping))))
     }
 
@@ -81,9 +81,9 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
     // I see your in-parallel and raise you my race-condition
     // If a user duplicates a mapping say in answers and sets, we want to be able to sequentially point this out
     // todo some more robust error handling
-    await upsertMappings(answers, ANSWERS_BATCH_INDEX, 'answers');
-    await upsertMappings(sets, SETS_BATCH_INDEX, 'sets');
-    await upsertMappings(mappings, MAPPINGS_BATCH_INDEX, 'mappings');
+    await upsertMappings(answers, ANSWERS_BATCH_INDEX, 'answers')
+    await upsertMappings(sets, SETS_BATCH_INDEX, 'sets')
+    await upsertMappings(mappings, MAPPINGS_BATCH_INDEX, 'mappings')
 
     dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ''))
     dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))
@@ -115,7 +115,7 @@ const viewConceptLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEP
 const viewConceptErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPT_ACTION))
 const viewConceptsLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION))
 const viewConceptsErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION))
-const upsertAllMappingsErrorSelector = errorListSelector(UPSERT_MAPPING_ACTION);
+const upsertAllMappingsErrorSelector = errorListSelector(UPSERT_MAPPING_ACTION)
 
 export {
   reducer as default,

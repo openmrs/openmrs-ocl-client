@@ -1,0 +1,5 @@
+const SOURCE_CONTAINER = 'source'
+const COLLECTION_CONTAINER = 'collection'
+const CIEL_CONCEPTS_URL = '/orgs/CIEL/sources/CIEL/concepts/'
+
+export { SOURCE_CONTAINER, COLLECTION_CONTAINER, CIEL_CONCEPTS_URL }

@@ -29,15 +29,15 @@ interface Props {
   collection?: APICollection,
 }
 
-const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs=[], dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection }: Props) => {
-  const { pathname: url } = useLocation();
-  const {ownerType, owner} = useParams<{ownerType: string, owner: string}>();
+const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection }: Props) => {
+  const { pathname: url } = useLocation()
+  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
   useEffect(() => {
     retrieveDictionaryAndDetails(url.replace('/dictionaries/', '/collections/'))
-  }, [url, retrieveDictionaryAndDetails]);
+  }, [url, retrieveDictionaryAndDetails])
 
-  const canEditDictionary = canModifyContainer(ownerType, owner, profile, usersOrgs);
+  const canEditDictionary = canModifyContainer(ownerType, owner, profile, usersOrgs)
 
   if (dictionaryLoading) return <span>'Loading...'</span>
 

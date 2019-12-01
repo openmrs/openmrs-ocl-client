@@ -25,9 +25,9 @@ interface Props {
 
 const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, errors, profile, usersOrgs }) => {
   const { pathname: url } = useLocation()
-  const {ownerType, owner}  = useParams<{ownerType: string, owner: string}>();
+  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
-  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs);
+  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs)
 
   useEffect(() => {
     retrieveConcept(url)

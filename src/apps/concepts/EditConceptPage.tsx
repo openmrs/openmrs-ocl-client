@@ -27,23 +27,23 @@ interface Props {
   updateErrors?: {},
   retrieveConcept: Function,
   updateConcept: Function,
-  allMappingErrors?: {errors: string}[],
+  allMappingErrors?: { errors: string }[],
   progress?: string,
 }
 
-const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoading, fetchErrors, updatedConcept, updateErrors, updateLoading, updateConcept, allMappingErrors=[], progress }) => {
-  const { pathname: url } = useLocation();
-  const { ownerType, owner, source } = useParams();
+const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoading, fetchErrors, updatedConcept, updateErrors, updateLoading, updateConcept, allMappingErrors = [], progress }) => {
+  const { pathname: url } = useLocation()
+  const { ownerType, owner, source } = useParams()
 
-  const anyMappingsErrors = !!allMappingErrors.length && allMappingErrors.some(value => value);
+  const anyMappingsErrors = !!allMappingErrors.length && allMappingErrors.some(value => value)
 
-  const status = !updateErrors && anyMappingsErrors ? 'Concept updated. Some mappings were not updated or added. Fix the errors and retry.' : progress;
+  const status = !updateErrors && anyMappingsErrors ? 'Concept updated. Some mappings were not updated or added. Fix the errors and retry.' : progress
 
   useEffect(() => {
     retrieveConcept(url.replace('edit/', ''))
   }, [url, retrieveConcept])
 
-  const updatePreviouslyLoading = usePrevious(updateLoading);
+  const updatePreviouslyLoading = usePrevious(updateLoading)
 
   if (fetchLoading) {
     return <span>Loading...</span>
