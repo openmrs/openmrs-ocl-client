@@ -3,12 +3,12 @@ import {
   createActionThunk,
   indexedAction,
   loadingSelector,
-  progressAction, resetAction,
+  progressAction, progressSelector, resetAction,
   startAction
 } from '../../redux'
 import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'
-import { errorSelector } from '../../redux/redux'
+import { errorListSelector, errorSelector } from '../../redux/redux'
 import { Action } from '../../redux/utils'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
@@ -17,17 +17,23 @@ const UPSERT_MAPPING_ACTION = 'concepts/upsertMapping'
 const UPSERT_CONCEPT_AND_MAPPINGS = 'concepts/createConceptAndMappings'
 const RETRIEVE_CONCEPTS_ACTION = 'concepts/retrieveConcepts'
 
+const ANSWERS_BATCH_INDEX = 0;
+const SETS_BATCH_INDEX = 1;
+const MAPPINGS_BATCH_INDEX = 2;
+
 const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concept.retrieve)
 const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
   return async (dispatch: Function) => {
+
     dispatch(startAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))
 
     const { answers, sets, mappings, ...concept } = data
 
+    const updating: boolean = !!concept.url;
+
     let response: APIConcept | boolean
 
-    dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), 'Upserting concept...'))
-    console.log(concept)
+    dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), `${updating ? 'Updating' : 'Creating'} concept...`))
     const [action, url] = concept.url ?
       [createActionThunk(UPSERT_CONCEPT_ACTION, api.concept.update), concept.url] :
       [createActionThunk(UPSERT_CONCEPT_ACTION, api.concepts.create), sourceUrl];
@@ -43,7 +49,9 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
 
     await dispatch(resetAction(UPSERT_MAPPING_ACTION))
 
-    const upsertMappings = async (rawMappings: Mapping[], batchIndex: number) => {
+    const upsertMappings = async (rawMappings: Mapping[], batchIndex: number, message: string) => {
+      if (rawMappings.length) dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), `${updating ? 'Updating' : 'Creating'} ${message}...`))
+
       const mappings = rawMappings.map(mapping => {
         const { to_source_url, to_concept_code, to_concept_url, external_id, map_type, to_concept_name, retired, url } = mapping
         const common = {external_id, map_type, to_concept_name, retired, url};
@@ -73,10 +81,11 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
     // I see your in-parallel and raise you my race-condition
     // If a user duplicates a mapping say in answers and sets, we want to be able to sequentially point this out
     // todo some more robust error handling
-    await upsertMappings(answers, 1)
-    await upsertMappings(sets, 2)
-    await upsertMappings(mappings, 3)
+    await upsertMappings(answers, ANSWERS_BATCH_INDEX, 'answers');
+    await upsertMappings(sets, SETS_BATCH_INDEX, 'sets');
+    await upsertMappings(mappings, MAPPINGS_BATCH_INDEX, 'mappings');
 
+    dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ''))
     dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))
   }
 }
@@ -100,21 +109,28 @@ const reducer = (state = initialState, action: Action) => {
 }
 
 const upsertConceptAndMappingsLoadingSelector = loadingSelector(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS))
-const createConceptErrorsSelector = errorSelector(indexedAction(UPSERT_CONCEPT_ACTION))
+const upsertConceptAndMappingsProgressSelector = progressSelector(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS))
+const upsertConceptErrorsSelector = errorSelector(indexedAction(UPSERT_CONCEPT_ACTION))
 const viewConceptLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEPT_ACTION))
 const viewConceptErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPT_ACTION))
 const viewConceptsLoadingSelector = loadingSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION))
 const viewConceptsErrorsSelector = errorSelector(indexedAction(RETRIEVE_CONCEPTS_ACTION))
+const upsertAllMappingsErrorSelector = errorListSelector(UPSERT_MAPPING_ACTION);
 
 export {
   reducer as default,
   upsertConceptAndMappingsAction,
   retrieveConceptAction,
   upsertConceptAndMappingsLoadingSelector,
-  createConceptErrorsSelector,
+  upsertConceptAndMappingsProgressSelector,
+  upsertConceptErrorsSelector,
   viewConceptLoadingSelector,
   viewConceptErrorsSelector,
   retrieveConceptsAction,
   viewConceptsLoadingSelector,
   viewConceptsErrorsSelector,
+  upsertAllMappingsErrorSelector,
+  ANSWERS_BATCH_INDEX,
+  SETS_BATCH_INDEX,
+  MAPPINGS_BATCH_INDEX,
 }

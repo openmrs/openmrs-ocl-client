@@ -6,7 +6,10 @@ import {
   viewConceptLoadingSelector,
   viewConceptErrorsSelector,
   retrieveConceptAction,
-  upsertConceptAndMappingsLoadingSelector, createConceptErrorsSelector, upsertConceptAndMappingsAction
+  upsertConceptAndMappingsLoadingSelector,
+  upsertConceptErrorsSelector,
+  upsertConceptAndMappingsAction,
+  upsertAllMappingsErrorSelector, upsertConceptAndMappingsProgressSelector,
 } from './redux'
 import { APIConcept, apiConceptToConcept, BaseConcept } from './types'
 import { Redirect, useLocation, useParams } from 'react-router'
@@ -24,12 +27,17 @@ interface Props {
   updateErrors?: {},
   retrieveConcept: Function,
   updateConcept: Function,
+  allMappingErrors?: {errors: string}[],
+  progress?: string,
 }
 
-const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoading, fetchErrors, updatedConcept, updateErrors, updateLoading, updateConcept }) => {
+const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoading, fetchErrors, updatedConcept, updateErrors, updateLoading, updateConcept, allMappingErrors=[], progress }) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner, source } = useParams();
 
+  const anyMappingsErrors = !!allMappingErrors.length && allMappingErrors.some(value => value);
+
+  const status = !updateErrors && anyMappingsErrors ? 'Concept updated. Some mappings were not updated or added. Fix the errors and retry.' : progress;
 
   useEffect(() => {
     retrieveConcept(url.replace('edit/', ''))
@@ -41,7 +49,7 @@ const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoadi
     return <span>Loading...</span>
   }
 
-  if (!updateLoading && updatePreviouslyLoading && !updateErrors && updatedConcept) {
+  if (!updateLoading && updatePreviouslyLoading && !updateErrors && updatedConcept && !anyMappingsErrors) {
     return <Redirect to={updatedConcept.url}/>
   }
 
@@ -50,9 +58,11 @@ const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoadi
       <Grid id="editConceptPage" item xs={8} component="div">
         <ConceptForm
           editing
+          status={status}
           savedValues={apiConceptToConcept(concept)}
           loading={updateLoading}
           errors={updateErrors}
+          allMappingErrors={allMappingErrors}
           onSubmit={(data: BaseConcept) => updateConcept(data, `/${ownerType}/${owner}/sources/${source}/`)}
         />
       </Grid>
@@ -66,7 +76,9 @@ const mapStateToProps = (state: AppState) => ({
   updateLoading: upsertConceptAndMappingsLoadingSelector(state),
   fetchLoading: viewConceptLoadingSelector(state),
   fetchErrors: viewConceptErrorsSelector(state),
-  updateErrors: createConceptErrorsSelector(state),
+  updateErrors: upsertConceptErrorsSelector(state),
+  allMappingErrors: upsertAllMappingsErrorSelector(state),
+  progress: upsertConceptAndMappingsProgressSelector(state),
 })
 
 const mapActionsToProps = {

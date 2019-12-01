@@ -28,6 +28,11 @@ import NamesTable from './NamesTable'
 import { Edit as EditIcon } from '@material-ui/icons'
 import * as Yup from 'yup'
 import MappingsTable from './MappingsTable'
+import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from '../redux'
+
+const ANSWERS_VALUE_KEY = 'answers';
+const SETS_VALUE_KEY = 'sets';
+const MAPPINGS_VALUE_KEY = 'mappings';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -117,11 +122,11 @@ const ConceptSchema = Yup.object().shape<Concept>({
     .required(),
   id: Yup.string()
     .required('Required'),
-  answers: Yup.array().of(MappingSchema)
+  [ANSWERS_VALUE_KEY]: Yup.array().of(MappingSchema)
     .min(0),
-  sets: Yup.array().of(MappingSchema)
+  [SETS_VALUE_KEY]: Yup.array().of(MappingSchema)
     .min(0),
-  mappings: Yup.array().of(MappingSchema)
+  [MAPPINGS_VALUE_KEY]: Yup.array().of(MappingSchema)
     .min(0),
 })
 
@@ -131,10 +136,14 @@ interface Props {
   errors?: {},
   editing?: boolean,
   savedValues?: Concept,
+  allMappingErrors?: {errors: string}[],
+  status?: string,
 }
 
-const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing = false, savedValues }) => {
+const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, status, errors, allMappingErrors=[], editing = false, savedValues }) => {
   const classes = useStyles()
+
+  const error: string | undefined = getPrettyError(errors);
 
   const formikRef: any = useRef(null)
 
@@ -150,6 +159,13 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
 
   useEffect(() => {
     const { current: currentRef } = formikRef
+    if (currentRef) {
+      currentRef.setStatus(status)
+    }
+  }, [status]);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef
     if (!currentRef) return
 
     Object.keys(initialValues).forEach((key) => {
@@ -157,6 +173,23 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
       if (error) currentRef.setFieldError(key, error)
     })
   }, [errors])
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef
+    if (!currentRef) return
+
+    [
+      [ANSWERS_VALUE_KEY, ANSWERS_BATCH_INDEX],
+      [SETS_VALUE_KEY, SETS_BATCH_INDEX],
+      [MAPPINGS_VALUE_KEY, MAPPINGS_BATCH_INDEX],
+    ].forEach(([key, batchIndex]) => {
+      currentRef.state.values[key].forEach((_: Mapping, index: number) => {
+        const error = allMappingErrors[Number(`${batchIndex}${index}`)];
+        if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
+      });
+    })
+    console.log(currentRef);
+  }, [allMappingErrors.toString()]);
 
   return (
     <Formik
@@ -285,12 +318,12 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>Answers</Typography>
-              <FieldArray name="answers">
+              <FieldArray name={ANSWERS_VALUE_KEY}>
                 {arrayHelpers => (
                   <MappingsTable
                     allowChoosingType
                     createNewMapping={() => createMapping(MAP_TYPE_Q_AND_A.value)}
-                    valuesKey="answers"
+                    valuesKey={ANSWERS_VALUE_KEY}
                     values={values.answers}
                     errors={errors.answers}
                     arrayHelpers={arrayHelpers}
@@ -308,12 +341,12 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>Sets</Typography>
-              <FieldArray name="sets">
+              <FieldArray name={SETS_VALUE_KEY}>
                 {arrayHelpers => (
                   <MappingsTable
                     allowChoosingType
                     createNewMapping={() => createMapping(MAP_TYPE_CONCEPT_SET.value)}
-                    valuesKey="sets"
+                    valuesKey={SETS_VALUE_KEY}
                     values={values.sets}
                     errors={errors.sets}
                     arrayHelpers={arrayHelpers}
@@ -331,12 +364,12 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>Mappings</Typography>
-              <FieldArray name="mappings">
+              <FieldArray name={MAPPINGS_VALUE_KEY}>
                 {arrayHelpers => (
                   <MappingsTable
                     allowChoosingType
                     createNewMapping={createMapping}
-                    valuesKey="mappings"
+                    valuesKey={MAPPINGS_VALUE_KEY}
                     values={values.mappings}
                     errors={errors.mappings}
                     arrayHelpers={arrayHelpers}
@@ -352,6 +385,16 @@ const ConceptForm: React.FC<Props> = ({ loading=false, onSubmit, errors, editing
           <br/>
           {!editing ? '' : (
             <div className={classes.buttonContainer}>
+              {!status ? <br/> : (
+                <Typography color="textSecondary" variant="caption" component="div">
+                  {status}
+                </Typography>
+              )}
+              {!error ? <br/> : (
+                <Typography color="error" variant="caption" component="div">
+                  {error}
+                </Typography>
+              )}
               <Button
                 variant="outlined"
                 color="primary"

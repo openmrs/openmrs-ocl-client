@@ -59,5 +59,6 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
 const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, { actionType, actionIndex }: IndexedAction): boolean => previousValue || Boolean(state.status[`${actionType}Loading`] ? state.status[`${actionType}Loading`][actionIndex] : false), false)
 const progressSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Progress`][actionIndex] : undefined
 const errorSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Errors`][actionIndex] : undefined
+const errorListSelector = (actionType: string) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Errors`] : undefined
 
-export { loadingSelector, progressSelector, errorSelector, loadingAndErroredReducer }
+export { loadingSelector, progressSelector, errorSelector, errorListSelector, loadingAndErroredReducer }

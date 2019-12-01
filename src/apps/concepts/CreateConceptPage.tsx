@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid } from '@material-ui/core'
 import { ConceptForm } from './components'
 import { AppState } from '../../redux'
-import { upsertConceptAndMappingsAction, createConceptErrorsSelector, upsertConceptAndMappingsLoadingSelector } from './redux'
+import { upsertConceptAndMappingsAction, upsertConceptErrorsSelector, upsertConceptAndMappingsLoadingSelector } from './redux'
 import { APIConcept, BaseConcept } from './types'
 import { usePrevious } from '../../utils'
 import { Redirect, useLocation } from 'react-router'
@@ -36,7 +36,7 @@ const CreateConceptPage: React.FC<Props> = ({ createConcept, newConcept, loading
 const mapStateToProps = (state: AppState) => ({
   newConcept: state.concepts.upsertedConcept,
   loading: upsertConceptAndMappingsLoadingSelector(state),
-  errors: createConceptErrorsSelector(state),
+  errors: upsertConceptErrorsSelector(state),
 })
 
 const mapActionsToProps = {

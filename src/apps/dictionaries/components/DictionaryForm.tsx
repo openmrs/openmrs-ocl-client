@@ -214,15 +214,6 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
             <br/>
             {!editing ? '' : (
               <div id="submit-button">
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="medium"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Submit
-                </Button>
                 {!status ? <br/> : (
                   <Typography color="textSecondary" variant="caption" component="span">
                     {status}
@@ -233,6 +224,15 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
                     {error}
                   </Typography>
                 )}
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  Submit
+                </Button>
               </div>
             )}
           </Form>
