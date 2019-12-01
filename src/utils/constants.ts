@@ -197,12 +197,12 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: 'zu', label: 'Zulu (zu)' },
 ]
 
-export const QUESTION_CONCEPT_CLASS = 'Question';
+export const QUESTION_CONCEPT_CLASS = 'Question'
 export const SET_CONCEPT_CLASSES = [
   'LabSet',
   'MedSet',
   'ConvSet',
-];
+]
 
 export const CONCEPT_CLASSES: string[] = [
   'Diagnosis',

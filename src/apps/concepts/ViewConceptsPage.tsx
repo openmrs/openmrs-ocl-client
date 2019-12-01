@@ -34,22 +34,22 @@ const useStyles = makeStyles({
     color: 'inherit',
     width: '100%',
   },
-});
+})
 
 const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const { push: goTo } = useHistory()
   const { pathname: url } = useLocation()
-  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>();
+  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const queryParams: QueryParams = useQuery() // todo get limit from settings
   const {
@@ -130,9 +130,11 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
             onClose={handleClose}
           >
             {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
-              <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/?conceptClass=${conceptClass}`}>{conceptClass} Concept</Link></MenuItem>
+              <MenuItem onClick={handleClose}><Link className={classes.link}
+                                                    to={`${url}new/?conceptClass=${conceptClass}`}>{conceptClass} Concept</Link></MenuItem>
             ))}
-            <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/`}>Other kind</Link></MenuItem>
+            <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/`}>Other
+              kind</Link></MenuItem>
           </Menu>
         </>
       ) : (

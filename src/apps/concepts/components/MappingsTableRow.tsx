@@ -189,7 +189,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
 
   return (
     <>
-      <TableRow className={clsx(classes.row, {[classes.retired]: retired})}>
+      <TableRow className={clsx(classes.row, { [classes.retired]: retired })}>
         <TableCell className={fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth} component="td"
                    scope="row">
           <FormControl
@@ -201,7 +201,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
               name={`${valueKey}.to_source_url`}
               component={AsyncSelect}
               onChange={(option: SourceOption | null) => {
-                resetToConcept();
+                resetToConcept()
                 if (option) {
                   handleChange(buildEvent(`${valueKey}.to_source_url`, option.value))
                   setIsInternalMapping(option.isInternalSource)

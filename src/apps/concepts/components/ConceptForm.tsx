@@ -89,7 +89,10 @@ const initialValues: Concept = {
   names: [createName()],
 }
 
-const buildInitialValues = (conceptClass: string=initialValues.concept_class) => ({...initialValues, concept_class: conceptClass});
+const buildInitialValues = (conceptClass: string = initialValues.concept_class) => ({
+  ...initialValues,
+  concept_class: conceptClass
+})
 
 const MappingSchema = Yup.object().shape<Mapping>({
   external_id: Yup.string(),
@@ -145,10 +148,10 @@ interface Props {
   conceptClass?: string,
 }
 
-const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, errors, allMappingErrors = [], context='view', savedValues, conceptClass }) => {
-  const editing = context === CONTEXT.edit || context === CONTEXT.create;
-  const showAnswers = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) || CONTEXT.view;
-  const showSets = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || SET_CONCEPT_CLASSES.indexOf(conceptClass) > -1)) || CONTEXT.view;
+const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, errors, allMappingErrors = [], context = 'view', savedValues, conceptClass }) => {
+  const editing = context === CONTEXT.edit || context === CONTEXT.create
+  const showAnswers = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) || CONTEXT.view
+  const showSets = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || SET_CONCEPT_CLASSES.indexOf(conceptClass) > -1)) || CONTEXT.view
 
   const classes = useStyles()
 

@@ -39,7 +39,7 @@ interface Props {
   editing: boolean,
 }
 
-const HEADER_MENU_INDEX = -100;
+const HEADER_MENU_INDEX = -100
 
 const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, createNewMapping, arrayHelpers, allowChoosingType = false, useTypes = false, isSubmitting, handleChange, title, fixedMappingType, editing }) => {
   const classes = useStyles()
@@ -50,8 +50,8 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
     else if (event) setMenu({ index: index, anchor: event.currentTarget })
   }
 
-  const [showRetired, setShowRetired] = useState(false);
-  const retiredCount = values.filter(value => value.retired).length;
+  const [showRetired, setShowRetired] = useState(false)
+  const retiredCount = values.filter(value => value.retired).length
 
   return (
     <div>
@@ -75,8 +75,8 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
                 onClose={() => toggleMappingMenu(HEADER_MENU_INDEX)}
               >
                 <MenuItem onClick={() => {
-                  setShowRetired(!showRetired);
-                  toggleMappingMenu(HEADER_MENU_INDEX);
+                  setShowRetired(!showRetired)
+                  toggleMappingMenu(HEADER_MENU_INDEX)
                 }}>{`${showRetired ? 'Hide retired' : 'Show retired(' + retiredCount + ')'}`}</MenuItem>
               </Menu>
             </TableCell>
@@ -100,7 +100,7 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
           ))}
         </TableBody>
       </Table>
-      {values.length > 0 ? null : <Typography align='center' component="div" >{`No ${valuesKey}`}</Typography>}
+      {values.length > 0 ? null : <Typography align='center' component="div">{`No ${valuesKey}`}</Typography>}
       {typeof errors !== 'string' ? null : (
         <Typography className={classes.errorContainer} color="error" variant="caption" component="div">
           <ErrorMessage name={valuesKey} component="span"/>
