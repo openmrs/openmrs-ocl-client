@@ -29,6 +29,8 @@ import { Edit as EditIcon } from '@material-ui/icons'
 import * as Yup from 'yup'
 import MappingsTable from './MappingsTable'
 import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from '../redux'
+import { QUESTION_CONCEPT_CLASS, SET_CONCEPT_CLASSES } from '../../../utils/constants'
+import { CONTEXT } from '../constants'
 
 const ANSWERS_VALUE_KEY = 'answers'
 const SETS_VALUE_KEY = 'sets'
@@ -83,9 +85,11 @@ const initialValues: Concept = {
   id: '',
   answers: [],
   sets: [],
-  mappings: [createMapping()],
+  mappings: [],
   names: [createName()],
 }
+
+const buildInitialValues = (conceptClass: string=initialValues.concept_class) => ({...initialValues, concept_class: conceptClass});
 
 const MappingSchema = Yup.object().shape<Mapping>({
   external_id: Yup.string(),
@@ -134,13 +138,18 @@ interface Props {
   loading?: boolean,
   onSubmit?: Function,
   errors?: {},
-  editing?: boolean,
+  context?: string,
   savedValues?: Concept,
   allMappingErrors?: { errors: string }[],
   status?: string,
+  conceptClass?: string,
 }
 
-const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, errors, allMappingErrors = [], editing = false, savedValues }) => {
+const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, errors, allMappingErrors = [], context='view', savedValues, conceptClass }) => {
+  const editing = context === CONTEXT.edit || context === CONTEXT.create;
+  const showAnswers = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) || CONTEXT.view;
+  const showSets = context === CONTEXT.edit || (context === CONTEXT.create && (!conceptClass || SET_CONCEPT_CLASSES.indexOf(conceptClass) > -1)) || CONTEXT.view;
+
   const classes = useStyles()
 
   const error: string | undefined = getPrettyError(errors)
@@ -194,7 +203,7 @@ const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, error
   return (
     <Formik
       ref={formikRef}
-      initialValues={savedValues || initialValues}
+      initialValues={savedValues || buildInitialValues(conceptClass)}
       validationSchema={ConceptSchema}
       onSubmit={values => {
         if (onSubmit) onSubmit(castNecessaryValues(values))
@@ -244,6 +253,7 @@ const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, error
                   name="concept_class"
                   id="concept_class"
                   component={Select}
+                  disabled={conceptClass}
                 >
                   {CONCEPT_CLASSES.map(conceptClass => <MenuItem key={conceptClass}
                                                                  value={conceptClass}>{conceptClass}</MenuItem>)}
@@ -315,52 +325,60 @@ const ConceptForm: React.FC<Props> = ({ loading = false, onSubmit, status, error
             </fieldset>
           </Paper>
           <br/>
-          <Paper className="fieldsetParent">
-            <fieldset>
-              <Typography component="legend" variant="h5" gutterBottom>Answers</Typography>
-              <FieldArray name={ANSWERS_VALUE_KEY}>
-                {arrayHelpers => (
-                  <MappingsTable
-                    allowChoosingType
-                    createNewMapping={() => createMapping(MAP_TYPE_Q_AND_A.value)}
-                    valuesKey={ANSWERS_VALUE_KEY}
-                    values={values.answers}
-                    errors={errors.answers}
-                    arrayHelpers={arrayHelpers}
-                    isSubmitting={isSubmitting}
-                    handleChange={handleChange}
-                    title="answer"
-                    fixedMappingType={MAP_TYPE_Q_AND_A}
-                    editing={editing}
-                  />
-                )}
-              </FieldArray>
-            </fieldset>
-          </Paper>
-          <br/>
-          <Paper className="fieldsetParent">
-            <fieldset>
-              <Typography component="legend" variant="h5" gutterBottom>Sets</Typography>
-              <FieldArray name={SETS_VALUE_KEY}>
-                {arrayHelpers => (
-                  <MappingsTable
-                    allowChoosingType
-                    createNewMapping={() => createMapping(MAP_TYPE_CONCEPT_SET.value)}
-                    valuesKey={SETS_VALUE_KEY}
-                    values={values.sets}
-                    errors={errors.sets}
-                    arrayHelpers={arrayHelpers}
-                    isSubmitting={isSubmitting}
-                    handleChange={handleChange}
-                    title="set"
-                    fixedMappingType={MAP_TYPE_CONCEPT_SET}
-                    editing={editing}
-                  />
-                )}
-              </FieldArray>
-            </fieldset>
-          </Paper>
-          <br/>
+          {(!showAnswers || (context === CONTEXT.view && !values.answers.length)) ? null : (
+            <>
+              <Paper className="fieldsetParent">
+                <fieldset>
+                  <Typography component="legend" variant="h5" gutterBottom>Answers</Typography>
+                  <FieldArray name={ANSWERS_VALUE_KEY}>
+                    {arrayHelpers => (
+                      <MappingsTable
+                        allowChoosingType
+                        createNewMapping={() => createMapping(MAP_TYPE_Q_AND_A.value)}
+                        valuesKey={ANSWERS_VALUE_KEY}
+                        values={values.answers}
+                        errors={errors.answers}
+                        arrayHelpers={arrayHelpers}
+                        isSubmitting={isSubmitting}
+                        handleChange={handleChange}
+                        title="answer"
+                        fixedMappingType={MAP_TYPE_Q_AND_A}
+                        editing={editing}
+                      />
+                    )}
+                  </FieldArray>
+                </fieldset>
+              </Paper>
+              <br/>
+            </>
+          )}
+          {(!showSets || (context === CONTEXT.view && !values.sets.length)) ? null : (
+            <>
+              <Paper className="fieldsetParent">
+                <fieldset>
+                  <Typography component="legend" variant="h5" gutterBottom>Sets</Typography>
+                  <FieldArray name={SETS_VALUE_KEY}>
+                    {arrayHelpers => (
+                      <MappingsTable
+                        allowChoosingType
+                        createNewMapping={() => createMapping(MAP_TYPE_CONCEPT_SET.value)}
+                        valuesKey={SETS_VALUE_KEY}
+                        values={values.sets}
+                        errors={errors.sets}
+                        arrayHelpers={arrayHelpers}
+                        isSubmitting={isSubmitting}
+                        handleChange={handleChange}
+                        title="set"
+                        fixedMappingType={MAP_TYPE_CONCEPT_SET}
+                        editing={editing}
+                      />
+                    )}
+                  </FieldArray>
+                </fieldset>
+              </Paper>
+              <br/>
+            </>
+          )}
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>Mappings</Typography>

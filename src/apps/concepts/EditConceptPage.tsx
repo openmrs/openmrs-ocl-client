@@ -17,6 +17,7 @@ import { connect } from 'react-redux'
 import Header from '../../components/Header'
 import { startCase, toLower } from 'lodash'
 import { usePrevious } from '../../utils'
+import { CONTEXT } from './constants'
 
 interface Props {
   fetchLoading: boolean,
@@ -57,7 +58,7 @@ const EditConceptPage: React.FC<Props> = ({ retrieveConcept, concept, fetchLoadi
     <Header title={'Edit ' + startCase(toLower(concept ? concept.display_name : 'concept'))}>
       <Grid id="editConceptPage" item xs={8} component="div">
         <ConceptForm
-          editing
+          context={CONTEXT.edit}
           status={status}
           savedValues={apiConceptToConcept(concept)}
           loading={updateLoading}

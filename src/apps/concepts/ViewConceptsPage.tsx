@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
-import { Fab, Grid } from '@material-ui/core'
+import { Fab, Grid, makeStyles, Menu, MenuItem } from '@material-ui/core'
 import { ConceptsTable } from './components'
 import { connect } from 'react-redux'
 import { retrieveConceptsAction, viewConceptsLoadingSelector, viewConceptsErrorsSelector } from './redux'
 import { AppState } from '../../redux'
 import { APIConcept, OptionalQueryParams as QueryParams } from './types'
 import { useLocation, useHistory, useParams } from 'react-router'
-import { useQuery } from '../../utils'
+import { CONCEPT_CLASSES, useQuery } from '../../utils'
 import qs from 'qs'
 import { ProgressOverlay } from '../../utils/components'
 import FilterOptions from './components/FilterOptions'
@@ -28,10 +28,28 @@ interface Props {
   containerType: string,
 }
 
+const useStyles = makeStyles({
+  link: {
+    textDecoration: 'none',
+    color: 'inherit',
+    width: '100%',
+  },
+});
+
 const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType }) => {
+  const classes = useStyles();
+
   const { push: goTo } = useHistory()
   const { pathname: url } = useLocation()
-  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
+  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const queryParams: QueryParams = useQuery() // todo get limit from settings
   const {
@@ -100,8 +118,25 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
           )}
         </ProgressOverlay>
       </Header>
-      {!canModifySource ? null : (
-        <Link to={containerType === SOURCE_CONTAINER ? `${url}new/` : `${CIEL_CONCEPTS_URL}?collection=${url}`}>
+      {!canModifySource ? null : containerType === SOURCE_CONTAINER ? (
+        <>
+          <Fab onClick={handleClick} color="primary" className="fab">
+            <AddIcon/>
+          </Fab>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
+              <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/?conceptClass=${conceptClass}`}>{conceptClass} Concept</Link></MenuItem>
+            ))}
+            <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/`}>Other kind</Link></MenuItem>
+          </Menu>
+        </>
+      ) : (
+        <Link to={`${CIEL_CONCEPTS_URL}?collection=${url}`}>
           <Fab color="primary" className="fab">
             <AddIcon/>
           </Fab>

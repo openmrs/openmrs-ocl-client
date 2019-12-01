@@ -100,6 +100,7 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
           ))}
         </TableBody>
       </Table>
+      {values.length > 0 ? null : <Typography align='center' component="div" >{`No ${valuesKey}`}</Typography>}
       {typeof errors !== 'string' ? null : (
         <Typography className={classes.errorContainer} color="error" variant="caption" component="div">
           <ErrorMessage name={valuesKey} component="span"/>

@@ -13,6 +13,7 @@ import Header from '../../components/Header'
 import { startCase, toLower } from 'lodash'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../authentication'
 import { orgsSelector } from '../authentication/redux/reducer'
+import { CONTEXT } from './constants'
 
 interface Props {
   loading: boolean,
@@ -40,7 +41,7 @@ const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, e
   return (
     <Header title={startCase(toLower(concept ? concept.display_name : 'View concept'))}>
       <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm savedValues={apiConceptToConcept(concept)} errors={errors}/>
+        <ConceptForm context={CONTEXT.view} savedValues={apiConceptToConcept(concept)} errors={errors}/>
       </Grid>
       {!canModifySource ? null : (
         <Link to={`${url}edit/`}>

@@ -8,9 +8,10 @@ import {
   upsertConceptAndMappingsLoadingSelector
 } from './redux'
 import { APIConcept, BaseConcept } from './types'
-import { usePrevious } from '../../utils'
+import { usePrevious, useQuery } from '../../utils'
 import { Redirect, useLocation } from 'react-router'
 import { connect } from 'react-redux'
+import { CONTEXT } from './constants'
 
 interface Props {
   loading: boolean,
@@ -21,6 +22,7 @@ interface Props {
 
 const CreateConceptPage: React.FC<Props> = ({ createConcept, newConcept, loading, errors }) => {
   const { pathname: url } = useLocation()
+  const {conceptClass} = useQuery();
   const sourceUrl = url.replace('concepts/new/', '')
 
   const previouslyLoading = usePrevious(loading)
@@ -31,7 +33,7 @@ const CreateConceptPage: React.FC<Props> = ({ createConcept, newConcept, loading
 
   return (
     <Grid item xs={8} component="div">
-      <ConceptForm editing onSubmit={(data: BaseConcept) => createConcept(data, sourceUrl)} loading={loading}
+      <ConceptForm conceptClass={conceptClass} context={CONTEXT.create} onSubmit={(data: BaseConcept) => createConcept(data, sourceUrl)} loading={loading}
                    errors={errors}/>
     </Grid>
   )
