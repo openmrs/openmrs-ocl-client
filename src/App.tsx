@@ -13,7 +13,7 @@ import DictionaryRoutes, {
   ViewDictionariesPage,
   ViewPublicDictionariesPage
 } from './apps/dictionaries'
-import ConceptRoutes, { ViewConceptsPage } from './apps/concepts'
+import ConceptRoutes, { COLLECTION_CONTAINER, ViewConceptsPage } from './apps/concepts'
 import Header from './components/Header'
 
 const AuthenticatedRoutes: React.FC = () => {
@@ -36,7 +36,7 @@ const AuthenticatedRoutes: React.FC = () => {
       </Route>
       <Route path="/:ownerType/:owner/dictionaries" component={DictionaryRoutes}/>
       <Route path="/:ownerType/:owner/sources/:source/concepts" component={ConceptRoutes}/>
-      <Route path="/:ownerType/:owner/collections/:collection/concepts/" component={ViewConceptsPage}/>
+      <Route path="/:ownerType/:owner/collections/:collection/concepts/" containerType={COLLECTION_CONTAINER} component={ViewConceptsPage}/>
       <Route exact path="/">
         Home
       </Route>

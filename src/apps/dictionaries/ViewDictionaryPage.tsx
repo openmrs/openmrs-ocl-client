@@ -13,9 +13,10 @@ import {
   retrieveDictionaryLoadingSelector
 } from './redux'
 import { AppState } from '../../redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { APISource } from '../sources'
 import { APICollection } from '../collections'
+import { canModifyContainer } from '../authentication'
 
 interface Props {
   profile?: APIProfile,
@@ -28,12 +29,15 @@ interface Props {
   collection?: APICollection,
 }
 
-const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs, dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection }: Props) => {
-  const { pathname: url } = useLocation()
+const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs=[], dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection }: Props) => {
+  const { pathname: url } = useLocation();
+  const {ownerType, owner} = useParams<{ownerType: string, owner: string}>();
 
   useEffect(() => {
     retrieveDictionaryAndDetails(url.replace('/dictionaries/', '/collections/'))
-  }, [url, retrieveDictionaryAndDetails])
+  }, [url, retrieveDictionaryAndDetails]);
+
+  const canEditDictionary = canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   if (dictionaryLoading) return <span>'Loading...'</span>
 
@@ -46,7 +50,7 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs, dictionaryLoa
             <DictionaryForm
               savedValues={apiDictionaryToDictionary(dictionary)}
               profile={profile}
-              usersOrgs={usersOrgs ? usersOrgs : []}
+              usersOrgs={usersOrgs}
               loading={true}
             />
           </fieldset>
@@ -57,9 +61,11 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs, dictionaryLoa
           <DictionaryDetails source={source} collection={collection}/>
         )}
       </Grid>
-      <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
-        <EditIcon/>
-      </Link>
+      {!canEditDictionary ? null : (
+        <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
+          <EditIcon/>
+        </Link>
+      )}
     </>
   )
 }

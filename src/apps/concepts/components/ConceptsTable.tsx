@@ -31,6 +31,7 @@ interface Props extends QueryParams {
   toggleShowOptions: Function,
   q: string,
   setQ: Function,
+  buttons?: {[key: string]: boolean},
 }
 
 interface HeadCell {
@@ -222,7 +223,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions }) => {
+const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions, buttons={}, collection }) => {
   const classes = useStyles()
   const [selected, setSelected] = React.useState<string[]>([])
   const [menu, setMenu] = React.useState<{ index: number, anchor: null | HTMLElement }>({ index: -1, anchor: null })
@@ -350,9 +351,16 @@ const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, se
                           }}>
                             {isSelected(row.id) ? 'Deselect' : 'Select'}
                           </MenuItem>
-                          <MenuItem onClick={() => toggleMenu(index)}>
-                            <Link className={classes.buttonLink} to={`${row.url}edit`}>Edit</Link>
-                          </MenuItem>
+                          {!buttons.edit ? null : (
+                            <MenuItem onClick={() => toggleMenu(index)}>
+                              <Link className={classes.buttonLink} to={`${row.url}edit`}>Edit</Link>
+                            </MenuItem>
+                          )}
+                          {!buttons.addToCollection ? null : (
+                            <MenuItem onClick={() => toggleMenu(index)}>
+                              Add
+                            </MenuItem>
+                          )}
                         </Menu>
                       </TableCell>
                     </TableRow>

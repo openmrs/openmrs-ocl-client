@@ -93,6 +93,7 @@ export interface OptionalQueryParams {
   limit?: number,
   classFilters?: string[],
   dataTypeFilters?: string[],
+  collection?: string,
 }
 
 export interface QueryParams {
@@ -101,6 +102,7 @@ export interface QueryParams {
   sortDirection: 'sortAsc' | 'sortDesc',
   sortBy: SortableField,
   limit: number,
+  collection?: string,
 }
 
 export {
