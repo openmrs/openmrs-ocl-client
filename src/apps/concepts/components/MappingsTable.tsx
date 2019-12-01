@@ -1,7 +1,7 @@
 import {
   Button,
-  createStyles,
-  makeStyles,
+  createStyles, IconButton,
+  makeStyles, Menu, MenuItem,
   Table,
   TableBody,
   TableCell,
@@ -10,10 +10,11 @@ import {
   Typography
 } from '@material-ui/core'
 import { ArrayHelpers, ErrorMessage, FormikTouched } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { Mapping } from '../types'
 import MappingsTableRow from './MappingsTableRow'
 import { Option } from '../../../utils'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,6 +39,8 @@ interface Props {
   editing: boolean,
 }
 
+const HEADER_MENU_INDEX = -100;
+
 const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, createNewMapping, arrayHelpers, allowChoosingType = false, useTypes = false, isSubmitting, handleChange, title, fixedMappingType, editing }) => {
   const classes = useStyles()
 
@@ -47,6 +50,9 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
     else if (event) setMenu({ index: index, anchor: event.currentTarget })
   }
 
+  const [showRetired, setShowRetired] = useState(false);
+  const retiredCount = values.filter(value => value.retired).length;
+
   return (
     <div>
       <Table>
@@ -55,11 +61,29 @@ const MappingsTable: React.FC<Props> = ({ valuesKey, values, errors = {}, create
             <TableCell>Source</TableCell>
             {fixedMappingType ? null : <TableCell>Relationship</TableCell>}
             <TableCell>Concept</TableCell>
-            <TableCell/>
+            <TableCell>
+              {retiredCount < 1 ? null : (
+                <IconButton id={`${valuesKey}.menu-icon`} aria-controls={`${valuesKey}.menu`} aria-haspopup="true"
+                            onClick={event => toggleMappingMenu(HEADER_MENU_INDEX, event)}>
+                  <MoreVertIcon/>
+                </IconButton>
+              )}
+              <Menu
+                anchorEl={menu.anchor}
+                id={`${valuesKey}.menu`}
+                open={HEADER_MENU_INDEX === menu.index}
+                onClose={() => toggleMappingMenu(HEADER_MENU_INDEX)}
+              >
+                <MenuItem onClick={() => {
+                  setShowRetired(!showRetired);
+                  toggleMappingMenu(HEADER_MENU_INDEX);
+                }}>{`${showRetired ? 'Hide retired' : 'Show retired(' + retiredCount + ')'}`}</MenuItem>
+              </Menu>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {values.map((value, index) => (
+          {values.map((value, index) => value.retired && !showRetired ? null : (
             <MappingsTableRow
               key={index}
               value={value}

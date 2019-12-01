@@ -18,6 +18,7 @@ import api from '../api'
 import { APISource } from '../../sources'
 import { includes } from 'lodash'
 import { MoreVert as MoreVertIcon, DeleteOutline as DeleteOutlineIcon } from '@material-ui/icons'
+import clsx from 'clsx'
 
 interface ConceptOption extends Option {
   displayName: string,
@@ -126,6 +127,9 @@ const useStyles = makeStyles((theme: Theme) =>
     row: {
       verticalAlign: 'top',
     },
+    retired: {
+      opacity: 0.5,
+    },
     singleCellWidth: {
       width: '24%',
     },
@@ -160,7 +164,7 @@ interface Props {
 const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChange, toggleMenu, menu, arrayHelpers, fixedMappingType, errors, editing }) => {
   const classes = useStyles()
 
-  const { to_source_url: toSourceUrl, to_concept_url: toConceptUrl, to_concept_name: toConceptName, to_concept_code: toConceptCode, url } = value
+  const { to_source_url: toSourceUrl, to_concept_url: toConceptUrl, to_concept_name: toConceptName, to_concept_code: toConceptCode, url, retired } = value
   const valueKey = `${valuesKey}[${index}]`
   const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl)
 
@@ -185,7 +189,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
 
   return (
     <>
-      <TableRow className={classes.row}>
+      <TableRow className={clsx(classes.row, {[classes.retired]: retired})}>
         <TableCell className={fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth} component="td"
                    scope="row">
           <FormControl
@@ -197,7 +201,7 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
               name={`${valueKey}.to_source_url`}
               component={AsyncSelect}
               onChange={(option: SourceOption | null) => {
-                resetToConcept()
+                resetToConcept();
                 if (option) {
                   handleChange(buildEvent(`${valueKey}.to_source_url`, option.value))
                   setIsInternalMapping(option.isInternalSource)
@@ -323,9 +327,9 @@ const MappingsTableRow: React.FC<Props> = ({ value, index, valuesKey, handleChan
           >
             {url ? (
               <MenuItem onClick={() => {
-                handleChange(buildEvent(`${valueKey}.retired`, true))
+                handleChange(buildEvent(`${valueKey}.retired`, !retired))
                 toggleMenu(index)
-              }}><DeleteOutlineIcon/> Retire</MenuItem>
+              }}><DeleteOutlineIcon/>{retired ? 'UnRetire' : 'Retire'}</MenuItem>
             ) : (
               <MenuItem onClick={() => {
                 arrayHelpers.remove(index)
