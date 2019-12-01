@@ -10,9 +10,9 @@ import ViewDictionaries from './components/ViewDictionaries'
 import { Fab, Grid } from '@material-ui/core'
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
-  PERSONAL_DICTIONARIES_ACTION_INDEX, retrieveOrgDictionariesAction,
-  retrieveOrgDictionariesLoadingSelector, retrievePersonalDictionariesAction,
-  retrievePersonalDictionariesLoadingSelector
+  PERSONAL_DICTIONARIES_ACTION_INDEX,
+  retrieveDictionariesAction,
+  retrieveDictionariesLoadingSelector
 } from './redux'
 import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
@@ -20,14 +20,12 @@ import { Link } from 'react-router-dom'
 const PER_PAGE = 20
 
 interface Props {
-  loadingPersonal: boolean,
-  loadingOrgs: boolean,
+  loading: boolean,
   personalDictionaries?: APIDictionary[],
   orgDictionaries?: APIDictionary[],
   personalMeta?: { num_found?: number },
   orgMeta?: { num_found?: number },
-  retrievePersonalDictionaries: Function,
-  retrieveOrgDictionaries: Function,
+  retrieveDictionaries: Function,
 }
 
 interface QueryParams {
@@ -39,13 +37,11 @@ interface QueryParams {
 
 const ViewDictionariesPage: React.FC<Props> = ({
   personalDictionaries = [],
-  loadingPersonal,
+  loading,
+  retrieveDictionaries,
   personalMeta = {},
-  retrievePersonalDictionaries,
   orgDictionaries = [],
-  loadingOrgs,
   orgMeta = {},
-  retrieveOrgDictionaries,
 }: Props) => {
 
   const { push: goTo } = useHistory()
@@ -62,12 +58,8 @@ const ViewDictionariesPage: React.FC<Props> = ({
   } = queryParams
 
   useEffect(() => {
-    retrievePersonalDictionaries('/user/collections/', initialPersonalQ, PER_PAGE, personalPage)
-  }, [retrievePersonalDictionaries, initialPersonalQ, personalPage])
-
-  useEffect(() => {
-    retrieveOrgDictionaries('/user/orgs/collections/', initialOrgQ, PER_PAGE, orgPage)
-  }, [retrieveOrgDictionaries, initialOrgQ, orgPage])
+    retrieveDictionaries('/user/collections/', initialPersonalQ, PER_PAGE, personalPage, '/user/orgs/collections/', initialOrgQ, PER_PAGE, orgPage);
+  }, [retrieveDictionaries, initialPersonalQ, personalPage, initialOrgQ, orgPage]);
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = { ...queryParams, ...params }
@@ -77,7 +69,7 @@ const ViewDictionariesPage: React.FC<Props> = ({
   return (
     <>
       <Grid item container xs={12}>
-        <ProgressOverlay loading={loadingPersonal || loadingOrgs}>
+        <ProgressOverlay loading={loading}>
           <Grid item xs={6}>
             <ViewDictionaries
               title="Personal dictionaries"
@@ -111,8 +103,7 @@ const ViewDictionariesPage: React.FC<Props> = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  loadingPersonal: retrievePersonalDictionariesLoadingSelector(state),
-  loadingOrgs: retrieveOrgDictionariesLoadingSelector(state),
+  loading: retrieveDictionariesLoadingSelector(state),
   personalDictionaries: state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.items,
   personalMeta: state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.responseMeta,
   orgDictionaries: state.dictionaries.dictionaries[ORG_DICTIONARIES_ACTION_INDEX]?.items,
@@ -120,8 +111,7 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = {
-  retrievePersonalDictionaries: retrievePersonalDictionariesAction,
-  retrieveOrgDictionaries: retrieveOrgDictionariesAction,
+  retrieveDictionaries: retrieveDictionariesAction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionariesPage)

@@ -143,6 +143,14 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
 const retrievePublicDictionariesAction = createActionThunk(RETRIEVE_DICTIONARIES_ACTION, api.dictionaries.retrieve.public)
 const retrievePersonalDictionariesAction = createActionThunk(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), api.dictionaries.retrieve.private)
 const retrieveOrgDictionariesAction = createActionThunk(indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX), api.dictionaries.retrieve.private)
+const retrieveDictionariesAction = (personalDictionariesUrl: string, personalQ: string = '', personalLimit = 20, personalPage = 1, orgDictionariesUrl: string, orgQ: string = '', orgLimit = 20, orgPage = 1) => {
+  // Yes, we would have loved for these to be individual actions, but I encountered a weird race condition issue
+  // Backend mixes up results for the two calls when they are started simultaneously
+  return async (dispatch: Function) => {
+    await dispatch(retrievePersonalDictionariesAction(personalDictionariesUrl, personalQ, personalLimit, personalPage));
+    await dispatch(retrieveOrgDictionariesAction(orgDictionariesUrl, orgQ, orgLimit, orgPage));
+  };
+}
 
 const initialState: DictionaryState = {
   dictionaries: [],
@@ -178,8 +186,7 @@ const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state)
 
 const retrievePublicDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION))
-const retrievePersonalDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX))
-const retrieveOrgDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX))
+const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX));
 
 export {
   reducer as default,
@@ -191,11 +198,9 @@ export {
   retrieveDictionaryDetailsLoadingSelector,
   retrieveDictionaryAndDetailsAction,
   retrievePublicDictionariesAction,
+  retrieveDictionariesAction,
   retrievePublicDictionariesLoadingSelector,
-  retrievePersonalDictionariesAction,
-  retrievePersonalDictionariesLoadingSelector,
-  retrieveOrgDictionariesAction,
-  retrieveOrgDictionariesLoadingSelector,
+  retrieveDictionariesLoadingSelector,
   PERSONAL_DICTIONARIES_ACTION_INDEX,
   ORG_DICTIONARIES_ACTION_INDEX,
 }
