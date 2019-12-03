@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -66,6 +67,9 @@ const useStyles = makeStyles((theme: Theme) =>
     logoutButton: {
       marginTop: 'auto',
     },
+    selected: {
+      color: theme.palette.primary.main,
+    },
   }),
 )
 
@@ -120,20 +124,27 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         </div>
         <Divider/>
         <List component="div">
-          <ListItem button dense={false} component={Link} to="/" key="Home">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/" key="Home">
             <ListItemIcon className="list-item-icon"><HomeOutlined/></ListItemIcon>
             <ListItemText primary="Home"/>
           </ListItem>
         </List>
         <Divider component="hr"/>
         <List component="div">
-          <ListItem button dense={false} component={Link} to="/user/dictionaries/" key="Your Dictionaries">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/user/dictionaries/" key="Your Dictionaries">
             <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
             <ListItemText primary="Your Dictionaries"/>
           </ListItem>
-          <ListItem button dense={false} component={Link} to="/dictionaries/" key="Public Dictionaries">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/dictionaries/" key="Public Dictionaries">
             <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
             <ListItemText primary="Public Dictionaries"/>
+          </ListItem>
+        </List>
+        <Divider component="hr"/>
+        <List component="div">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/actions/" key="In Progress">
+            <ListItemIcon className="list-item-icon"><HourGlassEmptyIcon/></ListItemIcon>
+            <ListItemText primary="In Progress"/>
           </ListItem>
         </List>
         <Divider component="hr"/>

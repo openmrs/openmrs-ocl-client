@@ -7,18 +7,24 @@ import {
 import { AuthenticationRequired, LoginPage } from './apps/authentication'
 import { Provider } from 'react-redux'
 import store from './store'
-import NavDrawer from './components/NavDrawer'
+import { NavDrawer } from './components'
 import DictionaryRoutes, {
   CreateDictionaryPage,
   ViewDictionariesPage,
   ViewPublicDictionariesPage
 } from './apps/dictionaries'
 import ConceptRoutes, { COLLECTION_CONTAINER, ViewConceptsPage } from './apps/concepts'
-import Header from './components/Header'
+import { Header } from './components'
+import {InProgressPage} from './components'
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
+      <Route exact path="/actions/">
+        <Header title="In Progress">
+          <InProgressPage />
+        </Header>
+      </Route>
       <Route exact path="/dictionaries/new/">
         <Header title="Create Dictionary">
           <CreateDictionaryPage/>
