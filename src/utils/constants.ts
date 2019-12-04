@@ -279,3 +279,4 @@ export const MAP_TYPES: Option[] = [
 ]
 export const MAP_TYPE_Q_AND_A = option('Q-AND-A')
 export const MAP_TYPE_CONCEPT_SET = option('CONCEPT-SET')
+export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/'

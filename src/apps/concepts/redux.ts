@@ -4,7 +4,7 @@ import {
   indexedAction,
   loadingSelector,
   progressAction, progressSelector, resetAction,
-  startAction
+  startAction,
 } from '../../redux'
 import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'

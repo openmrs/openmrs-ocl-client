@@ -28,8 +28,13 @@ export interface Mapping {
 }
 
 export interface APIMapping extends Mapping {
+  to_concept_code: string,
   url: string,
   retired: boolean,
+}
+
+export interface InternalAPIMapping extends APIMapping {
+  to_concept_url: string,
 }
 
 export interface BaseConcept {
