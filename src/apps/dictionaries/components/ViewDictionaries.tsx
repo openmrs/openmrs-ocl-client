@@ -118,16 +118,16 @@ const ViewDictionaries: React.FC<Props> = ({ dictionaries, numFound, onPageChang
           >
             <Card>
               <CardContent>
-                <Typography variant="body1" color="textSecondary" gutterBottom>
+                <Typography noWrap variant="body1" color="textSecondary" gutterBottom>
                   {shortCode}
                 </Typography>
                 <Typography noWrap variant="h5">
                   {name}
                 </Typography>
-                <Typography variant="body2" color="textSecondary">
+                <Typography noWrap variant="body2" color="textSecondary">
                   {ownerType}/{owner}
                 </Typography>
-                <Typography variant="body1" component="p">
+                <Typography noWrap variant="body1" component="p">
                   {description}
                 </Typography>
               </CardContent>
