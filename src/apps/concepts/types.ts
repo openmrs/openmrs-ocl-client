@@ -93,7 +93,7 @@ export interface OptionalQueryParams {
   limit?: number,
   classFilters?: string[],
   dataTypeFilters?: string[],
-  collection?: string,
+  addToCollection?: string,
 }
 
 export interface QueryParams {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Header from '../../components/Header'
-import { Fab, Grid, makeStyles, Menu, MenuItem } from '@material-ui/core'
+import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
 import { ConceptsTable } from './components'
 import { connect } from 'react-redux'
 import { retrieveConceptsAction, viewConceptsLoadingSelector, viewConceptsErrorsSelector } from './redux'
@@ -15,7 +15,7 @@ import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../authentication'
 import { orgsSelector } from '../authentication/redux/reducer'
-import { CIEL_CONCEPTS_URL, SOURCE_CONTAINER } from './constants'
+import { CIEL_CONCEPTS_URL, CIEL_SOURCE_URL, SOURCE_CONTAINER } from './constants'
 
 interface Props {
   concepts?: APIConcept[],
@@ -41,6 +41,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
 
   const { push: goTo } = useHistory()
   const { pathname: url } = useLocation()
+  const collectionUrl = url.replace('/concepts', '')
   const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -60,7 +61,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
     q: initialQ = '',
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
-    collection,
+    addToCollection,
   } = queryParams
 
   const [showOptions, setShowOptions] = useState(true)
@@ -94,9 +95,9 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
               concepts={concepts || []}
               buttons={{
                 edit: canModifySource,
-                addToCollection: !!collection,
+                addToCollection: !!addToCollection,
               }}
-              collection={collection}
+              collection={addToCollection}
               q={q}
               setQ={setQ}
               page={page}
@@ -120,9 +121,11 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
       </Header>
       {!canModifySource ? null : containerType === SOURCE_CONTAINER ? (
         <>
-          <Fab onClick={handleClick} color="primary" className="fab">
-            <AddIcon/>
-          </Fab>
+          <Tooltip title="Create a new concept">
+            <Fab onClick={handleClick} color="primary" className="fab">
+              <AddIcon/>
+            </Fab>
+          </Tooltip>
           <Menu
             anchorEl={anchorEl}
             keepMounted
@@ -138,11 +141,26 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
           </Menu>
         </>
       ) : (
-        <Link to={`${CIEL_CONCEPTS_URL}?collection=${url}`}>
-          <Fab color="primary" className="fab">
-            <AddIcon/>
-          </Fab>
-        </Link>
+        <>
+          <Tooltip title="Add CIEL concepts">
+            <Fab onClick={handleClick} color="primary" className="fab">
+              <AddIcon/>
+            </Fab>
+          </Tooltip>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}><Link className={classes.link}
+                                                  to={`${CIEL_CONCEPTS_URL}?addToCollection=${collectionUrl}`}>Add
+              single concept</Link></MenuItem>
+            <MenuItem onClick={handleClose}><Link className={classes.link}
+                                                  to={`${collectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}>Add bulk
+              concepts</Link></MenuItem>
+          </Menu>
+        </>
       )}
     </>
   )

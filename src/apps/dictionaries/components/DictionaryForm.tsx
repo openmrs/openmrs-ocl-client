@@ -109,7 +109,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
             <Field
               // required
               fullWidth
-              disabled={editing}
+              disabled={editing || isSubmitting}
               autoComplete="off"
               id="short_code"
               name="short_code"
@@ -149,7 +149,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
               <Field
                 value=""
-                disabled={editing}
+                disabled={editing || isSubmitting}
                 name="owner_url"
                 id="owner_url"
                 component={Select}
@@ -210,7 +210,8 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
                 id="supported_locales"
                 component={Select}
               >
-                {LOCALES.filter(({value}) => value !== values.default_locale).map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
+                {LOCALES.filter(({ value }) => value !== values.default_locale).map(({ value, label }) => <MenuItem
+                  value={value}>{label}</MenuItem>)}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="supported_locales" component="span"/>
