@@ -1,4 +1,4 @@
-import { NewAPIDictionary } from './types'
+import { EditableDictionaryFields, NewAPIDictionary } from './types'
 import { authenticatedInstance, unAuthenticatedInstance } from '../../api'
 import { AxiosResponse } from 'axios'
 import { OCL_DICTIONARY_TYPE } from './constants'
@@ -7,6 +7,7 @@ import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from '../../utils'
 const api = {
   create: (ownerUrl: string, data: NewAPIDictionary): Promise<AxiosResponse<any>> => authenticatedInstance.post(`${ownerUrl}collections/`, data),
   retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> => authenticatedInstance.get(dictionaryUrl, { params: { verbose: true } }),
+  update: (dictionaryUrl: string, data: EditableDictionaryFields): Promise<AxiosResponse<any>> => authenticatedInstance.put(dictionaryUrl, data),
   dictionaries: {
     retrieve: {
       public: (dictionariesUrl: string, q: string = '', limit = 20, page = 1): Promise<AxiosResponse<any>> => unAuthenticatedInstance.get(dictionariesUrl,

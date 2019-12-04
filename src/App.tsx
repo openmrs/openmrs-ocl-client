@@ -15,14 +15,14 @@ import DictionaryRoutes, {
 } from './apps/dictionaries'
 import ConceptRoutes, { COLLECTION_CONTAINER, ViewConceptsPage } from './apps/concepts'
 import { Header } from './components'
-import {InProgressPage} from './components'
+import { InProgressPage } from './components'
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
       <Route exact path="/actions/">
         <Header title="In Progress">
-          <InProgressPage />
+          <InProgressPage/>
         </Header>
       </Route>
       <Route exact path="/dictionaries/new/">

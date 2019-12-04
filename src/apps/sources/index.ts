@@ -3,6 +3,8 @@ export {
   createSourceAction,
   createSourceErrorSelector,
   retrieveSourceAction,
-  retrieveSourceLoadingSelector
+  retrieveSourceLoadingSelector,
+  editSourceAction,
+  editSourceErrorSelector,
 } from './redux'
 export * from './types'

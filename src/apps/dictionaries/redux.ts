@@ -11,17 +11,22 @@ import {
   createSourceAction as createSource,
   createSourceErrorSelector, NewAPISource,
   retrieveSourceAction,
-  retrieveSourceLoadingSelector
+  retrieveSourceLoadingSelector,
+  editSourceAction as editSource,
+  editSourceErrorSelector,
 } from '../sources'
 import { APIDictionary, Dictionary, DictionaryState, NewAPIDictionary } from './types'
 import { APISource } from '../sources'
-import { CUSTOM_VALIDATION_SCHEMA } from '../../utils'
+import { CUSTOM_VALIDATION_SCHEMA, EditableConceptContainerFields } from '../../utils'
 import uuid from 'uuid/v4'
 import { APICollection, NewAPICollection } from '../collections'
 import {
   createCollectionAction as createCollection,
   createCollectionErrorSelector,
-  retrieveCollectionAction, retrieveCollectionLoadingSelector
+  retrieveCollectionAction,
+  retrieveCollectionLoadingSelector,
+  editCollectionAction as editCollection,
+  editCollectionErrorSelector,
 } from '../collections'
 import { AppState } from '../../redux'
 import { errorSelector } from '../../redux/redux'
@@ -36,6 +41,8 @@ const CREATE_DICTIONARY_ACTION = 'dictionaries/create'
 const CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/createSourceCollectionDictionary'
 const RETRIEVE_DICTIONARY_ACTION = 'dictionaries/retrieveDictionary'
 const RETRIEVE_DICTIONARIES_ACTION = 'dictionaries/retrieveDictionaries'
+const EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/editSourceCollectionDictionary'
+const EDIT_DICTIONARY_ACTION = 'dictionaries/edit'
 
 const createDictionaryAction = createActionThunk(indexedAction(CREATE_DICTIONARY_ACTION), api.create)
 const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
@@ -60,8 +67,8 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     dispatch(progressAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Creating source...'))
     const source: NewAPISource = {
       custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale: default_locale,
-      description: description,
+      default_locale,
+      description,
       external_id: uuid(),
       full_name: `${name} Source`,
       name: `${name} Source`,
@@ -72,7 +79,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
       supported_locales: supported_locales.join(','),
       website: ''
     }
-    sourceResponse = await dispatch(createSource<NewAPISource>(owner_url, source))
+    sourceResponse = await dispatch(createSource<APISource>(owner_url, source))
     if (!sourceResponse) {
       dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)))
       return false
@@ -82,8 +89,8 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     const collection: NewAPICollection = {
       collection_type: OCL_COLLECTION_TYPE,
       custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale: default_locale,
-      description: description,
+      default_locale,
+      description,
       external_id: uuid(),
       full_name: `${name} Collection`,
       name: `${name} Collection`,
@@ -93,7 +100,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
       supported_locales: supported_locales.join(','),
       website: ''
     }
-    collectionResponse = await dispatch(createCollection<NewAPICollection>(owner_url, collection))
+    collectionResponse = await dispatch(createCollection<APICollection>(owner_url, collection))
     if (!collectionResponse) { // todo cleanup here would involve hard deleting the source
       dispatch(completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)))
       return false
@@ -103,8 +110,8 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     const dictionary: NewAPIDictionary = {
       collection_type: OCL_DICTIONARY_TYPE,
       custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale: default_locale,
-      description: description,
+      default_locale,
+      description,
       external_id: uuid(),
       extras: {
         source: (sourceResponse as APISource).url,
@@ -112,10 +119,10 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
       },
       preferred_source: preferred_source,
       full_name: name,
-      name: name,
+      name,
       public_access: public_access,
       id: short_code,
-      short_code: short_code,
+      short_code,
       supported_locales: supported_locales.join(','),
       website: ''
     }
@@ -151,6 +158,57 @@ const retrieveDictionariesAction = (personalDictionariesUrl: string, personalQ: 
     await dispatch(retrieveOrgDictionariesAction(orgDictionariesUrl, orgQ, orgLimit, orgPage))
   }
 }
+const editSourceCollectionDictionaryAction = (dictionaryUrl: string, dictionaryData: Dictionary, extras: { source: string, collection: string }) => {
+  return async (dispatch: Function) => {
+    dispatch(startAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)))
+
+    const {
+      description,
+      name,
+      supported_locales,
+      default_locale,
+      preferred_source,
+      public_access,
+    } = dictionaryData
+
+    const data: EditableConceptContainerFields = {
+      // we are not updating source and collection visibility for now, as they are staying private
+      description,
+      name,
+      supported_locales: supported_locales.join(','),
+      default_locale,
+      preferred_source,
+    }
+
+    let sourceResponse: APISource | boolean
+    let collectionResponse: APICollection | boolean
+    let dictionaryResponse: APIDictionary | boolean
+
+    dispatch(progressAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Editing source...'))
+    sourceResponse = await dispatch(editSource<APISource>(extras.source, data))
+    if (!sourceResponse) {
+      dispatch(completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)))
+      return false
+    }
+
+    dispatch(progressAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Editing collection...'))
+    collectionResponse = await dispatch(editCollection<APICollection>(extras.collection, data))
+    if (!collectionResponse) {
+      dispatch(completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)))
+      return false
+    }
+
+    dispatch(progressAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION), 'Editing dictionary...'))
+    dictionaryResponse = await dispatch(editDictionaryAction<APIDictionary>(dictionaryUrl, { ...data, public_access }))
+    if (!dictionaryResponse) { // todo cleanup here would involve hard deleting the source and collection
+      dispatch(completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)))
+      return false
+    }
+
+    dispatch(completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)))
+  }
+}
+const editDictionaryAction = createActionThunk(EDIT_DICTIONARY_ACTION, api.update)
 
 const initialState: DictionaryState = {
   dictionaries: [],
@@ -166,11 +224,19 @@ const reducer = createReducer(initialState, {
   [RETRIEVE_DICTIONARIES_ACTION]: (state, { actionIndex, payload, responseMeta }: Action) => {
     state.dictionaries[actionIndex] = { items: payload, responseMeta }
   },
+  [startAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)).type]: (state) => ({
+    ...state,
+    editedDictionary: undefined
+  }),
+  [EDIT_DICTIONARY_ACTION]: (state, action) => ({ ...state, editedDictionary: action.payload }),
 })
 
 const createDictionaryLoadingSelector = loadingSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
 const createDictionaryProgressSelector = progressSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
 const createDictionaryErrorSelector = errorSelector(indexedAction(CREATE_DICTIONARY_ACTION))
+const editDictionaryErrorSelector = errorSelector(indexedAction(EDIT_DICTIONARY_ACTION))
+const editDictionaryLoadingSelector = loadingSelector(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
+const editDictionaryProgressSelector = progressSelector(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
 const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [key: string]: string[] | undefined } | undefined) => {
   const createSourceErrors = createSourceErrorSelector(state)
   if (createSourceErrors) return createSourceErrors
@@ -180,6 +246,16 @@ const createSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [ke
 
   const createDictionaryErrors = createDictionaryErrorSelector(state)
   if (createDictionaryErrors) return createDictionaryErrors
+}
+const editSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [key: string]: string[] | undefined } | undefined) => {
+  const editSourceErrors = editSourceErrorSelector(state)
+  if (editSourceErrors) return editSourceErrors
+
+  const editCollectionErrors = editCollectionErrorSelector(state)
+  if (editCollectionErrors) return editCollectionErrors
+
+  const editDictionaryErrors = editDictionaryErrorSelector(state)
+  if (editDictionaryErrors) return editDictionaryErrors
 }
 
 const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION))
@@ -203,4 +279,9 @@ export {
   retrieveDictionariesLoadingSelector,
   PERSONAL_DICTIONARIES_ACTION_INDEX,
   ORG_DICTIONARIES_ACTION_INDEX,
+  retrieveDictionaryAction,
+  editSourceCollectionDictionaryAction,
+  editSourceCollectionDictionaryErrorsSelector,
+  editDictionaryProgressSelector,
+  editDictionaryLoadingSelector,
 }

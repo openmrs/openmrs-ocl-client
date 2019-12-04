@@ -114,7 +114,7 @@ const ViewDictionaries: React.FC<Props> = ({ dictionaries, numFound, onPageChang
           <Grid
             item
             key={shortCode}
-            // xs={3}
+            xs={4}
           >
             <Card>
               <CardContent>

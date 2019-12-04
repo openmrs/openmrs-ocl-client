@@ -17,6 +17,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import { APISource } from '../sources'
 import { APICollection } from '../collections'
 import { canModifyContainer } from '../authentication'
+import { CONTEXT } from './constants'
 
 interface Props {
   profile?: APIProfile,
@@ -48,6 +49,7 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictiona
           <fieldset>
             <Typography component="legend" variant="h5" gutterBottom>General Details</Typography>
             <DictionaryForm
+              context={CONTEXT.view}
               savedValues={apiDictionaryToDictionary(dictionary)}
               profile={profile}
               usersOrgs={usersOrgs}
@@ -62,8 +64,10 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictiona
         )}
       </Grid>
       {!canEditDictionary ? null : (
-        <Link to={`${url}edit/`} color="primary" className="fab" component={Fab}>
-          <EditIcon/>
+        <Link to={`${url}edit/`}>
+          <Fab color="primary" className="fab">
+            <EditIcon/>
+          </Fab>
         </Link>
       )}
     </>

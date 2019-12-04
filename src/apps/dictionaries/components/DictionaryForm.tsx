@@ -9,6 +9,7 @@ import { snakeCase } from 'lodash'
 
 import { Dictionary } from '../types'
 import { APIOrg, APIProfile } from '../../authentication'
+import { CONTEXT } from '../constants'
 
 interface Props {
   onSubmit?: Function,
@@ -18,7 +19,7 @@ interface Props {
   usersOrgs: APIOrg[],
   errors?: {},
   savedValues?: Dictionary,
-  editing?: boolean,
+  context?: string,
 }
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
@@ -51,7 +52,10 @@ const initialValues: Dictionary = {
   supported_locales: [],
 }
 
-const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, usersOrgs, errors, editing = false, savedValues }) => {
+const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, usersOrgs, errors, context = CONTEXT.view, savedValues }) => {
+  const notViewing = (context === CONTEXT.create) || (context === CONTEXT.edit)
+  const editing = context === CONTEXT.edit
+
   const formikRef: any = useRef(null)
   const error: string | undefined = getPrettyError(errors)
 
@@ -90,7 +94,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
           if (onSubmit) onSubmit(values)
         }}
       >
-        {({ isSubmitting, status }) => (
+        {({ isSubmitting, status, values }) => (
           <Form>
             <Field
               // required
@@ -105,6 +109,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
             <Field
               // required
               fullWidth
+              disabled={editing}
               autoComplete="off"
               id="short_code"
               name="short_code"
@@ -144,13 +149,14 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
               <Field
                 value=""
+                disabled={editing}
                 name="owner_url"
                 id="owner_url"
                 component={Select}
               >
                 {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
                 <ListSubheader>Your Organizations</ListSubheader>
-                {usersOrgs.map(org => <MenuItem value={org.url}>{org.name}</MenuItem>)}
+                {usersOrgs.map(org => <MenuItem key={org.id} value={org.url}>{org.name}</MenuItem>)}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="owner_url" component="span"/>
@@ -204,7 +210,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
                 id="supported_locales"
                 component={Select}
               >
-                {LOCALES.map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
+                {LOCALES.filter(({value}) => value !== values.default_locale).map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="supported_locales" component="span"/>
@@ -212,7 +218,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
             </FormControl>
             <br/>
             <br/>
-            {!editing ? '' : (
+            {!notViewing ? '' : (
               <div id="submit-button">
                 {!status ? <br/> : (
                   <Typography color="textSecondary" variant="caption" component="span">

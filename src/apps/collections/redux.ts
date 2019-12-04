@@ -6,9 +6,11 @@ import { CollectionState } from './types'
 
 const CREATE_COLLECTION_ACTION = 'collections/create'
 const RETRIEVE_COLLECTION_ACTION = 'collections/retrieve'
+const EDIT_COLLECTION_ACTION = 'collections/edit'
 
-const createCollectionAction = createActionThunk(indexedAction(CREATE_COLLECTION_ACTION), api.create)
-const retrieveCollectionAction = createActionThunk(indexedAction(RETRIEVE_COLLECTION_ACTION), api.retrieve)
+const createCollectionAction = createActionThunk(CREATE_COLLECTION_ACTION, api.create)
+const retrieveCollectionAction = createActionThunk(RETRIEVE_COLLECTION_ACTION, api.retrieve)
+const editCollectionAction = createActionThunk(EDIT_COLLECTION_ACTION, api.update)
 
 const initialState: CollectionState = {}
 
@@ -23,11 +25,14 @@ const reducer = (state = initialState, action: AnyAction) => {
 
 const createCollectionErrorSelector = errorSelector(indexedAction(CREATE_COLLECTION_ACTION))
 const retrieveCollectionLoadingSelector = loadingSelector(indexedAction(RETRIEVE_COLLECTION_ACTION))
+const editCollectionErrorSelector = errorSelector(indexedAction(EDIT_COLLECTION_ACTION))
 
 export {
   reducer as default,
   createCollectionAction,
   createCollectionErrorSelector,
   retrieveCollectionAction,
-  retrieveCollectionLoadingSelector
+  retrieveCollectionLoadingSelector,
+  editCollectionAction,
+  editCollectionErrorSelector,
 }

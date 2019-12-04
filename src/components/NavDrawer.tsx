@@ -131,18 +131,21 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         </List>
         <Divider component="hr"/>
         <List component="div">
-          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/user/dictionaries/" key="Your Dictionaries">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected}
+                    to="/user/dictionaries/" key="Your Dictionaries">
             <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
             <ListItemText primary="Your Dictionaries"/>
           </ListItem>
-          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/dictionaries/" key="Public Dictionaries">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/dictionaries/"
+                    key="Public Dictionaries">
             <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
             <ListItemText primary="Public Dictionaries"/>
           </ListItem>
         </List>
         <Divider component="hr"/>
         <List component="div">
-          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/actions/" key="In Progress">
+          <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/actions/"
+                    key="In Progress">
             <ListItemIcon className="list-item-icon"><HourGlassEmptyIcon/></ListItemIcon>
             <ListItemText primary="In Progress"/>
           </ListItem>

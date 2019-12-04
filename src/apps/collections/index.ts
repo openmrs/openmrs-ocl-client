@@ -3,6 +3,8 @@ export {
   createCollectionAction,
   createCollectionErrorSelector,
   retrieveCollectionAction,
-  retrieveCollectionLoadingSelector
+  retrieveCollectionLoadingSelector,
+  editCollectionAction,
+  editCollectionErrorSelector,
 } from './redux'
 export * from './types'

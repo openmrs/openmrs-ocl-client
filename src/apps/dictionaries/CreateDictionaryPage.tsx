@@ -12,6 +12,7 @@ import { APIDictionary, Dictionary } from './types'
 import { orgsSelector, profileSelector } from '../authentication/redux/reducer'
 import { APIOrg, APIProfile } from '../authentication'
 import { usePrevious } from '../../utils'
+import { CONTEXT } from './constants'
 
 interface Props {
   errors?: {},
@@ -33,7 +34,7 @@ const CreateDictionaryPage: React.FC<Props> = ({ profile, usersOrgs, errors, cre
     <Grid id="create-dictionary-page" item xs={6} component="div">
       <Paper>
         <DictionaryForm
-          editing
+          context={CONTEXT.create}
           errors={errors}
           profile={profile}
           usersOrgs={usersOrgs ? usersOrgs : []}

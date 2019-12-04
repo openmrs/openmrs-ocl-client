@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const InProgressPage = () => (
   <span>'In progress'</span>
-);
+)
 
-export default InProgressPage;
+export default InProgressPage

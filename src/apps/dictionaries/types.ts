@@ -1,4 +1,4 @@
-import { BaseConceptContainer } from '../../utils'
+import { BaseConceptContainer, EditableConceptContainerFields } from '../../utils'
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
@@ -34,8 +34,13 @@ export interface APIDictionary extends BaseAPIDictionary {
 
 export interface DictionaryState {
   newDictionary?: APIDictionary,
+  editedDictionary?: APIDictionary,
   dictionary?: APIDictionary,
   dictionaries: { items: APIDictionary[], responseMeta?: {} }[],
+}
+
+export interface EditableDictionaryFields extends EditableConceptContainerFields {
+  public_access: string,
 }
 
 const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {
