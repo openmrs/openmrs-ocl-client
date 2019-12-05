@@ -108,4 +108,5 @@ export {
   progressAction,
   completeAction,
   indexedAction,
+  FAILURE,
 }

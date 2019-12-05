@@ -76,7 +76,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({ items, title, searchText, che
           </ListSubheader>
         }
       >
-        {items.filter(item => item.toLowerCase().indexOf(searchText.toLowerCase()) >= 0).map(value => {
+        {items.filter(item => item.toLowerCase().includes(searchText.toLowerCase())).map(value => {
           const labelId = `checkbox-list-label-${value}`
 
           return (
@@ -84,7 +84,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({ items, title, searchText, che
               <ListItemIcon>
                 <Checkbox
                   edge="start"
-                  checked={checked.indexOf(value) !== -1}
+                  checked={checked.includes(value)}
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ 'aria-labelledby': labelId }}

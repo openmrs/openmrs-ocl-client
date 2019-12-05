@@ -7,6 +7,10 @@ interface LoadingAndErroredState {
   [key: string]: (boolean | {} | undefined)[],
 }
 
+const loading = (actionType: string): string => `${actionType}Loading`
+const progress = (actionType: string): string => `${actionType}Progress`
+const errors = (actionType: string): string => `${actionType}Errors`
+
 // todo improve these action types args
 const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Action) => {
   const { type, payload, actionIndex } = action
@@ -15,9 +19,9 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
   if (!matches) return state
 
   const [, actionName, requestState] = matches
-  const loadingName = actionName + 'Loading'
-  const progressName = actionName + 'Progress'
-  const errorName = actionName + 'Errors'
+  const loadingName = loading(actionName)
+  const progressName = progress(actionName)
+  const errorName = errors(actionName)
 
   const newState = cloneDeep(state)
 
@@ -56,9 +60,17 @@ const loadingAndErroredReducer = (state: LoadingAndErroredState = {}, action: Ac
       return state
   }
 }
-const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, { actionType, actionIndex }: IndexedAction): boolean => previousValue || Boolean(state.status[`${actionType}Loading`] ? state.status[`${actionType}Loading`][actionIndex] : false), false)
-const progressSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Progress`][actionIndex] : undefined
-const errorSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Errors`][actionIndex] : undefined
-const errorListSelector = (actionType: string) => (state: AppState): any => state.status[`${actionType}Progress`] ? state.status[`${actionType}Errors`] : undefined
+const loadingSelector = (...actions: IndexedAction[]) => (state: AppState): boolean => actions.reduce((previousValue: boolean, { actionType, actionIndex }: IndexedAction): boolean => previousValue || Boolean(state.status[loading(actionType)] ? state.status[loading(actionType)][actionIndex] : false), false)
+const progressSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[progress(actionType)] ? state.status[progress(actionType)][actionIndex] : undefined
+const errorSelector = ({ actionType, actionIndex }: IndexedAction) => (state: AppState): any => state.status[errors(actionType)] ? state.status[errors(actionType)][actionIndex] : undefined
+const progressListSelector = (actionType: string) => (state: AppState): any => state.status[progress(actionType)] ? state.status[progress(actionType)] : undefined
+const errorListSelector = (actionType: string) => (state: AppState): any => state.status[errors(actionType)] ? state.status[errors(actionType)] : undefined
 
-export { loadingSelector, progressSelector, errorSelector, errorListSelector, loadingAndErroredReducer }
+export {
+  loadingSelector,
+  progressSelector,
+  errorSelector,
+  progressListSelector,
+  errorListSelector,
+  loadingAndErroredReducer
+}

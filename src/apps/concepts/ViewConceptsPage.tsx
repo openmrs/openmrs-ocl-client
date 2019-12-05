@@ -17,6 +17,7 @@ import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../auth
 import { orgsSelector } from '../authentication/redux/reducer'
 import { CIEL_CONCEPTS_URL, SOURCE_CONTAINER } from './constants'
 import { CIEL_SOURCE_URL } from '../../utils/constants'
+import { addConceptsToCollectionAction } from '../collections'
 
 interface Props {
   concepts?: APIConcept[],
@@ -27,6 +28,7 @@ interface Props {
   profile?: APIProfile,
   usersOrgs?: APIOrg[],
   containerType: string,
+  addConceptsToCollection: Function,
 }
 
 const useStyles = makeStyles({
@@ -37,12 +39,12 @@ const useStyles = makeStyles({
   },
 })
 
-const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType }) => {
+const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType, addConceptsToCollection }) => {
   const classes = useStyles()
 
   const { push: goTo } = useHistory()
   const { pathname: url } = useLocation()
-  const collectionUrl = url.replace('/concepts', '')
+  const sourceOrCollectionUrl = url.replace('/concepts', '')
   const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -62,7 +64,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
     q: initialQ = '',
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
-    addToCollection,
+    addToCollection: collectionToAddTo,
   } = queryParams
 
   const [showOptions, setShowOptions] = useState(true)
@@ -96,9 +98,8 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
               concepts={concepts || []}
               buttons={{
                 edit: canModifySource,
-                addToCollection: !!addToCollection,
+                addToCollection: !!collectionToAddTo,
               }}
-              collection={addToCollection}
               q={q}
               setQ={setQ}
               page={page}
@@ -109,6 +110,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
               goTo={goTo}
               count={meta.num_found ? Number(meta.num_found) : (concepts ? concepts.length : 0)}
               toggleShowOptions={() => setShowOptions(!showOptions)}
+              addConceptsToCollection={(concepts: APIConcept[]) => addConceptsToCollection(collectionToAddTo, concepts)}
             />
           </Grid>
           {!showOptions ? '' : (
@@ -155,10 +157,11 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}><Link className={classes.link}
-                                                  to={`${CIEL_CONCEPTS_URL}?addToCollection=${collectionUrl}`}>Add
+                                                  to={`${CIEL_CONCEPTS_URL}?addToCollection=${sourceOrCollectionUrl}`}>Add
               single concept</Link></MenuItem>
             <MenuItem onClick={handleClose}><Link className={classes.link}
-                                                  to={`${collectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}>Add bulk
+                                                  to={`${sourceOrCollectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}>Add
+              bulk
               concepts</Link></MenuItem>
           </Menu>
         </>
@@ -178,6 +181,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
+  addConceptsToCollection: addConceptsToCollectionAction,
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage)

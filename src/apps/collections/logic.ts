@@ -2,19 +2,19 @@ import api from './api'
 import { APIMapping, InternalAPIMapping } from '../concepts'
 import { union } from 'lodash'
 
-const fetchCIELMappings = async (fromConcepts: string[]): Promise<APIMapping[]> => {
+const fetchCIELMappings = async (fromConceptIds: string[]): Promise<APIMapping[]> => {
   try {
-    return (await api.retrieveCIELMappings(fromConcepts)).data
+    return (await api.retrieveCIELMappings(fromConceptIds)).data
   } catch (e) {
     return []
   }
 }
 
-export const recursivelyFetchToConcepts = async (
-  fromConcepts: string[],
+const recursivelyFetchToConcepts = async (
+  fromConceptIds: string[],
+  updateNotification: (message: string) => {},
   levelsToCheck: number = 20,
   fetchMappings = fetchCIELMappings,
-  updateNotification: (message: string) => {},
 ): Promise<string[]> => {
   const getConceptUrls = (mappingsLists: InternalAPIMapping[][]): string[] => {
     const toConceptUrls = union(...mappingsLists).map(mapping => mapping.to_concept_url)
@@ -27,7 +27,7 @@ export const recursivelyFetchToConcepts = async (
   )
 
   updateNotification('Finding dependent concepts...')
-  const startingConceptMappings: APIMapping[] = await fetchMappings(fromConcepts)
+  const startingConceptMappings: APIMapping[] = await fetchMappings(fromConceptIds)
   const mappingsLists = [removeExternalMappings(startingConceptMappings)]
   updateNotification(`Found ${getConceptUrls(mappingsLists).length} dependent concepts to add...`)
 
@@ -43,3 +43,5 @@ export const recursivelyFetchToConcepts = async (
 
   return getConceptUrls(mappingsLists)
 }
+
+export { recursivelyFetchToConcepts }

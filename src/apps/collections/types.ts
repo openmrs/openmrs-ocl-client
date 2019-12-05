@@ -23,6 +23,7 @@ export interface APICollection extends BaseAPICollection {
 
 export interface CollectionState {
   collection?: APICollection,
+  addReferencesResults: { payload: {}, meta: [] }[],
 }
 
 export {}

@@ -6,6 +6,7 @@ export {
   retrieveCollectionLoadingSelector,
   editCollectionAction,
   editCollectionErrorSelector,
+  addConceptsToCollectionAction,
 } from './redux'
 export { default } from './Routes'
 

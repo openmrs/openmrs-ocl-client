@@ -16,11 +16,10 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
-import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import { APIConcept, QueryParams, SortableField } from '../types'
 import { Link } from 'react-router-dom'
-import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon, Search as SearchIcon } from '@material-ui/icons'
+import { Add as AddIcon, MoreVert as MoreVertIcon, Search as SearchIcon } from '@material-ui/icons'
 import { Button, Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 
 interface Props extends QueryParams {
@@ -32,6 +31,7 @@ interface Props extends QueryParams {
   q: string,
   setQ: Function,
   buttons?: { [key: string]: boolean },
+  addConceptsToCollection: Function,
 }
 
 interface HeadCell {
@@ -130,10 +130,12 @@ interface EnhancedTableToolbarProps {
   search: Function;
   q: string;
   setQ: Function;
+  showAddConcepts: boolean;
+  addSelectedConcepts: Function;
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-  const { numSelected, toggleShowOptions, search, q, setQ } = props
+  const { numSelected, toggleShowOptions, search, q, setQ, showAddConcepts, addSelectedConcepts } = props
 
   const classes = useToolbarStyles()
 
@@ -172,11 +174,15 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon/>
-          </IconButton>
-        </Tooltip>
+        <>
+          {!showAddConcepts ? null : (
+            <Tooltip title="Add">
+              <IconButton onClick={e => addSelectedConcepts()} aria-label="add">
+                <AddIcon/>
+              </IconButton>
+            </Tooltip>
+          )}
+        </>
       ) : (
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
@@ -223,7 +229,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions, buttons = {}, collection }) => {
+const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, setQ, page, limit, sortBy, sortDirection, toggleShowOptions, buttons = {}, collection, addConceptsToCollection }) => {
   const classes = useStyles()
   const [selected, setSelected] = React.useState<string[]>([])
   const [menu, setMenu] = React.useState<{ index: number, anchor: null | HTMLElement }>({ index: -1, anchor: null })
@@ -281,13 +287,14 @@ const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, se
     setRowsPerPage(parseInt(event.target.value, 10))
   }
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1
+  const isSelected = (id: string) => selected.includes(id)
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar q={q} setQ={setQ} search={search} numSelected={selected.length}
-                              toggleShowOptions={toggleShowOptions}/>
+                              toggleShowOptions={toggleShowOptions} showAddConcepts={buttons.addToCollection}
+                              addSelectedConcepts={() => addConceptsToCollection(concepts.filter(concept => selected.includes(concept.id)))}/>
         <div className={classes.tableWrapper}>
           <Table
             stickyHeader
@@ -357,7 +364,10 @@ const ConceptsTable: React.FC<Props> = ({ concepts, buildUrl, goTo, count, q, se
                             </MenuItem>
                           )}
                           {!buttons.addToCollection ? null : (
-                            <MenuItem onClick={() => toggleMenu(index)}>
+                            <MenuItem onClick={() => {
+                              if (addConceptsToCollection) addConceptsToCollection([row])
+                              toggleMenu(index)
+                            }}>
                               Add
                             </MenuItem>
                           )}
