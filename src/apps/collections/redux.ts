@@ -1,7 +1,7 @@
 import {
   completeAction,
-  createActionThunk, FAILURE,
-  indexedAction,
+  createActionThunk, errorListSelector, FAILURE,
+  indexedAction, loadingListSelector,
   loadingSelector,
   progressAction,
   progressListSelector,
@@ -23,14 +23,16 @@ const createCollectionAction = createActionThunk(CREATE_COLLECTION_ACTION, api.c
 const retrieveCollectionAction = createActionThunk(RETRIEVE_COLLECTION_ACTION, api.retrieve)
 const editCollectionAction = createActionThunk(EDIT_COLLECTION_ACTION, api.update)
 const addConceptsToCollectionAction = (collectionUrl: string, concepts: APIConcept[]) =>
-  async (dispatch: Function) => {
-    const actionIndex = progressListSelector(ADD_CONCEPTS_TO_COLLECTION).length || 0
-    const updateProgress = (message: string) => dispatch(progressAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex), `Adding concept(s)- ${concepts.map(concept => concept.display_name).join(', ')}: ${message}`))
+  async (dispatch: Function, getState: Function) => {
+    const conceptOrConcepts = concepts.length > 1 ? `concepts (${concepts.length})` : 'concept'
+    const thisOrThese = concepts.length > 1 ? 'these' : 'this'
+    const actionIndex = addConceptsToCollectionProgressListSelector(getState()).length || 0
+    const updateProgress = (message: string) => dispatch(progressAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex), `Adding ${conceptOrConcepts}: ${concepts.map(concept => concept.display_name).join(', ')}--${message}`))
 
     dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex)))
 
     const referencesToAdd = await recursivelyFetchToConcepts(concepts.map(concept => concept.id), updateProgress)
-    updateProgress(referencesToAdd.length ? `Adding this and ${referencesToAdd.length} dependent concepts...` : 'Adding concept(s)...')
+    updateProgress(referencesToAdd.length ? `Adding ${thisOrThese} and ${referencesToAdd.length} dependent concepts...` : `Adding ${conceptOrConcepts}...`)
 
     try {
       const response = await api.references.add(collectionUrl, [...referencesToAdd, ...concepts.map(concept => concept.url)])
@@ -40,7 +42,7 @@ const addConceptsToCollectionAction = (collectionUrl: string, concepts: APIConce
         payload: response.data,
         meta: [collectionUrl, concepts],
       })
-      updateProgress('Added concept')
+      updateProgress(`Added ${conceptOrConcepts}`)
     } catch (e) {
       dispatch({
         type: `${ADD_CONCEPTS_TO_COLLECTION}_${FAILURE}`,
@@ -68,6 +70,10 @@ const createCollectionErrorSelector = errorSelector(indexedAction(CREATE_COLLECT
 const retrieveCollectionLoadingSelector = loadingSelector(indexedAction(RETRIEVE_COLLECTION_ACTION))
 const editCollectionErrorSelector = errorSelector(indexedAction(EDIT_COLLECTION_ACTION))
 
+const addConceptsToCollectionLoadingListSelector = loadingListSelector(ADD_CONCEPTS_TO_COLLECTION)
+const addConceptsToCollectionProgressListSelector = progressListSelector(ADD_CONCEPTS_TO_COLLECTION)
+const addConceptsToCollectionErrorListSelector = errorListSelector(ADD_CONCEPTS_TO_COLLECTION)
+
 export {
   reducer as default,
   createCollectionAction,
@@ -77,4 +83,7 @@ export {
   editCollectionAction,
   editCollectionErrorSelector,
   addConceptsToCollectionAction,
+  addConceptsToCollectionLoadingListSelector,
+  addConceptsToCollectionProgressListSelector,
+  addConceptsToCollectionErrorListSelector,
 }

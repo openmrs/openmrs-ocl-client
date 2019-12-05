@@ -7,6 +7,9 @@ export {
   editCollectionAction,
   editCollectionErrorSelector,
   addConceptsToCollectionAction,
+  addConceptsToCollectionLoadingListSelector,
+  addConceptsToCollectionProgressListSelector,
+  addConceptsToCollectionErrorListSelector,
 } from './redux'
 export { default } from './Routes'
 

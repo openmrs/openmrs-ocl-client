@@ -21,11 +21,7 @@ import { InProgressPage } from './components'
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/actions/">
-        <Header title="In Progress">
-          <InProgressPage/>
-        </Header>
-      </Route>
+      <Route exact path="/actions/" component={InProgressPage}/>
       <Route exact path="/dictionaries/new/">
         <Header title="Create Dictionary">
           <CreateDictionaryPage/>

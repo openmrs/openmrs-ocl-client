@@ -1,5 +1,10 @@
 export {
-  loadingSelector, progressSelector, progressListSelector, errorListSelector, loadingAndErroredReducer
+  loadingSelector,
+  progressSelector,
+  loadingListSelector,
+  progressListSelector,
+  errorListSelector,
+  loadingAndErroredReducer
 }from './redux'
 export {
   createActionThunk, createActionType, resetAction, startAction, progressAction, completeAction, indexedAction, FAILURE,

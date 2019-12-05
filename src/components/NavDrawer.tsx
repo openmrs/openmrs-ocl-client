@@ -8,11 +8,16 @@ import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { ExitToApp, FolderOpenOutlined, FolderSharedOutlined, HomeOutlined } from '@material-ui/icons'
+import {
+  ExitToApp,
+  FolderOpenOutlined,
+  FolderSharedOutlined,
+  HomeOutlined,
+  Notifications as NotificationsIcon
+} from '@material-ui/icons'
 import { NavLink as Link } from 'react-router-dom'
 import { Button, Dialog, DialogActions, DialogTitle, Typography } from '@material-ui/core'
 import { logoutAction } from '../apps/authentication/redux'
@@ -145,9 +150,9 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         <Divider component="hr"/>
         <List component="div">
           <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/actions/"
-                    key="In Progress">
-            <ListItemIcon className="list-item-icon"><HourGlassEmptyIcon/></ListItemIcon>
-            <ListItemText primary="In Progress"/>
+                    key="Progress Notifications">
+            <ListItemIcon className="list-item-icon"><NotificationsIcon/></ListItemIcon>
+            <ListItemText primary="Progress Notifications"/>
           </ListItem>
         </List>
         <Divider component="hr"/>
