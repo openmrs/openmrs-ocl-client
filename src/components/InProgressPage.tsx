@@ -1,5 +1,4 @@
 import React from 'react'
-import { Header } from './index'
 import { Card, CardContent, Grid, List, ListItem, ListSubheader, makeStyles, Typography } from '@material-ui/core'
 import { AppState } from '../redux'
 import {
@@ -7,6 +6,7 @@ import {
   addConceptsToCollectionProgressListSelector
 } from '../apps/collections'
 import { connect } from 'react-redux'
+import Header from './Header'
 
 interface Props {
   loadingList: boolean[],

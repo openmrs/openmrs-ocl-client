@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Fab, Grid } from '@material-ui/core'
+import { Fab, Grid, Tooltip } from '@material-ui/core'
 import { ConceptForm } from './components'
 import { AppState } from '../../redux'
 import { viewConceptLoadingSelector, viewConceptErrorsSelector, retrieveConceptAction } from './redux'
@@ -45,9 +45,11 @@ const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, e
       </Grid>
       {!canModifySource ? null : (
         <Link to={`${url}edit/`}>
-          <Fab color="primary" className="fab">
-            <EditIcon/>
-          </Fab>
+          <Tooltip title="Edit this concept">
+            <Fab color="primary" className="fab">
+              <EditIcon/>
+            </Fab>
+          </Tooltip>
         </Link>
       )}
     </Header>

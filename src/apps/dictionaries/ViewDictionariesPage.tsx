@@ -7,7 +7,7 @@ import { useQuery } from '../../utils'
 import { useHistory, useLocation } from 'react-router'
 import qs from 'qs'
 import ViewDictionaries from './components/ViewDictionaries'
-import { Fab, Grid } from '@material-ui/core'
+import { Fab, Grid, Tooltip } from '@material-ui/core'
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX,
@@ -94,9 +94,11 @@ const ViewDictionariesPage: React.FC<Props> = ({
         </ProgressOverlay>
       </Grid>
       <Link to={`/dictionaries/new/`}>
-        <Fab color="primary" className="fab">
-          <AddIcon/>
-        </Fab>
+        <Tooltip title="Create new dictionary">
+          <Fab color="primary" className="fab">
+            <AddIcon/>
+          </Fab>
+        </Tooltip>
       </Link>
     </>
   )

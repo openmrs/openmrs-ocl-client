@@ -19,7 +19,7 @@ import {
   Notifications as NotificationsIcon
 } from '@material-ui/icons'
 import { NavLink as Link } from 'react-router-dom'
-import { Button, Dialog, DialogActions, DialogTitle, Typography } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle, Tooltip, Typography } from '@material-ui/core'
 import { logoutAction } from '../apps/authentication/redux'
 import { connect } from 'react-redux'
 
@@ -130,7 +130,9 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         <Divider/>
         <List component="div">
           <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/" key="Home">
-            <ListItemIcon className="list-item-icon"><HomeOutlined/></ListItemIcon>
+            <Tooltip title="Home">
+              <ListItemIcon className="list-item-icon"><HomeOutlined/></ListItemIcon>
+            </Tooltip>
             <ListItemText primary="Home"/>
           </ListItem>
         </List>
@@ -138,12 +140,16 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         <List component="div">
           <ListItem button dense={false} component={Link} exact activeClassName={classes.selected}
                     to="/user/dictionaries/" key="Your Dictionaries">
-            <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
+            <Tooltip title="Your Dictionaries">
+              <ListItemIcon className="list-item-icon"><FolderOpenOutlined/></ListItemIcon>
+            </Tooltip>
             <ListItemText primary="Your Dictionaries"/>
           </ListItem>
           <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/dictionaries/"
                     key="Public Dictionaries">
-            <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
+            <Tooltip title="Public Dictionaries">
+              <ListItemIcon className="list-item-icon"><FolderSharedOutlined/></ListItemIcon>
+            </Tooltip>
             <ListItemText primary="Public Dictionaries"/>
           </ListItem>
         </List>
@@ -151,7 +157,9 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
         <List component="div">
           <ListItem button dense={false} component={Link} exact activeClassName={classes.selected} to="/actions/"
                     key="Progress Notifications">
-            <ListItemIcon className="list-item-icon"><NotificationsIcon/></ListItemIcon>
+            <Tooltip title="Progress Notifications">
+              <ListItemIcon className="list-item-icon"><NotificationsIcon/></ListItemIcon>
+            </Tooltip>
             <ListItemText primary="Progress Notifications"/>
           </ListItem>
         </List>

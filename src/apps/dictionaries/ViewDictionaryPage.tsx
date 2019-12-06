@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { DictionaryDetails, DictionaryForm } from './components'
-import { Fab, Grid, Paper, Typography } from '@material-ui/core'
+import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
 import { Edit as EditIcon } from '@material-ui/icons'
 import './ViewDictionaryPage.scss'
 import { connect } from 'react-redux'
@@ -65,9 +65,11 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictiona
       </Grid>
       {!canEditDictionary ? null : (
         <Link to={`${url}edit/`}>
-          <Fab color="primary" className="fab">
-            <EditIcon/>
-          </Fab>
+          <Tooltip title="Edit this dictionary">
+            <Fab color="primary" className="fab">
+              <EditIcon/>
+            </Fab>
+          </Tooltip>
         </Link>
       )}
     </>
