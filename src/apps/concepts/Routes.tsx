@@ -1,34 +1,34 @@
-import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import Header from '../../components/Header'
-import ViewConceptPage from './ViewConceptPage'
-import { CreateConceptPage } from './index'
-import ViewConceptsPage from './ViewConceptsPage'
-import EditConceptPage from './EditConceptPage'
-import { SOURCE_CONTAINER } from './constants'
+import React from "react";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import Header from "../../components/Header";
+import ViewConceptPage from "./ViewConceptPage";
+import { CreateConceptPage } from "./index";
+import ViewConceptsPage from "./ViewConceptsPage";
+import EditConceptPage from "./EditConceptPage";
+import { SOURCE_CONTAINER } from "./constants";
 
 const Routes: React.FC = () => {
   // @ts-ignore
-  let { path } = useRouteMatch()
+  let { path } = useRouteMatch();
 
   return (
     <Switch>
       <Route exact path={`${path}/`}>
-        <ViewConceptsPage containerType={SOURCE_CONTAINER}/>
+        <ViewConceptsPage containerType={SOURCE_CONTAINER} />
       </Route>
       <Route exact path={`${path}/new/`}>
         <Header title="Create concept">
-          <CreateConceptPage/>
+          <CreateConceptPage />
         </Header>
       </Route>
       <Route exact path={`${path}/:concept/`}>
-        <ViewConceptPage/>
+        <ViewConceptPage />
       </Route>
       <Route exact path={`${path}/:concept/edit/`}>
-        <EditConceptPage/>
+        <EditConceptPage />
       </Route>
     </Switch>
-  )
-}
+  );
+};
 
-export default Routes
+export default Routes;

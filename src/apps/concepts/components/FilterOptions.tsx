@@ -1,71 +1,79 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Checkbox,
   createStyles,
   List,
   ListItem,
-  ListItemIcon, ListItemText,
+  ListItemIcon,
+  ListItemText,
   makeStyles,
   Paper,
   Input,
   Theme,
   ListSubheader,
-  Button, ButtonGroup,
-} from '@material-ui/core'
-import { DATA_TYPES, CONCEPT_CLASSES } from '../../../utils'
-import { Link } from 'react-router-dom'
+  Button,
+  ButtonGroup
+} from "@material-ui/core";
+import { DATA_TYPES, CONCEPT_CLASSES } from "../../../utils";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(3)
     },
     paper: {
-      width: '100%',
+      width: "100%",
       marginBottom: theme.spacing(2),
-      height: '85vh',
-      overflowY: 'auto',
+      height: "85vh",
+      overflowY: "auto"
     },
     center: {
-      textAlign: 'center',
+      textAlign: "center"
     },
     listSubHeader: {
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     applyFilters: {
-      marginTop: '2vh',
-      marginBottom: '2vh',
+      marginTop: "2vh",
+      marginBottom: "2vh"
     },
     applyFiltersLink: {
-      textDecoration: 'none',
-      color: 'inherit',
-    },
-  }),
-)
+      textDecoration: "none",
+      color: "inherit"
+    }
+  })
+);
 
 interface FilterGroupProps {
-  items: string[],
-  title: string,
-  searchText: string,
-  checked: string[],
-  setChecked: Function,
+  items: string[];
+  title: string;
+  searchText: string;
+  checked: string[];
+  setChecked: Function;
 }
 
-const FilterGroup: React.FC<FilterGroupProps> = ({ items, title, searchText, checked, setChecked }) => {
-  const classes = useStyles()
+const FilterGroup: React.FC<FilterGroupProps> = ({
+  items,
+  title,
+  searchText,
+  checked,
+  setChecked
+}) => {
+  const classes = useStyles();
 
   const handleToggle = (value: string) => () => {
-    const currentIndex = checked.indexOf(value)
-    const newChecked = [...checked]
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
 
     if (currentIndex === -1) {
-      newChecked.push(value)
+      newChecked.push(value);
     } else {
-      newChecked.splice(currentIndex, 1)
+      newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked)
-  }
+    setChecked(newChecked);
+  };
 
   return (
     <>
@@ -76,69 +84,101 @@ const FilterGroup: React.FC<FilterGroupProps> = ({ items, title, searchText, che
           </ListSubheader>
         }
       >
-        {items.filter(item => item.toLowerCase().includes(searchText.toLowerCase())).map(value => {
-          const labelId = `checkbox-list-label-${value}`
+        {items
+          .filter(item => item.toLowerCase().includes(searchText.toLowerCase()))
+          .map(value => {
+            const labelId = `checkbox-list-label-${value}`;
 
-          return (
-            <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.includes(value)}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ 'aria-labelledby': labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={value}/>
-            </ListItem>
-          )
-        })}
+            return (
+              <ListItem
+                key={value}
+                role={undefined}
+                dense
+                button
+                onClick={handleToggle(value)}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={checked.includes(value)}
+                    tabIndex={-1}
+                    disableRipple
+                    inputProps={{ "aria-labelledby": labelId }}
+                  />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={value} />
+              </ListItem>
+            );
+          })}
       </List>
     </>
-  )
-}
+  );
+};
 
 interface FilterOptionsProps {
-  url: string,
-  checkedClasses: string[],
-  setCheckedClasses: Function,
-  checkedDataTypes: string[],
-  setCheckedDataTypes: Function,
+  url: string;
+  checkedClasses: string[];
+  setCheckedClasses: Function;
+  checkedDataTypes: string[];
+  setCheckedDataTypes: Function;
 }
 
-const FilterOptions: React.FC<FilterOptionsProps> = ({ url, checkedClasses, checkedDataTypes, setCheckedClasses, setCheckedDataTypes }) => {
-  const classes = useStyles()
-  const [searchText, setSearchText] = useState('')
+const FilterOptions: React.FC<FilterOptionsProps> = ({
+  url,
+  checkedClasses,
+  checkedDataTypes,
+  setCheckedClasses,
+  setCheckedDataTypes
+}) => {
+  const classes = useStyles();
+  const [searchText, setSearchText] = useState("");
 
   const clearAllFilters = () => {
-    setCheckedClasses([])
-    setCheckedDataTypes([])
-  }
+    setCheckedClasses([]);
+    setCheckedDataTypes([]);
+  };
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <div className={classes.center}>
           <ButtonGroup size="small" variant="text" fullWidth>
-            <Button className={classes.applyFilters} color='primary'>
-              <Link className={classes.applyFiltersLink} to={url}>Apply Filters</Link>
+            <Button className={classes.applyFilters} color="primary">
+              <Link className={classes.applyFiltersLink} to={url}>
+                Apply Filters
+              </Link>
             </Button>
-            <Button onClick={clearAllFilters} className={classes.applyFilters} color='primary'>Clear all</Button>
+            <Button
+              onClick={clearAllFilters}
+              className={classes.applyFilters}
+              color="primary"
+            >
+              Clear all
+            </Button>
           </ButtonGroup>
           <Input
-            placeholder='Search'
+            placeholder="Search"
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={e => setSearchText(e.target.value)}
           />
         </div>
-        <FilterGroup checked={checkedClasses} setChecked={setCheckedClasses} searchText={searchText} title="Classes"
-                     items={CONCEPT_CLASSES}/>
-        <FilterGroup checked={checkedDataTypes} setChecked={setCheckedDataTypes} searchText={searchText}
-                     title="Data types" items={DATA_TYPES}/>
+        <FilterGroup
+          checked={checkedClasses}
+          setChecked={setCheckedClasses}
+          searchText={searchText}
+          title="Classes"
+          items={CONCEPT_CLASSES}
+        />
+        <FilterGroup
+          checked={checkedDataTypes}
+          setChecked={setCheckedDataTypes}
+          searchText={searchText}
+          title="Data types"
+          items={DATA_TYPES}
+        />
       </Paper>
     </div>
-  )
-}
+  );
+};
 
-export default FilterOptions
+export default FilterOptions;

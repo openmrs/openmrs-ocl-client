@@ -4,9 +4,9 @@ export interface Option {
 }
 
 export interface OptionResponse {
-  options: Option[],
-  hasMore: boolean,
-  additional: {},
+  options: Option[];
+  hasMore: boolean;
+  additional: {};
 }
 
 export interface BaseConceptContainer {
@@ -18,11 +18,11 @@ export interface BaseConceptContainer {
 }
 
 export interface EditableConceptContainerFields {
-  description: string,
-  name: string,
-  supported_locales: string,
-  default_locale: string,
-  preferred_source: string,
+  description: string;
+  name: string;
+  supported_locales: string;
+  default_locale: string;
+  preferred_source: string;
 }
 
-export {}
+export {};

@@ -1,4 +1,7 @@
-import { BaseConceptContainer, EditableConceptContainerFields } from '../../utils'
+import {
+  BaseConceptContainer,
+  EditableConceptContainerFields
+} from "../../utils";
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
@@ -10,7 +13,7 @@ export interface Dictionary extends BaseDictionary {
 }
 
 interface BaseAPIDictionary extends BaseDictionary {
-  id: string,
+  id: string;
   external_id: string;
   full_name: string;
   collection_type: string;
@@ -33,40 +36,39 @@ export interface APIDictionary extends BaseAPIDictionary {
 }
 
 export interface DictionaryState {
-  newDictionary?: APIDictionary,
-  editedDictionary?: APIDictionary,
-  dictionary?: APIDictionary,
-  dictionaries: { items: APIDictionary[], responseMeta?: {} }[],
-  versions: DictionaryVersion[],
+  newDictionary?: APIDictionary;
+  editedDictionary?: APIDictionary;
+  dictionary?: APIDictionary;
+  dictionaries: { items: APIDictionary[]; responseMeta?: {} }[];
+  versions: DictionaryVersion[];
 }
 
-export interface EditableDictionaryFields extends EditableConceptContainerFields {
-  public_access: string,
+export interface EditableDictionaryFields
+  extends EditableConceptContainerFields {
+  public_access: string;
 }
 
 export interface DictionaryVersion {
-  id: string,
-  released: boolean,
-  version_url: string,
-  url: string,
-  description?: string,
-  external_id: string,
-  extras?: { [key: string]: string },
+  id: string;
+  released: boolean;
+  version_url: string;
+  url: string;
+  description?: string;
+  external_id: string;
+  extras?: { [key: string]: string };
 }
 
-const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {
-  if (!apiDictionary) return apiDictionary
+const apiDictionaryToDictionary = (
+  apiDictionary?: APIDictionary
+): Dictionary | undefined => {
+  if (!apiDictionary) return apiDictionary;
 
-  const {
-    url,
-    supported_locales,
-    ...theRest
-  } = apiDictionary
+  const { url, supported_locales, ...theRest } = apiDictionary;
 
   return {
     supported_locales: supported_locales || [],
-    ...theRest,
-  }
-}
+    ...theRest
+  };
+};
 
-export { apiDictionaryToDictionary }
+export { apiDictionaryToDictionary };

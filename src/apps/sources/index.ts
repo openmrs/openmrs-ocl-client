@@ -5,6 +5,6 @@ export {
   retrieveSourceAction,
   retrieveSourceLoadingSelector,
   editSourceAction,
-  editSourceErrorSelector,
-} from './redux'
-export * from './types'
+  editSourceErrorSelector
+} from "./redux";
+export * from "./types";

@@ -1,106 +1,172 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../components/Header'
-import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
-import { ConceptsTable } from './components'
-import { connect } from 'react-redux'
-import { retrieveConceptsAction, viewConceptsLoadingSelector, viewConceptsErrorsSelector } from './redux'
-import { AppState } from '../../redux'
-import { APIConcept, OptionalQueryParams as QueryParams } from './types'
-import { useLocation, useHistory, useParams } from 'react-router'
-import { CONCEPT_CLASSES, useQuery } from '../../utils'
-import qs from 'qs'
-import { ProgressOverlay } from '../../utils/components'
-import FilterOptions from './components/FilterOptions'
-import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../authentication'
-import { orgsSelector } from '../authentication/redux/reducer'
-import { CIEL_CONCEPTS_URL, DICTIONARY_CONTAINER, SOURCE_CONTAINER } from './constants'
-import { CIEL_SOURCE_URL } from '../../utils/constants'
-import { addConceptsToCollectionAction } from '../collections'
+import React, { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import {
+  Fab,
+  Grid,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Tooltip
+} from "@material-ui/core";
+import { ConceptsTable } from "./components";
+import { connect } from "react-redux";
+import {
+  retrieveConceptsAction,
+  viewConceptsLoadingSelector,
+  viewConceptsErrorsSelector
+} from "./redux";
+import { AppState } from "../../redux";
+import { APIConcept, OptionalQueryParams as QueryParams } from "./types";
+import { useLocation, useHistory, useParams } from "react-router";
+import { CONCEPT_CLASSES, useQuery } from "../../utils";
+import qs from "qs";
+import { ProgressOverlay } from "../../utils/components";
+import FilterOptions from "./components/FilterOptions";
+import { Add as AddIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector
+} from "../authentication";
+import { orgsSelector } from "../authentication/redux/reducer";
+import {
+  CIEL_CONCEPTS_URL,
+  DICTIONARY_CONTAINER,
+  SOURCE_CONTAINER
+} from "./constants";
+import { CIEL_SOURCE_URL } from "../../utils/constants";
+import { addConceptsToCollectionAction } from "../collections";
 
 interface Props {
-  concepts?: APIConcept[],
-  loading: boolean,
-  errors?: {},
-  retrieveConcepts: Function,
-  meta?: { num_found?: number },
-  profile?: APIProfile,
-  usersOrgs?: APIOrg[],
-  containerType: string,
-  addConceptsToCollection: Function,
+  concepts?: APIConcept[];
+  loading: boolean;
+  errors?: {};
+  retrieveConcepts: Function;
+  meta?: { num_found?: number };
+  profile?: APIProfile;
+  usersOrgs?: APIOrg[];
+  containerType: string;
+  addConceptsToCollection: Function;
 }
 
 const useStyles = makeStyles({
   link: {
-    textDecoration: 'none',
-    color: 'inherit',
-    width: '100%',
-  },
-})
+    textDecoration: "none",
+    color: "inherit",
+    width: "100%"
+  }
+});
 
-const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType, addConceptsToCollection }) => {
-  const classes = useStyles()
+const ViewConceptsPage: React.FC<Props> = ({
+  concepts,
+  loading,
+  errors,
+  retrieveConcepts,
+  meta = {},
+  profile,
+  usersOrgs,
+  containerType,
+  addConceptsToCollection
+}) => {
+  const classes = useStyles();
 
-  const isDictionary = containerType === DICTIONARY_CONTAINER
-  const { push: goTo } = useHistory()
-  const { pathname } = useLocation()
-  const url = isDictionary ? pathname.replace('/dictionaries/', '/collections/') : pathname
-  const sourceOrCollectionUrl = url.replace('/concepts', '')
-  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
+  const isDictionary = containerType === DICTIONARY_CONTAINER;
+  const { push: goTo } = useHistory();
+  const { pathname } = useLocation();
+  const url = isDictionary
+    ? pathname.replace("/dictionaries/", "/collections/")
+    : pathname;
+  const sourceOrCollectionUrl = url.replace("/concepts", "");
+  const { ownerType, owner } = useParams<{
+    ownerType: string;
+    owner: string;
+  }>();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
-  const queryParams: QueryParams = useQuery() // todo get limit from settings
+  const queryParams: QueryParams = useQuery(); // todo get limit from settings
   const {
     page = 1,
-    sortDirection = 'sortAsc',
-    sortBy = 'id',
+    sortDirection = "sortAsc",
+    sortBy = "id",
     limit = 25,
-    q: initialQ = '',
+    q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
-    addToCollection: collectionToAddTo,
-  } = queryParams
+    addToCollection: collectionToAddTo
+  } = queryParams;
 
-  const [showOptions, setShowOptions] = useState(true)
-  const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters)
-  const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters)
-  const [q, setQ] = useState(initialQ)
-  const canModify = !isDictionary && canModifyContainer(ownerType, owner, profile, usersOrgs)
+  const [showOptions, setShowOptions] = useState(true);
+  const [classFilters, setClassFilters] = useState<string[]>(
+    initialClassFilters
+  );
+  const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
+    initialDataTypeFilters
+  );
+  const [q, setQ] = useState(initialQ);
+  const canModify =
+    !isDictionary && canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = {
-      ...queryParams, ...{
+      ...queryParams,
+      ...{
         classFilters: classFilters,
         dataTypeFilters: dataTypeFilters,
         page: 1,
         q
-      }, ...params
-    }
-    return `${url}?${qs.stringify(newParams)}`
-  }
+      },
+      ...params
+    };
+    return `${url}?${qs.stringify(newParams)}`;
+  };
 
   useEffect(() => {
-    retrieveConcepts(url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters, initialClassFilters)
-  }, [retrieveConcepts, url, page, limit, initialQ, sortDirection, sortBy, initialDataTypeFilters.toString(), initialClassFilters.toString()])
+    retrieveConcepts(
+      url,
+      page,
+      limit,
+      initialQ,
+      sortDirection,
+      sortBy,
+      initialDataTypeFilters,
+      initialClassFilters
+    );
+  }, [
+    retrieveConcepts,
+    url,
+    page,
+    limit,
+    initialQ,
+    sortDirection,
+    sortBy,
+    initialDataTypeFilters.toString(),
+    initialClassFilters.toString()
+  ]);
 
   return (
     <>
       <Header title="Concepts" justifyChildren="space-around">
         <ProgressOverlay loading={loading}>
-          <Grid id="viewConceptsPage" item xs={showOptions ? 9 : 12} component="div">
+          <Grid
+            id="viewConceptsPage"
+            item
+            xs={showOptions ? 9 : 12}
+            component="div"
+          >
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
                 edit: canModify,
-                addToCollection: !!collectionToAddTo,
+                addToCollection: !!collectionToAddTo
               }}
               q={q}
               setQ={setQ}
@@ -110,16 +176,30 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
               limit={Number(limit)}
               buildUrl={gimmeAUrl}
               goTo={goTo}
-              count={meta.num_found ? Number(meta.num_found) : (concepts ? concepts.length : 0)}
+              count={
+                meta.num_found
+                  ? Number(meta.num_found)
+                  : concepts
+                  ? concepts.length
+                  : 0
+              }
               toggleShowOptions={() => setShowOptions(!showOptions)}
-              addConceptsToCollection={(concepts: APIConcept[]) => addConceptsToCollection(collectionToAddTo, concepts)}
+              addConceptsToCollection={(concepts: APIConcept[]) =>
+                addConceptsToCollection(collectionToAddTo, concepts)
+              }
             />
           </Grid>
-          {!showOptions ? '' : (
+          {!showOptions ? (
+            ""
+          ) : (
             <Grid item xs={2} component="div">
-              <FilterOptions checkedClasses={classFilters} setCheckedClasses={setClassFilters}
-                             checkedDataTypes={dataTypeFilters} setCheckedDataTypes={setInitialDataTypeFilters}
-                             url={gimmeAUrl({})}/>
+              <FilterOptions
+                checkedClasses={classFilters}
+                setCheckedClasses={setClassFilters}
+                checkedDataTypes={dataTypeFilters}
+                setCheckedDataTypes={setInitialDataTypeFilters}
+                url={gimmeAUrl({})}
+              />
             </Grid>
           )}
         </ProgressOverlay>
@@ -128,7 +208,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
         <>
           <Tooltip title="Create a new concept">
             <Fab onClick={handleClick} color="primary" className="fab">
-              <AddIcon/>
+              <AddIcon />
             </Fab>
           </Tooltip>
           <Menu
@@ -138,18 +218,27 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
             onClose={handleClose}
           >
             {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
-              <MenuItem onClick={handleClose}><Link className={classes.link}
-                                                    to={`${url}new/?conceptClass=${conceptClass}`}>{conceptClass} Concept</Link></MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Link
+                  className={classes.link}
+                  to={`${url}new/?conceptClass=${conceptClass}`}
+                >
+                  {conceptClass} Concept
+                </Link>
+              </MenuItem>
             ))}
-            <MenuItem onClick={handleClose}><Link className={classes.link} to={`${url}new/`}>Other
-              kind</Link></MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link className={classes.link} to={`${url}new/`}>
+                Other kind
+              </Link>
+            </MenuItem>
           </Menu>
         </>
       ) : (
         <>
           <Tooltip title="Add CIEL concepts">
             <Fab onClick={handleClick} color="primary" className="fab">
-              <AddIcon/>
+              <AddIcon />
             </Fab>
           </Tooltip>
           <Menu
@@ -158,32 +247,43 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}><Link className={classes.link}
-                                                  to={`${CIEL_CONCEPTS_URL}?addToCollection=${sourceOrCollectionUrl}`}>Add
-              single concept</Link></MenuItem>
-            <MenuItem onClick={handleClose}><Link className={classes.link}
-                                                  to={`${sourceOrCollectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}>Add
-              bulk
-              concepts</Link></MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                className={classes.link}
+                to={`${CIEL_CONCEPTS_URL}?addToCollection=${sourceOrCollectionUrl}`}
+              >
+                Add single concept
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleClose}>
+              <Link
+                className={classes.link}
+                to={`${sourceOrCollectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}
+              >
+                Add bulk concepts
+              </Link>
+            </MenuItem>
           </Menu>
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
-  meta: state.concepts.concepts ? state.concepts.concepts.responseMeta : undefined,
+  meta: state.concepts.concepts
+    ? state.concepts.concepts.responseMeta
+    : undefined,
   loading: viewConceptsLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state),
-})
+  errors: viewConceptsErrorsSelector(state)
+});
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
-  addConceptsToCollection: addConceptsToCollectionAction,
-}
+  addConceptsToCollection: addConceptsToCollectionAction
+};
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage)
+export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);

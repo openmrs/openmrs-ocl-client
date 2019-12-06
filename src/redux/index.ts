@@ -5,8 +5,15 @@ export {
   progressListSelector,
   errorListSelector,
   loadingAndErroredReducer
-}from './redux'
+} from "./redux";
 export {
-  createActionThunk, createActionType, resetAction, startAction, progressAction, completeAction, indexedAction, FAILURE,
-}from './utils'
-export * from './types'
+  createActionThunk,
+  createActionType,
+  resetAction,
+  startAction,
+  progressAction,
+  completeAction,
+  indexedAction,
+  FAILURE
+} from "./utils";
+export * from "./types";

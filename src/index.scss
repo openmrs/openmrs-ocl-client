@@ -1,20 +1,21 @@
-body, * {
+body,
+* {
   margin: 0;
-  font-family: 'Nunito', sans-serif !important;
+  font-family: "Nunito", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-  monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 .fieldsetParent {
   padding: 4vh 2vw;
 
   fieldset {
-    border: .5px solid black;
+    border: 0.5px solid black;
   }
 }
 
@@ -26,5 +27,3 @@ code {
   left: auto;
   position: fixed !important;
 }
-
-;

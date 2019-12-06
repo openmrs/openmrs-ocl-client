@@ -1,87 +1,103 @@
-import React, { useEffect, useRef } from 'react'
-import { Button, FormControl, InputLabel, ListSubheader, MenuItem, Paper, Typography } from '@material-ui/core'
-import './DictionaryForm.scss'
-import { getPrettyError, LOCALES } from '../../../utils'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import { TextField, Select } from 'formik-material-ui'
-import { snakeCase } from 'lodash'
+import React, { useEffect, useRef } from "react";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  Paper,
+  Typography
+} from "@material-ui/core";
+import "./DictionaryForm.scss";
+import { getPrettyError, LOCALES } from "../../../utils";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { TextField, Select } from "formik-material-ui";
+import { snakeCase } from "lodash";
 
-import { Dictionary } from '../types'
-import { APIOrg, APIProfile } from '../../authentication'
-import { CONTEXT } from '../constants'
+import { Dictionary } from "../types";
+import { APIOrg, APIProfile } from "../../authentication";
+import { CONTEXT } from "../constants";
 
 interface Props {
-  onSubmit?: Function,
-  loading: boolean,
-  status?: string,
-  profile?: APIProfile,
-  usersOrgs: APIOrg[],
-  errors?: {},
-  savedValues?: Dictionary,
-  context?: string,
+  onSubmit?: Function;
+  loading: boolean;
+  status?: string;
+  profile?: APIProfile;
+  usersOrgs: APIOrg[];
+  errors?: {};
+  savedValues?: Dictionary;
+  context?: string;
 }
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
-  name: Yup.string()
-    .required('Dictionary name is required'),
-  short_code: Yup.string()
-    .required('Short code is required'),
-  description: Yup.string()
-    .min(0),
+  name: Yup.string().required("Dictionary name is required"),
+  short_code: Yup.string().required("Short code is required"),
+  description: Yup.string().min(0),
   preferred_source: Yup.string()
-    .required('Select a preferred source')
-    .oneOf(['CIEL'], 'This source is not supported'),
-  owner_url: Yup.string()
-    .required('Select this dictionary\'s owner'),
-  public_access: Yup.string()
-    .required('Select who will have access to this dictionary'),
-  default_locale: Yup.string()
-    .required('Select a preferred language'),
-  supported_locales: Yup.array(Yup.string()),
-})
+    .required("Select a preferred source")
+    .oneOf(["CIEL"], "This source is not supported"),
+  owner_url: Yup.string().required("Select this dictionary's owner"),
+  public_access: Yup.string().required(
+    "Select who will have access to this dictionary"
+  ),
+  default_locale: Yup.string().required("Select a preferred language"),
+  supported_locales: Yup.array(Yup.string())
+});
 
 const initialValues: Dictionary = {
-  name: '',
-  short_code: '',
-  description: '',
-  preferred_source: 'CIEL',
-  owner_url: '',
-  public_access: '',
-  default_locale: '',
-  supported_locales: [],
-}
+  name: "",
+  short_code: "",
+  description: "",
+  preferred_source: "CIEL",
+  owner_url: "",
+  public_access: "",
+  default_locale: "",
+  supported_locales: []
+};
 
-const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, usersOrgs, errors, context = CONTEXT.view, savedValues }) => {
-  const notViewing = (context === CONTEXT.create) || (context === CONTEXT.edit)
-  const editing = context === CONTEXT.edit
+const DictionaryForm: React.FC<Props> = ({
+  onSubmit,
+  loading,
+  status,
+  profile,
+  usersOrgs,
+  errors,
+  context = CONTEXT.view,
+  savedValues
+}) => {
+  const notViewing = context === CONTEXT.create || context === CONTEXT.edit;
+  const editing = context === CONTEXT.edit;
 
-  const formikRef: any = useRef(null)
-  const error: string | undefined = getPrettyError(errors)
+  const formikRef: any = useRef(null);
+  const error: string | undefined = getPrettyError(errors);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef
+    const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setSubmitting(loading)
+      currentRef.setSubmitting(loading);
     }
-  }, [loading])
+  }, [loading]);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef
+    const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setStatus(status)
+      currentRef.setStatus(status);
     }
-  }, [status])
+  }, [status]);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef
-    if (!currentRef) return
+    const { current: currentRef } = formikRef;
+    if (!currentRef) return;
 
-    Object.keys(initialValues).forEach((key) => {
-      const error = getPrettyError(errors, snakeCase(key === 'shortCode' ? 'id' : key))
-      if (error) currentRef.setFieldError(key, error)
-    })
-  }, [errors])
+    Object.keys(initialValues).forEach(key => {
+      const error = getPrettyError(
+        errors,
+        snakeCase(key === "shortCode" ? "id" : key)
+      );
+      if (error) currentRef.setFieldError(key, error);
+    });
+  }, [errors]);
 
   return (
     <div id="dictionary-form">
@@ -91,7 +107,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
         validationSchema={DictionarySchema}
         validateOnChange={false}
         onSubmit={(values: Dictionary) => {
-          if (onSubmit) onSubmit(values)
+          if (onSubmit) onSubmit(values);
         }}
       >
         {({ isSubmitting, status, values }) => (
@@ -132,7 +148,9 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               // required
               margin="normal"
             >
-              <InputLabel htmlFor="preferred_source">Preferred Source</InputLabel>
+              <InputLabel htmlFor="preferred_source">
+                Preferred Source
+              </InputLabel>
               <Field
                 name="preferred_source"
                 id="preferred_source"
@@ -154,12 +172,22 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
                 id="owner_url"
                 component={Select}
               >
-                {profile ? <MenuItem value={profile.url}>{profile.username}(You)</MenuItem> : ''}
+                {profile ? (
+                  <MenuItem value={profile.url}>
+                    {profile.username}(You)
+                  </MenuItem>
+                ) : (
+                  ""
+                )}
                 <ListSubheader>Your Organizations</ListSubheader>
-                {usersOrgs.map(org => <MenuItem key={org.id} value={org.url}>{org.name}</MenuItem>)}
+                {usersOrgs.map(org => (
+                  <MenuItem key={org.id} value={org.url}>
+                    {org.name}
+                  </MenuItem>
+                ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
-                <ErrorMessage name="owner_url" component="span"/>
+                <ErrorMessage name="owner_url" component="span" />
               </Typography>
             </FormControl>
             <FormControl
@@ -168,16 +196,12 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               margin="normal"
             >
               <InputLabel htmlFor="public_access">Visibility</InputLabel>
-              <Field
-                name="public_access"
-                id="public_access"
-                component={Select}
-              >
+              <Field name="public_access" id="public_access" component={Select}>
                 <MenuItem value="View">Public</MenuItem>
                 <MenuItem value="None">Private</MenuItem>
               </Field>
               <Typography color="error" variant="caption" component="div">
-                <ErrorMessage name="public_access" component="span"/>
+                <ErrorMessage name="public_access" component="span" />
               </Typography>
             </FormControl>
             <FormControl
@@ -185,16 +209,20 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               // required
               margin="normal"
             >
-              <InputLabel htmlFor="default_locale">Preferred Language</InputLabel>
+              <InputLabel htmlFor="default_locale">
+                Preferred Language
+              </InputLabel>
               <Field
                 name="default_locale"
                 id="default_locale"
                 component={Select}
               >
-                {LOCALES.map(({ value, label }) => <MenuItem value={value}>{label}</MenuItem>)}
+                {LOCALES.map(({ value, label }) => (
+                  <MenuItem value={value}>{label}</MenuItem>
+                ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
-                <ErrorMessage name="default_locale" component="span"/>
+                <ErrorMessage name="default_locale" component="span" />
               </Typography>
             </FormControl>
             <FormControl
@@ -202,7 +230,9 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
               // required
               margin="normal"
             >
-              <InputLabel htmlFor="supported_locales">Other Languages</InputLabel>
+              <InputLabel htmlFor="supported_locales">
+                Other Languages
+              </InputLabel>
               <Field
                 multiple
                 value={[]}
@@ -210,23 +240,36 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
                 id="supported_locales"
                 component={Select}
               >
-                {LOCALES.filter(({ value }) => value !== values.default_locale).map(({ value, label }) => <MenuItem
-                  value={value}>{label}</MenuItem>)}
+                {LOCALES.filter(
+                  ({ value }) => value !== values.default_locale
+                ).map(({ value, label }) => (
+                  <MenuItem value={value}>{label}</MenuItem>
+                ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
-                <ErrorMessage name="supported_locales" component="span"/>
+                <ErrorMessage name="supported_locales" component="span" />
               </Typography>
             </FormControl>
-            <br/>
-            <br/>
-            {!notViewing ? '' : (
+            <br />
+            <br />
+            {!notViewing ? (
+              ""
+            ) : (
               <div id="submit-button">
-                {!status ? <br/> : (
-                  <Typography color="textSecondary" variant="caption" component="span">
+                {!status ? (
+                  <br />
+                ) : (
+                  <Typography
+                    color="textSecondary"
+                    variant="caption"
+                    component="span"
+                  >
                     {status}
                   </Typography>
                 )}
-                {!error ? <br/> : (
+                {!error ? (
+                  <br />
+                ) : (
                   <Typography color="error" variant="caption" component="span">
                     {error}
                   </Typography>
@@ -246,7 +289,7 @@ const DictionaryForm: React.FC<Props> = ({ onSubmit, loading, status, profile, u
         )}
       </Formik>
     </div>
-  )
-}
+  );
+};
 
-export default DictionaryForm
+export default DictionaryForm;
