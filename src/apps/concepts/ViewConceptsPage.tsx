@@ -15,7 +15,7 @@ import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../authentication'
 import { orgsSelector } from '../authentication/redux/reducer'
-import { CIEL_CONCEPTS_URL, SOURCE_CONTAINER } from './constants'
+import { CIEL_CONCEPTS_URL, DICTIONARY_CONTAINER, SOURCE_CONTAINER } from './constants'
 import { CIEL_SOURCE_URL } from '../../utils/constants'
 import { addConceptsToCollectionAction } from '../collections'
 
@@ -42,8 +42,10 @@ const useStyles = makeStyles({
 const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieveConcepts, meta = {}, profile, usersOrgs, containerType, addConceptsToCollection }) => {
   const classes = useStyles()
 
+  const isDictionary = containerType === DICTIONARY_CONTAINER
   const { push: goTo } = useHistory()
-  const { pathname: url } = useLocation()
+  const { pathname } = useLocation()
+  const url = isDictionary ? pathname.replace('/dictionaries/', '/collections/') : pathname
   const sourceOrCollectionUrl = url.replace('/concepts', '')
   const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
@@ -71,7 +73,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
   const [classFilters, setClassFilters] = useState<string[]>(initialClassFilters)
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(initialDataTypeFilters)
   const [q, setQ] = useState(initialQ)
-  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs)
+  const canModify = !isDictionary && canModifyContainer(ownerType, owner, profile, usersOrgs)
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = {
@@ -97,7 +99,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModifySource,
+                edit: canModify,
                 addToCollection: !!collectionToAddTo,
               }}
               q={q}
@@ -122,7 +124,7 @@ const ViewConceptsPage: React.FC<Props> = ({ concepts, loading, errors, retrieve
           )}
         </ProgressOverlay>
       </Header>
-      {!canModifySource ? null : containerType === SOURCE_CONTAINER ? (
+      {!canModify ? null : containerType === SOURCE_CONTAINER ? (
         <>
           <Tooltip title="Create a new concept">
             <Fab onClick={handleClick} color="primary" className="fab">

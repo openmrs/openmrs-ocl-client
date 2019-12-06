@@ -36,6 +36,9 @@ const api = {
       ),
     }
   },
+  versions: {
+    retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> => authenticatedInstance.get(`${dictionaryUrl}versions/`),
+  }
 }
 
 export default api

@@ -43,6 +43,7 @@ const RETRIEVE_DICTIONARY_ACTION = 'dictionaries/retrieveDictionary'
 const RETRIEVE_DICTIONARIES_ACTION = 'dictionaries/retrieveDictionaries'
 const EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION = 'dictionaries/editSourceCollectionDictionary'
 const EDIT_DICTIONARY_ACTION = 'dictionaries/edit'
+const RETRIEVE_DICTIONARY_VERSIONS_ACTION = 'dictionaries/retrieveVersions'
 
 const createDictionaryAction = createActionThunk(indexedAction(CREATE_DICTIONARY_ACTION), api.create)
 const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
@@ -141,10 +142,9 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     const retrieveDictionaryResult = await dispatch(retrieveDictionaryAction<APIDictionary>(dictionaryUrl))
     if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return
 
-    await Promise.all([
-      dispatch(retrieveSourceAction(retrieveDictionaryResult.extras.source)),
-      dispatch(retrieveCollectionAction(retrieveDictionaryResult.extras.collection)),
-    ])
+    dispatch(retrieveSourceAction(retrieveDictionaryResult.extras.source))
+    dispatch(retrieveCollectionAction(retrieveDictionaryResult.extras.collection))
+    dispatch(retrieveDictionaryVersionsAction(dictionaryUrl))
   }
 }
 const retrievePublicDictionariesAction = createActionThunk(RETRIEVE_DICTIONARIES_ACTION, api.dictionaries.retrieve.public)
@@ -209,9 +209,11 @@ const editSourceCollectionDictionaryAction = (dictionaryUrl: string, dictionaryD
   }
 }
 const editDictionaryAction = createActionThunk(EDIT_DICTIONARY_ACTION, api.update)
+const retrieveDictionaryVersionsAction = createActionThunk(RETRIEVE_DICTIONARY_VERSIONS_ACTION, api.versions.retrieve)
 
 const initialState: DictionaryState = {
   dictionaries: [],
+  versions: [],
 }
 
 const reducer = createReducer(initialState, {
@@ -229,6 +231,7 @@ const reducer = createReducer(initialState, {
     editedDictionary: undefined
   }),
   [EDIT_DICTIONARY_ACTION]: (state, action) => ({ ...state, editedDictionary: action.payload }),
+  [RETRIEVE_DICTIONARY_VERSIONS_ACTION]: (state, action) => ({ ...state, versions: action.payload }),
 })
 
 const createDictionaryLoadingSelector = loadingSelector(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
@@ -260,6 +263,7 @@ const editSourceCollectionDictionaryErrorsSelector = (state: AppState): ({ [key:
 
 const retrieveDictionaryLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION))
 const retrieveDictionaryDetailsLoadingSelector = (state: AppState) => retrieveCollectionLoadingSelector(state) || retrieveSourceLoadingSelector(state)
+const retrieveDictionaryVersionLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION))
 
 const retrievePublicDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION))
 const retrieveDictionariesLoadingSelector = loadingSelector(indexedAction(RETRIEVE_DICTIONARIES_ACTION, PERSONAL_DICTIONARIES_ACTION_INDEX), indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX))
@@ -284,4 +288,5 @@ export {
   editSourceCollectionDictionaryErrorsSelector,
   editDictionaryProgressSelector,
   editDictionaryLoadingSelector,
+  retrieveDictionaryVersionLoadingSelector,
 }

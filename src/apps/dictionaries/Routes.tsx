@@ -3,6 +3,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import Header from '../../components/Header'
 import ViewDictionaryPage from './ViewDictionaryPage'
 import EditDictionaryPage from './EditDictionaryPage'
+import { DICTIONARY_CONTAINER, ViewConceptsPage } from '../concepts'
 
 const Routes: React.FC = () => {
   // @ts-ignore
@@ -19,6 +20,9 @@ const Routes: React.FC = () => {
         <Header title="Edit Dictionary">
           <EditDictionaryPage/>
         </Header>
+      </Route>
+      <Route path={`${path}/:dictionary/:version/concepts/`}>
+        <ViewConceptsPage containerType={DICTIONARY_CONTAINER}/>
       </Route>
     </Switch>
   )

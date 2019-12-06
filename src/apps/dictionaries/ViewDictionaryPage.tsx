@@ -4,13 +4,13 @@ import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
 import { Edit as EditIcon } from '@material-ui/icons'
 import './ViewDictionaryPage.scss'
 import { connect } from 'react-redux'
-import { APIDictionary, apiDictionaryToDictionary } from './types'
+import { APIDictionary, apiDictionaryToDictionary, DictionaryVersion } from './types'
 import { orgsSelector, profileSelector } from '../authentication/redux/reducer'
 import { APIOrg, APIProfile } from '../authentication'
 import {
   retrieveDictionaryAndDetailsAction,
   retrieveDictionaryDetailsLoadingSelector,
-  retrieveDictionaryLoadingSelector
+  retrieveDictionaryLoadingSelector, retrieveDictionaryVersionLoadingSelector
 } from './redux'
 import { AppState } from '../../redux'
 import { Link, useLocation, useParams } from 'react-router-dom'
@@ -18,6 +18,7 @@ import { APISource } from '../sources'
 import { APICollection } from '../collections'
 import { canModifyContainer } from '../authentication'
 import { CONTEXT } from './constants'
+import ReleasedVersions from './components/ReleasedVersions'
 
 interface Props {
   profile?: APIProfile,
@@ -28,9 +29,11 @@ interface Props {
   retrieveDictionaryAndDetails: Function,
   source?: APISource,
   collection?: APICollection,
+  versions: DictionaryVersion[],
+  versionsLoading: boolean,
 }
 
-const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection }: Props) => {
+const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictionaryLoading, dictionaryDetailsLoading, dictionary, retrieveDictionaryAndDetails, source, collection, versions, versionsLoading }: Props) => {
   const { pathname: url } = useLocation()
   const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
 
@@ -58,10 +61,22 @@ const ViewDictionaryPage: React.FC<Props> = ({ profile, usersOrgs = [], dictiona
           </fieldset>
         </Paper>
       </Grid>
-      <Grid item xs={5} component="div">
-        {dictionaryDetailsLoading ? 'Loading...' : (
-          <DictionaryDetails source={source} collection={collection}/>
-        )}
+      <Grid
+        item
+        xs={5}
+        container
+        spacing={2}
+      >
+        <Grid item xs={12} component="div">
+          {dictionaryDetailsLoading ? 'Loading...' : (
+            <DictionaryDetails source={source} collection={collection}/>
+          )}
+        </Grid>
+        <Grid item xs={12} component="div">
+          {versionsLoading ? 'Loading...' : (
+            <ReleasedVersions versions={versions} subscriptionUrl={url.replace('/dictionaries/', '/collections/')}/>
+          )}
+        </Grid>
       </Grid>
       {!canEditDictionary ? null : (
         <Link to={`${url}edit/`}>
@@ -84,6 +99,8 @@ const mapStateToProps = (state: AppState) => ({
   dictionaryDetailsLoading: retrieveDictionaryDetailsLoadingSelector(state),
   source: state.sources.source,
   collection: state.collections.collection,
+  versions: state.dictionaries.versions,
+  versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
 })
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,

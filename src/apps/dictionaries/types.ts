@@ -37,10 +37,21 @@ export interface DictionaryState {
   editedDictionary?: APIDictionary,
   dictionary?: APIDictionary,
   dictionaries: { items: APIDictionary[], responseMeta?: {} }[],
+  versions: DictionaryVersion[],
 }
 
 export interface EditableDictionaryFields extends EditableConceptContainerFields {
   public_access: string,
+}
+
+export interface DictionaryVersion {
+  id: string,
+  released: boolean,
+  version_url: string,
+  url: string,
+  description?: string,
+  external_id: string,
+  extras?: { [key: string]: string },
 }
 
 const apiDictionaryToDictionary = (apiDictionary?: APIDictionary): Dictionary | undefined => {
