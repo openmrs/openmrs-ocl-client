@@ -44,7 +44,7 @@ const LoginPage: React.FC<Props> = ({
               mixing expert-defined content with your own custom concepts.
             </Typography>
           </div>
-          <Login onSubmit={login} loading={loading} status={errors.detail} />
+          <Login onSubmit={login} loading={loading} status={errors ? errors.detail : ''} />
         </Grid>
       </Grid>
     );
