@@ -182,12 +182,12 @@ const ConceptForm: React.FC<Props> = ({
     context === CONTEXT.edit ||
     (context === CONTEXT.create &&
       (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) ||
-    CONTEXT.view;
+    context === CONTEXT.view;
   const showSets =
     context === CONTEXT.edit ||
     (context === CONTEXT.create &&
-      (!conceptClass || SET_CONCEPT_CLASSES.indexOf(conceptClass) > -1)) ||
-    CONTEXT.view;
+      (!conceptClass || SET_CONCEPT_CLASSES.includes(conceptClass))) ||
+    context === CONTEXT.view;
 
   const classes = useStyles();
 
@@ -368,8 +368,7 @@ const ConceptForm: React.FC<Props> = ({
             </fieldset>
           </Paper>
           <br />
-          {!showAnswers ||
-          (context === CONTEXT.view && !values.answers.length) ? null : (
+          {!showAnswers ? null : (
             <>
               <Paper className="fieldsetParent">
                 <fieldset>
@@ -400,8 +399,7 @@ const ConceptForm: React.FC<Props> = ({
               <br />
             </>
           )}
-          {!showSets ||
-          (context === CONTEXT.view && !values.sets.length) ? null : (
+          {!showSets ? null :  (
             <>
               <Paper className="fieldsetParent">
                 <fieldset>
