@@ -16,6 +16,7 @@ import { CollectionState } from "./types";
 import { APIConcept } from "../concepts";
 import { recursivelyFetchToConcepts } from "./logic";
 import { createReducer } from "@reduxjs/toolkit";
+import { CIEL_CONCEPTS_URL } from '../concepts/constants'
 
 const CREATE_COLLECTION_ACTION = "collections/create";
 const RETRIEVE_COLLECTION_ACTION = "collections/retrieve";
@@ -34,24 +35,28 @@ const editCollectionAction = createActionThunk(
   EDIT_COLLECTION_ACTION,
   api.update
 );
-const addConceptsToCollectionAction = (
+const addCIELConceptsToCollectionAction = (
   collectionUrl: string,
-  concepts: APIConcept[]
+  rawConcepts: (APIConcept | string)[],
+  bulk: boolean=false,
 ) => async (dispatch: Function, getState: Function) => {
+  const concepts = rawConcepts.map(concept => typeof concept === 'string' ? {id: concept, url: `${CIEL_CONCEPTS_URL}${concept}/`, display_name: ''} : concept);
   const conceptOrConcepts =
     concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
   const thisOrThese = concepts.length > 1 ? "these" : "this";
   const actionIndex =
-    addConceptsToCollectionProgressListSelector(getState()).length || 0;
-  const updateProgress = (message: string) =>
+    addConceptsToCollectionProgressListSelector(getState())?.length || 0;
+  const updateProgress = (message: string) => {
+    const headerMessage = bulk ? 'bulk' : concepts
+      .map(concept => concept.display_name)
+      .join(", ");
     dispatch(
       progressAction(
         indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex),
-        `Adding ${conceptOrConcepts}: ${concepts
-          .map(concept => concept.display_name)
-          .join(", ")}--${message}`
+        `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
       )
-    );
+    )
+  }
 
   dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex)));
 
@@ -74,7 +79,7 @@ const addConceptsToCollectionAction = (
       type: ADD_CONCEPTS_TO_COLLECTION,
       actionIndex: actionIndex,
       payload: response.data,
-      meta: [collectionUrl, concepts]
+      meta: [collectionUrl, concepts, bulk],
     });
     updateProgress(`Added ${conceptOrConcepts}`);
   } catch (e) {
@@ -82,7 +87,7 @@ const addConceptsToCollectionAction = (
       type: `${ADD_CONCEPTS_TO_COLLECTION}_${FAILURE}`,
       actionIndex: actionIndex,
       payload: e.response?.data,
-      meta: [collectionUrl, concepts]
+      meta: [collectionUrl, concepts, bulk],
     });
   }
 
@@ -133,7 +138,7 @@ export {
   retrieveCollectionLoadingSelector,
   editCollectionAction,
   editCollectionErrorSelector,
-  addConceptsToCollectionAction,
+  addCIELConceptsToCollectionAction,
   addConceptsToCollectionLoadingListSelector,
   addConceptsToCollectionProgressListSelector,
   addConceptsToCollectionErrorListSelector

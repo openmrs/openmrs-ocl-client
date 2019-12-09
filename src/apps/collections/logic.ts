@@ -14,7 +14,7 @@ const fetchCIELMappings = async (
 
 const recursivelyFetchToConcepts = async (
   fromConceptIds: string[],
-  updateNotification: (message: string) => {},
+  updateNotification: (message: string) => void,
   levelsToCheck: number = 20,
   fetchMappings = fetchCIELMappings
 ): Promise<string[]> => {

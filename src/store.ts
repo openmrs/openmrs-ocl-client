@@ -11,19 +11,22 @@ import { conceptsReducer } from "./apps/concepts";
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
 
+const doNotPersist = [
+  "dictionaries",
+  "collections",
+  "sources",
+  "concepts",
+  "status",
+].reduce(
+  (previousValue, item) => ({ ...previousValue, [item]: undefined }),
+  {}
+);
+
 const saveState = (appState: any) => {
-  const doNotPersist = [
-    "dictionaries",
-    "collections",
-    "sources",
-    "concepts"
-  ].reduce(
-    (previousValue, item) => ({ ...previousValue, [item]: undefined }),
-    {}
-  );
+
   const state = {
     ...appState,
-    ...doNotPersist
+    ...doNotPersist,
   };
 
   try {
@@ -47,7 +50,7 @@ export const loadState = () => {
       return undefined;
     }
 
-    return JSON.parse(state);
+    return {...JSON.parse(state), ...doNotPersist};
   } catch (e) {
     return undefined;
   }

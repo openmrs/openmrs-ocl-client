@@ -1,46 +1,44 @@
-import React, { useEffect, useRef } from 'react'
-import { Button, Paper, Typography, Link } from '@material-ui/core'
-import './Login.scss'
-import { TRADITIONAL_OCL_URL } from '../../../utils/constants'
-import { Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import { TextField } from 'formik-material-ui'
+import React, { useEffect, useRef } from "react";
+import { Button, Paper, Typography, Link } from "@material-ui/core";
+import "./Login.scss";
+import { TRADITIONAL_OCL_URL } from "../../../utils/constants";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { TextField } from "formik-material-ui";
 
 interface Props {
-  onSubmit: Function,
-  loading: boolean,
-  status?: string,
+  onSubmit: Function;
+  loading: boolean;
+  status?: string;
 }
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string()
-    .required('Username is required'),
-  password: Yup.string()
-    .required('Password is required'),
-})
+  username: Yup.string().required("Username is required"),
+  password: Yup.string().required("Password is required")
+});
 
 const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
-  const formikRef: any = useRef(null)
+  const formikRef: any = useRef(null);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef
+    const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setSubmitting(loading)
+      currentRef.setSubmitting(loading);
     }
-  }, [loading])
+  }, [loading]);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef
+    const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setStatus(status)
+      currentRef.setStatus(status);
     }
-  }, [status])
+  }, [status]);
 
   return (
     <Paper id="login-form">
       <Formik
         ref={formikRef}
-        initialValues={{ username: '', password: '' }}
+        initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={({ username, password }) => onSubmit(username, password)}
       >
@@ -62,7 +60,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                   variant="outlined"
                   component={TextField}
                 />
-                <br/>
+                <br />
 
                 <Field
                   required
@@ -75,8 +73,8 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                   variant="outlined"
                   component={TextField}
                 />
-                <br/>
-                <br/>
+                <br />
+                <br />
 
                 <Button
                   variant="outlined"
@@ -88,19 +86,41 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                 >
                   Log in
                 </Button>
-                {!status ? <br/> : (
-                  <Typography className="status-message" color="error" variant="caption"
-                              component="span">
+                {!status ? (
+                  <br />
+                ) : (
+                  <Typography
+                    className="status-message"
+                    color="error"
+                    variant="caption"
+                    component="span"
+                  >
                     {status}
                   </Typography>
                 )}
-                <br/>
-                <br/>
+                <br />
+                <br />
                 <div className="other-options">
-                  <div><Link target="_blank" component="a" variant="body2"
-                             href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}>Sign up</Link></div>
-                  <div><Link target="_blank" component="a" variant="body2" href={TRADITIONAL_OCL_URL}>Go
-                    to Traditional OCL</Link></div>
+                  <div>
+                    <Link
+                      target="_blank"
+                      component="a"
+                      variant="body2"
+                      href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}
+                    >
+                      Sign up
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      target="_blank"
+                      component="a"
+                      variant="body2"
+                      href={TRADITIONAL_OCL_URL}
+                    >
+                      Go to Traditional OCL
+                    </Link>
+                  </div>
                 </div>
               </div>
             </fieldset>
@@ -108,7 +128,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
         )}
       </Formik>
     </Paper>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

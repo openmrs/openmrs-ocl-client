@@ -50,23 +50,16 @@ interface Props {
   title: string;
   justifyChildren?: string;
   loadingList: boolean[];
-  inProgressList: string[];
 }
 
 const Header: React.FC<Props> = ({
   children,
   title,
   justifyChildren = "center",
-  loadingList,
-  inProgressList
+  loadingList = []
 }) => {
-  const inProgressItems = loadingList
-    .map((loading: boolean, index: number) =>
-      loading ? inProgressList[index] : null
-    )
-    .filter(item => item)
-    .reverse();
-  const anyInProgressItems = inProgressItems.length > 0;
+  const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
+    .length;
 
   const classes = useStyles();
 
@@ -79,14 +72,11 @@ const Header: React.FC<Props> = ({
           </Typography>
           <div className={classes.grow} />
           <div>
-            {!anyInProgressItems ? null : (
+            {!(loadingItemsLength > 0) ? null : (
               <Link to="/actions/">
                 <Tooltip title="In progress">
                   <IconButton>
-                    <Badge
-                      badgeContent={inProgressItems.length}
-                      color="secondary"
-                    >
+                    <Badge badgeContent={loadingItemsLength} color="secondary">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>
@@ -111,8 +101,7 @@ const Header: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-  loadingList: addConceptsToCollectionLoadingListSelector(state),
-  inProgressList: addConceptsToCollectionProgressListSelector(state)
+  loadingList: addConceptsToCollectionLoadingListSelector(state)
 });
 
 export default connect(mapStateToProps)(Header);

@@ -37,7 +37,7 @@ import {
   SOURCE_CONTAINER
 } from "./constants";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
-import { addConceptsToCollectionAction } from "../collections";
+import { addCIELConceptsToCollectionAction } from "../collections";
 
 interface Props {
   concepts?: APIConcept[];
@@ -283,7 +283,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
-  addConceptsToCollection: addConceptsToCollectionAction
+  addConceptsToCollection: addCIELConceptsToCollectionAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);

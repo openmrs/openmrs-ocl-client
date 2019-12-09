@@ -91,15 +91,15 @@ const errorSelector = ({ actionType, actionIndex }: IndexedAction) => (
   state.status[errors(actionType)]
     ? state.status[errors(actionType)][actionIndex]
     : undefined;
-const loadingListSelector = (actionType: string) => (state: AppState): any =>
+const loadingListSelector = (actionType: string) => (state: AppState): any|undefined =>
   state.status[loading(actionType)]
     ? state.status[loading(actionType)]
     : undefined;
-const progressListSelector = (actionType: string) => (state: AppState): any =>
+const progressListSelector = (actionType: string) => (state: AppState): any|undefined =>
   state.status[progress(actionType)]
     ? state.status[progress(actionType)]
     : undefined;
-const errorListSelector = (actionType: string) => (state: AppState): any =>
+const errorListSelector = (actionType: string) => (state: AppState): any|undefined =>
   state.status[errors(actionType)]
     ? state.status[errors(actionType)]
     : undefined;

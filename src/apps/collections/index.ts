@@ -6,11 +6,12 @@ export {
   retrieveCollectionLoadingSelector,
   editCollectionAction,
   editCollectionErrorSelector,
-  addConceptsToCollectionAction,
+  addCIELConceptsToCollectionAction,
   addConceptsToCollectionLoadingListSelector,
   addConceptsToCollectionProgressListSelector,
   addConceptsToCollectionErrorListSelector,
 } from './redux'
 export { default } from './Routes'
+export {buildAddConceptToCollectionMessage} from './utils';
 
 export * from './types'
