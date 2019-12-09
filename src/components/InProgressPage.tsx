@@ -13,8 +13,9 @@ import { AppState } from "../redux";
 import {
   addConceptsToCollectionErrorListSelector,
   addConceptsToCollectionLoadingListSelector,
-  addConceptsToCollectionProgressListSelector, buildAddConceptToCollectionMessage
-} from '../apps/collections'
+  addConceptsToCollectionProgressListSelector,
+  buildAddConceptToCollectionMessage
+} from "../apps/collections";
 import { connect } from "react-redux";
 import Header from "./Header";
 
@@ -22,7 +23,7 @@ interface Props {
   loadingList?: boolean[];
   inProgressList?: string[];
   erroredList?: [];
-  successList?: {payload: {}}[];
+  successList?: { payload: {} }[];
 }
 
 const SEPARATOR = "--";
@@ -32,15 +33,15 @@ const useStyles = makeStyles({
     width: "100%"
   },
   scrollLongText: {
-    overflowX: 'scroll',
-  },
+    overflowX: "scroll"
+  }
 });
 
 const InProgressPage: React.FC<Props> = ({
-  loadingList=[],
-  inProgressList=[],
-  erroredList=[],
-  successList=[],
+  loadingList = [],
+  inProgressList = [],
+  erroredList = [],
+  successList = []
 }) => {
   const inProgressItems = loadingList
     .map((loading: boolean, index: number) =>
@@ -71,13 +72,22 @@ const InProgressPage: React.FC<Props> = ({
     .filter(item => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
-  console.log(loadingList, inProgressList, inProgressItems, successfullItems, successList);
+  console.log(
+    loadingList,
+    inProgressList,
+    inProgressItems,
+    successfullItems,
+    successList
+  );
 
   const classes = useStyles();
 
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
+        <Typography align='center'>
+          Your actions will appear here
+        </Typography>
         {!inProgressItems.length ? null : (
           <List
             component="div"
@@ -89,7 +99,11 @@ const InProgressPage: React.FC<Props> = ({
               <ListItem key={item}>
                 <Card className={classes.card}>
                   <CardContent>
-                    <Typography noWrap variant="subtitle1" className={classes.scrollLongText}>
+                    <Typography
+                      noWrap
+                      variant="subtitle1"
+                      className={classes.scrollLongText}
+                    >
                       {item.split(SEPARATOR)[0]}
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
@@ -110,7 +124,11 @@ const InProgressPage: React.FC<Props> = ({
               <ListItem key={item.progress}>
                 <Card className={classes.card}>
                   <CardContent>
-                    <Typography noWrap variant="subtitle1" className={classes.scrollLongText}>
+                    <Typography
+                      noWrap
+                      variant="subtitle1"
+                      className={classes.scrollLongText}
+                    >
                       {item.progress.split(SEPARATOR)[0]}
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
@@ -122,7 +140,7 @@ const InProgressPage: React.FC<Props> = ({
             ))}
           </List>
         )}
-        {!successfullItems ? null : (
+        {!successfullItems.length ? null : (
           <List
             component="div"
             subheader={<ListSubheader component="div">Completed</ListSubheader>}
@@ -131,7 +149,11 @@ const InProgressPage: React.FC<Props> = ({
               <ListItem key={item.progress}>
                 <Card className={classes.card}>
                   <CardContent>
-                    <Typography noWrap variant="subtitle1" className={classes.scrollLongText}>
+                    <Typography
+                      noWrap
+                      variant="subtitle1"
+                      className={classes.scrollLongText}
+                    >
                       {item.progress.split(SEPARATOR)[0]}
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">

@@ -28,7 +28,9 @@ const recursivelyFetchToConcepts = async (
   const removeExternalMappings = (
     mappingsList: APIMapping[]
   ): InternalAPIMapping[] =>
-    (mappingsList.filter(mapping => mapping.to_concept_url) as InternalAPIMapping[]);
+    mappingsList.filter(
+      mapping => mapping.to_concept_url
+    ) as InternalAPIMapping[];
 
   updateNotification("Finding dependent concepts...");
   const startingConceptMappings: APIMapping[] = await fetchMappings(

@@ -1,71 +1,103 @@
-import React, { useEffect } from 'react'
-import { Fab, Grid, Tooltip } from '@material-ui/core'
-import { ConceptForm } from './components'
-import { AppState } from '../../redux'
-import { viewConceptLoadingSelector, viewConceptErrorsSelector, retrieveConceptAction } from './redux'
-import { APIConcept, apiConceptToConcept } from './types'
-import { useLocation, useParams } from 'react-router'
-import { connect } from 'react-redux'
-import './ViewConceptPage.scss'
-import { Edit as EditIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import Header from '../../components/Header'
-import { startCase, toLower } from 'lodash'
-import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../authentication'
-import { orgsSelector } from '../authentication/redux/reducer'
-import { CONTEXT } from './constants'
+import React, { useEffect } from "react";
+import { Fab, Grid, Tooltip } from "@material-ui/core";
+import { ConceptForm } from "./components";
+import { AppState } from "../../redux";
+import {
+  viewConceptLoadingSelector,
+  viewConceptErrorsSelector,
+  retrieveConceptAction
+} from "./redux";
+import { APIConcept, apiConceptToConcept } from "./types";
+import { useLocation, useParams } from "react-router";
+import { connect } from "react-redux";
+import "./ViewConceptPage.scss";
+import { Edit as EditIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import Header from "../../components/Header";
+import { startCase, toLower } from "lodash";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector
+} from "../authentication";
+import { orgsSelector } from "../authentication/redux/reducer";
+import { CONTEXT } from "./constants";
 
 interface Props {
-  loading: boolean,
-  concept?: APIConcept,
-  errors?: {},
-  retrieveConcept: Function,
-  profile?: APIProfile,
-  usersOrgs?: APIOrg[],
+  loading: boolean;
+  concept?: APIConcept;
+  errors?: {};
+  retrieveConcept: Function;
+  profile?: APIProfile;
+  usersOrgs?: APIOrg[];
 }
 
-const ViewConceptPage: React.FC<Props> = ({ retrieveConcept, concept, loading, errors, profile, usersOrgs }) => {
-  const { pathname: url } = useLocation()
-  const { ownerType, owner } = useParams<{ ownerType: string, owner: string }>()
+const ViewConceptPage: React.FC<Props> = ({
+  retrieveConcept,
+  concept,
+  loading,
+  errors,
+  profile,
+  usersOrgs
+}) => {
+  const { pathname: url } = useLocation();
+  const { ownerType, owner } = useParams<{
+    ownerType: string;
+    owner: string;
+  }>();
 
-  const canModifySource = canModifyContainer(ownerType, owner, profile, usersOrgs)
+  const canModifySource = canModifyContainer(
+    ownerType,
+    owner,
+    profile,
+    usersOrgs
+  );
 
   useEffect(() => {
-    retrieveConcept(url)
-  }, [url, retrieveConcept])
+    retrieveConcept(url);
+  }, [url, retrieveConcept]);
 
   if (loading) {
-    return <span>Loading...</span>
+    return <span>Loading...</span>;
   }
 
   return (
-    <Header title={startCase(toLower(concept ? concept.display_name : 'View concept'))}>
+    <Header
+      title={startCase(
+        toLower(concept ? concept.display_name : "View concept")
+      )}
+    >
       <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm context={CONTEXT.view} savedValues={apiConceptToConcept(concept)} errors={errors}/>
+        <ConceptForm
+          context={CONTEXT.view}
+          savedValues={apiConceptToConcept(concept)}
+          errors={errors}
+        />
       </Grid>
       {!canModifySource ? null : (
         <Link to={`${url}edit/`}>
           <Tooltip title="Edit this concept">
             <Fab color="primary" className="fab">
-              <EditIcon/>
+              <EditIcon />
             </Fab>
           </Tooltip>
         </Link>
       )}
     </Header>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   concept: state.concepts.concept,
   loading: viewConceptLoadingSelector(state),
-  errors: viewConceptErrorsSelector(state),
-})
+  errors: viewConceptErrorsSelector(state)
+});
 
 const mapActionsToProps = {
-  retrieveConcept: retrieveConceptAction,
-}
+  retrieveConcept: retrieveConceptAction
+};
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage)
+export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage);

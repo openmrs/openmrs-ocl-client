@@ -1,38 +1,38 @@
-import React, { useEffect } from 'react'
-import { AppState } from '../../redux'
-import { connect } from 'react-redux'
-import { APIDictionary } from './types'
-import { ProgressOverlay } from '../../utils/components'
-import { useQuery } from '../../utils'
-import { useHistory, useLocation } from 'react-router'
-import qs from 'qs'
-import ViewDictionaries from './components/ViewDictionaries'
-import { Fab, Grid, Tooltip } from '@material-ui/core'
+import React, { useEffect } from "react";
+import { AppState } from "../../redux";
+import { connect } from "react-redux";
+import { APIDictionary } from "./types";
+import { ProgressOverlay } from "../../utils/components";
+import { useQuery } from "../../utils";
+import { useHistory, useLocation } from "react-router";
+import qs from "qs";
+import ViewDictionaries from "./components/ViewDictionaries";
+import { Fab, Grid, Tooltip } from "@material-ui/core";
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX,
   retrieveDictionariesAction,
   retrieveDictionariesLoadingSelector
-} from './redux'
-import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
+} from "./redux";
+import { Add as AddIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
-const PER_PAGE = 20
+const PER_PAGE = 20;
 
 interface Props {
-  loading: boolean,
-  personalDictionaries?: APIDictionary[],
-  orgDictionaries?: APIDictionary[],
-  personalMeta?: { num_found?: number },
-  orgMeta?: { num_found?: number },
-  retrieveDictionaries: Function,
+  loading: boolean;
+  personalDictionaries?: APIDictionary[];
+  orgDictionaries?: APIDictionary[];
+  personalMeta?: { num_found?: number };
+  orgMeta?: { num_found?: number };
+  retrieveDictionaries: Function;
 }
 
 interface QueryParams {
-  personalPage?: number,
-  personalQ?: string,
-  orgPage?: number,
-  orgQ?: string
+  personalPage?: number;
+  personalQ?: string;
+  orgPage?: number;
+  orgQ?: string;
 }
 
 const ViewDictionariesPage: React.FC<Props> = ({
@@ -41,30 +41,46 @@ const ViewDictionariesPage: React.FC<Props> = ({
   retrieveDictionaries,
   personalMeta = {},
   orgDictionaries = [],
-  orgMeta = {},
+  orgMeta = {}
 }: Props) => {
+  const { push: goTo } = useHistory();
+  const { pathname: url } = useLocation();
+  const {
+    num_found: numFoundPersonal = personalDictionaries.length
+  } = personalMeta;
+  const { num_found: numFoundOrgs = orgDictionaries.length } = orgMeta;
 
-  const { push: goTo } = useHistory()
-  const { pathname: url } = useLocation()
-  const { num_found: numFoundPersonal = personalDictionaries.length } = personalMeta
-  const { num_found: numFoundOrgs = orgDictionaries.length } = orgMeta
-
-  const queryParams: QueryParams = useQuery()
+  const queryParams: QueryParams = useQuery();
   const {
     personalPage = 1,
-    personalQ: initialPersonalQ = '',
+    personalQ: initialPersonalQ = "",
     orgPage = 1,
-    orgQ: initialOrgQ = '',
-  } = queryParams
+    orgQ: initialOrgQ = ""
+  } = queryParams;
 
   useEffect(() => {
-    retrieveDictionaries('/user/collections/', initialPersonalQ, PER_PAGE, personalPage, '/user/orgs/collections/', initialOrgQ, PER_PAGE, orgPage)
-  }, [retrieveDictionaries, initialPersonalQ, personalPage, initialOrgQ, orgPage])
+    retrieveDictionaries(
+      "/user/collections/",
+      initialPersonalQ,
+      PER_PAGE,
+      personalPage,
+      "/user/orgs/collections/",
+      initialOrgQ,
+      PER_PAGE,
+      orgPage
+    );
+  }, [
+    retrieveDictionaries,
+    initialPersonalQ,
+    personalPage,
+    initialOrgQ,
+    orgPage
+  ]);
 
   const gimmeAUrl = (params: QueryParams) => {
-    const newParams: QueryParams = { ...queryParams, ...params }
-    return `${url}?${qs.stringify(newParams)}`
-  }
+    const newParams: QueryParams = { ...queryParams, ...params };
+    return `${url}?${qs.stringify(newParams)}`;
+  };
 
   return (
     <>
@@ -88,7 +104,8 @@ const ViewDictionariesPage: React.FC<Props> = ({
               page={Number(orgPage)}
               onSearch={(orgQ: string) => goTo(gimmeAUrl({ orgQ }))}
               onPageChange={(page: number) => goTo(gimmeAUrl({ orgPage }))}
-              dictionaries={orgDictionaries} numFound={numFoundOrgs}
+              dictionaries={orgDictionaries}
+              numFound={numFoundOrgs}
             />
           </Grid>
         </ProgressOverlay>
@@ -96,24 +113,32 @@ const ViewDictionariesPage: React.FC<Props> = ({
       <Link to={`/dictionaries/new/`}>
         <Tooltip title="Create new dictionary">
           <Fab color="primary" className="fab">
-            <AddIcon/>
+            <AddIcon />
           </Fab>
         </Tooltip>
       </Link>
     </>
-  )
-}
+  );
+};
 
 const mapStateToProps = (state: AppState) => ({
   loading: retrieveDictionariesLoadingSelector(state),
-  personalDictionaries: state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.items,
-  personalMeta: state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.responseMeta,
-  orgDictionaries: state.dictionaries.dictionaries[ORG_DICTIONARIES_ACTION_INDEX]?.items,
-  orgMeta: state.dictionaries.dictionaries[ORG_DICTIONARIES_ACTION_INDEX]?.responseMeta,
-})
+  personalDictionaries:
+    state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.items,
+  personalMeta:
+    state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]
+      ?.responseMeta,
+  orgDictionaries:
+    state.dictionaries.dictionaries[ORG_DICTIONARIES_ACTION_INDEX]?.items,
+  orgMeta:
+    state.dictionaries.dictionaries[ORG_DICTIONARIES_ACTION_INDEX]?.responseMeta
+});
 
 const mapDispatchToProps = {
-  retrieveDictionaries: retrieveDictionariesAction,
-}
+  retrieveDictionaries: retrieveDictionariesAction
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionariesPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewDictionariesPage);

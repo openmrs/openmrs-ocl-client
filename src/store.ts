@@ -16,17 +16,16 @@ const doNotPersist = [
   "collections",
   "sources",
   "concepts",
-  "status",
+  "status"
 ].reduce(
   (previousValue, item) => ({ ...previousValue, [item]: undefined }),
   {}
 );
 
 const saveState = (appState: any) => {
-
   const state = {
     ...appState,
-    ...doNotPersist,
+    ...doNotPersist
   };
 
   try {
@@ -50,7 +49,7 @@ export const loadState = () => {
       return undefined;
     }
 
-    return {...JSON.parse(state), ...doNotPersist};
+    return { ...JSON.parse(state), ...doNotPersist };
   } catch (e) {
     return undefined;
   }

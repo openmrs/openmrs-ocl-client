@@ -40,16 +40,14 @@ const addCIELConceptsToCollectionAction = (
   rawConcepts: (APIConcept | string)[],
   bulk: boolean=false,
 ) => async (dispatch: Function, getState: Function) => {
-  const concepts = rawConcepts.map(concept => typeof concept === 'string' ? {id: concept, url: `${CIEL_CONCEPTS_URL}${concept}/`, display_name: ''} : concept);
+  const concepts = rawConcepts.map(concept => typeof concept === 'string' ? {id: concept, url: `${CIEL_CONCEPTS_URL}${concept}/`, display_name: concept} : concept);
   const conceptOrConcepts =
     concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
   const thisOrThese = concepts.length > 1 ? "these" : "this";
   const actionIndex =
     addConceptsToCollectionProgressListSelector(getState())?.length || 0;
   const updateProgress = (message: string) => {
-    const headerMessage = bulk ? 'bulk' : concepts
-      .map(concept => concept.display_name)
-      .join(", ");
+    const headerMessage = concepts.map(concept => concept.display_name).join(", ");
     dispatch(
       progressAction(
         indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex),

@@ -1,4 +1,4 @@
-import { BaseConceptContainer } from '../../utils'
+import { BaseConceptContainer } from "../../utils";
 
 export interface BaseAPICollection extends BaseConceptContainer {
   id: string;
@@ -22,8 +22,8 @@ export interface APICollection extends BaseAPICollection {
 }
 
 export interface CollectionState {
-  collection?: APICollection,
-  addReferencesResults: { payload: {}, meta: [] }[],
+  collection?: APICollection;
+  addReferencesResults: { payload: {}; meta: [] }[];
 }
 
-export {}
+export {};
