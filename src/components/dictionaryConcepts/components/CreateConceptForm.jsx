@@ -262,7 +262,7 @@ const CreateConceptForm = (props) => {
                 className="btn btn-outline-secondary btn-sm mt-3"
                 onClick={addSetRow}
               >
-                Add set...
+                Add set member
               </button>
             </fieldset>
           </div>
