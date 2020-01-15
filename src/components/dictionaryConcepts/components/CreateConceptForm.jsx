@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CreateConceptTable from './CreateConceptTable';
-import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import CreateMapping from './CreateMapping';
 import {
@@ -40,7 +39,7 @@ const CreateConceptForm = (props) => {
         && map.map_type !== MAP_TYPE.questionAndAnswer
         && map.map_type !== MAP_TYPE.conceptSet,
   );
-  const descriptions = props.existingConcept.descriptions || props.description;
+  
   const showCodedOption = concept === CONCEPT_CLASS.question || concept === '' || isEditConcept;
 
   return (
@@ -227,22 +226,7 @@ const CreateConceptForm = (props) => {
             </fieldset>
           </div>
         </div>
-        <div className="concept-table card">
-          <div className="form-group">
-            <fieldset className="row col-12 custom-concept-list">
-              <legend className="text-left section-header">Descriptions</legend>
-              <DescriptionTable {...props} />
-              <button
-                type="button"
-                id="add-more-description"
-                onClick={props.addDescription}
-                className="btn btn-outline-secondary btn-sm "
-              >
-                {descriptions.length > 0 ? 'Add another description...' : 'Add a description'}
-              </button>
-            </fieldset>
-          </div>
-        </div>
+  
         {(isSetConcept(props.concept.toString().trim()) || !concept || isEditConcept) && (
           <div className="form-group set card">
             <fieldset className="row col-12 custom-concept-list">
@@ -351,7 +335,7 @@ const CreateConceptForm = (props) => {
 };
 
 CreateConceptForm.propTypes = {
-  addDescription: PropTypes.func.isRequired,
+  
   handleNewName: PropTypes.func.isRequired,
   handleAnswerChange: PropTypes.func,
   state: PropTypes.shape({
@@ -387,7 +371,7 @@ CreateConceptForm.propTypes = {
   removeAnswerRow: PropTypes.func,
   currentDictionaryName: PropTypes.string,
   removeCurrentAnswer: PropTypes.func,
-  description: PropTypes.array,
+  
 };
 
 CreateConceptForm.defaultProps = {
@@ -412,7 +396,7 @@ CreateConceptForm.defaultProps = {
   removeAnswerRow: () => {},
   currentDictionaryName: '',
   removeCurrentAnswer: () => {},
-  description: [],
+  
 };
 
 export default CreateConceptForm;
