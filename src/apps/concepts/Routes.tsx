@@ -1,10 +1,8 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import Header from "../../components/Header";
 import ViewConceptPage from "./ViewConceptPage";
-import { CreateConceptPage } from "./index";
 import ViewConceptsPage from "./ViewConceptsPage";
-import EditConceptPage from "./EditConceptPage";
+import EditConceptPage from "./ConceptPage";
 import { SOURCE_CONTAINER } from "./constants";
 
 const Routes: React.FC = () => {
@@ -17,9 +15,7 @@ const Routes: React.FC = () => {
         <ViewConceptsPage containerType={SOURCE_CONTAINER} />
       </Route>
       <Route exact path={`${path}/new/`}>
-        <Header title="Create concept">
-          <CreateConceptPage />
-        </Header>
+        <EditConceptPage />
       </Route>
       <Route exact path={`${path}/:concept/`}>
         <ViewConceptPage />

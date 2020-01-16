@@ -97,7 +97,8 @@ const initialState: ConceptsState = {
 }
 
 const reducer = createReducer<ConceptsState>(initialState, {
-  [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({ ...state, upsertedConcept: undefined }),
+  [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({ ...state, concept: undefined }),
+  [startAction(indexedAction(RETRIEVE_CONCEPT_ACTION)).type]: state => ({ ...state, concept: undefined }),
   [UPSERT_CONCEPT_ACTION]: (state, action) => ({ ...state, concept: action.payload }),
   [RETRIEVE_CONCEPT_ACTION]: (state, {payload}) => ({ ...state, concept: payload, mappings: payload.mappings }),
   [RETRIEVE_CONCEPTS_ACTION]: (state, action) => ({ ...state, concepts: { items: (action.payload as APIConcept[]), responseMeta: action.responseMeta } }),

@@ -165,6 +165,7 @@ interface Props {
   allMappingErrors?: { errors: string }[];
   status?: string;
   conceptClass?: string;
+  supportLegacyMappings?: boolean;
 }
 
 const ConceptForm: React.FC<Props> = ({
@@ -175,19 +176,20 @@ const ConceptForm: React.FC<Props> = ({
   allMappingErrors = [],
   context = "view",
   savedValues,
-  conceptClass
+  conceptClass,
+  supportLegacyMappings=true,
 }) => {
   const editing = context === CONTEXT.edit || context === CONTEXT.create;
   const showAnswers =
-    context === CONTEXT.edit ||
+    ((context === CONTEXT.edit) && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) ||
-    context === CONTEXT.view;
+    ((context === CONTEXT.view) && supportLegacyMappings);
   const showSets =
-    context === CONTEXT.edit ||
+    ((context === CONTEXT.edit) && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || SET_CONCEPT_CLASSES.includes(conceptClass))) ||
-    context === CONTEXT.view;
+    ((context === CONTEXT.view) && supportLegacyMappings);
 
   const classes = useStyles();
 

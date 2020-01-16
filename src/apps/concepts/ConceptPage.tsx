@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid } from "@material-ui/core";
+import { Fab, Grid, Tooltip } from '@material-ui/core'
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
 import {
@@ -17,105 +17,107 @@ import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import { startCase, toLower } from "lodash";
-import { usePrevious } from "../../utils";
+import { usePrevious, useQuery } from '../../utils'
 import { CONTEXT } from "./constants";
+import { Pageview as PageViewIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
 
 interface Props {
   fetchLoading: boolean;
-  updateLoading: boolean;
-  updatedConcept?: APIConcept;
+  loading: boolean;
   concept?: APIConcept;
   mappings: APIMapping[];
   fetchErrors?: {};
-  updateErrors?: {};
+  errors?: {};
   retrieveConcept: Function;
-  updateConcept: Function;
+  upsertConcept: Function;
   allMappingErrors?: { errors: string }[];
   progress?: string;
 }
 
-const EditConceptPage: React.FC<Props> = ({
+const ConceptPage: React.FC<Props> = ({
   retrieveConcept,
   concept,
   mappings,
   fetchLoading,
   fetchErrors,
-  updatedConcept,
-  updateErrors,
-  updateLoading,
-  updateConcept,
+  errors,
+  loading,
+  upsertConcept,
   allMappingErrors = [],
   progress
 }) => {
   const { pathname: url } = useLocation();
-  const { ownerType, owner, source } = useParams();
+  const { ownerType, owner, source, concept: conceptId } = useParams();
+  const { conceptClass } = useQuery();
+  const sourceUrl = `/${ownerType}/${owner}/sources/${source}/`;
+
+  const previouslyLoading = usePrevious(loading);
+  let context = conceptId ? CONTEXT.edit : CONTEXT.create;
 
   const anyMappingsErrors =
     !!allMappingErrors.length && allMappingErrors.some(value => value);
 
   const status =
-    !updateErrors && anyMappingsErrors
+    !errors && anyMappingsErrors
       ? "Concept updated. Some mappings were not updated or added. Fix the errors and retry."
       : progress;
 
   useEffect(() => {
-    retrieveConcept(url.replace("edit/", ""));
+    if (conceptId) retrieveConcept(`${sourceUrl}concepts/${conceptId}/`);
   }, [url, retrieveConcept]);
-
-  const updatePreviouslyLoading = usePrevious(updateLoading);
 
   if (fetchLoading) {
     return <span>Loading...</span>;
   }
 
-  if (
-    !updateLoading &&
-    updatePreviouslyLoading &&
-    !updateErrors &&
-    updatedConcept &&
-    !anyMappingsErrors
-  ) {
-    return <Redirect to={updatedConcept.url} />;
+  if (!loading && previouslyLoading && concept) {
+    if (!errors && !anyMappingsErrors) return <Redirect to={concept.url} />;
+    else context = CONTEXT.edit;
   }
 
   return (
     <Header
       title={
-        "Edit " + startCase(toLower(concept ? concept.display_name : "concept"))
+        context === CONTEXT.edit ?
+          "Edit " + startCase(toLower(concept ? concept.display_name : "concept")):
+          "Create concept"
       }
     >
       <Grid id="editConceptPage" item xs={8} component="div">
         <ConceptForm
-          context={CONTEXT.edit}
+          conceptClass={conceptClass}
+          context={context}
           status={status}
-          savedValues={apiConceptToConcept(concept, mappings)}
-          loading={updateLoading}
-          errors={updateErrors}
+          savedValues={context === CONTEXT.edit ? apiConceptToConcept(concept, mappings) : undefined}
+          loading={loading}
+          errors={errors}
           allMappingErrors={allMappingErrors}
+          supportLegacyMappings={!!conceptId}
           onSubmit={(data: BaseConcept) =>
-            updateConcept(data, `/${ownerType}/${owner}/sources/${source}/`)
+            upsertConcept(data, sourceUrl)
           }
         />
       </Grid>
+      
     </Header>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
   concept: state.concepts.concept,
-  updatedConcept: state.concepts.concept,
   mappings: state.concepts.mappings,
-  updateLoading: upsertConceptAndMappingsLoadingSelector(state),
+  loading: upsertConceptAndMappingsLoadingSelector(state),
   fetchLoading: viewConceptLoadingSelector(state),
   fetchErrors: viewConceptErrorsSelector(state),
-  updateErrors: upsertConceptErrorsSelector(state),
+  errors: upsertConceptErrorsSelector(state),
   allMappingErrors: upsertAllMappingsErrorSelector(state),
   progress: upsertConceptAndMappingsProgressSelector(state)
 });
 
 const mapActionsToProps = {
   retrieveConcept: retrieveConceptAction,
-  updateConcept: upsertConceptAndMappingsAction
+  upsertConcept: upsertConceptAndMappingsAction
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(EditConceptPage);
+export default connect(mapStateToProps, mapActionsToProps)(ConceptPage);
