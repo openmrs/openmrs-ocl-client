@@ -12,7 +12,7 @@ import {
   upsertAllMappingsErrorSelector,
   upsertConceptAndMappingsProgressSelector
 } from "./redux";
-import { APIConcept, apiConceptToConcept, BaseConcept } from "./types";
+import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from './types'
 import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
@@ -25,6 +25,7 @@ interface Props {
   updateLoading: boolean;
   updatedConcept?: APIConcept;
   concept?: APIConcept;
+  mappings: APIMapping[];
   fetchErrors?: {};
   updateErrors?: {};
   retrieveConcept: Function;
@@ -36,6 +37,7 @@ interface Props {
 const EditConceptPage: React.FC<Props> = ({
   retrieveConcept,
   concept,
+  mappings,
   fetchLoading,
   fetchErrors,
   updatedConcept,
@@ -86,7 +88,7 @@ const EditConceptPage: React.FC<Props> = ({
         <ConceptForm
           context={CONTEXT.edit}
           status={status}
-          savedValues={apiConceptToConcept(concept)}
+          savedValues={apiConceptToConcept(concept, mappings)}
           loading={updateLoading}
           errors={updateErrors}
           allMappingErrors={allMappingErrors}
@@ -101,7 +103,8 @@ const EditConceptPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   concept: state.concepts.concept,
-  updatedConcept: state.concepts.upsertedConcept,
+  updatedConcept: state.concepts.concept,
+  mappings: state.concepts.mappings,
   updateLoading: upsertConceptAndMappingsLoadingSelector(state),
   fetchLoading: viewConceptLoadingSelector(state),
   fetchErrors: viewConceptErrorsSelector(state),

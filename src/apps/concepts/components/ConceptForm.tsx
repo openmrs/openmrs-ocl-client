@@ -215,6 +215,24 @@ const ConceptForm: React.FC<Props> = ({
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
+    if (!currentRef || !savedValues) return;
+
+    currentRef.setFieldValue('url', savedValues.url, false);
+  }, [savedValues]);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef;
+    if (!currentRef || !savedValues) return;
+
+    [ANSWERS_VALUE_KEY, SETS_VALUE_KEY, MAPPINGS_VALUE_KEY].forEach(key => {
+      // @ts-ignore
+      savedValues[key].forEach((value: Mapping, index: number) => currentRef.setFieldValue(`${key}[${index}].url`, value.url, false));
+    });
+    console.log(currentRef);
+  }, [savedValues]);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef;
     if (!currentRef) return;
 
     Object.keys(initialValues).forEach(key => {
@@ -234,10 +252,11 @@ const ConceptForm: React.FC<Props> = ({
     ].forEach(([key, batchIndex]) => {
       currentRef.state.values[key].forEach((_: Mapping, index: number) => {
         const error = allMappingErrors[Number(`${batchIndex}${index}`)];
+        console.log(error, `${key}[${index}]`);
         if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
       });
     });
-    console.log(currentRef);
+    console.log(currentRef, allMappingErrors);
   }, [allMappingErrors.toString()]);
 
   return (

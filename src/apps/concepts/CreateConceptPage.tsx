@@ -7,7 +7,7 @@ import {
   upsertConceptErrorsSelector,
   upsertConceptAndMappingsLoadingSelector
 } from "./redux";
-import { APIConcept, BaseConcept } from "./types";
+import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from './types'
 import { usePrevious, useQuery } from "../../utils";
 import { Redirect, useLocation } from "react-router";
 import { connect } from "react-redux";
@@ -16,6 +16,7 @@ import { CONTEXT } from "./constants";
 interface Props {
   loading: boolean;
   newConcept?: APIConcept;
+  mappings: APIMapping[];
   errors?: {};
   createConcept: Function;
 }
@@ -23,6 +24,7 @@ interface Props {
 const CreateConceptPage: React.FC<Props> = ({
   createConcept,
   newConcept,
+  mappings,
   loading,
   errors
 }) => {
@@ -32,15 +34,21 @@ const CreateConceptPage: React.FC<Props> = ({
 
   const previouslyLoading = usePrevious(loading);
 
-  if (!loading && previouslyLoading && !errors && newConcept) {
-    return <Redirect to={newConcept.url} />;
+  let context = CONTEXT.create;
+
+  if (!loading && previouslyLoading) {
+    if (newConcept) {
+      if (!errors) return <Redirect to={newConcept.url}/>;
+      else context = CONTEXT.edit;
+    }
   }
 
   return (
     <Grid item xs={8} component="div">
       <ConceptForm
         conceptClass={conceptClass}
-        context={CONTEXT.create}
+        savedValues={apiConceptToConcept(newConcept, mappings)}
+        context={context}
         onSubmit={(data: BaseConcept) => createConcept(data, sourceUrl)}
         loading={loading}
         errors={errors}
@@ -51,6 +59,7 @@ const CreateConceptPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   newConcept: state.concepts.upsertedConcept,
+  mappings: state.concepts.mappings,
   loading: upsertConceptAndMappingsLoadingSelector(state),
   errors: upsertConceptErrorsSelector(state)
 });

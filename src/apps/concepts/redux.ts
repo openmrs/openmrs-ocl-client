@@ -10,6 +10,7 @@ import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorListSelector, errorSelector } from '../../redux/redux'
 import { Action } from '../../redux/utils'
+import { createReducer } from '@reduxjs/toolkit'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept'
@@ -91,22 +92,21 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
 }
 const retrieveConceptsAction = createActionThunk(RETRIEVE_CONCEPTS_ACTION, api.concepts.retrieve)
 
-const initialState: ConceptsState = {}
-
-const reducer = (state = initialState, action: Action) => {
-  switch (action.type) {
-    case startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type:
-      return { ...state, upsertedConcept: undefined }
-    case UPSERT_CONCEPT_ACTION:
-      return { ...state, upsertedConcept: action.payload }
-    case RETRIEVE_CONCEPT_ACTION:
-      return { ...state, concept: action.payload }
-    case RETRIEVE_CONCEPTS_ACTION:
-      return { ...state, concepts: { items: (action.payload as APIConcept[]), responseMeta: action.responseMeta } }
-    default:
-      return state
-  }
+const initialState: ConceptsState = {
+  mappings: [],
 }
+
+const reducer = createReducer<ConceptsState>(initialState, {
+  [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({ ...state, upsertedConcept: undefined }),
+  [UPSERT_CONCEPT_ACTION]: (state, action) => ({ ...state, concept: action.payload }),
+  [RETRIEVE_CONCEPT_ACTION]: (state, {payload}) => ({ ...state, concept: payload, mappings: payload.mappings }),
+  [RETRIEVE_CONCEPTS_ACTION]: (state, action) => ({ ...state, concepts: { items: (action.payload as APIConcept[]), responseMeta: action.responseMeta } }),
+  [UPSERT_MAPPING_ACTION]: (state, { actionIndex, payload, meta }) => {
+    const mappingIndex = state.mappings.findIndex(mapping => mapping.external_id === payload.external_id);
+    if (mappingIndex !== -1) state.mappings[mappingIndex] = payload;
+    else state.mappings.push(payload);
+  },
+})
 
 const upsertConceptAndMappingsLoadingSelector = loadingSelector(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS))
 const upsertConceptAndMappingsProgressSelector = progressSelector(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS))

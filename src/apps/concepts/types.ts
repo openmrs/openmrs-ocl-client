@@ -63,6 +63,7 @@ export interface ConceptsState {
   upsertedConcept?: APIConcept;
   concept?: APIConcept;
   concepts?: { items: APIConcept[]; responseMeta?: {} };
+  mappings: APIMapping[];
 }
 
 const apiNamesToName = (names: ConceptName[]) =>
@@ -72,14 +73,20 @@ const apiNamesToName = (names: ConceptName[]) =>
   }));
 
 const apiConceptToConcept = (
-  apiConcept: APIConcept | undefined
+  apiConcept: APIConcept | undefined,
+  mappings: APIMapping[],
 ): Concept | undefined => {
-  console.log(apiConcept, "concept");
   if (!apiConcept) return apiConcept;
 
-  let { names, descriptions, mappings, display_name, ...theRest } = apiConcept;
-  mappings = mappings || [];
+  let { names, descriptions, display_name, ...theRest } = apiConcept;
   descriptions = descriptions || [];
+  mappings = mappings || [];
+
+  console.log(mappings.filter(
+    mapping =>
+      mapping.map_type !== MAP_TYPE_Q_AND_A.value &&
+      mapping.map_type !== MAP_TYPE_CONCEPT_SET.value
+  ));
 
   return {
     names: apiNamesToName(names),
