@@ -6,6 +6,8 @@ import ReleaseVersionModal from './common/ReleaseVersionModal';
 import SubscriptionModal from './common/SubscriptionModal';
 import {
   CIEL_SOURCE_URL,
+  AMPATH_SOURCE_URL,
+  PIH_SOURCE_URL,
   TRADITIONAL_OCL_HOST,
 } from '../../../dictionaryConcepts/components/helperFunction';
 import { findLocale } from './common/Languages';
@@ -26,6 +28,7 @@ const DictionaryDetailCard = (props) => {
       supported_locales,
       url,
       references,
+      preferred_source,
     },
     versions,
     showEditModal,
@@ -62,7 +65,16 @@ const DictionaryDetailCard = (props) => {
   const cielConceptCount = conceptReferences.filter(
     ({ expression }) => expression.includes(CIEL_SOURCE_URL),
   ).length;
-  const otherConceptCount = conceptReferences.length - cielConceptCount;
+
+  const ampathConceptCount = conceptReferences.filter(
+    ({ expression }) => expression.includes(AMPATH_SOURCE_URL),
+  ).length;
+
+  const pihConceptCount = conceptReferences.filter(
+    ({ expression }) => expression.includes(PIH_SOURCE_URL),
+  ).length;
+
+  const otherConceptCount = conceptReferences.length - cielConceptCount - ampathConceptCount - pihConceptCount;
 
   return (
     <div className="dictionaryDetails">
@@ -89,7 +101,7 @@ Dictionary
             <legend>General Details</legend>
             <p>
               <b>Preferred Source</b>
-: CIEL
+: {preferred_source}
             </p>
             <p className="paragraph">
               <b>Public Access</b>
@@ -166,6 +178,18 @@ Dictionary
 :
               {' '}
               {cielConceptCount}
+            </p>
+            <p className="points">
+              <b>From AMPATH</b>
+:
+              {' '}
+              {ampathConceptCount}
+            </p>
+            <p className="points">
+              <b>From PIH</b>
+:
+              {' '}
+              {pihConceptCount}
             </p>
             <p className="points">
               <b>Other Concepts</b>

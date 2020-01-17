@@ -272,11 +272,14 @@ export class DictionaryModal extends React.Component {
                     <Input
                       type="select"
                       id="preferred_source"
+                      placeholder="CIEL"
                       name="preferred_source"
                       onChange={this.onChange}
                       value={data.preferred_source}
                     >
                       <option value="CIEL">CIEL (default source)</option>
+                      <option value="AMPATH">AMPATH</option>
+                      <option value="PIH">PIH</option>
                     </Input>
                   </FormGroup>
                   <FormGroup style={{ marginTop: '12px' }}>
