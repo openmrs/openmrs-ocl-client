@@ -54,6 +54,8 @@ export const MAP_TYPES_DEFAULTS = ['SAME-AS', 'NARROWER-THAN'];
 
 export const INTERNAL_MAPPING_DEFAULT_SOURCE = 'CIEL';
 export const CIEL_SOURCE_URL = '/orgs/CIEL/sources/CIEL/';
+export const AMPATH_SOURCE_URL = '/orgs/AMPATH/sources/AMPATH/';
+export const PIH_SOURCE_URL = '/orgs/PIH/sources/PIH/';
 
 export const MAP_TYPE = {
   conceptSet: 'CONCEPT-SET',
