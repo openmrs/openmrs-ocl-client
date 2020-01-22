@@ -61,7 +61,7 @@ const CreateConceptForm = (props) => {
               readOnly={props.editable}
               onChange={props.handleChange}
               name="external_id"
-              value={props.state.external_id}
+              value={props.state.external_id || ''}
               id="uuid"
               required
             />
@@ -262,7 +262,7 @@ const CreateConceptForm = (props) => {
                 className="btn btn-outline-secondary btn-sm mt-3"
                 onClick={addSetRow}
               >
-                Add set...
+                Add set member
               </button>
             </fieldset>
           </div>
