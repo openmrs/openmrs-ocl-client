@@ -61,7 +61,7 @@ const CreateConceptForm = (props) => {
               readOnly={props.editable}
               onChange={props.handleChange}
               name="external_id"
-              value={props.state.external_id}
+              value={''}
               id="uuid"
               required
             />
