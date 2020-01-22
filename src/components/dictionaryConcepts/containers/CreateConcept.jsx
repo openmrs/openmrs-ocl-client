@@ -136,6 +136,8 @@ export class CreateConcept extends Component {
         nextProps.history.push(`/concepts/${type}/${typeName}/${collectionName}/${dictionaryName}/${language}`);
         notify.show('concept successfully created', 'success', 3000);
       }, 10);
+    } else {
+      notify.show('Failed to create concept', 'error', 3000);
     }
   }
 
