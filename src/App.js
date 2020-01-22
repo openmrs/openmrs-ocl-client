@@ -61,6 +61,12 @@ const App = () => (
               path="/new/:conceptType?/concepts/:type/:typeName/:collectionName/:dictionaryName/:language/"
               component={Authenticate(CreateConcept)}
             />
+
+
+
+
+
+
             <Route
               exact
               // eslint-disable-next-line max-len
