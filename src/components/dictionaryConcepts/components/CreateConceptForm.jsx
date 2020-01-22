@@ -89,7 +89,7 @@ const CreateConceptForm = (props) => {
               type="text"
               className="form-control"
               onChange={props.handleChange}
-              value={props.state.id}
+              value={''}
               readOnly={isEditConcept}
               name="id"
               id="id"
