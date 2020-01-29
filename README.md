@@ -10,16 +10,17 @@
 ## Build
 ## Requirements
 ### Ensure you have NodeJS and Npm installed before you start the installation process
-- To download NodeJS and Npm [click here](https://nodejs.org/en/download/). OR To install Node.js and Npm via package manager [click here](https://nodejs.org/en/download/package-manager/)
+- To download NodeJS and Npm [click here](https://nodejs.org/en/download/). OR to install Node.js and Npm via package manager [click here](https://nodejs.org/en/download/package-manager/).
 ### Npm is distributed with Node.js- which means that when you download Node.js, you automatically get npm installed on your computer.
 ### Set-up Process (Manual Environment Setup)
 ```
 - Fork the repository by clicking on the Fork button located below the navigation bar on the right side of the page.
-- Clone the forked repository to your computer ensure to run the command below in the directory you want to store the project.
+- Clone the forked repository locally to your computer.
+- Ensure to run the command below in the directory you want to store the project.
     # git clone [the url of the repository] For example; 
     # git clone https://github.com/yourusername/openmrs-ocl-client.git
       
-- In the root directory of the project install all the dependencies using the command below 
+- In the root directory of the project, install all the dependencies using the command below 
     $ npm install
 ```
 ### Run in development
@@ -30,8 +31,8 @@
     ```
     npm start
     ```
-- The site should now be running at http://localhost:3000/ in the browser where you will see the app, You can change the port to your wish.
-### To change ports
+- The site should now be running at http://localhost:3000/ in the browser where you will see the app. You can change the port as you wish.
+### To change ports.
 ```
 - Modify scripts part of package.json and add the port you want to use:
 ```
@@ -63,7 +64,7 @@ For instances where port 3000 is being used it will prompt you to reply with let
 ```
 ### Running the Docker Image
 ```
-- Build the Docker image using the provided Dockerfile in the root folder. 
+- Build the Docker image using the provided Docker file in the root folder. 
    
 $ docker-compose build
 
@@ -84,7 +85,7 @@ To run tests
 ### Creating a Sass build
 ```
 - To compile Sass to CSS each time you make a change to a file with a .scss file 
-  extension, run the command below.
+  extension, run the command below:
 
 $ npm run build:css
 
@@ -94,8 +95,8 @@ $ npm run watch:css
 ```
 
 ## How to contribute to this project?
- - Please read [OpenMRS wiki](https://wiki.openmrs.org/) for awareness on the code of conduct used in OpenMRS organization 
- - And to get you started with the project please use the OpenMRS-OCL [documentation](https://wiki.openmrs.org/x/1gJiDQ)
+ - Please read [OpenMRS wiki](https://wiki.openmrs.org/) for awareness on the code of conduct used in OpenMRS community.
+ - And to get you started with the project please use the OpenMRS-OCL [documentation](https://wiki.openmrs.org/x/1gJiDQ).
 
 ## Support
 
@@ -103,4 +104,4 @@ Talk to us on [OpenMRS Talk](https://talk.openmrs.org/)
 
 ## License
 
-[MPL 2.0 w/ HD](http://openmrs.org/license/) © [OpenMRS Inc.](http://www.openmrs.org/)
+[MPL 2.0 w/ HD](http://openmrs.org/license/) © [OpenMRS Inc.](http://www.openmrs.org/).
