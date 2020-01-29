@@ -756,10 +756,10 @@ describe('Test suite for dictionary concepts components', () => {
       const dictionaryConcepts = wrapper.find('DictionaryConcepts');
       const container = dictionaryConcepts.instance();
       const spy = jest.spyOn(container, 'handleRetireConcept');
-      dictionaryConcepts.setState({ isOwner: true }, () => {
-        wrapper.find('button#retire').simulate('click');
-        expect(spy).toHaveBeenCalled();
-      });
+      dictionaryConcepts.setState({ isOwner: true });
+      wrapper.update();
+      wrapper.find('button#retire').simulate('click');
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should call the handleRetireConcept method when un-retiring', () => {
@@ -777,10 +777,10 @@ describe('Test suite for dictionary concepts components', () => {
       const dictionaryConcepts = wrapper.find('DictionaryConcepts');
       const container = dictionaryConcepts.instance();
       const spy = jest.spyOn(container, 'handleRetireConcept');
-      dictionaryConcepts.setState({ isOwner: true }, () => {
-        wrapper.find('button#unRetire').simulate('click');
-        expect(spy).toHaveBeenCalled();
-      });
+      dictionaryConcepts.setState({ isOwner: true });
+      wrapper.update();
+      wrapper.find('button#unRetire').simulate('click');
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should call handleRetireConcept without crashing when owner_url is invalid', () => {
@@ -797,10 +797,10 @@ describe('Test suite for dictionary concepts components', () => {
       const dictionaryConcepts = wrapper.find('DictionaryConcepts');
       const container = dictionaryConcepts.instance();
       const spy = jest.spyOn(container, 'handleRetireConcept');
-      dictionaryConcepts.setState({ isOwner: true }, () => {
-        wrapper.find('button#retire').simulate('click');
-        expect(spy).toHaveBeenCalled();
-      });
+      dictionaryConcepts.setState({ isOwner: true });
+      wrapper.update();
+      wrapper.find('button#retire').simulate('click');
+      expect(spy).toHaveBeenCalled();
     });
 
     describe('handleRetireConcept', () => {
