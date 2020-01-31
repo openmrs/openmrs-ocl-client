@@ -105,7 +105,7 @@ class DescriptionRow extends Component {
             name="description"
             value={this.state.description}
             id="concept-description"
-            required
+            
           />
         </td>
         <td className="concept-language">
