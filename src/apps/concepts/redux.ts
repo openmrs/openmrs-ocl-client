@@ -1,4 +1,5 @@
 import {
+  AppState,
   completeAction,
   createActionThunk,
   indexedAction,
@@ -9,8 +10,11 @@ import {
 import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorListSelector, errorSelector } from '../../redux/redux'
-import { Action } from '../../redux/utils'
 import { createReducer } from '@reduxjs/toolkit'
+import {
+  addConceptsToCollectionAction as addConceptsToCollection,
+  removeReferencesFromCollectionAction as removeReferencesFromCollection
+} from '../collections/redux'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept'
@@ -23,8 +27,8 @@ const SETS_BATCH_INDEX = 1
 const MAPPINGS_BATCH_INDEX = 2
 
 const retrieveConceptAction = createActionThunk(RETRIEVE_CONCEPT_ACTION, api.concept.retrieve)
-const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
-  return async (dispatch: Function) => {
+const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string, linkedDictionary?: string) => {
+  return async (dispatch: Function, getState: Function) => {
 
     dispatch(startAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))
 
@@ -85,6 +89,28 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string) => {
     await upsertMappings(answers, ANSWERS_BATCH_INDEX, 'answers')
     await upsertMappings(sets, SETS_BATCH_INDEX, 'sets')
     await upsertMappings(mappings, MAPPINGS_BATCH_INDEX, 'mappings')
+
+    if (linkedDictionary) {
+      dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), 'Updating concept in dictionary...'))
+
+      const state: AppState = getState();
+      const toConceptUrls: string[] = [
+        ...state.concepts.mappings.map(mapping => mapping.to_concept_url),
+      ].filter(reference => reference) as string[];
+
+      if (updating) {
+        let referencesToRemove = [
+          ...state.concepts.mappings.map(mapping => mapping.url),
+          concept.url,
+        ].filter(reference => reference) as string[];
+        await removeReferencesFromCollection(linkedDictionary, referencesToRemove);
+      }
+
+      await Promise.all([
+        dispatch(addConceptsToCollection(linkedDictionary, [concept.url as string])),
+        dispatch(addConceptsToCollection(linkedDictionary, toConceptUrls, 'none')),
+      ]);
+    }
 
     dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ''))
     dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))

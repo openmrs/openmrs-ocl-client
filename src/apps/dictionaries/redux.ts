@@ -29,19 +29,9 @@ import {
   EditableConceptContainerFields
 } from "../../utils";
 import uuid from "uuid/v4";
-import { APICollection, NewAPICollection } from "../collections";
-import {
-  createCollectionAction as createCollection,
-  createCollectionErrorSelector,
-  retrieveCollectionAction,
-  retrieveCollectionLoadingSelector,
-  editCollectionAction as editCollection,
-  editCollectionErrorSelector
-} from "../collections";
 import { AppState } from "../../redux";
 import { errorSelector } from "../../redux/redux";
 import {
-  OCL_COLLECTION_TYPE,
   OCL_DICTIONARY_TYPE,
   OCL_SOURCE_TYPE
 } from "./constants";
@@ -65,7 +55,7 @@ const createDictionaryAction = createActionThunk(
   indexedAction(CREATE_DICTIONARY_ACTION),
   api.create
 );
-const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
+const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
   return async (dispatch: Function) => {
     dispatch(
       startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
@@ -83,7 +73,6 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
     } = dictionaryData;
 
     let sourceResponse: APISource | boolean;
-    let collectionResponse: APICollection | boolean;
     let dictionaryResponse;
 
     dispatch(
@@ -122,32 +111,6 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
         "Creating collection..."
       )
     );
-    const collection: NewAPICollection = {
-      collection_type: OCL_COLLECTION_TYPE,
-      custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale,
-      description,
-      external_id: uuid(),
-      full_name: `${name} Collection`,
-      name: `${name} Collection`,
-      public_access: "None",
-      id: `${short_code}Collection`,
-      short_code: `${short_code}Collection`,
-      supported_locales: supported_locales.join(","),
-      website: ""
-    };
-    collectionResponse = await dispatch(
-      createCollection<APICollection>(owner_url, collection)
-    );
-    if (!collectionResponse) {
-      // todo cleanup here would involve hard deleting the source
-      dispatch(
-        completeAction(
-          indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)
-        )
-      );
-      return false;
-    }
 
     dispatch(
       progressAction(
@@ -163,7 +126,6 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
       external_id: uuid(),
       extras: {
         source: (sourceResponse as APISource).url,
-        collection: (collectionResponse as APICollection).url
       },
       preferred_source: preferred_source,
       full_name: name,
@@ -193,7 +155,7 @@ const createSourceCollectionDictionaryAction = (dictionaryData: Dictionary) => {
   };
 };
 const retrieveDictionaryAction = createActionThunk(
-  indexedAction(RETRIEVE_DICTIONARY_ACTION),
+  RETRIEVE_DICTIONARY_ACTION,
   api.retrieve
 );
 const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
@@ -203,10 +165,6 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     );
     if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return;
 
-    dispatch(retrieveSourceAction(retrieveDictionaryResult.extras.source));
-    dispatch(
-      retrieveCollectionAction(retrieveDictionaryResult.extras.collection)
-    );
     dispatch(retrieveDictionaryVersionsAction(dictionaryUrl));
   };
 };
@@ -251,7 +209,7 @@ const retrieveDictionariesAction = (
     );
   };
 };
-const editSourceCollectionDictionaryAction = (
+const editSourceAndDictionaryAction = (
   dictionaryUrl: string,
   dictionaryData: Dictionary,
   extras: { source: string; collection: string }
@@ -280,7 +238,6 @@ const editSourceCollectionDictionaryAction = (
     };
 
     let sourceResponse: APISource | boolean;
-    let collectionResponse: APICollection | boolean;
     let dictionaryResponse: APIDictionary | boolean;
 
     dispatch(
@@ -303,15 +260,6 @@ const editSourceCollectionDictionaryAction = (
         "Editing collection..."
       )
     );
-    collectionResponse = await dispatch(
-      editCollection<APICollection>(extras.collection, data)
-    );
-    if (!collectionResponse) {
-      dispatch(
-        completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
-      );
-      return false;
-    }
 
     dispatch(
       progressAction(
@@ -411,9 +359,6 @@ const createSourceCollectionDictionaryErrorsSelector = (
   const createSourceErrors = createSourceErrorSelector(state);
   if (createSourceErrors) return createSourceErrors;
 
-  const createCollectionErrors = createCollectionErrorSelector(state);
-  if (createCollectionErrors) return createCollectionErrors;
-
   const createDictionaryErrors = createDictionaryErrorSelector(state);
   if (createDictionaryErrors) return createDictionaryErrors;
 };
@@ -423,9 +368,6 @@ const editSourceCollectionDictionaryErrorsSelector = (
   const editSourceErrors = editSourceErrorSelector(state);
   if (editSourceErrors) return editSourceErrors;
 
-  const editCollectionErrors = editCollectionErrorSelector(state);
-  if (editCollectionErrors) return editCollectionErrors;
-
   const editDictionaryErrors = editDictionaryErrorSelector(state);
   if (editDictionaryErrors) return editDictionaryErrors;
 };
@@ -433,9 +375,6 @@ const editSourceCollectionDictionaryErrorsSelector = (
 const retrieveDictionaryLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_ACTION)
 );
-const retrieveDictionaryDetailsLoadingSelector = (state: AppState) =>
-  retrieveCollectionLoadingSelector(state) ||
-  retrieveSourceLoadingSelector(state);
 const retrieveDictionaryVersionLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION)
 );
@@ -453,12 +392,11 @@ const retrieveDictionariesLoadingSelector = loadingSelector(
 
 export {
   reducer as default,
-  createSourceCollectionDictionaryAction,
+  createSourceAndDictionaryAction,
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
   createSourceCollectionDictionaryErrorsSelector,
   retrieveDictionaryLoadingSelector,
-  retrieveDictionaryDetailsLoadingSelector,
   retrieveDictionaryAndDetailsAction,
   retrievePublicDictionariesAction,
   retrieveDictionariesAction,
@@ -467,7 +405,7 @@ export {
   PERSONAL_DICTIONARIES_ACTION_INDEX,
   ORG_DICTIONARIES_ACTION_INDEX,
   retrieveDictionaryAction,
-  editSourceCollectionDictionaryAction,
+  editSourceAndDictionaryAction,
   editSourceCollectionDictionaryErrorsSelector,
   editDictionaryProgressSelector,
   editDictionaryLoadingSelector,

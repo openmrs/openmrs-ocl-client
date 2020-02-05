@@ -33,6 +33,9 @@ export interface APIDictionary extends BaseAPIDictionary {
   owner_type: string;
   owner_url: string;
   url: string;
+  active_concepts: string;
+  references: {[key: string]: string}[];
+  concepts_url: string;
 }
 
 export interface DictionaryState {

@@ -1,6 +1,5 @@
 import React from "react";
-import { APISource } from "../../sources";
-import { APICollection } from "../../collections";
+import { APIDictionary } from "../../dictionaries";
 import {
   Button,
   ButtonGroup,
@@ -10,10 +9,10 @@ import {
 } from "@material-ui/core";
 import "./DictionaryDetails.scss";
 import { Link } from "react-router-dom";
+import { CIEL_SOURCE_URL } from '../../../utils/constants'
 
 interface Props {
-  source?: APISource;
-  collection?: APICollection;
+  dictionary: APIDictionary,
 }
 
 const useStyles = makeStyles({
@@ -23,20 +22,16 @@ const useStyles = makeStyles({
   }
 });
 
-const DictionaryDetails: React.FC<Props> = ({ source, collection }) => {
+const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
-  if (!(source && collection)) {
-    return <span>Could not retrieve dictionary details</span>;
-  }
-  const {
-    active_concepts: sourceConceptCount = 0,
-    concepts_url: sourceConceptsUrl
-  } = source;
-  const {
-    active_concepts: collectionConceptCount = 0,
-    concepts_url: collectionConceptsUrl
-  } = collection;
+  const {active_concepts: conceptCount, references, concepts_url: conceptsUrl} = dictionary;
+
+  const conceptReferences = references ? references.filter(({ reference_type }) => reference_type === 'concepts') : [];
+  const cielConceptCount = conceptReferences.filter(
+    ({ expression }) => expression.includes(CIEL_SOURCE_URL),
+  ).length;
+  const customConceptCount = conceptReferences.length - cielConceptCount;
 
   return (
     <Paper className="fieldsetParent">
@@ -45,7 +40,7 @@ const DictionaryDetails: React.FC<Props> = ({ source, collection }) => {
           Concepts(HEAD Version)
         </Typography>
         <Typography variant="h6" gutterBottom>
-          <b>Total Concepts: {sourceConceptCount + collectionConceptCount}</b>
+          <b>Total Concepts: {conceptCount}</b>
         </Typography>
         <Typography
           component="div"
@@ -53,19 +48,14 @@ const DictionaryDetails: React.FC<Props> = ({ source, collection }) => {
           gutterBottom
           id="conceptCountBreakDown"
         >
-          From CIEL: {collectionConceptCount}
+          From CIEL: {cielConceptCount}
           <br />
-          Custom Concepts: {sourceConceptCount}
+          Custom Concepts: {customConceptCount}
         </Typography>
         <ButtonGroup variant="text" fullWidth>
           <Button color="primary">
-            <Link className={classes.link} to={sourceConceptsUrl}>
-              View Custom Concepts
-            </Link>
-          </Button>
-          <Button color="primary">
-            <Link className={classes.link} to={collectionConceptsUrl}>
-              View CIEL Concepts
+            <Link className={classes.link} to={conceptsUrl}>
+              View Concepts
             </Link>
           </Button>
         </ButtonGroup>

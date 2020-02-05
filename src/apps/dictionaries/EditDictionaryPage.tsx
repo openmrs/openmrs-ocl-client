@@ -7,7 +7,7 @@ import {
   editSourceCollectionDictionaryErrorsSelector,
   editDictionaryProgressSelector,
   editDictionaryLoadingSelector,
-  editSourceCollectionDictionaryAction,
+  editSourceAndDictionaryAction,
   retrieveDictionaryAction,
   retrieveDictionaryLoadingSelector
 } from "./redux";
@@ -22,7 +22,7 @@ interface Props {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
-  editSourceCollectionDictionary: Function;
+  editSourceAndDictionary: Function;
   loading: boolean;
   editedDictionary?: APIDictionary;
   retrieveDictionary: Function;
@@ -34,7 +34,7 @@ const EditDictionaryPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   errors,
-  editSourceCollectionDictionary,
+  editSourceAndDictionary,
   loading,
   dictionaryLoading,
   dictionary,
@@ -71,7 +71,7 @@ const EditDictionaryPage: React.FC<Props> = ({
             loading={loading}
             savedValues={apiDictionaryToDictionary(dictionary)}
             onSubmit={(values: Dictionary) =>
-              editSourceCollectionDictionary(
+              editSourceAndDictionary(
                 dictionary?.url,
                 values,
                 dictionary?.extras
@@ -95,7 +95,7 @@ const mapStateToProps = (state: any) => ({
   dictionary: state.dictionaries.dictionary
 });
 const mapActionsToProps = {
-  editSourceCollectionDictionary: editSourceCollectionDictionaryAction,
+  editSourceAndDictionary: editSourceAndDictionaryAction,
   retrieveDictionary: retrieveDictionaryAction
 };
 

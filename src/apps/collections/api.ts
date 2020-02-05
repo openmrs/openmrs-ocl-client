@@ -1,22 +1,8 @@
-import { NewAPICollection } from "./types";
 import { authenticatedInstance } from "../../api";
 import { AxiosResponse } from "axios";
-import { EditableConceptContainerFields } from "../../utils";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
 
 const api = {
-  create: (
-    ownerUrl: string,
-    data: NewAPICollection
-  ): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.post(`${ownerUrl}collections/`, data),
-  update: (
-    collectionUrl: string,
-    data: EditableConceptContainerFields
-  ): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.put(collectionUrl, data),
-  retrieve: (collectionUrl: string): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.get(collectionUrl, { params: { verbose: true } }),
   retrieveCIELMappings: (
     fromConceptIds: string[]
   ): Promise<AxiosResponse<any>> =>
@@ -29,12 +15,13 @@ const api = {
   references: {
     add: (
       collectionUrl: string,
-      references: string[]
+      references: string[],
+      cascade: string="sourcemappings",
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.put(
         `${collectionUrl}references/`,
         { data: { expressions: references } },
-        { params: { cascade: "sourcemappings" } }
+        { params: { cascade: cascade } }
       ), // the nesting is not an error. Check API docs
     delete: (
       collectionUrl: string,

@@ -13,14 +13,11 @@ import { orgsSelector, profileSelector } from "../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../authentication";
 import {
   retrieveDictionaryAndDetailsAction,
-  retrieveDictionaryDetailsLoadingSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector
 } from "./redux";
 import { AppState } from "../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { APISource } from "../sources";
-import { APICollection } from "../collections";
 import { canModifyContainer } from "../authentication";
 import { CONTEXT } from "./constants";
 import ReleasedVersions from "./components/ReleasedVersions";
@@ -29,11 +26,8 @@ interface Props {
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
   dictionaryLoading: boolean;
-  dictionaryDetailsLoading: boolean;
   dictionary?: APIDictionary;
   retrieveDictionaryAndDetails: Function;
-  source?: APISource;
-  collection?: APICollection;
   versions: DictionaryVersion[];
   versionsLoading: boolean;
 }
@@ -42,11 +36,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
   dictionaryLoading,
-  dictionaryDetailsLoading,
   dictionary,
   retrieveDictionaryAndDetails,
-  source,
-  collection,
   versions,
   versionsLoading
 }: Props) => {
@@ -91,11 +82,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
       </Grid>
       <Grid item xs={5} container spacing={2}>
         <Grid item xs={12} component="div">
-          {dictionaryDetailsLoading ? (
-            "Loading..."
-          ) : (
-            <DictionaryDetails source={source} collection={collection} />
-          )}
+          {dictionary ? <DictionaryDetails dictionary={dictionary} /> : <span></span>}
         </Grid>
         <Grid item xs={12} component="div">
           {versionsLoading ? (
@@ -126,9 +113,7 @@ const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
   dictionary: state.dictionaries.dictionary,
-  dictionaryDetailsLoading: retrieveDictionaryDetailsLoadingSelector(state),
   source: state.sources.source,
-  collection: state.collections.collection,
   versions: state.dictionaries.versions,
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state)
 });

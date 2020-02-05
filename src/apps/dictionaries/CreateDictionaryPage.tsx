@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
-  createSourceCollectionDictionaryAction,
+  createSourceAndDictionaryAction,
   createSourceCollectionDictionaryErrorsSelector
 } from "./redux";
 import { APIDictionary, Dictionary } from "./types";
@@ -19,7 +19,7 @@ interface Props {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
-  createSourceCollectionDictionary: Function;
+  createSourceAndDictionary: Function;
   loading: boolean;
   newDictionary?: APIDictionary;
 }
@@ -28,7 +28,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   errors,
-  createSourceCollectionDictionary,
+  createSourceAndDictionary,
   loading,
   newDictionary
 }: Props) => {
@@ -52,7 +52,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
           usersOrgs={usersOrgs ? usersOrgs : []}
           loading={loading}
           onSubmit={(values: Dictionary) =>
-            createSourceCollectionDictionary(values)
+            createSourceAndDictionary(values)
           }
         />
       </Paper>
@@ -69,7 +69,7 @@ const mapStateToProps = (state: any) => ({
   errors: createSourceCollectionDictionaryErrorsSelector(state)
 });
 const mapActionsToProps = {
-  createSourceCollectionDictionary: createSourceCollectionDictionaryAction
+  createSourceAndDictionary: createSourceAndDictionaryAction
 };
 
 export default connect(

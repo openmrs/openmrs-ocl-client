@@ -23,6 +23,7 @@ import {
 } from "../authentication";
 import { orgsSelector } from "../authentication/redux/reducer";
 import { CONTEXT } from "./constants";
+import { useQuery } from '../../utils'
 
 interface Props {
   loading: boolean;
@@ -48,6 +49,7 @@ const ViewConceptPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
+  const {linkedDictionary} = useQuery();
 
   const canModifySource = canModifyContainer(
     ownerType,
@@ -78,7 +80,7 @@ const ViewConceptPage: React.FC<Props> = ({
         />
       </Grid>
       {!canModifySource ? null : (
-        <Link to={`${url}edit/`}>
+        <Link to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
           <Tooltip title="Edit this concept">
             <Fab color="primary" className="fab">
               <EditIcon />

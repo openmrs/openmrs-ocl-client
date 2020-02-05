@@ -49,7 +49,7 @@ const ConceptPage: React.FC<Props> = ({
 }) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner, source, concept: conceptId } = useParams();
-  const { conceptClass } = useQuery();
+  const { conceptClass, linkedDictionary } = useQuery();
   const sourceUrl = `/${ownerType}/${owner}/sources/${source}/`;
 
   const previouslyLoading = usePrevious(loading);
@@ -95,11 +95,11 @@ const ConceptPage: React.FC<Props> = ({
           allMappingErrors={allMappingErrors}
           supportLegacyMappings={!!conceptId}
           onSubmit={(data: BaseConcept) =>
-            upsertConcept(data, sourceUrl)
+            upsertConcept(data, sourceUrl, linkedDictionary)
           }
         />
       </Grid>
-      
+
     </Header>
   );
 };

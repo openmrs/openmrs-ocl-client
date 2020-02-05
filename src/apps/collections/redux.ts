@@ -5,36 +5,21 @@ import {
   FAILURE,
   indexedAction,
   loadingListSelector,
-  loadingSelector,
   progressAction,
   progressListSelector,
   startAction
 } from "../../redux";
 import api from "./api";
-import { errorSelector } from "../../redux/redux";
 import { CollectionState } from "./types";
 import { APIConcept } from "../concepts";
 import { recursivelyFetchToConcepts } from "./logic";
 import { createReducer } from "@reduxjs/toolkit";
 import { CIEL_CONCEPTS_URL } from '../concepts/constants'
 
-const CREATE_COLLECTION_ACTION = "collections/create";
 const RETRIEVE_COLLECTION_ACTION = "collections/retrieve";
-const EDIT_COLLECTION_ACTION = "collections/edit";
 const ADD_CONCEPTS_TO_COLLECTION = "collections/Add concept(s) to collection";
+const REMOVE_REFERENCES_FROM_COLLECTION = "collections/Remove reference(s) from collection"
 
-const createCollectionAction = createActionThunk(
-  CREATE_COLLECTION_ACTION,
-  api.create
-);
-const retrieveCollectionAction = createActionThunk(
-  RETRIEVE_COLLECTION_ACTION,
-  api.retrieve
-);
-const editCollectionAction = createActionThunk(
-  EDIT_COLLECTION_ACTION,
-  api.update
-);
 const addCIELConceptsToCollectionAction = (
   collectionUrl: string,
   rawConcepts: (APIConcept | string)[],
@@ -93,6 +78,8 @@ const addCIELConceptsToCollectionAction = (
     completeAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex))
   );
 };
+const addConceptsToCollectionAction = createActionThunk(indexedAction(ADD_CONCEPTS_TO_COLLECTION, 100), api.references.add);
+const removeReferencesFromCollectionAction = createActionThunk(REMOVE_REFERENCES_FROM_COLLECTION, api.references.delete);
 
 const initialState: CollectionState = {
   addReferencesResults: []
@@ -108,16 +95,6 @@ const reducer = createReducer(initialState, {
   }
 });
 
-const createCollectionErrorSelector = errorSelector(
-  indexedAction(CREATE_COLLECTION_ACTION)
-);
-const retrieveCollectionLoadingSelector = loadingSelector(
-  indexedAction(RETRIEVE_COLLECTION_ACTION)
-);
-const editCollectionErrorSelector = errorSelector(
-  indexedAction(EDIT_COLLECTION_ACTION)
-);
-
 const addConceptsToCollectionLoadingListSelector = loadingListSelector(
   ADD_CONCEPTS_TO_COLLECTION
 );
@@ -130,14 +107,10 @@ const addConceptsToCollectionErrorListSelector = errorListSelector(
 
 export {
   reducer as default,
-  createCollectionAction,
-  createCollectionErrorSelector,
-  retrieveCollectionAction,
-  retrieveCollectionLoadingSelector,
-  editCollectionAction,
-  editCollectionErrorSelector,
   addCIELConceptsToCollectionAction,
   addConceptsToCollectionLoadingListSelector,
   addConceptsToCollectionProgressListSelector,
-  addConceptsToCollectionErrorListSelector
+  addConceptsToCollectionErrorListSelector,
+  removeReferencesFromCollectionAction,
+  addConceptsToCollectionAction,
 };
