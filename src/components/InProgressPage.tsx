@@ -14,8 +14,8 @@ import {
   addConceptsToCollectionErrorListSelector,
   addConceptsToCollectionLoadingListSelector,
   addConceptsToCollectionProgressListSelector,
-  buildAddConceptToCollectionMessage
-} from "../apps/collections";
+  buildAddConceptToCollectionMessage,
+} from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
 
@@ -175,7 +175,7 @@ const mapStateToProps = (state: AppState) => ({
   loadingList: addConceptsToCollectionLoadingListSelector(state),
   inProgressList: addConceptsToCollectionProgressListSelector(state),
   erroredList: addConceptsToCollectionErrorListSelector(state),
-  successList: state.collections.addReferencesResults
+  successList: state.dictionaries.addReferencesResults
 });
 const mapDispatchToProps = {};
 

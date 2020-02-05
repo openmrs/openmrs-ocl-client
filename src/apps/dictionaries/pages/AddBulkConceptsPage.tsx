@@ -7,7 +7,7 @@ import {
   TextField,
   Theme, Typography
 } from '@material-ui/core'
-import { addCIELConceptsToCollectionAction } from './redux'
+import { addCIELConceptsToCollectionAction } from '../redux'
 import { useLocation } from 'react-router'
 import { connect } from 'react-redux'
 

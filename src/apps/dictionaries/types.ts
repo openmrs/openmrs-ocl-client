@@ -19,7 +19,7 @@ interface BaseAPIDictionary extends BaseDictionary {
   collection_type: string;
   website: string;
   custom_validation_schema: string;
-  extras?: { [key: string]: string | undefined };
+  extras: { [key: string]: string | undefined };
 }
 
 export interface NewAPIDictionary extends BaseAPIDictionary {
@@ -44,6 +44,7 @@ export interface DictionaryState {
   dictionary?: APIDictionary;
   dictionaries: { items: APIDictionary[]; responseMeta?: {} }[];
   versions: DictionaryVersion[];
+  addReferencesResults: { payload: {}; meta: [] }[];
 }
 
 export interface EditableDictionaryFields

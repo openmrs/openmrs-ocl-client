@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { DictionaryDetails, DictionaryForm } from "./components";
+import { DictionaryDetails, DictionaryForm, ReleasedVersions } from "../components";
 import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
 import { Edit as EditIcon } from "@material-ui/icons";
 import "./ViewDictionaryPage.scss";
@@ -8,19 +8,17 @@ import {
   APIDictionary,
   apiDictionaryToDictionary,
   DictionaryVersion
-} from "./types";
-import { orgsSelector, profileSelector } from "../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../authentication";
+} from "../types";
+import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
-  retrieveDictionaryAndDetailsAction,
   retrieveDictionaryLoadingSelector,
-  retrieveDictionaryVersionLoadingSelector
-} from "./redux";
-import { AppState } from "../../redux";
+  retrieveDictionaryVersionLoadingSelector,
+  retrieveDictionaryAndDetailsAction,
+} from "../redux";
+import { AppState } from "../../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { canModifyContainer } from "../authentication";
-import { CONTEXT } from "./constants";
-import ReleasedVersions from "./components/ReleasedVersions";
+import { CONTEXT } from "../constants";
 
 interface Props {
   profile?: APIProfile;
@@ -48,9 +46,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   }>();
 
   useEffect(() => {
-    retrieveDictionaryAndDetails(
-      url.replace("/dictionaries/", "/collections/")
-    );
+    retrieveDictionaryAndDetails(url);
   }, [url, retrieveDictionaryAndDetails]);
 
   const canEditDictionary = canModifyContainer(
@@ -82,7 +78,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
       </Grid>
       <Grid item xs={5} container spacing={2}>
         <Grid item xs={12} component="div">
-          {dictionary ? <DictionaryDetails dictionary={dictionary} /> : <span></span>}
+          {dictionary ? <DictionaryDetails dictionary={dictionary} /> : <span>Couldn't find dictionary details</span>}
         </Grid>
         <Grid item xs={12} component="div">
           {versionsLoading ? (
@@ -90,7 +86,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
           ) : (
             <ReleasedVersions
               versions={versions}
-              subscriptionUrl={url.replace("/dictionaries/", "/collections/")}
+              subscriptionUrl={url}
             />
           )}
         </Grid>

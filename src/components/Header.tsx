@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import {
   addConceptsToCollectionLoadingListSelector,
   addConceptsToCollectionProgressListSelector
-} from "../apps/collections";
+} from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link } from "react-router-dom";
 

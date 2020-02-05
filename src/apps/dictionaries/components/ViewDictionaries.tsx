@@ -152,7 +152,7 @@ const ViewDictionaries: React.FC<Props> = ({
                   <Button size="small" variant="text" color="primary">
                     <Link
                       className={classes.link}
-                      to={url.replace("/collections/", "/dictionaries/")}
+                      to={url}
                     >
                       View
                     </Link>

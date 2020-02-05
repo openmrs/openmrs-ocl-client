@@ -9,11 +9,10 @@ import DictionaryRoutes, {
   ViewDictionariesPage,
   ViewPublicDictionariesPage
 } from "./apps/dictionaries";
-import CollectionRoutes from "./apps/collections";
 import ConceptRoutes, {
-  COLLECTION_CONTAINER,
+  DICTIONARY_VERSION_CONTAINER,
   ViewConceptsPage
-} from "./apps/concepts";
+} from './apps/concepts'
 import { Header } from "./components";
 import { InProgressPage } from "./components";
 
@@ -21,37 +20,35 @@ const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
       <Route exact path="/actions/" component={InProgressPage} />
-      <Route exact path="/dictionaries/new/">
+      <Route exact path="/collections/new/">
         <Header title="Create Dictionary">
           <CreateDictionaryPage />
         </Header>
       </Route>
-      <Route exact path="/dictionaries/">
+      <Route exact path="/collections/">
         <Header title="Public Dictionaries">
           <ViewPublicDictionariesPage />
         </Header>
       </Route>
-      <Route exact path="/user/dictionaries/">
+      <Route exact path="/user/collections/">
         <Header title="Your Dictionaries">
           <ViewDictionariesPage />
         </Header>
       </Route>
-      <Route
-        path="/:ownerType/:owner/dictionaries"
-        component={DictionaryRoutes}
-      />
-      <Route
-        path="/:ownerType/:owner/sources/:source/concepts"
-        component={ConceptRoutes}
-      />
+      <Route path="/:ownerType/:owner/sources/:source/concepts">
+        <ConceptRoutes editConcept={true} newConcept={true} viewConcept={true} viewConcepts={true} />
+      </Route>
+      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+        <ConceptRoutes viewConcepts={true} />
+      </Route>
       <Route
         path="/:ownerType/:owner/collections/:collection/concepts/"
-        containerType={COLLECTION_CONTAINER}
+        containerType={DICTIONARY_VERSION_CONTAINER}
         component={ViewConceptsPage}
       />
       <Route
         path="/:ownerType/:owner/collections"
-        component={CollectionRoutes}
+        component={DictionaryRoutes}
       />
       <Route exact path="/">
         Home

@@ -1,6 +1,5 @@
-const SOURCE_CONTAINER = "source";
-const COLLECTION_CONTAINER = "collection";
-const DICTIONARY_CONTAINER = "dictionary";
+const DICTIONARY_CONTAINER = "collection";
+const DICTIONARY_VERSION_CONTAINER = "collectionVersion";
 const CIEL_CONCEPTS_URL = "/orgs/CIEL/sources/CIEL/concepts/";
 
 const CONTEXT = {
@@ -10,9 +9,8 @@ const CONTEXT = {
 };
 
 export {
-  SOURCE_CONTAINER,
-  COLLECTION_CONTAINER,
   DICTIONARY_CONTAINER,
+  DICTIONARY_VERSION_CONTAINER,
   CIEL_CONCEPTS_URL,
   CONTEXT
 };

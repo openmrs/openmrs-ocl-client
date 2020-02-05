@@ -3,6 +3,7 @@ import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
 import { AxiosResponse } from "axios";
 import { OCL_DICTIONARY_TYPE } from "./constants";
 import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
+import { CIEL_SOURCE_URL } from '../../utils/constants'
 
 const api = {
   create: (
@@ -56,6 +57,34 @@ const api = {
   versions: {
     retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
       authenticatedInstance.get(`${dictionaryUrl}versions/`)
+  },
+  retrieveCIELMappings: (
+    fromConceptIds: string[]
+  ): Promise<AxiosResponse<any>> =>
+    authenticatedInstance.get(`${CIEL_SOURCE_URL}mappings/`, {
+      params: {
+        fromConcept: fromConceptIds.join(","),
+        limit: 0
+      }
+    }), // todo optimize this
+  references: {
+    add: (
+      collectionUrl: string,
+      references: string[],
+      cascade: string="sourcemappings",
+    ): Promise<AxiosResponse<any>> =>
+      authenticatedInstance.put(
+        `${collectionUrl}references/`,
+        { data: { expressions: references } },
+        { params: { cascade: cascade } }
+      ), // the nesting is not an error. Check API docs
+    delete: (
+      collectionUrl: string,
+      references: string[]
+    ): Promise<AxiosResponse<any>> =>
+      authenticatedInstance.delete(`${collectionUrl}references/`, {
+        data: references
+      })
   }
 };
 

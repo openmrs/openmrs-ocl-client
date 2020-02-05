@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import qs from "qs";
 
@@ -14,4 +14,16 @@ function useQuery() {
   return qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 }
 
-export { usePrevious, useQuery };
+function useAnchor (): [null | HTMLElement, (event: React.MouseEvent<HTMLElement>) => void , () => void] {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return [anchorEl, handleClick, handleClose];
+}
+
+export { usePrevious, useQuery, useAnchor };

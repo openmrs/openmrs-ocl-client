@@ -1,19 +1,19 @@
 import React from "react";
-import { DictionaryForm } from "./components";
+import { DictionaryForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
-  createSourceAndDictionaryAction,
   createSourceCollectionDictionaryErrorsSelector
-} from "./redux";
-import { APIDictionary, Dictionary } from "./types";
-import { orgsSelector, profileSelector } from "../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../authentication";
-import { usePrevious } from "../../utils";
-import { CONTEXT } from "./constants";
+} from "../redux/selectors";
+import { APIDictionary, Dictionary } from "../types";
+import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile } from "../../authentication";
+import { usePrevious } from "../../../utils";
+import { CONTEXT } from "../constants";
+import { createSourceAndDictionaryAction } from '../redux/actions'
 
 interface Props {
   errors?: {};
@@ -37,7 +37,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
   if (!loading && previouslyLoading && newDictionary) {
     return (
       <Redirect
-        to={newDictionary.url.replace("/collections/", "/dictionaries/")}
+        to={newDictionary.url}
       />
     );
   }

@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
-  const {active_concepts: conceptCount, references, concepts_url: conceptsUrl} = dictionary;
+  const {active_concepts: conceptCount, references, concepts_url: conceptsUrl, extras: {source: sourceUrl}} = dictionary;
 
   const conceptReferences = references ? references.filter(({ reference_type }) => reference_type === 'concepts') : [];
   const cielConceptCount = conceptReferences.filter(
@@ -54,7 +54,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
         </Typography>
         <ButtonGroup variant="text" fullWidth>
           <Button color="primary">
-            <Link className={classes.link} to={conceptsUrl}>
+            <Link className={classes.link} to={`${conceptsUrl}?newConceptSource=${sourceUrl}`}>
               View Concepts
             </Link>
           </Button>

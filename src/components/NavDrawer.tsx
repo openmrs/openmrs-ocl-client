@@ -159,7 +159,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
             component={Link}
             exact
             activeClassName={classes.selected}
-            to="/user/dictionaries/"
+            to="/user/collections/"
             key="Your Dictionaries"
           >
             <Tooltip title="Your Dictionaries">
@@ -175,7 +175,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
             component={Link}
             exact
             activeClassName={classes.selected}
-            to="/dictionaries/"
+            to="/collections/"
             key="Public Dictionaries"
           >
             <Tooltip title="Public Dictionaries">

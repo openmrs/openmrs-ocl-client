@@ -1,4 +1,4 @@
-export { usePrevious, useQuery } from "./hooks";
+export { usePrevious, useQuery, useAnchor } from "./hooks";
 export {
   findLocale,
   getPrettyError,

@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import { AppState } from "../../redux";
+import { AppState } from "../../../redux";
 import {
-  retrievePublicDictionariesAction,
   retrievePublicDictionariesLoadingSelector
-} from "./redux";
+} from "../redux/selectors";
 import { connect } from "react-redux";
-import { APIDictionary } from "./types";
-import { ProgressOverlay } from "../../utils/components";
-import { useQuery } from "../../utils";
+import { APIDictionary } from "../types";
+import { ProgressOverlay } from "../../../utils/components";
+import { useQuery } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
-import ViewDictionaries from "./components/ViewDictionaries";
+import ViewDictionaries from "../components/ViewDictionaries";
+import { retrievePublicDictionariesAction } from '../redux/actions'
 
 const PER_PAGE = 20;
 

@@ -11,10 +11,7 @@ import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorListSelector, errorSelector } from '../../redux/redux'
 import { createReducer } from '@reduxjs/toolkit'
-import {
-  addConceptsToCollectionAction as addConceptsToCollection,
-  removeReferencesFromCollectionAction as removeReferencesFromCollection
-} from '../collections/redux'
+import {removeReferencesFromCollectionAction as removeReferencesFromCollection, addConceptsToCollectionAction as addConceptsToCollection} from '../dictionaries'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept'

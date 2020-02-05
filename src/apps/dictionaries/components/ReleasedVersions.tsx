@@ -57,10 +57,7 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl }) => {
                       <Button size="small" variant="text" color="primary">
                         <Link
                           className={classes.link}
-                          to={`${row.version_url.replace(
-                            "/collections/",
-                            "/dictionaries/"
-                          )}concepts/`}
+                          to={`${row.version_url}concepts/`}
                         >
                           View concepts
                         </Link>

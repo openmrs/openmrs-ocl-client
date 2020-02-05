@@ -1,6 +1,13 @@
 export { default } from "./Routes";
-export { default as CreateDictionaryPage } from "./CreateDictionaryPage";
-export { default as ViewPublicDictionariesPage } from "./ViewPublicDictionariesPage";
-export { default as ViewDictionariesPage } from "./ViewDictionariesPage";
-export { default as dictionariesReducer } from "./redux";
+export {  CreateDictionaryPage, ViewPublicDictionariesPage, ViewDictionariesPage } from "./pages";
+export {
+  default as dictionariesReducer,
+  addConceptsToCollectionLoadingListSelector,
+  addConceptsToCollectionProgressListSelector,
+  addConceptsToCollectionErrorListSelector,
+  addCIELConceptsToCollectionAction,
+  addConceptsToCollectionAction,
+  removeReferencesFromCollectionAction,
+} from "./redux";
+export {buildAddConceptToCollectionMessage} from "./utils";
 export * from "./types";

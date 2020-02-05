@@ -18,7 +18,7 @@ import {
 import { AppState } from "../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "./types";
 import { useLocation, useHistory, useParams } from "react-router";
-import { CONCEPT_CLASSES, useQuery } from "../../utils";
+import { CONCEPT_CLASSES, useAnchor, useQuery } from '../../utils'
 import qs from "qs";
 import { ProgressOverlay } from "../../utils/components";
 import FilterOptions from "./components/FilterOptions";
@@ -33,11 +33,11 @@ import {
 import { orgsSelector } from "../authentication/redux/reducer";
 import {
   CIEL_CONCEPTS_URL,
-  DICTIONARY_CONTAINER,
-  SOURCE_CONTAINER
+  DICTIONARY_VERSION_CONTAINER,
+  DICTIONARY_CONTAINER
 } from "./constants";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
-import { addCIELConceptsToCollectionAction } from "../collections";
+import { addCIELConceptsToCollectionAction } from "../dictionaries/redux";
 
 interface Props {
   concepts?: APIConcept[];
@@ -72,25 +72,19 @@ const ViewConceptsPage: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const isDictionary = containerType === DICTIONARY_CONTAINER;
+  const isDictionaryVersion = containerType === DICTIONARY_VERSION_CONTAINER;
   const { push: goTo } = useHistory();
-  const { pathname } = useLocation();
-  const url = isDictionary
-    ? pathname.replace("/dictionaries/", "/collections/")
-    : pathname;
-  const sourceOrCollectionUrl = url.replace("/concepts", "");
+  const { pathname: url } = useLocation();
+  const dictionaryUrl = url.replace("/concepts", "");
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
   }>();
+  const {newConceptSource} = useQuery();
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
+  const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
+  const [importExistingAnchor, handleImportExistingClick, handleImportExistingClose] = useAnchor();
 
   const queryParams: QueryParams = useQuery(); // todo get limit from settings
   const {
@@ -113,7 +107,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
   const [q, setQ] = useState(initialQ);
   const canModify =
-    !isDictionary && canModifyContainer(ownerType, owner, profile, usersOrgs);
+    !isDictionaryVersion && canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   const gimmeAUrl = (params: QueryParams) => {
     const newParams: QueryParams = {
@@ -204,67 +198,75 @@ const ViewConceptsPage: React.FC<Props> = ({
           )}
         </ProgressOverlay>
       </Header>
-      {!canModify ? null : containerType === SOURCE_CONTAINER ? (
+      {(!canModify || (containerType === DICTIONARY_VERSION_CONTAINER)) ? null : (
         <>
-          <Tooltip title="Create a new concept">
-            <Fab onClick={handleClick} color="primary" className="fab">
+          <Tooltip title="Add concepts">
+            <Fab onClick={handleAddNewClick} color="primary" className="fab">
               <AddIcon />
             </Fab>
           </Tooltip>
           <Menu
-            anchorEl={anchorEl}
+            anchorEl={addNewAnchor}
             keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+            open={Boolean(addNewAnchor)}
+            onClose={handleAddNewClose}
           >
-            {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
-              <MenuItem onClick={handleClose}>
-                <Link
-                  className={classes.link}
-                  to={`${url}new/?conceptClass=${conceptClass}`}
-                >
-                  {conceptClass} Concept
-                </Link>
+            <MenuItem onClick={e => {handleImportExistingClick(e); handleAddNewClose()}}>
+              Import existing concept
+            </MenuItem>
+            {!newConceptSource ? null : (
+              <MenuItem onClick={e => {handleCustomClick(e); handleAddNewClose()}}>
+                Create custom concept
               </MenuItem>
-            ))}
-            <MenuItem onClick={handleClose}>
-              <Link className={classes.link} to={`${url}new/`}>
-                Other kind
-              </Link>
-            </MenuItem>
+            )}
           </Menu>
         </>
-      ) : (
-        <>
-          <Tooltip title="Add CIEL concepts">
-            <Fab onClick={handleClick} color="primary" className="fab">
-              <AddIcon />
-            </Fab>
-          </Tooltip>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+      )}
+      <Menu
+        anchorEl={customAnchor}
+        keepMounted
+        open={Boolean(customAnchor)}
+        onClose={handleCustomClose}
+      >
+        {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
+          <MenuItem onClick={handleCustomClose}>
+            <Link
+              className={classes.link}
+              to={`${newConceptSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${dictionaryUrl}`}
+            >
+              {conceptClass} Concept
+            </Link>
+          </MenuItem>
+        ))}
+        <MenuItem onClick={handleCustomClose}>
+          <Link className={classes.link} to={`${newConceptSource}new/`}>
+            Other kind
+          </Link>
+        </MenuItem>
+      </Menu>
+      <Menu
+        anchorEl={importExistingAnchor}
+        keepMounted
+        open={Boolean(importExistingAnchor)}
+        onClose={handleImportExistingClose}
+      >
+        <MenuItem onClick={handleImportExistingClose}>
+          <Link
+            className={classes.link}
+            to={`${CIEL_CONCEPTS_URL}?addToCollection=${dictionaryUrl}`}
           >
-            <MenuItem onClick={handleClose}>
-              <Link
-                className={classes.link}
-                to={`${CIEL_CONCEPTS_URL}?addToCollection=${sourceOrCollectionUrl}`}
-              >
-                Add single concept
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleClose}>
-              <Link
-                className={classes.link}
-                to={`${sourceOrCollectionUrl}add/?fromSource=${CIEL_SOURCE_URL}`}
-              >
-                Add bulk concepts
-              </Link>
-            </MenuItem>
-          </Menu>
-        </>
+            Add single concept
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleImportExistingClose}>
+          <Link
+            className={classes.link}
+            to={`${dictionaryUrl}add/?fromSource=${CIEL_SOURCE_URL}`}
+          >
+            Add bulk concepts
+          </Link>
+        </MenuItem>
+      </Menu>
       )}
     </>
   );

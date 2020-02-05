@@ -4,7 +4,6 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { loadingAndErroredReducer } from "./redux";
 import authReducer from "./apps/authentication/redux/reducer"; // failed to respect module here because of a circular import issue
 import { dictionariesReducer } from "./apps/dictionaries";
-import { collectionsReducer } from "./apps/collections";
 import { sourcesReducer } from "./apps/sources";
 import { conceptsReducer } from "./apps/concepts";
 
@@ -13,7 +12,6 @@ export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
 
 const doNotPersist = [
   "dictionaries",
-  "collections",
   "sources",
   "concepts",
   "status"
@@ -59,7 +57,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   status: loadingAndErroredReducer,
   dictionaries: dictionariesReducer,
-  collections: collectionsReducer,
   sources: sourcesReducer,
   concepts: conceptsReducer
 });
