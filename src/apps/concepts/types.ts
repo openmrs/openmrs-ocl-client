@@ -79,13 +79,6 @@ const apiConceptToConcept = (
 
   let { names, descriptions, display_name, ...theRest } = apiConcept;
   descriptions = descriptions || [];
-  mappings = mappings || [];
-
-  console.log(mappings.filter(
-    mapping =>
-      mapping.map_type !== MAP_TYPE_Q_AND_A.value &&
-      mapping.map_type !== MAP_TYPE_CONCEPT_SET.value
-  ));
 
   return {
     names: apiNamesToName(names),

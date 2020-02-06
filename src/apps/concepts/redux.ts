@@ -43,6 +43,7 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string, linked
 
     if (typeof response === 'boolean') {
       // I think that at this point, it is generally sane not to try dealing with the mappings if the concept can't be updated. todo could improve.
+      dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), `Couldn't ${updating ? 'update' : 'create'} concept`))
       dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)))
       return false
     }
@@ -95,18 +96,26 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string, linked
         ...state.concepts.mappings.map(mapping => mapping.to_concept_url),
       ].filter(reference => reference) as string[];
 
-      if (updating) {
-        let referencesToRemove = [
-          ...state.concepts.mappings.map(mapping => mapping.url),
-          concept.url,
-        ].filter(reference => reference) as string[];
-        await removeReferencesFromCollection(linkedDictionary, referencesToRemove);
-      }
+      try {
+        // ideally, this block should be a transaction
+        if (updating) {
+          let referencesToRemove = [
+            // we don't remove the toConceptUrls because we can't be sure no other mapping depends on them
+            // that would break the OCL module importer
+            ...state.concepts.mappings.map(mapping => mapping.url),
+            concept.url,
+          ].filter(reference => reference) as string[];
+          await dispatch(removeReferencesFromCollection(linkedDictionary, referencesToRemove));
+        }
 
-      await Promise.all([
-        dispatch(addConceptsToCollection(linkedDictionary, [concept.url as string])),
-        dispatch(addConceptsToCollection(linkedDictionary, toConceptUrls, 'none')),
-      ]);
+        await Promise.all([
+          dispatch(addConceptsToCollection(linkedDictionary, [conceptResponse.url])),
+          dispatch(addConceptsToCollection(linkedDictionary, toConceptUrls, 'none')),
+        ]);
+      } catch (e) {
+        // whatever happens, make sure we never loose access to the reference from the collection
+        await dispatch(addConceptsToCollection(linkedDictionary, [conceptResponse.url || concept.url as string]));
+      }
     }
 
     dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ''))
@@ -123,7 +132,7 @@ const reducer = createReducer<ConceptsState>(initialState, {
   [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({ ...state, concept: undefined }),
   [startAction(indexedAction(RETRIEVE_CONCEPT_ACTION)).type]: state => ({ ...state, concept: undefined }),
   [UPSERT_CONCEPT_ACTION]: (state, action) => ({ ...state, concept: action.payload }),
-  [RETRIEVE_CONCEPT_ACTION]: (state, {payload}) => ({ ...state, concept: payload, mappings: payload.mappings }),
+  [RETRIEVE_CONCEPT_ACTION]: (state, {payload}) => ({ ...state, concept: payload, mappings: payload.mappings || [] }),
   [RETRIEVE_CONCEPTS_ACTION]: (state, action) => ({ ...state, concepts: { items: (action.payload as APIConcept[]), responseMeta: action.responseMeta } }),
   [UPSERT_MAPPING_ACTION]: (state, { actionIndex, payload, meta }) => {
     const mappingIndex = state.mappings.findIndex(mapping => mapping.external_id === payload.external_id);

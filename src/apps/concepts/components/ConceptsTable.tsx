@@ -47,6 +47,7 @@ interface Props extends QueryParams {
   setQ: Function;
   buttons?: { [key: string]: boolean };
   addConceptsToCollection: Function;
+  linkedDictionary?: string;
 }
 
 interface HeadCell {
@@ -86,7 +87,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort
+    onRequestSort,
   } = props;
   const createSortHandler = (property: SortableField) => (
     event: React.MouseEvent<unknown>
@@ -296,7 +297,8 @@ const ConceptsTable: React.FC<Props> = ({
   toggleShowOptions,
   buttons = {},
   collection,
-  addConceptsToCollection
+  addConceptsToCollection,
+  linkedDictionary,
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -427,7 +429,7 @@ const ConceptsTable: React.FC<Props> = ({
                       </TableCell>
                     )}
                     <TableCell>
-                      <Link onClick={e => e.stopPropagation()} to={row.url}>
+                      <Link onClick={e => e.stopPropagation()} to={`${row.url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`}>
                         {row.display_name}
                       </Link>
                     </TableCell>
@@ -457,11 +459,11 @@ const ConceptsTable: React.FC<Props> = ({
                         >
                           {isSelected(row.id) ? "Deselect" : "Select"}
                         </MenuItem>
-                        {!buttons.edit ? null : (
+                        {(!buttons.edit || !linkedDictionary) ? null : (
                           <MenuItem onClick={() => toggleMenu(index)}>
                             <Link
                               className={classes.buttonLink}
-                              to={`${row.url}edit`}
+                              to={`${row.url}edit/?linkedDictionary=${linkedDictionary}`}
                             >
                               Edit
                             </Link>

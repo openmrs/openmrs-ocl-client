@@ -34,7 +34,6 @@ import { orgsSelector } from "../authentication/redux/reducer";
 import {
   CIEL_CONCEPTS_URL,
   DICTIONARY_VERSION_CONTAINER,
-  DICTIONARY_CONTAINER
 } from "./constants";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
 import { addCIELConceptsToCollectionAction } from "../dictionaries/redux";
@@ -181,6 +180,7 @@ const ViewConceptsPage: React.FC<Props> = ({
               addConceptsToCollection={(concepts: APIConcept[]) =>
                 addConceptsToCollection(collectionToAddTo, concepts)
               }
+              linkedDictionary={dictionaryUrl}
             />
           </Grid>
           {!showOptions ? (
@@ -239,7 +239,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           </MenuItem>
         ))}
         <MenuItem onClick={handleCustomClose}>
-          <Link className={classes.link} to={`${newConceptSource}new/`}>
+          <Link className={classes.link} to={`${newConceptSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}>
             Other kind
           </Link>
         </MenuItem>
@@ -267,7 +267,6 @@ const ViewConceptsPage: React.FC<Props> = ({
           </Link>
         </MenuItem>
       </Menu>
-      )}
     </>
   );
 };

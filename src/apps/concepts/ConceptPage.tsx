@@ -72,7 +72,7 @@ const ConceptPage: React.FC<Props> = ({
   }
 
   if (!loading && previouslyLoading && concept) {
-    if (!errors && !anyMappingsErrors) return <Redirect to={concept.url} />;
+    if (!errors && !anyMappingsErrors) return <Redirect to={`${concept.url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`} />;
     else context = CONTEXT.edit;
   }
 

@@ -83,7 +83,7 @@ const api = {
       references: string[]
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.delete(`${collectionUrl}references/`, {
-        data: references
+        data: {references: references},  // again, Check the API docs
       })
   }
 };
