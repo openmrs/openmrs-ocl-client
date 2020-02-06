@@ -75,15 +75,17 @@ const api = {
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.put(
         `${collectionUrl}references/`,
-        { data: { expressions: references } },
+        { data: { expressions: references } },  // the nesting is not an error. Check API docs
         { params: { cascade: cascade } }
-      ), // the nesting is not an error. Check API docs
+      ),
     delete: (
       collectionUrl: string,
-      references: string[]
+      references: string[],
+      cascade: string="sourcemappings",
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.delete(`${collectionUrl}references/`, {
         data: {references: references},  // again, Check the API docs
+        params: { cascade: cascade },
       })
   }
 };

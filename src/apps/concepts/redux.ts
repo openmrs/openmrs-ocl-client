@@ -12,6 +12,7 @@ import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorListSelector, errorSelector } from '../../redux/redux'
 import { createReducer } from '@reduxjs/toolkit'
 import {removeReferencesFromCollectionAction as removeReferencesFromCollection, addConceptsToCollectionAction as addConceptsToCollection} from '../dictionaries'
+import { delay } from '../../utils'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept'
@@ -97,13 +98,13 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string, linked
       ].filter(reference => reference) as string[];
 
       try {
-        // ideally, this block should be a transaction
+        // ideally, this block should be atomic
         if (updating) {
           let referencesToRemove = [
             // we don't remove the toConceptUrls because we can't be sure no other mapping depends on them
             // that would break the OCL module importer
-            ...state.concepts.mappings.map(mapping => mapping.url),
-            concept.url,
+            // ...state.concepts.mappings.map(mapping => mapping.url), todo ensure the cascade is working and delete this if so
+            concept.version_url,
           ].filter(reference => reference) as string[];
           await dispatch(removeReferencesFromCollection(linkedDictionary, referencesToRemove));
         }

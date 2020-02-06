@@ -48,9 +48,10 @@ const ConceptPage: React.FC<Props> = ({
   progress
 }) => {
   const { pathname: url } = useLocation();
-  const { ownerType, owner, source, concept: conceptId } = useParams();
+  const { concept: conceptId } = useParams();
   const { conceptClass, linkedDictionary } = useQuery();
-  const sourceUrl = `/${ownerType}/${owner}/sources/${source}/`;
+  const sourceUrl = url.substring(0, url.indexOf('concepts/'));
+  const conceptUrl = url.replace('/edit', '');
 
   const previouslyLoading = usePrevious(loading);
   let context = conceptId ? CONTEXT.edit : CONTEXT.create;
@@ -64,15 +65,15 @@ const ConceptPage: React.FC<Props> = ({
       : progress;
 
   useEffect(() => {
-    if (conceptId) retrieveConcept(`${sourceUrl}concepts/${conceptId}/`);
-  }, [url, retrieveConcept]);
+    if (conceptId) retrieveConcept(conceptUrl);
+  }, [conceptUrl, retrieveConcept]);
 
   if (fetchLoading) {
     return <span>Loading...</span>;
   }
 
   if (!loading && previouslyLoading && concept) {
-    if (!errors && !anyMappingsErrors) return <Redirect to={`${concept.url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`} />;
+    if (!errors && !anyMappingsErrors) return <Redirect to={`${concept.version_url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`} />;
     else context = CONTEXT.edit;
   }
 
@@ -99,6 +100,16 @@ const ConceptPage: React.FC<Props> = ({
           }
         />
       </Grid>
+
+      {context !== CONTEXT.edit ? null : (
+        <Link to={`${conceptUrl}?linkedDictionary=${linkedDictionary}`}>
+          <Tooltip title="Discard and view concept">
+            <Fab color="primary" className="fab">
+              <PageViewIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      ) }
 
     </Header>
   );

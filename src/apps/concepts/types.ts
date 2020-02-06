@@ -45,6 +45,7 @@ export interface BaseConcept {
   names: ConceptName[];
   descriptions: ConceptDescription[];
   url?: string;
+  version_url?: string;
 }
 
 export interface Concept extends BaseConcept {
@@ -56,6 +57,7 @@ export interface Concept extends BaseConcept {
 export interface APIConcept extends BaseConcept {
   display_name: string;
   url: string;
+  version_url: string;
   mappings: APIMapping[];
 }
 

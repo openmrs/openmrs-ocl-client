@@ -158,8 +158,8 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModify,
-                addToCollection: !!collectionToAddTo
+                edit: canModify && !!dictionaryUrl,
+                addToCollection: !!collectionToAddTo,
               }}
               q={q}
               setQ={setQ}
@@ -181,6 +181,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 addConceptsToCollection(collectionToAddTo, concepts)
               }
               linkedDictionary={dictionaryUrl}
+              linkedSource={newConceptSource}
             />
           </Grid>
           {!showOptions ? (
@@ -255,7 +256,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             className={classes.link}
             to={`${CIEL_CONCEPTS_URL}?addToCollection=${dictionaryUrl}`}
           >
-            Add single concept
+            Pick concepts
           </Link>
         </MenuItem>
         <MenuItem onClick={handleImportExistingClose}>

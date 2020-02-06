@@ -48,6 +48,7 @@ interface Props extends QueryParams {
   buttons?: { [key: string]: boolean };
   addConceptsToCollection: Function;
   linkedDictionary?: string;
+  linkedSource?: string;
 }
 
 interface HeadCell {
@@ -299,6 +300,7 @@ const ConceptsTable: React.FC<Props> = ({
   collection,
   addConceptsToCollection,
   linkedDictionary,
+  linkedSource,
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -429,7 +431,7 @@ const ConceptsTable: React.FC<Props> = ({
                       </TableCell>
                     )}
                     <TableCell>
-                      <Link onClick={e => e.stopPropagation()} to={`${row.url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`}>
+                      <Link onClick={e => e.stopPropagation()} to={`${row.version_url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`}>
                         {row.display_name}
                       </Link>
                     </TableCell>
@@ -459,11 +461,11 @@ const ConceptsTable: React.FC<Props> = ({
                         >
                           {isSelected(row.id) ? "Deselect" : "Select"}
                         </MenuItem>
-                        {(!buttons.edit || !linkedDictionary) ? null : (
+                        {(!buttons.edit || !linkedSource || !row.url.includes(linkedSource)) ? null : (
                           <MenuItem onClick={() => toggleMenu(index)}>
                             <Link
                               className={classes.buttonLink}
-                              to={`${row.url}edit/?linkedDictionary=${linkedDictionary}`}
+                              to={`${row.version_url}edit/?linkedDictionary=${linkedDictionary}`}
                             >
                               Edit
                             </Link>

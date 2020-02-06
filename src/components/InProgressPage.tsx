@@ -85,9 +85,11 @@ const InProgressPage: React.FC<Props> = ({
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
-        <Typography align='center'>
-          Your actions will appear here
-        </Typography>
+        {(inProgressItems.length + erroredItems.length + successfullItems.length) ? null : (
+          <Typography align='center'>
+            Your actions will appear here
+          </Typography>
+        )}
         {!inProgressItems.length ? null : (
           <List
             component="div"
