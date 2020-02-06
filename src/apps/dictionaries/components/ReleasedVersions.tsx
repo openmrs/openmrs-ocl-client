@@ -20,6 +20,7 @@ import { BASE_URL } from "../../../utils";
 interface Props {
   versions: DictionaryVersion[];
   subscriptionUrl: string;
+  canEditDictionary: boolean;
 }
 
 const useStyles = makeStyles({
@@ -29,8 +30,9 @@ const useStyles = makeStyles({
   }
 });
 
-const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl }) => {
+const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditDictionary }) => {
   const classes = useStyles();
+  const versionsToDisplay = versions.filter(row => row.id !== 'HEAD');
 
   return (
     <Paper className="fieldsetParent">
@@ -38,7 +40,7 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl }) => {
         <Typography component="legend" variant="h5" gutterBottom>
           Releases
         </Typography>
-        {versions.length > 0 ? (
+        {versionsToDisplay.length > 0 ? (
           <div>
             <Table>
               <TableHead>
@@ -49,7 +51,7 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {versions.map((row: DictionaryVersion) => (
+                {versionsToDisplay.map((row: DictionaryVersion) => (
                   <TableRow key={row.id}>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.description || "None"}</TableCell>
@@ -67,19 +69,21 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl }) => {
                 ))}
               </TableBody>
             </Table>
-            <br />
-            <ButtonGroup fullWidth variant="text" color="primary">
-              <CopyToClipboard text={`${BASE_URL}${subscriptionUrl}`}>
-                <Tooltip title={`Copy ${BASE_URL}${subscriptionUrl}`}>
-                  <Button>Copy subscription URL</Button>
-                </Tooltip>
-              </CopyToClipboard>
-              <Button>Release new version</Button>
-            </ButtonGroup>
           </div>
         ) : (
           <Typography align="center">No released versions</Typography>
         )}
+        <br />
+        <ButtonGroup fullWidth variant="text" color="primary">
+          <CopyToClipboard text={`${BASE_URL}${subscriptionUrl}`}>
+            <Tooltip title={`Copy ${BASE_URL}${subscriptionUrl}`}>
+              <Button>Copy subscription URL</Button>
+            </Tooltip>
+          </CopyToClipboard>
+          {!canEditDictionary ? null : (
+            <Button>Release new version</Button>
+          )}
+        </ButtonGroup>
       </fieldset>
     </Paper>
   );

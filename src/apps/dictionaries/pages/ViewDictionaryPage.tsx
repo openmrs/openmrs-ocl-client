@@ -87,6 +87,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
             <ReleasedVersions
               versions={versions}
               subscriptionUrl={url}
+              canEditDictionary={canEditDictionary}
             />
           )}
         </Grid>

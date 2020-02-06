@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
-  const {active_concepts: conceptCount, references, concepts_url: conceptsUrl, extras: {source: sourceUrl}} = dictionary;
+  const {references, concepts_url: conceptsUrl, extras: {source: sourceUrl}} = dictionary;
 
   const conceptReferences = references ? references.filter(({ reference_type }) => reference_type === 'concepts') : [];
   const cielConceptCount = conceptReferences.filter(
@@ -40,7 +40,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           Concepts(HEAD Version)
         </Typography>
         <Typography variant="h6" gutterBottom>
-          <b>Total Concepts: {conceptCount}</b>
+          <b>Total Concepts: {conceptReferences.length}</b>
         </Typography>
         <Typography
           component="div"
