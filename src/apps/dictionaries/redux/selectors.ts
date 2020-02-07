@@ -11,33 +11,33 @@ import { createSourceErrorSelector, editSourceErrorSelector } from '../../source
 import { errorSelector } from '../../../redux/redux'
 import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } from './constants'
 import {
-  ADD_CONCEPTS_TO_COLLECTION,
+  ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
-  CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION,
+  CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
-  EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION, RETRIEVE_DICTIONARIES_ACTION, RETRIEVE_DICTIONARY_ACTION,
+  EDIT_SOURCE_AND_DICTIONARY_ACTION, RETRIEVE_DICTIONARIES_ACTION, RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from './actionTypes'
 
-const createDictionaryLoadingSelector = loadingSelector(
-  indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)
+export const createDictionaryLoadingSelector = loadingSelector(
+  indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
 );
-const createDictionaryProgressSelector = progressSelector(
-  indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)
+export const createDictionaryProgressSelector = progressSelector(
+  indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
 );
-const createDictionaryErrorSelector = errorSelector(
+export const createDictionaryErrorSelector = errorSelector(
   indexedAction(CREATE_DICTIONARY_ACTION)
 );
-const editDictionaryErrorSelector = errorSelector(
+export const editDictionaryErrorSelector = errorSelector(
   indexedAction(EDIT_DICTIONARY_ACTION)
 );
-const editDictionaryLoadingSelector = loadingSelector(
-  indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)
+export const editDictionaryLoadingSelector = loadingSelector(
+  indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
 );
-const editDictionaryProgressSelector = progressSelector(
-  indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION)
+export const editDictionaryProgressSelector = progressSelector(
+  indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
 );
-const createSourceCollectionDictionaryErrorsSelector = (
+export const createSourceAndDictionaryErrorsSelector = (
   state: AppState
 ): { [key: string]: string[] | undefined } | undefined => {
   const createSourceErrors = createSourceErrorSelector(state);
@@ -46,7 +46,7 @@ const createSourceCollectionDictionaryErrorsSelector = (
   const createDictionaryErrors = createDictionaryErrorSelector(state);
   if (createDictionaryErrors) return createDictionaryErrors;
 };
-const editSourceCollectionDictionaryErrorsSelector = (
+export const editSourceAndDictionaryErrorsSelector = (
   state: AppState
 ): { [key: string]: string[] | undefined } | undefined => {
   const editSourceErrors = editSourceErrorSelector(state);
@@ -56,17 +56,17 @@ const editSourceCollectionDictionaryErrorsSelector = (
   if (editDictionaryErrors) return editDictionaryErrors;
 };
 
-const retrieveDictionaryLoadingSelector = loadingSelector(
+export const retrieveDictionaryLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_ACTION)
 );
-const retrieveDictionaryVersionLoadingSelector = loadingSelector(
+export const retrieveDictionaryVersionLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION)
 );
 
-const retrievePublicDictionariesLoadingSelector = loadingSelector(
+export const retrievePublicDictionariesLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARIES_ACTION)
 );
-const retrieveDictionariesLoadingSelector = loadingSelector(
+export const retrieveDictionariesLoadingSelector = loadingSelector(
   indexedAction(
     RETRIEVE_DICTIONARIES_ACTION,
     PERSONAL_DICTIONARIES_ACTION_INDEX
@@ -74,27 +74,12 @@ const retrieveDictionariesLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX)
 );
 
-const addConceptsToCollectionLoadingListSelector = loadingListSelector(
-  ADD_CONCEPTS_TO_COLLECTION
+export const addConceptsToDictionaryLoadingListSelector = loadingListSelector(
+  ADD_CONCEPTS_TO_DICTIONARY
 )
-const addConceptsToCollectionProgressListSelector = progressListSelector(
-  ADD_CONCEPTS_TO_COLLECTION
+export const addConceptsToDictionaryProgressListSelector = progressListSelector(
+  ADD_CONCEPTS_TO_DICTIONARY
 )
-const addConceptsToCollectionErrorListSelector = errorListSelector(
-  ADD_CONCEPTS_TO_COLLECTION
+export const addConceptsToDictionaryErrorListSelector = errorListSelector(
+  ADD_CONCEPTS_TO_DICTIONARY
 )
-export {
-  addConceptsToCollectionErrorListSelector,
-  addConceptsToCollectionProgressListSelector,
-  addConceptsToCollectionLoadingListSelector,
-  createDictionaryLoadingSelector,
-  createDictionaryProgressSelector,
-  createSourceCollectionDictionaryErrorsSelector,
-  retrieveDictionaryLoadingSelector,
-  retrievePublicDictionariesLoadingSelector,
-  retrieveDictionariesLoadingSelector,
-  editSourceCollectionDictionaryErrorsSelector,
-  editDictionaryProgressSelector,
-  editDictionaryLoadingSelector,
-  retrieveDictionaryVersionLoadingSelector,
-}

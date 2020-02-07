@@ -2,12 +2,12 @@ export { default } from "./Routes";
 export {  CreateDictionaryPage, ViewPublicDictionariesPage, ViewDictionariesPage } from "./pages";
 export {
   default as dictionariesReducer,
-  addConceptsToCollectionLoadingListSelector,
-  addConceptsToCollectionProgressListSelector,
-  addConceptsToCollectionErrorListSelector,
-  addCIELConceptsToCollectionAction,
-  addConceptsToCollectionAction,
-  removeReferencesFromCollectionAction,
+  addConceptsToDictionaryLoadingListSelector,
+  addConceptsToDictionaryProgressListSelector,
+  addConceptsToDictionaryErrorListSelector,
+  addCIELConceptsToDictionaryAction,
+  addConceptsToDictionaryAction,
+  removeReferencesFromDictionaryAction,
 } from "./redux";
-export {buildAddConceptToCollectionMessage} from "./utils";
+export {buildAddConceptToDictionaryMessage} from "./utils";
 export * from "./types";

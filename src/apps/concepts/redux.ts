@@ -11,8 +11,7 @@ import api from './api'
 import { APIConcept, Concept, ConceptsState, Mapping } from './types'
 import { errorListSelector, errorSelector } from '../../redux/redux'
 import { createReducer } from '@reduxjs/toolkit'
-import {removeReferencesFromCollectionAction as removeReferencesFromCollection, addConceptsToCollectionAction as addConceptsToCollection} from '../dictionaries'
-import { delay } from '../../utils'
+import {removeReferencesFromDictionaryAction as removeReferencesFromDictionary, addConceptsToDictionaryAction as addConceptsToDictionary} from '../dictionaries'
 
 const UPSERT_CONCEPT_ACTION = 'concepts/upsertConcept'
 const RETRIEVE_CONCEPT_ACTION = 'concepts/retrieveConcept'
@@ -106,16 +105,16 @@ const upsertConceptAndMappingsAction = (data: Concept, sourceUrl: string, linked
             // ...state.concepts.mappings.map(mapping => mapping.url), todo ensure the cascade is working and delete this if so
             concept.version_url,
           ].filter(reference => reference) as string[];
-          await dispatch(removeReferencesFromCollection(linkedDictionary, referencesToRemove));
+          await dispatch(removeReferencesFromDictionary(linkedDictionary, referencesToRemove));
         }
 
         await Promise.all([
-          dispatch(addConceptsToCollection(linkedDictionary, [conceptResponse.url])),
-          dispatch(addConceptsToCollection(linkedDictionary, toConceptUrls, 'none')),
+          dispatch(addConceptsToDictionary(linkedDictionary, [conceptResponse.url])),
+          dispatch(addConceptsToDictionary(linkedDictionary, toConceptUrls, 'none')),
         ]);
       } catch (e) {
-        // whatever happens, make sure we never loose access to the reference from the collection
-        await dispatch(addConceptsToCollection(linkedDictionary, [conceptResponse.url || concept.url as string]));
+        // whatever happens, make sure we never loose access to the reference from the dictionary
+        await dispatch(addConceptsToDictionary(linkedDictionary, [conceptResponse.url || concept.url as string]));
       }
     }
 

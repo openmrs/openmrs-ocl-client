@@ -46,7 +46,7 @@ interface Props extends QueryParams {
   q: string;
   setQ: Function;
   buttons?: { [key: string]: boolean };
-  addConceptsToCollection: Function;
+  addConceptsToDictionary: Function;
   linkedDictionary?: string;
   linkedSource?: string;
 }
@@ -297,8 +297,7 @@ const ConceptsTable: React.FC<Props> = ({
   sortDirection,
   toggleShowOptions,
   buttons = {},
-  collection,
-  addConceptsToCollection,
+  addConceptsToDictionary,
   linkedDictionary,
   linkedSource,
 }) => {
@@ -381,9 +380,9 @@ const ConceptsTable: React.FC<Props> = ({
           search={search}
           numSelected={selected.length}
           toggleShowOptions={toggleShowOptions}
-          showAddConcepts={buttons.addToCollection}
+          showAddConcepts={buttons.addToDictionary}
           addSelectedConcepts={() =>
-            addConceptsToCollection(
+            addConceptsToDictionary(
               concepts.filter(concept => selected.includes(concept.id))
             )
           }
@@ -471,11 +470,11 @@ const ConceptsTable: React.FC<Props> = ({
                             </Link>
                           </MenuItem>
                         )}
-                        {!buttons.addToCollection ? null : (
+                        {!buttons.addToDictionary ? null : (
                           <MenuItem
                             onClick={() => {
-                              if (addConceptsToCollection)
-                                addConceptsToCollection([row]);
+                              if (addConceptsToDictionary)
+                                addConceptsToDictionary([row]);
                               toggleMenu(index);
                             }}
                           >

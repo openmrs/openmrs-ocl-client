@@ -57,6 +57,9 @@ const useStyles = makeStyles({
   link: {
     textDecoration: "none",
     color: "inherit"
+  },
+  dictionaryName: {
+    overflowX: "auto",
   }
 });
 
@@ -138,7 +141,7 @@ const ViewDictionaries: React.FC<Props> = ({
                   >
                     {shortCode}
                   </Typography>
-                  <Typography noWrap variant="h5">
+                  <Typography className={classes.dictionaryName} noWrap variant="h5">
                     {name}
                   </Typography>
                   <Typography noWrap variant="body2" color="textSecondary">

@@ -7,7 +7,7 @@ import {
   TextField,
   Theme, Typography
 } from '@material-ui/core'
-import { addCIELConceptsToCollectionAction } from '../redux'
+import { addCIELConceptsToDictionaryAction } from '../redux'
 import { useLocation } from 'react-router'
 import { connect } from 'react-redux'
 
@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  addConceptsToCollection: Function,
+  addConceptsToDictionary: Function,
 }
 
-const AddBulkConceptsPage: React.FC<Props> = ({addConceptsToCollection}) => {
+const AddBulkConceptsPage: React.FC<Props> = ({addConceptsToDictionary}) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
-  const collectionUrl = url.replace('/add', '');
+  const dictionaryUrl = url.replace('/add', '');
   const [conceptsToAdd, setConceptsToAdd] = useState<string[]>([]);
 
   return (
@@ -48,7 +48,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({addConceptsToCollection}) => {
           disabled={conceptsToAdd.length < 1}
           onClick={() => {
             setConceptsToAdd([]);
-            addConceptsToCollection(collectionUrl, conceptsToAdd, true);
+            addConceptsToDictionary(dictionaryUrl, conceptsToAdd, true);
           }}
         >
           Add concepts
@@ -59,7 +59,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({addConceptsToCollection}) => {
 };
 
 const mapActionsToProps = {
-  addConceptsToCollection: addCIELConceptsToCollectionAction,
+  addConceptsToDictionary: addCIELConceptsToDictionaryAction,
 }
 
 export default connect(undefined, mapActionsToProps)(AddBulkConceptsPage);

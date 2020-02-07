@@ -14,14 +14,14 @@ import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } fro
 import { APIConcept } from '../../concepts'
 import { CIEL_CONCEPTS_URL } from '../../concepts/constants'
 import { recursivelyFetchToConcepts } from '../logic'
-import { addConceptsToCollectionProgressListSelector } from './selectors'
+import { addConceptsToDictionaryProgressListSelector } from './selectors'
 import {
-  ADD_CONCEPTS_TO_COLLECTION,
+  ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
-  CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION,
+  CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
-  EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION,
-  REMOVE_REFERENCES_FROM_COLLECTION,
+  EDIT_SOURCE_AND_DICTIONARY_ACTION,
+  REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
@@ -34,7 +34,7 @@ const createDictionaryAction = createActionThunk(
 const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
   return async (dispatch: Function) => {
     dispatch(
-      startAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
+      startAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
     )
 
     const {
@@ -53,7 +53,7 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION),
+        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
         'Creating source...'
       )
     )
@@ -75,7 +75,7 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     if (!sourceResponse) {
       dispatch(
         completeAction(
-          indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)
+          indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
         )
       )
       return false
@@ -83,14 +83,14 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION),
-        'Creating collection...'
+        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
+        'Creating dictionary...'
       )
     )
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION),
+        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
         'Creating dictionary...'
       )
     )
@@ -116,17 +116,17 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
     )
     if (!dictionaryResponse) {
-      // todo cleanup here would involve hard deleting the source and collection
+      // todo cleanup here would involve hard deleting the source
       dispatch(
         completeAction(
-          indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION)
+          indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
         )
       )
       return false
     }
 
     dispatch(
-      completeAction(indexedAction(CREATE_SOURCE_COLLECTION_DICTIONARY_ACTION))
+      completeAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
     )
   }
 }
@@ -188,11 +188,11 @@ const retrieveDictionariesAction = (
 const editSourceAndDictionaryAction = (
   dictionaryUrl: string,
   dictionaryData: Dictionary,
-  extras: { source: string; collection: string }
+  extras: { source: string }
 ) => {
   return async (dispatch: Function) => {
     dispatch(
-      startAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
+      startAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
     )
 
     const {
@@ -205,7 +205,7 @@ const editSourceAndDictionaryAction = (
     } = dictionaryData
 
     const data: EditableConceptContainerFields = {
-      // we are not updating source and collection visibility for now, as they are staying private
+      // we are not updating source visibility for now, as it is staying private
       description,
       name,
       supported_locales: supported_locales.join(','),
@@ -218,28 +218,21 @@ const editSourceAndDictionaryAction = (
 
     dispatch(
       progressAction(
-        indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION),
+        indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION),
         'Editing source...'
       )
     )
     sourceResponse = await dispatch(editSource<APISource>(extras.source, data))
     if (!sourceResponse) {
       dispatch(
-        completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
+        completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
       )
       return false
     }
 
     dispatch(
       progressAction(
-        indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION),
-        'Editing collection...'
-      )
-    )
-
-    dispatch(
-      progressAction(
-        indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION),
+        indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION),
         'Editing dictionary...'
       )
     )
@@ -250,15 +243,15 @@ const editSourceAndDictionaryAction = (
       })
     )
     if (!dictionaryResponse) {
-      // todo cleanup here would involve hard deleting the source and collection
+      // todo cleanup here would involve undoing the source update
       dispatch(
-        completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
+        completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
       )
       return false
     }
 
     dispatch(
-      completeAction(indexedAction(EDIT_SOURCE_COLLECTION_DICTIONARY_ACTION))
+      completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
     )
   }
 }
@@ -271,8 +264,8 @@ const retrieveDictionaryVersionsAction = createActionThunk(
   api.versions.retrieve
 )
 
-const addCIELConceptsToCollectionAction = (
-  collectionUrl: string,
+const addCIELConceptsToDictionaryAction = (
+  dictionaryUrl: string,
   rawConcepts: (APIConcept | string)[],
   bulk: boolean = false,
 ) => async (dispatch: Function, getState: Function) => {
@@ -285,18 +278,18 @@ const addCIELConceptsToCollectionAction = (
     concepts.length > 1 ? `concepts (${concepts.length})` : 'concept'
   const thisOrThese = concepts.length > 1 ? 'these' : 'this'
   const actionIndex =
-    addConceptsToCollectionProgressListSelector(getState())?.length || 0
+    addConceptsToDictionaryProgressListSelector(getState())?.length || 0
   const updateProgress = (message: string) => {
     const headerMessage = concepts.map(concept => concept.display_name).join(', ')
     dispatch(
       progressAction(
-        indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex),
+        indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
         `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
       )
     )
   }
 
-  dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex)))
+  dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex)))
 
   const referencesToAdd = await recursivelyFetchToConcepts(
     concepts.map(concept => concept.id),
@@ -309,32 +302,32 @@ const addCIELConceptsToCollectionAction = (
   )
 
   try {
-    const response = await api.references.add(collectionUrl, [
+    const response = await api.references.add(dictionaryUrl, [
       ...referencesToAdd,
       ...concepts.map(concept => concept.url)
     ])
     dispatch({
-      type: ADD_CONCEPTS_TO_COLLECTION,
+      type: ADD_CONCEPTS_TO_DICTIONARY,
       actionIndex: actionIndex,
       payload: response.data,
-      meta: [collectionUrl, concepts, bulk],
+      meta: [dictionaryUrl, concepts, bulk],
     })
     updateProgress(`Added ${conceptOrConcepts}`)
   } catch (e) {
     dispatch({
-      type: `${ADD_CONCEPTS_TO_COLLECTION}_${FAILURE}`,
+      type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
       actionIndex: actionIndex,
       payload: e.response?.data,
-      meta: [collectionUrl, concepts, bulk],
+      meta: [dictionaryUrl, concepts, bulk],
     })
   }
 
   dispatch(
-    completeAction(indexedAction(ADD_CONCEPTS_TO_COLLECTION, actionIndex))
+    completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
   )
 }
-const addConceptsToCollectionAction = createActionThunk(indexedAction(ADD_CONCEPTS_TO_COLLECTION, 100), api.references.add)
-const removeReferencesFromCollectionAction = createActionThunk(REMOVE_REFERENCES_FROM_COLLECTION, api.references.delete)
+const addConceptsToDictionaryAction = createActionThunk(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100), api.references.add)
+const removeReferencesFromDictionaryAction = createActionThunk(REMOVE_REFERENCES_FROM_DICTIONARY, api.references.delete)
 
 export {
   editSourceAndDictionaryAction,
@@ -343,7 +336,7 @@ export {
   retrieveDictionaryAndDetailsAction,
   retrieveDictionaryAction,
   createSourceAndDictionaryAction,
-  addConceptsToCollectionAction,
-  addCIELConceptsToCollectionAction,
-  removeReferencesFromCollectionAction,
+  addConceptsToDictionaryAction,
+  addCIELConceptsToDictionaryAction,
+  removeReferencesFromDictionaryAction,
 }

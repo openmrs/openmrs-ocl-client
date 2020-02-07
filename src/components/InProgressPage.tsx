@@ -11,10 +11,10 @@ import {
 } from "@material-ui/core";
 import { AppState } from "../redux";
 import {
-  addConceptsToCollectionErrorListSelector,
-  addConceptsToCollectionLoadingListSelector,
-  addConceptsToCollectionProgressListSelector,
-  buildAddConceptToCollectionMessage,
+  addConceptsToDictionaryErrorListSelector,
+  addConceptsToDictionaryLoadingListSelector,
+  addConceptsToDictionaryProgressListSelector,
+  buildAddConceptToDictionaryMessage,
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
@@ -159,7 +159,7 @@ const InProgressPage: React.FC<Props> = ({
                       {item.progress.split(SEPARATOR)[0]}
                     </Typography>
                     <Typography variant="subtitle2" color="textSecondary">
-                      {buildAddConceptToCollectionMessage(item.result)}
+                      {buildAddConceptToDictionaryMessage(item.result)}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -174,9 +174,9 @@ const InProgressPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   isLoggedIn: state.auth.isLoggedIn,
-  loadingList: addConceptsToCollectionLoadingListSelector(state),
-  inProgressList: addConceptsToCollectionProgressListSelector(state),
-  erroredList: addConceptsToCollectionErrorListSelector(state),
+  loadingList: addConceptsToDictionaryLoadingListSelector(state),
+  inProgressList: addConceptsToDictionaryProgressListSelector(state),
+  erroredList: addConceptsToDictionaryErrorListSelector(state),
   successList: state.dictionaries.addReferencesResults
 });
 const mapDispatchToProps = {};

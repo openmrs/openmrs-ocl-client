@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react'
 import { Redirect } from "react-router-dom";
 import { Grid, Container, Typography } from "@material-ui/core";
 import { Login } from "./components";
@@ -20,6 +20,13 @@ const LoginPage: React.FC<Props> = ({
   loading,
   errors = {}
 }: Props) => {
+
+  useEffect(() => {
+    document.title = `Login | OCL for OpenMRS`;
+
+    return () => {document.title = 'OCL for OpenMRS'};
+  }, [])
+
   if (isLoggedIn) return <Redirect to="/" />;
   // todo add redirect url use
   else

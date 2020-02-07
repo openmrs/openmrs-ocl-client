@@ -36,7 +36,7 @@ import {
   DICTIONARY_VERSION_CONTAINER,
 } from "./constants";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
-import { addCIELConceptsToCollectionAction } from "../dictionaries/redux";
+import { addCIELConceptsToDictionaryAction } from "../dictionaries/redux";
 
 interface Props {
   concepts?: APIConcept[];
@@ -47,7 +47,7 @@ interface Props {
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
   containerType: string;
-  addConceptsToCollection: Function;
+  addConceptsToDictionary: Function;
 }
 
 const useStyles = makeStyles({
@@ -67,7 +67,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   containerType,
-  addConceptsToCollection
+  addConceptsToDictionary
 }) => {
   const classes = useStyles();
 
@@ -94,7 +94,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
-    addToCollection: collectionToAddTo
+    addToDictionary: dictionaryToAddTo
   } = queryParams;
 
   const [showOptions, setShowOptions] = useState(true);
@@ -159,7 +159,7 @@ const ViewConceptsPage: React.FC<Props> = ({
               concepts={concepts || []}
               buttons={{
                 edit: canModify && !!dictionaryUrl,
-                addToCollection: !!collectionToAddTo,
+                addToDictionary: !!dictionaryToAddTo,
               }}
               q={q}
               setQ={setQ}
@@ -177,8 +177,8 @@ const ViewConceptsPage: React.FC<Props> = ({
                   : 0
               }
               toggleShowOptions={() => setShowOptions(!showOptions)}
-              addConceptsToCollection={(concepts: APIConcept[]) =>
-                addConceptsToCollection(collectionToAddTo, concepts)
+              addConceptsToDictionary={(concepts: APIConcept[]) =>
+                addConceptsToDictionary(dictionaryToAddTo, concepts)
               }
               linkedDictionary={dictionaryUrl}
               linkedSource={newConceptSource}
@@ -254,7 +254,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${CIEL_CONCEPTS_URL}?addToCollection=${dictionaryUrl}`}
+            to={`${CIEL_CONCEPTS_URL}?addToDictionary=${dictionaryUrl}`}
           >
             Pick concepts
           </Link>
@@ -285,7 +285,7 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
-  addConceptsToCollection: addCIELConceptsToCollectionAction
+  addConceptsToDictionary: addCIELConceptsToDictionaryAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);

@@ -4,7 +4,7 @@ import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import {
-  editSourceCollectionDictionaryErrorsSelector,
+  editSourceAndDictionaryErrorsSelector,
   editDictionaryProgressSelector,
   editDictionaryLoadingSelector,
   retrieveDictionaryLoadingSelector
@@ -89,7 +89,7 @@ const mapStateToProps = (state: any) => ({
   loading: editDictionaryLoadingSelector(state),
   progress: editDictionaryProgressSelector(state),
   editedDictionary: state.dictionaries.editedDictionary,
-  errors: editSourceCollectionDictionaryErrorsSelector(state),
+  errors: editSourceAndDictionaryErrorsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
   dictionary: state.dictionaries.dictionary
 });

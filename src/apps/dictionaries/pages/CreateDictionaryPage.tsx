@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
-  createSourceCollectionDictionaryErrorsSelector
+  createSourceAndDictionaryErrorsSelector
 } from "../redux/selectors";
 import { APIDictionary, Dictionary } from "../types";
 import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
@@ -66,7 +66,7 @@ const mapStateToProps = (state: any) => ({
   loading: createDictionaryLoadingSelector(state),
   progress: createDictionaryProgressSelector(state),
   newDictionary: state.dictionaries.newDictionary,
-  errors: createSourceCollectionDictionaryErrorsSelector(state)
+  errors: createSourceAndDictionaryErrorsSelector(state)
 });
 const mapActionsToProps = {
   createSourceAndDictionary: createSourceAndDictionaryAction

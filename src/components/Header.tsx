@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from 'react'
 import {
   AppBar,
   createStyles,
@@ -14,8 +14,8 @@ import {
 import { NotificationsOutlined as NotificationsIcon } from "@material-ui/icons";
 import { connect } from "react-redux";
 import {
-  addConceptsToCollectionLoadingListSelector,
-  addConceptsToCollectionProgressListSelector
+  addConceptsToDictionaryLoadingListSelector,
+  addConceptsToDictionaryProgressListSelector
 } from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link } from "react-router-dom";
@@ -62,6 +62,9 @@ const Header: React.FC<Props> = ({
     .length;
 
   const classes = useStyles();
+  useEffect(() => {
+    document.title = `${title} | OCL for OpenMRS`;
+  }, [title])
 
   return (
     <div>
@@ -101,7 +104,7 @@ const Header: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: AppState) => ({
-  loadingList: addConceptsToCollectionLoadingListSelector(state)
+  loadingList: addConceptsToDictionaryLoadingListSelector(state)
 });
 
 export default connect(mapStateToProps)(Header);

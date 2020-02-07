@@ -69,21 +69,21 @@ const api = {
     }), // todo optimize this
   references: {
     add: (
-      collectionUrl: string,
+      dictionaryUrl: string,
       references: string[],
       cascade: string="sourcemappings",
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.put(
-        `${collectionUrl}references/`,
+        `${dictionaryUrl}references/`,
         { data: { expressions: references } },  // the nesting is not an error. Check API docs
         { params: { cascade: cascade } }
       ),
     delete: (
-      collectionUrl: string,
+      dictionaryUrl: string,
       references: string[],
       cascade: string="sourcemappings",
     ): Promise<AxiosResponse<any>> =>
-      authenticatedInstance.delete(`${collectionUrl}references/`, {
+      authenticatedInstance.delete(`${dictionaryUrl}references/`, {
         data: {references: references},  // again, Check the API docs
         params: { cascade: cascade },
       })
