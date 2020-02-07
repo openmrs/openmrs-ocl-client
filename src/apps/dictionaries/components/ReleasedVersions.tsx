@@ -3,6 +3,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import {
   Button,
   ButtonGroup,
+  Dialog,
   makeStyles,
   Paper,
   Table,
@@ -12,15 +13,20 @@ import {
   TableRow,
   Tooltip,
   Typography
-} from "@material-ui/core";
+} from '@material-ui/core'
 import { Link } from "react-router-dom";
-import { DictionaryVersion } from "../types";
+import { APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
+import DictionaryVersionForm from './DictionaryVersionForm'
 
 interface Props {
-  versions: DictionaryVersion[];
+  versions: APIDictionaryVersion[];
   subscriptionUrl: string;
   canEditDictionary: boolean;
+  createDictionaryVersion: Function;
+  createVersionLoading: boolean;
+  createVersionError?: {detail: string};
+  dictionaryUrl: string;
 }
 
 const useStyles = makeStyles({
@@ -30,9 +36,18 @@ const useStyles = makeStyles({
   }
 });
 
-const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditDictionary }) => {
+const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditDictionary, createDictionaryVersion, createVersionLoading, createVersionError, dictionaryUrl }) => {
   const classes = useStyles();
   const versionsToDisplay = versions.filter(row => row.id !== 'HEAD');
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Paper className="fieldsetParent">
@@ -51,7 +66,7 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditD
                 </TableRow>
               </TableHead>
               <TableBody>
-                {versionsToDisplay.map((row: DictionaryVersion) => (
+                {versionsToDisplay.map((row: APIDictionaryVersion) => (
                   <TableRow key={row.id}>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.description || "None"}</TableCell>
@@ -59,7 +74,7 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditD
                       <Button size="small" variant="text" color="primary">
                         <Link
                           className={classes.link}
-                          to={`${row.version_url}concepts/`}
+                          to={`${dictionaryUrl}${row.id}/concepts/`}
                         >
                           View concepts
                         </Link>
@@ -81,10 +96,14 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditD
             </Tooltip>
           </CopyToClipboard>
           {!canEditDictionary ? null : (
-            <Button>Release new version</Button>
+            <Button onClick={handleClickOpen}>Release new version</Button>
           )}
         </ButtonGroup>
       </fieldset>
+
+      <Dialog onClose={handleClose} open={open}>
+        <DictionaryVersionForm onSubmit={createDictionaryVersion} loading={createVersionLoading} handleClose={handleClose} error={createVersionError} />
+      </Dialog>
     </Paper>
   );
 };

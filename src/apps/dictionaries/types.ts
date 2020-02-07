@@ -43,7 +43,7 @@ export interface DictionaryState {
   editedDictionary?: APIDictionary;
   dictionary?: APIDictionary;
   dictionaries: { items: APIDictionary[]; responseMeta?: {} }[];
-  versions: DictionaryVersion[];
+  versions: APIDictionaryVersion[];
   addReferencesResults: { payload: {}; meta: [] }[];
 }
 
@@ -55,11 +55,14 @@ export interface EditableDictionaryFields
 export interface DictionaryVersion {
   id: string;
   released: boolean;
-  version_url: string;
-  url: string;
   description?: string;
   external_id: string;
   extras?: { [key: string]: string };
+}
+
+export interface APIDictionaryVersion extends DictionaryVersion{
+  version_url: string;
+  url: string;
 }
 
 const apiDictionaryToDictionary = (

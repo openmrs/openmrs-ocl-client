@@ -12,7 +12,7 @@ import { errorSelector } from '../../../redux/redux'
 import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } from './constants'
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
-  CREATE_DICTIONARY_ACTION,
+  CREATE_DICTIONARY_ACTION, CREATE_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION, RETRIEVE_DICTIONARIES_ACTION, RETRIEVE_DICTIONARY_ACTION,
@@ -59,8 +59,15 @@ export const editSourceAndDictionaryErrorsSelector = (
 export const retrieveDictionaryLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_ACTION)
 );
+
 export const retrieveDictionaryVersionLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION)
+);
+export const createDictionaryVersionLoadingSelector = loadingSelector(
+  indexedAction(CREATE_DICTIONARY_VERSION_ACTION)
+);
+export const createDictionaryVersionErrorSelector = errorSelector(
+  indexedAction(CREATE_DICTIONARY_VERSION_ACTION)
 );
 
 export const retrievePublicDictionariesLoadingSelector = loadingSelector(

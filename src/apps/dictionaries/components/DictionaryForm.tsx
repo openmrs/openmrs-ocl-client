@@ -5,7 +5,6 @@ import {
   InputLabel,
   ListSubheader,
   MenuItem,
-  Paper,
   Typography
 } from "@material-ui/core";
 import "./DictionaryForm.scss";

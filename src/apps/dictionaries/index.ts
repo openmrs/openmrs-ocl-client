@@ -8,6 +8,9 @@ export {
   addCIELConceptsToDictionaryAction,
   addConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
+  createDictionaryVersionAction,
+  createDictionaryVersionLoadingSelector,
+  createDictionaryVersionErrorSelector,
 } from "./redux";
 export {buildAddConceptToDictionaryMessage} from "./utils";
 export * from "./types";

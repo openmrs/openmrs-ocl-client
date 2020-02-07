@@ -24,14 +24,15 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
+  CREATE_DICTIONARY_VERSION_ACTION,
 } from './actionTypes'
 
 const createDictionaryAction = createActionThunk(
   indexedAction(CREATE_DICTIONARY_ACTION),
   api.create
 )
-const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
+export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
   return async (dispatch: Function) => {
     dispatch(
       startAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
@@ -62,11 +63,11 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
       default_locale,
       description,
       external_id: uuid(),
-      full_name: `${name} Source`,
-      name: `${name} Source`,
+      full_name: name,
+      name: name,
       public_access: 'None',
-      short_code: `${short_code}Source`,
-      id: `${short_code}Source`,
+      short_code: short_code,
+      id: short_code,
       source_type: OCL_SOURCE_TYPE,
       supported_locales: supported_locales.join(','),
       website: ''
@@ -130,11 +131,11 @@ const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     )
   }
 }
-const retrieveDictionaryAction = createActionThunk(
+export const retrieveDictionaryAction = createActionThunk(
   RETRIEVE_DICTIONARY_ACTION,
   api.retrieve
 )
-const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
+export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
   return async (dispatch: Function) => {
     const retrieveDictionaryResult = await dispatch(
       retrieveDictionaryAction<APIDictionary>(dictionaryUrl)
@@ -144,7 +145,7 @@ const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     dispatch(retrieveDictionaryVersionsAction(dictionaryUrl))
   }
 }
-const retrievePublicDictionariesAction = createActionThunk(
+export const retrievePublicDictionariesAction = createActionThunk(
   RETRIEVE_DICTIONARIES_ACTION,
   api.dictionaries.retrieve.public
 )
@@ -159,7 +160,7 @@ const retrieveOrgDictionariesAction = createActionThunk(
   indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX),
   api.dictionaries.retrieve.private
 )
-const retrieveDictionariesAction = (
+export const retrieveDictionariesAction = (
   personalDictionariesUrl: string,
   personalQ: string = '',
   personalLimit = 20,
@@ -185,7 +186,7 @@ const retrieveDictionariesAction = (
     )
   }
 }
-const editSourceAndDictionaryAction = (
+export const editSourceAndDictionaryAction = (
   dictionaryUrl: string,
   dictionaryData: Dictionary,
   extras: { source: string }
@@ -263,8 +264,9 @@ const retrieveDictionaryVersionsAction = createActionThunk(
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
   api.versions.retrieve
 )
+export const createDictionaryVersionAction = createActionThunk(CREATE_DICTIONARY_VERSION_ACTION, api.versions.create);
 
-const addCIELConceptsToDictionaryAction = (
+export const addCIELConceptsToDictionaryAction = (
   dictionaryUrl: string,
   rawConcepts: (APIConcept | string)[],
   bulk: boolean = false,
@@ -326,17 +328,5 @@ const addCIELConceptsToDictionaryAction = (
     completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
   )
 }
-const addConceptsToDictionaryAction = createActionThunk(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100), api.references.add)
-const removeReferencesFromDictionaryAction = createActionThunk(REMOVE_REFERENCES_FROM_DICTIONARY, api.references.delete)
-
-export {
-  editSourceAndDictionaryAction,
-  retrieveDictionariesAction,
-  retrievePublicDictionariesAction,
-  retrieveDictionaryAndDetailsAction,
-  retrieveDictionaryAction,
-  createSourceAndDictionaryAction,
-  addConceptsToDictionaryAction,
-  addCIELConceptsToDictionaryAction,
-  removeReferencesFromDictionaryAction,
-}
+export const addConceptsToDictionaryAction = createActionThunk(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100), api.references.add)
+export const removeReferencesFromDictionaryAction = createActionThunk(REMOVE_REFERENCES_FROM_DICTIONARY, api.references.delete)

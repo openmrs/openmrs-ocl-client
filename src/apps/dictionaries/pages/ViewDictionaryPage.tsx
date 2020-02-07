@@ -7,15 +7,17 @@ import { connect } from "react-redux";
 import {
   APIDictionary,
   apiDictionaryToDictionary,
-  DictionaryVersion
-} from "../types";
+  APIDictionaryVersion,
+  DictionaryVersion,
+} from '../types'
 import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector,
   retrieveDictionaryAndDetailsAction,
-} from "../redux";
+  createDictionaryVersionAction, createDictionaryVersionLoadingSelector, createDictionaryVersionErrorSelector,
+} from '../redux'
 import { AppState } from "../../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CONTEXT } from "../constants";
@@ -26,8 +28,11 @@ interface Props {
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
   retrieveDictionaryAndDetails: Function;
-  versions: DictionaryVersion[];
+  createDictionaryVersion: Function;
+  versions: APIDictionaryVersion[];
   versionsLoading: boolean;
+  createVersionLoading: boolean;
+  createVersionError?: {detail: string};
 }
 
 const ViewDictionaryPage: React.FC<Props> = ({
@@ -37,7 +42,10 @@ const ViewDictionaryPage: React.FC<Props> = ({
   dictionary,
   retrieveDictionaryAndDetails,
   versions,
-  versionsLoading
+  versionsLoading,
+  createDictionaryVersion,
+  createVersionLoading,
+  createVersionError,
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -88,6 +96,10 @@ const ViewDictionaryPage: React.FC<Props> = ({
               versions={versions}
               subscriptionUrl={url}
               canEditDictionary={canEditDictionary}
+              createDictionaryVersion={(data: DictionaryVersion) => createDictionaryVersion(url, data)}
+              createVersionLoading={createVersionLoading}
+              createVersionError={createVersionError}
+              dictionaryUrl={url}
             />
           )}
         </Grid>
@@ -112,10 +124,13 @@ const mapStateToProps = (state: AppState) => ({
   dictionary: state.dictionaries.dictionary,
   source: state.sources.source,
   versions: state.dictionaries.versions,
-  versionsLoading: retrieveDictionaryVersionLoadingSelector(state)
+  versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
+  createVersionLoading: createDictionaryVersionLoadingSelector(state),
+  createVersionError: createDictionaryVersionErrorSelector(state),
 });
 const mapDispatchToProps = {
-  retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction
+  retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
+  createDictionaryVersion: createDictionaryVersionAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);

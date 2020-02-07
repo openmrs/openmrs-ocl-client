@@ -1,4 +1,9 @@
-import { EditableDictionaryFields, NewAPIDictionary } from "./types";
+import {
+  APIDictionaryVersion,
+  EditableDictionaryFields,
+  NewAPIDictionary,
+  DictionaryVersion
+} from './types'
 import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
 import { AxiosResponse } from "axios";
 import { OCL_DICTIONARY_TYPE } from "./constants";
@@ -33,7 +38,7 @@ const api = {
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
-            timestamp: new Date().getTime()
+            timestamp: new Date().getTime(),  // work around seemingly unhelpful caching
           }
         }),
       private: (
@@ -49,14 +54,16 @@ const api = {
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
-            timestamp: new Date().getTime()
+            timestamp: new Date().getTime(),  // work around seemingly unhelpful caching
           }
         })
     }
   },
   versions: {
     retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
-      authenticatedInstance.get(`${dictionaryUrl}versions/`)
+      authenticatedInstance.get(`${dictionaryUrl}versions/`),
+    create: (dictionaryUrl: string, data: DictionaryVersion): Promise<AxiosResponse<APIDictionaryVersion>> =>
+      authenticatedInstance.post(`${dictionaryUrl}versions/`, data),
   },
   retrieveCIELMappings: (
     fromConceptIds: string[]
