@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { DictionaryDetails, DictionaryForm, ReleasedVersions } from "../components";
 import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
 import { Edit as EditIcon } from "@material-ui/icons";
-import "./ViewDictionaryPage.scss";
 import { connect } from "react-redux";
 import {
   APIDictionary,

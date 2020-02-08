@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { Redirect } from "react-router-dom";
-import { Grid, Container, Typography } from "@material-ui/core";
+import { Grid, Container, Typography, makeStyles } from '@material-ui/core'
 import { Login } from "./components";
-import "./LoginPage.scss";
 import { connect } from "react-redux";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
 import { loginAction } from "./redux/actions";
@@ -14,12 +13,23 @@ interface Props {
   errors?: any;
 }
 
+const useStyles = makeStyles({
+  loginPage: {
+    height: "100vh",
+  },
+  headerText: {
+    textAlign: 'center',
+    margin: '-6vh 0 5vh 0',
+  }
+});
+
 const LoginPage: React.FC<Props> = ({
   isLoggedIn,
   login,
   loading,
   errors = {}
 }: Props) => {
+  const classes = useStyles();
 
   useEffect(() => {
     document.title = `Login | OCL for OpenMRS`;
@@ -27,7 +37,7 @@ const LoginPage: React.FC<Props> = ({
     return () => {document.title = 'OCL for OpenMRS'};
   }, [])
 
-  if (isLoggedIn) return <Redirect to="/" />;
+  if (isLoggedIn) return <Redirect to="/user/collections/" />;
   // todo add redirect url use
   else
     return (
@@ -35,11 +45,11 @@ const LoginPage: React.FC<Props> = ({
         container
         justify="center"
         alignItems="center"
-        id="login-page"
+        className={classes.loginPage}
         component={Container}
       >
         <Grid xs={4} item component="div">
-          <div className="header-text">
+          <div className={classes.headerText}>
             <Typography variant="h3" component="h3">
               Open Concept Lab
             </Typography>

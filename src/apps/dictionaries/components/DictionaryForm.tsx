@@ -4,10 +4,10 @@ import {
   FormControl,
   InputLabel,
   ListSubheader,
+  makeStyles,
   MenuItem,
   Typography
 } from "@material-ui/core";
-import "./DictionaryForm.scss";
 import { getPrettyError, LOCALES } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -55,6 +55,15 @@ const initialValues: Dictionary = {
   supported_locales: []
 };
 
+const useStyles = makeStyles({
+  dictionaryForm: {
+    padding: "2vh 2vw"
+  },
+  submitButton: {
+    textAlign: "center"
+  }
+});
+
 const DictionaryForm: React.FC<Props> = ({
   onSubmit,
   loading,
@@ -65,6 +74,8 @@ const DictionaryForm: React.FC<Props> = ({
   context = CONTEXT.view,
   savedValues
 }) => {
+  const classes = useStyles();
+
   const notViewing = context === CONTEXT.create || context === CONTEXT.edit;
   const editing = context === CONTEXT.edit;
 
@@ -99,7 +110,7 @@ const DictionaryForm: React.FC<Props> = ({
   }, [errors]);
 
   return (
-    <div id="dictionary-form">
+    <div className={classes.dictionaryForm}>
       <Formik
         ref={formikRef}
         initialValues={savedValues || initialValues}
@@ -254,7 +265,7 @@ const DictionaryForm: React.FC<Props> = ({
             {!notViewing ? (
               ""
             ) : (
-              <div id="submit-button">
+              <div className={classes.submitButton}>
                 {!status ? (
                   <br />
                 ) : (

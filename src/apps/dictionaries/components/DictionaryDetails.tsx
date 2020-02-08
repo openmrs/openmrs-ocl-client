@@ -5,9 +5,8 @@ import {
   ButtonGroup,
   makeStyles,
   Paper,
-  Typography
+  Typography,
 } from "@material-ui/core";
-import "./DictionaryDetails.scss";
 import { Link } from "react-router-dom";
 import { CIEL_SOURCE_URL } from '../../../utils/constants'
 
@@ -19,7 +18,10 @@ const useStyles = makeStyles({
   link: {
     textDecoration: "none",
     color: "inherit"
-  }
+  },
+  conceptCountBreakDown: {
+    marginLeft: '3vw',
+  },
 });
 
 const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
@@ -46,7 +48,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           component="div"
           variant="h6"
           gutterBottom
-          id="conceptCountBreakDown"
+          className={classes.conceptCountBreakDown}
         >
           From CIEL: {cielConceptCount}
           <br />

@@ -8,7 +8,6 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
-import "./DictionaryForm.scss";
 import { usePrevious } from "../../../utils";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Button, Paper, Typography, Link } from "@material-ui/core";
-import "./Login.scss";
+import { Button, Paper, Typography, Link, makeStyles } from '@material-ui/core'
 import { TRADITIONAL_OCL_URL } from "../../../utils/constants";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -17,7 +16,24 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required("Password is required")
 });
 
+const useStyles = makeStyles({
+  otherOptions: {
+    textAlign: 'center',
+  },
+  fields: {
+    padding: '2vh 1vw',
+    display: 'inherit',
+  },
+  statusMessage: {
+    display: 'inline-block',
+    width: '100%',
+    textAlign: 'center',
+  }
+});
+
 const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
+  const classes = useStyles();
+
   const formikRef: any = useRef(null);
 
   useEffect(() => {
@@ -48,7 +64,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
               <Typography variant="h6" component="legend">
                 Log In to Open Concept Lab
               </Typography>
-              <div className="fields">
+              <div className={classes.fields}>
                 <Field
                   required
                   fullWidth
@@ -90,7 +106,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                   <br />
                 ) : (
                   <Typography
-                    className="status-message"
+                    className={classes.statusMessage}
                     color="error"
                     variant="caption"
                     component="span"
@@ -100,7 +116,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                 )}
                 <br />
                 <br />
-                <div className="other-options">
+                <div className={classes.otherOptions}>
                   <div>
                     <Link
                       target="_blank"

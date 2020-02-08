@@ -6,7 +6,6 @@ import { retrieveConceptAction } from "./redux";
 import { APIConcept, apiConceptToConcept, APIMapping } from "./types";
 import { useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
-import "./ViewConceptPage.scss";
 import { Edit as EditIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";

@@ -15,7 +15,6 @@ import {
   ExitToApp,
   FolderOpenOutlined,
   FolderSharedOutlined,
-  HomeOutlined,
   Notifications as NotificationsIcon
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
@@ -132,25 +131,6 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
             </IconButton>
           )}
         </div>
-        <Divider />
-        <List component="div">
-          <ListItem
-            button
-            dense={false}
-            component={Link}
-            exact
-            activeClassName={classes.selected}
-            to="/"
-            key="Home"
-          >
-            <Tooltip title="Home">
-              <ListItemIcon className="list-item-icon">
-                <HomeOutlined />
-              </ListItemIcon>
-            </Tooltip>
-            <ListItemText primary="Home" />
-          </ListItem>
-        </List>
         <Divider component="hr" />
         <List component="div">
           <ListItem
