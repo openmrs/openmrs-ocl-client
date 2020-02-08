@@ -48,6 +48,13 @@ const keysToSnakeCase = (item?: any) => {
 const buildPartialSearchQuery = (query: string): string =>
   `${query.replace(new RegExp(" ", "g"), "* ")}*`;
 
-const delay = (seconds: number) => new Promise(resolve => setTimeout(resolve, seconds * 1000));
+const delay = (seconds: number) =>
+  new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
-export { findLocale, getPrettyError, keysToSnakeCase, buildPartialSearchQuery, delay };
+export {
+  findLocale,
+  getPrettyError,
+  keysToSnakeCase,
+  buildPartialSearchQuery,
+  delay
+};

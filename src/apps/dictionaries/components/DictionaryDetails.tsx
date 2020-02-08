@@ -54,7 +54,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
         </Typography>
         <ButtonGroup variant="text" fullWidth>
           <Button color="primary">
-            <Link className={classes.link} to={`${conceptsUrl}?newConceptSource=${sourceUrl}`}>
+            <Link className={classes.link} to={`${conceptsUrl}?linkedSource=${sourceUrl}`}>
               View Concepts
             </Link>
           </Button>

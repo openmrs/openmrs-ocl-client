@@ -34,7 +34,7 @@ export interface APIDictionary extends BaseAPIDictionary {
   owner_url: string;
   url: string;
   active_concepts: string;
-  references: {[key: string]: string}[];
+  references: { [key: string]: string }[];
   concepts_url: string;
 }
 
@@ -60,7 +60,7 @@ export interface DictionaryVersion {
   extras?: { [key: string]: string };
 }
 
-export interface APIDictionaryVersion extends DictionaryVersion{
+export interface APIDictionaryVersion extends DictionaryVersion {
   version_url: string;
   url: string;
 }

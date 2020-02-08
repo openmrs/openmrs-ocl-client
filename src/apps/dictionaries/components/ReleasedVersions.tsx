@@ -13,11 +13,11 @@ import {
   TableRow,
   Tooltip,
   Typography
-} from '@material-ui/core'
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
-import DictionaryVersionForm from './DictionaryVersionForm'
+import DictionaryVersionForm from "./DictionaryVersionForm";
 
 interface Props {
   versions: APIDictionaryVersion[];
@@ -25,7 +25,7 @@ interface Props {
   canEditDictionary: boolean;
   createDictionaryVersion: Function;
   createVersionLoading: boolean;
-  createVersionError?: {detail: string};
+  createVersionError?: { detail: string };
   dictionaryUrl: string;
 }
 
@@ -36,9 +36,17 @@ const useStyles = makeStyles({
   }
 });
 
-const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditDictionary, createDictionaryVersion, createVersionLoading, createVersionError, dictionaryUrl }) => {
+const ReleasedVersions: React.FC<Props> = ({
+  versions,
+  subscriptionUrl,
+  canEditDictionary,
+  createDictionaryVersion,
+  createVersionLoading,
+  createVersionError,
+  dictionaryUrl
+}) => {
   const classes = useStyles();
-  const versionsToDisplay = versions.filter(row => row.id !== 'HEAD');
+  const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
 
   const [open, setOpen] = React.useState(false);
 
@@ -102,7 +110,12 @@ const ReleasedVersions: React.FC<Props> = ({ versions, subscriptionUrl, canEditD
       </fieldset>
 
       <Dialog onClose={handleClose} open={open}>
-        <DictionaryVersionForm onSubmit={createDictionaryVersion} loading={createVersionLoading} handleClose={handleClose} error={createVersionError} />
+        <DictionaryVersionForm
+          onSubmit={createDictionaryVersion}
+          loading={createVersionLoading}
+          handleClose={handleClose}
+          error={createVersionError}
+        />
       </Dialog>
     </Paper>
   );

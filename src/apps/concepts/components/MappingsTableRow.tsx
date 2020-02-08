@@ -1,3 +1,7 @@
+/**
+ * Fun fact: to date, this is the hardest part of this codebase to get right
+ * And I'm not proud of everything here. A lot could improve, but the at the moment I don't know how
+ */
 import {
   createStyles,
   FormControl,

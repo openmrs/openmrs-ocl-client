@@ -4,7 +4,7 @@ export {
   getPrettyError,
   keysToSnakeCase,
   buildPartialSearchQuery,
-  delay,
+  delay
 } from "./utils";
 export { AsyncSelect } from "./components";
 export {

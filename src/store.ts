@@ -10,12 +10,7 @@ import { conceptsReducer } from "./apps/concepts";
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
 
-const doNotPersist = [
-  "dictionaries",
-  "sources",
-  "concepts",
-  "status"
-].reduce(
+const doNotPersist = ["dictionaries", "sources", "concepts", "status"].reduce(
   (previousValue, item) => ({ ...previousValue, [item]: undefined }),
   {}
 );

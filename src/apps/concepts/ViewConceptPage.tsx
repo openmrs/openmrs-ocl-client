@@ -7,7 +7,7 @@ import {
   viewConceptErrorsSelector,
   retrieveConceptAction
 } from "./redux";
-import { APIConcept, apiConceptToConcept, APIMapping } from './types'
+import { APIConcept, apiConceptToConcept, APIMapping } from "./types";
 import { useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import "./ViewConceptPage.scss";
@@ -23,7 +23,7 @@ import {
 } from "../authentication";
 import { orgsSelector } from "../authentication/redux/reducer";
 import { CONTEXT } from "./constants";
-import { useQuery } from '../../utils'
+import { useQuery } from "../../utils";
 
 interface Props {
   loading: boolean;
@@ -49,7 +49,7 @@ const ViewConceptPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const {linkedDictionary} = useQuery();
+  const { linkedDictionary } = useQuery();
 
   const canModifySource = canModifyContainer(
     ownerType,

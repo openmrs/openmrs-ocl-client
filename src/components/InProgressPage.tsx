@@ -14,16 +14,16 @@ import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
-  buildAddConceptToDictionaryMessage,
+  buildAddConceptToDictionaryMessage
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
 
 interface Props {
-  loadingList?: boolean[];
-  inProgressList?: string[];
+  loadingList?: (boolean | undefined)[];
+  inProgressList?: (string | undefined)[];
   erroredList?: [];
-  successList?: { payload: {} }[];
+  successList?: ({ payload: {} } | undefined)[];
 }
 
 const SEPARATOR = "--";
@@ -43,24 +43,24 @@ const InProgressPage: React.FC<Props> = ({
   erroredList = [],
   successList = []
 }) => {
-  const inProgressItems = loadingList
+  const inProgressItems = (loadingList.filter(item => !!item) as boolean[])
     .map((loading: boolean, index: number) =>
       loading ? inProgressList[index] : null
     )
     .filter(item => item)
     .reverse() as string[];
-  const successfullItems = loadingList
+  const successfullItems = (loadingList.filter(item => !!item) as boolean[])
     .map((loading: boolean, index: number) =>
       !loading && !erroredList[index]
         ? {
-            result: successList[index].payload,
+            result: successList[index]?.payload || "Successful",
             progress: inProgressList[index]
           }
         : null
     )
     .filter(item => item && item.progress)
     .reverse() as { result: []; progress: string }[];
-  const erroredItems = loadingList
+  const erroredItems = (loadingList.filter(item => !!item) as boolean[])
     .map((loading: boolean, index: number) =>
       !loading && erroredList[index]
         ? {
@@ -85,10 +85,10 @@ const InProgressPage: React.FC<Props> = ({
   return (
     <Header title="Progress Notifications">
       <Grid item xs={6}>
-        {(inProgressItems.length + erroredItems.length + successfullItems.length) ? null : (
-          <Typography align='center'>
-            Your actions will appear here
-          </Typography>
+        {inProgressItems.length +
+        erroredItems.length +
+        successfullItems.length ? null : (
+          <Typography align="center">Your actions will appear here</Typography>
         )}
         {!inProgressItems.length ? null : (
           <List

@@ -37,8 +37,6 @@ interface Props {
   errors?: {} | string;
   createNewMapping: Function;
   arrayHelpers: ArrayHelpers;
-  allowChoosingType?: boolean;
-  useTypes?: boolean;
   isSubmitting: boolean;
   handleChange: Function;
   title: string;
@@ -54,8 +52,6 @@ const MappingsTable: React.FC<Props> = ({
   errors = {},
   createNewMapping,
   arrayHelpers,
-  allowChoosingType = false,
-  useTypes = false,
   isSubmitting,
   handleChange,
   title,

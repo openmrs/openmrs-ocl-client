@@ -79,7 +79,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const {newConceptSource} = useQuery();
+  const {linkedSource} = useQuery();
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
@@ -181,7 +181,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 addConceptsToDictionary(dictionaryToAddTo, concepts)
               }
               linkedDictionary={dictionaryUrl}
-              linkedSource={newConceptSource}
+              linkedSource={linkedSource}
             />
           </Grid>
           {!showOptions ? (
@@ -215,7 +215,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <MenuItem onClick={e => {handleImportExistingClick(e); handleAddNewClose()}}>
               Import existing concept
             </MenuItem>
-            {!newConceptSource ? null : (
+            {!linkedSource ? null : (
               <MenuItem onClick={e => {handleCustomClick(e); handleAddNewClose()}}>
                 Create custom concept
               </MenuItem>
@@ -233,14 +233,14 @@ const ViewConceptsPage: React.FC<Props> = ({
           <MenuItem onClick={handleCustomClose}>
             <Link
               className={classes.link}
-              to={`${newConceptSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${dictionaryUrl}`}
+              to={`${linkedSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${dictionaryUrl}`}
             >
               {conceptClass} Concept
             </Link>
           </MenuItem>
         ))}
         <MenuItem onClick={handleCustomClose}>
-          <Link className={classes.link} to={`${newConceptSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}>
+          <Link className={classes.link} to={`${linkedSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}>
             Other kind
           </Link>
         </MenuItem>

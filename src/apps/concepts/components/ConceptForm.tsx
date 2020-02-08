@@ -177,19 +177,19 @@ const ConceptForm: React.FC<Props> = ({
   context = "view",
   savedValues,
   conceptClass,
-  supportLegacyMappings=true,
+  supportLegacyMappings = true
 }) => {
-  const editing = context === CONTEXT.edit || context === CONTEXT.create;
+  const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
   const showAnswers =
-    ((context === CONTEXT.edit) && supportLegacyMappings) ||
+    (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) ||
-    ((context === CONTEXT.view) && supportLegacyMappings);
+    (context === CONTEXT.view && supportLegacyMappings);
   const showSets =
-    ((context === CONTEXT.edit) && supportLegacyMappings) ||
+    (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || SET_CONCEPT_CLASSES.includes(conceptClass))) ||
-    ((context === CONTEXT.view) && supportLegacyMappings);
+    (context === CONTEXT.view && supportLegacyMappings);
 
   const classes = useStyles();
 
@@ -204,9 +204,9 @@ const ConceptForm: React.FC<Props> = ({
   useEffect(() => {
     const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setSubmitting(loading || !editing);
+      currentRef.setSubmitting(loading || !allowEditing);
     }
-  }, [loading, editing]);
+  }, [loading, allowEditing]);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -219,7 +219,7 @@ const ConceptForm: React.FC<Props> = ({
     const { current: currentRef } = formikRef;
     if (!currentRef || !savedValues) return;
 
-    currentRef.setFieldValue('url', savedValues.url, false);
+    currentRef.setFieldValue("url", savedValues.url, false);
   }, [savedValues]);
 
   useEffect(() => {
@@ -228,9 +228,10 @@ const ConceptForm: React.FC<Props> = ({
 
     [ANSWERS_VALUE_KEY, SETS_VALUE_KEY, MAPPINGS_VALUE_KEY].forEach(key => {
       // @ts-ignore
-      savedValues[key].forEach((value: Mapping, index: number) => currentRef.setFieldValue(`${key}[${index}].url`, value.url, false));
+      savedValues[key].forEach((value: Mapping, index: number) =>
+        currentRef.setFieldValue(`${key}[${index}].url`, value.url, false)
+      );
     });
-    console.log(currentRef);
   }, [savedValues]);
 
   useEffect(() => {
@@ -244,6 +245,7 @@ const ConceptForm: React.FC<Props> = ({
   }, [errors]);
 
   useEffect(() => {
+    // fun one, ain't it? any who, we need to manually copy mapping errors from redux into formik
     const { current: currentRef } = formikRef;
     if (!currentRef) return;
 
@@ -258,7 +260,6 @@ const ConceptForm: React.FC<Props> = ({
         if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
       });
     });
-    console.log(currentRef, allMappingErrors);
   }, [allMappingErrors.toString()]);
 
   return (
@@ -289,7 +290,7 @@ const ConceptForm: React.FC<Props> = ({
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        disabled={!editing}
+                        disabled={!allowEditing}
                         aria-label="toggle external id editable"
                         onClick={toggleExternalIDEditable}
                       >
@@ -358,7 +359,7 @@ const ConceptForm: React.FC<Props> = ({
                     errors={errors.names}
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
-                    editing={editing}
+                    editing={allowEditing}
                   />
                 )}
               </FieldArray>
@@ -382,7 +383,7 @@ const ConceptForm: React.FC<Props> = ({
                     errors={errors.descriptions}
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
-                    editing={editing}
+                    editing={allowEditing}
                   />
                 )}
               </FieldArray>
@@ -399,7 +400,6 @@ const ConceptForm: React.FC<Props> = ({
                   <FieldArray name={ANSWERS_VALUE_KEY}>
                     {arrayHelpers => (
                       <MappingsTable
-                        allowChoosingType
                         createNewMapping={() =>
                           createMapping(MAP_TYPE_Q_AND_A.value)
                         }
@@ -411,7 +411,7 @@ const ConceptForm: React.FC<Props> = ({
                         handleChange={handleChange}
                         title="answer"
                         fixedMappingType={MAP_TYPE_Q_AND_A}
-                        editing={editing}
+                        editing={allowEditing}
                       />
                     )}
                   </FieldArray>
@@ -420,7 +420,7 @@ const ConceptForm: React.FC<Props> = ({
               <br />
             </>
           )}
-          {!showSets ? null :  (
+          {!showSets ? null : (
             <>
               <Paper className="fieldsetParent">
                 <fieldset>
@@ -430,7 +430,6 @@ const ConceptForm: React.FC<Props> = ({
                   <FieldArray name={SETS_VALUE_KEY}>
                     {arrayHelpers => (
                       <MappingsTable
-                        allowChoosingType
                         createNewMapping={() =>
                           createMapping(MAP_TYPE_CONCEPT_SET.value)
                         }
@@ -442,7 +441,7 @@ const ConceptForm: React.FC<Props> = ({
                         handleChange={handleChange}
                         title="set"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
-                        editing={editing}
+                        editing={allowEditing}
                       />
                     )}
                   </FieldArray>
@@ -459,7 +458,6 @@ const ConceptForm: React.FC<Props> = ({
               <FieldArray name={MAPPINGS_VALUE_KEY}>
                 {arrayHelpers => (
                   <MappingsTable
-                    allowChoosingType
                     createNewMapping={createMapping}
                     valuesKey={MAPPINGS_VALUE_KEY}
                     values={values.mappings}
@@ -468,14 +466,14 @@ const ConceptForm: React.FC<Props> = ({
                     isSubmitting={isSubmitting}
                     handleChange={handleChange}
                     title="mapping"
-                    editing={editing}
+                    editing={allowEditing}
                   />
                 )}
               </FieldArray>
             </fieldset>
           </Paper>
           <br />
-          {!editing ? (
+          {!allowEditing ? (
             ""
           ) : (
             <div className={classes.buttonContainer}>

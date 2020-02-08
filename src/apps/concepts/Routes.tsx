@@ -6,17 +6,17 @@ import ConceptPage from "./ConceptPage";
 import { DICTIONARY_CONTAINER } from "./constants";
 
 interface Props {
-  viewConcepts?: boolean,
-  newConcept?: boolean,
-  viewConcept?: boolean,
-  editConcept?: boolean,
+  viewConcepts?: boolean;
+  newConcept?: boolean;
+  viewConcept?: boolean;
+  editConcept?: boolean;
 }
 
 const Routes: React.FC<Props> = ({
-  viewConcepts=false,
-  newConcept=false,
-  viewConcept=false,
-  editConcept=false,
+  viewConcepts = false,
+  newConcept = false,
+  viewConcept = false,
+  editConcept = false
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();

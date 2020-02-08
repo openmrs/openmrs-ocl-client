@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Fab, Grid, Tooltip } from '@material-ui/core'
+import { Fab, Grid, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
 import {
@@ -12,15 +12,20 @@ import {
   upsertAllMappingsErrorSelector,
   upsertConceptAndMappingsProgressSelector
 } from "./redux";
-import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from './types'
+import {
+  APIConcept,
+  apiConceptToConcept,
+  APIMapping,
+  BaseConcept
+} from "./types";
 import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import { startCase, toLower } from "lodash";
-import { usePrevious, useQuery } from '../../utils'
+import { usePrevious, useQuery } from "../../utils";
 import { CONTEXT } from "./constants";
-import { Pageview as PageViewIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
+import { Pageview as PageViewIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 interface Props {
   fetchLoading: boolean;
@@ -50,14 +55,18 @@ const ConceptPage: React.FC<Props> = ({
   const { pathname: url } = useLocation();
   const { concept: conceptId } = useParams();
   const { conceptClass, linkedDictionary } = useQuery();
-  const sourceUrl = url.substring(0, url.indexOf('concepts/'));
-  const conceptUrl = url.replace('/edit', '');
-
   const previouslyLoading = usePrevious(loading);
-  let context = conceptId ? CONTEXT.edit : CONTEXT.create;
 
+  const sourceUrl = url.substring(0, url.indexOf("concepts/"));
+  const conceptUrl = concept?.version_url || url.replace("/edit", "");
   const anyMappingsErrors =
     !!allMappingErrors.length && allMappingErrors.some(value => value);
+
+  let context = conceptId ? CONTEXT.edit : CONTEXT.create;
+  let originallyEditing = context === CONTEXT.edit;
+  // we created a concept, but there were some errors with mappings, so we switch to edit mode
+  if (!loading && previouslyLoading && concept && (errors || anyMappingsErrors))
+    context = CONTEXT.edit;
 
   const status =
     !errors && anyMappingsErrors
@@ -65,24 +74,31 @@ const ConceptPage: React.FC<Props> = ({
       : progress;
 
   useEffect(() => {
-    if (conceptId) retrieveConcept(conceptUrl);
-  }, [conceptUrl, retrieveConcept]);
+    // only retrieve the concept if the context was edit at the beginning
+    if (originallyEditing) retrieveConcept(conceptUrl);
+  }, []);
 
   if (fetchLoading) {
     return <span>Loading...</span>;
   }
 
-  if (!loading && previouslyLoading && concept) {
-    if (!errors && !anyMappingsErrors) return <Redirect to={`${concept.version_url}${linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ''}`} />;
-    else context = CONTEXT.edit;
-  }
+  // everything went hunky-dory, and we should redirect the user to the view concept page
+  if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
+    return (
+      <Redirect
+        to={`${concept.version_url}${
+          linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ""
+        }`}
+      />
+    );
 
   return (
     <Header
       title={
-        context === CONTEXT.edit ?
-          "Edit " + startCase(toLower(concept ? concept.display_name : "concept")):
-          "Create concept"
+        context === CONTEXT.edit
+          ? "Edit " +
+            startCase(toLower(concept ? concept.display_name : "concept"))
+          : "Create concept"
       }
     >
       <Grid id="editConceptPage" item xs={8} component="div">
@@ -90,11 +106,15 @@ const ConceptPage: React.FC<Props> = ({
           conceptClass={conceptClass}
           context={context}
           status={status}
-          savedValues={context === CONTEXT.edit ? apiConceptToConcept(concept, mappings) : undefined}
+          savedValues={
+            context === CONTEXT.edit
+              ? apiConceptToConcept(concept, mappings)
+              : undefined
+          }
           loading={loading}
           errors={errors}
           allMappingErrors={allMappingErrors}
-          supportLegacyMappings={!!conceptId}
+          supportLegacyMappings={originallyEditing}
           onSubmit={(data: BaseConcept) =>
             upsertConcept(data, sourceUrl, linkedDictionary)
           }
@@ -109,8 +129,7 @@ const ConceptPage: React.FC<Props> = ({
             </Fab>
           </Tooltip>
         </Link>
-      ) }
-
+      )}
     </Header>
   );
 };
