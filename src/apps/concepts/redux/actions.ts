@@ -3,36 +3,30 @@ import {
   completeAction,
   createActionThunk,
   indexedAction,
-  loadingSelector,
   progressAction,
-  progressSelector,
   resetAction,
   startAction
-} from "../../redux";
-import api from "./api";
-import { APIConcept, Concept, ConceptsState, Mapping } from "./types";
-import { errorListSelector, errorSelector } from "../../redux/redux";
-import { createReducer } from "@reduxjs/toolkit";
+} from '../../../redux'
+import api from '../api'
+import { APIConcept, Concept, Mapping } from '../types'
 import {
-  removeReferencesFromDictionaryAction as removeReferencesFromDictionary,
-  addConceptsToDictionaryAction as addConceptsToDictionary
-} from "../dictionaries";
+  addConceptsToDictionaryAction as addConceptsToDictionary,
+  removeReferencesFromDictionaryAction as removeReferencesFromDictionary
+} from '../../dictionaries'
+import {
+  RETRIEVE_CONCEPT_ACTION,
+  RETRIEVE_CONCEPTS_ACTION,
+  UPSERT_CONCEPT_ACTION,
+  UPSERT_CONCEPT_AND_MAPPINGS,
+  UPSERT_MAPPING_ACTION
+} from './actionTypes'
+import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from './constants'
 
-const UPSERT_CONCEPT_ACTION = "concepts/upsertConcept";
-const RETRIEVE_CONCEPT_ACTION = "concepts/retrieveConcept";
-const UPSERT_MAPPING_ACTION = "concepts/upsertMapping";
-const UPSERT_CONCEPT_AND_MAPPINGS = "concepts/createConceptAndMappings";
-const RETRIEVE_CONCEPTS_ACTION = "concepts/retrieveConcepts";
-
-const ANSWERS_BATCH_INDEX = 0;
-const SETS_BATCH_INDEX = 1;
-const MAPPINGS_BATCH_INDEX = 2;
-
-const retrieveConceptAction = createActionThunk(
+export const retrieveConceptAction = createActionThunk(
   RETRIEVE_CONCEPT_ACTION,
   api.concept.retrieve
 );
-const upsertConceptAndMappingsAction = (
+export const upsertConceptAndMappingsAction = (
   data: Concept,
   sourceUrl: string,
   linkedDictionary?: string
@@ -194,86 +188,7 @@ const upsertConceptAndMappingsAction = (
     dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
   };
 };
-const retrieveConceptsAction = createActionThunk(
+export const retrieveConceptsAction = createActionThunk(
   RETRIEVE_CONCEPTS_ACTION,
   api.concepts.retrieve
 );
-
-const initialState: ConceptsState = {
-  mappings: []
-};
-
-const reducer = createReducer<ConceptsState>(initialState, {
-  [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({
-    ...state,
-    concept: undefined
-  }),
-  [startAction(indexedAction(RETRIEVE_CONCEPT_ACTION)).type]: state => ({
-    ...state,
-    concept: undefined
-  }),
-  [UPSERT_CONCEPT_ACTION]: (state, action) => ({
-    ...state,
-    concept: action.payload
-  }),
-  [RETRIEVE_CONCEPT_ACTION]: (state, { payload }) => ({
-    ...state,
-    concept: payload,
-    mappings: payload.mappings || []
-  }),
-  [RETRIEVE_CONCEPTS_ACTION]: (state, action) => ({
-    ...state,
-    concepts: {
-      items: action.payload as APIConcept[],
-      responseMeta: action.responseMeta
-    }
-  }),
-  [UPSERT_MAPPING_ACTION]: (state, { actionIndex, payload, meta }) => {
-    const mappingIndex = state.mappings.findIndex(
-      mapping => mapping.external_id === payload.external_id
-    );
-    if (mappingIndex !== -1) state.mappings[mappingIndex] = payload;
-    else state.mappings.push(payload);
-  }
-});
-
-const upsertConceptAndMappingsLoadingSelector = loadingSelector(
-  indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)
-);
-const upsertConceptAndMappingsProgressSelector = progressSelector(
-  indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)
-);
-const upsertConceptErrorsSelector = errorSelector(
-  indexedAction(UPSERT_CONCEPT_ACTION)
-);
-const viewConceptLoadingSelector = loadingSelector(
-  indexedAction(RETRIEVE_CONCEPT_ACTION)
-);
-const viewConceptErrorsSelector = errorSelector(
-  indexedAction(RETRIEVE_CONCEPT_ACTION)
-);
-const viewConceptsLoadingSelector = loadingSelector(
-  indexedAction(RETRIEVE_CONCEPTS_ACTION)
-);
-const viewConceptsErrorsSelector = errorSelector(
-  indexedAction(RETRIEVE_CONCEPTS_ACTION)
-);
-const upsertAllMappingsErrorSelector = errorListSelector(UPSERT_MAPPING_ACTION);
-
-export {
-  reducer as default,
-  upsertConceptAndMappingsAction,
-  retrieveConceptAction,
-  upsertConceptAndMappingsLoadingSelector,
-  upsertConceptAndMappingsProgressSelector,
-  upsertConceptErrorsSelector,
-  viewConceptLoadingSelector,
-  viewConceptErrorsSelector,
-  retrieveConceptsAction,
-  viewConceptsLoadingSelector,
-  viewConceptsErrorsSelector,
-  upsertAllMappingsErrorSelector,
-  ANSWERS_BATCH_INDEX,
-  SETS_BATCH_INDEX,
-  MAPPINGS_BATCH_INDEX
-};

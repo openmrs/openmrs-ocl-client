@@ -11,9 +11,7 @@ import {
 import { ConceptsTable } from "./components";
 import { connect } from "react-redux";
 import {
-  retrieveConceptsAction,
-  viewConceptsLoadingSelector,
-  viewConceptsErrorsSelector
+  retrieveConceptsAction
 } from "./redux";
 import { AppState } from "../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "./types";
@@ -37,6 +35,7 @@ import {
 } from "./constants";
 import { CIEL_SOURCE_URL } from "../../utils/constants";
 import { addCIELConceptsToDictionaryAction } from "../dictionaries/redux";
+import { viewConceptsErrorsSelector, viewConceptsLoadingSelector } from './redux'
 
 interface Props {
   concepts?: APIConcept[];

@@ -2,11 +2,7 @@ import React, { useEffect } from "react";
 import { Fab, Grid, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
-import {
-  viewConceptLoadingSelector,
-  viewConceptErrorsSelector,
-  retrieveConceptAction
-} from "./redux";
+import { retrieveConceptAction } from "./redux";
 import { APIConcept, apiConceptToConcept, APIMapping } from "./types";
 import { useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
@@ -24,6 +20,7 @@ import {
 import { orgsSelector } from "../authentication/redux/reducer";
 import { CONTEXT } from "./constants";
 import { useQuery } from "../../utils";
+import { viewConceptErrorsSelector, viewConceptLoadingSelector } from "./redux";
 
 interface Props {
   loading: boolean;

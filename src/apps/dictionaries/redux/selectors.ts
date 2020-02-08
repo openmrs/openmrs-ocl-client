@@ -6,18 +6,27 @@ import {
   loadingSelector,
   progressListSelector,
   progressSelector
-} from '../../../redux'
-import { createSourceErrorSelector, editSourceErrorSelector } from '../../sources'
-import { errorSelector } from '../../../redux/redux'
-import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } from './constants'
+} from "../../../redux";
+import {
+  createSourceErrorSelector,
+  editSourceErrorSelector
+} from "../../sources";
+import { errorSelector } from "../../../redux/redux";
+import {
+  ORG_DICTIONARIES_ACTION_INDEX,
+  PERSONAL_DICTIONARIES_ACTION_INDEX
+} from "./constants";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
-  CREATE_DICTIONARY_ACTION, CREATE_DICTIONARY_VERSION_ACTION,
+  CREATE_DICTIONARY_ACTION,
+  CREATE_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
-  EDIT_SOURCE_AND_DICTIONARY_ACTION, RETRIEVE_DICTIONARIES_ACTION, RETRIEVE_DICTIONARY_ACTION,
+  EDIT_SOURCE_AND_DICTIONARY_ACTION,
+  RETRIEVE_DICTIONARIES_ACTION,
+  RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
-} from './actionTypes'
+} from "./actionTypes";
 
 export const createDictionaryLoadingSelector = loadingSelector(
   indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
@@ -83,10 +92,10 @@ export const retrieveDictionariesLoadingSelector = loadingSelector(
 
 export const addConceptsToDictionaryLoadingListSelector = loadingListSelector(
   ADD_CONCEPTS_TO_DICTIONARY
-)
+);
 export const addConceptsToDictionaryProgressListSelector = progressListSelector(
   ADD_CONCEPTS_TO_DICTIONARY
-)
+);
 export const addConceptsToDictionaryErrorListSelector = errorListSelector(
   ADD_CONCEPTS_TO_DICTIONARY
-)
+);

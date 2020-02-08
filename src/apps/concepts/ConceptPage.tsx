@@ -2,16 +2,7 @@ import React, { useEffect } from "react";
 import { Fab, Grid, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
-import {
-  viewConceptLoadingSelector,
-  viewConceptErrorsSelector,
-  retrieveConceptAction,
-  upsertConceptAndMappingsLoadingSelector,
-  upsertConceptErrorsSelector,
-  upsertConceptAndMappingsAction,
-  upsertAllMappingsErrorSelector,
-  upsertConceptAndMappingsProgressSelector
-} from "./redux";
+import { retrieveConceptAction, upsertConceptAndMappingsAction } from "./redux";
 import {
   APIConcept,
   apiConceptToConcept,
@@ -26,6 +17,14 @@ import { usePrevious, useQuery } from "../../utils";
 import { CONTEXT } from "./constants";
 import { Pageview as PageViewIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import {
+  upsertAllMappingsErrorSelector,
+  upsertConceptAndMappingsLoadingSelector,
+  upsertConceptAndMappingsProgressSelector,
+  upsertConceptErrorsSelector,
+  viewConceptErrorsSelector,
+  viewConceptLoadingSelector
+} from "./redux";
 
 interface Props {
   fetchLoading: boolean;

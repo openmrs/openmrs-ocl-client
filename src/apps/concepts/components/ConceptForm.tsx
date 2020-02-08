@@ -29,15 +29,11 @@ import { Edit as EditIcon } from "@material-ui/icons";
 import * as Yup from "yup";
 import MappingsTable from "./MappingsTable";
 import {
-  ANSWERS_BATCH_INDEX,
-  MAPPINGS_BATCH_INDEX,
-  SETS_BATCH_INDEX
-} from "../redux";
-import {
   QUESTION_CONCEPT_CLASS,
   SET_CONCEPT_CLASSES
 } from "../../../utils/constants";
 import { CONTEXT } from "../constants";
+import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from '../redux/constants'
 
 const ANSWERS_VALUE_KEY = "answers";
 const SETS_VALUE_KEY = "sets";
