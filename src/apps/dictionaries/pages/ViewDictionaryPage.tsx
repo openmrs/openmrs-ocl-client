@@ -121,7 +121,6 @@ const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
   dictionary: state.dictionaries.dictionary,
-  source: state.sources.source,
   versions: state.dictionaries.versions,
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),

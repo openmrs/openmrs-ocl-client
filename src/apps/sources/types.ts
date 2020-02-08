@@ -21,8 +21,4 @@ export interface APISource extends BaseAPISource {
   supported_locales: string[];
 }
 
-export interface SourceState {
-  source?: APISource;
-}
-
 export {};

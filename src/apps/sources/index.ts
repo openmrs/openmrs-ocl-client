@@ -1,5 +1,4 @@
 export {
-  default as sourcesReducer,
   createSourceAction,
   createSourceErrorSelector,
   editSourceAction,

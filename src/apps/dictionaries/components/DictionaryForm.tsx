@@ -110,7 +110,7 @@ const DictionaryForm: React.FC<Props> = ({
   }, [errors]);
 
   return (
-    <div className={classes.dictionaryForm}>
+    <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
         ref={formikRef}
         initialValues={savedValues || initialValues}
