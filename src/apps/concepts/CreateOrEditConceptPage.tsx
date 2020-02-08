@@ -149,4 +149,7 @@ const mapActionsToProps = {
   upsertConcept: upsertConceptAndMappingsAction
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(CreateOrEditConceptPage);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(CreateOrEditConceptPage);

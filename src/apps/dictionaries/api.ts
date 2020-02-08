@@ -71,9 +71,9 @@ const api = {
     authenticatedInstance.get(`${CIEL_SOURCE_URL}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),
-        limit: 0
+        limit: 0,  // bad, todo optimize this
       }
-    }), // todo optimize this
+    }),
   references: {
     add: (
       dictionaryUrl: string,

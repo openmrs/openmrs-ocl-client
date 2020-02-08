@@ -7,7 +7,6 @@ import { APIOrg, APIProfile } from "./types";
 
 const redirectIfNotLoggedIn = (response: AxiosResponse) => {
   if (response.status === 401) {
-    // todo redirect to log in page
     store.dispatch(logoutAction());
   }
   return response;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Button, Paper, Typography, Link, makeStyles } from '@material-ui/core'
+import { Button, Paper, Typography, Link, makeStyles } from "@material-ui/core";
 import { TRADITIONAL_OCL_URL } from "../../../utils/constants";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -18,16 +18,16 @@ const LoginSchema = Yup.object().shape({
 
 const useStyles = makeStyles({
   otherOptions: {
-    textAlign: 'center',
+    textAlign: "center"
   },
   fields: {
-    padding: '2vh 1vw',
-    display: 'inherit',
+    padding: "2vh 1vw",
+    display: "inherit"
   },
   statusMessage: {
-    display: 'inline-block',
-    width: '100%',
-    textAlign: 'center',
+    display: "inline-block",
+    width: "100%",
+    textAlign: "center"
   }
 });
 

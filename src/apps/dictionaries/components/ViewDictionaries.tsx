@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     display: "grid",
     position: "fixed",
     bottom: 0,
-    background: "#fafafa" // todo hard coded color
+    background: "transparent",
   },
   paginationDouble: {
     width: "100%"
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
     justifyItems: "center",
     display: "grid",
     position: "sticky",
-    background: "#fafafa", // todo hard coded color
+    background: "transparent",
     width: "100%",
     marginBottom: "2vw"
   },

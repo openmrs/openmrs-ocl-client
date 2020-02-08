@@ -20,6 +20,7 @@ import { orgsSelector } from "../authentication/redux/reducer";
 import { CONTEXT } from "./constants";
 import { useQuery } from "../../utils";
 import { viewConceptErrorsSelector, viewConceptLoadingSelector } from "./redux";
+import { NotFound } from "../../components";
 
 interface Props {
   loading: boolean;
@@ -61,6 +62,8 @@ const ViewConceptPage: React.FC<Props> = ({
   if (loading) {
     return <span>Loading...</span>;
   }
+
+  if (errors) return <NotFound />;
 
   return (
     <Header

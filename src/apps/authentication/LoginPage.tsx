@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { Grid, Container, Typography, makeStyles } from '@material-ui/core'
+import { Grid, Container, Typography, makeStyles } from "@material-ui/core";
 import { Login } from "./components";
 import { connect } from "react-redux";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
@@ -15,11 +15,11 @@ interface Props {
 
 const useStyles = makeStyles({
   loginPage: {
-    height: "100vh",
+    height: "100vh"
   },
   headerText: {
-    textAlign: 'center',
-    margin: '-6vh 0 5vh 0',
+    textAlign: "center",
+    margin: "-6vh 0 5vh 0"
   }
 });
 
@@ -34,11 +34,12 @@ const LoginPage: React.FC<Props> = ({
   useEffect(() => {
     document.title = `Login | OCL for OpenMRS`;
 
-    return () => {document.title = 'OCL for OpenMRS'};
-  }, [])
+    return () => {
+      document.title = "OCL for OpenMRS";
+    };
+  }, []);
 
   if (isLoggedIn) return <Redirect to="/user/collections/" />;
-  // todo add redirect url use
   else
     return (
       <Grid
