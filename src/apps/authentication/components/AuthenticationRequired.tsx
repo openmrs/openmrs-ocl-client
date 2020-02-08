@@ -5,8 +5,8 @@ import {
   getUserDetailsAction,
   getUserDetailsLoadingSelector,
   profileSelector
-} from "./redux";
-import { APIProfile } from "./types";
+} from "../redux";
+import { APIProfile } from "../types";
 
 interface Props {
   children: any;

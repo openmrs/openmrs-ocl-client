@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import ViewConceptPage from "./ViewConceptPage";
 import ViewConceptsPage from "./ViewConceptsPage";
-import ConceptPage from "./ConceptPage";
+import CreateOrEditConceptPage from "./CreateOrEditConceptPage";
 import { DICTIONARY_CONTAINER } from "./constants";
 
 interface Props {
@@ -30,7 +30,7 @@ const Routes: React.FC<Props> = ({
       )}
       {!newConcept ? null : (
         <Route exact path={`${path}/new/`}>
-          <ConceptPage />
+          <CreateOrEditConceptPage />
         </Route>
       )}
       {!viewConcept ? null : (
@@ -40,7 +40,7 @@ const Routes: React.FC<Props> = ({
       )}
       {!editConcept ? null : (
         <Route exact path={`${path}/:concept/:version/edit/`}>
-          <ConceptPage />
+          <CreateOrEditConceptPage />
         </Route>
       )}
     </Switch>

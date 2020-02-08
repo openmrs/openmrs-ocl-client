@@ -39,7 +39,7 @@ interface Props {
   progress?: string;
 }
 
-const ConceptPage: React.FC<Props> = ({
+const CreateOrEditConceptPage: React.FC<Props> = ({
   retrieveConcept,
   concept,
   mappings,
@@ -149,4 +149,4 @@ const mapActionsToProps = {
   upsertConcept: upsertConceptAndMappingsAction
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(ConceptPage);
+export default connect(mapStateToProps, mapActionsToProps)(CreateOrEditConceptPage);
