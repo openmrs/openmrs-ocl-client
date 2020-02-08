@@ -59,6 +59,7 @@ export interface APIConcept extends BaseConcept {
   url: string;
   version_url: string;
   mappings: APIMapping[];
+  retired: boolean;
 }
 
 export interface ConceptsState {
@@ -75,7 +76,7 @@ const apiNamesToName = (names: ConceptName[]) =>
 
 const apiConceptToConcept = (
   apiConcept: APIConcept | undefined,
-  mappings: APIMapping[],
+  mappings: APIMapping[]=[],
 ): Concept | undefined => {
   if (!apiConcept) return apiConcept;
 

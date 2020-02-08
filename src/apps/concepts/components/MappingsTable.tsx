@@ -20,7 +20,7 @@ import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,
-  MoreVert as MoreVertIcon
+  MoreVert as MenuIcon,
 } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -91,7 +91,7 @@ const MappingsTable: React.FC<Props> = ({
                   aria-haspopup="true"
                   onClick={event => toggleMappingMenu(HEADER_MENU_INDEX, event)}
                 >
-                  <MoreVertIcon />
+                  <MenuIcon />
                 </IconButton>
               )}
               <Menu

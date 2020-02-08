@@ -176,6 +176,7 @@ const ConceptForm: React.FC<Props> = ({
   supportLegacyMappings = true
 }) => {
   const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
+  const allowIdEdits = context === CONTEXT.create;
   const showAnswers =
     (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
@@ -286,7 +287,7 @@ const ConceptForm: React.FC<Props> = ({
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
-                        disabled={!allowEditing}
+                        disabled={!(allowEditing && allowIdEdits)}
                         aria-label="toggle external id editable"
                         onClick={toggleExternalIDEditable}
                       >
@@ -303,6 +304,7 @@ const ConceptForm: React.FC<Props> = ({
                 label="OCL ID"
                 margin="normal"
                 component={TextField}
+                disabled={!(allowEditing && allowIdEdits)}
               />
               <FormControl fullWidth margin="normal">
                 <InputLabel htmlFor="concept_class">Class</InputLabel>

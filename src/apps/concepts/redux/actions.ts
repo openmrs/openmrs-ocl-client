@@ -176,6 +176,7 @@ export const upsertConceptAndMappingsAction = (
         ]);
       } catch (e) {
         // whatever happens, make sure we never loose access to the reference from the dictionary
+        // even if it means keeping the old version in
         await dispatch(
           addConceptsToDictionary(linkedDictionary, [
             conceptResponse.url || (concept.url as string)
