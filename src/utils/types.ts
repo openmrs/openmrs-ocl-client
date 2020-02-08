@@ -24,5 +24,3 @@ export interface EditableConceptContainerFields {
   default_locale: string;
   preferred_source: string;
 }
-
-export {};

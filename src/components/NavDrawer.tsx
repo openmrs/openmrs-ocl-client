@@ -26,8 +26,11 @@ import {
   Tooltip,
   Typography
 } from "@material-ui/core";
-import { logoutAction } from "../apps/authentication/redux";
 import { connect } from "react-redux";
+// resist the temptation to make this like the rest of the action creators
+// because of the potential of a circular dependency(auth/utils->api->auth/api->auth/redux/actions->auth->utils)
+import { LOGOUT_ACTION } from '../apps/authentication'
+import { action } from '../redux/utils'
 
 const drawerWidth = 240;
 
@@ -90,6 +93,7 @@ interface Props {
 }
 
 export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
+  console.log(logout);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);
@@ -229,6 +233,6 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
   );
 };
 
-const mapDispatchToProps = { logout: logoutAction };
+const mapDispatchToProps = { logout: () => action(LOGOUT_ACTION) };
 
 export default connect(undefined, mapDispatchToProps)(NavDrawer);

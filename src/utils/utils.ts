@@ -1,11 +1,11 @@
 import { LOCALES, USER_TYPE } from "./constants";
 import { snakeCase } from "lodash";
 
-const findLocale = (localeCode: string, fallback = "en") =>
+export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||
   LOCALES.find(currentLocale => currentLocale.value === fallback);
 
-const getPrettyError = (
+export const getPrettyError = (
   errors: { [key: string]: string[] | undefined } | undefined,
   field?: string
 ) => {
@@ -19,7 +19,7 @@ const getPrettyError = (
   return errorList.join(", ");
 };
 
-const keysToSnakeCase = (item?: any) => {
+export const keysToSnakeCase = (item?: any) => {
   const isArray = (a: any) => {
     return Array.isArray(a);
   };
@@ -45,16 +45,8 @@ const keysToSnakeCase = (item?: any) => {
   return item;
 };
 
-const buildPartialSearchQuery = (query: string): string =>
+export const buildPartialSearchQuery = (query: string): string =>
   `${query.replace(new RegExp(" ", "g"), "* ")}*`;
 
-const delay = (seconds: number) =>
+export const delay = (seconds: number) =>
   new Promise(resolve => setTimeout(resolve, seconds * 1000));
-
-export {
-  findLocale,
-  getPrettyError,
-  keysToSnakeCase,
-  buildPartialSearchQuery,
-  delay
-};

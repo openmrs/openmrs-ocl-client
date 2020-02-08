@@ -1,7 +1,6 @@
 import {
   completeAction,
   createActionThunk,
-  createActionType,
   indexedAction,
   startAction
 } from "../../../redux";
@@ -15,7 +14,6 @@ import {
 } from "./actionTypes";
 
 const loginAction = createActionThunk(indexedAction(LOGIN_ACTION), api.login);
-const logoutAction = createActionType(LOGOUT_ACTION);
 const getProfileAction = createActionThunk(
   indexedAction(GET_PROFILE_ACTION),
   api.getProfile
@@ -32,10 +30,10 @@ const getUserDetailsAction = () => {
       dispatch(getProfileAction()),
       dispatch(getUserOrgsAction())
     ]);
-    if (!(userProfile || userOrgs)) dispatch(logoutAction());
+    if (!(userProfile || userOrgs)) dispatch({type: LOGOUT_ACTION});
 
     dispatch(completeAction(indexedAction(GET_USER_DETAILS_ACTION)));
   };
 };
 
-export { loginAction, logoutAction, getUserDetailsAction };
+export { loginAction, getUserDetailsAction };

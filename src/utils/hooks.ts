@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import qs from "qs";
 
-function usePrevious(value: any) {
+export function usePrevious(value: any) {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;
@@ -10,11 +10,11 @@ function usePrevious(value: any) {
   return ref.current;
 }
 
-function useQuery() {
+export function useQuery() {
   return qs.parse(useLocation().search, { ignoreQueryPrefix: true });
 }
 
-function useAnchor(): [
+export function useAnchor(): [
   null | HTMLElement,
   (event: React.MouseEvent<HTMLElement>) => void,
   () => void
@@ -29,5 +29,3 @@ function useAnchor(): [
 
   return [anchorEl, handleClick, handleClose];
 }
-
-export { usePrevious, useQuery, useAnchor };

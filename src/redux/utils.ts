@@ -29,6 +29,10 @@ const indexedAction = (
   actionIndex: number = 0
 ): IndexedAction => ({ actionType: action, actionIndex });
 
+export function action (type: string) {
+  return {type};
+}
+
 const resetAction = (actionType: string) => ({
   type: `${actionType}_${RESET}`
 });

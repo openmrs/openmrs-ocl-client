@@ -1,13 +1,16 @@
 import { AxiosResponse } from "axios";
 import store from "../../store";
-import { logoutAction } from "./redux";
+// resist the temptation to make this like the rest of the action creators
+// because of the potential of a circular dependency(auth/utils->api->auth/api->auth/redux/actions->auth->utils)
+import { LOGOUT_ACTION } from "./redux";
 import { AppState } from "../../redux";
 import { USER_TYPE } from "../../utils/constants";
 import { APIOrg, APIProfile } from "./types";
+import { action } from '../../redux/utils'
 
 const redirectIfNotLoggedIn = (response: AxiosResponse) => {
   if (response.status === 401) {
-    store.dispatch(logoutAction());
+    store.dispatch(action(LOGOUT_ACTION));
   }
   return response;
 };

@@ -284,6 +284,7 @@ const DictionaryForm: React.FC<Props> = ({
                     {error}
                   </Typography>
                 )}
+                <br/>
                 <Button
                   variant="outlined"
                   color="primary"
