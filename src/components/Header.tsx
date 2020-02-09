@@ -11,11 +11,11 @@ import {
   Tooltip,
   Typography
 } from '@material-ui/core'
-import { NotificationsOutlined as NotificationsIcon } from '@material-ui/icons'
+import { ArrowBack as BackIcon, ArrowForward as ForwardIcon, NotificationsOutlined as NotificationsIcon } from '@material-ui/icons'
 import { connect } from 'react-redux'
 import { addConceptsToDictionaryLoadingListSelector, } from '../apps/dictionaries'
 import { AppState } from '../redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,16 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
     grow: {
       flexGrow: 1
     },
-    notifications: {
-      position: "absolute",
-      marginTop: "11vh",
-      top: 0,
-      right: "3vw",
-      height: "33vh",
-      width: "20vw",
-      background: theme.palette.background.default,
-      zIndex: 1
-    }
+    icon: {
+      color: theme.palette.background.default,
+    },
   })
 );
 
@@ -47,13 +40,15 @@ interface Props {
   title: string;
   justifyChildren?: string;
   loadingList: boolean[];
+  backUrl?: string;
 }
 
 const Header: React.FC<Props> = ({
   children,
   title,
   justifyChildren = "center",
-  loadingList = []
+  loadingList = [],
+  backUrl,
 }) => {
   const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
     .length;
@@ -62,11 +57,25 @@ const Header: React.FC<Props> = ({
   useEffect(() => {
     document.title = `${title} | OCL for OpenMRS`;
   }, [title])
+  const history = useHistory();
 
   return (
     <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
+          <Tooltip title="Back">
+          {backUrl ? (
+            <Link to={backUrl}>
+                <IconButton>
+                  <BackIcon className={classes.icon} />
+                </IconButton>
+            </Link>
+          ) : (
+            <IconButton onClick={history.goBack}>
+              <BackIcon className={classes.icon} />
+            </IconButton>
+          )}
+          </Tooltip>
           <Typography variant="h5" noWrap>
             {title}
           </Typography>
@@ -77,12 +86,15 @@ const Header: React.FC<Props> = ({
                 <Tooltip title="In progress">
                   <IconButton>
                     <Badge badgeContent={loadingItemsLength} color="secondary">
-                      <NotificationsIcon />
+                      <NotificationsIcon className={classes.icon} />
                     </Badge>
                   </IconButton>
                 </Tooltip>
               </Link>
             )}
+            <IconButton onClick={history.goForward}>
+              <ForwardIcon className={classes.icon} />
+            </IconButton>
           </div>
         </Toolbar>
       </AppBar>

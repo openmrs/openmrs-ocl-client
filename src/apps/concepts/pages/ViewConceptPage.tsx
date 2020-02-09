@@ -64,6 +64,7 @@ const ViewConceptPage: React.FC<Props> = ({
       title={startCase(
         toLower(concept ? concept.display_name : "View concept")
       )}
+      backUrl={linkedDictionary ? `${linkedDictionary}concepts/` : undefined}
     >
       <Grid id="viewConceptPage" item xs={8} component="div">
         <ConceptForm

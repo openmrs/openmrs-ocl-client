@@ -148,7 +148,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   return (
     <>
-      <Header title="Concepts" justifyChildren="space-around">
+      <Header title="Concepts" justifyChildren="space-around" backUrl={!isDictionaryVersion ? dictionaryUrl : undefined}>
         <ProgressOverlay loading={loading}>
           <Grid
             id="viewConceptsPage"
