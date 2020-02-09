@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
-import { ConceptForm } from "./components";
-import { AppState } from "../../redux";
-import { retrieveConceptAction, upsertConceptAndMappingsAction } from "./redux";
+import { ConceptForm } from "../components";
+import { AppState } from "../../../redux";
+import { retrieveConceptAction, upsertConceptAndMappingsAction } from "../redux";
 import {
   APIConcept,
   apiConceptToConcept,
   APIMapping,
   BaseConcept
-} from "./types";
+} from "../types";
 import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
-import Header from "../../components/Header";
+import Header from "../../../components/Header";
 import { startCase, toLower } from "lodash";
-import { useAnchor, usePrevious, useQuery } from "../../utils";
-import { CONTEXT } from "./constants";
+import { useAnchor, usePrevious, useQuery } from "../../../utils";
+import { CONTEXT } from "../constants";
 import {
   Pageview as PageViewIcon,
   MoreVert as MenuIcon,
@@ -29,7 +29,7 @@ import {
   upsertConceptErrorsSelector,
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
-} from "./redux";
+} from "../redux";
 
 interface Props {
   fetchLoading: boolean;

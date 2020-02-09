@@ -1,8 +1,6 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import ViewConceptPage from "./ViewConceptPage";
-import ViewConceptsPage from "./ViewConceptsPage";
-import CreateOrEditConceptPage from "./CreateOrEditConceptPage";
+import {ViewConceptPage, ViewConceptsPage, CreateOrEditConceptPage} from "./pages";
 import { DICTIONARY_CONTAINER } from "./constants";
 
 interface Props {

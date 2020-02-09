@@ -1,5 +1,5 @@
 export { default } from "./Routes";
-export { default as ViewConceptsPage } from "./ViewConceptsPage";
+export { default as ViewConceptsPage } from "./pages/ViewConceptsPage";
 export * from "./types";
 export { default as conceptsReducer } from "./redux";
 export {
