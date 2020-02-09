@@ -88,7 +88,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
         {inProgressItems.length +
         erroredItems.length +
         successfullItems.length ? null : (
-          <Typography align="center">Your actions will appear here</Typography>
+          <Typography align="center">Your actions in this session will appear here</Typography>
         )}
         {!inProgressItems.length ? null : (
           <List
