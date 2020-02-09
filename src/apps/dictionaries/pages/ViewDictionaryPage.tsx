@@ -60,6 +60,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
     usersOrgs
   );
 
+  const linkedSource = dictionary?.extras?.source || '';
+
   if (dictionaryLoading) return <span>'Loading...'</span>;
 
   return (
@@ -96,6 +98,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
               dictionaryUrl={url}
+              linkedSource={linkedSource}
             />
           )}
         </Grid>

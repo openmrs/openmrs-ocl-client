@@ -117,6 +117,7 @@ export interface OptionalQueryParams {
   limit?: number;
   classFilters?: string[];
   dataTypeFilters?: string[];
+  sourceFilters?: string[];
   addToDictionary?: string;
 }
 

@@ -121,14 +121,20 @@ interface FilterOptionsProps {
   setCheckedClasses: Function;
   checkedDataTypes: string[];
   setCheckedDataTypes: Function;
+  checkedSources: string[];
+  setCheckedSources: Function;
+  sourceOptions: string[];
 }
 
 const FilterOptions: React.FC<FilterOptionsProps> = ({
   url,
   checkedClasses,
   checkedDataTypes,
+  checkedSources,
   setCheckedClasses,
-  setCheckedDataTypes
+  setCheckedDataTypes,
+  setCheckedSources,
+  sourceOptions,
 }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
@@ -136,6 +142,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   const clearAllFilters = () => {
     setCheckedClasses([]);
     setCheckedDataTypes([]);
+    setCheckedSources([]);
   };
 
   return (
@@ -162,6 +169,13 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
             onChange={e => setSearchText(e.target.value)}
           />
         </div>
+        <FilterGroup
+          checked={checkedSources}
+          setChecked={setCheckedSources}
+          searchText={searchText}
+          title="Sources"
+          items={sourceOptions}
+        />
         <FilterGroup
           checked={checkedClasses}
           setChecked={setCheckedClasses}

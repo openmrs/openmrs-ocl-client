@@ -15,9 +15,10 @@ import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
 import { orgsSelector } from '../../authentication/redux/reducer'
-import { CIEL_CONCEPTS_URL, DICTIONARY_VERSION_CONTAINER, } from '../constants'
+import { CIEL_CONCEPTS_URL, DICTIONARY_VERSION_CONTAINER, FILTER_SOURCE_IDS, } from '../constants'
 import { CIEL_SOURCE_URL } from '../../../utils/constants'
 import { addCIELConceptsToDictionaryAction } from '../../dictionaries/redux'
+import { getSourceIdFromUrl } from '../utils'
 
 interface Props {
   concepts?: APIConcept[];
@@ -77,26 +78,32 @@ const ViewConceptsPage: React.FC<Props> = ({
     q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
+    sourceFilters: initialSourceFilters = [],
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
   const [showOptions, setShowOptions] = useState(true);
+  // why did he put the filtered state here and not inside the component, you ask?
+  // consistency my friend, consistency. The key thing here is one can trigger a requery by changing
+  // the page count/ number and if the state is not up here then, we query with stale options
   const [classFilters, setClassFilters] = useState<string[]>(
     initialClassFilters
   );
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
+  const [sourceFilters, setSourceFilters] = useState<string[]>(initialSourceFilters);
   const [q, setQ] = useState(initialQ);
   const canModify =
     !isDictionaryVersion && canModifyContainer(ownerType, owner, profile, usersOrgs);
 
-  const gimmeAUrl = (params: QueryParams) => {
+  const gimmeAUrl = (params: QueryParams={}) => {
     const newParams: QueryParams = {
       ...queryParams,
       ...{
         classFilters: classFilters,
         dataTypeFilters: dataTypeFilters,
+        sourceFilters: sourceFilters,
         page: 1,
         q
       },
@@ -106,6 +113,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    // we don't make this reactive(only depend on the initial values), because the requirement
+    // was only trigger queries on user search(enter or apply filters, or change page)
     retrieveConcepts(
       url,
       page,
@@ -115,6 +124,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       sortBy,
       initialDataTypeFilters,
       initialClassFilters,
+      initialSourceFilters,
       true,
     );
   // i don't know how the comparison algorithm works, but for these arrays, it fails.
@@ -131,7 +141,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialDataTypeFilters.toString(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialClassFilters.toString()
+    initialClassFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialSourceFilters.toString(),
   ]);
 
   return (
@@ -182,7 +194,11 @@ const ViewConceptsPage: React.FC<Props> = ({
                 setCheckedClasses={setClassFilters}
                 checkedDataTypes={dataTypeFilters}
                 setCheckedDataTypes={setInitialDataTypeFilters}
-                url={gimmeAUrl({})}
+                checkedSources={sourceFilters}
+                setCheckedSources={setSourceFilters}
+                // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
+                sourceOptions={[...FILTER_SOURCE_IDS, getSourceIdFromUrl(linkedSource)].filter(source => source !== undefined) as string[]}
+                url={gimmeAUrl()}
               />
             </Grid>
           )}

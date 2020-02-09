@@ -2,6 +2,8 @@ const DICTIONARY_CONTAINER = "dictionary";
 const DICTIONARY_VERSION_CONTAINER = "dictionaryVersion";
 const CIEL_CONCEPTS_URL = "/orgs/CIEL/sources/CIEL/concepts/";
 
+export const FILTER_SOURCE_IDS = ['CIEL'];
+
 const CONTEXT = {
   create: "create",
   view: "view",

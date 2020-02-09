@@ -34,6 +34,7 @@ const api = {
       sortBy = "bestMatch",
       dataTypeFilters = [],
       classFilters = [],
+      sourceFilters = [],
       includeRetired = false
     ) =>
       authenticatedInstance.get(conceptsUrl, {
@@ -44,6 +45,7 @@ const api = {
           [sortDirection]: sortBy,
           ...optionallyIncludeList("datatype", dataTypeFilters),
           ...optionallyIncludeList("conceptClass", classFilters),
+          ...optionallyIncludeList("source", sourceFilters),
           includeRetired,
           timestamp: new Date().getTime()
         }

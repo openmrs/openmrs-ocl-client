@@ -284,8 +284,10 @@ const ConceptsTable: React.FC<Props> = ({
   toggleShowOptions,
   buttons = {},
   addConceptsToDictionary,
+  // current dictionary, for editing and creating concepts
   linkedDictionary,
-  linkedSource
+  // source to store new concepts in and use as criteria for whether a user can edit a concept
+  linkedSource,
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -419,7 +421,7 @@ const ConceptsTable: React.FC<Props> = ({
                       <Link
                         onClick={e => e.stopPropagation()}
                         to={`${row.version_url}${
-                          linkedDictionary
+                          buttons.edit && linkedDictionary
                             ? `?linkedDictionary=${linkedDictionary}`
                             : ""
                         }`}

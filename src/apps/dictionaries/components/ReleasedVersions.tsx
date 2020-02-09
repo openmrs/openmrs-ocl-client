@@ -27,6 +27,7 @@ interface Props {
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
   dictionaryUrl: string;
+  linkedSource: string;
 }
 
 const useStyles = makeStyles({
@@ -43,7 +44,8 @@ const ReleasedVersions: React.FC<Props> = ({
   createDictionaryVersion,
   createVersionLoading,
   createVersionError,
-  dictionaryUrl
+  dictionaryUrl,
+  linkedSource,
 }) => {
   const classes = useStyles();
   const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
@@ -82,7 +84,7 @@ const ReleasedVersions: React.FC<Props> = ({
                       <Button size="small" variant="text" color="primary">
                         <Link
                           className={classes.link}
-                          to={`${dictionaryUrl}${row.id}/concepts/`}
+                          to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
                         >
                           View concepts
                         </Link>
