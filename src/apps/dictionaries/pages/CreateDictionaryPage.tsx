@@ -9,11 +9,14 @@ import {
   createSourceAndDictionaryErrorsSelector
 } from "../redux/selectors";
 import { APIDictionary, Dictionary } from "../types";
-import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
 import { usePrevious } from "../../../utils";
 import { CONTEXT } from "../constants";
-import { createSourceAndDictionaryAction } from '../redux/actions'
+import { createSourceAndDictionaryAction } from "../redux/actions";
 
 interface Props {
   errors?: {};
@@ -35,11 +38,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
   const previouslyLoading = usePrevious(loading);
 
   if (!loading && previouslyLoading && newDictionary) {
-    return (
-      <Redirect
-        to={newDictionary.url}
-      />
-    );
+    return <Redirect to={newDictionary.url} />;
   }
 
   return (
@@ -51,9 +50,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
           profile={profile}
           usersOrgs={usersOrgs ? usersOrgs : []}
           loading={loading}
-          onSubmit={(values: Dictionary) =>
-            createSourceAndDictionary(values)
-          }
+          onSubmit={(values: Dictionary) => createSourceAndDictionary(values)}
         />
       </Paper>
     </Grid>

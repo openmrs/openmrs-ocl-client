@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Fab, Grid, Icon, Menu, MenuItem, Tooltip } from '@material-ui/core'
+import { Fab, Grid, Icon, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
 import { retrieveConceptAction, upsertConceptAndMappingsAction } from "./redux";
@@ -13,9 +13,15 @@ import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../components/Header";
 import { startCase, toLower } from "lodash";
-import { useAnchor, usePrevious, useQuery } from '../../utils'
+import { useAnchor, usePrevious, useQuery } from "../../utils";
 import { CONTEXT } from "./constants";
-import { Add as AddIcon, Pageview as PageViewIcon, MoreVert as MenuIcon, DeleteSweepOutlined as DeleteIcon, RestoreFromTrashOutlined as RestoreIcon } from '@material-ui/icons'
+import {
+  Add as AddIcon,
+  Pageview as PageViewIcon,
+  MoreVert as MenuIcon,
+  DeleteSweepOutlined as DeleteIcon,
+  RestoreFromTrashOutlined as RestoreIcon
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import {
   upsertAllMappingsErrorSelector,
@@ -121,33 +127,55 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
         />
       </Grid>
 
-      {(context !== CONTEXT.edit) ? null : (
-          <>
-            <Tooltip title="Menu">
-              <Fab onClick={handleMenuClick} color="primary" className="fab">
-                <MenuIcon />
-              </Fab>
-            </Tooltip>
-            <Menu
-              anchorEl={menuAnchor}
-              keepMounted
-              open={Boolean(menuAnchor)}
-              onClose={handleMenuClose}
+      {context !== CONTEXT.edit ? null : (
+        <>
+          <Tooltip title="Menu">
+            <Fab onClick={handleMenuClick} color="primary" className="fab">
+              <MenuIcon />
+            </Fab>
+          </Tooltip>
+          <Menu
+            anchorEl={menuAnchor}
+            keepMounted
+            open={Boolean(menuAnchor)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem>
+              <PageViewIcon />
+              <Link
+                className="link"
+                to={`${conceptUrl}?linkedDictionary=${linkedDictionary}`}
+              >
+                Discard changes and view
+              </Link>
+            </MenuItem>
+            <MenuItem
+              disabled={loading}
+              onClick={() =>
+                upsertConcept(
+                  {
+                    ...apiConceptToConcept(concept),
+                    retired: !concept?.retired
+                  },
+                  sourceUrl,
+                  linkedDictionary
+                )
+              }
             >
-              <MenuItem>
-                <PageViewIcon/>
-                <Link className="link" to={`${conceptUrl}?linkedDictionary=${linkedDictionary}`}>
-                  Discard changes and view
-                </Link>
-              </MenuItem>
-              <MenuItem disabled={loading} onClick={() => upsertConcept({...apiConceptToConcept(concept), retired: !(concept?.retired)}, sourceUrl, linkedDictionary)}>
-                {concept?.retired ?
-                  <><RestoreIcon/>Unretire concept</> :
-                  <><DeleteIcon/>Retire concept</>
-                }
-              </MenuItem>
-            </Menu>
-          </>
+              {concept?.retired ? (
+                <>
+                  <RestoreIcon />
+                  Unretire concept
+                </>
+              ) : (
+                <>
+                  <DeleteIcon />
+                  Retire concept
+                </>
+              )}
+            </MenuItem>
+          </Menu>
+        </>
       )}
     </Header>
   );

@@ -5,13 +5,13 @@ import {
   loadingListSelector,
   loadingSelector,
   progressListSelector,
-  progressSelector
+  progressSelector,
+  errorSelector,
 } from "../../../redux";
 import {
   createSourceErrorSelector,
   editSourceErrorSelector
 } from "../../sources";
-import { errorSelector } from "../../../redux/redux";
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX

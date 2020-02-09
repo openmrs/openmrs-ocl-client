@@ -4,4 +4,4 @@ export { AuthenticationRequired } from "./components";
 export { profileSelector } from "./redux";
 export * from "./types";
 export { canModifyContainer } from "./utils";
-export {LOGOUT_ACTION} from "./redux";
+export { LOGOUT_ACTION } from "./redux";

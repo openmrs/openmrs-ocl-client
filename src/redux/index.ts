@@ -1,12 +1,4 @@
 export {
-  loadingSelector,
-  progressSelector,
-  loadingListSelector,
-  progressListSelector,
-  errorListSelector,
-  loadingAndErroredReducer
-} from "./redux";
-export {
   createActionThunk,
   createActionType,
   resetAction,
@@ -14,6 +6,8 @@ export {
   progressAction,
   completeAction,
   indexedAction,
-  FAILURE
+  FAILURE,
 } from "./utils";
 export * from "./types";
+export * from './selectors'
+export {default} from "./store";

@@ -6,7 +6,7 @@ import {
   UPSERT_CONCEPT_AND_MAPPINGS,
   UPSERT_MAPPING_ACTION
 } from './actionTypes'
-import { errorSelector } from '../../../redux/redux'
+import { errorSelector } from '../../../redux/selectors'
 
 export const upsertConceptAndMappingsLoadingSelector = loadingSelector(
   indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)

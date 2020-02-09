@@ -1,24 +1,15 @@
 import { AxiosResponse } from "axios";
-import { AnyAction } from "redux";
-
-export interface Action extends AnyAction {
-  type: string;
-  payload?: any;
-  actionIndex: number;
-  meta: any[];
-  responseMeta?: {};
-}
-
-export interface IndexedAction {
-  actionType: string;
-  actionIndex: number;
-}
+import { Action, IndexedAction } from "./types";
 
 const RESET = "RESET";
 const START = "START";
 const FAILURE = "FAILURE";
 const PROGRESS = "PROGRESS";
 const COMPLETE = "COMPLETE";
+
+export const loading = (actionType: string): string => `${actionType}Loading`;
+export const progress = (actionType: string): string => `${actionType}Progress`;
+export const errors = (actionType: string): string => `${actionType}Errors`;
 
 const createActionType = (actionType: string): Function => (): {
   [key: string]: string;
@@ -29,8 +20,8 @@ const indexedAction = (
   actionIndex: number = 0
 ): IndexedAction => ({ actionType: action, actionIndex });
 
-export function action (type: string) {
-  return {type};
+export function action(type: string) {
+  return { type };
 }
 
 const resetAction = (actionType: string) => ({

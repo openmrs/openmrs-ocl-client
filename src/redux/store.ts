@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import reduxThunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { loadingAndErroredReducer } from "./redux";
-import authReducer from "./apps/authentication/redux/reducer"; // failed to respect module here because of a circular import issue
-import { dictionariesReducer } from "./apps/dictionaries";
-import { conceptsReducer } from "./apps/concepts";
+import loadingAndErroredReducer from "./reducer";
+import authReducer from "../apps/authentication/redux/reducer"; // failed to respect module here because of a circular import issue
+import { dictionariesReducer } from "../apps/dictionaries";
+import { conceptsReducer } from "../apps/concepts";
 
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";

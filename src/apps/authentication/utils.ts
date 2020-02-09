@@ -1,10 +1,10 @@
 import { AxiosResponse } from "axios";
-import store from "../../store";
+import store from "../../redux/store";
 // resist the temptation to make this like the rest of the action creators
 // because of the potential of a circular dependency(auth/utils->api->auth/api->auth/redux/actions->auth->utils)
 import { LOGOUT_ACTION } from "./redux";
 import { AppState } from "../../redux";
-import { USER_TYPE } from "../../utils/constants";
+import { USER_TYPE } from "../../utils";
 import { APIOrg, APIProfile } from "./types";
 import { action } from '../../redux/utils'
 

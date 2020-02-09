@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux";
 import { NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,

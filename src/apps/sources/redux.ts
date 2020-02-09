@@ -1,6 +1,5 @@
-import { createActionThunk, indexedAction } from "../../redux";
+import { createActionThunk, indexedAction, errorSelector } from "../../redux";
 import api from "./api";
-import { errorSelector } from "../../redux/redux";
 
 const CREATE_SOURCE_ACTION = "sources/create";
 const EDIT_SOURCE_ACTION = "sources/edit";
