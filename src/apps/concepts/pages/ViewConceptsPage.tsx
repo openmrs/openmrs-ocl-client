@@ -39,6 +39,8 @@ const useStyles = makeStyles({
   }
 });
 
+const INITIAL_LIMIT = 10;  // todo get limit from settings
+
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   loading,
@@ -66,12 +68,12 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
   const [importExistingAnchor, handleImportExistingClick, handleImportExistingClose] = useAnchor();
 
-  const queryParams: QueryParams = useQuery(); // todo get limit from settings
+  const queryParams: QueryParams = useQuery();
   const {
     page = 1,
     sortDirection = "sortAsc",
     sortBy = "id",
-    limit = 25,
+    limit = INITIAL_LIMIT,
     q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
