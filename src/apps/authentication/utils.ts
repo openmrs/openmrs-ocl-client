@@ -31,8 +31,7 @@ const canModifyContainer = (
   Boolean(
     ownerType === USER_TYPE
       ? profile?.username === owner
-      : profile?.username &&
-          usersOrgs.map(org => org.id).indexOf(profile.username) > -1
+      : usersOrgs.map(org => org.id).includes(owner)
   );
 
 export { redirectIfNotLoggedIn, addAuthToken, canModifyContainer };
