@@ -263,7 +263,10 @@ const useStyles = makeStyles((theme: Theme) =>
     buttonLink: {
       textDecoration: "none",
       color: "inherit"
-    }
+    },
+    retired: {
+      textDecoration: 'line-through',
+    },
   })
 );
 
@@ -412,7 +415,7 @@ const ConceptsTable: React.FC<Props> = ({
                         />
                       </TableCell>
                     )}
-                    <TableCell>
+                    <TableCell className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
                         to={`${row.version_url}${

@@ -3,8 +3,8 @@ import { AxiosResponse } from "axios";
 import { BaseConcept, Mapping } from "./types";
 import { buildPartialSearchQuery } from "../../utils";
 
-// https://stackoverflow.com/a/40560953/6448384
 const optionallyIncludeList = (key: string, value: string[]) =>
+  // https://stackoverflow.com/a/40560953/6448384
   value.length > 0 && { [key]: value.join(",") };
 
 // timestamp here is to disable caching. response occasionally excluded headers when caching was turned on
@@ -33,7 +33,8 @@ const api = {
       sortDirection = "sortAsc",
       sortBy = "bestMatch",
       dataTypeFilters = [],
-      classFilters = []
+      classFilters = [],
+      includeRetired = false
     ) =>
       authenticatedInstance.get(conceptsUrl, {
         params: {
@@ -43,6 +44,7 @@ const api = {
           [sortDirection]: sortBy,
           ...optionallyIncludeList("datatype", dataTypeFilters),
           ...optionallyIncludeList("conceptClass", classFilters),
+          includeRetired,
           timestamp: new Date().getTime()
         }
       })

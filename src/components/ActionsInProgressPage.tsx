@@ -43,15 +43,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
   erroredList = [],
   successList = []
 }) => {
-  const inProgressItems = (loadingList.filter(item => !!item) as boolean[])
-    .map((loading: boolean, index: number) =>
-      loading ? inProgressList[index] : null
+  const inProgressItems = loadingList
+    .map((loading: boolean | undefined, index: number) =>
+      typeof loading == "boolean" && loading ? inProgressList[index] : null
     )
     .filter(item => item)
     .reverse() as string[];
-  const successfullItems = (loadingList.filter(item => !!item) as boolean[])
-    .map((loading: boolean, index: number) =>
-      !loading && !erroredList[index]
+  const successfullItems = loadingList
+    .map((loading: boolean | undefined, index: number) =>
+      typeof loading == "boolean" && !loading && !erroredList[index]
         ? {
             result: successList[index]?.payload || "Successful",
             progress: inProgressList[index]
@@ -60,9 +60,9 @@ const ActionsInProgressPage: React.FC<Props> = ({
     )
     .filter(item => item && item.progress)
     .reverse() as { result: []; progress: string }[];
-  const erroredItems = (loadingList.filter(item => !!item) as boolean[])
-    .map((loading: boolean, index: number) =>
-      !loading && erroredList[index]
+  const erroredItems = loadingList
+    .map((loading: boolean | undefined, index: number) =>
+      typeof loading == "boolean" && !loading && erroredList[index]
         ? {
             error: erroredList[index],
             progress: inProgressList[index]

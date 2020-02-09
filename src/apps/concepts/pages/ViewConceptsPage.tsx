@@ -112,9 +112,10 @@ const ViewConceptsPage: React.FC<Props> = ({
       sortDirection,
       sortBy,
       initialDataTypeFilters,
-      initialClassFilters
+      initialClassFilters,
+      true,
     );
-  // i don't know hoe the comparison algorithm works, but for these arrays, it fails.
+  // i don't know how the comparison algorithm works, but for these arrays, it fails.
   // stringify the arrays to work around that
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
