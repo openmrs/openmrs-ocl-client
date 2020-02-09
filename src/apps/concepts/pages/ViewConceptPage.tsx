@@ -1,26 +1,20 @@
-import React, { useEffect } from "react";
-import { Fab, Grid, Tooltip } from "@material-ui/core";
-import { ConceptForm } from "../components";
-import { AppState } from "../../../redux";
-import { retrieveConceptAction } from "../redux";
-import { APIConcept, apiConceptToConcept, APIMapping } from "../types";
-import { useLocation, useParams } from "react-router";
-import { connect } from "react-redux";
-import { Edit as EditIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import Header from "../../../components/Header";
-import { startCase, toLower } from "lodash";
-import {
-  APIOrg,
-  APIProfile,
-  canModifyContainer,
-  profileSelector
-} from "../../authentication";
-import { orgsSelector } from "../../authentication/redux/reducer";
-import { CONTEXT } from "../constants";
-import { useQuery } from "../../../utils";
-import { viewConceptErrorsSelector, viewConceptLoadingSelector } from "../redux";
-import { NotFound } from "../../../components";
+import React, { useEffect } from 'react'
+import { Fab, Grid, Tooltip } from '@material-ui/core'
+import { ConceptForm } from '../components'
+import { AppState } from '../../../redux'
+import { retrieveConceptAction, viewConceptErrorsSelector, viewConceptLoadingSelector } from '../redux'
+import { APIConcept, apiConceptToConcept, APIMapping } from '../types'
+import { useLocation, useParams } from 'react-router'
+import { connect } from 'react-redux'
+import { Edit as EditIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import Header from '../../../components/Header'
+import { startCase, toLower } from 'lodash'
+import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
+import { orgsSelector } from '../../authentication/redux/reducer'
+import { CONTEXT } from '../constants'
+import { useQuery } from '../../../utils'
+import { NotFound } from '../../../components'
 
 interface Props {
   loading: boolean;

@@ -13,21 +13,18 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
-import { ArrayHelpers, ErrorMessage, Field } from "formik";
-import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
-import { MAP_TYPES, Option } from "../../../utils";
-import { Select, TextField } from "formik-material-ui";
-import React, { useEffect, useState } from "react";
-import { Mapping } from "../types";
-import api from "../api";
-import { APISource } from "../../sources";
-import { includes } from "lodash";
-import {
-  MoreVert as MoreVertIcon,
-  DeleteOutline as DeleteOutlineIcon
-} from "@material-ui/icons";
-import clsx from "clsx";
+} from '@material-ui/core'
+import { ArrayHelpers, ErrorMessage, Field } from 'formik'
+import { AsyncSelect, NestedErrorMessage } from '../../../utils/components'
+import { MAP_TYPES, Option } from '../../../utils'
+import { Select, TextField } from 'formik-material-ui'
+import React, { useEffect, useState } from 'react'
+import { Mapping } from '../types'
+import api from '../api'
+import { APISource } from '../../sources'
+import { includes } from 'lodash'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
+import clsx from 'clsx'
 
 interface ConceptOption extends Option {
   displayName: string;

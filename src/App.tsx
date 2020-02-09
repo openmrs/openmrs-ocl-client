@@ -1,20 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { AuthenticationRequired, LoginPage } from "./apps/authentication";
-import { Provider } from "react-redux";
-import store from "./redux";
-import { NavDrawer } from "./components";
+import React from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { AuthenticationRequired, LoginPage } from './apps/authentication'
+import { Provider } from 'react-redux'
+import store from './redux'
+import { Header, InProgressPage, NavDrawer } from './components'
 import DictionaryRoutes, {
   CreateDictionaryPage,
   ViewDictionariesPage,
   ViewPublicDictionariesPage
-} from "./apps/dictionaries";
-import ConceptRoutes, {
-  DICTIONARY_VERSION_CONTAINER,
-  ViewConceptsPage
-} from './apps/concepts'
-import { Header } from "./components";
-import { InProgressPage } from "./components";
+} from './apps/dictionaries'
+import ConceptRoutes, { DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from './apps/concepts'
 
 const AuthenticatedRoutes: React.FC = () => {
   return (

@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from "react";
-import { Button, Paper, Typography, Link, makeStyles } from "@material-ui/core";
-import { TRADITIONAL_OCL_URL } from "../../../utils/constants";
-import { Field, Form, Formik } from "formik";
-import * as Yup from "yup";
-import { TextField } from "formik-material-ui";
+import React, { useEffect, useRef } from 'react'
+import { Button, Link, makeStyles, Paper, Typography } from '@material-ui/core'
+import { TRADITIONAL_OCL_URL } from '../../../utils/constants'
+import { Field, Form, Formik } from 'formik'
+import * as Yup from 'yup'
+import { TextField } from 'formik-material-ui'
 
 interface Props {
   onSubmit: Function;

@@ -11,7 +11,7 @@ import {
 import { usePrevious } from "../../../utils";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { TextField, Select } from "formik-material-ui";
+import { Select, TextField } from "formik-material-ui";
 
 import { DictionaryVersion } from "../types";
 import uuid from "uuid";

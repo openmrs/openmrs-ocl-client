@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router";
-import qs from "qs";
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router'
+import qs from 'qs'
 
 export function usePrevious(value: any) {
   const ref = useRef();

@@ -1,25 +1,22 @@
-import React, { useEffect } from "react";
-import { DictionaryDetails, DictionaryForm, ReleasedVersions } from "../components";
-import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
-import { Edit as EditIcon } from "@material-ui/icons";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react'
+import { DictionaryDetails, DictionaryForm, ReleasedVersions } from '../components'
+import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
+import { Edit as EditIcon } from '@material-ui/icons'
+import { connect } from 'react-redux'
+import { APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion, } from '../types'
+import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
+import { APIOrg, APIProfile, canModifyContainer } from '../../authentication'
 import {
-  APIDictionary,
-  apiDictionaryToDictionary,
-  APIDictionaryVersion,
-  DictionaryVersion,
-} from '../types'
-import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
-import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
-import {
+  createDictionaryVersionAction,
+  createDictionaryVersionErrorSelector,
+  createDictionaryVersionLoadingSelector,
+  retrieveDictionaryAndDetailsAction,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector,
-  retrieveDictionaryAndDetailsAction,
-  createDictionaryVersionAction, createDictionaryVersionLoadingSelector, createDictionaryVersionErrorSelector,
 } from '../redux'
-import { AppState } from "../../../redux";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { CONTEXT } from "../constants";
+import { AppState } from '../../../redux'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { CONTEXT } from '../constants'
 
 interface Props {
   profile?: APIProfile;

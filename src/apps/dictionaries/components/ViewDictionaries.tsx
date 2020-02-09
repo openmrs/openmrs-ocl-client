@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -9,13 +9,13 @@ import {
   InputAdornment,
   makeStyles,
   Typography
-} from "@material-ui/core";
-import TablePagination from "@material-ui/core/TablePagination";
-import IconButton from "@material-ui/core/IconButton";
-import { Search as SearchIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import { APIDictionary } from "../types";
-import clsx from "clsx";
+} from '@material-ui/core'
+import TablePagination from '@material-ui/core/TablePagination'
+import IconButton from '@material-ui/core/IconButton'
+import { Search as SearchIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import { APIDictionary } from '../types'
+import clsx from 'clsx'
 
 const PER_PAGE = 20;
 

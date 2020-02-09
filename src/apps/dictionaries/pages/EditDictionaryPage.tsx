@@ -1,20 +1,20 @@
-import React, { useEffect } from "react";
-import { DictionaryForm } from "../components";
-import { Grid, Paper } from "@material-ui/core";
-import { connect } from "react-redux";
-import { Redirect, useLocation } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { DictionaryForm } from '../components'
+import { Grid, Paper } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { Redirect, useLocation } from 'react-router-dom'
 import {
-  editSourceAndDictionaryErrorsSelector,
-  editDictionaryProgressSelector,
   editDictionaryLoadingSelector,
+  editDictionaryProgressSelector,
+  editSourceAndDictionaryErrorsSelector,
   retrieveDictionaryLoadingSelector
-} from "../redux/selectors";
-import { APIDictionary, apiDictionaryToDictionary, Dictionary } from "../types";
-import { orgsSelector, profileSelector } from "../../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../../authentication";
-import { usePrevious } from "../../../utils";
-import { CONTEXT } from "../constants";
-import { ProgressOverlay } from "../../../utils/components";
+} from '../redux/selectors'
+import { APIDictionary, apiDictionaryToDictionary, Dictionary } from '../types'
+import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
+import { APIOrg, APIProfile } from '../../authentication'
+import { usePrevious } from '../../../utils'
+import { CONTEXT } from '../constants'
+import { ProgressOverlay } from '../../../utils/components'
 import { editSourceAndDictionaryAction, retrieveDictionaryAction } from '../redux/actions'
 
 interface Props {

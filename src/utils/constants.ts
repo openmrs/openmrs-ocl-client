@@ -1,4 +1,4 @@
-import { Option } from "./types";
+import { Option } from './types'
 
 export const BASE_URL: string = "http://localhost:8000";
 export const TRADITIONAL_OCL_URL = "https://demo.openconceptlab.org";

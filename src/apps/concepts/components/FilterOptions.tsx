@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
+  Button,
+  ButtonGroup,
   Checkbox,
   createStyles,
+  Input,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   makeStyles,
   Paper,
-  Input,
-  Theme,
-  ListSubheader,
-  Button,
-  ButtonGroup
-} from "@material-ui/core";
-import { DATA_TYPES, CONCEPT_CLASSES } from "../../../utils";
-import { Link } from "react-router-dom";
+  Theme
+} from '@material-ui/core'
+import { CONCEPT_CLASSES, DATA_TYPES } from '../../../utils'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

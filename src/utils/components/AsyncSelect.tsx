@@ -1,33 +1,22 @@
-import React, { CSSProperties, HTMLAttributes } from "react";
-import {
-  createStyles,
-  makeStyles,
-  useTheme,
-  Theme
-} from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import TextField, { BaseTextFieldProps } from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import { ValueContainerProps } from "react-select/src/components/containers";
-import { ControlProps } from "react-select/src/components/Control";
-import { MenuProps, NoticeProps } from "react-select/src/components/Menu";
-import { OptionProps } from "react-select/src/components/Option";
-import { PlaceholderProps } from "react-select/src/components/Placeholder";
-import { SingleValueProps } from "react-select/src/components/SingleValue";
-import { Omit } from "@material-ui/types";
-import {
-  components as ReactSelectComponents,
-  IndicatorProps
-} from "react-select";
-import AsyncPaginate from "react-select-async-paginate";
-import { Option } from "../types";
-import {
-  ArrowDropDown as ArrowDropDownIcon,
-  Close as CloseIcon
-} from "@material-ui/icons";
-import { CircularProgress } from "@material-ui/core";
-import { LoadingIconProps } from "react-select/src/components/indicators";
+import React, { CSSProperties, HTMLAttributes } from 'react'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import { ValueContainerProps } from 'react-select/src/components/containers'
+import { ControlProps } from 'react-select/src/components/Control'
+import { MenuProps, NoticeProps } from 'react-select/src/components/Menu'
+import { OptionProps } from 'react-select/src/components/Option'
+import { PlaceholderProps } from 'react-select/src/components/Placeholder'
+import { SingleValueProps } from 'react-select/src/components/SingleValue'
+import { Omit } from '@material-ui/types'
+import { components as ReactSelectComponents, IndicatorProps } from 'react-select'
+import AsyncPaginate from 'react-select-async-paginate'
+import { Option } from '../types'
+import { ArrowDropDown as ArrowDropDownIcon, Close as CloseIcon } from '@material-ui/icons'
+import { CircularProgress } from '@material-ui/core'
+import { LoadingIconProps } from 'react-select/src/components/indicators'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,9 +1,9 @@
-import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import Header from "../../components/Header";
-import { ViewDictionaryPage, EditDictionaryPage } from "./pages";
-import { DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from "../concepts";
-import AddBulkConceptsPage from "./pages/AddBulkConceptsPage";
+import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import Header from '../../components/Header'
+import { EditDictionaryPage, ViewDictionaryPage } from './pages'
+import { DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from '../concepts'
+import AddBulkConceptsPage from './pages/AddBulkConceptsPage'
 
 const Routes: React.FC = () => {
   // @ts-ignore

@@ -1,16 +1,8 @@
-import React, { useState } from "react";
-import {
-  Button,
-  createStyles,
-  Grid,
-  makeStyles,
-  TextField,
-  Theme,
-  Typography
-} from "@material-ui/core";
-import { addCIELConceptsToDictionaryAction } from "../redux";
-import { useLocation } from "react-router";
-import { connect } from "react-redux";
+import React, { useState } from 'react'
+import { Button, createStyles, Grid, makeStyles, TextField, Theme, Typography } from '@material-ui/core'
+import { addCIELConceptsToDictionaryAction } from '../redux'
+import { useLocation } from 'react-router'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

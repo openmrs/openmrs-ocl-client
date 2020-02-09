@@ -1,7 +1,7 @@
-import React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
-import {ViewConceptPage, ViewConceptsPage, CreateOrEditConceptPage} from "./pages";
-import { DICTIONARY_CONTAINER } from "./constants";
+import React from 'react'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { CreateOrEditConceptPage, ViewConceptPage, ViewConceptsPage } from './pages'
+import { DICTIONARY_CONTAINER } from './constants'
 
 interface Props {
   viewConcepts?: boolean;

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { Redirect } from "react-router-dom";
-import { Grid, Container, Typography, makeStyles } from "@material-ui/core";
-import { Login } from "./components";
-import { connect } from "react-redux";
-import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
-import { loginAction } from "./redux/actions";
+import React, { useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
+import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Login } from './components'
+import { connect } from 'react-redux'
+import { authErrorsSelector, authLoadingSelector } from './redux/reducer'
+import { loginAction } from './redux/actions'
 
 interface Props {
   isLoggedIn: boolean;

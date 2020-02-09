@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  createStyles,
-  CircularProgress,
-  makeStyles,
-  Theme,
-} from "@material-ui/core";
+import React from 'react'
+import { CircularProgress, createStyles, makeStyles, Theme, } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

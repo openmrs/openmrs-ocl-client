@@ -1,13 +1,13 @@
-import { AnyAction } from "redux";
-import { indexedAction, loadingSelector, errorSelector } from "../../../redux";
+import { AnyAction } from 'redux'
+import { errorSelector, indexedAction, loadingSelector } from '../../../redux'
 import {
-  GET_USER_DETAILS_ACTION,
   GET_PROFILE_ACTION,
+  GET_USER_DETAILS_ACTION,
   GET_USER_ORGS_ACTION,
   LOGIN_ACTION,
   LOGOUT_ACTION
-} from "./actionTypes";
-import { AuthState } from "../types";
+} from './actionTypes'
+import { AuthState } from '../types'
 
 const initialState: AuthState = {
   isLoggedIn: false

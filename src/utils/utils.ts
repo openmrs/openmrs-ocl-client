@@ -1,5 +1,5 @@
-import { LOCALES } from "./constants";
-import { snakeCase } from "lodash";
+import { LOCALES } from './constants'
+import { snakeCase } from 'lodash'
 
 export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||

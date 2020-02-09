@@ -1,41 +1,23 @@
-import React, { useEffect, useState } from "react";
-import Header from "../../../components/Header";
-import {
-  Fab,
-  Grid,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Tooltip
-} from "@material-ui/core";
-import { ConceptsTable } from "../components";
-import { connect } from "react-redux";
-import {
-  retrieveConceptsAction
-} from "../redux";
-import { AppState } from "../../../redux";
-import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
-import { useLocation, useHistory, useParams } from "react-router";
+import React, { useEffect, useState } from 'react'
+import Header from '../../../components/Header'
+import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
+import { ConceptsTable } from '../components'
+import { connect } from 'react-redux'
+import { retrieveConceptsAction, viewConceptsErrorsSelector, viewConceptsLoadingSelector } from '../redux'
+import { AppState } from '../../../redux'
+import { APIConcept, OptionalQueryParams as QueryParams } from '../types'
+import { useHistory, useLocation, useParams } from 'react-router'
 import { CONCEPT_CLASSES, useAnchor, useQuery } from '../../../utils'
-import qs from "qs";
-import { ProgressOverlay } from "../../../utils/components";
-import FilterOptions from "../components/FilterOptions";
-import { Add as AddIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import {
-  APIOrg,
-  APIProfile,
-  canModifyContainer,
-  profileSelector
-} from "../../authentication";
-import { orgsSelector } from "../../authentication/redux/reducer";
-import {
-  CIEL_CONCEPTS_URL,
-  DICTIONARY_VERSION_CONTAINER,
-} from "../constants";
-import { CIEL_SOURCE_URL } from "../../../utils/constants";
-import { addCIELConceptsToDictionaryAction } from "../../dictionaries/redux";
-import { viewConceptsErrorsSelector, viewConceptsLoadingSelector } from '../redux'
+import qs from 'qs'
+import { ProgressOverlay } from '../../../utils/components'
+import FilterOptions from '../components/FilterOptions'
+import { Add as AddIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
+import { orgsSelector } from '../../authentication/redux/reducer'
+import { CIEL_CONCEPTS_URL, DICTIONARY_VERSION_CONTAINER, } from '../constants'
+import { CIEL_SOURCE_URL } from '../../../utils/constants'
+import { addCIELConceptsToDictionaryAction } from '../../dictionaries/redux'
 
 interface Props {
   concepts?: APIConcept[];

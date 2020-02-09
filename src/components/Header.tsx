@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react'
 import {
   AppBar,
+  Badge,
   createStyles,
   Grid,
   IconButton,
   makeStyles,
   Theme,
   Toolbar,
-  Typography,
-  Badge,
-  Tooltip
-} from "@material-ui/core";
-import { NotificationsOutlined as NotificationsIcon } from "@material-ui/icons";
-import { connect } from "react-redux";
-import {
-  addConceptsToDictionaryLoadingListSelector,
-} from "../apps/dictionaries";
-import { AppState } from "../redux";
-import { Link } from "react-router-dom";
+  Tooltip,
+  Typography
+} from '@material-ui/core'
+import { NotificationsOutlined as NotificationsIcon } from '@material-ui/icons'
+import { connect } from 'react-redux'
+import { addConceptsToDictionaryLoadingListSelector, } from '../apps/dictionaries'
+import { AppState } from '../redux'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

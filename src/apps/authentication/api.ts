@@ -1,4 +1,4 @@
-import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
+import { authenticatedInstance, unAuthenticatedInstance } from '../../api'
 
 const api = {
   login: (username: string, password: string) =>
