@@ -257,6 +257,9 @@ const ConceptForm: React.FC<Props> = ({
         if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
       });
     });
+  // i don't know hoe the comparison algorithm works, but for this array, it fails.
+  // stringify the array to work around that
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allMappingErrors.toString()]);
 
   return (

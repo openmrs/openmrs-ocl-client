@@ -211,7 +211,6 @@ const MappingsTableRow: React.FC<Props> = ({
     to_source_url: toSourceUrl,
     to_concept_url: toConceptUrl,
     to_concept_name: toConceptName,
-    to_concept_code: toConceptCode,
     url,
     retired
   } = value;
@@ -238,12 +237,18 @@ const MappingsTableRow: React.FC<Props> = ({
           MAP_TYPES[isInternalMapping ? 0 : 1].value
         )
       );
+  // usually doing the following is a mistake and will bite us later
+  // we do it here because updating the default map_type should only ever be triggered when this changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInternalMapping]);
 
   // update map_type from fixed map_type
   useEffect(() => {
     if (fixedMappingType)
       handleChange(buildEvent(`${valueKey}.map_type`, fixedMappingType.value));
+    // usually doing the following is a mistake and will bite us later
+    // we do it here because setting the fixed map_type should only ever be triggered once. We only include fixedMappingType for sanity
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedMappingType]);
 
   return (

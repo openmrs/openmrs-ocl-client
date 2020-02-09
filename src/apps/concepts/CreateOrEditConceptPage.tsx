@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Fab, Grid, Icon, Menu, MenuItem, Tooltip } from "@material-ui/core";
+import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "./components";
 import { AppState } from "../../redux";
 import { retrieveConceptAction, upsertConceptAndMappingsAction } from "./redux";
@@ -16,7 +16,6 @@ import { startCase, toLower } from "lodash";
 import { useAnchor, usePrevious, useQuery } from "../../utils";
 import { CONTEXT } from "./constants";
 import {
-  Add as AddIcon,
   Pageview as PageViewIcon,
   MoreVert as MenuIcon,
   DeleteSweepOutlined as DeleteIcon,
@@ -81,7 +80,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 
   useEffect(() => {
     // only retrieve the concept if the context was edit at the beginning
+    // otherwise we obviously have nothing to edit
     if (originallyEditing) retrieveConcept(conceptUrl);
+  // usually doing the following is a mistake and will bite us later
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (fetchLoading) {

@@ -13,13 +13,12 @@ import {
   Theme,
   Typography
 } from "@material-ui/core";
-import { ArrayHelpers, ErrorMessage, FormikTouched } from "formik";
+import { ArrayHelpers, ErrorMessage } from "formik";
 import React, { useState } from "react";
 import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
 import {
-  DeleteOutline as DeleteOutlineIcon,
   MoreVert as MenuIcon,
 } from "@material-ui/icons";
 

@@ -132,6 +132,9 @@ const ViewConceptsPage: React.FC<Props> = ({
       initialDataTypeFilters,
       initialClassFilters
     );
+  // i don't know hoe the comparison algorithm works, but for these arrays, it fails.
+  // stringify the arrays to work around that
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     retrieveConcepts,
     url,
@@ -140,7 +143,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialQ,
     sortDirection,
     sortBy,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     initialDataTypeFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     initialClassFilters.toString()
   ]);
 

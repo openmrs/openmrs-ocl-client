@@ -1,13 +1,9 @@
 import React from "react";
 import {
-  AppBar,
   createStyles,
-  Grid,
   CircularProgress,
   makeStyles,
   Theme,
-  Toolbar,
-  Typography
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>

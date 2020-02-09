@@ -1,7 +1,6 @@
 import React, { CSSProperties, HTMLAttributes } from "react";
 import {
   createStyles,
-  emphasize,
   makeStyles,
   useTheme,
   Theme

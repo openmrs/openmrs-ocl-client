@@ -15,7 +15,6 @@ import { NotificationsOutlined as NotificationsIcon } from "@material-ui/icons";
 import { connect } from "react-redux";
 import {
   addConceptsToDictionaryLoadingListSelector,
-  addConceptsToDictionaryProgressListSelector
 } from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link } from "react-router-dom";

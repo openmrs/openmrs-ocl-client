@@ -1,4 +1,4 @@
-import { LOCALES, USER_TYPE } from "./constants";
+import { LOCALES } from "./constants";
 import { snakeCase } from "lodash";
 
 export const findLocale = (localeCode: string, fallback = "en") =>

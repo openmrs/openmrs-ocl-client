@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   }
 });
 
-const InProgressPage: React.FC<Props> = ({
+const ActionsInProgressPage: React.FC<Props> = ({
   loadingList = [],
   inProgressList = [],
   erroredList = [],
@@ -181,4 +181,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(InProgressPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ActionsInProgressPage);
