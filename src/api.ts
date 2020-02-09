@@ -1,6 +1,9 @@
-import axios, { AxiosTransformer } from 'axios'
-import { BASE_URL } from './utils'
-import { addAuthToken, redirectIfNotLoggedIn } from './apps/authentication/utils' // failed to respect module here because of a circular import issue
+import axios, { AxiosTransformer } from "axios";
+import { BASE_URL } from "./utils";
+import {
+  addAuthToken,
+  redirectIfNotLoggedIn
+} from "./apps/authentication/utils"; // failed to respect module here because of a circular import issue
 
 axios.defaults.headers.common["Content-Type"] = "application/json";
 

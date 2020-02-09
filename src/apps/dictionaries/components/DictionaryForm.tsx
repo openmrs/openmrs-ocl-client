@@ -1,14 +1,22 @@
-import React, { useEffect, useRef } from 'react'
-import { Button, FormControl, InputLabel, ListSubheader, makeStyles, MenuItem, Typography } from '@material-ui/core'
-import { getPrettyError, LOCALES } from '../../../utils'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import { Select, TextField } from 'formik-material-ui'
-import { snakeCase } from 'lodash'
+import React, { useEffect, useRef } from "react";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  makeStyles,
+  MenuItem,
+  Typography
+} from "@material-ui/core";
+import { getPrettyError, LOCALES } from "../../../utils";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { Select, TextField } from "formik-material-ui";
+import { snakeCase } from "lodash";
 
-import { Dictionary } from '../types'
-import { APIOrg, APIProfile } from '../../authentication'
-import { CONTEXT } from '../constants'
+import { Dictionary } from "../types";
+import { APIOrg, APIProfile } from "../../authentication";
+import { CONTEXT } from "../constants";
 
 interface Props {
   onSubmit?: Function;

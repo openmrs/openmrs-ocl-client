@@ -5,6 +5,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
   MenuItem,
   Typography
 } from "@material-ui/core";
@@ -84,27 +86,34 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   margin="normal"
                   component={TextField}
                 />
-                <Field
+                <FormControl
                   fullWidth
-                  id="released"
-                  name="released"
-                  label="Release?"
+                  // required
                   margin="normal"
-                  component={Select}
                 >
-                  <MenuItem
-                    // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                    value={false}
+                  <InputLabel htmlFor="released">Release</InputLabel>
+                  <Field
+                    fullWidth
+                    id="released"
+                    name="released"
+                    label="Release?"
+                    margin="normal"
+                    component={Select}
                   >
-                    No
-                  </MenuItem>
-                  <MenuItem
-                    // @ts-ignore
-                    value={true}
-                  >
-                    Yes
-                  </MenuItem>
-                </Field>
+                    <MenuItem
+                      // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                      value={false}
+                    >
+                      No
+                    </MenuItem>
+                    <MenuItem
+                      // @ts-ignore
+                      value={true}
+                    >
+                      Yes
+                    </MenuItem>
+                  </Field>
+                </FormControl>
                 <Field
                   fullWidth
                   multiline
