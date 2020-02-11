@@ -42,7 +42,7 @@ const ViewConceptPage: React.FC<Props> = ({
   }>();
   const { linkedDictionary } = useQuery();
 
-  const canModifySource = canModifyContainer(
+  const showEditButton = canModifyContainer(
     ownerType,
     owner,
     profile,
@@ -64,7 +64,6 @@ const ViewConceptPage: React.FC<Props> = ({
       title={startCase(
         toLower(concept ? concept.display_name : "View concept")
       )}
-      backUrl={linkedDictionary ? `${linkedDictionary}concepts/` : undefined}
     >
       <Grid id="viewConceptPage" item xs={8} component="div">
         <ConceptForm
@@ -73,7 +72,7 @@ const ViewConceptPage: React.FC<Props> = ({
           errors={errors}
         />
       </Grid>
-      {!canModifySource ? null : (
+      {!showEditButton ? null : (
         <Link to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
           <Tooltip title="Edit this concept">
             <Fab color="primary" className="fab">

@@ -15,10 +15,16 @@ import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
 import { orgsSelector } from '../../authentication/redux/reducer'
-import { CIEL_CONCEPTS_URL, DICTIONARY_VERSION_CONTAINER, FILTER_SOURCE_IDS, } from '../constants'
-import { CIEL_SOURCE_URL } from '../../../utils/constants'
+import {
+  CIEL_CONCEPTS_URL,
+  DICTIONARY_CONTAINER,
+  DICTIONARY_VERSION_CONTAINER,
+  FILTER_SOURCE_IDS,
+  SOURCE_CONTAINER,
+} from '../constants'
+import { CIEL_SOURCE_URL } from '../../../utils'
 import { addCIELConceptsToDictionaryAction } from '../../dictionaries/redux'
-import { getSourceIdFromUrl } from '../utils'
+import { canModifyConcept, getSourceIdFromUrl } from '../utils'
 
 interface Props {
   concepts?: APIConcept[];
@@ -55,7 +61,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const isDictionaryVersion = containerType === DICTIONARY_VERSION_CONTAINER;
+  const isDictionaryVersionContainer = containerType === DICTIONARY_VERSION_CONTAINER;
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
   const dictionaryUrl = url.replace("/concepts", "");
@@ -63,7 +69,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const {linkedSource} = useQuery();
+  const {linkedSource} = useQuery();  // only relevant when using collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
@@ -94,8 +100,6 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
   const [sourceFilters, setSourceFilters] = useState<string[]>(initialSourceFilters);
   const [q, setQ] = useState(initialQ);
-  const canModify =
-    !isDictionaryVersion && canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   const gimmeAUrl = (params: QueryParams={}) => {
     const newParams: QueryParams = {
@@ -146,9 +150,13 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialSourceFilters.toString(),
   ]);
 
+  const canModifyDictionary =
+    (containerType === DICTIONARY_CONTAINER) && canModifyContainer(ownerType, owner, profile, usersOrgs);
+  console.log(containerType, ownerType, owner, profile, usersOrgs, canModifyContainer(ownerType, owner, profile, usersOrgs))
+
   return (
     <>
-      <Header title="Concepts" justifyChildren="space-around" backUrl={!isDictionaryVersion ? dictionaryUrl : undefined}>
+      <Header title="Concepts" justifyChildren="space-around" backUrl={!isDictionaryVersionContainer ? dictionaryUrl : undefined}>
         <ProgressOverlay loading={loading}>
           <Grid
             id="viewConceptsPage"
@@ -159,8 +167,8 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModify && !!dictionaryUrl,
-                addToDictionary: !!dictionaryToAddTo,
+                edit: canModifyDictionary,  // relevant for DICTIONARY_CONTAINER
+                addToDictionary: (containerType === SOURCE_CONTAINER) && !!dictionaryToAddTo,  // relevant for SOURCE_CONTAINER
               }}
               q={q}
               setQ={setQ}
@@ -170,19 +178,14 @@ const ViewConceptsPage: React.FC<Props> = ({
               limit={Number(limit)}
               buildUrl={gimmeAUrl}
               goTo={goTo}
-              count={
-                meta.num_found
-                  ? Number(meta.num_found)
-                  : concepts
-                  ? concepts.length
-                  : 0
-              }
+              count={meta.num_found || concepts?.length || 0}
               toggleShowOptions={() => setShowOptions(!showOptions)}
               addConceptsToDictionary={(concepts: APIConcept[]) =>
                 addConceptsToDictionary(dictionaryToAddTo, concepts)
               }
               linkedDictionary={dictionaryUrl}
               linkedSource={linkedSource}
+              canModifyConcept={(concept: APIConcept) => canModifyConcept(concept.url, profile, usersOrgs)}
             />
           </Grid>
           {!showOptions ? (
@@ -204,7 +207,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           )}
         </ProgressOverlay>
       </Header>
-      {(!canModify || (containerType === DICTIONARY_VERSION_CONTAINER)) ? null : (
+      {!canModifyDictionary ? null : (
         <>
           <Tooltip title="Add concepts">
             <Fab onClick={handleAddNewClick} color="primary" className="fab">

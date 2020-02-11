@@ -9,7 +9,8 @@ import DictionaryRoutes, {
   ViewDictionariesPage,
   ViewPublicDictionariesPage
 } from './apps/dictionaries'
-import ConceptRoutes, { DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from './apps/concepts'
+import ConceptRoutes, { DICTIONARY_CONTAINER, DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from './apps/concepts'
+import { SOURCE_CONTAINER } from './apps/concepts/constants'
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -31,10 +32,10 @@ const AuthenticatedRoutes: React.FC = () => {
         </Header>
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
-        <ConceptRoutes editConcept={true} newConcept={true} viewConcept={true} viewConcepts={true} />
+        <ConceptRoutes containerType={SOURCE_CONTAINER} editConcept={true} newConcept={true} viewConcept={true} viewConcepts={true} />
       </Route>
       <Route path="/:ownerType/:owner/collections/:collection/concepts">
-        <ConceptRoutes viewConcepts={true} />
+        <ConceptRoutes containerType={DICTIONARY_CONTAINER} viewConcepts={true} />
       </Route>
       <Route
         path="/:ownerType/:owner/collections/:collection/concepts/"

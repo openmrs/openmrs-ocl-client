@@ -1,20 +1,21 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import { CreateOrEditConceptPage, ViewConceptPage, ViewConceptsPage } from './pages'
-import { DICTIONARY_CONTAINER } from './constants'
 
 interface Props {
   viewConcepts?: boolean;
   newConcept?: boolean;
   viewConcept?: boolean;
   editConcept?: boolean;
+  containerType: string;
 }
 
 const Routes: React.FC<Props> = ({
+  containerType,
   viewConcepts = false,
   newConcept = false,
   viewConcept = false,
-  editConcept = false
+  editConcept = false,
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();
@@ -23,7 +24,7 @@ const Routes: React.FC<Props> = ({
     <Switch>
       {!viewConcepts ? null : (
         <Route exact path={`${path}/`}>
-          <ViewConceptsPage containerType={DICTIONARY_CONTAINER} />
+          <ViewConceptsPage containerType={containerType} />
         </Route>
       )}
       {!newConcept ? null : (

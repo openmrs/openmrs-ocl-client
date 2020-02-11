@@ -59,6 +59,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
     profile,
     usersOrgs
   );
+  const showEditButton = canEditDictionary;
 
   const linkedSource = dictionary?.extras?.source || '';
 
@@ -93,7 +94,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
             <ReleasedVersions
               versions={versions}
               subscriptionUrl={url}
-              canEditDictionary={canEditDictionary}
+              showCreateVersionButton={canEditDictionary}
               createDictionaryVersion={(data: DictionaryVersion) => createDictionaryVersion(url, data)}
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
@@ -103,7 +104,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
           )}
         </Grid>
       </Grid>
-      {!canEditDictionary ? null : (
+      {!showEditButton ? null : (
         <Link to={`${url}edit/`}>
           <Tooltip title="Edit this dictionary">
             <Fab color="primary" className="fab">

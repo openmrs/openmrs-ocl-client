@@ -32,6 +32,7 @@ interface Props extends QueryParams {
   addConceptsToDictionary: Function;
   linkedDictionary?: string;
   linkedSource?: string;
+  canModifyConcept: (concept: APIConcept) => boolean;
 }
 
 interface HeadCell {
@@ -270,6 +271,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+function showEditMenuItem(concept: APIConcept, showingEditButtons: boolean, linkedSource: string|undefined, canModifyConcept: (concept: APIConcept) => boolean) {
+  // only allow edit of a concept we can modify and belongs to our linked source
+  // the second condition prevents us editing non custom concepts in a collection
+  return showingEditButtons && canModifyConcept(concept) && linkedSource && concept.url.includes(linkedSource);
+}
+
 const ConceptsTable: React.FC<Props> = ({
   concepts,
   buildUrl,
@@ -288,6 +295,7 @@ const ConceptsTable: React.FC<Props> = ({
   linkedDictionary,
   // source to store new concepts in and use as criteria for whether a user can edit a concept
   linkedSource,
+  canModifyConcept,
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -420,11 +428,7 @@ const ConceptsTable: React.FC<Props> = ({
                     <TableCell className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
-                        to={`${row.version_url}${
-                          buttons.edit && linkedDictionary
-                            ? `?linkedDictionary=${linkedDictionary}`
-                            : ""
-                        }`}
+                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
                       >
                         {row.display_name}
                       </Link>
@@ -455,9 +459,7 @@ const ConceptsTable: React.FC<Props> = ({
                         >
                           {isSelected(row.id) ? "Deselect" : "Select"}
                         </MenuItem>
-                        {!buttons.edit ||
-                        !linkedSource ||
-                        !row.url.includes(linkedSource) ? null : (
+                        {!showEditMenuItem(row, buttons.edit, linkedSource, canModifyConcept) ? null : (
                           <MenuItem onClick={() => toggleMenu(index)}>
                             <Link
                               className={classes.buttonLink}

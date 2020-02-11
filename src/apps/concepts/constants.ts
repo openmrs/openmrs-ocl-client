@@ -1,18 +1,12 @@
-const DICTIONARY_CONTAINER = "dictionary";
-const DICTIONARY_VERSION_CONTAINER = "dictionaryVersion";
-const CIEL_CONCEPTS_URL = "/orgs/CIEL/sources/CIEL/concepts/";
+export const DICTIONARY_CONTAINER = "dictionary";
+export const DICTIONARY_VERSION_CONTAINER = "dictionaryVersion";
+export const SOURCE_CONTAINER = "source";
+export const CIEL_CONCEPTS_URL = "/orgs/CIEL/sources/CIEL/concepts/";
 
 export const FILTER_SOURCE_IDS = ['CIEL'];
 
-const CONTEXT = {
+export const CONTEXT = {
   create: "create",
   view: "view",
   edit: "edit"
-};
-
-export {
-  DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER,
-  CIEL_CONCEPTS_URL,
-  CONTEXT
 };

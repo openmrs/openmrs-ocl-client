@@ -217,6 +217,8 @@ const ConceptForm: React.FC<Props> = ({
   }, [savedValues]);
 
   useEffect(() => {
+    // fun one, ain't it? any who, we need to manually add a url to each mapping
+    // This is the only indicator that a concept has been created and is being edited going forward
     const { current: currentRef } = formikRef;
     if (!currentRef || !savedValues) return;
 
@@ -239,7 +241,7 @@ const ConceptForm: React.FC<Props> = ({
   }, [errors]);
 
   useEffect(() => {
-    // fun one, ain't it? any who, we need to manually copy mapping errors from redux into formik
+    // another fun one, we need to manually copy mapping errors from redux into formik
     const { current: currentRef } = formikRef;
     if (!currentRef) return;
 

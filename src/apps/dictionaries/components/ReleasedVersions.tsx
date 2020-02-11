@@ -22,7 +22,7 @@ import DictionaryVersionForm from './DictionaryVersionForm'
 interface Props {
   versions: APIDictionaryVersion[];
   subscriptionUrl: string;
-  canEditDictionary: boolean;
+  showCreateVersionButton: boolean;
   createDictionaryVersion: Function;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 const ReleasedVersions: React.FC<Props> = ({
   versions,
   subscriptionUrl,
-  canEditDictionary,
+  showCreateVersionButton,
   createDictionaryVersion,
   createVersionLoading,
   createVersionError,
@@ -84,6 +84,7 @@ const ReleasedVersions: React.FC<Props> = ({
                       <Button size="small" variant="text" color="primary">
                         <Link
                           className={classes.link}
+                          // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
                           to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
                         >
                           View concepts
@@ -105,7 +106,7 @@ const ReleasedVersions: React.FC<Props> = ({
               <Button>Copy subscription URL</Button>
             </Tooltip>
           </CopyToClipboard>
-          {!canEditDictionary ? null : (
+          {!showCreateVersionButton ? null : (
             <Button onClick={handleClickOpen}>Release new version</Button>
           )}
         </ButtonGroup>

@@ -57,7 +57,7 @@ export const upsertConceptAndMappingsAction = (
         ];
     response = await dispatch(action<APIConcept>(url, concept));
 
-    if (typeof response === "boolean") {
+    if (response === false) {
       // I think that at this point, it is generally sane not to try dealing with the mappings if the concept can't be updated. todo could improve.
       dispatch(
         progressAction(
@@ -69,7 +69,7 @@ export const upsertConceptAndMappingsAction = (
       return false;
     }
 
-    const conceptResponse: APIConcept = response;
+    const conceptResponse: APIConcept = response as APIConcept;
 
     await dispatch(resetAction(UPSERT_MAPPING_ACTION));
 
@@ -126,18 +126,23 @@ export const upsertConceptAndMappingsAction = (
       ]);
 
       for (const [mapping, action, url] of actions) {
-        // See point below about race condition
-        await dispatch(action(url, mapping));
+        // See point below about race condition. We want to stop immediately any of these fails
+        const response = await dispatch(action(url, mapping));
+        if (response === false) return false;
       }
+
+      return true;
     };
 
     // I know you're thinking, oh, we could have done these in parallel
     // I see your in-parallel and raise you my race-condition
     // If a user duplicates a mapping say in answers and sets, we want to be able to sequentially point this out
     // todo some more robust error handling
-    await upsertMappings(answers, ANSWERS_BATCH_INDEX, "answers");
-    await upsertMappings(sets, SETS_BATCH_INDEX, "sets");
-    await upsertMappings(mappings, MAPPINGS_BATCH_INDEX, "mappings");
+    const mappingsToProcess: [Mapping[], number, string][] = [[answers, ANSWERS_BATCH_INDEX, "answers"], [sets, SETS_BATCH_INDEX, "sets"], [mappings, MAPPINGS_BATCH_INDEX, "mappings"]];
+    for (const [values, batchIndex, message] of mappingsToProcess) {
+      const response = await upsertMappings(values, batchIndex, message);
+      if (response === false) break;
+    }
 
     if (linkedDictionary) {
       dispatch(
