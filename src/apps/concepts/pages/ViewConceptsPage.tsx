@@ -1,30 +1,50 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../../components/Header'
-import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
-import { ConceptsTable } from '../components'
-import { connect } from 'react-redux'
-import { retrieveConceptsAction, viewConceptsErrorsSelector, viewConceptsLoadingSelector } from '../redux'
-import { AppState } from '../../../redux'
-import { APIConcept, OptionalQueryParams as QueryParams } from '../types'
-import { useHistory, useLocation, useParams } from 'react-router'
-import { CONCEPT_CLASSES, useAnchor, useQuery } from '../../../utils'
-import qs from 'qs'
-import { ProgressOverlay } from '../../../utils/components'
-import FilterOptions from '../components/FilterOptions'
-import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
-import { orgsSelector } from '../../authentication/redux/reducer'
+import React, { useEffect, useState } from "react";
+import Header from "../../../components/Header";
+import {
+  Fab,
+  Grid,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Tooltip
+} from "@material-ui/core";
+import { ConceptsTable } from "../components";
+import { connect } from "react-redux";
+import {
+  retrieveConceptsAction,
+  viewConceptsErrorsSelector,
+  viewConceptsLoadingSelector
+} from "../redux";
+import { AppState } from "../../../redux";
+import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
+import { useHistory, useLocation, useParams } from "react-router";
+import {
+  CIEL_SOURCE_URL,
+  CONCEPT_CLASSES,
+  useAnchor,
+  useQuery
+} from "../../../utils";
+import qs from "qs";
+import { ProgressOverlay } from "../../../utils/components";
+import FilterOptions from "../components/FilterOptions";
+import { Add as AddIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector
+} from "../../authentication";
+import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   CIEL_CONCEPTS_URL,
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
-  SOURCE_CONTAINER,
-} from '../constants'
-import { CIEL_SOURCE_URL } from '../../../utils'
-import { addCIELConceptsToDictionaryAction } from '../../dictionaries/redux'
-import { canModifyConcept, getSourceIdFromUrl } from '../utils'
+  SOURCE_CONTAINER
+} from "../constants";
+import { addCIELConceptsToDictionaryAction } from "../../dictionaries/redux";
+import { canModifyConcept, getSourceIdFromUrl } from "../utils";
 
 interface Props {
   concepts?: APIConcept[];
@@ -46,7 +66,7 @@ const useStyles = makeStyles({
   }
 });
 
-const INITIAL_LIMIT = 10;  // todo get limit from settings
+const INITIAL_LIMIT = 10; // todo get limit from settings
 
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
@@ -61,7 +81,8 @@ const ViewConceptsPage: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const isDictionaryVersionContainer = containerType === DICTIONARY_VERSION_CONTAINER;
+  const isDictionaryVersionContainer =
+    containerType === DICTIONARY_VERSION_CONTAINER;
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
   const dictionaryUrl = url.replace("/concepts", "");
@@ -69,11 +90,15 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const {linkedSource} = useQuery();  // only relevant when using collection container
+  const { linkedSource } = useQuery(); // only relevant when using collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
-  const [importExistingAnchor, handleImportExistingClick, handleImportExistingClose] = useAnchor();
+  const [
+    importExistingAnchor,
+    handleImportExistingClick,
+    handleImportExistingClose
+  ] = useAnchor();
 
   const queryParams: QueryParams = useQuery();
   const {
@@ -98,10 +123,12 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
-  const [sourceFilters, setSourceFilters] = useState<string[]>(initialSourceFilters);
+  const [sourceFilters, setSourceFilters] = useState<string[]>(
+    initialSourceFilters
+  );
   const [q, setQ] = useState(initialQ);
 
-  const gimmeAUrl = (params: QueryParams={}) => {
+  const gimmeAUrl = (params: QueryParams = {}) => {
     const newParams: QueryParams = {
       ...queryParams,
       ...{
@@ -129,11 +156,11 @@ const ViewConceptsPage: React.FC<Props> = ({
       initialDataTypeFilters,
       initialClassFilters,
       initialSourceFilters,
-      true,
+      true
     );
-  // i don't know how the comparison algorithm works, but for these arrays, it fails.
-  // stringify the arrays to work around that
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // i don't know how the comparison algorithm works, but for these arrays, it fails.
+    // stringify the arrays to work around that
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     retrieveConcepts,
     url,
@@ -147,16 +174,28 @@ const ViewConceptsPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialClassFilters.toString(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialSourceFilters.toString(),
+    initialSourceFilters.toString()
   ]);
 
   const canModifyDictionary =
-    (containerType === DICTIONARY_CONTAINER) && canModifyContainer(ownerType, owner, profile, usersOrgs);
-  console.log(containerType, ownerType, owner, profile, usersOrgs, canModifyContainer(ownerType, owner, profile, usersOrgs))
+    containerType === DICTIONARY_CONTAINER &&
+    canModifyContainer(ownerType, owner, profile, usersOrgs);
+  console.log(
+    containerType,
+    ownerType,
+    owner,
+    profile,
+    usersOrgs,
+    canModifyContainer(ownerType, owner, profile, usersOrgs)
+  );
 
   return (
     <>
-      <Header title="Concepts" justifyChildren="space-around" backUrl={!isDictionaryVersionContainer ? dictionaryUrl : undefined}>
+      <Header
+        title="Concepts"
+        justifyChildren="space-around"
+        backUrl={!isDictionaryVersionContainer ? dictionaryUrl : undefined}
+      >
         <ProgressOverlay loading={loading}>
           <Grid
             id="viewConceptsPage"
@@ -167,8 +206,9 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModifyDictionary,  // relevant for DICTIONARY_CONTAINER
-                addToDictionary: (containerType === SOURCE_CONTAINER) && !!dictionaryToAddTo,  // relevant for SOURCE_CONTAINER
+                edit: canModifyDictionary, // relevant for DICTIONARY_CONTAINER
+                addToDictionary:
+                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo // relevant for SOURCE_CONTAINER
               }}
               q={q}
               setQ={setQ}
@@ -185,7 +225,9 @@ const ViewConceptsPage: React.FC<Props> = ({
               }
               linkedDictionary={dictionaryUrl}
               linkedSource={linkedSource}
-              canModifyConcept={(concept: APIConcept) => canModifyConcept(concept.url, profile, usersOrgs)}
+              canModifyConcept={(concept: APIConcept) =>
+                canModifyConcept(concept.url, profile, usersOrgs)
+              }
             />
           </Grid>
           {!showOptions ? (
@@ -200,7 +242,12 @@ const ViewConceptsPage: React.FC<Props> = ({
                 checkedSources={sourceFilters}
                 setCheckedSources={setSourceFilters}
                 // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
-                sourceOptions={[...FILTER_SOURCE_IDS, getSourceIdFromUrl(linkedSource)].filter(source => source !== undefined) as string[]}
+                sourceOptions={
+                  [
+                    ...FILTER_SOURCE_IDS,
+                    getSourceIdFromUrl(linkedSource)
+                  ].filter(source => source !== undefined) as string[]
+                }
                 url={gimmeAUrl()}
               />
             </Grid>
@@ -220,11 +267,21 @@ const ViewConceptsPage: React.FC<Props> = ({
             open={Boolean(addNewAnchor)}
             onClose={handleAddNewClose}
           >
-            <MenuItem onClick={e => {handleImportExistingClick(e); handleAddNewClose()}}>
+            <MenuItem
+              onClick={e => {
+                handleImportExistingClick(e);
+                handleAddNewClose();
+              }}
+            >
               Import existing concept
             </MenuItem>
             {!linkedSource ? null : (
-              <MenuItem onClick={e => {handleCustomClick(e); handleAddNewClose()}}>
+              <MenuItem
+                onClick={e => {
+                  handleCustomClick(e);
+                  handleAddNewClose();
+                }}
+              >
                 Create custom concept
               </MenuItem>
             )}
@@ -248,7 +305,10 @@ const ViewConceptsPage: React.FC<Props> = ({
           </MenuItem>
         ))}
         <MenuItem onClick={handleCustomClose}>
-          <Link className={classes.link} to={`${linkedSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}>
+          <Link
+            className={classes.link}
+            to={`${linkedSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}
+          >
             Other kind
           </Link>
         </MenuItem>

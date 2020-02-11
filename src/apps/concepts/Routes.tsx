@@ -1,6 +1,10 @@
-import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { CreateOrEditConceptPage, ViewConceptPage, ViewConceptsPage } from './pages'
+import React from "react";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import {
+  CreateOrEditConceptPage,
+  ViewConceptPage,
+  ViewConceptsPage
+} from "./pages";
 
 interface Props {
   viewConcepts?: boolean;
@@ -15,7 +19,7 @@ const Routes: React.FC<Props> = ({
   viewConcepts = false,
   newConcept = false,
   viewConcept = false,
-  editConcept = false,
+  editConcept = false
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();

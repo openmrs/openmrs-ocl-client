@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react'
-import { DictionaryDetails, DictionaryForm, ReleasedVersions } from '../components'
-import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
-import { Edit as EditIcon } from '@material-ui/icons'
-import { connect } from 'react-redux'
-import { APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion, } from '../types'
-import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
-import { APIOrg, APIProfile, canModifyContainer } from '../../authentication'
+import React, { useEffect } from "react";
+import {
+  DictionaryDetails,
+  DictionaryForm,
+  ReleasedVersions
+} from "../components";
+import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
+import { Edit as EditIcon } from "@material-ui/icons";
+import { connect } from "react-redux";
+import {
+  APIDictionary,
+  apiDictionaryToDictionary,
+  APIDictionaryVersion,
+  DictionaryVersion
+} from "../types";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   createDictionaryVersionAction,
   createDictionaryVersionErrorSelector,
   createDictionaryVersionLoadingSelector,
   retrieveDictionaryAndDetailsAction,
   retrieveDictionaryLoadingSelector,
-  retrieveDictionaryVersionLoadingSelector,
-} from '../redux'
-import { AppState } from '../../../redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import { CONTEXT } from '../constants'
+  retrieveDictionaryVersionLoadingSelector
+} from "../redux";
+import { AppState } from "../../../redux";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { CONTEXT } from "../constants";
 
 interface Props {
   profile?: APIProfile;
@@ -28,7 +40,7 @@ interface Props {
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
-  createVersionError?: {detail: string};
+  createVersionError?: { detail: string };
 }
 
 const ViewDictionaryPage: React.FC<Props> = ({
@@ -41,7 +53,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   versionsLoading,
   createDictionaryVersion,
   createVersionLoading,
-  createVersionError,
+  createVersionError
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -61,7 +73,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   );
   const showEditButton = canEditDictionary;
 
-  const linkedSource = dictionary?.extras?.source || '';
+  const linkedSource = dictionary?.extras?.source || "";
 
   if (dictionaryLoading) return <span>'Loading...'</span>;
 
@@ -85,7 +97,11 @@ const ViewDictionaryPage: React.FC<Props> = ({
       </Grid>
       <Grid item xs={5} container spacing={2}>
         <Grid item xs={12} component="div">
-          {dictionary ? <DictionaryDetails dictionary={dictionary} /> : <span>Couldn't find dictionary details</span>}
+          {dictionary ? (
+            <DictionaryDetails dictionary={dictionary} />
+          ) : (
+            <span>Couldn't find dictionary details</span>
+          )}
         </Grid>
         <Grid item xs={12} component="div">
           {versionsLoading ? (
@@ -95,7 +111,9 @@ const ViewDictionaryPage: React.FC<Props> = ({
               versions={versions}
               subscriptionUrl={url}
               showCreateVersionButton={canEditDictionary}
-              createDictionaryVersion={(data: DictionaryVersion) => createDictionaryVersion(url, data)}
+              createDictionaryVersion={(data: DictionaryVersion) =>
+                createDictionaryVersion(url, data)
+              }
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
               dictionaryUrl={url}
@@ -125,11 +143,11 @@ const mapStateToProps = (state: AppState) => ({
   versions: state.dictionaries.versions,
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
-  createVersionError: createDictionaryVersionErrorSelector(state),
+  createVersionError: createDictionaryVersionErrorSelector(state)
 });
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
-  createDictionaryVersion: createDictionaryVersionAction,
+  createDictionaryVersion: createDictionaryVersionAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);

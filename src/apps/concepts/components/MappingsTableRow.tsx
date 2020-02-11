@@ -13,18 +13,21 @@ import {
   TableRow,
   Theme,
   Typography
-} from '@material-ui/core'
-import { ArrayHelpers, ErrorMessage, Field } from 'formik'
-import { AsyncSelect, NestedErrorMessage } from '../../../utils/components'
-import { MAP_TYPES, Option } from '../../../utils'
-import { Select, TextField } from 'formik-material-ui'
-import React, { useEffect, useState } from 'react'
-import { Mapping } from '../types'
-import api from '../api'
-import { APISource } from '../../sources'
-import { includes } from 'lodash'
-import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
-import clsx from 'clsx'
+} from "@material-ui/core";
+import { ArrayHelpers, ErrorMessage, Field } from "formik";
+import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
+import { MAP_TYPES, Option } from "../../../utils";
+import { Select, TextField } from "formik-material-ui";
+import React, { useEffect, useState } from "react";
+import { Mapping } from "../types";
+import api from "../api";
+import { APISource } from "../../sources";
+import { includes } from "lodash";
+import {
+  DeleteOutline as DeleteOutlineIcon,
+  MoreVert as MoreVertIcon
+} from "@material-ui/icons";
+import clsx from "clsx";
 
 interface ConceptOption extends Option {
   displayName: string;
@@ -234,9 +237,9 @@ const MappingsTableRow: React.FC<Props> = ({
           MAP_TYPES[isInternalMapping ? 0 : 1].value
         )
       );
-  // usually doing the following is a mistake and will bite us later
-  // we do it here because updating the default map_type should only ever be triggered when this changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // usually doing the following is a mistake and will bite us later
+    // we do it here because updating the default map_type should only ever be triggered when this changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInternalMapping]);
 
   // update map_type from fixed map_type

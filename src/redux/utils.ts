@@ -1,5 +1,5 @@
-import { AxiosResponse } from 'axios'
-import { Action, IndexedAction } from './types'
+import { AxiosResponse } from "axios";
+import { Action, IndexedAction } from "./types";
 
 const RESET = "RESET";
 const START = "START";

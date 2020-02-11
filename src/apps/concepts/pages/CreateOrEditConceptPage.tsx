@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { Fab, Grid, Menu, MenuItem, Tooltip } from '@material-ui/core'
-import { ConceptForm } from '../components'
-import { AppState } from '../../../redux'
+import React, { useEffect } from "react";
+import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
+import { ConceptForm } from "../components";
+import { AppState } from "../../../redux";
 import {
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
@@ -11,21 +11,26 @@ import {
   upsertConceptErrorsSelector,
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
-} from '../redux'
-import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from '../types'
-import { Redirect, useLocation, useParams } from 'react-router'
-import { connect } from 'react-redux'
-import Header from '../../../components/Header'
-import { startCase, toLower } from 'lodash'
-import { useAnchor, usePrevious, useQuery } from '../../../utils'
-import { CONTEXT } from '../constants'
+} from "../redux";
+import {
+  APIConcept,
+  apiConceptToConcept,
+  APIMapping,
+  BaseConcept
+} from "../types";
+import { Redirect, useLocation, useParams } from "react-router";
+import { connect } from "react-redux";
+import Header from "../../../components/Header";
+import { startCase, toLower } from "lodash";
+import { useAnchor, usePrevious, useQuery } from "../../../utils";
+import { CONTEXT } from "../constants";
 import {
   DeleteSweepOutlined as DeleteIcon,
   MoreVert as MenuIcon,
   Pageview as PageViewIcon,
   RestoreFromTrashOutlined as RestoreIcon
-} from '@material-ui/icons'
-import { Link } from 'react-router-dom'
+} from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 interface Props {
   fetchLoading: boolean;
@@ -78,8 +83,8 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // only retrieve the concept if the context was edit at the beginning
     // otherwise we obviously have nothing to edit
     if (originallyEditing) retrieveConcept(conceptUrl);
-  // usually doing the following is a mistake and will bite us later
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // usually doing the following is a mistake and will bite us later
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (fetchLoading) {

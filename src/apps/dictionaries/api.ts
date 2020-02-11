@@ -1,9 +1,14 @@
-import { APIDictionaryVersion, DictionaryVersion, EditableDictionaryFields, NewAPIDictionary } from './types'
-import { authenticatedInstance, unAuthenticatedInstance } from '../../api'
-import { AxiosResponse } from 'axios'
-import { OCL_DICTIONARY_TYPE } from './constants'
-import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from '../../utils'
-import { CIEL_SOURCE_URL } from '../../utils/constants'
+import {
+  APIDictionaryVersion,
+  DictionaryVersion,
+  EditableDictionaryFields,
+  NewAPIDictionary
+} from "./types";
+import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
+import { AxiosResponse } from "axios";
+import { OCL_DICTIONARY_TYPE } from "./constants";
+import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
+import { CIEL_SOURCE_URL } from "../../utils/constants";
 
 const api = {
   create: (
@@ -33,7 +38,7 @@ const api = {
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
-            timestamp: new Date().getTime(),  // work around seemingly unhelpful caching
+            timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
         }),
       private: (
@@ -49,7 +54,7 @@ const api = {
             q: buildPartialSearchQuery(q),
             collection_type: OCL_DICTIONARY_TYPE,
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
-            timestamp: new Date().getTime(),  // work around seemingly unhelpful caching
+            timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
         })
     }
@@ -57,8 +62,11 @@ const api = {
   versions: {
     retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
       authenticatedInstance.get(`${dictionaryUrl}versions/`),
-    create: (dictionaryUrl: string, data: DictionaryVersion): Promise<AxiosResponse<APIDictionaryVersion>> =>
-      authenticatedInstance.post(`${dictionaryUrl}versions/`, data),
+    create: (
+      dictionaryUrl: string,
+      data: DictionaryVersion
+    ): Promise<AxiosResponse<APIDictionaryVersion>> =>
+      authenticatedInstance.post(`${dictionaryUrl}versions/`, data)
   },
   retrieveCIELMappings: (
     fromConceptIds: string[]
@@ -66,28 +74,28 @@ const api = {
     authenticatedInstance.get(`${CIEL_SOURCE_URL}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),
-        limit: 0,  // bad, todo optimize this
+        limit: 0 // bad, todo optimize this
       }
     }),
   references: {
     add: (
       dictionaryUrl: string,
       references: string[],
-      cascade: string="sourcemappings",
+      cascade: string = "sourcemappings"
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.put(
         `${dictionaryUrl}references/`,
-        { data: { expressions: references } },  // the nesting is not an error. Check API docs
+        { data: { expressions: references } }, // the nesting is not an error. Check API docs
         { params: { cascade: cascade } }
       ),
     delete: (
       dictionaryUrl: string,
       references: string[],
-      cascade: string="sourcemappings",
+      cascade: string = "sourcemappings"
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.delete(`${dictionaryUrl}references/`, {
-        data: {references: references},  // again, Check the API docs
-        params: { cascade: cascade },
+        data: { references: references }, // again, Check the API docs
+        params: { cascade: cascade }
       })
   }
 };

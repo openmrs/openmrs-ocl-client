@@ -1,12 +1,17 @@
-import { completeAction, createActionThunk, indexedAction, startAction } from '../../../redux'
-import api from '../api'
+import {
+  completeAction,
+  createActionThunk,
+  indexedAction,
+  startAction
+} from "../../../redux";
+import api from "../api";
 import {
   GET_PROFILE_ACTION,
   GET_USER_DETAILS_ACTION,
   GET_USER_ORGS_ACTION,
   LOGIN_ACTION,
   LOGOUT_ACTION
-} from './actionTypes'
+} from "./actionTypes";
 
 const loginAction = createActionThunk(indexedAction(LOGIN_ACTION), api.login);
 const getProfileAction = createActionThunk(
@@ -25,7 +30,7 @@ const getUserDetailsAction = () => {
       dispatch(getProfileAction()),
       dispatch(getUserOrgsAction())
     ]);
-    if (!(userProfile || userOrgs)) dispatch({type: LOGOUT_ACTION});
+    if (!(userProfile || userOrgs)) dispatch({ type: LOGOUT_ACTION });
 
     dispatch(completeAction(indexedAction(GET_USER_DETAILS_ACTION)));
   };

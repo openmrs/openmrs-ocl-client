@@ -1,16 +1,16 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { APIConcept, ConceptsState } from '../types'
-import { indexedAction, startAction } from '../../../redux'
+import { createReducer } from "@reduxjs/toolkit";
+import { APIConcept, ConceptsState } from "../types";
+import { indexedAction, startAction } from "../../../redux";
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_MAPPING_ACTION
-} from './actionTypes'
+} from "./actionTypes";
 
 const initialState: ConceptsState = {
   mappings: []
-}
+};
 export const reducer = createReducer<ConceptsState>(initialState, {
   [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({
     ...state,
@@ -39,9 +39,9 @@ export const reducer = createReducer<ConceptsState>(initialState, {
   [UPSERT_MAPPING_ACTION]: (state, { actionIndex, payload, meta }) => {
     const mappingIndex = state.mappings.findIndex(
       mapping => mapping.external_id === payload.external_id
-    )
-    if (mappingIndex !== -1) state.mappings[mappingIndex] = payload
-    else state.mappings.push(payload)
+    );
+    if (mappingIndex !== -1) state.mappings[mappingIndex] = payload;
+    else state.mappings.push(payload);
   }
-})
-export { reducer as default }
+});
+export { reducer as default };

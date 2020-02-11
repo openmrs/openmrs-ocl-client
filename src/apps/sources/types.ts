@@ -1,4 +1,4 @@
-import { BaseConceptContainer } from '../../utils'
+import { BaseConceptContainer } from "../../utils";
 
 interface BaseAPISource extends BaseConceptContainer {
   external_id: string;

@@ -1,5 +1,5 @@
-import { AppState, IndexedAction } from './types'
-import { errors, loading, progress } from './utils'
+import { AppState, IndexedAction } from "./types";
+import { errors, loading, progress } from "./utils";
 
 export const loadingSelector = (...actions: IndexedAction[]) => (
   state: AppState

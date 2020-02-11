@@ -1,11 +1,17 @@
-import React from 'react'
-import { APIDictionary } from '../../dictionaries'
-import { Button, ButtonGroup, makeStyles, Paper, Typography, } from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import { CIEL_SOURCE_URL } from '../../../utils/constants'
+import React from "react";
+import { APIDictionary } from "../../dictionaries";
+import {
+  Button,
+  ButtonGroup,
+  makeStyles,
+  Paper,
+  Typography
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { CIEL_SOURCE_URL } from "../../../utils/constants";
 
 interface Props {
-  dictionary: APIDictionary,
+  dictionary: APIDictionary;
 }
 
 const useStyles = makeStyles({
@@ -14,18 +20,24 @@ const useStyles = makeStyles({
     color: "inherit"
   },
   conceptCountBreakDown: {
-    marginLeft: '3vw',
-  },
+    marginLeft: "3vw"
+  }
 });
 
 const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
-  const {references, concepts_url: conceptsUrl, extras: {source: linkedSource}} = dictionary;
+  const {
+    references,
+    concepts_url: conceptsUrl,
+    extras: { source: linkedSource }
+  } = dictionary;
 
-  const conceptReferences = references ? references.filter(({ reference_type }) => reference_type === 'concepts') : [];
-  const cielConceptCount = conceptReferences.filter(
-    ({ expression }) => expression.includes(CIEL_SOURCE_URL),
+  const conceptReferences = references
+    ? references.filter(({ reference_type }) => reference_type === "concepts")
+    : [];
+  const cielConceptCount = conceptReferences.filter(({ expression }) =>
+    expression.includes(CIEL_SOURCE_URL)
   ).length;
   const customConceptCount = conceptReferences.length - cielConceptCount;
 
@@ -50,7 +62,10 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
         </Typography>
         <ButtonGroup variant="text" fullWidth>
           <Button color="primary">
-            <Link className={classes.link} to={`${conceptsUrl}?linkedSource=${linkedSource}`}>
+            <Link
+              className={classes.link}
+              to={`${conceptsUrl}?linkedSource=${linkedSource}`}
+            >
               View Concepts
             </Link>
           </Button>

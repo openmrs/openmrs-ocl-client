@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Button,
   Card,
@@ -9,13 +9,13 @@ import {
   InputAdornment,
   makeStyles,
   Typography
-} from '@material-ui/core'
-import TablePagination from '@material-ui/core/TablePagination'
-import IconButton from '@material-ui/core/IconButton'
-import { Search as SearchIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import { APIDictionary } from '../types'
-import clsx from 'clsx'
+} from "@material-ui/core";
+import TablePagination from "@material-ui/core/TablePagination";
+import IconButton from "@material-ui/core/IconButton";
+import { Search as SearchIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { APIDictionary } from "../types";
+import clsx from "clsx";
 
 const PER_PAGE = 20;
 
@@ -35,7 +35,7 @@ const useStyles = makeStyles({
     display: "grid",
     position: "fixed",
     bottom: 0,
-    background: "transparent",
+    background: "transparent"
   },
   paginationDouble: {
     width: "100%"
@@ -59,7 +59,7 @@ const useStyles = makeStyles({
     color: "inherit"
   },
   dictionaryName: {
-    overflowX: "auto",
+    overflowX: "auto"
   }
 });
 
@@ -141,7 +141,11 @@ const ViewDictionaries: React.FC<Props> = ({
                   >
                     {shortCode}
                   </Typography>
-                  <Typography className={classes.dictionaryName} noWrap variant="h5">
+                  <Typography
+                    className={classes.dictionaryName}
+                    noWrap
+                    variant="h5"
+                  >
                     {name}
                   </Typography>
                   <Typography noWrap variant="body2" color="textSecondary">
@@ -153,10 +157,7 @@ const ViewDictionaries: React.FC<Props> = ({
                 </CardContent>
                 <CardActions>
                   <Button size="small" variant="text" color="primary">
-                    <Link
-                      className={classes.link}
-                      to={url}
-                    >
+                    <Link className={classes.link} to={url}>
                       View
                     </Link>
                   </Button>

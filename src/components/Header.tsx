@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import {
   AppBar,
   Badge,
@@ -10,12 +10,16 @@ import {
   Toolbar,
   Tooltip,
   Typography
-} from '@material-ui/core'
-import { ArrowBack as BackIcon, ArrowForward as ForwardIcon, NotificationsOutlined as NotificationsIcon } from '@material-ui/icons'
-import { connect } from 'react-redux'
-import { addConceptsToDictionaryLoadingListSelector, } from '../apps/dictionaries'
-import { AppState } from '../redux'
-import { Link, useHistory } from 'react-router-dom'
+} from "@material-ui/core";
+import {
+  ArrowBack as BackIcon,
+  ArrowForward as ForwardIcon,
+  NotificationsOutlined as NotificationsIcon
+} from "@material-ui/icons";
+import { connect } from "react-redux";
+import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
+import { AppState } from "../redux";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1
     },
     icon: {
-      color: theme.palette.background.default,
-    },
+      color: theme.palette.background.default
+    }
   })
 );
 
@@ -48,7 +52,7 @@ const Header: React.FC<Props> = ({
   title,
   justifyChildren = "center",
   loadingList = [],
-  backUrl,
+  backUrl
 }) => {
   const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
     .length;
@@ -56,7 +60,7 @@ const Header: React.FC<Props> = ({
   const classes = useStyles();
   useEffect(() => {
     document.title = `${title} | OCL for OpenMRS`;
-  }, [title])
+  }, [title]);
   const history = useHistory();
 
   return (
@@ -64,17 +68,17 @@ const Header: React.FC<Props> = ({
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Tooltip title="Back">
-          {backUrl ? (
-            <Link to={backUrl}>
+            {backUrl ? (
+              <Link to={backUrl}>
                 <IconButton>
                   <BackIcon className={classes.icon} />
                 </IconButton>
-            </Link>
-          ) : (
-            <IconButton onClick={history.goBack}>
-              <BackIcon className={classes.icon} />
-            </IconButton>
-          )}
+              </Link>
+            ) : (
+              <IconButton onClick={history.goBack}>
+                <BackIcon className={classes.icon} />
+              </IconButton>
+            )}
           </Tooltip>
           <Typography variant="h5" noWrap>
             {title}
