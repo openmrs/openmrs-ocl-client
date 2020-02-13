@@ -1,50 +1,34 @@
-import React, { useEffect, useState } from "react";
-import Header from "../../../components/Header";
+import React, { useEffect, useState } from 'react'
+import Header from '../../../components/Header'
+import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
+import { ConceptsTable } from '../components'
+import { connect } from 'react-redux'
 import {
-  Fab,
-  Grid,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Tooltip
-} from "@material-ui/core";
-import { ConceptsTable } from "../components";
-import { connect } from "react-redux";
-import {
+  removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
   viewConceptsErrorsSelector,
   viewConceptsLoadingSelector
-} from "../redux";
-import { AppState } from "../../../redux";
-import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
-import { useHistory, useLocation, useParams } from "react-router";
-import {
-  CIEL_SOURCE_URL,
-  CONCEPT_CLASSES,
-  useAnchor,
-  useQuery
-} from "../../../utils";
-import qs from "qs";
-import { ProgressOverlay } from "../../../utils/components";
-import FilterOptions from "../components/FilterOptions";
-import { Add as AddIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-import {
-  APIOrg,
-  APIProfile,
-  canModifyContainer,
-  profileSelector
-} from "../../authentication";
-import { orgsSelector } from "../../authentication/redux/reducer";
+} from '../redux'
+import { AppState } from '../../../redux'
+import { APIConcept, OptionalQueryParams as QueryParams } from '../types'
+import { useHistory, useLocation, useParams } from 'react-router'
+import { CIEL_SOURCE_URL, CONCEPT_CLASSES, useAnchor, useQuery } from '../../../utils'
+import qs from 'qs'
+import { ProgressOverlay } from '../../../utils/components'
+import FilterOptions from '../components/FilterOptions'
+import { Add as AddIcon } from '@material-ui/icons'
+import { Link } from 'react-router-dom'
+import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
+import { orgsSelector } from '../../authentication/redux/reducer'
 import {
   CIEL_CONCEPTS_URL,
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
-} from "../constants";
-import { addCIELConceptsToDictionaryAction } from "../../dictionaries/redux";
-import { canModifyConcept, getSourceIdFromUrl } from "../utils";
+} from '../constants'
+import { addCIELConceptsToDictionaryAction, removeReferencesFromDictionaryAction } from '../../dictionaries/redux'
+import { canModifyConcept, getSourceIdFromUrl } from '../utils'
 
 interface Props {
   concepts?: APIConcept[];
@@ -56,6 +40,7 @@ interface Props {
   usersOrgs?: APIOrg[];
   containerType: string;
   addConceptsToDictionary: Function;
+  removeConceptsFromDictionary: Function;
 }
 
 const useStyles = makeStyles({
@@ -77,7 +62,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   containerType,
-  addConceptsToDictionary
+  addConceptsToDictionary,
+  removeConceptsFromDictionary,
 }) => {
   const classes = useStyles();
 
@@ -85,7 +71,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     containerType === DICTIONARY_VERSION_CONTAINER;
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
-  const dictionaryUrl = url.replace("/concepts", "");
+  const dictionaryUrl = url.replace("/concepts", ""); // only relevant when using collection container
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
@@ -206,7 +192,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModifyDictionary, // relevant for DICTIONARY_CONTAINER
+                edit: canModifyDictionary, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
                   containerType === SOURCE_CONTAINER && !!dictionaryToAddTo // relevant for SOURCE_CONTAINER
               }}
@@ -228,6 +214,7 @@ const ViewConceptsPage: React.FC<Props> = ({
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
               }
+              removeConceptsFromDictionary={(conceptVersionUrls: string[]) => removeConceptsFromDictionary(dictionaryUrl, conceptVersionUrls)}
             />
           </Grid>
           {!showOptions ? (
@@ -347,13 +334,14 @@ const mapStateToProps = (state: AppState) => ({
   meta: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
-  loading: viewConceptsLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state)
+  loading: viewConceptsLoadingSelector(state) || removeConceptsFromDictionaryLoadingSelector(state),
+  errors: viewConceptsErrorsSelector(state),
 });
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
-  addConceptsToDictionary: addCIELConceptsToDictionaryAction
+  addConceptsToDictionary: addCIELConceptsToDictionaryAction,
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);

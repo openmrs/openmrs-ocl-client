@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
-import { ConceptForm } from "../components";
-import { AppState } from "../../../redux";
+import React, { useEffect } from 'react'
+import { Fab, Grid, Menu, MenuItem, Tooltip } from '@material-ui/core'
+import { ConceptForm } from '../components'
+import { AppState } from '../../../redux'
 import {
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
@@ -11,26 +11,21 @@ import {
   upsertConceptErrorsSelector,
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
-} from "../redux";
-import {
-  APIConcept,
-  apiConceptToConcept,
-  APIMapping,
-  BaseConcept
-} from "../types";
-import { Redirect, useLocation, useParams } from "react-router";
-import { connect } from "react-redux";
-import Header from "../../../components/Header";
-import { startCase, toLower } from "lodash";
-import { useAnchor, usePrevious, useQuery } from "../../../utils";
-import { CONTEXT } from "../constants";
+} from '../redux'
+import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from '../types'
+import { Redirect, useLocation, useParams } from 'react-router'
+import { connect } from 'react-redux'
+import Header from '../../../components/Header'
+import { startCase, toLower } from 'lodash'
+import { useAnchor, usePrevious, useQuery } from '../../../utils'
+import { CONTEXT } from '../constants'
 import {
   DeleteSweepOutlined as DeleteIcon,
   MoreVert as MenuIcon,
   Pageview as PageViewIcon,
   RestoreFromTrashOutlined as RestoreIcon
-} from "@material-ui/icons";
-import { Link } from "react-router-dom";
+} from '@material-ui/icons'
+import { Link } from 'react-router-dom'
 
 interface Props {
   fetchLoading: boolean;
@@ -97,7 +92,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
       <Redirect
         to={`${concept.version_url}${
           linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ""
-        }`}
+        }&linkedSource=${sourceUrl}`}
       />
     );
 
@@ -147,7 +142,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
               <PageViewIcon />
               <Link
                 className="link"
-                to={`${conceptUrl}?linkedDictionary=${linkedDictionary}`}
+                to={`${conceptUrl}?linkedDictionary=${linkedDictionary}&linkedSource=${sourceUrl}`}
               >
                 Discard changes and view
               </Link>

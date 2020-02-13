@@ -1,5 +1,5 @@
-import { AxiosResponse } from "axios";
-import { Action, IndexedAction } from "./types";
+import { AxiosResponse } from 'axios'
+import { Action, IndexedAction } from './types'
 
 const RESET = "RESET";
 const START = "START";
@@ -88,6 +88,7 @@ const createActionThunk = <T extends any[]>(
 
           result = response.data;
         } catch (error) {
+          console.log(error);
           dispatch({
             type: `${actionType}_${FAILURE}`,
             actionIndex: actionIndex,

@@ -17,7 +17,14 @@ import Tooltip from '@material-ui/core/Tooltip'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import { APIConcept, QueryParams, SortableField } from '../types'
 import { Link } from 'react-router-dom'
-import { Add as AddIcon, MoreVert as MoreVertIcon, Search as SearchIcon } from '@material-ui/icons'
+import {
+  Add as AddIcon,
+  CheckBoxOutlined as CheckBoxIcon,
+  DeleteSweepOutlined as DeleteIcon,
+  EditOutlined as EditIcon,
+  MoreVert as MoreVertIcon,
+  Search as SearchIcon
+} from '@material-ui/icons'
 import { Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 
 interface Props extends QueryParams {
@@ -30,6 +37,7 @@ interface Props extends QueryParams {
   setQ: Function;
   buttons?: { [key: string]: boolean };
   addConceptsToDictionary: Function;
+  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   linkedDictionary?: string;
   linkedSource?: string;
   canModifyConcept: (concept: APIConcept) => boolean;
@@ -277,6 +285,11 @@ function showEditMenuItem(concept: APIConcept, showingEditButtons: boolean, link
   return showingEditButtons && canModifyConcept(concept) && linkedSource && concept.url.includes(linkedSource);
 }
 
+function showRemoveFromDictionaryMenuItem (concept: APIConcept, showingEditButtons: boolean, linkedSource: string | undefined) {
+  // only allow manual removal of imported/ non custom concepts
+  return showingEditButtons && linkedSource && !concept.url.includes(linkedSource);
+}
+
 const ConceptsTable: React.FC<Props> = ({
   concepts,
   buildUrl,
@@ -291,6 +304,7 @@ const ConceptsTable: React.FC<Props> = ({
   toggleShowOptions,
   buttons = {},
   addConceptsToDictionary,
+  removeConceptsFromDictionary,
   // current dictionary, for editing and creating concepts
   linkedDictionary,
   // source to store new concepts in and use as criteria for whether a user can edit a concept
@@ -428,7 +442,7 @@ const ConceptsTable: React.FC<Props> = ({
                     <TableCell className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
-                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
+                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}${linkedSource ? `&linkedSource=${linkedSource}` : ''}`}
                       >
                         {row.display_name}
                       </Link>
@@ -457,7 +471,7 @@ const ConceptsTable: React.FC<Props> = ({
                             toggleMenu(index);
                           }}
                         >
-                          {isSelected(row.id) ? "Deselect" : "Select"}
+                          <CheckBoxIcon /> {isSelected(row.id) ? "Deselect" : "Select"}
                         </MenuItem>
                         {!showEditMenuItem(row, buttons.edit, linkedSource, canModifyConcept) ? null : (
                           <MenuItem onClick={() => toggleMenu(index)}>
@@ -465,8 +479,19 @@ const ConceptsTable: React.FC<Props> = ({
                               className={classes.buttonLink}
                               to={`${row.version_url}edit/?linkedDictionary=${linkedDictionary}`}
                             >
-                              Edit
+                              <EditIcon /> Edit
                             </Link>
+                          </MenuItem>
+                        )}
+                        {!showRemoveFromDictionaryMenuItem(row, buttons.edit, linkedSource) ? null : (
+                          <MenuItem
+                            onClick={() => {
+                              if (removeConceptsFromDictionary)
+                                removeConceptsFromDictionary([row.version_url]);
+                              toggleMenu(index);
+                            }}
+                          >
+                            <DeleteIcon /> Remove
                           </MenuItem>
                         )}
                         {!buttons.addToDictionary ? null : (
@@ -477,7 +502,7 @@ const ConceptsTable: React.FC<Props> = ({
                               toggleMenu(index);
                             }}
                           >
-                            Add
+                            <AddIcon /> Add
                           </MenuItem>
                         )}
                       </Menu>

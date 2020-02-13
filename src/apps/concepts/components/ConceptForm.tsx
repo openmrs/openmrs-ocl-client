@@ -22,16 +22,14 @@ import {
   getPrettyError,
   MAP_TYPE_CONCEPT_SET,
   MAP_TYPE_Q_AND_A,
-  NAME_TYPES
-} from "../../../utils";
-import NamesTable from "./NamesTable";
-import { Edit as EditIcon } from "@material-ui/icons";
-import * as Yup from "yup";
-import MappingsTable from "./MappingsTable";
-import {
+  NAME_TYPES,
   QUESTION_CONCEPT_CLASS,
   SET_CONCEPT_CLASSES
-} from "../../../utils/constants";
+} from "../../../utils";
+import NamesTable from "./NamesTable";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import * as Yup from "yup";
+import MappingsTable from "./MappingsTable";
 import { CONTEXT } from "../constants";
 import {
   ANSWERS_BATCH_INDEX,

@@ -1,15 +1,19 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { APIConcept, ConceptsState } from "../types";
-import { indexedAction, startAction } from "../../../redux";
+import { createReducer } from '@reduxjs/toolkit'
+import { APIConcept, ConceptsState } from '../types'
+import { indexedAction, startAction } from '../../../redux'
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_MAPPING_ACTION
-} from "./actionTypes";
+} from './actionTypes'
+import { REMOVE_REFERENCES_FROM_DICTIONARY } from '../../dictionaries/redux/actionTypes'
 
 const initialState: ConceptsState = {
-  mappings: []
+  mappings: [],
+  concepts: {
+    items: [],
+  }
 };
 export const reducer = createReducer<ConceptsState>(initialState, {
   [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({
@@ -42,6 +46,9 @@ export const reducer = createReducer<ConceptsState>(initialState, {
     );
     if (mappingIndex !== -1) state.mappings[mappingIndex] = payload;
     else state.mappings.push(payload);
-  }
+  },
+  [REMOVE_REFERENCES_FROM_DICTIONARY]: (state, { actionIndex, payload, meta }: {actionIndex: number, payload: {}, meta: [string, string[]]}) => {
+    state.concepts.items = state.concepts.items.filter((concept: APIConcept) => !meta[1].includes(concept.version_url));
+  },
 });
 export { reducer as default };
