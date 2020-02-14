@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: "wrap",
       flex: 1,
       alignItems: "center",
-      overflow: "hidden"
     },
     message: {
       padding: theme.spacing(1, 2)
