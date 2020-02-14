@@ -1,23 +1,16 @@
-import React from "react";
-import {
-  CircularProgress,
-  createStyles,
-  makeStyles,
-  Theme
-} from "@material-ui/core";
+import React from 'react'
+import { CircularProgress, createStyles, makeStyles, Theme } from '@material-ui/core'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     overlay: {
       position: "fixed",
-      marginLeft: theme.spacing(7) + 1,
-      marginTop: "6vh",
       height: "100%",
       top: 0,
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: "rgba(0,0,0,0.1)",
+      backgroundColor: "rgba(0,0,0,0.1)", // almost transparent
       zIndex: 2,
       display: "flex",
       flexDirection: "column",

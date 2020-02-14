@@ -166,14 +166,6 @@ const ViewConceptsPage: React.FC<Props> = ({
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
-  console.log(
-    containerType,
-    ownerType,
-    owner,
-    profile,
-    usersOrgs,
-    canModifyContainer(ownerType, owner, profile, usersOrgs)
-  );
 
   return (
     <>

@@ -1,22 +1,27 @@
-import React from 'react'
-import clsx from 'clsx'
-import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
-import TableRow from '@material-ui/core/TableRow'
-import TableSortLabel from '@material-ui/core/TableSortLabel'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import Checkbox from '@material-ui/core/Checkbox'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import FilterListIcon from '@material-ui/icons/FilterList'
-import { APIConcept, QueryParams, SortableField } from '../types'
-import { Link } from 'react-router-dom'
+import React from "react";
+import clsx from "clsx";
+import {
+  createStyles,
+  lighten,
+  makeStyles,
+  Theme
+} from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import { APIConcept, QueryParams, SortableField } from "../types";
+import { Link } from "react-router-dom";
 import {
   Add as AddIcon,
   CheckBoxOutlined as CheckBoxIcon,
@@ -24,8 +29,8 @@ import {
   EditOutlined as EditIcon,
   MoreVert as MoreVertIcon,
   Search as SearchIcon
-} from '@material-ui/icons'
-import { Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
+} from "@material-ui/icons";
+import { Input, InputAdornment, Menu, MenuItem } from "@material-ui/core";
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -274,20 +279,36 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "inherit"
     },
     retired: {
-      textDecoration: 'line-through',
-    },
+      textDecoration: "line-through"
+    }
   })
 );
 
-function showEditMenuItem(concept: APIConcept, showingEditButtons: boolean, linkedSource: string|undefined, canModifyConcept: (concept: APIConcept) => boolean) {
+function showEditMenuItem(
+  concept: APIConcept,
+  showingEditButtons: boolean,
+  linkedSource: string | undefined,
+  canModifyConcept: (concept: APIConcept) => boolean
+) {
   // only allow edit of a concept we can modify and belongs to our linked source
   // the second condition prevents us editing non custom concepts in a collection
-  return showingEditButtons && canModifyConcept(concept) && linkedSource && concept.url.includes(linkedSource);
+  return (
+    showingEditButtons &&
+    canModifyConcept(concept) &&
+    linkedSource &&
+    concept.url.includes(linkedSource)
+  );
 }
 
-function showRemoveFromDictionaryMenuItem (concept: APIConcept, showingEditButtons: boolean, linkedSource: string | undefined) {
+function showRemoveFromDictionaryMenuItem(
+  concept: APIConcept,
+  showingEditButtons: boolean,
+  linkedSource: string | undefined
+) {
   // only allow manual removal of imported/ non custom concepts
-  return showingEditButtons && linkedSource && !concept.url.includes(linkedSource);
+  return (
+    showingEditButtons && linkedSource && !concept.url.includes(linkedSource)
+  );
 }
 
 const ConceptsTable: React.FC<Props> = ({
@@ -309,7 +330,7 @@ const ConceptsTable: React.FC<Props> = ({
   linkedDictionary,
   // source to store new concepts in and use as criteria for whether a user can edit a concept
   linkedSource,
-  canModifyConcept,
+  canModifyConcept
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -442,7 +463,11 @@ const ConceptsTable: React.FC<Props> = ({
                     <TableCell className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
-                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}${linkedSource ? `&linkedSource=${linkedSource}` : ''}`}
+                        to={`${
+                          row.version_url
+                        }?linkedDictionary=${linkedDictionary}${
+                          linkedSource ? `&linkedSource=${linkedSource}` : ""
+                        }`}
                       >
                         {row.display_name}
                       </Link>
@@ -471,9 +496,15 @@ const ConceptsTable: React.FC<Props> = ({
                             toggleMenu(index);
                           }}
                         >
-                          <CheckBoxIcon /> {isSelected(row.id) ? "Deselect" : "Select"}
+                          <CheckBoxIcon />{" "}
+                          {isSelected(row.id) ? "Deselect" : "Select"}
                         </MenuItem>
-                        {!showEditMenuItem(row, buttons.edit, linkedSource, canModifyConcept) ? null : (
+                        {!showEditMenuItem(
+                          row,
+                          buttons.edit,
+                          linkedSource,
+                          canModifyConcept
+                        ) ? null : (
                           <MenuItem onClick={() => toggleMenu(index)}>
                             <Link
                               className={classes.buttonLink}
@@ -483,7 +514,11 @@ const ConceptsTable: React.FC<Props> = ({
                             </Link>
                           </MenuItem>
                         )}
-                        {!showRemoveFromDictionaryMenuItem(row, buttons.edit, linkedSource) ? null : (
+                        {!showRemoveFromDictionaryMenuItem(
+                          row,
+                          buttons.edit,
+                          linkedSource
+                        ) ? null : (
                           <MenuItem
                             onClick={() => {
                               if (removeConceptsFromDictionary)

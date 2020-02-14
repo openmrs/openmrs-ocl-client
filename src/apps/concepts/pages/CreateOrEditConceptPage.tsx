@@ -17,7 +17,7 @@ import { Redirect, useLocation, useParams } from 'react-router'
 import { connect } from 'react-redux'
 import Header from '../../../components/Header'
 import { startCase, toLower } from 'lodash'
-import { useAnchor, usePrevious, useQuery } from '../../../utils'
+import { ProgressOverlay, useAnchor, usePrevious, useQuery } from '../../../utils'
 import { CONTEXT } from '../constants'
 import {
   DeleteSweepOutlined as DeleteIcon,
@@ -82,10 +82,6 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (fetchLoading) {
-    return <span>Loading...</span>;
-  }
-
   // everything went hunky-dory, and we should redirect the user to the view concept page
   if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
     return (
@@ -105,76 +101,78 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
           : "Create concept"
       }
     >
-      <Grid id="editConceptPage" item xs={8} component="div">
-        <ConceptForm
-          conceptClass={conceptClass}
-          context={context}
-          status={status}
-          savedValues={
-            context === CONTEXT.edit
-              ? apiConceptToConcept(concept, mappings)
-              : undefined
-          }
-          loading={loading}
-          errors={errors}
-          allMappingErrors={allMappingErrors}
-          supportLegacyMappings={originallyEditing}
-          onSubmit={(data: BaseConcept) =>
-            upsertConcept(data, sourceUrl, linkedDictionary)
-          }
-        />
-      </Grid>
+      <ProgressOverlay delayRender loading={fetchLoading}>
+        <Grid id="editConceptPage" item xs={8} component="div">
+          <ConceptForm
+            conceptClass={conceptClass}
+            context={context}
+            status={status}
+            savedValues={
+              context === CONTEXT.edit
+                ? apiConceptToConcept(concept, mappings)
+                : undefined
+            }
+            loading={loading}
+            errors={errors}
+            allMappingErrors={allMappingErrors}
+            supportLegacyMappings={originallyEditing}
+            onSubmit={(data: BaseConcept) =>
+              upsertConcept(data, sourceUrl, linkedDictionary)
+            }
+          />
+        </Grid>
 
-      {context !== CONTEXT.edit ? null : (
-        <>
-          <Tooltip title="Menu">
-            <Fab onClick={handleMenuClick} color="primary" className="fab">
-              <MenuIcon />
-            </Fab>
-          </Tooltip>
-          <Menu
-            anchorEl={menuAnchor}
-            keepMounted
-            open={Boolean(menuAnchor)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem>
-              <PageViewIcon />
-              <Link
-                className="link"
-                to={`${conceptUrl}?linkedDictionary=${linkedDictionary}&linkedSource=${sourceUrl}`}
-              >
-                Discard changes and view
-              </Link>
-            </MenuItem>
-            <MenuItem
-              disabled={loading}
-              onClick={() =>
-                upsertConcept(
-                  {
-                    ...apiConceptToConcept(concept),
-                    retired: !concept?.retired
-                  },
-                  sourceUrl,
-                  linkedDictionary
-                )
-              }
+        {context !== CONTEXT.edit ? null : (
+          <>
+            <Tooltip title="Menu">
+              <Fab onClick={handleMenuClick} color="primary" className="fab">
+                <MenuIcon />
+              </Fab>
+            </Tooltip>
+            <Menu
+              anchorEl={menuAnchor}
+              keepMounted
+              open={Boolean(menuAnchor)}
+              onClose={handleMenuClose}
             >
-              {concept?.retired ? (
-                <>
-                  <RestoreIcon />
-                  Unretire concept
-                </>
-              ) : (
-                <>
-                  <DeleteIcon />
-                  Retire concept
-                </>
-              )}
-            </MenuItem>
-          </Menu>
-        </>
-      )}
+              <MenuItem>
+                <PageViewIcon />
+                <Link
+                  className="link"
+                  to={`${conceptUrl}?linkedDictionary=${linkedDictionary}&linkedSource=${sourceUrl}`}
+                >
+                  Discard changes and view
+                </Link>
+              </MenuItem>
+              <MenuItem
+                disabled={loading}
+                onClick={() =>
+                  upsertConcept(
+                    {
+                      ...apiConceptToConcept(concept),
+                      retired: !concept?.retired
+                    },
+                    sourceUrl,
+                    linkedDictionary
+                  )
+                }
+              >
+                {concept?.retired ? (
+                  <>
+                    <RestoreIcon />
+                    Unretire concept
+                  </>
+                ) : (
+                  <>
+                    <DeleteIcon />
+                    Retire concept
+                  </>
+                )}
+              </MenuItem>
+            </Menu>
+          </>
+        )}
+      </ProgressOverlay>
     </Header>
   );
 };

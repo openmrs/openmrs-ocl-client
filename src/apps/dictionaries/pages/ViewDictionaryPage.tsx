@@ -17,6 +17,7 @@ import {
 import { AppState } from '../../../redux'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { CONTEXT } from '../constants'
+import { ProgressOverlay } from '../../../utils/components'
 
 interface Props {
   profile?: APIProfile;
@@ -63,10 +64,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
 
   const linkedSource = dictionary?.extras?.source || "";
 
-  if (dictionaryLoading) return <span>'Loading...'</span>;
-
   return (
-    <>
+    <ProgressOverlay delayRender loading={dictionaryLoading}>
       <Grid id="viewDictionaryPage" item xs={5} component="div">
         <Paper className="fieldsetParent">
           <fieldset>
@@ -93,7 +92,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
         </Grid>
         <Grid item xs={12} component="div">
           {versionsLoading ? (
-            "Loading..."
+            "Loading versions..."
           ) : (
             <ReleasedVersions
               versions={versions}
@@ -119,7 +118,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
           </Tooltip>
         </Link>
       )}
-    </>
+    </ProgressOverlay>
   );
 };
 

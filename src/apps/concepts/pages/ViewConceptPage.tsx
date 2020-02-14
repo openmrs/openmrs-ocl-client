@@ -13,7 +13,7 @@ import { startCase, toLower } from 'lodash'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
 import { orgsSelector } from '../../authentication/redux/reducer'
 import { CONTEXT } from '../constants'
-import { useQuery } from '../../../utils'
+import { ProgressOverlay, useQuery } from '../../../utils'
 import { NotFound } from '../../../components'
 
 interface Props {
@@ -54,10 +54,6 @@ const ViewConceptPage: React.FC<Props> = ({
     retrieveConcept(url);
   }, [url, retrieveConcept]);
 
-  if (loading) {
-    return <span>Loading...</span>;
-  }
-
   if (errors) return <NotFound />;
 
   return (
@@ -66,22 +62,24 @@ const ViewConceptPage: React.FC<Props> = ({
         toLower(concept ? concept.display_name : "View concept")
       )}
     >
-      <Grid id="viewConceptPage" item xs={8} component="div">
-        <ConceptForm
-          context={CONTEXT.view}
-          savedValues={apiConceptToConcept(concept, mappings)}
-          errors={errors}
-        />
-      </Grid>
-      {!showEditButton ? null : (
-        <Link to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
-          <Tooltip title="Edit this concept">
-            <Fab color="primary" className="fab">
-              <EditIcon />
-            </Fab>
-          </Tooltip>
-        </Link>
-      )}
+      <ProgressOverlay delayRender loading={loading}>
+        <Grid id="viewConceptPage" item xs={8} component="div">
+          <ConceptForm
+            context={CONTEXT.view}
+            savedValues={apiConceptToConcept(concept, mappings)}
+            errors={errors}
+          />
+        </Grid>
+        {!showEditButton ? null : (
+          <Link to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
+            <Tooltip title="Edit this concept">
+              <Fab color="primary" className="fab">
+                <EditIcon />
+              </Fab>
+            </Tooltip>
+          </Link>
+        )}
+      </ProgressOverlay>
     </Header>
   );
 };
