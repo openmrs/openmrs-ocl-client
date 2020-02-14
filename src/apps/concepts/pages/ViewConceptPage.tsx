@@ -14,7 +14,6 @@ import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../a
 import { orgsSelector } from '../../authentication/redux/reducer'
 import { CONTEXT } from '../constants'
 import { ProgressOverlay, useQuery } from '../../../utils'
-import { NotFound } from '../../../components'
 
 interface Props {
   loading: boolean;
@@ -54,7 +53,6 @@ const ViewConceptPage: React.FC<Props> = ({
     retrieveConcept(url);
   }, [url, retrieveConcept]);
 
-  if (errors) return <NotFound />;
 
   return (
     <Header
@@ -62,7 +60,7 @@ const ViewConceptPage: React.FC<Props> = ({
         toLower(concept ? concept.display_name : "View concept")
       )}
     >
-      <ProgressOverlay delayRender loading={loading}>
+      <ProgressOverlay delayRender loading={loading} error={errors ? "Could not retrieve concept. Refresh this page to retry." : undefined}>
         <Grid id="viewConceptPage" item xs={8} component="div">
           <ConceptForm
             context={CONTEXT.view}

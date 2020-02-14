@@ -1,27 +1,22 @@
-import React from "react";
-import clsx from "clsx";
-import {
-  createStyles,
-  lighten,
-  makeStyles,
-  Theme
-} from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import { APIConcept, QueryParams, SortableField } from "../types";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react'
+import clsx from 'clsx'
+import { createStyles, lighten, makeStyles, Theme } from '@material-ui/core/styles'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TablePagination from '@material-ui/core/TablePagination'
+import TableRow from '@material-ui/core/TableRow'
+import TableSortLabel from '@material-ui/core/TableSortLabel'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import Checkbox from '@material-ui/core/Checkbox'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import FilterListIcon from '@material-ui/icons/FilterList'
+import { APIConcept, QueryParams, SortableField } from '../types'
+import { Link } from 'react-router-dom'
 import {
   Add as AddIcon,
   CheckBoxOutlined as CheckBoxIcon,
@@ -29,8 +24,8 @@ import {
   EditOutlined as EditIcon,
   MoreVert as MoreVertIcon,
   Search as SearchIcon
-} from "@material-ui/icons";
-import { Input, InputAdornment, Menu, MenuItem } from "@material-ui/core";
+} from '@material-ui/icons'
+import { Input, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -339,6 +334,9 @@ const ConceptsTable: React.FC<Props> = ({
     anchor: null | HTMLElement;
   }>({ index: -1, anchor: null });
 
+  const resetSelected = () => setSelected([]);
+  const isSelected = (id: string) => selected.includes(id);
+
   const toggleMenu = (
     index: number,
     event?: React.MouseEvent<HTMLButtonElement>
@@ -367,7 +365,7 @@ const ConceptsTable: React.FC<Props> = ({
       setSelected(newSelecteds);
       return;
     }
-    setSelected([]);
+    resetSelected();
   };
 
   const toggleSelect = (event: React.MouseEvent<unknown>, id: string) => {
@@ -400,7 +398,14 @@ const ConceptsTable: React.FC<Props> = ({
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const isSelected = (id: string) => selected.includes(id);
+  useEffect(() => {
+    // reset selected concepts when new ones are fetched
+    resetSelected();
+  // usually doing the following is a mistake and will bite us later
+  // we do it here because otherwise we'll have to enumerate all the possible things that could change
+  // it really is saner to just condition it on the concept list
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [concepts.toString()])
 
   return (
     <div className={classes.root}>
@@ -412,10 +417,12 @@ const ConceptsTable: React.FC<Props> = ({
           numSelected={selected.length}
           toggleShowOptions={toggleShowOptions}
           showAddConcepts={buttons.addToDictionary}
-          addSelectedConcepts={() =>
+          addSelectedConcepts={() => {
             addConceptsToDictionary(
               concepts.filter(concept => selected.includes(concept.id))
-            )
+            );
+            resetSelected();
+            }
           }
         />
         <div className={classes.tableWrapper}>
