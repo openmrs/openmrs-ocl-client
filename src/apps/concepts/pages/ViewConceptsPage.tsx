@@ -1,36 +1,53 @@
-import React, { useEffect, useState } from 'react'
-import Header from '../../../components/Header'
-import { Fab, Grid, makeStyles, Menu, MenuItem, Tooltip } from '@material-ui/core'
-import { ConceptsTable } from '../components'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import Header from "../../../components/Header";
+import {
+  Fab,
+  Grid,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Tooltip
+} from "@material-ui/core";
+import { ConceptsTable } from "../components";
+import { connect } from "react-redux";
 import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
   viewConceptsErrorsSelector,
   viewConceptsLoadingSelector
-} from '../redux'
-import { AppState } from '../../../redux'
-import { APIConcept, OptionalQueryParams as QueryParams } from '../types'
-import { useHistory, useLocation, useParams } from 'react-router'
-import { CONCEPT_CLASSES, PREFERRED_SOURCES, useAnchor, useQuery } from '../../../utils'
-import qs from 'qs'
-import { ProgressOverlay } from '../../../utils/components'
-import FilterOptions from '../components/FilterOptions'
-import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
-import { orgsSelector } from '../../authentication/redux/reducer'
+} from "../redux";
+import { AppState } from "../../../redux";
+import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
+import { useHistory, useLocation, useParams } from "react-router";
+import {
+  CONCEPT_CLASSES,
+  PREFERRED_SOURCES,
+  useAnchor,
+  useQuery
+} from "../../../utils";
+import qs from "qs";
+import { ProgressOverlay } from "../../../utils/components";
+import FilterOptions from "../components/FilterOptions";
+import { Add as AddIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector
+} from "../../authentication";
+import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
-} from '../constants'
+} from "../constants";
 import {
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction
-} from '../../dictionaries/redux'
-import { canModifyConcept, getSourceIdFromUrl } from '../utils'
+} from "../../dictionaries/redux";
+import { canModifyConcept, getSourceIdFromUrl } from "../utils";
 
 interface StateProps {
   concepts?: APIConcept[];
@@ -73,7 +90,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   usersOrgs,
   containerType,
   addConceptsToDictionary,
-  removeConceptsFromDictionary,
+  removeConceptsFromDictionary
 }) => {
   const classes = useStyles();
 
@@ -152,7 +169,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       initialDataTypeFilters,
       initialClassFilters,
       initialSourceFilters,
-      true,
+      true
     );
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
@@ -209,14 +226,21 @@ const ViewConceptsPage: React.FC<Props> = ({
               count={meta.num_found || concepts?.length || 0}
               toggleShowOptions={() => setShowOptions(!showOptions)}
               addConceptsToDictionary={(concepts: APIConcept[]) =>
-                dictionaryToAddTo && addConceptsToDictionary(PREFERRED_SOURCES[preferredSource], dictionaryToAddTo, concepts)
+                dictionaryToAddTo &&
+                addConceptsToDictionary(
+                  PREFERRED_SOURCES[preferredSource],
+                  dictionaryToAddTo,
+                  concepts
+                )
               }
               linkedDictionary={dictionaryUrl}
               linkedSource={linkedSource}
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
               }
-              removeConceptsFromDictionary={(conceptVersionUrls: string[]) => removeConceptsFromDictionary(dictionaryUrl, conceptVersionUrls)}
+              removeConceptsFromDictionary={(conceptVersionUrls: string[]) =>
+                removeConceptsFromDictionary(dictionaryUrl, conceptVersionUrls)
+              }
             />
           </Grid>
           {!showOptions ? (
@@ -234,7 +258,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 sourceOptions={
                   [
                     getSourceIdFromUrl(linkedSource),
-                    ...FILTER_SOURCE_IDS,
+                    ...FILTER_SOURCE_IDS
                   ].filter(source => source !== undefined) as string[]
                 }
                 url={gimmeAUrl()}
@@ -336,14 +360,16 @@ const mapStateToProps = (state: AppState): StateProps => ({
   meta: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
-  loading: viewConceptsLoadingSelector(state) || removeConceptsFromDictionaryLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state),
+  loading:
+    viewConceptsLoadingSelector(state) ||
+    removeConceptsFromDictionaryLoadingSelector(state),
+  errors: viewConceptsErrorsSelector(state)
 });
 
 const mapActionsToProps: ActionProps = {
   retrieveConcepts: retrieveConceptsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction
 };
 
 // @ts-ignore todo find out why retrieveConcepts is acting up

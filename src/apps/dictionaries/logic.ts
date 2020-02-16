@@ -1,6 +1,6 @@
-import api from "./api";
-import { APIMapping, InternalAPIMapping } from "../concepts";
-import { union } from "lodash";
+import api from './api'
+import { APIMapping, InternalAPIMapping } from '../concepts'
+import { union } from 'lodash'
 
 const fetchConceptMappings = async (
   sourceUrl: string,

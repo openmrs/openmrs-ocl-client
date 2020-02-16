@@ -6,25 +6,21 @@ import {
   progressAction,
   resetAction,
   startAction
-} from "../../../redux";
-import api from "../api";
-import { APIConcept, Concept, Mapping } from "../types";
+} from '../../../redux'
+import api from '../api'
+import { APIConcept, Concept, Mapping } from '../types'
 import {
   addConceptsToDictionaryAction as addConceptsToDictionary,
   removeReferencesFromDictionaryAction as removeReferencesFromDictionary
-} from "../../dictionaries";
+} from '../../dictionaries'
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_CONCEPT_AND_MAPPINGS,
   UPSERT_MAPPING_ACTION
-} from "./actionTypes";
-import {
-  ANSWERS_BATCH_INDEX,
-  MAPPINGS_BATCH_INDEX,
-  SETS_BATCH_INDEX
-} from "./constants";
+} from './actionTypes'
+import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from './constants'
 
 export const retrieveConceptAction = createActionThunk(
   RETRIEVE_CONCEPT_ACTION,

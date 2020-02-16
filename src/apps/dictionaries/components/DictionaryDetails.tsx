@@ -1,13 +1,7 @@
-import React from "react";
-import { APIDictionary } from "../../dictionaries";
-import {
-  Button,
-  ButtonGroup,
-  makeStyles,
-  Paper,
-  Typography
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { APIDictionary } from '../../dictionaries'
+import { Button, ButtonGroup, makeStyles, Paper, Typography } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 interface Props {
   dictionary: APIDictionary;

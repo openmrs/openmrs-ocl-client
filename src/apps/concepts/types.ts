@@ -1,4 +1,4 @@
-import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from '../../utils'
+import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from "../../utils";
 
 export interface ConceptName {
   name: string;

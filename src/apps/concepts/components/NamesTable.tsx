@@ -13,16 +13,13 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
-import { ArrayHelpers, ErrorMessage, Field } from "formik";
-import { Select, TextField } from "formik-material-ui";
-import { LOCALES, NAME_TYPES } from "../../../utils";
-import {
-  DeleteOutline as DeleteOutlineIcon,
-  MoreVert as MoreVertIcon
-} from "@material-ui/icons";
-import React from "react";
-import { ConceptDescription, ConceptName } from "../types";
+} from '@material-ui/core'
+import { ArrayHelpers, ErrorMessage, Field } from 'formik'
+import { Select, TextField } from 'formik-material-ui'
+import { LOCALES, NAME_TYPES } from '../../../utils'
+import { DeleteOutline as DeleteOutlineIcon, MoreVert as MoreVertIcon } from '@material-ui/icons'
+import React from 'react'
+import { ConceptDescription, ConceptName } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

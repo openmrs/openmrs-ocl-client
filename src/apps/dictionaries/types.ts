@@ -1,7 +1,4 @@
-import {
-  BaseConceptContainer,
-  EditableConceptContainerFields
-} from "../../utils";
+import { BaseConceptContainer, EditableConceptContainerFields } from '../../utils'
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;

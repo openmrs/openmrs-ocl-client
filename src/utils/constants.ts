@@ -1,4 +1,4 @@
-import { Option } from './types'
+import { Option } from "./types";
 
 export const BASE_URL: string = "https://api.qa.openconceptlab.org";
 export const TRADITIONAL_OCL_URL = "https://qa.openconceptlab.org";
@@ -337,7 +337,7 @@ export const MAP_TYPE_CONCEPT_SET = option("CONCEPT-SET");
 const CIEL_SOURCE_URL = "/orgs/CIEL/sources/CIEL/";
 const PIH_SOURCE_URL = "/orgs/PIH/sources/PIH/";
 
-export const PREFERRED_SOURCES: {[key: string]: string} = {
+export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
-  PIH: PIH_SOURCE_URL,
-}
+  PIH: PIH_SOURCE_URL
+};

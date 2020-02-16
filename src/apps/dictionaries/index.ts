@@ -3,7 +3,11 @@
  * Since we don't really care about collections themselves, but in the 'linked source' behaviour we create
  */
 export { default } from "./Routes";
-export {  CreateDictionaryPage, ViewPublicDictionariesPage, ViewDictionariesPage } from "./pages";
+export {
+  CreateDictionaryPage,
+  ViewPublicDictionariesPage,
+  ViewDictionariesPage
+} from "./pages";
 export {
   default as dictionariesReducer,
   addConceptsToDictionaryLoadingListSelector,
@@ -14,7 +18,7 @@ export {
   removeReferencesFromDictionaryAction,
   createDictionaryVersionAction,
   createDictionaryVersionLoadingSelector,
-  createDictionaryVersionErrorSelector,
+  createDictionaryVersionErrorSelector
 } from "./redux";
-export {buildAddConceptToDictionaryMessage} from "./utils";
+export { buildAddConceptToDictionaryMessage } from "./utils";
 export * from "./types";

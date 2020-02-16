@@ -1,23 +1,14 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  Grid,
-  List,
-  ListItem,
-  ListSubheader,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
-import { AppState } from "../redux";
+import React from 'react'
+import { Card, CardContent, Grid, List, ListItem, ListSubheader, makeStyles, Typography } from '@material-ui/core'
+import { AppState } from '../redux'
 import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
   buildAddConceptToDictionaryMessage
-} from "../apps/dictionaries";
-import { connect } from "react-redux";
-import Header from "./Header";
+} from '../apps/dictionaries'
+import { connect } from 'react-redux'
+import Header from './Header'
 
 interface Props {
   loadingList?: (boolean | undefined)[];

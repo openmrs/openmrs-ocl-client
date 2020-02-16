@@ -35,7 +35,7 @@ const api = {
       dataTypeFilters = [] as string[],
       classFilters = [] as string[],
       sourceFilters = [] as string[],
-      includeRetired = false,
+      includeRetired = false
     ) =>
       authenticatedInstance.get(conceptsUrl, {
         params: {

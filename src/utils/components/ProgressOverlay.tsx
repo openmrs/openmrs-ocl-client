@@ -1,7 +1,13 @@
-import React from 'react'
-import { CircularProgress, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
-import { BrokenImageOutlined as ErrorIcon } from '@material-ui/icons'
-import clsx from 'clsx'
+import React from "react";
+import {
+  CircularProgress,
+  createStyles,
+  makeStyles,
+  Theme,
+  Typography
+} from "@material-ui/core";
+import { BrokenImageOutlined as ErrorIcon } from "@material-ui/icons";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       // paddingTop: '45%',
     },
     blur: {
-      backgroundColor: "rgba(0,0,0,0.1)", // almost transparent
+      backgroundColor: "rgba(0,0,0,0.1)" // almost transparent
     },
     overlayContent: {
       margin: "auto",
@@ -60,9 +66,7 @@ const Error = ({ errorMessage }: { errorMessage: string }) => {
       <div className={classes.overlayContent}>
         <ErrorIcon fontSize="large" />
         <br />
-        <Typography variant="h6">
-          {errorMessage}
-        </Typography>
+        <Typography variant="h6">{errorMessage}</Typography>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
-import { AuthState } from "../apps/authentication";
-import { DictionaryState } from "../apps/dictionaries";
-import { ConceptsState } from "../apps/concepts";
-import { AnyAction } from "redux";
+import { AuthState } from '../apps/authentication'
+import { DictionaryState } from '../apps/dictionaries'
+import { ConceptsState } from '../apps/concepts'
+import { AnyAction } from 'redux'
 
 interface StatusState {
   [key: string]: boolean[] | string[] | undefined[];

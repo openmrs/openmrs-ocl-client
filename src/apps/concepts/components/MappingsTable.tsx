@@ -12,13 +12,13 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
-import { ArrayHelpers, ErrorMessage } from "formik";
-import React, { useState } from "react";
-import { Mapping } from "../types";
-import MappingsTableRow from "./MappingsTableRow";
-import { Option } from "../../../utils";
-import { MoreVert as MenuIcon } from "@material-ui/icons";
+} from '@material-ui/core'
+import { ArrayHelpers, ErrorMessage } from 'formik'
+import React, { useState } from 'react'
+import { Mapping } from '../types'
+import MappingsTableRow from './MappingsTableRow'
+import { Option } from '../../../utils'
+import { MoreVert as MenuIcon } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

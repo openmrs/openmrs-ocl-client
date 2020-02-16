@@ -1,7 +1,7 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash'
 
-import { errors, loading, progress } from "./utils";
-import { Action, LoadingAndErroredState } from "./types";
+import { errors, loading, progress } from './utils'
+import { Action, LoadingAndErroredState } from './types'
 
 // todo improve these action types args
 const loadingAndErroredReducer = (

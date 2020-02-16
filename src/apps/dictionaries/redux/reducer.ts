@@ -1,6 +1,6 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { Action, indexedAction, startAction } from "../../../redux";
-import { DictionaryState } from "../types";
+import { createReducer } from '@reduxjs/toolkit'
+import { Action, indexedAction, startAction } from '../../../redux'
+import { DictionaryState } from '../types'
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
@@ -11,7 +11,7 @@ import {
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
-} from "./actionTypes";
+} from './actionTypes'
 
 const initialState: DictionaryState = {
   dictionaries: [],

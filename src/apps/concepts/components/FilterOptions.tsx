@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   ButtonGroup,
@@ -13,9 +13,9 @@ import {
   makeStyles,
   Paper,
   Theme
-} from "@material-ui/core";
-import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
-import { Link } from "react-router-dom";
+} from '@material-ui/core'
+import { CONCEPT_CLASSES, DATA_TYPES } from '../../../utils'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
