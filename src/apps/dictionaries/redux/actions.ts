@@ -25,7 +25,6 @@ import {
   PERSONAL_DICTIONARIES_ACTION_INDEX
 } from "./constants";
 import { APIConcept } from "../../concepts";
-import { CIEL_CONCEPTS_URL } from "../../concepts/constants";
 import { recursivelyFetchToConcepts } from "../logic";
 import { addConceptsToDictionaryProgressListSelector } from "./selectors";
 import {
@@ -272,7 +271,8 @@ export const createDictionaryVersionAction = createActionThunk(
   api.versions.create
 );
 
-export const addCIELConceptsToDictionaryAction = (
+export const recursivelyAddConceptsToDictionaryAction = (
+  sourceUrl: string,
   dictionaryUrl: string,
   rawConcepts: (APIConcept | string)[],
   bulk: boolean = false
@@ -281,7 +281,7 @@ export const addCIELConceptsToDictionaryAction = (
     typeof concept === "string"
       ? {
           id: concept,
-          url: `${CIEL_CONCEPTS_URL}${concept}/`,
+          url: `${sourceUrl}concepts/${concept}/`,
           display_name: concept
         }
       : concept
@@ -306,6 +306,7 @@ export const addCIELConceptsToDictionaryAction = (
   dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex)));
 
   const referencesToAdd = await recursivelyFetchToConcepts(
+    sourceUrl,
     concepts.map(concept => concept.id),
     updateProgress
   );

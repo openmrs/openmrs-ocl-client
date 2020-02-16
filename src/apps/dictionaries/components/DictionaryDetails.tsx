@@ -8,7 +8,6 @@ import {
   Typography
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { CIEL_SOURCE_URL } from "../../../utils/constants";
 
 interface Props {
   dictionary: APIDictionary;
@@ -30,16 +29,17 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const {
     references,
     concepts_url: conceptsUrl,
+    preferred_source: preferredSource,
     extras: { source: linkedSource }
   } = dictionary;
 
   const conceptReferences = references
     ? references.filter(({ reference_type }) => reference_type === "concepts")
     : [];
-  const cielConceptCount = conceptReferences.filter(({ expression }) =>
-    expression.includes(CIEL_SOURCE_URL)
+  const fromPreferredSource = conceptReferences.filter(({ expression }) =>
+    expression.includes(preferredSource)
   ).length;
-  const customConceptCount = conceptReferences.length - cielConceptCount;
+  const customConceptCount = conceptReferences.length - fromPreferredSource;
 
   return (
     <Paper className="fieldsetParent">
@@ -56,7 +56,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           gutterBottom
           className={classes.conceptCountBreakDown}
         >
-          From CIEL: {cielConceptCount}
+          From {preferredSource}: {fromPreferredSource}
           <br />
           Custom Concepts: {customConceptCount}
         </Typography>
@@ -64,7 +64,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           <Button color="primary">
             <Link
               className={classes.link}
-              to={`${conceptsUrl}?linkedSource=${linkedSource}`}
+              to={`${conceptsUrl}?linkedSource=${linkedSource}&preferredSource=${preferredSource}`}
             >
               View Concepts
             </Link>

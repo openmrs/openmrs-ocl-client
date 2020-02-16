@@ -8,7 +8,6 @@ import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
 import { AxiosResponse } from "axios";
 import { OCL_DICTIONARY_TYPE } from "./constants";
 import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
-import { CIEL_SOURCE_URL } from "../../utils/constants";
 
 const api = {
   create: (
@@ -68,10 +67,11 @@ const api = {
     ): Promise<AxiosResponse<APIDictionaryVersion>> =>
       authenticatedInstance.post(`${dictionaryUrl}versions/`, data)
   },
-  retrieveCIELMappings: (
-    fromConceptIds: string[]
+  retrieveMappings: (
+    sourceUrl: string,
+    fromConceptIds: string[],
   ): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.get(`${CIEL_SOURCE_URL}mappings/`, {
+    authenticatedInstance.get(`${sourceUrl}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),
         limit: 0 // bad, todo optimize this

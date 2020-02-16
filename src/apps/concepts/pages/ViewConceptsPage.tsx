@@ -12,7 +12,7 @@ import {
 import { AppState } from '../../../redux'
 import { APIConcept, OptionalQueryParams as QueryParams } from '../types'
 import { useHistory, useLocation, useParams } from 'react-router'
-import { CIEL_SOURCE_URL, CONCEPT_CLASSES, useAnchor, useQuery } from '../../../utils'
+import { CONCEPT_CLASSES, PREFERRED_SOURCES, useAnchor, useQuery } from '../../../utils'
 import qs from 'qs'
 import { ProgressOverlay } from '../../../utils/components'
 import FilterOptions from '../components/FilterOptions'
@@ -21,27 +21,37 @@ import { Link } from 'react-router-dom'
 import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
 import { orgsSelector } from '../../authentication/redux/reducer'
 import {
-  CIEL_CONCEPTS_URL,
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
 } from '../constants'
-import { addCIELConceptsToDictionaryAction, removeReferencesFromDictionaryAction } from '../../dictionaries/redux'
+import {
+  recursivelyAddConceptsToDictionaryAction,
+  removeReferencesFromDictionaryAction
+} from '../../dictionaries/redux'
 import { canModifyConcept, getSourceIdFromUrl } from '../utils'
 
-interface Props {
+interface StateProps {
   concepts?: APIConcept[];
   loading: boolean;
   errors?: {};
-  retrieveConcepts: Function;
   meta?: { num_found?: number };
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
-  containerType: string;
-  addConceptsToDictionary: Function;
-  removeConceptsFromDictionary: Function;
 }
+
+interface ActionProps {
+  retrieveConcepts: typeof retrieveConceptsAction;
+  addConceptsToDictionary: typeof recursivelyAddConceptsToDictionaryAction;
+  removeConceptsFromDictionary: typeof removeReferencesFromDictionaryAction;
+}
+
+interface OwnProps {
+  containerType: string;
+}
+
+type Props = StateProps & ActionProps & OwnProps;
 
 const useStyles = makeStyles({
   link: {
@@ -76,7 +86,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const { linkedSource } = useQuery(); // only relevant when using collection container
+  const { linkedSource, preferredSource } = useQuery(); // only relevant when using collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
@@ -142,7 +152,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       initialDataTypeFilters,
       initialClassFilters,
       initialSourceFilters,
-      true
+      true,
     );
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
@@ -199,7 +209,7 @@ const ViewConceptsPage: React.FC<Props> = ({
               count={meta.num_found || concepts?.length || 0}
               toggleShowOptions={() => setShowOptions(!showOptions)}
               addConceptsToDictionary={(concepts: APIConcept[]) =>
-                addConceptsToDictionary(dictionaryToAddTo, concepts)
+                dictionaryToAddTo && addConceptsToDictionary(PREFERRED_SOURCES[preferredSource], dictionaryToAddTo, concepts)
               }
               linkedDictionary={dictionaryUrl}
               linkedSource={linkedSource}
@@ -223,8 +233,8 @@ const ViewConceptsPage: React.FC<Props> = ({
                 // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
                 sourceOptions={
                   [
+                    getSourceIdFromUrl(linkedSource),
                     ...FILTER_SOURCE_IDS,
-                    getSourceIdFromUrl(linkedSource)
                   ].filter(source => source !== undefined) as string[]
                 }
                 url={gimmeAUrl()}
@@ -301,7 +311,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${CIEL_CONCEPTS_URL}?addToDictionary=${dictionaryUrl}`}
+            to={`${PREFERRED_SOURCES[preferredSource]}concepts/?addToDictionary=${dictionaryUrl}`}
           >
             Pick concepts
           </Link>
@@ -309,7 +319,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${dictionaryUrl}add/?fromSource=${CIEL_SOURCE_URL}`}
+            to={`${dictionaryUrl}add/?fromSource=${preferredSource}`}
           >
             Add bulk concepts
           </Link>
@@ -319,7 +329,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = (state: AppState): StateProps => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
@@ -330,10 +340,11 @@ const mapStateToProps = (state: AppState) => ({
   errors: viewConceptsErrorsSelector(state),
 });
 
-const mapActionsToProps = {
+const mapActionsToProps: ActionProps = {
   retrieveConcepts: retrieveConceptsAction,
-  addConceptsToDictionary: addCIELConceptsToDictionaryAction,
+  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
 };
 
+// @ts-ignore todo find out why retrieveConcepts is acting up
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);

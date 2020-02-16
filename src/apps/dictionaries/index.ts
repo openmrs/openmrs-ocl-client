@@ -9,7 +9,7 @@ export {
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
   addConceptsToDictionaryErrorListSelector,
-  addCIELConceptsToDictionaryAction,
+  recursivelyAddConceptsToDictionaryAction,
   addConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   createDictionaryVersionAction,

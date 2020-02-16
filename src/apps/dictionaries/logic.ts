@@ -2,21 +2,23 @@ import api from "./api";
 import { APIMapping, InternalAPIMapping } from "../concepts";
 import { union } from "lodash";
 
-const fetchCIELMappings = async (
-  fromConceptIds: string[]
+const fetchConceptMappings = async (
+  sourceUrl: string,
+  fromConceptIds: string[],
 ): Promise<APIMapping[]> => {
   try {
-    return (await api.retrieveCIELMappings(fromConceptIds)).data;
+    return (await api.retrieveMappings(sourceUrl, fromConceptIds)).data;
   } catch (e) {
     return [];
   }
 };
 
 const recursivelyFetchToConcepts = async (
+  fromSource: string,
   fromConceptIds: string[],
   updateNotification: (message: string) => void,
   levelsToCheck: number = 20,
-  fetchMappings = fetchCIELMappings
+  fetchMappings: (sourceUrl: string, fromConceptIds: string[]) => Promise<APIMapping[]> = fetchConceptMappings,
 ): Promise<string[]> => {
   const getConceptUrls = (mappingsLists: InternalAPIMapping[][]): string[] => {
     const toConceptUrls = union(...mappingsLists).map(
@@ -34,6 +36,7 @@ const recursivelyFetchToConcepts = async (
 
   updateNotification("Finding dependent concepts...");
   const startingConceptMappings: APIMapping[] = await fetchMappings(
+    fromSource,
     fromConceptIds
   );
   const mappingsLists = [removeExternalMappings(startingConceptMappings)];
@@ -46,7 +49,7 @@ const recursivelyFetchToConcepts = async (
       mapping => mapping.to_concept_code
     );
     if (!toConceptCodes.length) break;
-    const conceptMappings = await fetchMappings(toConceptCodes);
+    const conceptMappings = await fetchMappings(fromSource, toConceptCodes);
     mappingsLists.push(removeExternalMappings(conceptMappings));
     updateNotification(
       `Found ${

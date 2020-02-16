@@ -8,7 +8,7 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
-import { getPrettyError, LOCALES } from "../../../utils";
+import { getPrettyError, LOCALES, PREFERRED_SOURCES } from '../../../utils'
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
@@ -35,7 +35,7 @@ const DictionarySchema = Yup.object().shape<Dictionary>({
   description: Yup.string().min(0),
   preferred_source: Yup.string()
     .required("Select a preferred source")
-    .oneOf(["CIEL"], "This source is not supported"),
+    .oneOf(Object.keys(PREFERRED_SOURCES), "This source is not supported"),
   owner_url: Yup.string().required("Select this dictionary's owner"),
   public_access: Yup.string().required(
     "Select who will have access to this dictionary"
@@ -48,7 +48,7 @@ const initialValues: Dictionary = {
   name: "",
   short_code: "",
   description: "",
-  preferred_source: "CIEL",
+  preferred_source: "",
   owner_url: "",
   public_access: "",
   default_locale: "",
@@ -166,8 +166,11 @@ const DictionaryForm: React.FC<Props> = ({
                 id="preferred_source"
                 component={Select}
               >
-                <MenuItem value="CIEL">CIEL</MenuItem>
+                {Object.keys(PREFERRED_SOURCES).map(preferredSource => <MenuItem value={preferredSource}>{preferredSource}</MenuItem>)}
               </Field>
+              <Typography color="error" variant="caption" component="div">
+                <ErrorMessage name="preferred_source" component="span" />
+              </Typography>
             </FormControl>
             <FormControl
               fullWidth

@@ -32,10 +32,10 @@ const api = {
       q = "",
       sortDirection = "sortAsc",
       sortBy = "bestMatch",
-      dataTypeFilters = [],
-      classFilters = [],
-      sourceFilters = [],
-      includeRetired = false
+      dataTypeFilters = [] as string[],
+      classFilters = [] as string[],
+      sourceFilters = [] as string[],
+      includeRetired = false,
     ) =>
       authenticatedInstance.get(conceptsUrl, {
         params: {

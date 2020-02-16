@@ -4,7 +4,7 @@ import { USER_TYPE } from "../../utils";
 import { getParams } from "url-matcher";
 
 export function getSourceIdFromUrl(sourceUrl?: string) {
-  // /orgs/CIEL/sources/CIEL/ => CIEL
+  // /orgs/FOO/sources/FOO/ => FOO
   if (!sourceUrl) return undefined;
   const withoutTrailingSlash = sourceUrl.endsWith("/")
     ? sourceUrl.substring(0, sourceUrl.lastIndexOf("/"))
