@@ -25,9 +25,7 @@ const Routes: React.FC = () => {
         <ViewConceptsPage containerType={DICTIONARY_VERSION_CONTAINER} />
       </Route>
       <Route exact path={`${path}/:collection/add/`}>
-        <Header title="Add bulk concepts">
-          <AddBulkConceptsPage />
-        </Header>
+        <AddBulkConceptsPage />
       </Route>
     </Switch>
   );

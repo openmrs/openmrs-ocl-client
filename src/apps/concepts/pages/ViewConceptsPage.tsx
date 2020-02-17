@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../../components/Header";
 import {
+  Button,
+  createStyles,
   Fab,
   Grid,
   makeStyles,
   Menu,
   MenuItem,
+  Theme,
   Tooltip
 } from "@material-ui/core";
 import { ConceptsTable } from "../components";
@@ -39,7 +42,6 @@ import {
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
 } from "../constants";
@@ -70,13 +72,18 @@ interface OwnProps {
 
 type Props = StateProps & ActionProps & OwnProps;
 
-const useStyles = makeStyles({
-  link: {
-    textDecoration: "none",
-    color: "inherit",
-    width: "100%"
-  }
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    link: {
+      textDecoration: "none",
+      color: "inherit",
+      width: "100%"
+    },
+    lightColour: {
+      color: theme.palette.background.default
+    }
+  })
+);
 
 const INITIAL_LIMIT = 10; // todo get limit from settings
 
@@ -94,8 +101,6 @@ const ViewConceptsPage: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const isDictionaryVersionContainer =
-    containerType === DICTIONARY_VERSION_CONTAINER;
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
   const dictionaryUrl = url.replace("/concepts", ""); // only relevant when using collection container
@@ -111,6 +116,11 @@ const ViewConceptsPage: React.FC<Props> = ({
     importExistingAnchor,
     handleImportExistingClick,
     handleImportExistingClose
+  ] = useAnchor();
+  const [
+    switchSourceAnchor,
+    handleSwitchSourceClick,
+    handleSwitchSourceClose
   ] = useAnchor();
 
   const queryParams: QueryParams = useQuery();
@@ -194,12 +204,48 @@ const ViewConceptsPage: React.FC<Props> = ({
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
 
+  const showHeaderComponent = containerType === SOURCE_CONTAINER;
+
   return (
     <>
       <Header
         title="Concepts"
         justifyChildren="space-around"
-        backUrl={!isDictionaryVersionContainer ? dictionaryUrl : undefined}
+        headerComponent={
+          !showHeaderComponent ? null : (
+            <>
+              <Button
+                className={classes.lightColour}
+                variant="text"
+                size="large"
+                aria-haspopup="true"
+                onClick={handleSwitchSourceClick}
+              >
+                Switch source (Currently{" "}
+                {getSourceIdFromUrl(url.replace("concepts/", ""))})
+              </Button>
+              <Menu
+                anchorEl={switchSourceAnchor}
+                keepMounted
+                open={Boolean(switchSourceAnchor)}
+                onClose={handleSwitchSourceClose}
+              >
+                {Object.entries(PREFERRED_SOURCES).map(
+                  ([sourceName, sourceUrl]) => (
+                    <MenuItem onClick={handleSwitchSourceClose}>
+                      <Link
+                        className={classes.link}
+                        to={`${sourceUrl}concepts/?addToDictionary=${dictionaryToAddTo}`}
+                      >
+                        {sourceName}
+                      </Link>
+                    </MenuItem>
+                  )
+                )}
+              </Menu>
+            </>
+          )
+        }
       >
         <ProgressOverlay loading={loading}>
           <Grid
