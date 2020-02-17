@@ -77,7 +77,8 @@ const apiNamesToName = (names: ConceptName[]) =>
 
 const apiConceptToConcept = (
   apiConcept: APIConcept | undefined,
-  mappings: APIMapping[] = []
+  mappings: APIMapping[] = [],
+  convertNames = true,
 ): Concept | undefined => {
   if (!apiConcept) return apiConcept;
 
@@ -85,7 +86,7 @@ const apiConceptToConcept = (
   descriptions = descriptions || [];
 
   return {
-    names: apiNamesToName(names),
+    names: convertNames ? apiNamesToName(names) : names,
     descriptions,
     ...theRest,
     answers: mappings.filter(

@@ -147,7 +147,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
               <MenuItem
                 disabled={loading}
                 onClick={() => {
-                    const rawConcept = apiConceptToConcept(concept);
+                    const rawConcept = apiConceptToConcept(concept, [], false);
                     if (rawConcept) upsertConcept({...rawConcept, retired: !concept?.retired}, sourceUrl, linkedDictionary);
                     else debug("Retiring failed: rawConcept is undefined");
                   }
