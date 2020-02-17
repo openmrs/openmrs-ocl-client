@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  addConceptsToDictionary: typeof recursivelyAddConceptsToDictionaryAction;
+  addConceptsToDictionary: (...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>) => void;
 }
 
 const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
@@ -99,5 +99,4 @@ const mapActionsToProps = {
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction
 };
 
-// @ts-ignore
 export default connect(undefined, mapActionsToProps)(AddBulkConceptsPage);

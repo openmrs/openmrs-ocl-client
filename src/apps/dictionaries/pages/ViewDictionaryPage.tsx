@@ -24,8 +24,8 @@ interface Props {
   usersOrgs?: APIOrg[];
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
-  retrieveDictionaryAndDetails: Function;
-  createDictionaryVersion: Function;
+  retrieveDictionaryAndDetails: (...args: Parameters<typeof retrieveDictionaryAndDetailsAction>) => void;
+  createDictionaryVersion: (...args: Parameters<typeof createDictionaryVersionAction>) => void;
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;

@@ -1,28 +1,25 @@
-import React from "react";
-import { DictionaryForm } from "../components";
-import { Grid, Paper } from "@material-ui/core";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React from 'react'
+import { DictionaryForm } from '../components'
+import { Grid, Paper } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
   createSourceAndDictionaryErrorsSelector
-} from "../redux/selectors";
-import { APIDictionary, Dictionary } from "../types";
-import {
-  orgsSelector,
-  profileSelector
-} from "../../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../../authentication";
-import { usePrevious } from "../../../utils";
-import { CONTEXT } from "../constants";
-import { createSourceAndDictionaryAction } from "../redux/actions";
+} from '../redux/selectors'
+import { APIDictionary, Dictionary } from '../types'
+import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
+import { APIOrg, APIProfile } from '../../authentication'
+import { usePrevious } from '../../../utils'
+import { CONTEXT } from '../constants'
+import { createSourceAndDictionaryAction } from '../redux/actions'
 
 interface Props {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
-  createSourceAndDictionary: Function;
+  createSourceAndDictionary: (...args: Parameters<typeof createSourceAndDictionaryAction>) => void;
   loading: boolean;
   newDictionary?: APIDictionary;
 }

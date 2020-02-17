@@ -60,11 +60,17 @@ interface StateProps {
   usersOrgs?: APIOrg[];
 }
 
-interface ActionProps {
-  retrieveConcepts: typeof retrieveConceptsAction;
-  addConceptsToDictionary: typeof recursivelyAddConceptsToDictionaryAction;
-  removeConceptsFromDictionary: typeof removeReferencesFromDictionaryAction;
-}
+type ActionProps = {
+  retrieveConcepts: (
+    ...args: Parameters<typeof retrieveConceptsAction>
+  ) => void;
+  addConceptsToDictionary: (
+    ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
+  ) => void;
+  removeConceptsFromDictionary: (
+    ...args: Parameters<typeof removeReferencesFromDictionaryAction>
+  ) => void;
+};
 
 interface OwnProps {
   containerType: string;
@@ -399,7 +405,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState): StateProps => ({
+const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
@@ -412,11 +418,13 @@ const mapStateToProps = (state: AppState): StateProps => ({
   errors: viewConceptsErrorsSelector(state)
 });
 
-const mapActionsToProps: ActionProps = {
+const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction
 };
 
-// @ts-ignore todo find out why retrieveConcepts is acting up
-export default connect(mapStateToProps, mapActionsToProps)(ViewConceptsPage);
+export default connect<StateProps, ActionProps, OwnProps, AppState>(
+  mapStateToProps,
+  mapActionsToProps
+)(ViewConceptsPage);

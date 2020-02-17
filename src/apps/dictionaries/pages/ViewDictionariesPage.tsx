@@ -8,7 +8,7 @@ import { useHistory, useLocation } from 'react-router'
 import qs from 'qs'
 import ViewDictionaries from '../components/ViewDictionaries'
 import { Fab, Grid, Tooltip } from '@material-ui/core'
-import { retrieveDictionariesLoadingSelector } from '../redux/selectors'
+import { retrieveDictionariesLoadingSelector } from '../redux'
 import { Add as AddIcon } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { retrieveDictionariesAction } from '../redux/actions'
@@ -22,7 +22,7 @@ interface Props {
   orgDictionaries?: APIDictionary[];
   personalMeta?: { num_found?: number };
   orgMeta?: { num_found?: number };
-  retrieveDictionaries: Function;
+  retrieveDictionaries: (...args: Parameters<typeof retrieveDictionariesAction>) => void;
 }
 
 interface QueryParams {

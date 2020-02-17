@@ -20,7 +20,7 @@ interface Props {
   concept?: APIConcept;
   mappings: APIMapping[];
   errors?: {};
-  retrieveConcept: Function;
+  retrieveConcept: (...args: Parameters<typeof retrieveConceptAction>) => void;
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
 }

@@ -1,4 +1,4 @@
-import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from "../../utils";
+import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from '../../utils'
 
 export interface ConceptName {
   name: string;
@@ -52,6 +52,7 @@ export interface Concept extends BaseConcept {
   answers: Mapping[];
   sets: Mapping[];
   mappings: Mapping[];
+  retired: boolean;
 }
 
 export interface APIConcept extends BaseConcept {

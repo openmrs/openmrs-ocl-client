@@ -16,7 +16,7 @@ interface BaseAPIDictionary extends BaseDictionary {
   collection_type: string;
   website: string;
   custom_validation_schema: string;
-  extras: { [key: string]: string | undefined };
+  extras: { source: string };
 }
 
 export interface NewAPIDictionary extends BaseAPIDictionary {

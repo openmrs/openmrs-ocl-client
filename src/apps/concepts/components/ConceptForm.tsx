@@ -87,7 +87,8 @@ const initialValues: Concept = {
   answers: [],
   sets: [],
   mappings: [],
-  names: [createName()]
+  names: [createName()],
+  retired: false,
 };
 
 const buildInitialValues = (
@@ -147,7 +148,8 @@ const ConceptSchema = Yup.object().shape<Concept>({
     .min(0),
   [MAPPINGS_VALUE_KEY]: Yup.array()
     .of(MappingSchema)
-    .min(0)
+    .min(0),
+  retired: Yup.boolean(),
 });
 
 interface Props {

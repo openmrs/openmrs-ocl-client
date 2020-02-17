@@ -12,12 +12,12 @@ import {
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
 } from '../redux'
-import { APIConcept, apiConceptToConcept, APIMapping, BaseConcept } from '../types'
+import { APIConcept, apiConceptToConcept, APIMapping, Concept } from '../types'
 import { Redirect, useLocation, useParams } from 'react-router'
 import { connect } from 'react-redux'
 import Header from '../../../components/Header'
 import { startCase, toLower } from 'lodash'
-import { ProgressOverlay, useAnchor, usePrevious, useQuery } from '../../../utils'
+import { debug, ProgressOverlay, useAnchor, usePrevious, useQuery } from '../../../utils'
 import { CONTEXT } from '../constants'
 import {
   DeleteSweepOutlined as DeleteIcon,
@@ -34,8 +34,8 @@ interface Props {
   mappings: APIMapping[];
   fetchErrors?: {};
   errors?: {};
-  retrieveConcept: Function;
-  upsertConcept: Function;
+  retrieveConcept: (...args: Parameters<typeof retrieveConceptAction>) => void;
+  upsertConcept: (...args: Parameters<typeof upsertConceptAndMappingsAction>) => void;
   allMappingErrors?: { errors: string }[];
   progress?: string;
 }
@@ -116,7 +116,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
             errors={errors}
             allMappingErrors={allMappingErrors}
             supportLegacyMappings={originallyEditing}
-            onSubmit={(data: BaseConcept) =>
+            onSubmit={(data: Concept) =>
               upsertConcept(data, sourceUrl, linkedDictionary)
             }
           />
@@ -146,15 +146,11 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
               </MenuItem>
               <MenuItem
                 disabled={loading}
-                onClick={() =>
-                  upsertConcept(
-                    {
-                      ...apiConceptToConcept(concept),
-                      retired: !concept?.retired
-                    },
-                    sourceUrl,
-                    linkedDictionary
-                  )
+                onClick={() => {
+                    const rawConcept = apiConceptToConcept(concept);
+                    if (rawConcept) upsertConcept({...rawConcept, retired: !concept?.retired}, sourceUrl, linkedDictionary);
+                    else debug("Retiring failed: rawConcept is undefined");
+                  }
                 }
               >
                 {concept?.retired ? (
