@@ -1,7 +1,9 @@
 import { Option } from "./types";
 
-export const BASE_URL: string = "https://api.qa.openconceptlab.org";
-export const TRADITIONAL_OCL_URL = "https://qa.openconceptlab.org";
+// @ts-ignore OCL_API_HOST is injected at runtime via index.html
+export const BASE_URL: string = window.OCL_API_HOST || "https://api.qa.openconceptlab.org";
+// @ts-ignore TRADITIONAL_OCL_HOST is injected at runtime via index.html
+export const TRADITIONAL_OCL_URL = window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 

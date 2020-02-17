@@ -21,3 +21,15 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+public/index.html~HEAD
+yarn.lock
+package-lock.json
+
+#test snapshots
+**/__snapshots__/**
+src/components/dashboard/container/ListContainer.jsx
+.env
+
+# IDE settings
+.idea/*
