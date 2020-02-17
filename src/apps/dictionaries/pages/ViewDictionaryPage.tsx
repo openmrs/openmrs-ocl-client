@@ -1,11 +1,23 @@
-import React, { useEffect } from 'react'
-import { DictionaryDetails, DictionaryForm, ReleasedVersions } from '../components'
-import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
-import { EditOutlined as EditIcon } from '@material-ui/icons'
-import { connect } from 'react-redux'
-import { APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion } from '../types'
-import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
-import { APIOrg, APIProfile, canModifyContainer } from '../../authentication'
+import React, { useEffect } from "react";
+import {
+  DictionaryDetails,
+  DictionaryForm,
+  ReleasedVersions
+} from "../components";
+import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { connect } from "react-redux";
+import {
+  APIDictionary,
+  apiDictionaryToDictionary,
+  APIDictionaryVersion,
+  DictionaryVersion
+} from "../types";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   createDictionaryVersionAction,
   createDictionaryVersionErrorSelector,
@@ -13,19 +25,23 @@ import {
   retrieveDictionaryAndDetailsAction,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector
-} from '../redux'
-import { AppState } from '../../../redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import { CONTEXT } from '../constants'
-import { ProgressOverlay } from '../../../utils/components'
+} from "../redux";
+import { AppState } from "../../../redux";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { CONTEXT } from "../constants";
+import { ProgressOverlay } from "../../../utils/components";
 
 interface Props {
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
-  retrieveDictionaryAndDetails: (...args: Parameters<typeof retrieveDictionaryAndDetailsAction>) => void;
-  createDictionaryVersion: (...args: Parameters<typeof createDictionaryVersionAction>) => void;
+  retrieveDictionaryAndDetails: (
+    ...args: Parameters<typeof retrieveDictionaryAndDetailsAction>
+  ) => void;
+  createDictionaryVersion: (
+    ...args: Parameters<typeof createDictionaryVersionAction>
+  ) => void;
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;

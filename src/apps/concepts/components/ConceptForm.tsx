@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { ErrorMessage, Field, FieldArray, Form, Formik } from 'formik'
-import { Concept, ConceptDescription, ConceptName, Mapping } from '../types'
-import uuid from 'uuid'
+import React, { useEffect, useRef, useState } from "react";
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { Concept, ConceptDescription, ConceptName, Mapping } from "../types";
+import uuid from "uuid";
 import {
   Button,
   createStyles,
@@ -14,8 +14,8 @@ import {
   Paper,
   Theme,
   Typography
-} from '@material-ui/core'
-import { Select, TextField } from 'formik-material-ui'
+} from "@material-ui/core";
+import { Select, TextField } from "formik-material-ui";
 import {
   CONCEPT_CLASSES,
   DATA_TYPES,
@@ -25,13 +25,17 @@ import {
   NAME_TYPES,
   QUESTION_CONCEPT_CLASS,
   SET_CONCEPT_CLASSES
-} from '../../../utils'
-import NamesTable from './NamesTable'
-import { EditOutlined as EditIcon } from '@material-ui/icons'
-import * as Yup from 'yup'
-import MappingsTable from './MappingsTable'
-import { CONTEXT } from '../constants'
-import { ANSWERS_BATCH_INDEX, MAPPINGS_BATCH_INDEX, SETS_BATCH_INDEX } from '../redux/constants'
+} from "../../../utils";
+import NamesTable from "./NamesTable";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import * as Yup from "yup";
+import MappingsTable from "./MappingsTable";
+import { CONTEXT } from "../constants";
+import {
+  ANSWERS_BATCH_INDEX,
+  MAPPINGS_BATCH_INDEX,
+  SETS_BATCH_INDEX
+} from "../redux/constants";
 
 const ANSWERS_VALUE_KEY = "answers";
 const SETS_VALUE_KEY = "sets";
@@ -88,7 +92,7 @@ const initialValues: Concept = {
   sets: [],
   mappings: [],
   names: [createName()],
-  retired: false,
+  retired: false
 };
 
 const buildInitialValues = (
@@ -149,7 +153,7 @@ const ConceptSchema = Yup.object().shape<Concept>({
   [MAPPINGS_VALUE_KEY]: Yup.array()
     .of(MappingSchema)
     .min(0),
-  retired: Yup.boolean(),
+  retired: Yup.boolean()
 });
 
 interface Props {

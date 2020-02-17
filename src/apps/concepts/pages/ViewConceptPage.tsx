@@ -1,19 +1,28 @@
-import React, { useEffect } from 'react'
-import { Fab, Grid, Tooltip } from '@material-ui/core'
-import { ConceptForm } from '../components'
-import { AppState } from '../../../redux'
-import { retrieveConceptAction, viewConceptErrorsSelector, viewConceptLoadingSelector } from '../redux'
-import { APIConcept, apiConceptToConcept, APIMapping } from '../types'
-import { useLocation, useParams } from 'react-router'
-import { connect } from 'react-redux'
-import { EditOutlined as EditIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import Header from '../../../components/Header'
-import { startCase, toLower } from 'lodash'
-import { APIOrg, APIProfile, canModifyContainer, profileSelector } from '../../authentication'
-import { orgsSelector } from '../../authentication/redux/reducer'
-import { CONTEXT } from '../constants'
-import { ProgressOverlay, useQuery } from '../../../utils'
+import React, { useEffect } from "react";
+import { Fab, Grid, Tooltip } from "@material-ui/core";
+import { ConceptForm } from "../components";
+import { AppState } from "../../../redux";
+import {
+  retrieveConceptAction,
+  viewConceptErrorsSelector,
+  viewConceptLoadingSelector
+} from "../redux";
+import { APIConcept, apiConceptToConcept, APIMapping } from "../types";
+import { useLocation, useParams } from "react-router";
+import { connect } from "react-redux";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import Header from "../../../components/Header";
+import { startCase, toLower } from "lodash";
+import {
+  APIOrg,
+  APIProfile,
+  canModifyContainer,
+  profileSelector
+} from "../../authentication";
+import { orgsSelector } from "../../authentication/redux/reducer";
+import { CONTEXT } from "../constants";
+import { ProgressOverlay, useQuery } from "../../../utils";
 
 interface Props {
   loading: boolean;
@@ -42,17 +51,13 @@ const ViewConceptPage: React.FC<Props> = ({
   const { linkedDictionary, linkedSource } = useQuery();
 
   // we can modify the concept and it lives in our dictionary's linked source
-  const showEditButton = canModifyContainer(
-    ownerType,
-    owner,
-    profile,
-    usersOrgs,
-  ) && concept?.url.includes(linkedSource);
+  const showEditButton =
+    canModifyContainer(ownerType, owner, profile, usersOrgs) &&
+    concept?.url.includes(linkedSource);
 
   useEffect(() => {
     retrieveConcept(url);
   }, [url, retrieveConcept]);
-
 
   return (
     <Header
@@ -60,7 +65,15 @@ const ViewConceptPage: React.FC<Props> = ({
         toLower(concept ? concept.display_name : "View concept")
       )}
     >
-      <ProgressOverlay delayRender loading={loading} error={errors ? "Could not retrieve concept. Refresh this page to retry." : undefined}>
+      <ProgressOverlay
+        delayRender
+        loading={loading}
+        error={
+          errors
+            ? "Could not retrieve concept. Refresh this page to retry."
+            : undefined
+        }
+      >
         <Grid id="viewConceptPage" item xs={8} component="div">
           <ConceptForm
             context={CONTEXT.view}

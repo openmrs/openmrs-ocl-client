@@ -157,7 +157,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
   const [q, setQ] = useState(initialQ);
 
-  const gimmeAUrl = (params: QueryParams = {}) => {
+  const gimmeAUrl = (params: QueryParams = {}, conceptsUrl: string = url) => {
     const newParams: QueryParams = {
       ...queryParams,
       ...{
@@ -169,7 +169,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       },
       ...params
     };
-    return `${url}?${qs.stringify(newParams)}`;
+    return `${conceptsUrl}?${qs.stringify(newParams)}`;
   };
 
   useEffect(() => {
@@ -237,13 +237,13 @@ const ViewConceptsPage: React.FC<Props> = ({
                 onClose={handleSwitchSourceClose}
               >
                 {Object.entries(PREFERRED_SOURCES).map(
-                  ([sourceName, sourceUrl]) => (
+                  ([preferredSourceName, preferredSourceUrl]) => (
                     <MenuItem onClick={handleSwitchSourceClose}>
                       <Link
                         className={classes.link}
-                        to={`${sourceUrl}concepts/?addToDictionary=${dictionaryToAddTo}`}
+                        to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
                       >
-                        {sourceName}
+                        {preferredSourceName}
                       </Link>
                     </MenuItem>
                   )
@@ -253,7 +253,14 @@ const ViewConceptsPage: React.FC<Props> = ({
           )
         }
       >
-        <ProgressOverlay loading={loading}>
+        <ProgressOverlay
+          loading={loading}
+          error={
+            errors
+              ? "Could not fetch concepts. Refresh this page to retry"
+              : undefined
+          }
+        >
           <Grid
             id="viewConceptsPage"
             item

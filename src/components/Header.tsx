@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import {
   AppBar,
   Badge,
@@ -10,16 +10,16 @@ import {
   Toolbar,
   Tooltip,
   Typography
-} from '@material-ui/core'
+} from "@material-ui/core";
 import {
   ArrowBack as BackIcon,
   ArrowForward as ForwardIcon,
   NotificationsOutlined as NotificationsIcon
-} from '@material-ui/icons'
-import { connect } from 'react-redux'
-import { addConceptsToDictionaryLoadingListSelector } from '../apps/dictionaries'
-import { AppState } from '../redux'
-import { Link, useHistory } from 'react-router-dom'
+} from "@material-ui/icons";
+import { connect } from "react-redux";
+import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
+import { AppState } from "../redux";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,7 +54,7 @@ const Header: React.FC<Props> = ({
   justifyChildren = "center",
   loadingList = [],
   backUrl,
-  headerComponent,
+  headerComponent
 }) => {
   const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
     .length;
