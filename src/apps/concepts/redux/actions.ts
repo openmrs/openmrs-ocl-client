@@ -40,6 +40,11 @@ export const upsertConceptAndMappingsAction = (
 
     let response: APIConcept | boolean;
 
+    function finish() {
+      dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ""));
+      dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
+    }
+
     dispatch(
       progressAction(
         indexedAction(UPSERT_CONCEPT_AND_MAPPINGS),
@@ -145,7 +150,14 @@ export const upsertConceptAndMappingsAction = (
     ];
     for (const [values, batchIndex, message] of mappingsToProcess) {
       const response = await upsertMappings(values, batchIndex, message);
-      if (response === false) break;
+      if (updating && (response === false)) {
+        // short circuit this here because we don't want to lose the current concept version
+        // and don't really care about the updates the user made if not everything went smoothly
+        // I'd previously relied on the fact that collections don't allow you to add multiple versions
+        // per concept, but that behaviour seems buggy from the api end and this was simply a further precaution
+        // todo handle the same scenario when on the create concept page, involves copying the version_url into the form
+        return finish();
+      }
     }
 
     if (linkedDictionary) {

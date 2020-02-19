@@ -71,7 +71,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 
   const status =
     !errors && anyMappingsErrors
-      ? "Concept updated. Some mappings were not updated or added. Fix the errors and retry."
+      ? "Some mappings were not updated or added. Fix the errors and retry."
       : progress;
 
   useEffect(() => {
