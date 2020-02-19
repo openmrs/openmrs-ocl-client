@@ -13,8 +13,7 @@ import {
 } from "@material-ui/core";
 import {
   ArrowBack as BackIcon,
-  ArrowForward as ForwardIcon,
-  NotificationsOutlined as NotificationsIcon
+  NotificationsOutlined as NotificationsIcon,
 } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
@@ -99,11 +98,13 @@ const Header: React.FC<Props> = ({
                 </Tooltip>
               </Link>
             )}
-            <Tooltip title="Go forward">
-              <IconButton onClick={history.goForward}>
-                <ForwardIcon className={classes.icon} />
-            </IconButton>
-            </Tooltip>
+            {/*Until we can properly disable this when it is not necessary, I'm disabling it.*/}
+            {/*We would need some kind of canGoForward()*/}
+            {/*<Tooltip title="Go forward">*/}
+            {/*  <IconButton onClick={history.goForward}>*/}
+            {/*    <ForwardIcon className={classes.icon} />*/}
+            {/*</IconButton>*/}
+            {/*</Tooltip>*/}
           </div>
         </Toolbar>
       </AppBar>
