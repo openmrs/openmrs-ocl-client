@@ -69,7 +69,7 @@ const Header: React.FC<Props> = ({
     <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Tooltip title="Back">
+          <Tooltip title="Go back">
             {backUrl ? (
               <Link to={backUrl}>
                 <IconButton>
@@ -99,9 +99,11 @@ const Header: React.FC<Props> = ({
                 </Tooltip>
               </Link>
             )}
-            <IconButton onClick={history.goForward}>
-              <ForwardIcon className={classes.icon} />
+            <Tooltip title="Go forward">
+              <IconButton onClick={history.goForward}>
+                <ForwardIcon className={classes.icon} />
             </IconButton>
+            </Tooltip>
           </div>
         </Toolbar>
       </AppBar>
