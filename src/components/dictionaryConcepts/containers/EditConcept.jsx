@@ -110,6 +110,17 @@ export class EditConcept extends Component {
       mapp: '',
       show: false,
       uniqueKey: '',
+      numericPrecisionOptions:{
+        numericEnabled: false,
+        hiAbsolute:'',
+        hiCritical:'',
+        hiNormal:'',
+        lowNormal:'',
+        lowCritical:'',
+        lowAbsolute:'',
+        units:'',
+        allowDecimal: false,
+      },
     };
     this.conceptUrl = '';
     this.createUrl = '';
@@ -169,11 +180,28 @@ export class EditConcept extends Component {
     } = this.props;
     const conceptClass = (conceptType === 'Symptom-Finding' ? 'Symptom/Finding' : conceptType);
     const concept = conceptClass || '';
-    this.setState({
-      id: conceptId,
-      concept_class: concept,
-      datatype,
-    });
+
+    if (datatype === 'Numeric'){
+    this.setState( prevState =>({
+      ...prevState,
+      numericPrecisionOptions:{
+        ...prevState.numericPrecisionOptions,
+        numericEnabled: true},
+        id: conceptId,
+        concept_class: concept,
+        datatype,
+    }));
+  }else{
+    this.setState( prevState =>({
+      ...prevState,
+      numericPrecisionOptions:{
+        ...prevState.numericPrecisionOptions,
+        numericEnabled: false},
+        id: conceptId,
+        concept_class: concept,
+        datatype,
+    }));
+  }
   }
 
   handleNewName(event) {
@@ -207,7 +235,26 @@ export class EditConcept extends Component {
     const {
       target: { value, name },
     } = event;
-    this.setState({ [name]: value });
+    const trueValue = event.target.type === 'checkbox' ? !this.state.numericPrecisionOptions.allowDecimal : value;
+    if(event.target.name == "datatype" && value == "Numeric"){
+      this.setState( prevState =>({
+        numericPrecisionOptions:{
+          ...prevState.numericPrecisionOptions,
+          numericEnabled: true},
+      }));
+    }else if(event.target.name == "datatype"){
+      this.setState(prevState =>({
+        numericPrecisionOptions:{
+          ...prevState.numericPrecisionOptions,
+          numericEnabled: false},
+      }));
+    }
+    this.setState(prevState =>({
+      numericPrecisionOptions:{
+        ...prevState.numericPrecisionOptions,
+        [name]: trueValue},        
+    }));
+    this.setState({ [name]: trueValue });
   }
 
   updateConceptReference = async (concept) => {
@@ -685,6 +732,7 @@ Concept
                 selectedSets={selectedSets}
                 removeSetRow={this.removeSetRow}
                 addSetRow={this.addSetRow}
+                numericPrecisionOptions={this.state.numericPrecisionOptions}
               />
               )
               }

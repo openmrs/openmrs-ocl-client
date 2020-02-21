@@ -4,6 +4,7 @@ import CreateConceptTable from './CreateConceptTable';
 import DescriptionTable from './DescriptionTable';
 import AnswersTable from './AnswersTable';
 import CreateMapping from './CreateMapping';
+import NumericPrecision from './NumericPrecision';
 import {
   classes,
   MAP_TYPE,
@@ -33,6 +34,7 @@ const CreateConceptForm = (props) => {
     allSources,
     removeMappingRow,
     removeCurrentAnswer,
+    numericPrecisionOptions,
   } = props;
 
   const selectedMappings = mappings.filter(
@@ -208,6 +210,11 @@ const CreateConceptForm = (props) => {
             <option>Complex</option>
             {showCodedOption && <option>Coded</option>}
           </select>
+          {numericPrecisionOptions.numericEnabled && 
+          <NumericPrecision 
+          handleChange={props.handleChange}
+          numericPrecisionOptions={numericPrecisionOptions} />
+          }
             </div>
           </div>
         </div>
@@ -388,6 +395,7 @@ CreateConceptForm.propTypes = {
   currentDictionaryName: PropTypes.string,
   removeCurrentAnswer: PropTypes.func,
   description: PropTypes.array,
+  numericPrecisionOptions:PropTypes.object,
 };
 
 CreateConceptForm.defaultProps = {

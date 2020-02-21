@@ -81,6 +81,17 @@ export class CreateConcept extends Component {
       external_id: String(uuid()),
       concept_class: '',
       datatype: 'None',
+      numericPrecisionOptions:{
+        numericEnabled: false,
+        hiAbsolute:'',
+        hiCritical:'',
+        hiNormal:'',
+        lowNormal:'',
+        lowCritical:'',
+        lowAbsolute:'',
+        units:'',
+        allowDecimal: false,
+      }, 
       names: [],
       answers: [],
       sets: [],
@@ -231,7 +242,26 @@ export class CreateConcept extends Component {
     const {
       target: { value, name },
     } = event;
-    this.setState({ [name]: value });
+    const trueValue = event.target.type === 'checkbox' ? !this.state.numericPrecisionOptions.allowDecimal : value;
+    if(event.target.name == "datatype" && value == "Numeric"){
+      this.setState( prevState =>({
+        numericPrecisionOptions:{
+          ...prevState.numericPrecisionOptions,
+          numericEnabled: true},
+      }));
+    }else if(event.target.name == "datatype"){
+      this.setState(prevState =>({
+        numericPrecisionOptions:{
+          ...prevState.numericPrecisionOptions,
+          numericEnabled: false},
+      }));
+    }
+    this.setState(prevState =>({
+      numericPrecisionOptions:{
+        ...prevState.numericPrecisionOptions,
+        [name]: trueValue},        
+    }));
+    this.setState({ [name]: trueValue });
   }
 
   handleSubmit(event) {
@@ -336,6 +366,7 @@ export class CreateConcept extends Component {
     this.setState({ mappings: newMappings });
   }
 
+  
   updateEventListener = (event, url) => {
     const { value, name } = event.target;
     const { mappings } = this.state;
@@ -444,6 +475,7 @@ export class CreateConcept extends Component {
                 selectedSets={selectedSets}
                 removeSetRow={this.removeSetRow}
                 addSetRow={this.addSetRow}
+                numericPrecisionOptions={this.state.numericPrecisionOptions}
               />
               <GeneralModel
                 title={LEAVE_PAGE_POPUP_TITLE}

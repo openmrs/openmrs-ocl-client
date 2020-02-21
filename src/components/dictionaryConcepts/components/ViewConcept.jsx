@@ -18,6 +18,7 @@ const ViewConcept = (props) => {
     qaMappings,
     setMappings,
     otherMappings,
+    numericPrecisionOptions,
   } = props;
 
   return (
@@ -52,6 +53,12 @@ const ViewConcept = (props) => {
                 <label htmlFor="datatype"><u>Datatype</u></label>
                 <div id="datatype">{datatype}</div>
               </div>
+              {datatype === 'Numeric' &&
+              <div className="col-md-4">
+              <label htmlFor="numericPrecision"><u>Numeric Precision</u></label>
+              <div id="numericPrecision">{numericPrecisionOptions}</div>
+            </div>
+              }  
             </div>
           </div>
         </div>

@@ -34,6 +34,7 @@ export class ViewConceptContainer extends Component {
       concept,
       loading,
       history,
+      numericPrecisionOptions,
     } = this.props;
     const mappings = concept.mappings ? concept.mappings : [];
 
@@ -78,6 +79,7 @@ export class ViewConceptContainer extends Component {
                 qaMappings={qaMappings}
                 setMappings={setMappings}
                 otherMappings={otherMappings}
+                numericPrecisionOptions={numericPrecisionOptions}
               />
             </div>
           </div>

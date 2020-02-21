@@ -22,6 +22,9 @@ describe('Test suite for CreateConceptForm', () => {
       addAnswer: jest.fn(),
       answer: [],
       disableButton: false,
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
       match: {
         params: {
           conceptType: '',
@@ -54,6 +57,9 @@ describe('Test suite for CreateConceptForm', () => {
       answer: [],
       disableButton: false,
       allSources: [mockSource],
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
     expect(wrapper.find('select.set')).toHaveLength(1);
@@ -79,6 +85,9 @@ describe('Test suite for CreateConceptForm', () => {
       addAnswer: jest.fn(),
       answer: [],
       disableButton: false,
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
       allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
@@ -105,6 +114,9 @@ describe('Test suite for CreateConceptForm', () => {
       description: [],
       isEditConcept: true,
       disableButton: false,
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
       allSources: [mockSource],
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
@@ -131,6 +143,9 @@ describe('Test suite for CreateConceptForm', () => {
       answer: [],
       disableButton: false,
       allSources: [mockSource],
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
       mappings: [{
         id: 'uniqueid',
         retired: false,
@@ -164,6 +179,9 @@ describe('Test suite for CreateConceptForm', () => {
       nameRows: [],
       disableButton: false,
       allSources: [mockSource],
+      numericPrecisionOptions:{
+        numericEnabled: false,
+      },
       isEditConcept: true,
     };
     const wrapper = shallow(<CreateConceptForm {...props} />);
@@ -172,5 +190,63 @@ describe('Test suite for CreateConceptForm', () => {
     expect(wrapper.find('AnswersTable').length).toBe(2);
     expect(wrapper.find('CreateMapping').length).toBe(1);
     wrapper.unmount();
+  });
+
+  it('should render form for numericPrecision when dataType is numeric when creating concept', () => {
+    const props = {
+      state: {
+        id: '1',
+      },
+      concept: 'oldOne',
+      addDescription: jest.fn(),
+      handleNewName: jest.fn(),
+      path: '',
+      toggleUUID: jest.fn(),
+      handleChange: jest.fn(),
+      handleSubmit: jest.fn(),
+      editable: false,
+      addAnswer: jest.fn(),
+      answer: [],
+      nameRows: [],
+      description: [],
+      isEditConcept: false,
+      disableButton: false,
+      numericPrecisionOptions:{
+        numericEnabled: true,
+      },
+      allSources: [mockSource],
+    };
+    const wrapper = shallow(<CreateConceptForm {...props} />);
+    expect(wrapper.find('NumericPrecision')).toHaveLength(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render form for numericPrecision when dataType is numeric', () => {
+    const props = {
+      state: {
+        id: '1',
+      },
+      concept: '',
+      addDescription: jest.fn(),
+      handleNewName: jest.fn(),
+      path: '',
+      toggleUUID: jest.fn(),
+      handleChange: jest.fn(),
+      handleSubmit: jest.fn(),
+      editable: false,
+      addAnswer: jest.fn(),
+      answer: [],
+      nameRows: [],
+      description: [],
+      isEditConcept: true,
+      disableButton: false,
+      numericPrecisionOptions:{
+        numericEnabled: true,
+      },
+      allSources: [mockSource],
+    };
+    const wrapper = shallow(<CreateConceptForm {...props} />);
+    expect(wrapper.find('NumericPrecision')).toHaveLength(1);
+    expect(wrapper).toMatchSnapshot();
   });
 });
