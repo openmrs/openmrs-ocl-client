@@ -1,5 +1,5 @@
-describe('Login', () => {
-  it('Happy flow', () => {
+describe('Login Page', () => {
+  it('Happy flow: Should allow user to login', () => {
     cy.visit('/login');
 
     cy.findByLabelText('Username').type('admin');
