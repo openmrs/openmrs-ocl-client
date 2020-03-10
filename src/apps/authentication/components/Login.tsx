@@ -66,7 +66,6 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
               </Typography>
               <div className={classes.fields}>
                 <Field
-                  required
                   fullWidth
                   type="text"
                   name="username"
@@ -79,7 +78,6 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                 <br />
 
                 <Field
-                  required
                   type="password"
                   name="password"
                   id="password"
