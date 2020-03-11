@@ -4,11 +4,11 @@ import { Container, Grid, makeStyles, Typography } from '@material-ui/core'
 import { Login } from './components'
 import { connect } from 'react-redux'
 import { authErrorsSelector, authLoadingSelector } from './redux/reducer'
-import { loginAction } from './redux/actions'
+import { loginAction } from './redux'
 
 interface Props {
   isLoggedIn: boolean;
-  login: Function;
+  login: (...args: Parameters<typeof loginAction>) => void;
   loading: boolean;
   errors?: any;
 }

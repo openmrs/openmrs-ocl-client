@@ -169,7 +169,7 @@ const DictionaryForm: React.FC<Props> = ({
               // required
               margin="normal"
             >
-              <InputLabel htmlFor="ownerUrl">Owner</InputLabel>
+              <InputLabel htmlFor="owner_url">Owner</InputLabel>
               <Field
                 value=""
                 disabled={editing || isSubmitting}

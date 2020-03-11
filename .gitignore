@@ -33,3 +33,7 @@ src/components/dashboard/container/ListContainer.jsx
 
 # IDE settings
 .idea/*
+
+# cypress
+cypress/screenshots/**
+cypress/videos/**

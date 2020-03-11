@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center"
     },
     listSubHeader: {
-      backgroundColor: "white"
+      backgroundColor: "white" // todo hard coded colour
     },
     applyFilters: {
       marginTop: "2vh",
@@ -41,7 +41,11 @@ const useStyles = makeStyles((theme: Theme) =>
     applyFiltersLink: {
       textDecoration: "none",
       color: "inherit"
-    }
+    },
+    listItem: {
+      paddingTop: "0",
+      paddingBottom: "0",
+    },
   })
 );
 
@@ -78,6 +82,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
   return (
     <>
       <List
+        disablePadding
         subheader={
           <ListSubheader className={classes.listSubHeader} component="div">
             {title}
@@ -96,6 +101,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 dense
                 button
                 onClick={handleToggle(value)}
+                className={classes.listItem}
               >
                 <ListItemIcon>
                   <Checkbox

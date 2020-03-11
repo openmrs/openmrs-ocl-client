@@ -1,7 +1,7 @@
-import { NewAPISource } from './types'
-import { authenticatedInstance } from '../../api'
-import { AxiosResponse } from 'axios'
-import { EditableConceptContainerFields } from '../../utils'
+import { NewAPISource } from "./types";
+import { authenticatedInstance } from "../../api";
+import { AxiosResponse } from "axios";
+import { EditableConceptContainerFields } from "../../utils";
 
 const api = {
   create: (ownerUrl: string, data: NewAPISource): Promise<AxiosResponse<any>> =>

@@ -84,6 +84,7 @@ export const retrieveDictionariesLoadingSelector = loadingSelector(
   ),
   indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX)
 );
+export const retrieveDictionaryErrorSelector = errorSelector(indexedAction(RETRIEVE_DICTIONARY_ACTION));
 
 export const addConceptsToDictionaryLoadingListSelector = loadingListSelector(
   ADD_CONCEPTS_TO_DICTIONARY

@@ -1,35 +1,53 @@
-import React, { useEffect } from 'react'
-import { DictionaryDetails, DictionaryForm, ReleasedVersions } from '../components'
-import { Fab, Grid, Paper, Tooltip, Typography } from '@material-ui/core'
-import { EditOutlined as EditIcon } from '@material-ui/icons'
-import { connect } from 'react-redux'
-import { APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion } from '../types'
-import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
-import { APIOrg, APIProfile, canModifyContainer } from '../../authentication'
+import React, { useEffect } from "react";
+import {
+  DictionaryDetails,
+  DictionaryForm,
+  ReleasedVersions
+} from "../components";
+import { Fab, Grid, Paper, Tooltip, Typography } from "@material-ui/core";
+import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { connect } from "react-redux";
+import {
+  APIDictionary,
+  apiDictionaryToDictionary,
+  APIDictionaryVersion,
+  DictionaryVersion
+} from "../types";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   createDictionaryVersionAction,
   createDictionaryVersionErrorSelector,
   createDictionaryVersionLoadingSelector,
   retrieveDictionaryAndDetailsAction,
+  retrieveDictionaryErrorSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector
 } from '../redux'
-import { AppState } from '../../../redux'
-import { Link, useLocation, useParams } from 'react-router-dom'
-import { CONTEXT } from '../constants'
-import { ProgressOverlay } from '../../../utils/components'
+import { AppState } from "../../../redux";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { CONTEXT } from "../constants";
+import { ProgressOverlay } from "../../../utils/components";
 
 interface Props {
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
-  retrieveDictionaryAndDetails: Function;
-  createDictionaryVersion: Function;
+  retrieveDictionaryAndDetails: (
+    ...args: Parameters<typeof retrieveDictionaryAndDetailsAction>
+  ) => void;
+  createDictionaryVersion: (
+    ...args: Parameters<typeof createDictionaryVersionAction>
+  ) => void;
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
+  retrieveDictionaryErrors?: {};
 }
 
 const ViewDictionaryPage: React.FC<Props> = ({
@@ -42,7 +60,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
   versionsLoading,
   createDictionaryVersion,
   createVersionLoading,
-  createVersionError
+  createVersionError,
+  retrieveDictionaryErrors,
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -65,7 +84,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   const linkedSource = dictionary?.extras?.source || "";
 
   return (
-    <ProgressOverlay delayRender loading={dictionaryLoading}>
+    <ProgressOverlay delayRender loading={dictionaryLoading} error={retrieveDictionaryErrors ? "Could not load dictionary. Refresh the page to retry" : undefined}>
       <Grid id="viewDictionaryPage" item xs={5} component="div">
         <Paper className="fieldsetParent">
           <fieldset>
@@ -130,7 +149,8 @@ const mapStateToProps = (state: AppState) => ({
   versions: state.dictionaries.versions,
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
-  createVersionError: createDictionaryVersionErrorSelector(state)
+  createVersionError: createDictionaryVersionErrorSelector(state),
+  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state),
 });
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,

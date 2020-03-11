@@ -50,3 +50,7 @@ export const buildPartialSearchQuery = (query: string): string =>
 
 export const delay = (seconds: number) =>
   new Promise(resolve => setTimeout(resolve, seconds * 1000));
+
+export function debug (...messages: string[]) {
+  console.log(messages);
+}

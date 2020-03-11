@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { AppState } from "../../../redux";
-import { retrievePublicDictionariesLoadingSelector } from "../redux/selectors";
-import { connect } from "react-redux";
-import { APIDictionary } from "../types";
-import { ProgressOverlay } from "../../../utils/components";
-import { useQuery } from "../../../utils";
-import { useHistory, useLocation } from "react-router";
-import qs from "qs";
-import ViewDictionaries from "../components/ViewDictionaries";
-import { retrievePublicDictionariesAction } from "../redux/actions";
+import React, { useEffect } from 'react'
+import { AppState } from '../../../redux'
+import { retrievePublicDictionariesLoadingSelector } from '../redux'
+import { connect } from 'react-redux'
+import { APIDictionary } from '../types'
+import { ProgressOverlay } from '../../../utils/components'
+import { useQuery } from '../../../utils'
+import { useHistory, useLocation } from 'react-router'
+import qs from 'qs'
+import ViewDictionaries from '../components/ViewDictionaries'
+import { retrievePublicDictionariesAction } from '../redux/actions'
 
 const PER_PAGE = 20;
 
@@ -16,7 +16,7 @@ interface Props {
   loading: boolean;
   dictionaries?: APIDictionary[];
   meta?: { num_found?: number };
-  retrieveDictionaries: Function;
+  retrieveDictionaries: (...args: Parameters<typeof retrievePublicDictionariesAction>) => void;
 }
 
 const ViewPublicDictionariesPage: React.FC<Props> = ({

@@ -1,30 +1,40 @@
-import React, { useEffect } from 'react'
-import { DictionaryForm } from '../components'
-import { Grid, Paper } from '@material-ui/core'
-import { connect } from 'react-redux'
-import { Redirect, useLocation } from 'react-router-dom'
+import React, { useEffect } from "react";
+import { DictionaryForm } from "../components";
+import { Grid, Paper } from "@material-ui/core";
+import { connect } from "react-redux";
+import { Redirect, useLocation } from "react-router-dom";
 import {
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
   editSourceAndDictionaryErrorsSelector,
   retrieveDictionaryLoadingSelector
-} from '../redux/selectors'
-import { APIDictionary, apiDictionaryToDictionary, Dictionary } from '../types'
-import { orgsSelector, profileSelector } from '../../authentication/redux/reducer'
-import { APIOrg, APIProfile } from '../../authentication'
-import { usePrevious } from '../../../utils'
-import { CONTEXT } from '../constants'
-import { ProgressOverlay } from '../../../utils/components'
-import { editSourceAndDictionaryAction, retrieveDictionaryAction } from '../redux/actions'
+} from "../redux";
+import { APIDictionary, apiDictionaryToDictionary, Dictionary } from "../types";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile } from "../../authentication";
+import { debug, usePrevious } from "../../../utils";
+import { CONTEXT } from "../constants";
+import { ProgressOverlay } from "../../../utils/components";
+import {
+  editSourceAndDictionaryAction,
+  retrieveDictionaryAction
+} from "../redux/actions";
 
 interface Props {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
-  editSourceAndDictionary: Function;
+  editSourceAndDictionary: (
+    ...args: Parameters<typeof editSourceAndDictionaryAction>
+  ) => void;
   loading: boolean;
   editedDictionary?: APIDictionary;
-  retrieveDictionary: Function;
+  retrieveDictionary: (
+    ...args: Parameters<typeof retrieveDictionaryAction>
+  ) => void;
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
 }
@@ -63,13 +73,15 @@ const EditDictionaryPage: React.FC<Props> = ({
             usersOrgs={usersOrgs ? usersOrgs : []}
             loading={loading}
             savedValues={apiDictionaryToDictionary(dictionary)}
-            onSubmit={(values: Dictionary) =>
-              editSourceAndDictionary(
-                dictionary?.url,
-                values,
-                dictionary?.extras
-              )
-            }
+            onSubmit={(values: Dictionary) => {
+              if (dictionary)
+                editSourceAndDictionary(
+                  dictionary?.url,
+                  values,
+                  dictionary?.extras
+                );
+              else debug("Could not edit dictionary. dictionary is undefined");
+            }}
           />
         </Paper>
       </Grid>
