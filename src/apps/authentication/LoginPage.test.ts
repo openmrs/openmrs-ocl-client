@@ -1,14 +1,24 @@
-describe('Login Page', () => {
+export function login() {
+  cy.visit('/login');
+
+  cy.findByLabelText('Username').type('admin');
+  cy.findByLabelText('Password').type('Admin123');
+  cy.findByText('Log in').click();
+
+  // wait till page is ready
+  cy.findByText('Personal dictionaries');
+}
+
+describe('Login', () => {
   it('Happy flow: Should allow user to login', () => {
-    cy.visit('/login');
+    cy.visit('/user/collections/');
+    // should have redirected us to login
+    cy.queryByText('Log In to Open Concept Lab').should('exist');
 
-    cy.findByLabelText('Username').type('admin');
-    cy.findByLabelText('Password').type('Admin123');
-    cy.findByText('Log in').click();
+    login();
 
-    // Goes to home page
-    assert.exists(cy.findByText('Personal dictionaries'));
+    cy.visit('/user/collections/');
+    // should not redirect us anywhere
+    cy.findByText('Personal dictionaries').should('exist');
   })
 })
-
-export {};

@@ -23,9 +23,10 @@ import {
   createDictionaryVersionErrorSelector,
   createDictionaryVersionLoadingSelector,
   retrieveDictionaryAndDetailsAction,
+  retrieveDictionaryErrorSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector
-} from "../redux";
+} from '../redux'
 import { AppState } from "../../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CONTEXT } from "../constants";
@@ -46,6 +47,7 @@ interface Props {
   versionsLoading: boolean;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
+  retrieveDictionaryErrors?: {};
 }
 
 const ViewDictionaryPage: React.FC<Props> = ({
@@ -58,7 +60,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
   versionsLoading,
   createDictionaryVersion,
   createVersionLoading,
-  createVersionError
+  createVersionError,
+  retrieveDictionaryErrors,
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -81,7 +84,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   const linkedSource = dictionary?.extras?.source || "";
 
   return (
-    <ProgressOverlay delayRender loading={dictionaryLoading}>
+    <ProgressOverlay delayRender loading={dictionaryLoading} error={retrieveDictionaryErrors ? "Could not load dictionary. Refresh the page to retry" : undefined}>
       <Grid id="viewDictionaryPage" item xs={5} component="div">
         <Paper className="fieldsetParent">
           <fieldset>
@@ -146,7 +149,8 @@ const mapStateToProps = (state: AppState) => ({
   versions: state.dictionaries.versions,
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
-  createVersionError: createDictionaryVersionErrorSelector(state)
+  createVersionError: createDictionaryVersionErrorSelector(state),
+  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state),
 });
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
