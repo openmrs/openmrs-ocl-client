@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react'
-import { AppState } from '../../../redux'
-import { connect } from 'react-redux'
-import { APIDictionary } from '../types'
-import { ProgressOverlay } from '../../../utils/components'
-import { useQuery } from '../../../utils'
-import { useHistory, useLocation } from 'react-router'
-import qs from 'qs'
-import ViewDictionaries from '../components/ViewDictionaries'
-import { Fab, Grid, Tooltip } from '@material-ui/core'
-import { retrieveDictionariesLoadingSelector } from '../redux'
-import { Add as AddIcon } from '@material-ui/icons'
-import { Link } from 'react-router-dom'
-import { retrieveDictionariesAction } from '../redux/actions'
-import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } from '../redux/constants'
+import React, { useEffect } from "react";
+import { AppState } from "../../../redux";
+import { connect } from "react-redux";
+import { APIDictionary } from "../types";
+import { ProgressOverlay } from "../../../utils/components";
+import { useQuery } from "../../../utils";
+import { useHistory, useLocation } from "react-router";
+import qs from "qs";
+import ViewDictionaries from "../components/ViewDictionaries";
+import { Fab, Grid, Tooltip } from "@material-ui/core";
+import { retrieveDictionariesLoadingSelector } from "../redux";
+import { Add as AddIcon } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { retrieveDictionariesAction } from "../redux/actions";
+import {
+  ORG_DICTIONARIES_ACTION_INDEX,
+  PERSONAL_DICTIONARIES_ACTION_INDEX
+} from "../redux/constants";
 
 const PER_PAGE = 20;
 
@@ -22,7 +25,9 @@ interface Props {
   orgDictionaries?: APIDictionary[];
   personalMeta?: { num_found?: number };
   orgMeta?: { num_found?: number };
-  retrieveDictionaries: (...args: Parameters<typeof retrieveDictionariesAction>) => void;
+  retrieveDictionaries: (
+    ...args: Parameters<typeof retrieveDictionariesAction>
+  ) => void;
 }
 
 interface QueryParams {
