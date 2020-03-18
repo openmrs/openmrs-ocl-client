@@ -1,5 +1,5 @@
-import { login } from '../../authentication/LoginPage.test'
-import { createDictionary, TestDictionary } from './CreateDictionaryPage.test'
+import { login } from '../../authentication/testUtils'
+import { createDictionary, TestDictionary } from './testUtils'
 
 describe('View Dictionary', () => {
   let dictionary: TestDictionary;
