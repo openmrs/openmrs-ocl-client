@@ -68,7 +68,7 @@ const DictionaryForm: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const notViewing = context === CONTEXT.create || context === CONTEXT.edit;
+  const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
 
   const formikRef: any = useRef(null);
@@ -257,7 +257,7 @@ const DictionaryForm: React.FC<Props> = ({
             </FormControl>
             <br />
             <br />
-            {!notViewing ? (
+            {viewing ? (
               ""
             ) : (
               <div className={classes.submitButton}>
