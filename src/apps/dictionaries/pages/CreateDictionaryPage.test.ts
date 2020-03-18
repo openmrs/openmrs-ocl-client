@@ -51,6 +51,7 @@ export function createDictionary(dictionaryAndUrl = newDictionary()): [TestDicti
   select('Owner', dictionary.ownerDisplayValue);
   select('Visibility', dictionary.visibility);
   select('Preferred Language', dictionary.preferredLanguage);
+
   select('Other Languages', dictionary.otherLanguages);
   cy.get('body').type('{esc}');
   cy.findByText('Submit').click();
@@ -68,6 +69,7 @@ describe('Create Dictionary', () => {
   });
 
   it('Happy flow: Should create a dictionary', () => {
+    // todo improve this test to check actual values
     const [dictionary, dictionaryUrl] = newDictionary();
 
     cy.visit(dictionaryUrl);

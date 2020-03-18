@@ -1,5 +1,7 @@
 {
   "baseUrl": "http://localhost:3000",
   "integrationFolder": ".",
-  "testFiles": "**/*Page.test.*"
+  "testFiles": "**/*Page.test.*",
+  "defaultCommandTimeout": 6000,
+  "pageLoadTimeout": 60000
 }

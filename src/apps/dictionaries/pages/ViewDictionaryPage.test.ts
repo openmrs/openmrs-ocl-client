@@ -10,7 +10,7 @@ describe('View Dictionary', () => {
     [dictionary, dictionaryUrl] = createDictionary();
   });
 
-  it.only('Happy flow: Should allow a user to view a dictionary', () => {
+  it('Happy flow: Should allow a user to view a dictionary', () => {
     cy.visit(dictionaryUrl);
 
     cy.findByText('General Details').should('exist');
