@@ -334,7 +334,7 @@ const ConceptForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
               <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="class">Datatype</InputLabel>
+                <InputLabel htmlFor="datatype">Datatype</InputLabel>
                 <Field name="datatype" id="datatype" component={Select}>
                   {DATA_TYPES.map(datatype => (
                     <MenuItem key={datatype} value={datatype}>

@@ -2,8 +2,7 @@ import { login } from '../../authentication/testUtils'
 import { createDictionary, TestDictionary } from './testUtils'
 
 describe('View Dictionary', () => {
-  let dictionary: TestDictionary;
-  let dictionaryUrl: string;
+  let dictionary: TestDictionary, dictionaryUrl: string;
 
   beforeEach(() => {
     login();
