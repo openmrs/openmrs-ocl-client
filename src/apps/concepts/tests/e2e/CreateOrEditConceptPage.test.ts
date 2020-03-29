@@ -1,5 +1,5 @@
-import { login } from '../../authentication/testUtils'
-import { createDictionary, TestDictionary } from '../../dictionaries/pages/testUtils'
+import { login } from '../../../authentication/tests/e2e/testUtils'
+import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2e/testUtils'
 import { createConcept, newConcept } from './testUtils'
 
 describe("Create Concept", () => {
@@ -16,7 +16,6 @@ describe("Create Concept", () => {
 
     createConcept(dictionaryUrl, [concept, conceptUrl]);
 
-    cy.visit(conceptUrl);
     cy.findByText('Concept Details').should('exist');
   });
 })

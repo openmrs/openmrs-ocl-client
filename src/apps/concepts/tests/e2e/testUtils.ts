@@ -53,8 +53,7 @@ function selectBySelector(selector: string, item: string) {
 }
 function searchAndSelect(rowSelector: string, placeholderText: string, item: {search: string, select: string}) {
   cy.get(rowSelector).findByText(placeholderText).type(item.search);
-  cy.get(rowSelector).get('.css-4ljt47-MenuList').findByText('Loading...').should('not.exist');
-  cy.get(rowSelector).get('.css-4ljt47-MenuList').queryByText(item.select).click();
+  cy.get(rowSelector).get('.css-4ljt47-MenuList').findByText(item.select).should('be.visible').click();
 }
 
 function fillNameRow (index: number, concept: TestConcept) {
@@ -111,9 +110,6 @@ export function createConcept(dictionaryUrl: string, conceptAndUrl: [TestConcept
   cy.findByText('Add Mapping').click();
   fillMappingRow(0, concept, 'mappings');
 
-  cy.findByText('Submit').click();
-
-  // wait for request to get done
   cy.findByText('Concept Details');
 
   return [concept, conceptUrl];

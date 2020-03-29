@@ -1,4 +1,4 @@
-import { login } from '../../authentication/testUtils'
+import { login } from '../../../authentication/tests/e2e/testUtils'
 import { createDictionary, newDictionary } from './testUtils'
 
 describe('Create Dictionary', () => {

@@ -1,4 +1,4 @@
-import { login } from '../../authentication/testUtils'
+import { login } from '../../../authentication/tests/e2e/testUtils'
 import { createDictionary, TestDictionary } from './testUtils'
 
 export interface UpdatedDictionary {
