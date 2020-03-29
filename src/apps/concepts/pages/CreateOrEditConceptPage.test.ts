@@ -11,9 +11,12 @@ describe("Create Concept", () => {
     [dictionary, dictionaryUrl] = createDictionary();
   });
 
-  it.only('Should create a concept', () => {
+  it('Should create a concept', () => {
     const [concept, conceptUrl] = newConcept(dictionary.ownerType, dictionary.owner, dictionary.shortCode);
 
     createConcept(dictionaryUrl, [concept, conceptUrl]);
-  })
+
+    cy.visit(conceptUrl);
+    cy.findByText('Concept Details').should('exist');
+  });
 })
