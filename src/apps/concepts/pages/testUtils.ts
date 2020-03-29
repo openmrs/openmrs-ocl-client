@@ -28,14 +28,14 @@ export function newConcept(ownerType: string, owner: string, shortCode: string):
       {description: `TestConcept Uń ${randomString}`, language: 'French (fr)', preferredInLanguage: 'No'},
     ],
     answers: [
-      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '153557', select: '153557- blunt trauma of eye'}},
-      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '138571', select: '138571- HIV Positive'}},
+      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '1983', select: '1983- Unable to drink fluids'}},
+      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '1944', select: '1944- Beaten earth'}},
     ],
     sets: [
-      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '110264', select: '110264- HIV Lipodystrophy'}},
+      {source: {search: 'CIEL', select: 'CIEL'}, concept: {search: '1943', select: '1943- Cement'}},
     ],
     mappings: [
-      {source: {search: 'CIEL', select: 'CIEL'}, relationship: 'Access', concept: {search: '111061', select: '111061- roncha'}},
+      {source: {search: 'CIEL', select: 'CIEL'}, relationship: 'Access', concept: {search: '1940', select: '1940- Oral suspension'}},
     ],
   };
 
