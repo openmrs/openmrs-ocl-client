@@ -313,6 +313,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 setCheckedDataTypes={setInitialDataTypeFilters}
                 checkedSources={sourceFilters}
                 setCheckedSources={setSourceFilters}
+                showSources={containerType !== SOURCE_CONTAINER}
                 // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
                 sourceOptions={
                   [
