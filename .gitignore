@@ -1,12 +1,12 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 /node_modules
-/.vscode
+/.pnp
+.pnp.js
 
 # testing
 /coverage
-junit.xml
 
 # production
 /build
@@ -21,6 +21,7 @@ junit.xml
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 public/index.html~HEAD
 yarn.lock
 package-lock.json
@@ -32,3 +33,10 @@ src/components/dashboard/container/ListContainer.jsx
 
 # IDE settings
 .idea/*
+
+# cypress
+cypress/screenshots/**
+cypress/videos/**
+
+# env-config
+public/env-config.js

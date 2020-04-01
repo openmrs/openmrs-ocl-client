@@ -1,11 +1,10 @@
 language: node_js
 node_js:
-  - "8.11.2"
+  - "10.13.0"
 script:
   - npm install
   - npm install coveralls
-  - npm run lint
-  - npm test -- -u --coverage
+  - npm run test:ci
 
 after_success:
   - coveralls < coverage/lcov.info

@@ -1,6 +1,6 @@
 # Stage-1 Build process
 # Use the official node:9.6.1 runtime image for the build environment and tag the build as build-deps
-FROM node:9.6.1 as build-deps
+FROM node:10.13.0 as build-deps
 
 # Create a working directory for the build project
 RUN mkdir /usr/src/app
@@ -16,9 +16,6 @@ COPY package.json ./
 
 # Install the project dependencies and silence the npm output
 RUN npm install --silent
-
-# Install react-scripts and silence the npm output
-RUN npm install react-scripts@1.1.1 -g --silent
 
 # Copy everything to the working directory
 COPY . /usr/src/app
@@ -39,7 +36,7 @@ EXPOSE 80
 # Copy the tagged files from the build to the production environmnet of the nginx server
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
-# Copy nginx configuration 
+# Copy nginx configuration
 COPY --from=build-deps /usr/src/app/docker/default.conf /etc/nginx/conf.d/
 
 # Copy shell script to container

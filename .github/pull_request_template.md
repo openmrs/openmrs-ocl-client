@@ -1,4 +1,4 @@
 # JIRA TICKET NAME:
-[jira ticket Name](Url to the ticket)
+[JIRA ticket name](JIRA/ticket/url)
 
 # Summary:
