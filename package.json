@@ -45,6 +45,7 @@
     "test": "react-scripts test --passWithNoTests --testPathPattern='.*/tests/unit/'",
     "test:integration": "cypress run",
     "test:ci": "CI=true npm test --ci --coverage",
+    "test:bamboo": "npm run test:ci --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -69,6 +70,7 @@
     "@types/yup": "^0.26.30",
     "cypress": "^4.1.0",
     "prettier": "^1.19.1",
-    "ts-loader": "^6.2.1"
+    "ts-loader": "^6.2.1",
+    "jest-junit": "^4.0.0"
   }
 }
