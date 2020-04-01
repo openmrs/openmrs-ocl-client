@@ -2,6 +2,7 @@ import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2
 import { login } from '../../../authentication/tests/e2e/testUtils'
 
 describe('Add concepts to collection', () => {
+  const nameSelector = "[data-testClass='name']";
   const classSelector = "[data-testClass='conceptClass']";
   const datatypeSelector = "[data-testClass='datatype']";
   let dictionary: TestDictionary, dictionaryUrl: string;
@@ -72,7 +73,7 @@ describe('Add concepts to collection', () => {
 
     // Sort
     cy.runAndAwait(() => cy.findByTestId('conceptsTableHeader').findByText('Name').click());
-    cy.get(datatypeSelector).each(element => cy.wrap(element).invoke('text').should('match', /Z.*/));
+    cy.get(nameSelector).each(element => cy.wrap(element).invoke('text').should('match', /Z.*/));
 
     // Search filters
     cy.findByPlaceholderText("Search filters").type("b");
