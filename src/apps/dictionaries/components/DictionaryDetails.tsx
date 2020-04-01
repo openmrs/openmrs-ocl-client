@@ -50,9 +50,9 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           gutterBottom
           className={classes.conceptCountBreakDown}
         >
-          <span data-testId="preferredConceptCount">From {preferredSource}: {fromPreferredSource}</span>
+          <span data-testid="preferredConceptCount">From {preferredSource}: {fromPreferredSource}</span>
           <br />
-          <span data-testId="customConceptCount">Custom Concepts: {customConceptCount}</span>
+          <span data-testid="customConceptCount">Custom Concepts: {customConceptCount}</span>
         </Typography>
         <ButtonGroup variant="text" fullWidth>
           <Button color="primary">

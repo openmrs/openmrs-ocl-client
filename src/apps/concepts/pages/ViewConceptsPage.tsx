@@ -216,7 +216,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     <>
       <Header
         // todo we can improve this to say where we are adding to
-        title={containerType === SOURCE_CONTAINER ? `Add concepts from ${getSourceIdFromUrl(url.replace("concepts/", ""))}` : 'Concepts'}
+        title={containerType === SOURCE_CONTAINER ? `Import existing concept from ${getSourceIdFromUrl(url.replace("concepts/", ""))}` : 'Concepts'}
         justifyChildren="space-around"
         headerComponent={
           !showHeaderComponent ? null : (

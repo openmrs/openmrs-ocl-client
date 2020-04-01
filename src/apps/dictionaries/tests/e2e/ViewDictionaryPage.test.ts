@@ -25,8 +25,8 @@ describe('View Dictionary', () => {
 
     cy.findByText('Concepts(HEAD Version)').should('exist');
     cy.findByText('Total Concepts: 0').should('exist');
-    cy.get('[data-testId="preferredConceptCount"]').should('have.text', `From ${dictionary.preferredSource}: 0`);
-    cy.get('[data-testId="customConceptCount"]').should('have.text', 'Custom Concepts: 0');
+    cy.get('[data-testid="preferredConceptCount"]').should('have.text', `From ${dictionary.preferredSource}: 0`);
+    cy.get('[data-testid="customConceptCount"]').should('have.text', 'Custom Concepts: 0');
     cy.findByText('View Concepts').should('exist');
 
     cy.findByText('Releases').should('exist');

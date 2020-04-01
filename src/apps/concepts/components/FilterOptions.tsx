@@ -13,7 +13,7 @@ import {
   makeStyles,
   Paper,
   Theme
-} from "@material-ui/core";
+} from '@material-ui/core'
 import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
 import { Link } from "react-router-dom";
 
@@ -92,7 +92,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
         {items
           .filter(item => item.toLowerCase().includes(searchText.toLowerCase()))
           .map(value => {
-            const labelId = `checkbox-list-label-${value}`;
+            const id = `checkbox-${title}-${value}`;
 
             return (
               <ListItem
@@ -100,19 +100,19 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 role={undefined}
                 dense
                 button
-                onClick={handleToggle(value)}
                 className={classes.listItem}
               >
                 <ListItemIcon>
                   <Checkbox
+                    id={id}
                     edge="start"
+                    onChange={handleToggle(value)}
                     checked={checked.includes(value)}
                     tabIndex={-1}
                     disableRipple
-                    inputProps={{ "aria-labelledby": labelId }}
                   />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={value} />
+                <ListItemText primary={<label htmlFor={id}>{value}</label>} />
               </ListItem>
             );
           })}
@@ -172,7 +172,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
             </Button>
           </ButtonGroup>
           <Input
-            placeholder="Search"
+            placeholder="Search filters"
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
           />

@@ -25,7 +25,7 @@ describe("Create Concept", () => {
     cy.findByTitle('Edit this concept').should('exist');
   });
 
-  it.only('Edit a concept', () => {
+  it('Edit a concept', () => {
     const [oldConcept, oldConceptUrl] = newConcept(dictionary.ownerType, dictionary.owner, dictionary.shortCode);
     createConcept(dictionaryUrl, [oldConcept, oldConceptUrl]);
     cy.findByTitle('Edit this concept').click();

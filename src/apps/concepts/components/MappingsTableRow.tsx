@@ -308,7 +308,7 @@ const MappingsTableRow: React.FC<Props> = ({
               <Field
                 id={`${valueKey}.map_type`}
                 name={`${valueKey}.map_type`}
-                data-testId={`${valuesKey}_${index}_map_type`}
+                data-testid={`${valuesKey}_${index}_map_type`}
                 component={Select}
               >
                 {MAP_TYPES.map(mapType => (

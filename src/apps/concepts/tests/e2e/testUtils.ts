@@ -49,22 +49,22 @@ export function searchAndSelect(rowSelector: string, placeholderText: string, it
 }
 
 export function fillNameRow (index: number, concept: TestConcept) {
-  cy.get(`[data-testId="names_${index}_name"]`).type(concept.names[index].name);
-  cy.selectBySelector(`[data-testId="names_${index}_name_type"]`, concept.names[index].type);
-  cy.selectBySelector(`[data-testId="names_${index}_locale"]`, concept.names[index].language);
-  cy.selectBySelector(`[data-testId="names_${index}_locale_preferred"]`, concept.names[index].preferredInLanguage);
+  cy.get(`[data-testid="names_${index}_name"]`).type(concept.names[index].name);
+  cy.selectBySelector(`[data-testid="names_${index}_name_type"]`, concept.names[index].type);
+  cy.selectBySelector(`[data-testid="names_${index}_locale"]`, concept.names[index].language);
+  cy.selectBySelector(`[data-testid="names_${index}_locale_preferred"]`, concept.names[index].preferredInLanguage);
 }
 
 export function fillDescriptionRow (index: number, concept: TestConcept) {
-  cy.get(`[data-testId="descriptions_${index}_description"]`).type(concept.descriptions[index].description);
-  cy.selectBySelector(`[data-testId="descriptions_${index}_locale"]`, concept.descriptions[index].language);
-  cy.selectBySelector(`[data-testId="descriptions_${index}_locale_preferred"]`, concept.descriptions[index].preferredInLanguage);
+  cy.get(`[data-testid="descriptions_${index}_description"]`).type(concept.descriptions[index].description);
+  cy.selectBySelector(`[data-testid="descriptions_${index}_locale"]`, concept.descriptions[index].language);
+  cy.selectBySelector(`[data-testid="descriptions_${index}_locale_preferred"]`, concept.descriptions[index].preferredInLanguage);
 }
 
 export function fillMappingRow (index: number, concept: TestConcept, type: 'answers' | 'sets' | 'mappings') {
   searchAndSelect(`[data-testRowId="${type}_${index}"]`, 'Select a source', concept[type][index].source);
   // @ts-ignore
-  if (concept[type][index].relationship) cy.selectBySelector(`[data-testId="${type}_${index}_map_type"]`, concept[type][index].relationship);
+  if (concept[type][index].relationship) cy.selectBySelector(`[data-testid="${type}_${index}_map_type"]`, concept[type][index].relationship);
   searchAndSelect(`[data-testRowId="${type}_${index}"]`, 'Select a concept', concept[type][index].concept);
 }
 

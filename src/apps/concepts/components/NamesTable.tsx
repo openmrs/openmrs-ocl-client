@@ -109,7 +109,7 @@ const NamesTable: React.FC<Props> = ({
                   fullWidth
                   id={`${valuesKey}[${index}].${type}`}
                   name={`${valuesKey}[${index}].${type}`}
-                  data-testId={`${valuesKey}_${index}_${type}`}
+                  data-testid={`${valuesKey}_${index}_${type}`}
                   margin="dense"
                   component={TextField}
                   multiline={multiline}
@@ -125,7 +125,7 @@ const NamesTable: React.FC<Props> = ({
                     <Field
                       id={`${valuesKey}[${index}].${type}_type`}
                       name={`${valuesKey}[${index}].${type}_type`}
-                      data-testId={`${valuesKey}_${index}_${type}_type`}
+                      data-testid={`${valuesKey}_${index}_${type}_type`}
                       component={Select}
                     >
                       {NAME_TYPES.map(nameType => (
@@ -152,7 +152,7 @@ const NamesTable: React.FC<Props> = ({
                   <Field
                     id={`${valuesKey}[${index}].locale`}
                     name={`${valuesKey}[${index}].locale`}
-                    data-testId={`${valuesKey}_${index}_locale`}
+                    data-testid={`${valuesKey}_${index}_locale`}
                     component={Select}
                   >
                     {LOCALES.map(locale => (
@@ -178,7 +178,7 @@ const NamesTable: React.FC<Props> = ({
                   <Field
                     id={`${valuesKey}[${index}].locale_preferred`}
                     name={`${valuesKey}[${index}].locale_preferred`}
-                    data-testId={`${valuesKey}_${index}_locale_preferred`}
+                    data-testid={`${valuesKey}_${index}_locale_preferred`}
                     component={Select}
                   >
                     <MenuItem
