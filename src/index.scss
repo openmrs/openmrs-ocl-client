@@ -1,0 +1,67 @@
+//This file contains project wide scss. Seriously? Project wide? You ask. This project uses css in js, so on most occasions, if you find yourself looking at this file, someone (prolly me) did something wrong
+//Why is it here then? Sometimes, rarely though, we need project wide overrides that are difficult to achieve in js or we want to target weird generated classes that we can't appropriately target is js. Kapish?'
+
+body,
+* {
+  margin: 0;
+  font-family: "Nunito", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.fieldsetParent {
+  padding: 4vh 2vw;
+
+  fieldset {
+    border: 0.5px solid black;
+  }
+}
+
+.fab {
+  margin: 0;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed !important;
+}
+
+#viewConceptPage {
+  #conceptForm {
+    .MuiInput-formControl {
+      .MuiInput-input.Mui-disabled {
+        color: black;
+      }
+
+      svg {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+#viewDictionaryPage {
+  #dictionary-form {
+    .MuiInput-formControl {
+      .MuiInput-input.Mui-disabled {
+        color: black;
+        -moz-user-select: text;
+      }
+
+      svg {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}

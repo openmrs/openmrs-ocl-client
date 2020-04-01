@@ -1,0 +1,11 @@
+{
+  "root": "build/",
+  "routes": {
+    "/images/*": "/images/",
+    "/static/media/*": "/static/media/",
+    "/static/css/*": "/static/css/",
+    "/static/js/*": "/static/js/",
+    "/**": "index.html"
+  },
+  "clean_urls": true
+}
