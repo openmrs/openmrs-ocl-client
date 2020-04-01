@@ -42,8 +42,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests --testPathPattern='.*/tests/unit/'",
     "test:integration": "cypress run",
+    "test:ci": "CI=true npm test --ci --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
