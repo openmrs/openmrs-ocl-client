@@ -1,8 +1,13 @@
-import { APIDictionaryVersion, DictionaryVersion, EditableDictionaryFields, NewAPIDictionary } from './types'
-import { authenticatedInstance, unAuthenticatedInstance } from '../../api'
-import { AxiosResponse } from 'axios'
-import { OCL_DICTIONARY_TYPE } from './constants'
-import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from '../../utils'
+import {
+  APIDictionaryVersion,
+  DictionaryVersion,
+  EditableDictionaryFields,
+  NewAPIDictionary
+} from "./types";
+import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
+import { AxiosResponse } from "axios";
+import { OCL_DICTIONARY_TYPE } from "./constants";
+import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
 
 const api = {
   create: (
@@ -64,7 +69,7 @@ const api = {
   },
   retrieveMappings: (
     sourceUrl: string,
-    fromConceptIds: string[],
+    fromConceptIds: string[]
   ): Promise<AxiosResponse<any>> =>
     authenticatedInstance.get(`${sourceUrl}mappings/`, {
       params: {

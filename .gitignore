@@ -37,3 +37,6 @@ src/components/dashboard/container/ListContainer.jsx
 # cypress
 cypress/screenshots/**
 cypress/videos/**
+
+# env-config
+public/env-config.js

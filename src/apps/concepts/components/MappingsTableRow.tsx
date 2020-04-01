@@ -255,7 +255,7 @@ const MappingsTableRow: React.FC<Props> = ({
 
   return (
     <>
-      <TableRow className={clsx(classes.row, { [classes.retired]: retired })}>
+      <TableRow data-testRowId={`${valuesKey}_${index}`} className={clsx(classes.row, { [classes.retired]: retired })}>
         <TableCell
           className={
             fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth
@@ -308,6 +308,7 @@ const MappingsTableRow: React.FC<Props> = ({
               <Field
                 id={`${valueKey}.map_type`}
                 name={`${valueKey}.map_type`}
+                data-testid={`${valuesKey}_${index}_map_type`}
                 component={Select}
               >
                 {MAP_TYPES.map(mapType => (

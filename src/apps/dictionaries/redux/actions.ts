@@ -1,19 +1,32 @@
-import { completeAction, createActionThunk, FAILURE, indexedAction, progressAction, startAction } from '../../../redux'
-import api from '../api'
-import { APIDictionary, Dictionary, NewAPIDictionary } from '../types'
+import {
+  completeAction,
+  createActionThunk,
+  FAILURE,
+  indexedAction,
+  progressAction,
+  startAction
+} from "../../../redux";
+import api from "../api";
+import { APIDictionary, Dictionary, NewAPIDictionary } from "../types";
 import {
   APISource,
   createSourceAction as createSource,
   editSourceAction as editSource,
   NewAPISource
-} from '../../sources'
-import { CUSTOM_VALIDATION_SCHEMA, EditableConceptContainerFields } from '../../../utils'
-import uuid from 'uuid/v4'
-import { OCL_DICTIONARY_TYPE, OCL_SOURCE_TYPE } from '../constants'
-import { ORG_DICTIONARIES_ACTION_INDEX, PERSONAL_DICTIONARIES_ACTION_INDEX } from './constants'
-import { APIConcept } from '../../concepts'
-import { recursivelyFetchToConcepts } from '../logic'
-import { addConceptsToDictionaryProgressListSelector } from './selectors'
+} from "../../sources";
+import {
+  CUSTOM_VALIDATION_SCHEMA,
+  EditableConceptContainerFields
+} from "../../../utils";
+import uuid from "uuid/v4";
+import { OCL_DICTIONARY_TYPE, OCL_SOURCE_TYPE } from "../constants";
+import {
+  ORG_DICTIONARIES_ACTION_INDEX,
+  PERSONAL_DICTIONARIES_ACTION_INDEX
+} from "./constants";
+import { APIConcept } from "../../concepts";
+import { recursivelyFetchToConcepts } from "../logic";
+import { addConceptsToDictionaryProgressListSelector } from "./selectors";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
@@ -25,7 +38,7 @@ import {
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
-} from './actionTypes'
+} from "./actionTypes";
 
 const createDictionaryAction = createActionThunk(
   indexedAction(CREATE_DICTIONARY_ACTION),

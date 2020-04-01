@@ -1,30 +1,34 @@
-import { login } from '../../authentication/LoginPage.test'
 import uuid from 'uuid'
 
-interface TestDictionary {
+export interface TestDictionary {
   name: string,
   shortCode: string,
   description: string,
   preferredSource: string,
   owner: string,
+  ownerDisplayValue: string,
   ownerType: string,
   visibility: string,
   preferredLanguage: string,
   otherLanguages: string,
 }
 
-const FIXTURES = {
-  newDictionary: {
+export function newDictionary(): [TestDictionary, string] {
+  const owner = 'admin';
+  const dictionary = {
     name: 'Test Dictionary',
     shortCode: 'TD' + uuid(),
     description: 'Test dictionary',
     preferredSource: 'CIEL',  // todo stop hard coding this, pick the nth
-    owner: 'admin',
+    owner,
+    ownerDisplayValue: `${owner}(You)`,
     ownerType: 'users',
     visibility: 'Public',
     preferredLanguage: 'English (en)',
     otherLanguages: 'French (fr)',
-  },
+  };
+
+  return [dictionary, `/${dictionary.ownerType}/${dictionary.owner}/collections/${dictionary.shortCode}/`];
 }
 
 function select(labelText: string, item: string) {
@@ -32,7 +36,9 @@ function select(labelText: string, item: string) {
   cy.findByText(item).click();
 }
 
-function createDictionary(dictionary: TestDictionary) {
+export function createDictionary(dictionaryAndUrl = newDictionary()): [TestDictionary, string] {
+  const [dictionary, dictionaryUrl] = dictionaryAndUrl;
+
   cy.visit('/user/collections/');
 
   cy.findByTitle('Create new dictionary').click();
@@ -41,30 +47,17 @@ function createDictionary(dictionary: TestDictionary) {
   cy.findByLabelText('Short Code').type(dictionary.shortCode);
   cy.findByLabelText('Description').type(dictionary.description);
   select('Preferred Source', dictionary.preferredSource);
-  select('Owner', dictionary.owner + '(You)');
+  select('Owner', dictionary.ownerDisplayValue);
   select('Visibility', dictionary.visibility);
   select('Preferred Language', dictionary.preferredLanguage);
+
   select('Other Languages', dictionary.otherLanguages);
   cy.get('body').type('{esc}');
   cy.findByText('Submit').click();
 
   // wait for request to get done
   cy.findByText('General Details');
+
+  // for other test files that makes use of us
+  return [dictionary, dictionaryUrl];
 }
-
-describe('Create Dictionary', () => {
-  beforeEach(() => {
-    login();
-  });
-
-  it('Happy flow: Should create a dictionary', () => {
-    cy.visit(`/${FIXTURES.newDictionary.ownerType}/${FIXTURES.newDictionary.owner}/collections/${FIXTURES.newDictionary.shortCode}/`);
-    cy.findByText("Could not load dictionary. Refresh the page to retry").should('exist');
-
-    createDictionary(FIXTURES.newDictionary);
-
-    cy.visit(`/${FIXTURES.newDictionary.ownerType}/${FIXTURES.newDictionary.owner}/collections/${FIXTURES.newDictionary.shortCode}/`);
-    cy.queryByText("Could not load dictionary. Refresh the page to retry").should('not.exist');
-    cy.findByText('General Details').should('exist');
-  });
-})

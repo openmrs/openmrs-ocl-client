@@ -94,7 +94,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   };
 
   return (
-    <TableHead>
+    <TableHead data-testid="conceptsTableHeader">
       <TableRow>
         {numSelected <= 0 ? (
           ""
@@ -211,7 +211,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           >
             <Input
               fullWidth
-              placeholder="Search"
+              placeholder="Search concepts"
               value={q}
               onChange={e => setQ(e.target.value)}
               endAdornment={
@@ -453,6 +453,7 @@ const ConceptsTable: React.FC<Props> = ({
                 return (
                   <TableRow
                     hover
+                    data-testRowClass="conceptRow"
                     onDoubleClick={event => toggleSelect(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
@@ -483,8 +484,8 @@ const ConceptsTable: React.FC<Props> = ({
                         {row.display_name}
                       </Link>
                     </TableCell>
-                    <TableCell>{row.concept_class}</TableCell>
-                    <TableCell>{row.datatype}</TableCell>
+                    <TableCell data-testClass="conceptClass">{row.concept_class}</TableCell>
+                    <TableCell data-testClass="datatype">{row.datatype}</TableCell>
                     <TableCell>{row.id}</TableCell>
                     <TableCell padding="checkbox">
                       <IconButton

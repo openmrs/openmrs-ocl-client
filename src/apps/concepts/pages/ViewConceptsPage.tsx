@@ -215,7 +215,14 @@ const ViewConceptsPage: React.FC<Props> = ({
   return (
     <>
       <Header
-        title="Concepts"
+        // todo we can improve this to say where we are adding to
+        title={
+          containerType === SOURCE_CONTAINER
+            ? `Import existing concept from ${getSourceIdFromUrl(
+                url.replace("concepts/", "")
+              )}`
+            : "Concepts"
+        }
         justifyChildren="space-around"
         headerComponent={
           !showHeaderComponent ? null : (
@@ -313,6 +320,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 setCheckedDataTypes={setInitialDataTypeFilters}
                 checkedSources={sourceFilters}
                 setCheckedSources={setSourceFilters}
+                showSources={containerType !== SOURCE_CONTAINER}
                 // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
                 sourceOptions={
                   [

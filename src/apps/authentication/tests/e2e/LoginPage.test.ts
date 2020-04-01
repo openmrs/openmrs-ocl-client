@@ -1,13 +1,4 @@
-export function login() {
-  cy.visit('/login');
-
-  cy.findByLabelText('Username').type('admin');
-  cy.findByLabelText('Password').type('Admin123');
-  cy.findByText('Log in').click();
-
-  // wait till page is ready
-  cy.findByText('Personal dictionaries');
-}
+import { login } from './testUtils'
 
 describe('Login', () => {
   it('Happy flow: Should allow user to login', () => {
@@ -22,3 +13,7 @@ describe('Login', () => {
     cy.findByText('Personal dictionaries').should('exist');
   })
 })
+if (require.main === module) {
+  // do something
+  // or nothing
+}

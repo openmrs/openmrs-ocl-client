@@ -1,4 +1,4 @@
-import { PREFERRED_SOURCES } from '../../utils'
+import { PREFERRED_SOURCES } from "../../utils";
 
 export const DICTIONARY_CONTAINER = "dictionary";
 export const DICTIONARY_VERSION_CONTAINER = "dictionaryVersion";

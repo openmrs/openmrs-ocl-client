@@ -60,11 +60,11 @@ const castNecessaryValues = (values: Concept) => {
   };
 };
 
-const createName = (nameType: string = NAME_TYPES[0].value): ConceptName => ({
+const createName = (nameType: string = NAME_TYPES[0].value, localePreferred = true): ConceptName => ({
   name: "",
   locale: "",
   external_id: uuid(),
-  locale_preferred: false,
+  locale_preferred: localePreferred,
   name_type: nameType
 });
 
@@ -334,7 +334,7 @@ const ConceptForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
               <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="class">Datatype</InputLabel>
+                <InputLabel htmlFor="datatype">Datatype</InputLabel>
                 <Field name="datatype" id="datatype" component={Select}>
                   {DATA_TYPES.map(datatype => (
                     <MenuItem key={datatype} value={datatype}>
@@ -358,7 +358,7 @@ const ConceptForm: React.FC<Props> = ({
                 {arrayHelpers => (
                   <NamesTable
                     useTypes
-                    createNewValue={() => createName(NAME_TYPES[1].value)}
+                    createNewValue={() => createName(NAME_TYPES[1].value, false)}
                     type="name"
                     title="Name"
                     valuesKey="names"
@@ -416,7 +416,7 @@ const ConceptForm: React.FC<Props> = ({
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
                         handleChange={handleChange}
-                        title="answer"
+                        title="Answer"
                         fixedMappingType={MAP_TYPE_Q_AND_A}
                         editing={allowEditing}
                       />
@@ -446,7 +446,7 @@ const ConceptForm: React.FC<Props> = ({
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
                         handleChange={handleChange}
-                        title="set"
+                        title="Set"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
                         editing={allowEditing}
                       />
@@ -472,7 +472,7 @@ const ConceptForm: React.FC<Props> = ({
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
                     handleChange={handleChange}
-                    title="mapping"
+                    title="Mapping"
                     editing={allowEditing}
                   />
                 )}

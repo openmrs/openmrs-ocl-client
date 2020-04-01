@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Button,
   ButtonGroup,
@@ -14,8 +14,8 @@ import {
   Paper,
   Theme
 } from '@material-ui/core'
-import { CONCEPT_CLASSES, DATA_TYPES } from '../../../utils'
-import { Link } from 'react-router-dom'
+import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     listItem: {
       paddingTop: "0",
-      paddingBottom: "0",
-    },
+      paddingBottom: "0"
+    }
   })
 );
 
@@ -92,7 +92,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
         {items
           .filter(item => item.toLowerCase().includes(searchText.toLowerCase()))
           .map(value => {
-            const labelId = `checkbox-list-label-${value}`;
+            const id = `checkbox-${title}-${value}`;
 
             return (
               <ListItem
@@ -100,19 +100,19 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                 role={undefined}
                 dense
                 button
-                onClick={handleToggle(value)}
                 className={classes.listItem}
               >
                 <ListItemIcon>
                   <Checkbox
+                    id={id}
                     edge="start"
+                    onChange={handleToggle(value)}
                     checked={checked.includes(value)}
                     tabIndex={-1}
                     disableRipple
-                    inputProps={{ "aria-labelledby": labelId }}
                   />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={value} />
+                <ListItemText primary={<label htmlFor={id}>{value}</label>} />
               </ListItem>
             );
           })}
@@ -130,6 +130,7 @@ interface FilterOptionsProps {
   checkedSources: string[];
   setCheckedSources: Function;
   sourceOptions: string[];
+  showSources?: boolean;
 }
 
 const FilterOptions: React.FC<FilterOptionsProps> = ({
@@ -140,7 +141,8 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   setCheckedClasses,
   setCheckedDataTypes,
   setCheckedSources,
-  sourceOptions
+  sourceOptions,
+  showSources=true,
 }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
@@ -170,18 +172,20 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
             </Button>
           </ButtonGroup>
           <Input
-            placeholder="Search"
+            placeholder="Search filters"
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
           />
         </div>
-        <FilterGroup
-          checked={checkedSources}
-          setChecked={setCheckedSources}
-          searchText={searchText}
-          title="Sources"
-          items={sourceOptions}
-        />
+        {showSources ? (
+          <FilterGroup
+            checked={checkedSources}
+            setChecked={setCheckedSources}
+            searchText={searchText}
+            title="Sources"
+            items={sourceOptions}
+          />
+        ) : null}
         <FilterGroup
           checked={checkedClasses}
           setChecked={setCheckedClasses}
