@@ -472,7 +472,7 @@ const ConceptsTable: React.FC<Props> = ({
                         />
                       </TableCell>
                     )}
-                    <TableCell className={row.retired ? classes.retired : ""}>
+                    <TableCell data-testClass="name" className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
                         to={`${
