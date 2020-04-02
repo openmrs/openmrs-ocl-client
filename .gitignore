@@ -40,3 +40,4 @@ cypress/videos/**
 
 # env-config
 public/env-config.js
+/junit.xml

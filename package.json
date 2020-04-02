@@ -42,10 +42,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --passWithNoTests --testPathPattern='.*/tests/unit/'",
+    "test": "react-scripts test --testPathPattern='.*/tests/unit/'",
     "test:integration": "cypress run",
-    "test:ci": "CI=true react-scripts test --passWithNoTests --testPathPattern='.*/tests/unit/' --ci --coverage",
-    "test:bamboo": "react-scripts test --passWithNoTests --testPathPattern='.*/tests/unit/' --env=jsdom --ci --coverage --testResultsProcessor ./node_modules/jest-junit",
+    "test:ci": "CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage",
+    "test:bamboo": "CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
