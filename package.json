@@ -45,7 +45,7 @@
     "test": "react-scripts test --testPathPattern='.*/tests/unit/'",
     "test:integration": "cypress run",
     "test:ci": "CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage",
-    "test:bamboo": "CI=true node -v && react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
+    "test:bamboo": "node -v && CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
