@@ -27,9 +27,18 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br />
 
-## Set-up Process
+## Setup
 
-### Manual Environment Setup
+### Choosing an API server
+The API accessed by this UI falls back to the OpenMRS demo environment.
+To specify your own API server create a file called `env-config.js` under the public directory containing;
+```javascript
+var OCL_API_HOST = "<your endpoint, e.g https://api.qa.openconceptlab.org>";
+var TRADITIONAL_OCL_HOST = "<your endpoint, e.g https://qa.openconceptlab.org>";
+```
+These variables will automatically be injected into the app at runtime. The same strategy we use while deploying the application.
+
+### Native Environment Setup
 - Clone a forked version of the repository to your computer;  
 `git clone https://github.com/yourusername/openmrs-ocl-client.git`
       

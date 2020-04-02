@@ -5,7 +5,7 @@ export const BASE_URL: string =
   window.OCL_API_HOST || "https://api.demo.openconceptlab.org";
 export const TRADITIONAL_OCL_URL =
   // @ts-ignore TRADITIONAL_OCL_HOST is injected at runtime via index.html
-  window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
+  window.TRADITIONAL_OCL_HOST || "https://demo.openconceptlab.org";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 
