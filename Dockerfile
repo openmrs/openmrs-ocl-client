@@ -15,7 +15,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json ./
 
 # Install the project dependencies and silence the npm output
-RUN npm install --silent
+RUN npm install
 
 # Copy everything to the working directory
 COPY . /usr/src/app
