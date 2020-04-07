@@ -44,7 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     listItem: {
       paddingTop: "0",
-      paddingBottom: "0"
+      paddingBottom: "0",
+    },
+    listItemText: {
+      marginTop: "0",
+      marginBottom: "0",
     }
   })
 );
@@ -112,7 +116,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
                     disableRipple
                   />
                 </ListItemIcon>
-                <ListItemText primary={<label htmlFor={id}>{value}</label>} />
+                <ListItemText className={classes.listItemText} primary={<label htmlFor={id}>{value}</label>} />
               </ListItem>
             );
           })}
