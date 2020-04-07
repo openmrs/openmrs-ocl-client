@@ -454,7 +454,6 @@ const ConceptsTable: React.FC<Props> = ({
                   <TableRow
                     hover
                     data-testRowClass="conceptRow"
-                    onDoubleClick={event => toggleSelect(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -466,13 +465,15 @@ const ConceptsTable: React.FC<Props> = ({
                     ) : (
                       <TableCell padding="checkbox">
                         <Checkbox
+                          // ideally, we would have made this apply to the entire row, but there
+                          // seems to be a problem with an implicit click when the row popup closes
                           onClick={event => toggleSelect(event, row.id)}
                           checked={isItemSelected}
                           inputProps={{ "aria-labelledby": labelId }}
                         />
                       </TableCell>
                     )}
-                    <TableCell data-testClass="name" className={row.retired ? classes.retired : ""}>
+                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="name" className={row.retired ? classes.retired : ""}>
                       <Link
                         onClick={e => e.stopPropagation()}
                         to={`${
@@ -484,9 +485,9 @@ const ConceptsTable: React.FC<Props> = ({
                         {row.display_name}
                       </Link>
                     </TableCell>
-                    <TableCell data-testClass="conceptClass">{row.concept_class}</TableCell>
-                    <TableCell data-testClass="datatype">{row.datatype}</TableCell>
-                    <TableCell>{row.id}</TableCell>
+                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="conceptClass">{row.concept_class}</TableCell>
+                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="datatype">{row.datatype}</TableCell>
+                    <TableCell onClick={event => toggleSelect(event, row.id)}>{row.id}</TableCell>
                     <TableCell padding="checkbox">
                       <IconButton
                         id={`${index}.menu-icon`}
@@ -502,15 +503,6 @@ const ConceptsTable: React.FC<Props> = ({
                         open={index === menu.index}
                         onClose={() => toggleMenu(index)}
                       >
-                        <MenuItem
-                          onClick={event => {
-                            toggleSelect(event, row.id);
-                            toggleMenu(index);
-                          }}
-                        >
-                          <CheckBoxIcon />{" "}
-                          {isSelected(row.id) ? "Deselect" : "Select"}
-                        </MenuItem>
                         {!showEditMenuItem(
                           row,
                           buttons.edit,

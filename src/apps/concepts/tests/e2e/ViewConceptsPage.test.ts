@@ -1,7 +1,7 @@
 import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2e/testUtils'
 import { login } from '../../../authentication/tests/e2e/testUtils'
 
-describe('Add concepts to collection', () => {
+describe('View Concepts Page', () => {
   const nameSelector = "[data-testClass='name']";
   const classSelector = "[data-testClass='conceptClass']";
   const datatypeSelector = "[data-testClass='datatype']";
@@ -83,4 +83,6 @@ describe('Add concepts to collection', () => {
     cy.findByLabelText("LabSet").should('be.visible');
     cy.findByLabelText("Procedure").should('not.be.visible');
   });
+
+
 });
