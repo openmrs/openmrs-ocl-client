@@ -60,7 +60,10 @@ const castNecessaryValues = (values: Concept) => {
   };
 };
 
-const createName = (nameType: string = NAME_TYPES[0].value, localePreferred = true): ConceptName => ({
+const createName = (
+  nameType: string = NAME_TYPES[0].value,
+  localePreferred = true
+): ConceptName => ({
   name: "",
   locale: "",
   external_id: uuid(),
@@ -358,7 +361,9 @@ const ConceptForm: React.FC<Props> = ({
                 {arrayHelpers => (
                   <NamesTable
                     useTypes
-                    createNewValue={() => createName(NAME_TYPES[1].value, false)}
+                    createNewValue={() =>
+                      createName(NAME_TYPES[1].value, false)
+                    }
                     type="name"
                     title="Name"
                     valuesKey="names"

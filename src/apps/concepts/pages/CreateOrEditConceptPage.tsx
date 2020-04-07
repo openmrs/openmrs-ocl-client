@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
-import { Fab, Grid, Menu, MenuItem, Tooltip } from '@material-ui/core'
-import { ConceptForm } from '../components'
-import { AppState } from '../../../redux'
+import React, { useEffect } from "react";
+import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
+import { ConceptForm } from "../components";
+import { AppState } from "../../../redux";
 import {
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
@@ -11,21 +11,27 @@ import {
   upsertConceptErrorsSelector,
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
-} from '../redux'
-import { APIConcept, apiConceptToConcept, APIMapping, Concept } from '../types'
-import { Redirect, useLocation, useParams } from 'react-router'
-import { connect } from 'react-redux'
-import Header from '../../../components/Header'
-import { startCase, toLower } from 'lodash'
-import { debug, ProgressOverlay, useAnchor, usePrevious, useQuery } from '../../../utils'
-import { CONTEXT } from '../constants'
+} from "../redux";
+import { APIConcept, apiConceptToConcept, APIMapping, Concept } from "../types";
+import { Redirect, useLocation, useParams } from "react-router";
+import { connect } from "react-redux";
+import Header from "../../../components/Header";
+import { startCase, toLower } from "lodash";
+import {
+  debug,
+  ProgressOverlay,
+  useAnchor,
+  usePrevious,
+  useQuery
+} from "../../../utils";
+import { CONTEXT } from "../constants";
 import {
   DeleteSweepOutlined as DeleteIcon,
   MoreVert as MenuIcon,
   Pageview as PageViewIcon,
   RestoreFromTrashOutlined as RestoreIcon
-} from '@material-ui/icons'
-import { Link } from 'react-router-dom'
+} from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 interface Props {
   fetchLoading: boolean;
@@ -35,7 +41,9 @@ interface Props {
   fetchErrors?: {};
   errors?: {};
   retrieveConcept: (...args: Parameters<typeof retrieveConceptAction>) => void;
-  upsertConcept: (...args: Parameters<typeof upsertConceptAndMappingsAction>) => void;
+  upsertConcept: (
+    ...args: Parameters<typeof upsertConceptAndMappingsAction>
+  ) => void;
   allMappingErrors?: { errors: string }[];
   progress?: string;
 }
@@ -147,11 +155,15 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
               <MenuItem
                 disabled={loading}
                 onClick={() => {
-                    const rawConcept = apiConceptToConcept(concept, [], false);
-                    if (rawConcept) upsertConcept({...rawConcept, retired: !concept?.retired}, sourceUrl, linkedDictionary);
-                    else debug("Retiring failed: rawConcept is undefined");
-                  }
-                }
+                  const rawConcept = apiConceptToConcept(concept, [], false);
+                  if (rawConcept)
+                    upsertConcept(
+                      { ...rawConcept, retired: !concept?.retired },
+                      sourceUrl,
+                      linkedDictionary
+                    );
+                  else debug("Retiring failed: rawConcept is undefined");
+                }}
               >
                 {concept?.retired ? (
                   <>

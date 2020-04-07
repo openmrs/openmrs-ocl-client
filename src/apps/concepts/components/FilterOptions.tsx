@@ -12,7 +12,7 @@ import {
   ListSubheader,
   makeStyles,
   Paper,
-  Theme
+  Theme, Typography
 } from '@material-ui/core'
 import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
 import { Link } from "react-router-dom";
@@ -83,6 +83,8 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
     setChecked(newChecked);
   };
 
+  const itemsToDisplay = items.filter(item => item.toLowerCase().includes(searchText.toLowerCase()));
+
   return (
     <>
       <List
@@ -93,8 +95,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
           </ListSubheader>
         }
       >
-        {items
-          .filter(item => item.toLowerCase().includes(searchText.toLowerCase()))
+        {itemsToDisplay
           .map(value => {
             const id = `checkbox-${title}-${value}`;
 
@@ -120,6 +121,7 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
               </ListItem>
             );
           })}
+        {itemsToDisplay.length ? null : <Typography color="textSecondary" align="center">None matching this filter</Typography>}
       </List>
     </>
   );
