@@ -35,7 +35,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
 
   return (
     <Header
-      title="Add bulk concepts"
+      title={`Add concepts in bulk from ${fromSource}`}
       headerComponent={(
         <>
           <Button className={classes.lightColour} variant="text" size="large" aria-haspopup="true" onClick={handleSwitchSourceClick}>
@@ -69,6 +69,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
         </Typography>
         <br />
         <TextField
+          placeholder="1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007"
           onChange={e => setConceptsToAdd(e.target.value.split(/[\s,\r\n]+/))}
           fullWidth
           multiline

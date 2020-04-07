@@ -2,6 +2,7 @@ import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2
 import { login } from '../../../authentication/tests/e2e/testUtils'
 
 describe('View Concepts Page', () => {
+  const conceptSelector = "[data-testRowClass='conceptRow']"
   const nameSelector = "[data-testClass='name']";
   const classSelector = "[data-testClass='conceptClass']";
   const datatypeSelector = "[data-testClass='datatype']";
@@ -17,12 +18,13 @@ describe('View Concepts Page', () => {
     cy.visit(dictionaryUrl);
 
     cy.findByText('View Concepts').click();
-    cy.findByTitle('Add concepts').click();
-    cy.findByText('Import existing concept').click();
-    cy.findByText('Pick concepts').click();
   });
 
   it('Should allow retrieving, sorting, filtering concepts', () => {
+    cy.findByTitle('Add concepts').click();
+    cy.findByText('Import existing concept').click();
+    cy.findByText('Pick concepts').click();
+
     // Classes
     cy.findByLabelText("Diagnosis").click();
     applyFilters();
@@ -84,5 +86,39 @@ describe('View Concepts Page', () => {
     cy.findByLabelText("Procedure").should('not.be.visible');
   });
 
+  it('Import existing concept from Source', () => {
+    cy.get(conceptSelector).should('have.length', 0);
 
+    cy.findByTitle('Add concepts').click();
+    cy.findByText('Import existing concept').click();
+    cy.findByText('Pick concepts').click();
+
+    cy.findAllByTitle('More actions').first().click();
+    cy.runAndAwait(() => cy.findByText('Add to dictionary').click());
+
+    // select the next two concepts
+    cy.get(conceptSelector).eq(1).click();
+    cy.get(conceptSelector).eq(2).click();
+    cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
+
+    cy.findByTitle('Go back').click();
+
+    cy.get(conceptSelector).should('have.length.gte', 3); // account for possible recursively added concepts
+  });
+
+  it('Add concepts in bulk from Source', () => {
+    cy.get(conceptSelector).should('have.length', 0);
+
+    cy.findByTitle('Add concepts').click();
+    cy.findByText('Import existing concept').click();
+    cy.findByText('Add bulk concepts').click();
+
+    cy.findByPlaceholderText("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007").type("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007");
+    cy.runAndAwait(() => cy.findByText("Add concepts").click(), 'PUT');
+
+    cy.wait(5000); // index update takes a while
+
+    cy.findByTitle('Go back').click();
+    cy.get(conceptSelector).should('have.length.gte', 3); // account for possible recursively added concepts
+  });
 });

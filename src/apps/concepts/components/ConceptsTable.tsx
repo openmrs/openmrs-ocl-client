@@ -228,7 +228,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <>
           {!showAddConcepts ? null : (
-            <Tooltip title="Add">
+            <Tooltip title="Add selected to dictionary">
               <IconButton onClick={e => addSelectedConcepts()} aria-label="add">
                 <AddIcon />
               </IconButton>
@@ -489,14 +489,16 @@ const ConceptsTable: React.FC<Props> = ({
                     <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="datatype">{row.datatype}</TableCell>
                     <TableCell onClick={event => toggleSelect(event, row.id)}>{row.id}</TableCell>
                     <TableCell padding="checkbox">
-                      <IconButton
-                        id={`${index}.menu-icon`}
-                        aria-controls={`${index}.menu`}
-                        aria-haspopup="true"
-                        onClick={event => toggleMenu(index, event)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
+                      <Tooltip title="More actions" enterDelay={700}>
+                        <IconButton
+                          id={`${index}.menu-icon`}
+                          aria-controls={`${index}.menu`}
+                          aria-haspopup="true"
+                          onClick={event => toggleMenu(index, event)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      </Tooltip>
                       <Menu
                         anchorEl={menu.anchor}
                         id={`${index}.menu`}
@@ -541,7 +543,7 @@ const ConceptsTable: React.FC<Props> = ({
                               toggleMenu(index);
                             }}
                           >
-                            <AddIcon /> Add
+                            <AddIcon /> Add to dictionary
                           </MenuItem>
                         )}
                       </Menu>
