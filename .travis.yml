@@ -5,6 +5,8 @@ script:
   - npm install
   - npm install coveralls
   - npm run test:ci
+  - bash ./start_local_instance.sh
+  - npm run test:integration
 
 after_success:
   - coveralls < coverage/lcov.info
