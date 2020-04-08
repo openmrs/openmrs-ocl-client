@@ -40,7 +40,7 @@
     "yup": "^0.27.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8080 react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test --testPathPattern='.*/tests/unit/'",
     "test:integration": "cypress run",

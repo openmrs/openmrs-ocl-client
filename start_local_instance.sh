@@ -11,7 +11,7 @@ bash ./wait_for_url.sh $api_endpoint"/sources"
 echo "API listening at "$api_endpoint
 
 echo "Starting App..."
-export OCL_API_HOST='http://localhost:8000'
+export OCL_API_HOST='http://localhost:8080'
 docker-compose build
 docker-compose up -d
 app_endpoint=http://localhost:8080
