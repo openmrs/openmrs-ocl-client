@@ -14,8 +14,8 @@ app_endpoint=http://localhost:8080
 
 
 # wait for the api and app to be live
-bash ./wait_for_url.sh $app_endpoint
-echo "App listening at "$app_endpoint
-
 bash ./wait_for_url.sh $api_endpoint"/sources"
 echo "API listening at "$api_endpoint
+
+bash ./wait_for_url.sh $app_endpoint
+echo "App listening at "$app_endpoint
