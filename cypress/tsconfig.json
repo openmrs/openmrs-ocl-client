@@ -7,6 +7,6 @@
     "types": ["cypress"]
   },
   "include": [
-    "**/tests/e2e/**"
+    "**/tests/e2e/*.ts"
   ]
 }

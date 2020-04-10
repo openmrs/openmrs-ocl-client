@@ -15,7 +15,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json ./
 
 # Set environment to production
-ENV NODE_ENV production
+#ENV NODE_ENV production
 
 # Install the project dependencies and silence the npm output
 RUN npm install
