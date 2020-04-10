@@ -43,7 +43,7 @@
     "start": "PORT=8080 react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test --testPathPattern='.*/tests/unit/'",
-    "test:integration": "cypress run",
+    "test:integration": "cypress run --browser=chrome  --headless",
     "test:ci": "CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage",
     "test:bamboo": "node -v && CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
     "eject": "react-scripts eject"
