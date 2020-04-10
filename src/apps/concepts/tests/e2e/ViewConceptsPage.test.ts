@@ -1,5 +1,5 @@
 import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2e/testUtils'
-import { login } from '../../../authentication/tests/e2e/testUtils'
+import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 
 describe('View Concepts Page', () => {
   const conceptSelector = "[data-testRowClass='conceptRow']"
@@ -18,6 +18,10 @@ describe('View Concepts Page', () => {
     cy.visit(dictionaryUrl);
 
     cy.findByText('View Concepts').click();
+  });
+
+  afterEach(() => {
+    logout();
   });
 
   it('Should allow retrieving, sorting, filtering concepts', () => {

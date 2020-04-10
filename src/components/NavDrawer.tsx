@@ -192,9 +192,11 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
               component="div"
               key={"Logout"}
             >
-              <ListItemIcon className="list-item-icon">
-                <ExitToApp />
-              </ListItemIcon>
+              <Tooltip title="Logout">
+                <ListItemIcon className="list-item-icon">
+                  <ExitToApp />
+                </ListItemIcon>
+              </Tooltip>
               <ListItemText primary="Logout" />
             </ListItem>
           </List>

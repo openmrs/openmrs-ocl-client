@@ -10,3 +10,9 @@ export function login(username = 'admin', password = 'Admin123'): string {
 
   return username;
 }
+
+export function logout () {
+  cy.findByTitle('Logout').click();
+  cy.focused().findByText('Logout').click();
+  cy.findByLabelText('Username').should('exist');
+}

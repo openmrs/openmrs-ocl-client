@@ -1,4 +1,4 @@
-import { login } from '../../../authentication/tests/e2e/testUtils'
+import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 import { createDictionary, TestDictionary } from './testUtils'
 
 export interface UpdatedDictionary {
@@ -34,6 +34,10 @@ describe('Edit Dictionary', () => {
   beforeEach(() => {
     login();
     [savedDictionary, dictionaryUrl] = createDictionary();
+  });
+
+  afterEach(() => {
+    logout();
   });
 
   it('Happy flow: Should edit a dictionary', () => {
