@@ -164,11 +164,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     singleCellWidth: {
       width: "24%",
-      overflow: "scroll"
     },
     doubleCellWidth: {
       width: "48%",
-      overflow: "scroll"
     },
     fillParent: {
       width: "100%"
