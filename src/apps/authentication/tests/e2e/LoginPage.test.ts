@@ -13,7 +13,3 @@ describe('Login', () => {
     cy.findByText('Personal dictionaries').should('exist');
   })
 })
-if (require.main === module) {
-  // do something
-  // or nothing
-}

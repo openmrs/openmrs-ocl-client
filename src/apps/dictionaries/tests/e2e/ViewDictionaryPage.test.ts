@@ -1,4 +1,4 @@
-import { login } from '../../../authentication/tests/e2e/testUtils'
+import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 import { createDictionary, TestDictionary } from './testUtils'
 
 describe('View Dictionary', () => {
@@ -7,6 +7,10 @@ describe('View Dictionary', () => {
   beforeEach(() => {
     login();
     [dictionary, dictionaryUrl] = createDictionary();
+  });
+
+  afterEach(() => {
+    logout();
   });
 
   it('Happy flow: Should allow a user to view a dictionary', () => {

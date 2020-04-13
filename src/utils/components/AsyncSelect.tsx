@@ -56,12 +56,12 @@ const useStyles = makeStyles((theme: Theme) =>
       bottom: 6,
       fontSize: 16
     },
-    paper: {
+    resultsList: {
       position: "absolute",
-      zIndex: 1,
+      zIndex: 10,
       marginTop: theme.spacing(1),
       left: 0,
-      right: 0
+      right: 0,
     },
     divider: {
       height: theme.spacing(2)
@@ -216,7 +216,8 @@ function Menu(props: MenuProps<Option>) {
   return (
     <Paper
       square
-      className={props.selectProps.classes.paper}
+      data-testid="asyncSelectResultsList"
+      className={props.selectProps.classes.resultsList}
       {...props.innerProps}
     >
       {props.children}

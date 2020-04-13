@@ -45,11 +45,11 @@ export function newConcept(ownerType: string, owner: string, shortCode: string):
 
 export function searchAndSelect(rowSelector: string, placeholderText: string, item: {search: string, select: string}) {
   cy.get(rowSelector).findByText(placeholderText).type(item.search);
-  cy.get('.css-4ljt47-MenuList').findByText(item.select).should('be.visible').click();
+  cy.findByTestId("asyncSelectResultsList").findByText(item.select).should('be.visible').click();
 }
 
 export function fillNameRow (index: number, concept: TestConcept) {
-  cy.get(`[data-testid="names_${index}_name"]`).type(concept.names[index].name);
+  cy.findByTestId(`names_${index}_name`).type(concept.names[index].name);
   cy.selectBySelector(`[data-testid="names_${index}_name_type"]`, concept.names[index].type);
   cy.selectBySelector(`[data-testid="names_${index}_locale"]`, concept.names[index].language);
   cy.selectBySelector(`[data-testid="names_${index}_locale_preferred"]`, concept.names[index].preferredInLanguage);

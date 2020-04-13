@@ -1,9 +1,13 @@
-import { login } from '../../../authentication/tests/e2e/testUtils'
+import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 import { createDictionary, newDictionary } from './testUtils'
 
 describe('Create Dictionary', () => {
   beforeEach(() => {
     login();
+  });
+
+  afterEach(() => {
+    logout();
   });
 
   it('Happy flow: Should create a dictionary', () => {

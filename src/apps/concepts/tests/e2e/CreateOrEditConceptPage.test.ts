@@ -1,4 +1,4 @@
-import { login } from "../../../authentication/tests/e2e/testUtils";
+import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 import {
   createDictionary,
   TestDictionary
@@ -18,6 +18,10 @@ describe("Create Concept", () => {
   beforeEach(() => {
     login();
     [dictionary, dictionaryUrl] = createDictionary();
+  });
+
+  afterEach(() => {
+    logout();
   });
 
   it("Should create a concept", () => {
