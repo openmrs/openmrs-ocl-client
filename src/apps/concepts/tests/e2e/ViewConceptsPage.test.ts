@@ -105,9 +105,16 @@ describe('View Concepts Page', () => {
     cy.get(conceptSelector).eq(2).click();
     cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
 
+    // switch source and add more concepts
+    cy.findByText(`Switch source (Currently ${dictionary.preferredSource})`).click();
+    cy.runAndAwait(() => cy.findByText("Public Sources").click());
+    cy.get(conceptSelector).eq(3).click();
+    cy.get(conceptSelector).eq(4).click();
+    cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
+
     cy.findByTitle('Go back').click();
 
-    cy.get(conceptSelector).should('have.length.gte', 3); // account for possible recursively added concepts
+    cy.get(conceptSelector).should('have.length.gte', 5); // account for possible recursively added concepts
   });
 
   it('Add concepts in bulk from Source', () => {
