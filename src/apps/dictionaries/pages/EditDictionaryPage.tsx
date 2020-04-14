@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { DictionaryForm } from "../components";
-import { Grid, Paper } from "@material-ui/core";
+import { Fab, Grid, Paper, Tooltip } from '@material-ui/core'
 import { connect } from "react-redux";
-import { Redirect, useLocation } from "react-router-dom";
+import { Link, Redirect, useLocation } from 'react-router-dom'
 import {
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
@@ -22,6 +22,7 @@ import {
   editSourceAndDictionaryAction,
   retrieveDictionaryAction
 } from "../redux/actions";
+import { Pageview as PageViewIcon } from '@material-ui/icons'
 
 interface Props {
   errors?: {};
@@ -51,12 +52,13 @@ const EditDictionaryPage: React.FC<Props> = ({
   retrieveDictionary
 }: Props) => {
   const { pathname: url } = useLocation();
+  const dictionaryUrl = url.replace("edit/", "");
 
   const previouslyLoading = usePrevious(loading);
 
   useEffect(() => {
-    retrieveDictionary(url.replace("edit/", ""));
-  }, [url, retrieveDictionary]);
+    retrieveDictionary(dictionaryUrl);
+  }, [dictionaryUrl, retrieveDictionary]);
 
   if (!loading && previouslyLoading && editedDictionary) {
     return <Redirect to={editedDictionary.url} />;
@@ -85,6 +87,13 @@ const EditDictionaryPage: React.FC<Props> = ({
           />
         </Paper>
       </Grid>
+      <Link to={dictionaryUrl}>
+        <Tooltip title="Discard changes and view">
+          <Fab color="primary" className="fab">
+            <PageViewIcon />
+          </Fab>
+        </Tooltip>
+      </Link>
     </ProgressOverlay>
   );
 };
