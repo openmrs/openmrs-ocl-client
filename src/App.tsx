@@ -12,7 +12,6 @@ import DictionaryRoutes, {
 import ConceptRoutes, {
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
-  ViewConceptsPage
 } from "./apps/concepts";
 import { SOURCE_CONTAINER } from "./apps/concepts/constants";
 
@@ -50,11 +49,18 @@ const AuthenticatedRoutes: React.FC = () => {
           viewConcepts={true}
         />
       </Route>
-      <Route
-        path="/:ownerType/:owner/collections/:collection/concepts/"
-        containerType={DICTIONARY_VERSION_CONTAINER}
-        component={ViewConceptsPage}
-      />
+      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+        <ConceptRoutes
+          containerType={DICTIONARY_VERSION_CONTAINER}
+          viewConcepts={true}
+        />
+      </Route>
+      <Route path="/concepts">
+        <ConceptRoutes
+          containerType={SOURCE_CONTAINER}
+          viewConcepts={true}
+        />
+      </Route>
       <Route
         path="/:ownerType/:owner/collections"
         component={DictionaryRoutes}
@@ -67,6 +73,10 @@ const AuthenticatedRoutes: React.FC = () => {
 };
 
 const Routes: React.FC = () => {
+  /**
+   * The goal for all routes in the application is to mirror the API as much as possible
+   * Exceptions *should* have a good reason
+   */
   return (
     <Router>
       <Switch>

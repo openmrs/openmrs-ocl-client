@@ -23,11 +23,12 @@ import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
 import {
+  ALL_PUBLIC_SOURCES_URL,
   CONCEPT_CLASSES,
   PREFERRED_SOURCES,
   useAnchor,
   useQuery
-} from "../../../utils";
+} from '../../../utils'
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
 import FilterOptions from "../components/FilterOptions";
@@ -243,7 +244,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 open={Boolean(switchSourceAnchor)}
                 onClose={handleSwitchSourceClose}
               >
-                {Object.entries(PREFERRED_SOURCES).map(
+                {Object.entries({"Public Sources": ALL_PUBLIC_SOURCES_URL, ...PREFERRED_SOURCES}).map(
                   ([preferredSourceName, preferredSourceUrl]) => (
                     <MenuItem onClick={handleSwitchSourceClose}>
                       <Link

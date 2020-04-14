@@ -340,8 +340,9 @@ export const MAP_TYPE_Q_AND_A = option("Q-AND-A");
 export const MAP_TYPE_CONCEPT_SET = option("CONCEPT-SET");
 const CIEL_SOURCE_URL = "/orgs/CIEL/sources/CIEL/";
 const PIH_SOURCE_URL = "/orgs/PIH/sources/PIH/";
+export const ALL_PUBLIC_SOURCES_URL = "/"
 
 export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
-  PIH: PIH_SOURCE_URL
+  PIH: PIH_SOURCE_URL,
 };
