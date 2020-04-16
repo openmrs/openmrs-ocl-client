@@ -1,12 +1,22 @@
 language: node_js
 node_js:
   - "10.13.0"
-script:
+install:
   - npm install
   - npm install coveralls
+
+script:
   - npm run test:ci
   - bash ./start_local_instance.sh
   - npm run test:integration
+
+cache:
+  # Caches $HOME/.npm when npm ci is default script command
+  # Caches node_modules in all other cases
+  npm: true
+  directories:
+    # we also need to cache folder with Cypress binary
+    - ~/.cache
 
 after_success:
   - coveralls < coverage/lcov.info

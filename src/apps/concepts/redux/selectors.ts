@@ -20,15 +20,11 @@ export const upsertConceptAndMappingsLoadingSelector = loadingSelector(
 export const upsertConceptAndMappingsProgressSelector = progressSelector(
   UPSERT_CONCEPT_AND_MAPPINGS
 );
-export const upsertConceptErrorsSelector = errorSelector(
-  UPSERT_CONCEPT_ACTION
-);
+export const upsertConceptErrorsSelector = errorSelector(UPSERT_CONCEPT_ACTION);
 export const viewConceptLoadingSelector = loadingSelector(
   RETRIEVE_CONCEPT_ACTION
 );
-export const viewConceptErrorsSelector = errorSelector(
-  RETRIEVE_CONCEPT_ACTION
-);
+export const viewConceptErrorsSelector = errorSelector(RETRIEVE_CONCEPT_ACTION);
 export const viewConceptsLoadingSelector = loadingSelector(
   RETRIEVE_CONCEPTS_ACTION
 );

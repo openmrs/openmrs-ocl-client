@@ -1,5 +1,6 @@
 import { LOCALES } from './constants'
 import { snakeCase } from 'lodash'
+import IDGenerator from "shortid";
 
 export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||
@@ -54,3 +55,5 @@ export const delay = (seconds: number) =>
 export function debug (...messages: string[]) {
   console.log(messages);
 }
+
+export const shortRandomID = () => IDGenerator.generate();

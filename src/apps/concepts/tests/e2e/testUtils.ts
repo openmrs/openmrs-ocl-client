@@ -1,4 +1,4 @@
-import uuid from 'uuid'
+import { shortRandomID } from '../../../../utils'
 
 export interface TestConcept {
   id: string,
@@ -12,7 +12,7 @@ export interface TestConcept {
 }
 
 export function newConcept(ownerType: string, owner: string, shortCode: string): [TestConcept, string] {
-  const randomString = uuid();
+  const randomString = shortRandomID();
   const id = `TestConcept1-${randomString}`;
 
   const concept = {

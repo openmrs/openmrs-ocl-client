@@ -26,7 +26,7 @@ import {
   retrieveDictionaryErrorSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector
-} from '../redux'
+} from "../redux";
 import { AppState } from "../../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { CONTEXT } from "../constants";
@@ -61,7 +61,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   createDictionaryVersion,
   createVersionLoading,
   createVersionError,
-  retrieveDictionaryErrors,
+  retrieveDictionaryErrors
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -84,7 +84,15 @@ const ViewDictionaryPage: React.FC<Props> = ({
   const linkedSource = dictionary?.extras?.source || "";
 
   return (
-    <ProgressOverlay delayRender loading={dictionaryLoading} error={retrieveDictionaryErrors ? "Could not load dictionary. Refresh the page to retry" : undefined}>
+    <ProgressOverlay
+      delayRender
+      loading={dictionaryLoading}
+      error={
+        retrieveDictionaryErrors
+          ? "Could not load dictionary. Refresh the page to retry"
+          : undefined
+      }
+    >
       <Grid id="viewDictionaryPage" item xs={5} component="div">
         <Paper className="fieldsetParent">
           <fieldset>
@@ -150,7 +158,7 @@ const mapStateToProps = (state: AppState) => ({
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
   createVersionError: createDictionaryVersionErrorSelector(state),
-  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state),
+  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state)
 });
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,

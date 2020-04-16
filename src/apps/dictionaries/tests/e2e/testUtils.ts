@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { shortRandomID } from "../../../../utils";
 
 export interface TestDictionary {
   name: string;
@@ -17,7 +17,7 @@ export function newDictionary(): [TestDictionary, string] {
   const owner = "admin";
   const dictionary = {
     name: "Test Dictionary",
-    shortCode: "TD" + uuid(),
+    shortCode: "TD" + shortRandomID(),
     description: "Test dictionary",
     preferredSource: "CIEL", // todo stop hard coding this, pick the nth
     owner,

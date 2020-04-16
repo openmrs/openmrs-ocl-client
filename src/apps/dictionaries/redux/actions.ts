@@ -63,10 +63,7 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     let dictionaryResponse;
 
     dispatch(
-      progressAction(
-        CREATE_SOURCE_AND_DICTIONARY_ACTION,
-        "Creating source..."
-      )
+      progressAction(CREATE_SOURCE_AND_DICTIONARY_ACTION, "Creating source...")
     );
     const source: NewAPISource = {
       custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
@@ -84,9 +81,7 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     };
     sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
     if (!sourceResponse) {
-      dispatch(
-        completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
-      );
+      dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
       return false;
     }
 
@@ -126,15 +121,11 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     );
     if (!dictionaryResponse) {
       // todo cleanup here would involve hard deleting the source
-      dispatch(
-        completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
-      );
+      dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
       return false;
     }
 
-    dispatch(
-      completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
-    );
+    dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
   };
 };
 export const retrieveDictionaryAction = createActionThunk(
@@ -222,24 +213,16 @@ export const editSourceAndDictionaryAction = (
     let dictionaryResponse: APIDictionary | boolean;
 
     dispatch(
-      progressAction(
-        EDIT_SOURCE_AND_DICTIONARY_ACTION,
-        "Editing source..."
-      )
+      progressAction(EDIT_SOURCE_AND_DICTIONARY_ACTION, "Editing source...")
     );
     sourceResponse = await dispatch(editSource<APISource>(extras.source, data));
     if (!sourceResponse) {
-      dispatch(
-        completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
-      );
+      dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
       return false;
     }
 
     dispatch(
-      progressAction(
-        EDIT_SOURCE_AND_DICTIONARY_ACTION,
-        "Editing dictionary..."
-      )
+      progressAction(EDIT_SOURCE_AND_DICTIONARY_ACTION, "Editing dictionary...")
     );
     dictionaryResponse = await dispatch(
       editDictionaryAction<APIDictionary>(dictionaryUrl, {
@@ -249,9 +232,7 @@ export const editSourceAndDictionaryAction = (
     );
     if (!dictionaryResponse) {
       // todo cleanup here would involve undoing the source update
-      dispatch(
-        completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
-      );
+      dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
       return false;
     }
 

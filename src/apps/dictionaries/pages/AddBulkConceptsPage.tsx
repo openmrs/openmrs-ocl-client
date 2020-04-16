@@ -1,11 +1,21 @@
-import React, { useState } from 'react'
-import { Button, createStyles, Grid, makeStyles, Menu, MenuItem, TextField, Theme, Typography } from '@material-ui/core'
-import { recursivelyAddConceptsToDictionaryAction } from '../redux'
-import { useLocation } from 'react-router'
-import { connect } from 'react-redux'
-import { PREFERRED_SOURCES, useAnchor, useQuery } from '../../../utils'
-import Header from '../../../components/Header'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import {
+  Button,
+  createStyles,
+  Grid,
+  makeStyles,
+  Menu,
+  MenuItem,
+  TextField,
+  Theme,
+  Typography
+} from "@material-ui/core";
+import { recursivelyAddConceptsToDictionaryAction } from "../redux";
+import { useLocation } from "react-router";
+import { connect } from "react-redux";
+import { PREFERRED_SOURCES, useAnchor, useQuery } from "../../../utils";
+import Header from "../../../components/Header";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,20 +25,26 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     lightColour: {
       color: theme.palette.background.default
-    },
+    }
   })
 );
 
 interface Props {
-  addConceptsToDictionary: (...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>) => void;
+  addConceptsToDictionary: (
+    ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
+  ) => void;
 }
 
 const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
-  const {fromSource} = useQuery();
+  const { fromSource } = useQuery();
 
-  const [switchSourceAnchor, handleSwitchSourceClick, handleSwitchSourceClose] = useAnchor();
+  const [
+    switchSourceAnchor,
+    handleSwitchSourceClick,
+    handleSwitchSourceClose
+  ] = useAnchor();
 
   const dictionaryUrl = url.replace("/add", "");
   const [conceptsToAdd, setConceptsToAdd] = useState<string[]>([]);
@@ -36,9 +52,15 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   return (
     <Header
       title={`Add concepts in bulk from ${fromSource}`}
-      headerComponent={(
+      headerComponent={
         <>
-          <Button className={classes.lightColour} variant="text" size="large" aria-haspopup="true" onClick={handleSwitchSourceClick}>
+          <Button
+            className={classes.lightColour}
+            variant="text"
+            size="large"
+            aria-haspopup="true"
+            onClick={handleSwitchSourceClick}
+          >
             Switch source (Currently {fromSource})
           </Button>
           <Menu
@@ -47,25 +69,24 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
             open={Boolean(switchSourceAnchor)}
             onClose={handleSwitchSourceClose}
           >
-            {Object.entries(PREFERRED_SOURCES).map(([sourceName, sourceUrl]) => (
-              <MenuItem onClick={handleSwitchSourceClose}>
-                <Link
-                  className="link"
-                  to={`${url}?fromSource=${sourceName}`}
-                >
-                  {sourceName}
-                </Link>
-              </MenuItem>
-            ))}
+            {Object.entries(PREFERRED_SOURCES).map(
+              ([sourceName, sourceUrl]) => (
+                <MenuItem onClick={handleSwitchSourceClose}>
+                  <Link className="link" to={`${url}?fromSource=${sourceName}`}>
+                    {sourceName}
+                  </Link>
+                </MenuItem>
+              )
+            )}
           </Menu>
         </>
-      )}
+      }
     >
       <Grid item xs={6}>
         <Typography align="center">
-          Please provide IDs for the {fromSource} concepts to add. IDs should be separated
-          with a space, comma or new lines. For example, you can copy and paste
-          from a spreadsheet column. e.g 1000, 1001, 1002.
+          Please provide IDs for the {fromSource} concepts to add. IDs should be
+          separated with a space, comma or new lines. For example, you can copy
+          and paste from a spreadsheet column. e.g 1000, 1001, 1002.
         </Typography>
         <br />
         <TextField
@@ -85,7 +106,12 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
             disabled={conceptsToAdd.length < 1}
             onClick={() => {
               setConceptsToAdd([]);
-              addConceptsToDictionary(PREFERRED_SOURCES[fromSource], dictionaryUrl, conceptsToAdd, true);
+              addConceptsToDictionary(
+                PREFERRED_SOURCES[fromSource],
+                dictionaryUrl,
+                conceptsToAdd,
+                true
+              );
             }}
           >
             Add concepts
