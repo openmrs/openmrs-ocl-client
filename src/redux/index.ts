@@ -6,8 +6,8 @@ export {
   progressAction,
   completeAction,
   indexedAction,
-  FAILURE,
+  FAILURE
 } from "./utils";
 export * from "./types";
-export * from './selectors'
-export {default} from "./store";
+export * from "./selectors";
+export { default } from "./store";

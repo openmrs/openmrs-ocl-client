@@ -1,7 +1,7 @@
-import { APIOrg, APIProfile } from '../authentication'
-import { USER_TYPE } from '../../utils'
+import { APIOrg, APIProfile } from "../authentication";
+import { USER_TYPE } from "../../utils";
 // @ts-ignore
-import { getParams } from 'url-matcher'
+import { getParams } from "url-matcher";
 
 export function getSourceIdFromUrl(sourceUrl?: string) {
   // /orgs/FOO/sources/FOO/ => FOO
@@ -11,7 +11,7 @@ export function getSourceIdFromUrl(sourceUrl?: string) {
   const withoutTrailingSlash = sourceUrl.endsWith("/")
     ? sourceUrl.substring(0, sourceUrl.lastIndexOf("/"))
     : sourceUrl;
-  const sourceName =  withoutTrailingSlash.substring(
+  const sourceName = withoutTrailingSlash.substring(
     withoutTrailingSlash.lastIndexOf("/") + 1
   );
 

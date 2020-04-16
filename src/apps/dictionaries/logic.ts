@@ -1,10 +1,10 @@
-import api from './api'
-import { APIMapping, InternalAPIMapping } from '../concepts'
-import { union } from 'lodash'
+import api from "./api";
+import { APIMapping, InternalAPIMapping } from "../concepts";
+import { union } from "lodash";
 
 const fetchConceptMappings = async (
   sourceUrl: string,
-  fromConceptIds: string[],
+  fromConceptIds: string[]
 ): Promise<APIMapping[]> => {
   try {
     return (await api.retrieveMappings(sourceUrl, fromConceptIds)).data;
@@ -18,7 +18,10 @@ const recursivelyFetchToConcepts = async (
   fromConceptIds: string[],
   updateNotification: (message: string) => void,
   levelsToCheck: number = 20,
-  fetchMappings: (sourceUrl: string, fromConceptIds: string[]) => Promise<APIMapping[]> = fetchConceptMappings,
+  fetchMappings: (
+    sourceUrl: string,
+    fromConceptIds: string[]
+  ) => Promise<APIMapping[]> = fetchConceptMappings
 ): Promise<string[]> => {
   const getConceptUrls = (mappingsLists: InternalAPIMapping[][]): string[] => {
     const toConceptUrls = union(...mappingsLists).map(

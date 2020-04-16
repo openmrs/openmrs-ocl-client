@@ -1,5 +1,5 @@
-import React from 'react'
-import CopyToClipboard from 'react-copy-to-clipboard'
+import React from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import {
   Button,
   ButtonGroup,
@@ -13,11 +13,11 @@ import {
   TableRow,
   Tooltip,
   Typography
-} from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import { APIDictionaryVersion } from '../types'
-import { BASE_URL } from '../../../utils'
-import DictionaryVersionForm from './DictionaryVersionForm'
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { APIDictionaryVersion } from "../types";
+import { BASE_URL } from "../../../utils";
+import DictionaryVersionForm from "./DictionaryVersionForm";
 
 interface Props {
   versions: APIDictionaryVersion[];
@@ -103,7 +103,9 @@ const ReleasedVersions: React.FC<Props> = ({
         <ButtonGroup fullWidth variant="text" color="primary">
           <CopyToClipboard text={`${BASE_URL}${subscriptionUrl}`}>
             <Tooltip title={`Copy ${BASE_URL}${subscriptionUrl}`}>
-              <Button disabled={!versionsToDisplay.length}>Copy subscription URL</Button>
+              <Button disabled={!versionsToDisplay.length}>
+                Copy subscription URL
+              </Button>
             </Tooltip>
           </CopyToClipboard>
           {!showCreateVersionButton ? null : (
