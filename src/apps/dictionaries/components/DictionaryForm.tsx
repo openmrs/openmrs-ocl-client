@@ -23,7 +23,7 @@ interface Props {
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
   name: Yup.string().required("Dictionary name is required"),
-  short_code: Yup.string().required("Short code is required"),
+  short_code: Yup.string().required("Short code is required").matches(/[a-zA-Z0-9\-.]+/, "Alphanumeric characters, - and . only"),
   description: Yup.string().min(0),
   preferred_source: Yup.string()
     .required("Select a preferred source")
@@ -95,7 +95,7 @@ const DictionaryForm: React.FC<Props> = ({
     Object.keys(initialValues).forEach(key => {
       const error = getPrettyError(
         errors,
-        snakeCase(key === "shortCode" ? "id" : key)
+        snakeCase(key === "short_code" ? "id" : key) // id and short_code are the same value. error comes back in id
       );
       if (error) currentRef.setFieldError(key, error);
     });
