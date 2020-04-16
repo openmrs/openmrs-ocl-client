@@ -32,7 +32,7 @@ export const upsertConceptAndMappingsAction = (
   linkedDictionary?: string
 ) => {
   return async (dispatch: Function, getState: Function) => {
-    dispatch(startAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
+    dispatch(startAction(UPSERT_CONCEPT_AND_MAPPINGS));
 
     const { answers, sets, mappings, ...concept } = data;
 
@@ -41,13 +41,13 @@ export const upsertConceptAndMappingsAction = (
     let response: APIConcept | boolean;
 
     function finish() {
-      dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ""));
-      dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
+      dispatch(progressAction(UPSERT_CONCEPT_AND_MAPPINGS, ""));
+      dispatch(completeAction(UPSERT_CONCEPT_AND_MAPPINGS));
     }
 
     dispatch(
       progressAction(
-        indexedAction(UPSERT_CONCEPT_AND_MAPPINGS),
+        UPSERT_CONCEPT_AND_MAPPINGS,
         `${updating ? "Updating" : "Creating"} concept...`
       )
     );
@@ -66,11 +66,11 @@ export const upsertConceptAndMappingsAction = (
       // I think that at this point, it is generally sane not to try dealing with the mappings if the concept can't be updated. todo could improve.
       dispatch(
         progressAction(
-          indexedAction(UPSERT_CONCEPT_AND_MAPPINGS),
+          UPSERT_CONCEPT_AND_MAPPINGS,
           `Couldn't ${updating ? "update" : "create"} concept`
         )
       );
-      dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
+      dispatch(completeAction(UPSERT_CONCEPT_AND_MAPPINGS));
       return false;
     }
 
@@ -86,7 +86,7 @@ export const upsertConceptAndMappingsAction = (
       if (rawMappings.length)
         dispatch(
           progressAction(
-            indexedAction(UPSERT_CONCEPT_AND_MAPPINGS),
+            UPSERT_CONCEPT_AND_MAPPINGS,
             `${updating ? "Updating" : "Creating"} ${message}...`
           )
         );
@@ -163,7 +163,7 @@ export const upsertConceptAndMappingsAction = (
     if (linkedDictionary) {
       dispatch(
         progressAction(
-          indexedAction(UPSERT_CONCEPT_AND_MAPPINGS),
+          UPSERT_CONCEPT_AND_MAPPINGS,
           "Updating concept in dictionary..."
         )
       );
@@ -206,8 +206,8 @@ export const upsertConceptAndMappingsAction = (
       }
     }
 
-    dispatch(progressAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS), ""));
-    dispatch(completeAction(indexedAction(UPSERT_CONCEPT_AND_MAPPINGS)));
+    dispatch(progressAction(UPSERT_CONCEPT_AND_MAPPINGS, ""));
+    dispatch(completeAction(UPSERT_CONCEPT_AND_MAPPINGS));
   };
 };
 export const retrieveConceptsAction = createActionThunk(

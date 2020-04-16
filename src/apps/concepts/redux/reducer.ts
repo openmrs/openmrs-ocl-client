@@ -16,11 +16,11 @@ const initialState: ConceptsState = {
   }
 };
 export const reducer = createReducer<ConceptsState>(initialState, {
-  [startAction(indexedAction(UPSERT_CONCEPT_ACTION)).type]: state => ({
+  [startAction(UPSERT_CONCEPT_ACTION).type]: state => ({
     ...state,
     concept: undefined
   }),
-  [startAction(indexedAction(RETRIEVE_CONCEPT_ACTION)).type]: state => ({
+  [startAction(RETRIEVE_CONCEPT_ACTION).type]: state => ({
     ...state,
     concept: undefined
   }),

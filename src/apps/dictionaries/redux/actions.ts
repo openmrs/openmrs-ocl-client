@@ -41,12 +41,12 @@ import {
 } from "./actionTypes";
 
 const createDictionaryAction = createActionThunk(
-  indexedAction(CREATE_DICTIONARY_ACTION),
+  CREATE_DICTIONARY_ACTION,
   api.create
 );
 export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
   return async (dispatch: Function) => {
-    dispatch(startAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)));
+    dispatch(startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
 
     const {
       description,
@@ -64,7 +64,7 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
+        CREATE_SOURCE_AND_DICTIONARY_ACTION,
         "Creating source..."
       )
     );
@@ -85,21 +85,21 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
     if (!sourceResponse) {
       dispatch(
-        completeAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
+        completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
       );
       return false;
     }
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
+        CREATE_SOURCE_AND_DICTIONARY_ACTION,
         "Creating dictionary..."
       )
     );
 
     dispatch(
       progressAction(
-        indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION),
+        CREATE_SOURCE_AND_DICTIONARY_ACTION,
         "Creating dictionary..."
       )
     );
@@ -127,13 +127,13 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     if (!dictionaryResponse) {
       // todo cleanup here would involve hard deleting the source
       dispatch(
-        completeAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
+        completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
       );
       return false;
     }
 
     dispatch(
-      completeAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
+      completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION)
     );
   };
 };
@@ -198,7 +198,7 @@ export const editSourceAndDictionaryAction = (
   extras: { source: string }
 ) => {
   return async (dispatch: Function) => {
-    dispatch(startAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)));
+    dispatch(startAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
 
     const {
       description,
@@ -223,21 +223,21 @@ export const editSourceAndDictionaryAction = (
 
     dispatch(
       progressAction(
-        indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION),
+        EDIT_SOURCE_AND_DICTIONARY_ACTION,
         "Editing source..."
       )
     );
     sourceResponse = await dispatch(editSource<APISource>(extras.source, data));
     if (!sourceResponse) {
       dispatch(
-        completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
+        completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
       );
       return false;
     }
 
     dispatch(
       progressAction(
-        indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION),
+        EDIT_SOURCE_AND_DICTIONARY_ACTION,
         "Editing dictionary..."
       )
     );
@@ -250,12 +250,12 @@ export const editSourceAndDictionaryAction = (
     if (!dictionaryResponse) {
       // todo cleanup here would involve undoing the source update
       dispatch(
-        completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
+        completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)
       );
       return false;
     }
 
-    dispatch(completeAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION)));
+    dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
   };
 };
 const editDictionaryAction = createActionThunk(
@@ -342,6 +342,8 @@ export const recursivelyAddConceptsToDictionaryAction = (
   );
 };
 export const addConceptsToDictionaryAction = createActionThunk(
+  // 100 was chosen arbitrarily because this is an indexed action and we need to to slot it in somewhere.
+  // it is unlikely to bite us but in the event that it does, we can always create another action type.
   indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100),
   api.references.add
 );

@@ -19,8 +19,7 @@ const initialState: DictionaryState = {
   addReferencesResults: []
 };
 export const reducer = createReducer(initialState, {
-  [startAction(indexedAction(CREATE_SOURCE_AND_DICTIONARY_ACTION))
-    .type]: state => ({
+  [startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION).type]: state => ({
     ...state,
     newDictionary: undefined
   }),
@@ -38,8 +37,7 @@ export const reducer = createReducer(initialState, {
   ) => {
     state.dictionaries[actionIndex] = { items: payload, responseMeta };
   },
-  [startAction(indexedAction(EDIT_SOURCE_AND_DICTIONARY_ACTION))
-    .type]: state => ({
+  [startAction(EDIT_SOURCE_AND_DICTIONARY_ACTION).type]: state => ({
     ...state,
     editedDictionary: undefined
   }),

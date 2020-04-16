@@ -1,72 +1,84 @@
 import { AxiosResponse } from "axios";
 import { Action, IndexedAction } from "./types";
 
-const RESET = "RESET";
-const START = "START";
-const FAILURE = "FAILURE";
-const PROGRESS = "PROGRESS";
-const COMPLETE = "COMPLETE";
+export const RESET = "RESET";
+export const START = "START";
+export const FAILURE = "FAILURE";
+export const PROGRESS = "PROGRESS";
+export const COMPLETE = "COMPLETE";
 
 export const loading = (actionType: string): string => `${actionType}Loading`;
 export const progress = (actionType: string): string => `${actionType}Progress`;
 export const errors = (actionType: string): string => `${actionType}Errors`;
 
-const createActionType = (actionType: string): Function => (): {
+export const createActionType = (actionType: string): Function => (): {
   [key: string]: string;
 } => ({ type: actionType });
 
-const indexedAction = (
+export const indexedAction = (
   action: string,
   actionIndex: number = 0
 ): IndexedAction => ({ actionType: action, actionIndex });
+
+export function getIndexedAction (actionOrActionType: IndexedAction | string) {
+  return typeof actionOrActionType === "string"
+    ? indexedAction(actionOrActionType)
+    : actionOrActionType;
+}
 
 export function action(type: string) {
   return { type };
 }
 
-const resetAction = (actionType: string) => ({
+export const resetAction = (actionType: string) => ({
   type: `${actionType}_${RESET}`
 });
 
-const startAction = (
-  { actionType, actionIndex }: IndexedAction,
-  ...args: any[]
-) => ({
-  type: `${actionType}_${START}`,
-  actionIndex,
-  meta: args
-});
+export function startAction (actionOrActionType: IndexedAction | string, ...args: any[]) {
+  const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
-const progressAction = (
-  { actionType, actionIndex }: IndexedAction,
+  return {
+    type: `${actionType}_${START}`,
+    actionIndex,
+    meta: args
+  }
+}
+
+export function progressAction (
+  actionOrActionType: IndexedAction | string,
   payload: string
-) => ({
-  type: `${actionType}_${PROGRESS}`,
-  actionIndex,
-  payload
-});
+) {
+  const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
-const completeAction = (
-  { actionType, actionIndex }: IndexedAction,
+  return {
+    type: `${actionType}_${PROGRESS}`,
+      actionIndex,
+      payload
+  };
+}
+
+export function completeAction (
+  actionOrActionType: IndexedAction | string,
   ...args: any[]
-) => ({
-  type: `${actionType}_${COMPLETE}`,
-  actionIndex,
-  meta: args
-});
+) {
+  const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
-const createActionThunk = <T extends any[]>(
+  return {
+    type: `${actionType}_${COMPLETE}`,
+    actionIndex,
+    meta: args
+  };
+}
+
+export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
   task: (...args: T) => Promise<AxiosResponse<any>>
 ) => {
   /*
-   ** Create an redux thunk that dispatches start, runs task, dispatched success/failure and completed actions
+   ** Create an redux thunk that dispatches start, runs task then dispatches (success or failure) and completed actions
    */
 
-  const action: IndexedAction =
-    typeof actionOrActionType === "string"
-      ? indexedAction(actionOrActionType)
-      : actionOrActionType;
+  const action = getIndexedAction(actionOrActionType);
   const { actionType, actionIndex } = action;
 
   return <S>(...args: T) => {
@@ -114,15 +126,4 @@ const createActionThunk = <T extends any[]>(
       return result;
     };
   };
-};
-
-export {
-  createActionType,
-  createActionThunk,
-  resetAction,
-  startAction,
-  progressAction,
-  completeAction,
-  indexedAction,
-  FAILURE
 };

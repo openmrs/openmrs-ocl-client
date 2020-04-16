@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { DictionaryForm } from "../components";
-import { Fab, Grid, Paper, Tooltip } from '@material-ui/core'
+import { Fab, Grid, Paper, Tooltip } from "@material-ui/core";
 import { connect } from "react-redux";
-import { Link, Redirect, useLocation } from 'react-router-dom'
+import { Link, Redirect, useLocation } from "react-router-dom";
 import {
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
@@ -22,7 +22,7 @@ import {
   editSourceAndDictionaryAction,
   retrieveDictionaryAction
 } from "../redux/actions";
-import { Pageview as PageViewIcon } from '@material-ui/icons'
+import { Pageview as PageViewIcon } from "@material-ui/icons";
 
 interface Props {
   errors?: {};

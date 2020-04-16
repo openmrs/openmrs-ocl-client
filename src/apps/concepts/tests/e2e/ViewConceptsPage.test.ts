@@ -184,7 +184,7 @@ describe("View Concepts Page", () => {
       cy.get(conceptSelector).should("have.length.gte", 5); // account for possible recursively added concepts
     });
 
-    it.only("Should recursively import to-concepts", () => {
+    it("Should recursively import to-concepts", () => {
       cy.get(conceptSelector).should("have.length", 0);
 
       cy.findByTitle(TEXT.ADD_CONCEPTS).click();

@@ -27,11 +27,11 @@ const reducer = (state = initialState, action: AnyAction) => {
       return state;
   }
 };
-const authLoadingSelector = loadingSelector(indexedAction(LOGIN_ACTION));
-const authErrorsSelector = errorSelector(indexedAction(LOGIN_ACTION));
+const authLoadingSelector = loadingSelector(LOGIN_ACTION);
+const authErrorsSelector = errorSelector(LOGIN_ACTION);
 
 const getUserDetailsLoadingSelector = loadingSelector(
-  indexedAction(GET_USER_DETAILS_ACTION)
+  GET_USER_DETAILS_ACTION
 );
 const profileSelector = ({ auth }: { auth: AuthState }) => auth.profile;
 const orgsSelector = ({ auth }: { auth: AuthState }) => auth.orgs;

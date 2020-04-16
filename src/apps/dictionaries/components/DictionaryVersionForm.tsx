@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from "react";
 import {
   Button,
   ButtonGroup,
@@ -9,14 +9,14 @@ import {
   InputLabel,
   MenuItem,
   Typography
-} from '@material-ui/core'
-import { usePrevious } from '../../../utils'
-import { Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import { Select, TextField } from 'formik-material-ui'
+} from "@material-ui/core";
+import { usePrevious } from "../../../utils";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { Select, TextField } from "formik-material-ui";
 
-import { DictionaryVersion } from '../types'
-import uuid from 'uuid'
+import { DictionaryVersion } from "../types";
+import uuid from "uuid";
 
 interface Props {
   onSubmit: Function;

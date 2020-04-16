@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 
-import { errors, loading, progress } from "./utils";
+import { errors, loading, progress, COMPLETE, FAILURE, PROGRESS, RESET, START } from './utils'
 import { Action, LoadingAndErroredState } from "./types";
 
 // todo improve these action types args
@@ -21,14 +21,14 @@ const loadingAndErroredReducer = (
   const newState = cloneDeep(state);
 
   switch (requestState) {
-    case "RESET": {
+    case RESET: {
       newState[loadingName] = [];
       newState[progressName] = [];
       newState[errorName] = [];
 
       return newState;
     }
-    case "START": {
+    case START: {
       if (!newState[loadingName]) newState[loadingName] = [];
       if (!newState[progressName]) newState[progressName] = [];
       if (!newState[errorName]) newState[errorName] = [];
@@ -39,15 +39,15 @@ const loadingAndErroredReducer = (
 
       return newState;
     }
-    case "COMPLETE": {
+    case COMPLETE: {
       newState[loadingName][actionIndex] = false;
       return newState;
     }
-    case "PROGRESS": {
+    case PROGRESS: {
       newState[progressName][actionIndex] = payload;
       return newState;
     }
-    case "FAILURE": {
+    case FAILURE: {
       newState[errorName][actionIndex] = payload;
       return newState;
     }
