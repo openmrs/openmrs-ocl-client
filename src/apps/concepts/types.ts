@@ -1,4 +1,4 @@
-import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from '../../utils'
+import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from "../../utils";
 
 export interface ConceptName {
   name: string;
@@ -78,7 +78,7 @@ const apiNamesToName = (names: ConceptName[]) =>
 const apiConceptToConcept = (
   apiConcept: APIConcept | undefined,
   mappings: APIMapping[] = [],
-  convertNames = true,
+  convertNames = true
 ): Concept | undefined => {
   if (!apiConcept) return apiConcept;
 

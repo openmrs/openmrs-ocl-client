@@ -28,7 +28,7 @@ import {
   PREFERRED_SOURCES,
   useAnchor,
   useQuery
-} from '../../../utils'
+} from "../../../utils";
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
 import FilterOptions from "../components/FilterOptions";
@@ -218,9 +218,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       <Header
         title={
           containerType === SOURCE_CONTAINER
-            ? `Import existing concept from ${getSourceIdFromUrl(
-                containerUrl
-              )}`
+            ? `Import existing concept from ${getSourceIdFromUrl(containerUrl)}`
             : "Concepts"
         }
         justifyChildren="space-around"
@@ -234,8 +232,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 aria-haspopup="true"
                 onClick={handleSwitchSourceClick}
               >
-                Switch source (Currently{" "}
-                {getSourceIdFromUrl(containerUrl)})
+                Switch source (Currently {getSourceIdFromUrl(containerUrl)})
               </Button>
               <Menu
                 anchorEl={switchSourceAnchor}
@@ -243,18 +240,19 @@ const ViewConceptsPage: React.FC<Props> = ({
                 open={Boolean(switchSourceAnchor)}
                 onClose={handleSwitchSourceClose}
               >
-                {Object.entries({"Public Sources": ALL_PUBLIC_SOURCES_URL, ...PREFERRED_SOURCES}).map(
-                  ([preferredSourceName, preferredSourceUrl]) => (
-                    <MenuItem onClick={handleSwitchSourceClose}>
-                      <Link
-                        className={classes.link}
-                        to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                      >
-                        {preferredSourceName}
-                      </Link>
-                    </MenuItem>
-                  )
-                )}
+                {Object.entries({
+                  "Public Sources": ALL_PUBLIC_SOURCES_URL,
+                  ...PREFERRED_SOURCES
+                }).map(([preferredSourceName, preferredSourceUrl]) => (
+                  <MenuItem onClick={handleSwitchSourceClose}>
+                    <Link
+                      className={classes.link}
+                      to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                    >
+                      {preferredSourceName}
+                    </Link>
+                  </MenuItem>
+                ))}
               </Menu>
             </>
           )

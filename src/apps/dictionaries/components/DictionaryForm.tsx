@@ -1,14 +1,22 @@
-import React, { useEffect, useRef } from 'react'
-import { Button, FormControl, InputLabel, ListSubheader, makeStyles, MenuItem, Typography } from '@material-ui/core'
-import { getPrettyError, LOCALES, PREFERRED_SOURCES } from '../../../utils'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
-import * as Yup from 'yup'
-import { Select, TextField } from 'formik-material-ui'
-import { snakeCase } from 'lodash'
+import React, { useEffect, useRef } from "react";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  makeStyles,
+  MenuItem,
+  Typography
+} from "@material-ui/core";
+import { getPrettyError, LOCALES, PREFERRED_SOURCES } from "../../../utils";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { Select, TextField } from "formik-material-ui";
+import { snakeCase } from "lodash";
 
-import { Dictionary } from '../types'
-import { APIOrg, APIProfile } from '../../authentication'
-import { CONTEXT } from '../constants'
+import { Dictionary } from "../types";
+import { APIOrg, APIProfile } from "../../authentication";
+import { CONTEXT } from "../constants";
 
 interface Props {
   onSubmit?: Function;
@@ -23,7 +31,9 @@ interface Props {
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
   name: Yup.string().required("Dictionary name is required"),
-  short_code: Yup.string().required("Short code is required").matches(/^[a-zA-Z0-9\-.]+$/, "Alphanumeric characters, - and . only"),
+  short_code: Yup.string()
+    .required("Short code is required")
+    .matches(/^[a-zA-Z0-9\-.]+$/, "Alphanumeric characters, - and . only"),
   description: Yup.string().min(0),
   preferred_source: Yup.string()
     .required("Select a preferred source")
@@ -158,7 +168,9 @@ const DictionaryForm: React.FC<Props> = ({
                 id="preferred_source"
                 component={Select}
               >
-                {Object.keys(PREFERRED_SOURCES).map(preferredSource => <MenuItem value={preferredSource}>{preferredSource}</MenuItem>)}
+                {Object.keys(PREFERRED_SOURCES).map(preferredSource => (
+                  <MenuItem value={preferredSource}>{preferredSource}</MenuItem>
+                ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="preferred_source" component="span" />
