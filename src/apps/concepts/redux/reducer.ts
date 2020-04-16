@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { APIConcept, ConceptsState } from "../types";
-import { indexedAction, startAction } from "../../../redux";
+import { startAction } from "../../../redux";
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,

@@ -24,7 +24,6 @@ import { APIConcept, QueryParams, SortableField } from "../types";
 import { Link } from "react-router-dom";
 import {
   Add as AddIcon,
-  CheckBoxOutlined as CheckBoxIcon,
   DeleteSweepOutlined as DeleteIcon,
   EditOutlined as EditIcon,
   MoreVert as MoreVertIcon,

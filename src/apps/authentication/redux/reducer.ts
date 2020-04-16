@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { errorSelector, indexedAction, loadingSelector } from "../../../redux";
+import { errorSelector, loadingSelector } from "../../../redux";
 import {
   GET_PROFILE_ACTION,
   GET_USER_DETAILS_ACTION,

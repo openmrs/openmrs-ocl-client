@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { Action, indexedAction, startAction } from "../../../redux";
+import { Action, startAction } from "../../../redux";
 import { DictionaryState } from "../types";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
