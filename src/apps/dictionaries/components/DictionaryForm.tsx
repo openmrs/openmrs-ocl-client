@@ -23,7 +23,7 @@ interface Props {
 
 const DictionarySchema = Yup.object().shape<Dictionary>({
   name: Yup.string().required("Dictionary name is required"),
-  short_code: Yup.string().required("Short code is required").matches(/[a-zA-Z0-9\-.]+/, "Alphanumeric characters, - and . only"),
+  short_code: Yup.string().required("Short code is required").matches(/^[a-zA-Z0-9\-.]+$/, "Alphanumeric characters, - and . only"),
   description: Yup.string().min(0),
   preferred_source: Yup.string()
     .required("Select a preferred source")
