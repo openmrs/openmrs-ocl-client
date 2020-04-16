@@ -110,7 +110,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
-  const dictionaryUrl = url.replace("/concepts", ""); // only relevant when using collection container
+  const containerUrl = url.replace("/concepts", "");
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
@@ -216,11 +216,10 @@ const ViewConceptsPage: React.FC<Props> = ({
   return (
     <>
       <Header
-        // todo we can improve this to say where we are adding to
         title={
           containerType === SOURCE_CONTAINER
             ? `Import existing concept from ${getSourceIdFromUrl(
-                url.replace("concepts/", "")
+                containerUrl
               )}`
             : "Concepts"
         }
@@ -236,7 +235,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 onClick={handleSwitchSourceClick}
               >
                 Switch source (Currently{" "}
-                {getSourceIdFromUrl(url.replace("concepts/", ""))})
+                {getSourceIdFromUrl(containerUrl)})
               </Button>
               <Menu
                 anchorEl={switchSourceAnchor}
@@ -295,18 +294,18 @@ const ViewConceptsPage: React.FC<Props> = ({
               addConceptsToDictionary={(concepts: APIConcept[]) =>
                 dictionaryToAddTo &&
                 addConceptsToDictionary(
-                  PREFERRED_SOURCES[preferredSource],
+                  containerUrl,
                   dictionaryToAddTo,
                   concepts
                 )
               }
-              linkedDictionary={dictionaryUrl}
+              linkedDictionary={containerUrl}
               linkedSource={linkedSource}
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
               }
               removeConceptsFromDictionary={(conceptVersionUrls: string[]) =>
-                removeConceptsFromDictionary(dictionaryUrl, conceptVersionUrls)
+                removeConceptsFromDictionary(containerUrl, conceptVersionUrls)
               }
             />
           </Grid>
@@ -379,7 +378,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           <MenuItem onClick={handleCustomClose}>
             <Link
               className={classes.link}
-              to={`${linkedSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${dictionaryUrl}`}
+              to={`${linkedSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${containerUrl}`}
             >
               {conceptClass} Concept
             </Link>
@@ -388,7 +387,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleCustomClose}>
           <Link
             className={classes.link}
-            to={`${linkedSource}concepts/new/?linkedDictionary=${dictionaryUrl}`}
+            to={`${linkedSource}concepts/new/?linkedDictionary=${containerUrl}`}
           >
             Other kind
           </Link>
@@ -403,7 +402,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${PREFERRED_SOURCES[preferredSource]}concepts/?addToDictionary=${dictionaryUrl}`}
+            to={`${PREFERRED_SOURCES[preferredSource]}concepts/?addToDictionary=${containerUrl}`}
           >
             Pick concepts
           </Link>
@@ -411,7 +410,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${dictionaryUrl}add/?fromSource=${preferredSource}`}
+            to={`${containerUrl}add/?fromSource=${preferredSource}`}
           >
             Add bulk concepts
           </Link>

@@ -2,6 +2,13 @@ import { createDictionary, TestDictionary } from '../../../dictionaries/tests/e2
 import { login, logout } from '../../../authentication/tests/e2e/testUtils'
 
 describe('View Concepts Page', () => {
+  const TEXT = {
+    ADD_TO_DICTIONARY: 'Add to dictionary',
+    ADD_CONCEPTS: 'Add concepts',
+    IMPORT_EXISTING_CONCEPT: 'Import existing concept',
+    PICK_CONCEPTS: 'Pick concepts',
+  }
+
   const conceptSelector = "[data-testRowClass='conceptRow']"
   const nameSelector = "[data-testClass='name']";
   const classSelector = "[data-testClass='conceptClass']";
@@ -25,9 +32,9 @@ describe('View Concepts Page', () => {
   });
 
   it('Should allow retrieving, sorting, filtering concepts', () => {
-    cy.findByTitle('Add concepts').click();
-    cy.findByText('Import existing concept').click();
-    cy.findByText('Pick concepts').click();
+    cy.findByTitle(TEXT.ADD_CONCEPTS).click();
+    cy.findByText(TEXT.IMPORT_EXISTING_CONCEPT).click();
+    cy.findByText(TEXT.PICK_CONCEPTS).click();
 
     // Classes
     cy.findByLabelText("Diagnosis").click();
@@ -90,42 +97,63 @@ describe('View Concepts Page', () => {
     cy.findByLabelText("Procedure").should('not.be.visible');
   });
 
-  it('Import existing concept from Source', () => {
-    cy.get(conceptSelector).should('have.length', 0);
+  describe('Import existing concept from Source', () => {
+    it('Should import existing concepts', () => {
+      cy.get(conceptSelector).should('have.length', 0);
 
-    cy.findByTitle('Add concepts').click();
-    cy.findByText('Import existing concept').click();
-    cy.findByText('Pick concepts').click();
+      cy.findByTitle(TEXT.ADD_CONCEPTS).click();
+      cy.findByText(TEXT.IMPORT_EXISTING_CONCEPT).click();
+      cy.findByText(TEXT.PICK_CONCEPTS).click();
 
-    cy.findAllByTitle('More actions').first().click();
-    cy.runAndAwait(() => cy.findByText('Add to dictionary').click());
+      cy.findAllByTitle('More actions').first().click();
+      cy.runAndAwait(() => cy.findByText(TEXT.ADD_TO_DICTIONARY).click());
 
-    // select the next two concepts
-    cy.get(conceptSelector).eq(1).click();
-    cy.get(conceptSelector).eq(2).click();
-    cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
+      // select the next two concepts
+      cy.get(conceptSelector).eq(1).click();
+      cy.get(conceptSelector).eq(2).click();
+      cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
 
-    // switch source and add more concepts
-    cy.findByText(`Switch source (Currently ${dictionary.preferredSource})`).click();
-    cy.runAndAwait(() => cy.findByText("Public Sources").click());
-    cy.get(conceptSelector).eq(3).click();
-    cy.get(conceptSelector).eq(4).click();
-    cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
+      // switch source and add more concepts
+      cy.findByText(`Switch source (Currently ${dictionary.preferredSource})`).click();
+      cy.runAndAwait(() => cy.findByText("Public Sources").click());
+      cy.get(conceptSelector).eq(3).click();
+      cy.get(conceptSelector).eq(4).click();
+      cy.runAndAwait(() => cy.findByTitle('Add selected to dictionary').click());
 
-    cy.findByTitle('Go back').click();
+      cy.findByTitle('Go back').click();
 
-    cy.get(conceptSelector).should('have.length.gte', 5); // account for possible recursively added concepts
-  });
+      cy.get(conceptSelector).should('have.length.gte', 5); // account for possible recursively added concepts
+    });
+
+    it.only('Should recursively import to-concepts', () => {
+      cy.get(conceptSelector).should('have.length', 0);
+
+      cy.findByTitle(TEXT.ADD_CONCEPTS).click();
+      cy.findByText(TEXT.IMPORT_EXISTING_CONCEPT).click();
+      cy.findByText(TEXT.PICK_CONCEPTS).click();
+
+      cy.runAndAwait(() => cy.findByPlaceholderText("Search concepts").type("984 Immunizations{enter}"));
+      cy.findAllByTitle('More actions').first().click();
+      cy.runAndAwait(() => {
+        cy.findByText(TEXT.ADD_TO_DICTIONARY).click();
+        cy.findByTitle("In progress").should('exist');
+      });
+
+      cy.findByTitle('Go back').click();
+
+      cy.get(conceptSelector).should('have.length.gt', 1); // todo make this more comprehensive
+    });
+  })
 
   it('Add concepts in bulk from Source', () => {
     cy.get(conceptSelector).should('have.length', 0);
 
-    cy.findByTitle('Add concepts').click();
-    cy.findByText('Import existing concept').click();
+    cy.findByTitle(TEXT.ADD_CONCEPTS).click();
+    cy.findByText(TEXT.IMPORT_EXISTING_CONCEPT).click();
     cy.findByText('Add bulk concepts').click();
 
     cy.findByPlaceholderText("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007").type("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007");
-    cy.runAndAwait(() => cy.findByText("Add concepts").click(), 'PUT');
+    cy.runAndAwait(() => cy.findByText(TEXT.ADD_CONCEPTS).click(), 'PUT');
 
     cy.wait(5000); // index update takes a while
 
