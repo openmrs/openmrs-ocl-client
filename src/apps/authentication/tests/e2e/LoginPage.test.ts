@@ -1,4 +1,4 @@
-import { login } from "./testUtils";
+import { login, logout } from './testUtils'
 
 describe("Login", () => {
   it("Happy flow: Should allow user to login", () => {
@@ -11,5 +11,7 @@ describe("Login", () => {
     cy.visit("/user/collections/");
     // should not redirect us anywhere
     cy.findByText("Personal dictionaries").should("exist");
+
+    logout();
   });
 });

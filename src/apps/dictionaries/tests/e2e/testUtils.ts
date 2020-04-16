@@ -1,6 +1,9 @@
 import IDGenerator from "shortid";
 
-const shortRandomID = () => IDGenerator.generate();
+const shortRandomID = () => {
+  IDGenerator.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-.');
+  return IDGenerator.generate()
+};
 
 export interface TestDictionary {
   name: string;
