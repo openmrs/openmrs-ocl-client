@@ -1,4 +1,6 @@
-import { shortRandomID } from "../../../../utils";
+import IDGenerator from "shortid";
+
+const shortRandomID = () => IDGenerator.generate();
 
 export interface TestDictionary {
   name: string;
