@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { getUserDetailsAction, getUserDetailsLoadingSelector, profileSelector } from '../redux'
-import { APIProfile } from '../types'
-import { ProgressOverlay } from '../../../utils/components'
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import {
+  getUserDetailsAction,
+  getUserDetailsLoadingSelector,
+  profileSelector
+} from "../redux";
+import { APIProfile } from "../types";
+import { ProgressOverlay } from "../../../utils/components";
 
 interface Props {
   children: any;

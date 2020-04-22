@@ -202,7 +202,7 @@ describe("View Concepts Page", () => {
       cy.runAndAwait(() => {
         cy.findByText(TEXT.ADD_TO_DICTIONARY).click();
         cy.findByTitle("In progress").should("exist");
-      });
+      }, "PUT", true);
 
       cy.findByTitle("Go back").click();
 
@@ -220,9 +220,7 @@ describe("View Concepts Page", () => {
     cy.findByPlaceholderText(
       "1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007"
     ).type("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007");
-    cy.runAndAwait(() => cy.findByText(TEXT.ADD_CONCEPTS).click(), "PUT");
-
-    cy.wait(5000); // index update takes a while
+    cy.runAndAwait(() => cy.findByText(TEXT.ADD_CONCEPTS).click(), "PUT", true);
 
     cy.findByTitle("Go back").click();
     cy.get(conceptSelector).should("have.length.gte", 3); // account for possible recursively added concepts

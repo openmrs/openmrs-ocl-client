@@ -3,8 +3,9 @@ import { USER_TYPE } from "../../utils";
 // @ts-ignore
 import { getParams } from "url-matcher";
 
-export function getSourceIdFromUrl(sourceUrl?: string) {
+export function getContainerIdFromUrl(sourceUrl?: string) {
   // /orgs/FOO/sources/FOO/ => FOO
+  // /orgs/FOO/collections/FOO/ => FOO
   // / => Public Sources
 
   if (!sourceUrl) return undefined;

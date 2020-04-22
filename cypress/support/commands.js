@@ -1,6 +1,6 @@
 import uuid from 'uuid'
 
-Cypress.Commands.add('runAndAwait', (callable, method='GET') => {
+Cypress.Commands.add('runAndAwait', (callable, method='GET', addArtificialWait=false) => {
     const requestId = `apiRequest-${uuid()}`;
 
     cy.server();
@@ -8,6 +8,8 @@ Cypress.Commands.add('runAndAwait', (callable, method='GET') => {
     callable();
     cy.wait(`@${requestId}`);
     cy.route(method, '**').as('untrackedRequest'); // stop recording requests
+
+    if (addArtificialWait) cy.wait(5000);
   }
 );
 

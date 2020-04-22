@@ -2,8 +2,9 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import Header from "../../components/Header";
 import { EditDictionaryPage, ViewDictionaryPage } from "./pages";
-import { DICTIONARY_VERSION_CONTAINER, ViewConceptsPage } from "../concepts";
+import { DICTIONARY_VERSION_CONTAINER } from "../concepts";
 import AddBulkConceptsPage from "./pages/AddBulkConceptsPage";
+import ConceptRoutes from "../concepts/Routes";
 
 const Routes: React.FC = () => {
   // @ts-ignore
@@ -17,12 +18,13 @@ const Routes: React.FC = () => {
         </Header>
       </Route>
       <Route exact path={`${path}/:collection/edit/`}>
-        <Header title="Edit Dictionary">
-          <EditDictionaryPage />
-        </Header>
+        <EditDictionaryPage />
       </Route>
       <Route path={`${path}/:collection/:version/concepts/`}>
-        <ViewConceptsPage containerType={DICTIONARY_VERSION_CONTAINER} />
+        <ConceptRoutes
+          containerType={DICTIONARY_VERSION_CONTAINER}
+          viewConcepts={true}
+        />
       </Route>
       <Route exact path={`${path}/:collection/add/`}>
         <AddBulkConceptsPage />

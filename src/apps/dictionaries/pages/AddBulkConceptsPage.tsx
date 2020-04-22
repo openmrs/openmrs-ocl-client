@@ -51,6 +51,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
 
   return (
     <Header
+      allowImplicitNavigation
       title={`Add concepts in bulk from ${fromSource}`}
       headerComponent={
         <>
@@ -72,7 +73,11 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
             {Object.entries(PREFERRED_SOURCES).map(
               ([sourceName, sourceUrl]) => (
                 <MenuItem onClick={handleSwitchSourceClose}>
-                  <Link className="link" to={`${url}?fromSource=${sourceName}`}>
+                  <Link
+                    replace
+                    className="link"
+                    to={`${url}?fromSource=${sourceName}`}
+                  >
                     {sourceName}
                   </Link>
                 </MenuItem>

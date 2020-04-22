@@ -61,6 +61,7 @@ const ViewConceptPage: React.FC<Props> = ({
 
   return (
     <Header
+      allowImplicitNavigation
       title={startCase(
         toLower(concept ? concept.display_name : "View concept")
       )}
@@ -82,7 +83,7 @@ const ViewConceptPage: React.FC<Props> = ({
           />
         </Grid>
         {!showEditButton ? null : (
-          <Link to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
+          <Link replace to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
             <Tooltip title="Edit this concept">
               <Fab color="primary" className="fab">
                 <EditIcon />

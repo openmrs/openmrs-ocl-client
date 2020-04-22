@@ -28,7 +28,7 @@ const Routes: React.FC<Props> = ({
     <Switch>
       {!viewConcepts ? null : (
         <Route exact path={`${path}/`}>
-          <ViewConceptsPage containerType={containerType} />
+          <ViewConceptsPage key={containerType} containerType={containerType} />
         </Route>
       )}
       {!newConcept ? null : (

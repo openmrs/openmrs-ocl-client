@@ -39,7 +39,7 @@ const LoginPage: React.FC<Props> = ({
     };
   }, []);
 
-  if (isLoggedIn) return <Redirect to="/user/collections/" />;
+  if (isLoggedIn) return <Redirect to="/" />;
   else
     return (
       <Grid

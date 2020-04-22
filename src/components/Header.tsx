@@ -44,7 +44,9 @@ interface Props {
   justifyChildren?: string;
   loadingList: boolean[];
   backUrl?: string;
+  backText?: string;
   headerComponent?: any;
+  allowImplicitNavigation?: boolean;
 }
 
 const Header: React.FC<Props> = ({
@@ -53,7 +55,9 @@ const Header: React.FC<Props> = ({
   justifyChildren = "center",
   loadingList = [],
   backUrl,
-  headerComponent
+  backText = "Go back",
+  headerComponent,
+  allowImplicitNavigation = false,
 }) => {
   const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
     .length;
@@ -68,19 +72,21 @@ const Header: React.FC<Props> = ({
     <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Tooltip title="Go back">
             {backUrl ? (
+              <Tooltip title={backText}>
               <Link to={backUrl}>
                 <IconButton>
                   <BackIcon className={classes.icon} />
                 </IconButton>
               </Link>
-            ) : (
+              </Tooltip>
+            ) : (allowImplicitNavigation ? (
+              <Tooltip title="Go back">
               <IconButton onClick={history.goBack}>
                 <BackIcon className={classes.icon} />
               </IconButton>
-            )}
-          </Tooltip>
+              </Tooltip>
+            ) : <span />)}
           <Typography variant="h5" noWrap>
             {title}
           </Typography>
@@ -98,13 +104,6 @@ const Header: React.FC<Props> = ({
                 </Tooltip>
               </Link>
             )}
-            {/*Until we can properly disable this when it is not necessary, I'm disabling it.*/}
-            {/*We would need some kind of canGoForward()*/}
-            {/*<Tooltip title="Go forward">*/}
-            {/*  <IconButton onClick={history.goForward}>*/}
-            {/*    <ForwardIcon className={classes.icon} />*/}
-            {/*</IconButton>*/}
-            {/*</Tooltip>*/}
           </div>
         </Toolbar>
       </AppBar>
