@@ -1,6 +1,15 @@
 import { cloneDeep } from "lodash";
 
-import { errors, loading, progress, COMPLETE, FAILURE, PROGRESS, RESET, START } from './utils'
+import {
+  errors,
+  loading,
+  progress,
+  COMPLETE,
+  FAILURE,
+  PROGRESS,
+  RESET,
+  START
+} from "./utils";
 import { Action, LoadingAndErroredState } from "./types";
 
 // todo improve these action types args

@@ -42,15 +42,15 @@ import {
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
-  DICTIONARY_CONTAINER,
+  DICTIONARY_CONTAINER, DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
-} from "../constants";
+} from '../constants'
 import {
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction
 } from "../../dictionaries/redux";
-import { canModifyConcept, getSourceIdFromUrl } from "../utils";
+import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 
 interface StateProps {
   concepts?: APIConcept[];
@@ -108,7 +108,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
 
-  const { push: goTo } = useHistory();
+  const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
   const { pathname: url } = useLocation();
   const containerUrl = url.replace("/concepts", "");
   const { ownerType, owner } = useParams<{
@@ -218,8 +218,8 @@ const ViewConceptsPage: React.FC<Props> = ({
       <Header
         title={
           containerType === SOURCE_CONTAINER
-            ? `Import existing concept from ${getSourceIdFromUrl(containerUrl)}`
-            : "Concepts"
+            ? `Import existing concept from ${getContainerIdFromUrl(containerUrl)}`
+            : `Concepts in ${containerType === DICTIONARY_VERSION_CONTAINER ? 'v' : ''}${getContainerIdFromUrl(containerUrl)}`
         }
         justifyChildren="space-around"
         headerComponent={
@@ -232,7 +232,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 aria-haspopup="true"
                 onClick={handleSwitchSourceClick}
               >
-                Switch source (Currently {getSourceIdFromUrl(containerUrl)})
+                Switch source (Currently {getContainerIdFromUrl(containerUrl)})
               </Button>
               <Menu
                 anchorEl={switchSourceAnchor}
@@ -246,6 +246,8 @@ const ViewConceptsPage: React.FC<Props> = ({
                 }).map(([preferredSourceName, preferredSourceUrl]) => (
                   <MenuItem onClick={handleSwitchSourceClose}>
                     <Link
+                      // replace because we want to keep the back button useful
+                      replace
                       className={classes.link}
                       to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
                     >
@@ -257,6 +259,10 @@ const ViewConceptsPage: React.FC<Props> = ({
             </>
           )
         }
+        // we can only be confident about the back url when viewing a collection's concepts
+        allowImplicitNavigation
+        backUrl={containerType !== DICTIONARY_CONTAINER ? undefined : containerUrl}
+        backText={containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"}
       >
         <ProgressOverlay
           loading={loading}
@@ -322,7 +328,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                 // interesting how we generate these, isn't it? yeah well, this is an important feature, so there :)
                 sourceOptions={
                   [
-                    getSourceIdFromUrl(linkedSource),
+                    getContainerIdFromUrl(linkedSource),
                     ...FILTER_SOURCE_IDS
                   ].filter(source => source !== undefined) as string[]
                 }

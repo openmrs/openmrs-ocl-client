@@ -165,7 +165,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
         <div className={classes.center}>
           <ButtonGroup size="small" variant="text" fullWidth>
             <Button className={classes.applyFilters} color="primary">
-              <Link className={classes.applyFiltersLink} to={url}>
+              <Link replace className={classes.applyFiltersLink} to={url}>
                 Apply Filters
               </Link>
             </Button>

@@ -23,6 +23,7 @@ import {
   retrieveDictionaryAction
 } from "../redux/actions";
 import { Pageview as PageViewIcon } from "@material-ui/icons";
+import Header from '../../../components/Header'
 
 interface Props {
   errors?: {};
@@ -65,36 +66,38 @@ const EditDictionaryPage: React.FC<Props> = ({
   }
 
   return (
-    <ProgressOverlay delayRender loading={dictionaryLoading}>
-      <Grid id="edit-dictionary-page" item xs={6} component="div">
-        <Paper>
-          <DictionaryForm
-            context={CONTEXT.edit}
-            errors={errors}
-            profile={profile}
-            usersOrgs={usersOrgs ? usersOrgs : []}
-            loading={loading}
-            savedValues={apiDictionaryToDictionary(dictionary)}
-            onSubmit={(values: Dictionary) => {
-              if (dictionary)
-                editSourceAndDictionary(
-                  dictionary?.url,
-                  values,
-                  dictionary?.extras
-                );
-              else debug("Could not edit dictionary. dictionary is undefined");
-            }}
-          />
-        </Paper>
-      </Grid>
-      <Link to={dictionaryUrl}>
-        <Tooltip title="Discard changes and view">
-          <Fab color="primary" className="fab">
-            <PageViewIcon />
-          </Fab>
-        </Tooltip>
-      </Link>
-    </ProgressOverlay>
+    <Header title="Edit Dictionary" backUrl={dictionaryUrl} backText="Back to dictionary">
+      <ProgressOverlay delayRender loading={dictionaryLoading}>
+        <Grid id="edit-dictionary-page" item xs={6} component="div">
+          <Paper>
+            <DictionaryForm
+              context={CONTEXT.edit}
+              errors={errors}
+              profile={profile}
+              usersOrgs={usersOrgs ? usersOrgs : []}
+              loading={loading}
+              savedValues={apiDictionaryToDictionary(dictionary)}
+              onSubmit={(values: Dictionary) => {
+                if (dictionary)
+                  editSourceAndDictionary(
+                    dictionary?.url,
+                    values,
+                    dictionary?.extras
+                  );
+                else debug("Could not edit dictionary. dictionary is undefined");
+              }}
+            />
+          </Paper>
+        </Grid>
+        <Link to={dictionaryUrl}>
+          <Tooltip title="Discard changes and view">
+            <Fab color="primary" className="fab">
+              <PageViewIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      </ProgressOverlay>
+    </Header>
   );
 };
 

@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
 import store from "./redux";
@@ -11,7 +16,7 @@ import DictionaryRoutes, {
 } from "./apps/dictionaries";
 import ConceptRoutes, {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER,
+  DICTIONARY_VERSION_CONTAINER
 } from "./apps/concepts";
 import { SOURCE_CONTAINER } from "./apps/concepts/constants";
 
@@ -56,17 +61,14 @@ const AuthenticatedRoutes: React.FC = () => {
         />
       </Route>
       <Route path="/concepts">
-        <ConceptRoutes
-          containerType={SOURCE_CONTAINER}
-          viewConcepts={true}
-        />
+        <ConceptRoutes containerType={SOURCE_CONTAINER} viewConcepts={true} />
       </Route>
       <Route
         path="/:ownerType/:owner/collections"
         component={DictionaryRoutes}
       />
       <Route exact path="/">
-        Home
+        <Redirect to="/user/collections/" />
       </Route>
     </Switch>
   );

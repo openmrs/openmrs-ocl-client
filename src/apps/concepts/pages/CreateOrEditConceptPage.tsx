@@ -102,6 +102,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 
   return (
     <Header
+      allowImplicitNavigation
       title={
         context === CONTEXT.edit
           ? "Edit " +
@@ -146,6 +147,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
               <MenuItem>
                 <PageViewIcon />
                 <Link
+                  replace
                   className="link"
                   to={`${conceptUrl}?linkedDictionary=${linkedDictionary}&linkedSource=${sourceUrl}`}
                 >
