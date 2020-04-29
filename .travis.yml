@@ -2,11 +2,11 @@ language: node_js
 node_js:
   - "10.13.0"
 
-before_cache:
-  # Save tagged docker images: https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
-  - >
-    mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
-    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
+#before_cache:
+#  # Save tagged docker images: https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
+#  - >
+#    mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+#    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
 
 cache:
   # caches $HOME/.npm when npm ci is default script command
@@ -15,11 +15,11 @@ cache:
   bundler: true
   directories:
     - ~/.cache # folder with Cypress binary
-    - $HOME/docker
+#    - $HOME/docker
 
-before_install:
-  # Load cached docker images: https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
-  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+#before_install:
+#  # Load cached docker images: https://github.com/travis-ci/travis-ci/issues/5358#issuecomment-248915326
+#  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
 
 install:
   - npm install
