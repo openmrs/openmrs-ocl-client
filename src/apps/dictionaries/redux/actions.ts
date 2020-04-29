@@ -146,43 +146,17 @@ export const retrievePublicDictionariesAction = createActionThunk(
   RETRIEVE_DICTIONARIES_ACTION,
   api.dictionaries.retrieve.public
 );
-const retrievePersonalDictionariesAction = createActionThunk(
+export const retrievePersonalDictionariesAction = createActionThunk(
   indexedAction(
     RETRIEVE_DICTIONARIES_ACTION,
     PERSONAL_DICTIONARIES_ACTION_INDEX
   ),
   api.dictionaries.retrieve.private
 );
-const retrieveOrgDictionariesAction = createActionThunk(
+export const retrieveOrgDictionariesAction = createActionThunk(
   indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX),
   api.dictionaries.retrieve.private
 );
-export const retrieveDictionariesAction = (
-  personalDictionariesUrl: string,
-  personalQ: string = "",
-  personalLimit = 20,
-  personalPage = 1,
-  orgDictionariesUrl: string,
-  orgQ: string = "",
-  orgLimit = 20,
-  orgPage = 1
-) => {
-  // Yes, we would have loved for these to be individual actions, but I encountered a weird race condition issue
-  // Backend mixes up results for the two calls when they are started simultaneously
-  return async (dispatch: Function) => {
-    await dispatch(
-      retrievePersonalDictionariesAction(
-        personalDictionariesUrl,
-        personalQ,
-        personalLimit,
-        personalPage
-      )
-    );
-    await dispatch(
-      retrieveOrgDictionariesAction(orgDictionariesUrl, orgQ, orgLimit, orgPage)
-    );
-  };
-};
 export const editSourceAndDictionaryAction = (
   dictionaryUrl: string,
   dictionaryData: Dictionary,

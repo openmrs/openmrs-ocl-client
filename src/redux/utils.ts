@@ -20,7 +20,7 @@ export const indexedAction = (
   actionIndex: number = 0
 ): IndexedAction => ({ actionType: action, actionIndex });
 
-export function getIndexedAction (actionOrActionType: IndexedAction | string) {
+export function getIndexedAction(actionOrActionType: IndexedAction | string) {
   return typeof actionOrActionType === "string"
     ? indexedAction(actionOrActionType)
     : actionOrActionType;
@@ -34,17 +34,20 @@ export const resetAction = (actionType: string) => ({
   type: `${actionType}_${RESET}`
 });
 
-export function startAction (actionOrActionType: IndexedAction | string, ...args: any[]) {
+export function startAction(
+  actionOrActionType: IndexedAction | string,
+  ...args: any[]
+) {
   const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
   return {
     type: `${actionType}_${START}`,
     actionIndex,
     meta: args
-  }
+  };
 }
 
-export function progressAction (
+export function progressAction(
   actionOrActionType: IndexedAction | string,
   payload: string
 ) {
@@ -52,12 +55,12 @@ export function progressAction (
 
   return {
     type: `${actionType}_${PROGRESS}`,
-      actionIndex,
-      payload
+    actionIndex,
+    payload
   };
 }
 
-export function completeAction (
+export function completeAction(
   actionOrActionType: IndexedAction | string,
   ...args: any[]
 ) {

@@ -11,7 +11,6 @@ import store from "./redux";
 import { Header, InProgressPage, NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,
-  ViewDictionariesPage,
   ViewPublicDictionariesPage
 } from "./apps/dictionaries";
 import ConceptRoutes, {
@@ -19,6 +18,7 @@ import ConceptRoutes, {
   DICTIONARY_VERSION_CONTAINER
 } from "./apps/concepts";
 import { SOURCE_CONTAINER } from "./apps/concepts/constants";
+import { ViewOrgDictionariesPage, ViewPersonalDictionariesPage } from './apps/dictionaries/pages'
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -29,14 +29,19 @@ const AuthenticatedRoutes: React.FC = () => {
           <CreateDictionaryPage />
         </Header>
       </Route>
+      <Route exact path="/user/collections/">
+        <Header title="Your Dictionaries">
+          <ViewPersonalDictionariesPage />
+        </Header>
+      </Route>
+      <Route exact path="/user/orgs/collections/">
+        <Header title="Your Organizations' Dictionaries">
+          <ViewOrgDictionariesPage />
+        </Header>
+      </Route>
       <Route exact path="/collections/">
         <Header title="Public Dictionaries">
           <ViewPublicDictionariesPage />
-        </Header>
-      </Route>
-      <Route exact path="/user/collections/">
-        <Header title="Your Dictionaries">
-          <ViewDictionariesPage />
         </Header>
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">

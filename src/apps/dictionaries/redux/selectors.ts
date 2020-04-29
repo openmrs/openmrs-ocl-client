@@ -83,11 +83,13 @@ export const createDictionaryVersionErrorSelector = errorSelector(
 export const retrievePublicDictionariesLoadingSelector = loadingSelector(
   RETRIEVE_DICTIONARIES_ACTION
 );
-export const retrieveDictionariesLoadingSelector = loadingSelector(
+export const retrievePersonalDictionariesLoadingSelector = loadingSelector(
   indexedAction(
     RETRIEVE_DICTIONARIES_ACTION,
     PERSONAL_DICTIONARIES_ACTION_INDEX
-  ),
+  )
+);
+export const retrieveOrgDictionariesLoadingSelector = loadingSelector(
   indexedAction(RETRIEVE_DICTIONARIES_ACTION, ORG_DICTIONARIES_ACTION_INDEX)
 );
 export const retrieveDictionaryErrorSelector = errorSelector(

@@ -6,7 +6,7 @@ export function login(username = 'admin', password = 'Admin123'): string {
   cy.findByText('Log in').click();
 
   // wait till page is ready
-  cy.findByText('Personal dictionaries');
+  cy.findByPlaceholderText("Search Dictionaries");
 
   return username;
 }

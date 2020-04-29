@@ -3,11 +3,7 @@
  * Since we don't really care about collections themselves, but in the 'linked source' behaviour we create
  */
 export { default } from "./Routes";
-export {
-  CreateDictionaryPage,
-  ViewPublicDictionariesPage,
-  ViewDictionariesPage
-} from "./pages";
+export { CreateDictionaryPage, ViewPublicDictionariesPage } from "./pages";
 export {
   default as dictionariesReducer,
   addConceptsToDictionaryLoadingListSelector,
