@@ -12,8 +12,9 @@ import {
   ListSubheader,
   makeStyles,
   Paper,
-  Theme, Typography
-} from '@material-ui/core'
+  Theme,
+  Typography
+} from "@material-ui/core";
 import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
 import { Link } from "react-router-dom";
 
@@ -44,11 +45,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     listItem: {
       paddingTop: "0",
-      paddingBottom: "0",
+      paddingBottom: "0"
     },
     listItemText: {
       marginTop: "0",
-      marginBottom: "0",
+      marginBottom: "0"
     }
   })
 );
@@ -83,7 +84,9 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
     setChecked(newChecked);
   };
 
-  const itemsToDisplay = items.filter(item => item.toLowerCase().includes(searchText.toLowerCase()));
+  const itemsToDisplay = items.filter(item =>
+    item.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <>
@@ -95,33 +98,39 @@ const FilterGroup: React.FC<FilterGroupProps> = ({
           </ListSubheader>
         }
       >
-        {itemsToDisplay
-          .map(value => {
-            const id = `checkbox-${title}-${value}`;
+        {itemsToDisplay.map(value => {
+          const id = `checkbox-${title}-${value}`;
 
-            return (
-              <ListItem
-                key={value}
-                role={undefined}
-                dense
-                button
-                className={classes.listItem}
-              >
-                <ListItemIcon>
-                  <Checkbox
-                    id={id}
-                    edge="start"
-                    onChange={handleToggle(value)}
-                    checked={checked.includes(value)}
-                    tabIndex={-1}
-                    disableRipple
-                  />
-                </ListItemIcon>
-                <ListItemText className={classes.listItemText} primary={<label htmlFor={id}>{value}</label>} />
-              </ListItem>
-            );
-          })}
-        {itemsToDisplay.length ? null : <Typography color="textSecondary" align="center">None matching this filter</Typography>}
+          return (
+            <ListItem
+              key={value}
+              role={undefined}
+              dense
+              button
+              className={classes.listItem}
+            >
+              <ListItemIcon>
+                <Checkbox
+                  id={id}
+                  edge="start"
+                  onChange={handleToggle(value)}
+                  checked={checked.includes(value)}
+                  tabIndex={-1}
+                  disableRipple
+                />
+              </ListItemIcon>
+              <ListItemText
+                className={classes.listItemText}
+                primary={<label htmlFor={id}>{value}</label>}
+              />
+            </ListItem>
+          );
+        })}
+        {itemsToDisplay.length ? null : (
+          <Typography color="textSecondary" align="center">
+            None matching this filter
+          </Typography>
+        )}
       </List>
     </>
   );
@@ -148,7 +157,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   setCheckedDataTypes,
   setCheckedSources,
   sourceOptions,
-  showSources=true,
+  showSources = true
 }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");

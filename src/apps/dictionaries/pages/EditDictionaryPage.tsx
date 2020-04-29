@@ -23,7 +23,7 @@ import {
   retrieveDictionaryAction
 } from "../redux/actions";
 import { Pageview as PageViewIcon } from "@material-ui/icons";
-import Header from '../../../components/Header'
+import Header from "../../../components/Header";
 
 interface Props {
   errors?: {};
@@ -66,7 +66,11 @@ const EditDictionaryPage: React.FC<Props> = ({
   }
 
   return (
-    <Header title="Edit Dictionary" backUrl={dictionaryUrl} backText="Back to dictionary">
+    <Header
+      title="Edit Dictionary"
+      backUrl={dictionaryUrl}
+      backText="Back to dictionary"
+    >
       <ProgressOverlay delayRender loading={dictionaryLoading}>
         <Grid id="edit-dictionary-page" item xs={6} component="div">
           <Paper>
@@ -84,7 +88,8 @@ const EditDictionaryPage: React.FC<Props> = ({
                     values,
                     dictionary?.extras
                   );
-                else debug("Could not edit dictionary. dictionary is undefined");
+                else
+                  debug("Could not edit dictionary. dictionary is undefined");
               }}
             />
           </Paper>

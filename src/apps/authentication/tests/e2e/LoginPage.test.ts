@@ -10,7 +10,7 @@ describe("Login", () => {
 
     cy.visit("/user/collections/");
     // should not redirect us anywhere
-    cy.findByText("Personal dictionaries").should("exist");
+    cy.findByPlaceholderText("Search Dictionaries").should("exist");
 
     logout();
   });

@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import {
   ExitToApp,
   FolderOpenOutlined,
+  GroupWorkOutlined as OrgDictionariesIcon,
   FolderSharedOutlined,
   Notifications as NotificationsIcon
 } from '@material-ui/icons'
@@ -38,10 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
-      whiteSpace: "nowrap"
     },
     drawerOpen: {
       width: drawerWidth,
+      whiteSpace: "normal",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
@@ -56,7 +57,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9) + 1
-      }
+      },
+      whiteSpace: "nowrap",
     },
     toolbar: {
       display: "flex",
@@ -145,6 +147,22 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary="Your Dictionaries" />
+          </ListItem>
+          <ListItem
+            button
+            dense={false}
+            component={Link}
+            exact
+            activeClassName={classes.selected}
+            to="/user/orgs/collections/"
+            key="Your Organizations' dictionaries"
+          >
+            <Tooltip title="Your Organizations' dictionaries">
+              <ListItemIcon className="list-item-icon">
+                <OrgDictionariesIcon />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary="Your Organizations' Dictionaries" />
           </ListItem>
           <ListItem
             button

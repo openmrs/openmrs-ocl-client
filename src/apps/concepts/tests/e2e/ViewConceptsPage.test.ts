@@ -199,10 +199,14 @@ describe("View Concepts Page", () => {
       cy.findAllByTitle("More actions")
         .first()
         .click();
-      cy.runAndAwait(() => {
-        cy.findByText(TEXT.ADD_TO_DICTIONARY).click();
-        cy.findByTitle("In progress").should("exist");
-      }, "PUT", true);
+      cy.runAndAwait(
+        () => {
+          cy.findByText(TEXT.ADD_TO_DICTIONARY).click();
+          cy.findByTitle("In progress").should("exist");
+        },
+        "PUT",
+        true
+      );
 
       cy.findByTitle("Go back").click();
 

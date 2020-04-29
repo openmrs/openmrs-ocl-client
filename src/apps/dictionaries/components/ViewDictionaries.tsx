@@ -3,13 +3,13 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent,
+  CardContent, createStyles,
   Grid,
   Input,
   InputAdornment,
-  makeStyles,
+  makeStyles, Theme,
   Typography
-} from "@material-ui/core";
+} from '@material-ui/core'
 import TablePagination from "@material-ui/core/TablePagination";
 import IconButton from "@material-ui/core/IconButton";
 import { Search as SearchIcon } from "@material-ui/icons";
@@ -29,13 +29,13 @@ interface Props {
   title?: string;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
   pagination: {
     justifyItems: "center",
     display: "grid",
     position: "fixed",
     bottom: 0,
-    background: "transparent"
+    background: theme.palette.background.default,
   },
   paginationDouble: {
     width: "100%"
@@ -61,7 +61,7 @@ const useStyles = makeStyles({
   dictionaryName: {
     overflowX: "auto"
   }
-});
+}));
 
 const ViewDictionaries: React.FC<Props> = ({
   dictionaries,
@@ -102,7 +102,7 @@ const ViewDictionaries: React.FC<Props> = ({
             onChange={e => setQ(e.target.value)}
             value={q}
             fullWidth
-            placeholder="Search"
+            placeholder="Search Dictionaries"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton onClick={() => onSearch(q)}>
