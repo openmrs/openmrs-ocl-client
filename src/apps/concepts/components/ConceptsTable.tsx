@@ -472,7 +472,11 @@ const ConceptsTable: React.FC<Props> = ({
                         />
                       </TableCell>
                     )}
-                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="name" className={row.retired ? classes.retired : ""}>
+                    <TableCell
+                      onClick={event => toggleSelect(event, row.id)}
+                      data-testClass="name"
+                      className={row.retired ? classes.retired : ""}
+                    >
                       <Link
                         onClick={e => e.stopPropagation()}
                         to={`${
@@ -484,9 +488,21 @@ const ConceptsTable: React.FC<Props> = ({
                         {row.display_name}
                       </Link>
                     </TableCell>
-                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="conceptClass">{row.concept_class}</TableCell>
-                    <TableCell onClick={event => toggleSelect(event, row.id)} data-testClass="datatype">{row.datatype}</TableCell>
-                    <TableCell onClick={event => toggleSelect(event, row.id)}>{row.id}</TableCell>
+                    <TableCell
+                      onClick={event => toggleSelect(event, row.id)}
+                      data-testClass="conceptClass"
+                    >
+                      {row.concept_class}
+                    </TableCell>
+                    <TableCell
+                      onClick={event => toggleSelect(event, row.id)}
+                      data-testClass="datatype"
+                    >
+                      {row.datatype}
+                    </TableCell>
+                    <TableCell onClick={event => toggleSelect(event, row.id)}>
+                      {row.id}
+                    </TableCell>
                     <TableCell padding="checkbox">
                       <Tooltip title="More actions" enterDelay={700}>
                         <IconButton

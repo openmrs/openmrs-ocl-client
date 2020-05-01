@@ -72,14 +72,6 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .filter(item => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
-  console.log(
-    loadingList,
-    inProgressList,
-    inProgressItems,
-    successfullItems,
-    successList
-  );
-
   const classes = useStyles();
 
   return (

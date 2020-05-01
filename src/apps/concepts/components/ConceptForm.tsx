@@ -262,7 +262,6 @@ const ConceptForm: React.FC<Props> = ({
     ].forEach(([key, batchIndex]) => {
       currentRef.state.values[key].forEach((_: Mapping, index: number) => {
         const error = allMappingErrors[Number(`${batchIndex}${index}`)];
-        console.log(error, `${key}[${index}]`);
         if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
       });
     });

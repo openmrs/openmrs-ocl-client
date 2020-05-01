@@ -3,13 +3,15 @@ import {
   Button,
   Card,
   CardActions,
-  CardContent, createStyles,
+  CardContent,
+  createStyles,
   Grid,
   Input,
   InputAdornment,
-  makeStyles, Theme,
+  makeStyles,
+  Theme,
   Typography
-} from '@material-ui/core'
+} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import IconButton from "@material-ui/core/IconButton";
 import { Search as SearchIcon } from "@material-ui/icons";
@@ -29,39 +31,41 @@ interface Props {
   title?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  pagination: {
-    justifyItems: "center",
-    display: "grid",
-    position: "fixed",
-    bottom: 0,
-    background: theme.palette.background.default,
-  },
-  paginationDouble: {
-    width: "100%"
-  },
-  paginationSingle: {
-    width: "50%"
-  },
-  title: {
-    marginBottom: "2vw"
-  },
-  search: {
-    justifyItems: "center",
-    display: "grid",
-    position: "sticky",
-    background: "transparent",
-    width: "100%",
-    marginBottom: "2vw"
-  },
-  link: {
-    textDecoration: "none",
-    color: "inherit"
-  },
-  dictionaryName: {
-    overflowX: "auto"
-  }
-}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pagination: {
+      justifyItems: "center",
+      display: "grid",
+      position: "fixed",
+      bottom: 0,
+      background: theme.palette.background.default
+    },
+    paginationDouble: {
+      width: "100%"
+    },
+    paginationSingle: {
+      width: "50%"
+    },
+    title: {
+      marginBottom: "2vw"
+    },
+    search: {
+      justifyItems: "center",
+      display: "grid",
+      position: "sticky",
+      background: "transparent",
+      width: "100%",
+      marginBottom: "2vw"
+    },
+    link: {
+      textDecoration: "none",
+      color: "inherit"
+    },
+    dictionaryName: {
+      overflowX: "auto"
+    }
+  })
+);
 
 const ViewDictionaries: React.FC<Props> = ({
   dictionaries,

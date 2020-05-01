@@ -30,9 +30,7 @@ const reducer = (state = initialState, action: AnyAction) => {
 const authLoadingSelector = loadingSelector(LOGIN_ACTION);
 const authErrorsSelector = errorSelector(LOGIN_ACTION);
 
-const getUserDetailsLoadingSelector = loadingSelector(
-  GET_USER_DETAILS_ACTION
-);
+const getUserDetailsLoadingSelector = loadingSelector(GET_USER_DETAILS_ACTION);
 const profileSelector = ({ auth }: { auth: AuthState }) => auth.profile;
 const orgsSelector = ({ auth }: { auth: AuthState }) => auth.orgs;
 

@@ -1,15 +1,30 @@
-import { LOCALES } from './constants'
-import { snakeCase } from 'lodash'
+import { LOCALES } from "./constants";
+import { snakeCase } from "lodash";
 
 export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||
   LOCALES.find(currentLocale => currentLocale.value === fallback);
 
+export const STATUS_CODES_TO_MESSAGES: { [key: number]: string } = {
+  // if this map starts growing big, try to find more standardized language
+  403: "You don't have permission to do this",
+  404: "Could not find that resource"
+};
+
+const MESSAGES_TO_STATUS_CODES: { [key: string]: number } = Object.entries(
+  STATUS_CODES_TO_MESSAGES
+).reduce<{ [key: string]: number }>(
+  (result, [key, value]) => ({ ...result, [value]: parseInt(key) }),
+  {}
+);
+
 export const getPrettyError = (
-  errors: { [key: string]: string[] | undefined } | undefined,
+  errors: { [key: string]: string[] | undefined } | undefined | string,
   field?: string
 ) => {
   if (!errors) return;
+
+  if (typeof errors === "string") return field ? undefined : errors;
 
   const errorList: string[] | undefined = field
     ? errors[field]
@@ -18,6 +33,19 @@ export const getPrettyError = (
 
   return errorList.join(", ");
 };
+
+export function getCustomErrorMessage(
+  errorMessage: string | undefined,
+  statusCodesWeCareAbout: { [key: number]: string }
+) {
+  const statusCode = errorMessage
+    ? MESSAGES_TO_STATUS_CODES[errorMessage]
+    : undefined;
+  const statusMessage = statusCode
+    ? statusCodesWeCareAbout[statusCode]
+    : undefined;
+  return statusMessage || errorMessage;
+}
 
 export const keysToSnakeCase = (item?: any) => {
   const isArray = (a: any) => {
@@ -51,6 +79,6 @@ export const buildPartialSearchQuery = (query: string): string =>
 export const delay = (seconds: number) =>
   new Promise(resolve => setTimeout(resolve, seconds * 1000));
 
-export function debug (...messages: string[]) {
+export function debug(...messages: string[]) {
   console.log(messages);
 }
