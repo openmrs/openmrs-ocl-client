@@ -30,13 +30,6 @@ interface Props {
   linkedSource: string;
 }
 
-const useStyles = makeStyles({
-  link: {
-    textDecoration: "none",
-    color: "inherit"
-  }
-});
-
 const ReleasedVersions: React.FC<Props> = ({
   versions,
   subscriptionUrl,
@@ -47,7 +40,6 @@ const ReleasedVersions: React.FC<Props> = ({
   dictionaryUrl,
   linkedSource
 }) => {
-  const classes = useStyles();
   const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
 
   const [open, setOpen] = React.useState(false);
@@ -81,14 +73,10 @@ const ReleasedVersions: React.FC<Props> = ({
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.description || "None"}</TableCell>
                     <TableCell>
-                      <Button size="small" variant="text" color="primary">
-                        <Link
-                          className={classes.link}
-                          // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
-                          to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
-                        >
-                          View concepts
-                        </Link>
+                      <Button
+                        // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
+                        to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`} component={Link} size="small" variant="text" color="primary">
+                        View concepts
                       </Button>
                     </TableCell>
                   </TableRow>

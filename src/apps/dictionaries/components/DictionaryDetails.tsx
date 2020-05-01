@@ -8,10 +8,6 @@ interface Props {
 }
 
 const useStyles = makeStyles({
-  link: {
-    textDecoration: "none",
-    color: "inherit"
-  },
   conceptCountBreakDown: {
     marginLeft: "3vw"
   }
@@ -55,13 +51,8 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           <span data-testid="customConceptCount">Custom Concepts: {customConceptCount}</span>
         </Typography>
         <ButtonGroup variant="text" fullWidth>
-          <Button color="primary">
-            <Link
-              className={classes.link}
-              to={`${conceptsUrl}?linkedSource=${linkedSource}&preferredSource=${preferredSource}`}
-            >
-              View Concepts
-            </Link>
+          <Button to={`${conceptsUrl}?linkedSource=${linkedSource}&preferredSource=${preferredSource}`} component={Link} color="primary">
+            View Concepts
           </Button>
         </ButtonGroup>
       </fieldset>

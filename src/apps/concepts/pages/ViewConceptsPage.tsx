@@ -244,15 +244,13 @@ const ViewConceptsPage: React.FC<Props> = ({
                   "Public Sources": ALL_PUBLIC_SOURCES_URL,
                   ...PREFERRED_SOURCES
                 }).map(([preferredSourceName, preferredSourceUrl]) => (
-                  <MenuItem onClick={handleSwitchSourceClose}>
-                    <Link
-                      // replace because we want to keep the back button useful
-                      replace
-                      className={classes.link}
-                      to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                    >
-                      {preferredSourceName}
-                    </Link>
+                  <MenuItem
+                    // replace because we want to keep the back button useful
+                    replace
+                    to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                    component={Link}
+                    onClick={handleSwitchSourceClose}>
+                    {preferredSourceName}
                   </MenuItem>
                 ))}
               </Menu>

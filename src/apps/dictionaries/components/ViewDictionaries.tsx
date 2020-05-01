@@ -57,10 +57,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       marginBottom: "2vw"
     },
-    link: {
-      textDecoration: "none",
-      color: "inherit"
-    },
     dictionaryName: {
       overflowX: "auto"
     }
@@ -160,10 +156,8 @@ const ViewDictionaries: React.FC<Props> = ({
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small" variant="text" color="primary">
-                    <Link className={classes.link} to={url}>
-                      View
-                    </Link>
+                  <Button to={url} component={Link} size="small" variant="text" color="primary">
+                    View
                   </Button>
                 </CardActions>
               </Card>
