@@ -18,7 +18,10 @@ import ConceptRoutes, {
   DICTIONARY_VERSION_CONTAINER
 } from "./apps/concepts";
 import { SOURCE_CONTAINER } from "./apps/concepts/constants";
-import { ViewOrgDictionariesPage, ViewPersonalDictionariesPage } from './apps/dictionaries/pages'
+import {
+  ViewOrgDictionariesPage,
+  ViewPersonalDictionariesPage
+} from "./apps/dictionaries/pages";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (

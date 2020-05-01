@@ -163,10 +163,10 @@ const useStyles = makeStyles((theme: Theme) =>
       opacity: 0.5
     },
     singleCellWidth: {
-      width: "24%",
+      width: "24%"
     },
     doubleCellWidth: {
-      width: "48%",
+      width: "48%"
     },
     fillParent: {
       width: "100%"
@@ -253,7 +253,10 @@ const MappingsTableRow: React.FC<Props> = ({
 
   return (
     <>
-      <TableRow data-testRowId={`${valuesKey}_${index}`} className={clsx(classes.row, { [classes.retired]: retired })}>
+      <TableRow
+        data-testRowId={`${valuesKey}_${index}`}
+        className={clsx(classes.row, { [classes.retired]: retired })}
+      >
         <TableCell
           className={
             fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth

@@ -1,4 +1,4 @@
-import { login, logout } from './testUtils'
+import { login, logout } from "./testUtils";
 
 describe("Login", () => {
   it("Happy flow: Should allow user to login", () => {

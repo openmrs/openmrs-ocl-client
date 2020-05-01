@@ -8,7 +8,12 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
-import { getPrettyError, LOCALES, PREFERRED_SOURCES } from "../../../utils";
+import {
+  getCustomErrorMessage,
+  getPrettyError,
+  LOCALES,
+  PREFERRED_SOURCES
+} from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
@@ -82,7 +87,13 @@ const DictionaryForm: React.FC<Props> = ({
   const editing = context === CONTEXT.edit;
 
   const formikRef: any = useRef(null);
-  const error: string | undefined = getPrettyError(errors);
+  const statusCodesWeCareAbout = {
+    403: `You don't have permission to ${context} a dictionary in this Organisation`
+  };
+  let error: string | undefined = getCustomErrorMessage(
+    getPrettyError(errors),
+    statusCodesWeCareAbout
+  );
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -169,7 +180,9 @@ const DictionaryForm: React.FC<Props> = ({
                 component={Select}
               >
                 {Object.keys(PREFERRED_SOURCES).map(preferredSource => (
-                  <MenuItem value={preferredSource}>{preferredSource}</MenuItem>
+                  <MenuItem key={preferredSource} value={preferredSource}>
+                    {preferredSource}
+                  </MenuItem>
                 ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
@@ -235,7 +248,9 @@ const DictionaryForm: React.FC<Props> = ({
                 component={Select}
               >
                 {LOCALES.map(({ value, label }) => (
-                  <MenuItem value={value}>{label}</MenuItem>
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
                 ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
@@ -260,7 +275,9 @@ const DictionaryForm: React.FC<Props> = ({
                 {LOCALES.filter(
                   ({ value }) => value !== values.default_locale
                 ).map(({ value, label }) => (
-                  <MenuItem value={value}>{label}</MenuItem>
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
                 ))}
               </Field>
               <Typography color="error" variant="caption" component="div">

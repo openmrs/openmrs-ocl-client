@@ -7,7 +7,7 @@ import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
   createSourceAndDictionaryErrorsSelector
-} from "../redux/selectors";
+} from "../redux";
 import { APIDictionary, Dictionary } from "../types";
 import {
   orgsSelector,

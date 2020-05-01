@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
 import { Action, IndexedAction } from "./types";
+import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 
 export const RESET = "RESET";
 export const START = "START";
@@ -103,17 +104,26 @@ export const createActionThunk = <T extends any[]>(
 
           result = response.data;
         } catch (error) {
-          console.log(error);
+          debug(error, "redux/utils/#createActionThunk#:catch");
+          const genericErrorMessage =
+            "Action could not be completed. Please retry.";
+
+          const response = error.response;
+          const errorMessage: string | {} | [] =
+            response?.data || response
+              ? STATUS_CODES_TO_MESSAGES[response.status] || genericErrorMessage
+              : genericErrorMessage;
+
           dispatch({
             type: `${actionType}_${FAILURE}`,
             actionIndex: actionIndex,
-            payload: error.response.data,
+            payload: errorMessage,
             meta: args
           });
           result = false;
         }
       } catch (error) {
-        console.log("should not happen", error);
+        debug("should not happen", error);
 
         dispatch({
           type: `${actionType}_${FAILURE}`,

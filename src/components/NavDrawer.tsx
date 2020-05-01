@@ -88,7 +88,6 @@ interface Props {
 }
 
 export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
-  console.log(logout);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);

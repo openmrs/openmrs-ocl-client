@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import {
   ArrowBack as BackIcon,
-  NotificationsOutlined as NotificationsIcon,
+  NotificationsOutlined as NotificationsIcon
 } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
@@ -57,7 +57,7 @@ const Header: React.FC<Props> = ({
   backUrl,
   backText = "Go back",
   headerComponent,
-  allowImplicitNavigation = false,
+  allowImplicitNavigation = false
 }) => {
   const loadingItemsLength = loadingList.filter((loading: boolean) => loading)
     .length;
@@ -72,21 +72,23 @@ const Header: React.FC<Props> = ({
     <div>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-            {backUrl ? (
-              <Tooltip title={backText}>
+          {backUrl ? (
+            <Tooltip title={backText}>
               <Link to={backUrl}>
                 <IconButton>
                   <BackIcon className={classes.icon} />
                 </IconButton>
               </Link>
-              </Tooltip>
-            ) : (allowImplicitNavigation ? (
-              <Tooltip title="Go back">
+            </Tooltip>
+          ) : allowImplicitNavigation ? (
+            <Tooltip title="Go back">
               <IconButton onClick={history.goBack}>
                 <BackIcon className={classes.icon} />
               </IconButton>
-              </Tooltip>
-            ) : <span />)}
+            </Tooltip>
+          ) : (
+            <span />
+          )}
           <Typography variant="h5" noWrap>
             {title}
           </Typography>
