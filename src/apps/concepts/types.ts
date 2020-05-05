@@ -37,6 +37,17 @@ export interface InternalAPIMapping extends APIMapping {
   to_concept_url: string;
 }
 
+export interface Extras {
+  hi_absolute?: number;
+  hi_critical?: number;
+  hi_normal?: number;
+  low_normal?: number;
+  low_critical?: number;
+  low_absolute?: number;
+  units?: string;
+  precise?: boolean;
+}
+
 export interface BaseConcept {
   id: string;
   external_id: string;
@@ -46,6 +57,7 @@ export interface BaseConcept {
   descriptions: ConceptDescription[];
   url?: string;
   version_url?: string;
+  extras: Extras;
 }
 
 export interface Concept extends BaseConcept {

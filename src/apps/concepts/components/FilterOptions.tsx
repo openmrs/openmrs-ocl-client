@@ -188,6 +188,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
           </ButtonGroup>
           <Input
             placeholder="Search filters"
+            type="search"
             value={searchText}
             onChange={e => setSearchText(e.target.value)}
           />

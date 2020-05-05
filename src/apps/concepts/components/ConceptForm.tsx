@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import { Concept, ConceptDescription, ConceptName, Mapping } from "../types";
+import { Concept, ConceptDescription, ConceptName, Extras, Mapping } from '../types'
 import uuid from "uuid";
 import {
   Button,
   createStyles,
-  FormControl,
+  FormControl, Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -14,7 +14,7 @@ import {
   Paper,
   Theme,
   Typography
-} from "@material-ui/core";
+} from '@material-ui/core'
 import { Select, TextField } from "formik-material-ui";
 import {
   CONCEPT_CLASSES,
@@ -23,9 +23,9 @@ import {
   MAP_TYPE_CONCEPT_SET,
   MAP_TYPE_Q_AND_A,
   NAME_TYPES,
-  QUESTION_CONCEPT_CLASS,
-  SET_CONCEPT_CLASSES
-} from "../../../utils";
+  CONCEPT_CLASS_QUESTION,
+  CONCEPT_CLASSES_SET, CONCEPT_DATATYPE_NUMERIC
+} from '../../../utils'
 import NamesTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
 import * as Yup from "yup";
@@ -49,14 +49,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const castNecessaryValues = (values: Concept) => {
-  const { names } = values;
+const prepForApi = (values: Concept) => {
+  const { names, extras } = values;
   return {
     ...values,
     names: names.map((name: ConceptName) => ({
       ...name,
       name_type: name.name_type === "null" ? null : name.name_type // api represents 'Synonym' name_type as null
-    }))
+    })),
+    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {},
   };
 };
 
@@ -95,7 +96,8 @@ const initialValues: Concept = {
   sets: [],
   mappings: [],
   names: [createName()],
-  retired: false
+  retired: false,
+  extras: {},
 };
 
 const buildInitialValues = (
@@ -120,6 +122,18 @@ const MappingSchema = Yup.object()
     "A to concept is required",
     (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
   );
+
+const ExtrasSchema = Yup.object()
+  .shape<Extras>({
+    hi_absolute: Yup.number().notRequired(),
+    hi_critical: Yup.number().notRequired(),
+    hi_normal: Yup.number().notRequired(),
+    low_normal: Yup.number().notRequired(),
+    low_critical: Yup.number().notRequired(),
+    low_absolute: Yup.number().notRequired(),
+    units: Yup.string().notRequired(),
+    precise: Yup.boolean().notRequired(),
+  })
 
 const ConceptSchema = Yup.object().shape<Concept>({
   concept_class: Yup.string().required("Required"),
@@ -156,7 +170,8 @@ const ConceptSchema = Yup.object().shape<Concept>({
   [MAPPINGS_VALUE_KEY]: Yup.array()
     .of(MappingSchema)
     .min(0),
-  retired: Yup.boolean()
+  retired: Yup.boolean(),
+  extras: ExtrasSchema,
 });
 
 interface Props {
@@ -187,12 +202,12 @@ const ConceptForm: React.FC<Props> = ({
   const showAnswers =
     (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
-      (!conceptClass || conceptClass === QUESTION_CONCEPT_CLASS)) ||
+      (!conceptClass || conceptClass === CONCEPT_CLASS_QUESTION)) ||
     (context === CONTEXT.view && supportLegacyMappings);
   const showSets =
     (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
-      (!conceptClass || SET_CONCEPT_CLASSES.includes(conceptClass))) ||
+      (!conceptClass || CONCEPT_CLASSES_SET.includes(conceptClass))) ||
     (context === CONTEXT.view && supportLegacyMappings);
 
   const classes = useStyles();
@@ -276,7 +291,7 @@ const ConceptForm: React.FC<Props> = ({
       initialValues={savedValues || buildInitialValues(conceptClass)}
       validationSchema={ConceptSchema}
       onSubmit={values => {
-        if (onSubmit) onSubmit(castNecessaryValues(values));
+        if (onSubmit) onSubmit(prepForApi(values));
       }}
     >
       {({ isSubmitting, status, values, errors, handleChange }) => (
@@ -348,6 +363,9 @@ const ConceptForm: React.FC<Props> = ({
                   <ErrorMessage name="datatype" component="span" />
                 </Typography>
               </FormControl>
+              {values.datatype !== CONCEPT_DATATYPE_NUMERIC ? null : (
+                <PrecisionOptions />
+              )}
             </fieldset>
           </Paper>
           <br />
@@ -521,6 +539,85 @@ const ConceptForm: React.FC<Props> = ({
       )}
     </Formik>
   );
+};
+
+interface PrecisionOptionsProps {
+
+}
+
+const PRECISION_INPUTS = [
+  [
+    ['hi_absolute', 'Absolute High'],
+    ['hi_critical', 'Critical High'],
+    ['hi_normal', 'Normal High'],
+  ],
+  [
+    ['low_absolute', 'Absolute Low'],
+    ['low_critical', 'Critical Low'],
+    ['lo_normal', 'Normal Low'],
+  ],
+];
+
+const usePrecisionStyles = makeStyles({
+    flex: {
+      display: "flex",
+    }
+  }
+);
+
+const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
+  const classes = usePrecisionStyles();
+
+  return (
+    <Grid direction="column" container>
+      {
+        PRECISION_INPUTS.map(input_group => (
+            <Grid className={classes.flex} justify="space-around">
+              {input_group.map(([key, value]) => (
+                <Field
+                  // fullWidth
+                  id={`extras.${key}`}
+                  name={`extras.${key}`}
+                  label={value}
+                  margin="dense"
+                  component={TextField}
+                  type="number"
+                  size="small"
+                />
+              ))}
+            </Grid>
+        ))
+      }
+      <Grid>
+        <Field
+          fullWidth
+          id="extras.units"
+          name="extras.units"
+          label="Units"
+          margin="dense"
+          component={TextField}
+          size="small"
+        />
+        <FormControl fullWidth margin="dense" size="small">
+          <InputLabel htmlFor="datatype">Allow Decimal</InputLabel>
+          <Field name="extras.precise" id="extras.precise" type="boolean" component={Select}>
+            <MenuItem
+              // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+              value={false}
+            >
+              No
+            </MenuItem>
+            <MenuItem
+              // @ts-ignore
+              value={true}
+            >
+              Yes
+            </MenuItem>
+          </Field>
+        </FormControl>
+      </Grid>
+    </Grid>
+  )
 };
 
 export default ConceptForm;
