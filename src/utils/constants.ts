@@ -207,17 +207,18 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: "zu", label: "Zulu (zu)" }
 ];
 
-export const QUESTION_CONCEPT_CLASS = "Question";
-export const SET_CONCEPT_CLASSES = ["LabSet", "MedSet", "ConvSet"];
+export const CONCEPT_CLASS_QUESTION = "Question";
+export const CONCEPT_CLASSES_SET = ["LabSet", "MedSet", "ConvSet"];
+export const CONCEPT_DATATYPE_NUMERIC = "Numeric";
 
 export const CONCEPT_CLASSES: string[] = [
   "Diagnosis",
   "Symptom/Finding",
   "Procedure",
-  QUESTION_CONCEPT_CLASS,
+  CONCEPT_CLASS_QUESTION,
   "Drug",
   "Test",
-  ...SET_CONCEPT_CLASSES,
+  ...CONCEPT_CLASSES_SET,
   "Finding",
   "Anatomy",
   "Misc",
@@ -251,7 +252,7 @@ export const DATA_TYPES: string[] = [
   "Datetime",
   "Structured-Numeric",
   "Rule",
-  "Numeric",
+  CONCEPT_DATATYPE_NUMERIC,
   "Text"
 ];
 

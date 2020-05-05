@@ -211,6 +211,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
             <Input
               fullWidth
               placeholder="Search concepts"
+              type="search"
               value={q}
               onChange={e => setQ(e.target.value)}
               endAdornment={

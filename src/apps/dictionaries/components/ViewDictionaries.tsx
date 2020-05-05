@@ -101,6 +101,7 @@ const ViewDictionaries: React.FC<Props> = ({
           <Input
             onChange={e => setQ(e.target.value)}
             value={q}
+            type="search"
             fullWidth
             placeholder="Search Dictionaries"
             endAdornment={
