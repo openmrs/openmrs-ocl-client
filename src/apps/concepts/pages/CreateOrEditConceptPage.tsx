@@ -22,7 +22,7 @@ import {
   ProgressOverlay,
   useAnchor,
   usePrevious,
-  useQuery
+  useQueryParams
 } from "../../../utils";
 import { CONTEXT } from "../constants";
 import {
@@ -48,6 +48,11 @@ interface Props {
   progress?: string;
 }
 
+interface ConceptPageQueryParams {
+  conceptClass: string;
+  linkedDictionary: string;
+}
+
 const CreateOrEditConceptPage: React.FC<Props> = ({
   retrieveConcept,
   concept,
@@ -62,7 +67,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 }) => {
   const { pathname: url } = useLocation();
   const { concept: conceptId } = useParams();
-  const { conceptClass, linkedDictionary } = useQuery();
+  const { conceptClass, linkedDictionary } = useQueryParams<ConceptPageQueryParams>();
   const previouslyLoading = usePrevious(loading);
   const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 

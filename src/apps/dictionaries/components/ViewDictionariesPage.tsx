@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { APIDictionary } from "../types";
 import { ProgressOverlay } from "../../../utils/components";
-import { useQuery } from "../../../utils";
+import { useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 import ViewDictionaries from "../components/ViewDictionaries";
@@ -32,7 +32,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   const { pathname: url } = useLocation();
   const { num_found: numFound = dictionaries.length } = meta;
 
-  const queryParams: { page?: number; q?: string } = useQuery();
+  const queryParams: { page?: number; q?: string } = useQueryParams();
   const { page = 1, q: initialQ = "" } = queryParams;
 
   useEffect(() => {

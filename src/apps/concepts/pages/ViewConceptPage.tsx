@@ -22,7 +22,7 @@ import {
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import { CONTEXT } from "../constants";
-import { ProgressOverlay, useQuery } from "../../../utils";
+import { ProgressOverlay, useQueryParams } from "../../../utils";
 
 interface Props {
   loading: boolean;
@@ -48,7 +48,7 @@ const ViewConceptPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const { linkedDictionary, linkedSource } = useQuery();
+  const { linkedDictionary, linkedSource } = useQueryParams();
 
   // we can modify the concept and it lives in our dictionary's linked source
   const showEditButton =

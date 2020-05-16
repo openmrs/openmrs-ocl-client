@@ -13,7 +13,7 @@ import {
 import { recursivelyAddConceptsToDictionaryAction } from "../redux";
 import { useLocation } from "react-router";
 import { connect } from "react-redux";
-import { PREFERRED_SOURCES, useAnchor, useQuery } from "../../../utils";
+import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
 
@@ -38,7 +38,7 @@ interface Props {
 const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
-  const { fromSource } = useQuery();
+  const { fromSource } = useQueryParams();
 
   const [
     switchSourceAnchor,

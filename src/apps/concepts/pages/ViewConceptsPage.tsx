@@ -27,7 +27,7 @@ import {
   CONCEPT_CLASSES,
   PREFERRED_SOURCES,
   useAnchor,
-  useQuery
+  useQueryParams
 } from "../../../utils";
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
@@ -115,7 +115,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const { linkedSource, preferredSource } = useQuery(); // only relevant when using collection container
+  const { linkedSource, preferredSource } = useQueryParams(); // only relevant when using collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
@@ -130,7 +130,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     handleSwitchSourceClose
   ] = useAnchor();
 
-  const queryParams: QueryParams = useQuery();
+  const queryParams: QueryParams = useQueryParams();
   const {
     page = 1,
     sortDirection = "sortAsc",

@@ -10,8 +10,8 @@ export function usePrevious(value: any) {
   return ref.current;
 }
 
-export function useQuery() {
-  return qs.parse(useLocation().search, { ignoreQueryPrefix: true });
+export function useQueryParams<QueryParamsType>(): QueryParamsType {
+  return qs.parse(useLocation().search, {ignoreQueryPrefix: true}) as unknown as QueryParamsType;
 }
 
 export function useAnchor(): [
