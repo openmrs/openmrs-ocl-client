@@ -352,6 +352,6 @@ export const PREFERRED_SOURCES: { [key: string]: string } = {
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
-  ...PREFERRED_SOURCES,
-  "Public Sources": ALL_PUBLIC_SOURCES_URL
+  "Public Sources": ALL_PUBLIC_SOURCES_URL,
+  ...PREFERRED_SOURCES
 };
