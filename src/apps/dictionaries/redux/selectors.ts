@@ -66,6 +66,10 @@ export const editSourceAndDictionaryErrorsSelector = (
   if (editDictionaryErrors) return editDictionaryErrors;
 };
 
+export function dictionarySelector(state: AppState) {
+  return state.dictionaries.dictionary;
+}
+
 export const retrieveDictionaryLoadingSelector = loadingSelector(
   RETRIEVE_DICTIONARY_ACTION
 );

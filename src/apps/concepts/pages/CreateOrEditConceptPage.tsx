@@ -67,7 +67,9 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 }) => {
   const { pathname: url } = useLocation();
   const { concept: conceptId } = useParams();
-  const { conceptClass, linkedDictionary } = useQueryParams<ConceptPageQueryParams>();
+  const { conceptClass, linkedDictionary } = useQueryParams<
+    ConceptPageQueryParams
+  >();
   const previouslyLoading = usePrevious(loading);
   const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 

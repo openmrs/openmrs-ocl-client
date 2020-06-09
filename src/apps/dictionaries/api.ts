@@ -8,15 +8,15 @@ import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
 import { AxiosResponse } from "axios";
 import { OCL_DICTIONARY_TYPE } from "./constants";
 import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
+import { default as containerAPI } from "../containers/api";
 
 const api = {
+  ...containerAPI,
   create: (
     ownerUrl: string,
     data: NewAPIDictionary
   ): Promise<AxiosResponse<any>> =>
     authenticatedInstance.post(`${ownerUrl}collections/`, data),
-  retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.get(dictionaryUrl, { params: { verbose: true } }),
   update: (
     dictionaryUrl: string,
     data: EditableDictionaryFields

@@ -1,30 +1,37 @@
-import React from 'react'
-import clsx from 'clsx'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import Drawer from '@material-ui/core/Drawer'
-import List from '@material-ui/core/List'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import React from "react";
+import clsx from "clsx";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import {
   ExitToApp,
   FolderOpenOutlined,
   GroupWorkOutlined as OrgDictionariesIcon,
   FolderSharedOutlined,
   Notifications as NotificationsIcon
-} from '@material-ui/icons'
-import { NavLink as Link } from 'react-router-dom'
-import { Button, Dialog, DialogActions, DialogTitle, Tooltip, Typography } from '@material-ui/core'
-import { connect } from 'react-redux'
+} from "@material-ui/icons";
+import { NavLink as Link } from "react-router-dom";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Tooltip,
+  Typography
+} from "@material-ui/core";
+import { connect } from "react-redux";
 // resist the temptation to make this like the rest of the action creators
 // because of the potential of a circular dependency(auth/utils->api->auth/api->auth/redux/actions->auth->utils)
-import { LOGOUT_ACTION } from '../apps/authentication'
-import { action } from '../redux/utils'
+import { LOGOUT_ACTION } from "../apps/authentication";
+import { action } from "../redux/utils";
 
 const drawerWidth = 240;
 
@@ -38,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0,
+      flexShrink: 0
     },
     drawerOpen: {
       width: drawerWidth,
@@ -58,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9) + 1
       },
-      whiteSpace: "nowrap",
+      whiteSpace: "nowrap"
     },
     toolbar: {
       display: "flex",

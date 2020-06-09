@@ -1,7 +1,13 @@
-import React from 'react'
-import { APIDictionary } from '../../dictionaries'
-import { Button, ButtonGroup, makeStyles, Paper, Typography } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { APIDictionary } from "../../dictionaries";
+import {
+  Button,
+  ButtonGroup,
+  makeStyles,
+  Paper,
+  Typography
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 interface Props {
   dictionary: APIDictionary;
@@ -19,8 +25,7 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   const {
     references,
     concepts_url: conceptsUrl,
-    preferred_source: preferredSource,
-    extras: { source: linkedSource }
+    preferred_source: preferredSource
   } = dictionary;
 
   const conceptReferences = references
@@ -46,12 +51,16 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
           gutterBottom
           className={classes.conceptCountBreakDown}
         >
-          <span data-testid="preferredConceptCount">From {preferredSource}: {fromPreferredSource}</span>
+          <span data-testid="preferredConceptCount">
+            From {preferredSource}: {fromPreferredSource}
+          </span>
           <br />
-          <span data-testid="customConceptCount">Custom Concepts: {customConceptCount}</span>
+          <span data-testid="customConceptCount">
+            Custom Concepts: {customConceptCount}
+          </span>
         </Typography>
         <ButtonGroup variant="text" fullWidth>
-          <Button to={`${conceptsUrl}?linkedSource=${linkedSource}&preferredSource=${preferredSource}`} component={Link} color="primary">
+          <Button to={conceptsUrl} component={Link} color="primary">
             View Concepts
           </Button>
         </ButtonGroup>

@@ -1,5 +1,5 @@
 import { AppState, IndexedAction } from "./types";
-import { errors, getIndexedAction, loading, progress } from "./utils";
+import { errors, getIndexedAction, loading, meta, progress } from "./utils";
 
 export function loadingSelector(...actions: (IndexedAction | string)[]) {
   const indexedActions: IndexedAction[] = actions.map(action =>
@@ -37,6 +37,15 @@ export function errorSelector(actionOrActionType: IndexedAction | string) {
   return (state: AppState): any =>
     state.status[errors(actionType)]
       ? state.status[errors(actionType)][actionIndex]
+      : undefined;
+}
+
+export function metaSelector(actionOrActionType: IndexedAction | string) {
+  const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
+
+  return (state: AppState): any =>
+    state.status[meta(actionType)]
+      ? state.status[meta(actionType)][actionIndex]
       : undefined;
 }
 
