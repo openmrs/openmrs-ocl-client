@@ -17,7 +17,7 @@ export interface TestDictionary {
   ownerType: string;
   visibility: string;
   preferredLanguage: string;
-  otherLanguages: string;
+  otherLanguages: string[];
 }
 
 export function newDictionary(): [TestDictionary, string] {
@@ -32,7 +32,7 @@ export function newDictionary(): [TestDictionary, string] {
     ownerType: "users",
     visibility: "Public",
     preferredLanguage: "English (en)",
-    otherLanguages: "French (fr)"
+    otherLanguages: ["French (fr)", "German (de)"]
   };
 
   return [
@@ -62,9 +62,11 @@ export function createDictionary(
   select("Owner", dictionary.ownerDisplayValue);
   select("Visibility", dictionary.visibility);
   select("Preferred Language", dictionary.preferredLanguage);
+  dictionary.otherLanguages.forEach(language => {
+    select("Other Languages", language);
+    cy.get("body").type("{esc}");
+  });
 
-  select("Other Languages", dictionary.otherLanguages);
-  cy.get("body").type("{esc}");
   cy.findByText("Submit").click();
 
   // wait for request to get done
