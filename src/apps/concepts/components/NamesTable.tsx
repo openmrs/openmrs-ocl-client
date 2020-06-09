@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { Select, TextField } from "formik-material-ui";
-import { LOCALES, NAME_TYPES } from "../../../utils";
+import { NAME_TYPES } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,
   MoreVert as MoreVertIcon
@@ -56,6 +56,7 @@ interface Props {
   useTypes?: boolean;
   isSubmitting: boolean;
   editing: boolean;
+  supportedLocales: { [key: string]: string }[];
 }
 
 const NamesTable: React.FC<Props> = ({
@@ -69,7 +70,8 @@ const NamesTable: React.FC<Props> = ({
   multiline = false,
   useTypes = false,
   isSubmitting,
-  editing
+  editing,
+  supportedLocales
 }) => {
   const classes = useStyles();
 
@@ -158,7 +160,7 @@ const NamesTable: React.FC<Props> = ({
                     data-testid={`${valuesKey}_${index}_locale`}
                     component={Select}
                   >
-                    {LOCALES.map(locale => (
+                    {supportedLocales.map(locale => (
                       <MenuItem key={locale.value} value={locale.value}>
                         {locale.label}
                       </MenuItem>

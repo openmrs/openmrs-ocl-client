@@ -32,21 +32,36 @@ import {
   RestoreFromTrashOutlined as RestoreIcon
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { APIDictionary } from "../../dictionaries";
+import {
+  dictionarySelector,
+  makeRetrieveDictionaryAction,
+  retrieveDictionaryLoadingSelector
+} from "../../dictionaries/redux";
 
-interface Props {
+interface StateProps {
   fetchLoading: boolean;
   loading: boolean;
   concept?: APIConcept;
+  linkedDictionary?: APIDictionary;
   mappings: APIMapping[];
   fetchErrors?: {};
   errors?: {};
+  allMappingErrors?: { errors: string }[];
+  progress?: string;
+}
+
+interface ActionProps {
+  retrieveDictionary: (
+    ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
+  ) => void;
   retrieveConcept: (...args: Parameters<typeof retrieveConceptAction>) => void;
   upsertConcept: (
     ...args: Parameters<typeof upsertConceptAndMappingsAction>
   ) => void;
-  allMappingErrors?: { errors: string }[];
-  progress?: string;
 }
+
+type Props = StateProps & ActionProps;
 
 interface ConceptPageQueryParams {
   conceptClass: string;
@@ -55,7 +70,9 @@ interface ConceptPageQueryParams {
 
 const CreateOrEditConceptPage: React.FC<Props> = ({
   retrieveConcept,
+  retrieveDictionary,
   concept,
+  linkedDictionary,
   mappings,
   fetchLoading,
   fetchErrors,
@@ -67,9 +84,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 }) => {
   const { pathname: url } = useLocation();
   const { concept: conceptId } = useParams();
-  const { conceptClass, linkedDictionary } = useQueryParams<
-    ConceptPageQueryParams
-  >();
+  const {
+    conceptClass,
+    linkedDictionary: linkedDictionaryUrl
+  } = useQueryParams<ConceptPageQueryParams>();
   const previouslyLoading = usePrevious(loading);
   const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
@@ -84,6 +102,9 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   if (!loading && previouslyLoading && concept && (errors || anyMappingsErrors))
     context = CONTEXT.edit;
 
+  const defaultLocale = linkedDictionary?.default_locale;
+  const supportedLocales = linkedDictionary?.supported_locales;
+
   const status =
     !errors && anyMappingsErrors
       ? "Some mappings were not updated or added. Fix the errors and retry."
@@ -93,6 +114,8 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // only retrieve the concept if the context was edit at the beginning
     // otherwise we obviously have nothing to edit
     if (originallyEditing) retrieveConcept(conceptUrl);
+    retrieveDictionary(linkedDictionaryUrl);
+
     // usually doing the following is a mistake and will bite us later
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -102,7 +125,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     return (
       <Redirect
         to={`${concept.version_url}${
-          linkedDictionary ? `?linkedDictionary=${linkedDictionary}` : ""
+          linkedDictionaryUrl ? `?linkedDictionary=${linkedDictionaryUrl}` : ""
         }&linkedSource=${sourceUrl}`}
       />
     );
@@ -133,8 +156,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
             allMappingErrors={allMappingErrors}
             supportLegacyMappings={originallyEditing}
             onSubmit={(data: Concept) =>
-              upsertConcept(data, sourceUrl, linkedDictionary)
+              upsertConcept(data, sourceUrl, linkedDictionaryUrl)
             }
+            defaultLocale={defaultLocale}
+            supportedLocales={supportedLocales}
           />
         </Grid>
 
@@ -156,7 +181,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
                 <Link
                   replace
                   className="link"
-                  to={`${conceptUrl}?linkedDictionary=${linkedDictionary}&linkedSource=${sourceUrl}`}
+                  to={`${conceptUrl}?linkedDictionary=${linkedDictionaryUrl}&linkedSource=${sourceUrl}`}
                 >
                   Discard changes and view
                 </Link>
@@ -169,7 +194,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
                     upsertConcept(
                       { ...rawConcept, retired: !concept?.retired },
                       sourceUrl,
-                      linkedDictionary
+                      linkedDictionaryUrl
                     );
                   else debug("Retiring failed: rawConcept is undefined");
                 }}
@@ -196,9 +221,12 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => ({
   concept: state.concepts.concept,
+  linkedDictionary: dictionarySelector(state),
   mappings: state.concepts.mappings,
   loading: upsertConceptAndMappingsLoadingSelector(state),
-  fetchLoading: viewConceptLoadingSelector(state),
+  fetchLoading:
+    viewConceptLoadingSelector(state) ||
+    retrieveDictionaryLoadingSelector(state),
   fetchErrors: viewConceptErrorsSelector(state),
   errors: upsertConceptErrorsSelector(state),
   allMappingErrors: upsertAllMappingsErrorSelector(state),
@@ -206,11 +234,12 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
+  retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveConcept: retrieveConceptAction,
   upsertConcept: upsertConceptAndMappingsAction
 };
 
-export default connect(
+export default connect<StateProps, ActionProps, unknown, AppState>(
   mapStateToProps,
   mapActionsToProps
 )(CreateOrEditConceptPage);

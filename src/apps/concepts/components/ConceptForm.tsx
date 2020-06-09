@@ -30,9 +30,11 @@ import {
   NAME_TYPES,
   CONCEPT_CLASS_QUESTION,
   CONCEPT_CLASSES_SET,
-  CONCEPT_DATATYPE_NUMERIC
+  CONCEPT_DATATYPE_NUMERIC,
+  LOCALES,
+  findLocale
 } from "../../../utils";
-import NamesTable from "./NamesTable";
+import NameOrDescriptionTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
 import * as Yup from "yup";
 import MappingsTable from "./MappingsTable";
@@ -48,11 +50,10 @@ const SETS_VALUE_KEY = "sets";
 const MAPPINGS_VALUE_KEY = "mappings";
 
 const useStyles = makeStyles({
-      buttonContainer: {
-        textAlign: "center"
-      }
-    }
-);
+  buttonContainer: {
+    textAlign: "center"
+  }
+});
 
 const prepForApi = (values: Concept) => {
   const { names, extras } = values;
@@ -67,22 +68,25 @@ const prepForApi = (values: Concept) => {
 };
 
 const createName = (
+  locale: string = "",
   nameType: string = NAME_TYPES[0].value,
   localePreferred = true
 ): ConceptName => ({
   name: "",
-  locale: "",
+  locale: locale,
   external_id: uuid(),
   locale_preferred: localePreferred,
   name_type: nameType
 });
 
-const createDescription = (): ConceptDescription => ({
-  description: "",
-  locale: "",
-  external_id: uuid(),
-  locale_preferred: false
-});
+function createDescription(locale: string = ""): ConceptDescription {
+  return {
+    description: "",
+    locale: locale,
+    external_id: uuid(),
+    locale_preferred: false
+  };
+}
 
 const createMapping = (map_type: string = ""): Mapping => ({
   external_id: uuid(),
@@ -100,16 +104,18 @@ const initialValues: Concept = {
   answers: [],
   sets: [],
   mappings: [],
-  names: [createName()],
+  names: [],
   retired: false,
   extras: {}
 };
 
 const buildInitialValues = (
-  conceptClass: string = initialValues.concept_class
+  conceptClass: string = initialValues.concept_class,
+  names: ConceptName[]
 ) => ({
   ...initialValues,
-  concept_class: conceptClass
+  concept_class: conceptClass,
+  names
 });
 
 const MappingSchema = Yup.object()
@@ -188,6 +194,8 @@ interface Props {
   status?: string;
   conceptClass?: string;
   supportLegacyMappings?: boolean;
+  defaultLocale?: string;
+  supportedLocales?: string[];
 }
 
 const ConceptForm: React.FC<Props> = ({
@@ -199,7 +207,9 @@ const ConceptForm: React.FC<Props> = ({
   context = "view",
   savedValues,
   conceptClass,
-  supportLegacyMappings = true
+  supportLegacyMappings = true,
+  defaultLocale,
+  supportedLocales
 }) => {
   const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
   const allowIdEdits = context === CONTEXT.create;
@@ -292,7 +302,10 @@ const ConceptForm: React.FC<Props> = ({
   return (
     <Formik
       ref={formikRef}
-      initialValues={savedValues || buildInitialValues(conceptClass)}
+      initialValues={
+        savedValues ||
+        buildInitialValues(conceptClass, [createName(defaultLocale)])
+      }
       validationSchema={ConceptSchema}
       onSubmit={values => {
         if (onSubmit) onSubmit(prepForApi(values));
@@ -380,10 +393,10 @@ const ConceptForm: React.FC<Props> = ({
               </Typography>
               <FieldArray name="names">
                 {arrayHelpers => (
-                  <NamesTable
+                  <NameOrDescriptionTable
                     useTypes
                     createNewValue={() =>
-                      createName(NAME_TYPES[1].value, false)
+                      createName(defaultLocale, NAME_TYPES[1].value, false)
                     }
                     type="name"
                     title="Name"
@@ -393,6 +406,13 @@ const ConceptForm: React.FC<Props> = ({
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
                     editing={allowEditing}
+                    supportedLocales={
+                      defaultLocale && supportedLocales
+                        ? [defaultLocale, ...supportedLocales].map(locale =>
+                            findLocale(locale)
+                          )
+                        : LOCALES
+                    }
                   />
                 )}
               </FieldArray>
@@ -406,9 +426,9 @@ const ConceptForm: React.FC<Props> = ({
               </Typography>
               <FieldArray name="descriptions">
                 {arrayHelpers => (
-                  <NamesTable
+                  <NameOrDescriptionTable
                     multiline
-                    createNewValue={createDescription}
+                    createNewValue={() => createDescription(defaultLocale)}
                     type="description"
                     title="Description"
                     valuesKey="descriptions"
@@ -417,6 +437,13 @@ const ConceptForm: React.FC<Props> = ({
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
                     editing={allowEditing}
+                    supportedLocales={
+                      defaultLocale && supportedLocales
+                        ? [defaultLocale, ...supportedLocales].map(locale =>
+                            findLocale(locale)
+                          )
+                        : LOCALES
+                    }
                   />
                 )}
               </FieldArray>

@@ -348,7 +348,7 @@ const ALL_PUBLIC_SOURCES_URL = "/";
 export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
   PIH: PIH_SOURCE_URL,
-  MSF: MSF_SOURCE_URL,
+  MSF: MSF_SOURCE_URL
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {

@@ -3,7 +3,9 @@ import { snakeCase } from "lodash";
 
 export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||
-  LOCALES.find(currentLocale => currentLocale.value === fallback);
+  (LOCALES.find(currentLocale => currentLocale.value === fallback) as {
+    [key: string]: string;
+  });
 
 export const STATUS_CODES_TO_MESSAGES: { [key: number]: string } = {
   // if this map starts growing big, try to find more standardized language
@@ -12,6 +14,7 @@ export const STATUS_CODES_TO_MESSAGES: { [key: number]: string } = {
 };
 
 const MESSAGES_TO_STATUS_CODES: { [key: string]: number } = Object.entries(
+  // todo reformat this to use lodash's invert
   STATUS_CODES_TO_MESSAGES
 ).reduce<{ [key: string]: number }>(
   (result, [key, value]) => ({ ...result, [value]: parseInt(key) }),
