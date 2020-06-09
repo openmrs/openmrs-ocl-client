@@ -1,20 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
-import { Concept, ConceptDescription, ConceptName, Extras, Mapping } from '../types'
+import {
+  Concept,
+  ConceptDescription,
+  ConceptName,
+  Extras,
+  Mapping
+} from "../types";
 import uuid from "uuid";
 import {
   Button,
-  createStyles,
-  FormControl, Grid,
+  FormControl,
+  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   makeStyles,
   MenuItem,
   Paper,
-  Theme,
   Typography
-} from '@material-ui/core'
+} from "@material-ui/core";
 import { Select, TextField } from "formik-material-ui";
 import {
   CONCEPT_CLASSES,
@@ -24,8 +29,9 @@ import {
   MAP_TYPE_Q_AND_A,
   NAME_TYPES,
   CONCEPT_CLASS_QUESTION,
-  CONCEPT_CLASSES_SET, CONCEPT_DATATYPE_NUMERIC
-} from '../../../utils'
+  CONCEPT_CLASSES_SET,
+  CONCEPT_DATATYPE_NUMERIC
+} from "../../../utils";
 import NamesTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
 import * as Yup from "yup";
@@ -41,12 +47,11 @@ const ANSWERS_VALUE_KEY = "answers";
 const SETS_VALUE_KEY = "sets";
 const MAPPINGS_VALUE_KEY = "mappings";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    buttonContainer: {
-      textAlign: "center"
+const useStyles = makeStyles({
+      buttonContainer: {
+        textAlign: "center"
+      }
     }
-  })
 );
 
 const prepForApi = (values: Concept) => {
@@ -57,7 +62,7 @@ const prepForApi = (values: Concept) => {
       ...name,
       name_type: name.name_type === "null" ? null : name.name_type // api represents 'Synonym' name_type as null
     })),
-    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {},
+    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {}
   };
 };
 
@@ -97,7 +102,7 @@ const initialValues: Concept = {
   mappings: [],
   names: [createName()],
   retired: false,
-  extras: {},
+  extras: {}
 };
 
 const buildInitialValues = (
@@ -123,17 +128,16 @@ const MappingSchema = Yup.object()
     (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
   );
 
-const ExtrasSchema = Yup.object()
-  .shape<Extras>({
-    hi_absolute: Yup.number().notRequired(),
-    hi_critical: Yup.number().notRequired(),
-    hi_normal: Yup.number().notRequired(),
-    low_normal: Yup.number().notRequired(),
-    low_critical: Yup.number().notRequired(),
-    low_absolute: Yup.number().notRequired(),
-    units: Yup.string().notRequired(),
-    precise: Yup.boolean().notRequired(),
-  })
+const ExtrasSchema = Yup.object().shape<Extras>({
+  hi_absolute: Yup.number().notRequired(),
+  hi_critical: Yup.number().notRequired(),
+  hi_normal: Yup.number().notRequired(),
+  low_normal: Yup.number().notRequired(),
+  low_critical: Yup.number().notRequired(),
+  low_absolute: Yup.number().notRequired(),
+  units: Yup.string().notRequired(),
+  precise: Yup.boolean().notRequired()
+});
 
 const ConceptSchema = Yup.object().shape<Concept>({
   concept_class: Yup.string().required("Required"),
@@ -171,7 +175,7 @@ const ConceptSchema = Yup.object().shape<Concept>({
     .of(MappingSchema)
     .min(0),
   retired: Yup.boolean(),
-  extras: ExtrasSchema,
+  extras: ExtrasSchema
 });
 
 interface Props {
@@ -541,53 +545,48 @@ const ConceptForm: React.FC<Props> = ({
   );
 };
 
-interface PrecisionOptionsProps {
-
-}
+interface PrecisionOptionsProps {}
 
 const PRECISION_INPUTS = [
   [
-    ['hi_absolute', 'Absolute High'],
-    ['hi_critical', 'Critical High'],
-    ['hi_normal', 'Normal High'],
+    ["hi_absolute", "Absolute High"],
+    ["hi_critical", "Critical High"],
+    ["hi_normal", "Normal High"]
   ],
   [
-    ['low_absolute', 'Absolute Low'],
-    ['low_critical', 'Critical Low'],
-    ['lo_normal', 'Normal Low'],
-  ],
+    ["low_absolute", "Absolute Low"],
+    ["low_critical", "Critical Low"],
+    ["lo_normal", "Normal Low"]
+  ]
 ];
 
 const usePrecisionStyles = makeStyles({
-    flex: {
-      display: "flex",
-    }
+  flex: {
+    display: "flex"
   }
-);
+});
 
 const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
   const classes = usePrecisionStyles();
 
   return (
     <Grid direction="column" container>
-      {
-        PRECISION_INPUTS.map(input_group => (
-            <Grid className={classes.flex} justify="space-around">
-              {input_group.map(([key, value]) => (
-                <Field
-                  // fullWidth
-                  id={`extras.${key}`}
-                  name={`extras.${key}`}
-                  label={value}
-                  margin="dense"
-                  component={TextField}
-                  type="number"
-                  size="small"
-                />
-              ))}
-            </Grid>
-        ))
-      }
+      {PRECISION_INPUTS.map(input_group => (
+        <Grid className={classes.flex} justify="space-around">
+          {input_group.map(([key, value]) => (
+            <Field
+              // fullWidth
+              id={`extras.${key}`}
+              name={`extras.${key}`}
+              label={value}
+              margin="dense"
+              component={TextField}
+              type="number"
+              size="small"
+            />
+          ))}
+        </Grid>
+      ))}
       <Grid>
         <Field
           fullWidth
@@ -600,7 +599,12 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
         />
         <FormControl fullWidth margin="dense" size="small">
           <InputLabel htmlFor="datatype">Allow Decimal</InputLabel>
-          <Field name="extras.precise" id="extras.precise" type="boolean" component={Select}>
+          <Field
+            name="extras.precise"
+            id="extras.precise"
+            type="boolean"
+            component={Select}
+          >
             <MenuItem
               // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
               value={false}
@@ -617,7 +621,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
         </FormControl>
       </Grid>
     </Grid>
-  )
+  );
 };
 
 export default ConceptForm;

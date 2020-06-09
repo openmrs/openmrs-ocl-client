@@ -23,9 +23,8 @@ import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
 import {
-  ALL_PUBLIC_SOURCES_URL,
   CONCEPT_CLASSES,
-  PREFERRED_SOURCES,
+  PREFERRED_SOURCES_VIEW_ONLY,
   useAnchor,
   useQueryParams
 } from "../../../utils";
@@ -42,18 +41,24 @@ import {
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
-  DICTIONARY_CONTAINER, DICTIONARY_VERSION_CONTAINER,
+  DICTIONARY_CONTAINER,
+  DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
-} from '../constants'
+} from "../constants";
 import {
+  dictionarySelector,
   recursivelyAddConceptsToDictionaryAction,
-  removeReferencesFromDictionaryAction
+  removeReferencesFromDictionaryAction,
+  makeRetrieveDictionaryAction,
+  retrieveDictionaryLoadingSelector
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
+import { APIDictionary } from "../../dictionaries";
 
 interface StateProps {
   concepts?: APIConcept[];
+  dictionary?: APIDictionary;
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -64,6 +69,9 @@ interface StateProps {
 type ActionProps = {
   retrieveConcepts: (
     ...args: Parameters<typeof retrieveConceptsAction>
+  ) => void;
+  retrieveDictionary: (
+    ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
   ) => void;
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
@@ -96,9 +104,11 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
+  dictionary,
   loading,
   errors,
   retrieveConcepts,
+  retrieveDictionary,
   meta = {},
   profile,
   usersOrgs,
@@ -115,7 +125,11 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const { linkedSource, preferredSource } = useQueryParams(); // only relevant when using collection container
+
+  // only relevant with the collection container
+  const preferredSource = dictionary?.preferred_source || "Public Sources";
+  const linkedSource = dictionary?.extras?.source;
+  // end only relevant with the collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
   const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
@@ -176,6 +190,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
+    retrieveDictionary(containerUrl);
     retrieveConcepts(
       url,
       page,
@@ -218,8 +233,12 @@ const ViewConceptsPage: React.FC<Props> = ({
       <Header
         title={
           containerType === SOURCE_CONTAINER
-            ? `Import existing concept from ${getContainerIdFromUrl(containerUrl)}`
-            : `Concepts in ${containerType === DICTIONARY_VERSION_CONTAINER ? 'v' : ''}${getContainerIdFromUrl(containerUrl)}`
+            ? `Import existing concept from ${getContainerIdFromUrl(
+                containerUrl
+              )}`
+            : `Concepts in ${
+                containerType === DICTIONARY_VERSION_CONTAINER ? "v" : ""
+              }${getContainerIdFromUrl(containerUrl)}`
         }
         justifyChildren="space-around"
         headerComponent={
@@ -240,27 +259,31 @@ const ViewConceptsPage: React.FC<Props> = ({
                 open={Boolean(switchSourceAnchor)}
                 onClose={handleSwitchSourceClose}
               >
-                {Object.entries({
-                  "Public Sources": ALL_PUBLIC_SOURCES_URL,
-                  ...PREFERRED_SOURCES
-                }).map(([preferredSourceName, preferredSourceUrl]) => (
-                  <MenuItem
-                    // replace because we want to keep the back button useful
-                    replace
-                    to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                    component={Link}
-                    onClick={handleSwitchSourceClose}>
-                    {preferredSourceName}
-                  </MenuItem>
-                ))}
+                {Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
+                  ([preferredSourceName, preferredSourceUrl]) => (
+                    <MenuItem
+                      // replace because we want to keep the back button useful
+                      replace
+                      to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                      component={Link}
+                      onClick={handleSwitchSourceClose}
+                    >
+                      {preferredSourceName}
+                    </MenuItem>
+                  )
+                )}
               </Menu>
             </>
           )
         }
         // we can only be confident about the back url when viewing a collection's concepts
         allowImplicitNavigation
-        backUrl={containerType !== DICTIONARY_CONTAINER ? undefined : containerUrl}
-        backText={containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"}
+        backUrl={
+          containerType !== DICTIONARY_CONTAINER ? undefined : containerUrl
+        }
+        backText={
+          containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"
+        }
       >
         <ProgressOverlay
           loading={loading}
@@ -404,7 +427,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         <MenuItem onClick={handleImportExistingClose}>
           <Link
             className={classes.link}
-            to={`${PREFERRED_SOURCES[preferredSource]}concepts/?addToDictionary=${containerUrl}`}
+            to={`${PREFERRED_SOURCES_VIEW_ONLY[preferredSource]}concepts/?addToDictionary=${containerUrl}`}
           >
             Pick concepts
           </Link>
@@ -426,17 +449,20 @@ const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
+  dictionary: dictionarySelector(state),
   meta: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
   loading:
     viewConceptsLoadingSelector(state) ||
+    retrieveDictionaryLoadingSelector(state) ||
     removeConceptsFromDictionaryLoadingSelector(state),
   errors: viewConceptsErrorsSelector(state)
 });
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
+  retrieveDictionary: makeRetrieveDictionaryAction(true),
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction
 };

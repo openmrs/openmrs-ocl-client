@@ -15,7 +15,7 @@ interface Props {
 
 const useStyles = makeStyles({
   loginPage: {
-    display: 'flex',
+    display: "flex",
     height: "100vh"
   },
   headerText: {

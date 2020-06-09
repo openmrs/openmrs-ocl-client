@@ -157,7 +157,13 @@ const ViewDictionaries: React.FC<Props> = ({
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button to={url} component={Link} size="small" variant="text" color="primary">
+                  <Button
+                    to={url}
+                    component={Link}
+                    size="small"
+                    variant="text"
+                    color="primary"
+                  >
                     View
                   </Button>
                 </CardActions>

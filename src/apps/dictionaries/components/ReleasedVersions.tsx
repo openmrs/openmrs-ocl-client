@@ -74,7 +74,12 @@ const ReleasedVersions: React.FC<Props> = ({
                     <TableCell>
                       <Button
                         // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
-                        to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`} component={Link} size="small" variant="text" color="primary">
+                        to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
+                        component={Link}
+                        size="small"
+                        variant="text"
+                        color="primary"
+                      >
                         View concepts
                       </Button>
                     </TableCell>

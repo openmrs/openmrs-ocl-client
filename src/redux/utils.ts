@@ -1,6 +1,8 @@
 import { AxiosResponse } from "axios";
-import { Action, IndexedAction } from "./types";
+import { isEqual } from "lodash";
+import { Action, AppState, IndexedAction } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
+import { errorSelector, metaSelector } from "./selectors";
 
 export const RESET = "RESET";
 export const START = "START";
@@ -11,6 +13,7 @@ export const COMPLETE = "COMPLETE";
 export const loading = (actionType: string): string => `${actionType}Loading`;
 export const progress = (actionType: string): string => `${actionType}Progress`;
 export const errors = (actionType: string): string => `${actionType}Errors`;
+export const meta = (actionType: string): string => `${actionType}Meta`;
 
 export const createActionType = (actionType: string): Function => (): {
   [key: string]: string;
@@ -74,9 +77,29 @@ export function completeAction(
   };
 }
 
+export function cachedAction(
+  actionOrActionType: IndexedAction | string,
+  ...args: any[]
+) {
+  const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
+
+  return {
+    type: `${actionType}_CACHE_HIT`,
+    actionIndex,
+    meta: args
+  };
+}
+
+function isCacheable(action: IndexedAction, meta: any[], state: AppState) {
+  return (
+    isEqual(meta, metaSelector(action)(state)) && !errorSelector(action)(state)
+  );
+}
+
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
-  task: (...args: T) => Promise<AxiosResponse<any>>
+  task: (...args: T) => Promise<AxiosResponse<any>>,
+  useCache = false
 ) => {
   /*
    ** Create an redux thunk that dispatches start, runs task then dispatches (success or failure) and completed actions
@@ -86,7 +109,15 @@ export const createActionThunk = <T extends any[]>(
   const { actionType, actionIndex } = action;
 
   return <S>(...args: T) => {
-    return async (dispatch: (action: Action) => {}): Promise<boolean | S> => {
+    return async (
+      dispatch: (action: Action) => {},
+      getState: () => AppState
+    ): Promise<boolean | S> => {
+      if (useCache && isCacheable(action, args, getState())) {
+        dispatch(cachedAction(action, ...args));
+        return true;
+      }
+
       let result = true;
 
       try {

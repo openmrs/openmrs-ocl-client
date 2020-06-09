@@ -20,7 +20,7 @@ import { CONTEXT } from "../constants";
 import { ProgressOverlay } from "../../../utils/components";
 import {
   editSourceAndDictionaryAction,
-  retrieveDictionaryAction
+  makeRetrieveDictionaryAction
 } from "../redux/actions";
 import { Pageview as PageViewIcon } from "@material-ui/icons";
 import Header from "../../../components/Header";
@@ -35,7 +35,7 @@ interface Props {
   loading: boolean;
   editedDictionary?: APIDictionary;
   retrieveDictionary: (
-    ...args: Parameters<typeof retrieveDictionaryAction>
+    ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
   ) => void;
   dictionaryLoading: boolean;
   dictionary?: APIDictionary;
@@ -118,7 +118,7 @@ const mapStateToProps = (state: any) => ({
 });
 const mapActionsToProps = {
   editSourceAndDictionary: editSourceAndDictionaryAction,
-  retrieveDictionary: retrieveDictionaryAction
+  retrieveDictionary: makeRetrieveDictionaryAction(false)
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(EditDictionaryPage);

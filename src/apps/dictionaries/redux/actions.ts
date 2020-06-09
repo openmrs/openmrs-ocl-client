@@ -128,14 +128,13 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
   };
 };
-export const retrieveDictionaryAction = createActionThunk(
-  RETRIEVE_DICTIONARY_ACTION,
-  api.retrieve
-);
+export function makeRetrieveDictionaryAction(useCache = false) {
+  return createActionThunk(RETRIEVE_DICTIONARY_ACTION, api.retrieve, useCache);
+}
 export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
   return async (dispatch: Function) => {
     const retrieveDictionaryResult = await dispatch(
-      retrieveDictionaryAction<APIDictionary>(dictionaryUrl)
+      makeRetrieveDictionaryAction(false)<APIDictionary>(dictionaryUrl)
     );
     if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return;
 
