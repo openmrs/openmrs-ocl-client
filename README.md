@@ -57,6 +57,10 @@ These variables will automatically be injected into the app at runtime. This is 
 ## Contributing to this project
 - Visit the project [wiki](https://wiki.openmrs.org/display/projects/Contributing+to+OCL+for+OpenMRS%3A+Developer+Guide) for a layout of the project and how you can start contributing.
 
+### Gotchas
+Things we've pulled our hair out for so you don't have to
+- Have an env-config file before running the e2e tests
+
 ## Support
 - Talk to us at [OpenMRS Talk](https://talk.openmrs.org/t/ocl-for-openmrs-squad/25831)
 
