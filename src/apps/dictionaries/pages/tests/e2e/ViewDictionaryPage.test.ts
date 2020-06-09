@@ -1,4 +1,4 @@
-import { login, logout } from "../../../authentication/tests/e2e/testUtils";
+import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, TestDictionary } from "./testUtils";
 
 describe("View Dictionary", () => {

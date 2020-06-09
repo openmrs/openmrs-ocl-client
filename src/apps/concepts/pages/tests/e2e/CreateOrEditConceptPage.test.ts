@@ -1,8 +1,8 @@
-import { login, logout } from "../../../authentication/tests/e2e/testUtils";
+import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import {
   createDictionary,
   TestDictionary
-} from "../../../dictionaries/tests/e2e/testUtils";
+} from "../../../../dictionaries/pages/tests/e2e/testUtils";
 import {
   createConcept,
   fillDescriptionRow,
