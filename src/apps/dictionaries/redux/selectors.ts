@@ -18,6 +18,7 @@ import {
 } from "./constants";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
+  CREATE_AND_ADD_LINKED_SOURCE_ACTION,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
@@ -46,6 +47,12 @@ export const editDictionaryLoadingSelector = loadingSelector(
 );
 export const editDictionaryProgressSelector = progressSelector(
   EDIT_SOURCE_AND_DICTIONARY_ACTION
+);
+export const createAndAddLinkedSourceLoadingSelector = loadingSelector(
+  CREATE_AND_ADD_LINKED_SOURCE_ACTION
+);
+export const createAndAddLinkedSourceProgressSelector = progressSelector(
+  CREATE_AND_ADD_LINKED_SOURCE_ACTION
 );
 export const createSourceAndDictionaryErrorsSelector = (
   state: AppState

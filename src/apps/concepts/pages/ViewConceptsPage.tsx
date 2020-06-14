@@ -96,6 +96,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     lightColour: {
       color: theme.palette.background.default
+    },
+    largerTooltip: {
+      fontSize: "larger"
     }
   })
 );
@@ -380,16 +383,37 @@ const ViewConceptsPage: React.FC<Props> = ({
             >
               Import existing concept
             </MenuItem>
-            {!linkedSource ? null : (
-              <MenuItem
-                onClick={e => {
-                  handleCustomClick(e);
-                  handleAddNewClose();
-                }}
-              >
-                Create custom concept
-              </MenuItem>
-            )}
+            <Tooltip
+              interactive
+              title={
+                linkedSource ? (
+                  ""
+                ) : (
+                  <span className={classes.largerTooltip}>
+                    This dictionary doesn't have a linked source attached to it.
+                    You'll need to{" "}
+                    <Link
+                      to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
+                    >
+                      create one
+                    </Link>{" "}
+                    to keep your custom concepts.
+                  </span>
+                )
+              }
+            >
+              <span>
+                <MenuItem
+                  disabled={!linkedSource}
+                  onClick={e => {
+                    handleCustomClick(e);
+                    handleAddNewClose();
+                  }}
+                >
+                  Create custom concept
+                </MenuItem>
+              </span>
+            </Tooltip>
           </Menu>
         </>
       )}
