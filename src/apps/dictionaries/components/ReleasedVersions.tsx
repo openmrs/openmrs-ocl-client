@@ -26,7 +26,6 @@ interface Props {
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
   dictionaryUrl: string;
-  linkedSource: string;
 }
 
 const ReleasedVersions: React.FC<Props> = ({
@@ -37,7 +36,6 @@ const ReleasedVersions: React.FC<Props> = ({
   createVersionLoading,
   createVersionError,
   dictionaryUrl,
-  linkedSource
 }) => {
   const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
 
@@ -74,7 +72,7 @@ const ReleasedVersions: React.FC<Props> = ({
                     <TableCell>
                       <Button
                         // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
-                        to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
+                        to={`${dictionaryUrl}${row.id}/concepts/`}
                         component={Link}
                         size="small"
                         variant="text"

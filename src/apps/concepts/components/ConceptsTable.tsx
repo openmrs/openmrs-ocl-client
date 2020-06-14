@@ -482,9 +482,7 @@ const ConceptsTable: React.FC<Props> = ({
                         onClick={e => e.stopPropagation()}
                         to={`${
                           row.version_url
-                        }?linkedDictionary=${linkedDictionary}${
-                          linkedSource ? `&linkedSource=${linkedSource}` : ""
-                        }`}
+                        }?linkedDictionary=${linkedDictionary}`}
                       >
                         {row.display_name}
                       </Link>
