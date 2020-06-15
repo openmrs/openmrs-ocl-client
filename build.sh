@@ -11,7 +11,7 @@ docker build --no-cache -t ocl-frontend:latest .
 docker tag ocl-frontend:latest ${OCL_FRONTEND_IMG}:latest
 docker tag ocl-frontend:latest ${OCL_FRONTEND_IMG}:$BUILD_TIME
 echo "aws ecr login .."
-aws ecr get-login-password --region ap-southeast-1|docker login --username AWS --password-stdin ${REPO_LOCATION}
+aws ecr get-login-password --region ap-south-1|docker login --username AWS --password-stdin ${REPO_LOCATION}
 echo "Docker push to ECR.."
 docker push ${OCL_FRONTEND_IMG}:latest
 docker push ${OCL_FRONTEND_IMG}:$BUILD_TIME
