@@ -24,7 +24,7 @@ yarn-error.log*
 
 public/index.html~HEAD
 yarn.lock
-package-lock.json
+#package-lock.json
 
 #test snapshots
 **/__snapshots__/**
