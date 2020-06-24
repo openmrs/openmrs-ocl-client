@@ -48,12 +48,14 @@ const ViewConceptPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  const { linkedDictionary, linkedSource } = useQueryParams();
+  const { linkedDictionary } = useQueryParams();
+  const conceptSource = concept?.source_url;
 
   // we can modify the concept and it lives in our dictionary's linked source
   const showEditButton =
     canModifyContainer(ownerType, owner, profile, usersOrgs) &&
-    concept?.url.includes(linkedSource);
+    conceptSource &&
+    concept?.url.includes(conceptSource);
 
   useEffect(() => {
     retrieveConcept(url);
