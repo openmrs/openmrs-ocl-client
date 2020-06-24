@@ -32,6 +32,7 @@ interface StateProps {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
+  createAndAddLinkedSourceLoading: boolean;
   loading: boolean;
   editedDictionary?: APIDictionary;
   dictionaryLoading: boolean;
@@ -63,6 +64,7 @@ const EditDictionaryPage: React.FC<Props> = ({
   errors,
   editSourceAndDictionary,
   createAndAddLinkedSource,
+  createAndAddLinkedSourceLoading,
   loading,
   dictionaryLoading,
   dictionary,
@@ -71,9 +73,7 @@ const EditDictionaryPage: React.FC<Props> = ({
 }: Props) => {
   const { pathname: url } = useLocation();
   const dictionaryUrl = url.replace("edit/", "");
-  const { next: nextUrl = editedDictionary?.url } = useQueryParams<
-    URLQueryParams
-  >();
+  const { next: nextUrl } = useQueryParams<URLQueryParams>();
   const createLinkedSource =
     useQueryParams<URLQueryParams>().createLinkedSource === "true";
   const linkedSource = dictionary?.extras?.source;
@@ -85,15 +85,15 @@ const EditDictionaryPage: React.FC<Props> = ({
   }, [dictionaryUrl, retrieveDictionary]);
 
   useEffect(() => {
-    const dictionaryToUpdate = apiDictionaryToDictionary(dictionary);
+    const dictionaryData = apiDictionaryToDictionary(dictionary);
     if (
       !loading &&
       createLinkedSource &&
       dictionary &&
-      dictionaryToUpdate &&
+      dictionaryData &&
       !linkedSource
     ) {
-      createAndAddLinkedSource(dictionary.url, dictionaryToUpdate);
+      createAndAddLinkedSource(dictionary.url, dictionaryData);
     }
   }, [
     loading,
@@ -115,7 +115,13 @@ const EditDictionaryPage: React.FC<Props> = ({
       backUrl={dictionaryUrl}
       backText="Back to dictionary"
     >
-      <ProgressOverlay delayRender loading={dictionaryLoading}>
+      <ProgressOverlay
+        loadingMessage={
+          createAndAddLinkedSourceLoading ? "Creating linked source" : undefined
+        }
+        delayRender={dictionaryLoading}
+        loading={dictionaryLoading || createAndAddLinkedSourceLoading}
+      >
         <Grid id="edit-dictionary-page" item xs={6} component="div">
           <Paper>
             <DictionaryForm
@@ -158,8 +164,7 @@ const EditDictionaryPage: React.FC<Props> = ({
                 <Link
                   replace
                   className="link"
-                  to={`${url}?createLinkedSource=true&next=${nextUrl ||
-                    dictionaryUrl}`}
+                  to={`${url}?createLinkedSource=true`}
                 >
                   Create linked source
                 </Link>
@@ -175,6 +180,9 @@ const EditDictionaryPage: React.FC<Props> = ({
 const mapStateToProps = (state: any) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
+  createAndAddLinkedSourceLoading: createAndAddLinkedSourceLoadingSelector(
+    state
+  ),
   loading:
     editDictionaryLoadingSelector(state) ||
     createAndAddLinkedSourceLoadingSelector(state),

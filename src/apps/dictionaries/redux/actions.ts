@@ -135,7 +135,7 @@ export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     const retrieveDictionaryResult = await dispatch(
       makeRetrieveDictionaryAction(false)<APIDictionary>(dictionaryUrl)
     );
-    if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return;
+    if (!retrieveDictionaryResult) return;
 
     dispatch(retrieveDictionaryVersionsAction(dictionaryUrl));
   };

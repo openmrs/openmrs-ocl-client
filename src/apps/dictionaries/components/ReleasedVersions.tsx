@@ -35,7 +35,7 @@ const ReleasedVersions: React.FC<Props> = ({
   createDictionaryVersion,
   createVersionLoading,
   createVersionError,
-  dictionaryUrl,
+  dictionaryUrl
 }) => {
   const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
 

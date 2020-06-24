@@ -480,9 +480,7 @@ const ConceptsTable: React.FC<Props> = ({
                     >
                       <Link
                         onClick={e => e.stopPropagation()}
-                        to={`${
-                          row.version_url
-                        }?linkedDictionary=${linkedDictionary}`}
+                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
                       >
                         {row.display_name}
                       </Link>
