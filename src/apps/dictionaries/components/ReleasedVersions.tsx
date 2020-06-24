@@ -11,11 +11,11 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
+  Typography,
+  Switch
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { APIDictionaryVersion } from "../types";
-import { BASE_URL } from "../../../utils";
 import DictionaryVersionForm from "./DictionaryVersionForm";
 
 interface Props {
@@ -61,6 +61,7 @@ const ReleasedVersions: React.FC<Props> = ({
                   <TableCell>Description</TableCell>
                   <TableCell>Concepts</TableCell>
                   <TableCell>Subscription URL</TableCell>
+                  <TableCell>Release Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -77,7 +78,7 @@ const ReleasedVersions: React.FC<Props> = ({
                         variant="text"
                         color="primary"
                       >
-                        View concepts
+                        View
                       </Button>
                     </TableCell>
                     <TableCell>
@@ -89,6 +90,16 @@ const ReleasedVersions: React.FC<Props> = ({
                         </Tooltip>
                       </CopyToClipboard>
                     </TableCell>
+                      <TableCell>
+                              <Switch
+                                  id={row.id}
+                                  data-testid={row.id}
+                                  checked={row.released}
+                                   // onChange={handleChange}
+                                  name="checkedReleaseStatus"
+                                  color="primary"
+                              />
+                      </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
