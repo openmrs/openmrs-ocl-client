@@ -14,8 +14,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   ExitToApp,
   FolderOpenOutlined,
-  GroupWorkOutlined as OrgDictionariesIcon,
-  FolderSharedOutlined,
   Notifications as NotificationsIcon
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
@@ -145,46 +143,14 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
             exact
             activeClassName={classes.selected}
             to="/user/collections/"
-            key="Your Dictionaries"
+            key="Dictionaries"
           >
-            <Tooltip title="Your Dictionaries">
+            <Tooltip title="Dictionaries">
               <ListItemIcon className="list-item-icon">
                 <FolderOpenOutlined />
               </ListItemIcon>
             </Tooltip>
-            <ListItemText primary="Your Dictionaries" />
-          </ListItem>
-          <ListItem
-            button
-            dense={false}
-            component={Link}
-            exact
-            activeClassName={classes.selected}
-            to="/user/orgs/collections/"
-            key="Your Organizations' dictionaries"
-          >
-            <Tooltip title="Your Organizations' dictionaries">
-              <ListItemIcon className="list-item-icon">
-                <OrgDictionariesIcon />
-              </ListItemIcon>
-            </Tooltip>
-            <ListItemText primary="Your Organizations' Dictionaries" />
-          </ListItem>
-          <ListItem
-            button
-            dense={false}
-            component={Link}
-            exact
-            activeClassName={classes.selected}
-            to="/collections/"
-            key="Public Dictionaries"
-          >
-            <Tooltip title="Public Dictionaries">
-              <ListItemIcon className="list-item-icon">
-                <FolderSharedOutlined />
-              </ListItemIcon>
-            </Tooltip>
-            <ListItemText primary="Public Dictionaries" />
+            <ListItemText primary="Dictionaries" />
           </ListItem>
         </List>
         <Divider component="hr" />

@@ -17,7 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import { Search as SearchIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { APIDictionary } from "../types";
-import clsx from "clsx";
 
 const PER_PAGE = 20;
 
@@ -28,7 +27,6 @@ interface Props {
   onSearch: Function;
   page: number;
   initialQ: string;
-  title?: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,24 +36,20 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "grid",
       position: "fixed",
       bottom: 0,
-      background: theme.palette.background.default
-    },
-    paginationDouble: {
+      background: theme.palette.background.default,
       width: "100%"
-    },
-    paginationSingle: {
-      width: "50%"
     },
     title: {
       marginBottom: "2vw"
     },
-    search: {
+    searchContainer: {
       justifyItems: "center",
       display: "grid",
       position: "sticky",
       background: "transparent",
       width: "100%",
-      marginBottom: "2vw"
+      margin: theme.spacing(2),
+      padding: theme.spacing(2)
     },
     dictionaryName: {
       overflowX: "auto"
@@ -69,29 +63,14 @@ const ViewDictionaries: React.FC<Props> = ({
   onPageChange,
   onSearch,
   page,
-  initialQ,
-  title
+  initialQ
 }) => {
   const classes = useStyles();
   const [q, setQ] = useState(initialQ);
 
   return (
     <>
-      {!title ? (
-        ""
-      ) : (
-        <Grid item xs={12}>
-          <Typography
-            align="center"
-            className={classes.title}
-            gutterBottom
-            variant="h5"
-          >
-            {title}
-          </Typography>
-        </Grid>
-      )}
-      <Grid className={classes.search} item xs={12}>
+      <Grid className={classes.searchContainer} item xs={12}>
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -101,6 +80,7 @@ const ViewDictionaries: React.FC<Props> = ({
           <Input
             onChange={e => setQ(e.target.value)}
             value={q}
+            color="secondary"
             type="search"
             fullWidth
             placeholder="Search Dictionaries"
@@ -172,14 +152,7 @@ const ViewDictionaries: React.FC<Props> = ({
           )
         )}
       </Grid>
-      <Grid
-        item
-        xs={12}
-        className={clsx(
-          classes.pagination,
-          title ? classes.paginationSingle : classes.paginationDouble
-        )}
-      >
+      <Grid item xs={12} className={classes.pagination}>
         <TablePagination
           rowsPerPageOptions={[PER_PAGE]}
           component="div"

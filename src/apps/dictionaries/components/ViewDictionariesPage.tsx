@@ -9,6 +9,8 @@ import { retrievePublicDictionariesAction } from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { DictionaryOwnerTabs } from "./DictionaryOwnerTabs";
+import { Header } from "../../../components";
 
 const PER_PAGE = 20;
 
@@ -48,23 +50,26 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   };
 
   return (
-    <ProgressOverlay loading={loading}>
-      <ViewDictionaries
-        initialQ={initialQ}
-        page={page}
-        onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
-        onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
-        dictionaries={dictionaries}
-        numFound={numFound}
-      />
-      <Link to={`/collections/new/`}>
-        <Tooltip title="Create new dictionary">
-          <Fab color="primary" className="fab">
-            <AddIcon />
-          </Fab>
-        </Tooltip>
-      </Link>
-    </ProgressOverlay>
+    <Header title="Dictionaries">
+      <DictionaryOwnerTabs currentPageUrl={url} />
+      <ProgressOverlay loading={loading}>
+        <ViewDictionaries
+          initialQ={initialQ}
+          page={page}
+          onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
+          onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
+          dictionaries={dictionaries}
+          numFound={numFound}
+        />
+        <Link to={`/collections/new/`}>
+          <Tooltip title="Create new dictionary">
+            <Fab color="primary" className="fab">
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      </ProgressOverlay>
+    </Header>
   );
 };
 

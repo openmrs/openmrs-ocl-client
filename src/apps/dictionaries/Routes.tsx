@@ -29,10 +29,9 @@ const Routes: React.FC<Props> = ({
   return (
     <Switch>
       {!viewDictionaries ? null : (
+        // see to do at the top of ViewPersonalDictionariesPage
         <Route exact path={`${path}/`}>
-          <Header title="Your Dictionaries">
-            <ViewPersonalDictionariesPage />
-          </Header>
+          <ViewPersonalDictionariesPage />
         </Route>
       )}
       {!viewDictionary ? null : (

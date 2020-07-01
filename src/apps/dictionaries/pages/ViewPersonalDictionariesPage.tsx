@@ -1,3 +1,4 @@
+// todo: make this handle both user and orgs dictionaries
 import { AppState } from "../../../redux";
 import {
   retrievePersonalDictionariesAction,
