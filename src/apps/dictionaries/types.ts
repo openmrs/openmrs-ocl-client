@@ -5,6 +5,7 @@ import {
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
+  extras?: { source?: string };
 }
 
 export interface Dictionary extends BaseDictionary {

@@ -284,6 +284,20 @@ const DictionaryForm: React.FC<Props> = ({
                 <ErrorMessage name="supported_locales" component="span" />
               </Typography>
             </FormControl>
+            {!viewing ? (
+              ""
+            ) : (
+              <Field
+                fullWidth
+                defaultValue="None"
+                id="linked_source"
+                name="extras.source"
+                label="Linked Source"
+                helperText="Custom concepts created for this dictionary will be kept here."
+                margin="normal"
+                component={TextField}
+              />
+            )}
             <br />
             <br />
             {viewing ? (

@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   }
 });
 
-const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
+const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
   const {
@@ -69,4 +69,4 @@ const DictionaryDetails: React.FC<Props> = ({ dictionary }) => {
   );
 };
 
-export default DictionaryDetails;
+export default DictionaryConceptsSummary;
