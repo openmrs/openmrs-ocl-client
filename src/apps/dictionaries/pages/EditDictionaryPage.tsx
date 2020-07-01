@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { DictionaryForm } from "../components";
-import { Fab, Grid, Paper, Tooltip } from "@material-ui/core";
+import { Fab, Grid, Menu, MenuItem, Paper, Tooltip } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Link, Redirect, useLocation } from "react-router-dom";
 import {
+  createAndAddLinkedSourceAction,
+  createAndAddLinkedSourceLoadingSelector,
+  createAndAddLinkedSourceProgressSelector,
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
   editSourceAndDictionaryErrorsSelector,
@@ -15,30 +18,44 @@ import {
   profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import { debug, usePrevious } from "../../../utils";
+import { debug, useAnchor, usePrevious, useQueryParams } from "../../../utils";
 import { CONTEXT } from "../constants";
 import { ProgressOverlay } from "../../../utils/components";
 import {
   editSourceAndDictionaryAction,
   makeRetrieveDictionaryAction
-} from "../redux/actions";
-import { Pageview as PageViewIcon } from "@material-ui/icons";
+} from "../redux";
+import { MoreVert as MenuIcon } from "@material-ui/icons";
 import Header from "../../../components/Header";
 
-interface Props {
+interface StateProps {
   errors?: {};
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
+  createAndAddLinkedSourceLoading: boolean;
+  loading: boolean;
+  editedDictionary?: APIDictionary;
+  dictionaryLoading: boolean;
+  dictionary?: APIDictionary;
+}
+
+interface ActionProps {
   editSourceAndDictionary: (
     ...args: Parameters<typeof editSourceAndDictionaryAction>
   ) => void;
-  loading: boolean;
-  editedDictionary?: APIDictionary;
   retrieveDictionary: (
     ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
   ) => void;
-  dictionaryLoading: boolean;
-  dictionary?: APIDictionary;
+  createAndAddLinkedSource: (
+    ...args: Parameters<typeof createAndAddLinkedSourceAction>
+  ) => void;
+}
+
+type Props = StateProps & ActionProps;
+
+interface URLQueryParams {
+  next?: string;
+  createLinkedSource?: string;
 }
 
 const EditDictionaryPage: React.FC<Props> = ({
@@ -46,6 +63,8 @@ const EditDictionaryPage: React.FC<Props> = ({
   usersOrgs,
   errors,
   editSourceAndDictionary,
+  createAndAddLinkedSource,
+  createAndAddLinkedSourceLoading,
   loading,
   dictionaryLoading,
   dictionary,
@@ -54,6 +73,10 @@ const EditDictionaryPage: React.FC<Props> = ({
 }: Props) => {
   const { pathname: url } = useLocation();
   const dictionaryUrl = url.replace("edit/", "");
+  const { next: nextUrl } = useQueryParams<URLQueryParams>();
+  const createLinkedSource =
+    useQueryParams<URLQueryParams>().createLinkedSource === "true";
+  const linkedSource = dictionary?.extras?.source;
 
   const previouslyLoading = usePrevious(loading);
 
@@ -61,8 +84,29 @@ const EditDictionaryPage: React.FC<Props> = ({
     retrieveDictionary(dictionaryUrl);
   }, [dictionaryUrl, retrieveDictionary]);
 
+  useEffect(() => {
+    const dictionaryData = apiDictionaryToDictionary(dictionary);
+    if (
+      !loading &&
+      createLinkedSource &&
+      dictionary &&
+      dictionaryData &&
+      !linkedSource
+    ) {
+      createAndAddLinkedSource(dictionary.url, dictionaryData);
+    }
+  }, [
+    loading,
+    createLinkedSource,
+    dictionary,
+    linkedSource,
+    createAndAddLinkedSource
+  ]);
+
+  const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
+
   if (!loading && previouslyLoading && editedDictionary) {
-    return <Redirect to={editedDictionary.url} />;
+    return <Redirect to={nextUrl || editedDictionary.url} />;
   }
 
   return (
@@ -71,7 +115,13 @@ const EditDictionaryPage: React.FC<Props> = ({
       backUrl={dictionaryUrl}
       backText="Back to dictionary"
     >
-      <ProgressOverlay delayRender loading={dictionaryLoading}>
+      <ProgressOverlay
+        loadingMessage={
+          createAndAddLinkedSourceLoading ? "Creating linked source" : undefined
+        }
+        delayRender={dictionaryLoading}
+        loading={dictionaryLoading || createAndAddLinkedSourceLoading}
+      >
         <Grid id="edit-dictionary-page" item xs={6} component="div">
           <Paper>
             <DictionaryForm
@@ -83,24 +133,45 @@ const EditDictionaryPage: React.FC<Props> = ({
               savedValues={apiDictionaryToDictionary(dictionary)}
               onSubmit={(values: Dictionary) => {
                 if (dictionary)
-                  editSourceAndDictionary(
-                    dictionary?.url,
-                    values,
-                    dictionary?.extras
-                  );
+                  editSourceAndDictionary(dictionary.url, values, linkedSource);
                 else
                   debug("Could not edit dictionary. dictionary is undefined");
               }}
             />
           </Paper>
         </Grid>
-        <Link to={dictionaryUrl}>
-          <Tooltip title="Discard changes and view">
-            <Fab color="primary" className="fab">
-              <PageViewIcon />
+        <>
+          <Tooltip title="Menu">
+            <Fab onClick={handleMenuClick} color="primary" className="fab">
+              <MenuIcon />
             </Fab>
           </Tooltip>
-        </Link>
+          <Menu
+            anchorEl={menuAnchor}
+            keepMounted
+            open={Boolean(menuAnchor)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem>
+              <Link replace className="link" to={dictionaryUrl}>
+                Discard changes and view
+              </Link>
+            </MenuItem>
+            {createLinkedSource || linkedSource ? (
+              <span />
+            ) : (
+              <MenuItem>
+                <Link
+                  replace
+                  className="link"
+                  to={`${url}?createLinkedSource=true`}
+                >
+                  Create linked source
+                </Link>
+              </MenuItem>
+            )}
+          </Menu>
+        </>
       </ProgressOverlay>
     </Header>
   );
@@ -109,16 +180,28 @@ const EditDictionaryPage: React.FC<Props> = ({
 const mapStateToProps = (state: any) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
-  loading: editDictionaryLoadingSelector(state),
-  progress: editDictionaryProgressSelector(state),
+  createAndAddLinkedSourceLoading: createAndAddLinkedSourceLoadingSelector(
+    state
+  ),
+  loading:
+    editDictionaryLoadingSelector(state) ||
+    createAndAddLinkedSourceLoadingSelector(state),
+  progress:
+    createAndAddLinkedSourceProgressSelector(state) ||
+    editDictionaryProgressSelector(state),
   editedDictionary: state.dictionaries.editedDictionary,
   errors: editSourceAndDictionaryErrorsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
   dictionary: state.dictionaries.dictionary
 });
+
 const mapActionsToProps = {
   editSourceAndDictionary: editSourceAndDictionaryAction,
-  retrieveDictionary: makeRetrieveDictionaryAction(false)
+  retrieveDictionary: makeRetrieveDictionaryAction(false),
+  createAndAddLinkedSource: createAndAddLinkedSourceAction
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(EditDictionaryPage);
+export default connect<StateProps, ActionProps, unknown>(
+  mapStateToProps,
+  mapActionsToProps
+)(EditDictionaryPage);

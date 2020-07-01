@@ -11,13 +11,13 @@ export function loadingSelector(...actions: (IndexedAction | string)[]) {
       (
         previousValue: boolean,
         { actionType, actionIndex }: IndexedAction
-      ): boolean =>
-        previousValue ||
-        Boolean(
-          state.status[loading(actionType)]
-            ? state.status[loading(actionType)][actionIndex]
-            : false
-        ),
+      ): boolean => {
+        const loadingList = loadingListSelector(actionType)(state);
+        return (
+          previousValue ||
+          Boolean(loadingList ? loadingList[actionIndex] : false)
+        );
+      },
       false
     );
 }
@@ -25,19 +25,19 @@ export function loadingSelector(...actions: (IndexedAction | string)[]) {
 export function progressSelector(actionOrActionType: IndexedAction | string) {
   const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
-  return (state: AppState): any =>
-    state.status[progress(actionType)]
-      ? state.status[progress(actionType)][actionIndex]
-      : undefined;
+  return (state: AppState): any => {
+    const progressList = progressListSelector(actionType)(state);
+    return progressList ? progressList[actionIndex] : undefined;
+  };
 }
 
 export function errorSelector(actionOrActionType: IndexedAction | string) {
   const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
-  return (state: AppState): any =>
-    state.status[errors(actionType)]
-      ? state.status[errors(actionType)][actionIndex]
-      : undefined;
+  return (state: AppState): any => {
+    const errorList = errorListSelector(actionType)(state);
+    return errorList ? errorList[actionIndex] : undefined;
+  };
 }
 
 export function metaSelector(actionOrActionType: IndexedAction | string) {

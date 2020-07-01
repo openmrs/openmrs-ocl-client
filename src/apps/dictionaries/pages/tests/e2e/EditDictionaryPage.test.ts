@@ -53,7 +53,7 @@ describe("Edit Dictionary", () => {
     dictionary.otherLanguages.forEach(language => {
       select("Other Languages", language);
       cy.get("body").type("{esc}");
-    })
+    });
 
     cy.findByText("Submit").click();
     // redirects to view page

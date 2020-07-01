@@ -73,6 +73,7 @@ export interface APIConcept extends BaseConcept {
   version_url: string;
   mappings: APIMapping[];
   retired: boolean;
+  source_url: string;
 }
 
 export interface ConceptsState {

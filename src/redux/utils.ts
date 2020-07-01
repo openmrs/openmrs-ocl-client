@@ -96,6 +96,10 @@ function isCacheable(action: IndexedAction, meta: any[], state: AppState) {
   );
 }
 
+export function invalidateCache(action: string, dispatch: Function) {
+  dispatch(resetAction(action));
+}
+
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
   task: (...args: T) => Promise<AxiosResponse<any>>,

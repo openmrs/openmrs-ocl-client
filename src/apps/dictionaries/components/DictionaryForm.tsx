@@ -74,7 +74,7 @@ const useStyles = makeStyles({
 const DictionaryForm: React.FC<Props> = ({
   onSubmit,
   loading,
-  status,
+  status, // todo start using this to show action progress
   profile,
   usersOrgs,
   errors,

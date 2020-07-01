@@ -5,6 +5,8 @@ export const RETRIEVE_DICTIONARY_ACTION = "dictionaries/retrieveDictionary";
 export const RETRIEVE_DICTIONARIES_ACTION = "dictionaries/retrieveDictionaries";
 export const EDIT_SOURCE_AND_DICTIONARY_ACTION =
   "dictionaries/editSourceAndDictionary";
+export const CREATE_AND_ADD_LINKED_SOURCE_ACTION =
+  "dictionaries/createAndAddLinkedSource";
 export const EDIT_DICTIONARY_ACTION = "dictionaries/edit";
 export const RETRIEVE_DICTIONARY_VERSIONS_ACTION =
   "dictionaries/retrieveVersions";

@@ -16,7 +16,6 @@ interface BaseAPIDictionary extends BaseDictionary {
   id: string;
   external_id: string;
   full_name: string;
-  collection_type: string;
   website: string;
   custom_validation_schema: string;
   extras: { source: string };
@@ -49,7 +48,8 @@ export interface DictionaryState {
 
 export interface EditableDictionaryFields
   extends EditableConceptContainerFields {
-  public_access: string;
+  public_access?: string;
+  extras?: { source?: string };
 }
 
 export interface DictionaryVersion {

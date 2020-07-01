@@ -19,7 +19,6 @@ import {
   EditableConceptContainerFields
 } from "../../../utils";
 import uuid from "uuid/v4";
-import { OCL_DICTIONARY_TYPE, OCL_SOURCE_TYPE } from "../constants";
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX
@@ -29,6 +28,7 @@ import { recursivelyFetchToConcepts } from "../logic";
 import { addConceptsToDictionaryProgressListSelector } from "./selectors";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
+  CREATE_AND_ADD_LINKED_SOURCE_ACTION,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
@@ -39,6 +39,7 @@ import {
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
+import { invalidateCache } from "../../../redux/utils";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -75,7 +76,6 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
       public_access: "None",
       short_code: short_code,
       id: short_code,
-      source_type: OCL_SOURCE_TYPE,
       supported_locales: supported_locales.join(","),
       website: ""
     };
@@ -99,7 +99,6 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
       )
     );
     const dictionary: NewAPIDictionary = {
-      collection_type: OCL_DICTIONARY_TYPE,
       custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
       default_locale,
       description,
@@ -136,7 +135,7 @@ export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     const retrieveDictionaryResult = await dispatch(
       makeRetrieveDictionaryAction(false)<APIDictionary>(dictionaryUrl)
     );
-    if (!retrieveDictionaryResult || !retrieveDictionaryResult.extras) return;
+    if (!retrieveDictionaryResult) return;
 
     dispatch(retrieveDictionaryVersionsAction(dictionaryUrl));
   };
@@ -159,7 +158,7 @@ export const retrieveOrgDictionariesAction = createActionThunk(
 export const editSourceAndDictionaryAction = (
   dictionaryUrl: string,
   dictionaryData: Dictionary,
-  extras: { source: string }
+  linkedSource?: string
 ) => {
   return async (dispatch: Function) => {
     dispatch(startAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
@@ -182,17 +181,22 @@ export const editSourceAndDictionaryAction = (
       preferred_source
     };
 
-    let sourceResponse: APISource | boolean;
-    let dictionaryResponse: APIDictionary | boolean;
+    if (linkedSource) {
+      let sourceResponse: APISource | boolean;
 
-    dispatch(
-      progressAction(EDIT_SOURCE_AND_DICTIONARY_ACTION, "Editing source...")
-    );
-    sourceResponse = await dispatch(editSource<APISource>(extras.source, data));
-    if (!sourceResponse) {
-      dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
-      return false;
+      dispatch(
+        progressAction(EDIT_SOURCE_AND_DICTIONARY_ACTION, "Editing source...")
+      );
+      sourceResponse = await dispatch(
+        editSource<APISource>(linkedSource, data)
+      );
+      if (!sourceResponse) {
+        dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
+        return false;
+      }
     }
+
+    let dictionaryResponse: APIDictionary | boolean;
 
     dispatch(
       progressAction(EDIT_SOURCE_AND_DICTIONARY_ACTION, "Editing dictionary...")
@@ -209,7 +213,73 @@ export const editSourceAndDictionaryAction = (
       return false;
     }
 
+    invalidateCache(RETRIEVE_DICTIONARY_ACTION, dispatch);
     dispatch(completeAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
+  };
+};
+export const createAndAddLinkedSourceAction = (
+  dictionaryUrl: string,
+  dictionaryData: Dictionary
+) => {
+  return async (dispatch: Function) => {
+    dispatch(startAction(CREATE_AND_ADD_LINKED_SOURCE_ACTION));
+
+    const {
+      description,
+      name,
+      supported_locales,
+      owner_url,
+      default_locale,
+      short_code
+    } = dictionaryData;
+
+    let sourceResponse: APISource | boolean;
+
+    dispatch(
+      progressAction(CREATE_AND_ADD_LINKED_SOURCE_ACTION, "Creating source...")
+    );
+    const source: NewAPISource = {
+      custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
+      default_locale,
+      description,
+      external_id: uuid(),
+      full_name: name,
+      name: name,
+      public_access: "None",
+      short_code: short_code,
+      id: short_code,
+      supported_locales: supported_locales.join(","),
+      website: ""
+    };
+    sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
+    if (!sourceResponse) {
+      dispatch(completeAction(CREATE_AND_ADD_LINKED_SOURCE_ACTION));
+      return false;
+    }
+    sourceResponse = sourceResponse as APISource;
+
+    let dictionaryResponse: APIDictionary | boolean;
+
+    dispatch(
+      progressAction(
+        CREATE_AND_ADD_LINKED_SOURCE_ACTION,
+        "Updating dictionary..."
+      )
+    );
+
+    dictionaryResponse = await dispatch(
+      editDictionaryAction<APIDictionary>(dictionaryUrl, {
+        extras: { source: sourceResponse.url }
+      })
+    );
+    if (!dictionaryResponse) {
+      // todo handle cleanup
+      dispatch(completeAction(CREATE_AND_ADD_LINKED_SOURCE_ACTION));
+      return false;
+    }
+
+    invalidateCache(RETRIEVE_DICTIONARY_ACTION, dispatch);
+    dispatch(completeAction(CREATE_AND_ADD_LINKED_SOURCE_ACTION));
   };
 };
 const editDictionaryAction = createActionThunk(

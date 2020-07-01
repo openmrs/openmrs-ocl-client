@@ -18,9 +18,9 @@ export interface BaseConceptContainer {
 }
 
 export interface EditableConceptContainerFields {
-  description: string;
-  name: string;
-  supported_locales: string;
-  default_locale: string;
-  preferred_source: string;
+  description?: string;
+  name?: string;
+  supported_locales?: string;
+  default_locale?: string;
+  preferred_source?: string;
 }

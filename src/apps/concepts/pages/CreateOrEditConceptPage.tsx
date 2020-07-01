@@ -126,7 +126,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
       <Redirect
         to={`${concept.version_url}${
           linkedDictionaryUrl ? `?linkedDictionary=${linkedDictionaryUrl}` : ""
-        }&linkedSource=${sourceUrl}`}
+        }`}
       />
     );
 
@@ -181,7 +181,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
                 <Link
                   replace
                   className="link"
-                  to={`${conceptUrl}?linkedDictionary=${linkedDictionaryUrl}&linkedSource=${sourceUrl}`}
+                  to={`${conceptUrl}?linkedDictionary=${linkedDictionaryUrl}`}
                 >
                   Discard changes and view
                 </Link>
