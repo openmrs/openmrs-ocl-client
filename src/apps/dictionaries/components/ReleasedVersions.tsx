@@ -1,28 +1,30 @@
 import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {
-  Button,
-  ButtonGroup,
-  Dialog,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  Switch
+    Button,
+    ButtonGroup,
+    Dialog,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    Switch,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { APIDictionaryVersion } from "../types";
 import { TRADITIONAL_OCL_URL } from "../../../utils";
+import {APIDictionaryVersion, DictionaryVersion} from "../types";
 import DictionaryVersionForm from "./DictionaryVersionForm";
+import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
 
 interface Props {
   versions: APIDictionaryVersion[];
   showCreateVersionButton: boolean;
   createDictionaryVersion: Function;
+  editDictionaryVersion: Function;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
   dictionaryUrl: string;
@@ -32,6 +34,7 @@ const ReleasedVersions: React.FC<Props> = ({
   versions,
   showCreateVersionButton,
   createDictionaryVersion,
+  editDictionaryVersion,
   createVersionLoading,
   createVersionError,
   dictionaryUrl
@@ -47,7 +50,40 @@ const ReleasedVersions: React.FC<Props> = ({
     setOpen(false);
   };
 
-  return (
+  const handleReleaseVersionChange = () => {
+     editDictionaryVersion({id:dictionaryVersion.id, released: !dictionaryVersion.released});
+     setConfirmDialogOpen(false);
+  };
+
+  const openDialog = (row: APIDictionaryVersion) => {
+      setConfirmDialogOpen(true);
+      setDictionaryVersion(row);
+  };
+
+  const confirmationMsg = () => {
+      return(
+          <div >
+              <span>Are you sure to mark version </span>
+              <span style={{fontWeight: 'bold'}}>
+                    {dictionaryVersion.id}
+              </span> as {dictionaryVersion.released ? <span style={{color: '#f50057'}}>unreleased</span> :
+
+              <span style={{color: '#f50057'}}>released</span>}?
+          </div>
+      )
+  };
+
+  const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
+
+  const [dictionaryVersion, setDictionaryVersion] = React.useState<DictionaryVersion>(
+    {
+        id: "",
+        released: false,
+        description: "",
+        external_id: ""
+    });
+
+    return (
     <Paper className="fieldsetParent">
       <fieldset>
         <Typography component="legend" variant="h5" gutterBottom>
@@ -96,14 +132,13 @@ const ReleasedVersions: React.FC<Props> = ({
                       </CopyToClipboard>
                     </TableCell>
                       <TableCell>
-                              <Switch
-                                  id={row.id}
-                                  data-testid={row.id}
-                                  checked={row.released}
-                                   // onChange={handleChange}
-                                  name="checkedReleaseStatus"
-                                  color="primary"
-                              />
+                        <Switch
+                          data-testid={row.id}
+                          checked={row.released}
+                          onChange={() => openDialog(row)}
+                          name="checkReleaseStatus"
+                          color="primary"
+                        />
                       </TableCell>
                   </TableRow>
                 ))}
@@ -120,7 +155,14 @@ const ReleasedVersions: React.FC<Props> = ({
           )}
         </ButtonGroup>
       </fieldset>
-
+      <ConfirmationDialog
+          open={confirmDialogOpen}
+          setOpen={setConfirmDialogOpen}
+          onConfirm={() => handleReleaseVersionChange()}
+          message={confirmationMsg()}
+          cancelButtonText={"No"}
+          confirmButtonText={"Yes"}
+      />
       <Dialog onClose={handleClose} open={open}>
         <DictionaryVersionForm
           onSubmit={createDictionaryVersion}
