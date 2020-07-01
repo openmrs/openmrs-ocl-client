@@ -47,7 +47,6 @@ describe("View Dictionary", () => {
 
     cy.findByText("Releases").should("exist");
     cy.findByText("No released versions").should("exist");
-    cy.findByText("Copy subscription URL").should("exist"); // todo add disabled check
     cy.findByText("Release new version").should("exist");
   });
 });
