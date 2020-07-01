@@ -42,6 +42,10 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       marginBottom: "2vw"
     },
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
+    },
     searchContainer: {
       justifyItems: "center",
       display: "grid",
@@ -78,6 +82,9 @@ const ViewDictionaries: React.FC<Props> = ({
           }}
         >
           <Input
+            inputProps={{
+              className: classes.searchInput
+            }}
             onChange={e => setQ(e.target.value)}
             value={q}
             color="secondary"
