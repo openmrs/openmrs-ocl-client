@@ -31,6 +31,7 @@ import {
   CREATE_AND_ADD_LINKED_SOURCE_ACTION,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
+  EDIT_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION,
@@ -293,6 +294,11 @@ const retrieveDictionaryVersionsAction = createActionThunk(
 export const createDictionaryVersionAction = createActionThunk(
   CREATE_DICTIONARY_VERSION_ACTION,
   api.versions.create
+);
+
+export const editDictionaryVersionAction = createActionThunk(
+    EDIT_DICTIONARY_VERSION_ACTION,
+    api.versions.update
 );
 
 export const recursivelyAddConceptsToDictionaryAction = (
