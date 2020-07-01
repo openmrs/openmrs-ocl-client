@@ -122,7 +122,6 @@ const ViewDictionaryPage: React.FC<Props> = ({
           ) : (
             <ReleasedVersions
               versions={versions}
-              subscriptionUrl={url}
               showCreateVersionButton={canEditDictionary}
               createDictionaryVersion={(data: DictionaryVersion) =>
                 createDictionaryVersion(url, data)

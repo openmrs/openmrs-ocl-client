@@ -57,7 +57,7 @@ const api = {
   },
   versions: {
     retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
-      authenticatedInstance.get(`${dictionaryUrl}versions/`),
+      authenticatedInstance.get(`${dictionaryUrl}versions/?verbose=true`),
     create: (
       dictionaryUrl: string,
       data: DictionaryVersion
