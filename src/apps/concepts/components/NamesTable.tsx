@@ -16,12 +16,13 @@ import {
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { Select, TextField } from "formik-material-ui";
-import { NAME_TYPES } from "../../../utils";
+import { findLocale, NAME_TYPES } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,
   MoreVert as MoreVertIcon
 } from "@material-ui/icons";
 import React from "react";
+import { uniqBy } from "lodash";
 import { ConceptDescription, ConceptName } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -160,7 +161,10 @@ const NamesTable: React.FC<Props> = ({
                     data-testid={`${valuesKey}_${index}_locale`}
                     component={Select}
                   >
-                    {supportedLocales.map(locale => (
+                    {uniqBy(
+                      [findLocale(value.locale), ...supportedLocales],
+                      locale => locale.value
+                    ).map(locale => (
                       <MenuItem key={locale.value} value={locale.value}>
                         {locale.label}
                       </MenuItem>

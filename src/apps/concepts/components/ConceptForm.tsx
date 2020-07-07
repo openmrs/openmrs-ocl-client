@@ -44,6 +44,7 @@ import {
   MAPPINGS_BATCH_INDEX,
   SETS_BATCH_INDEX
 } from "../redux/constants";
+import { MappingSchema } from "./MappingsTableRow";
 
 const ANSWERS_VALUE_KEY = "answers";
 const SETS_VALUE_KEY = "sets";
@@ -117,22 +118,6 @@ const buildInitialValues = (
   concept_class: conceptClass,
   names
 });
-
-const MappingSchema = Yup.object()
-  .shape<Mapping>({
-    external_id: Yup.string(),
-    from_concept_url: Yup.string(),
-    map_type: Yup.string().required("Required"),
-    to_source_url: Yup.string().required("Required"),
-    to_concept_code: Yup.string().notRequired(),
-    to_concept_url: Yup.string().notRequired(),
-    to_concept_name: Yup.string().notRequired()
-  })
-  .test(
-    "User should select a to concept",
-    "A to concept is required",
-    (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
-  );
 
 const ExtrasSchema = Yup.object().shape<Extras>({
   hi_absolute: Yup.number().notRequired(),

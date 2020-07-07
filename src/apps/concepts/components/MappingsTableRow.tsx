@@ -28,24 +28,48 @@ import {
   MoreVert as MoreVertIcon
 } from "@material-ui/icons";
 import clsx from "clsx";
+import * as Yup from "yup";
 
 interface ConceptOption extends Option {
   displayName: string;
 }
 
+export const MappingSchema = Yup.object()
+  .shape<Mapping>({
+    external_id: Yup.string(),
+    from_concept_url: Yup.string(),
+    map_type: Yup.string().required("Required"),
+    to_source_url: Yup.string().required("Required"),
+    to_concept_code: Yup.string().notRequired(),
+    to_concept_url: Yup.string()
+      .notRequired()
+      .nullable(),
+    to_concept_name: Yup.string()
+      .notRequired()
+      .nullable()
+  })
+  .test(
+    "User should select a to concept",
+    "A to concept is required",
+    (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
+  );
+
 const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
 
 const option = (value?: string, label?: string) => ({ value, label });
 
-const buildConceptLabel = (toConceptName?: string, toConceptUrl?: string) =>
+const buildConceptLabel = (
+  toConceptName?: string | null,
+  toConceptUrl?: string | null
+) =>
   toConceptName && toConceptUrl
-    ? `${nameFromUrl(toConceptUrl)}- ${toConceptName}`
+    ? `${conceptCodeFromUrl(toConceptUrl)}- ${toConceptName}`
     : "";
 
 export const isExternalSource = ({ source_type: sourceType }: APISource) =>
   includes(["External", "externalDictionary"], sourceType);
 
-const nameFromUrl = (url: string): string => {
+const conceptCodeFromUrl = (url: string): string => {
   let letters = url.split("");
   letters.reverse();
   letters.splice(0, 1);
@@ -285,7 +309,7 @@ const MappingsTableRow: React.FC<Props> = ({
               }}
               value={
                 toSourceUrl
-                  ? option(toSourceUrl, nameFromUrl(toSourceUrl))
+                  ? option(toSourceUrl, conceptCodeFromUrl(toSourceUrl))
                   : undefined
               }
               placeholder="Select a source"

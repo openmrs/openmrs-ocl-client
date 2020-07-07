@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { APIDictionaryVersion } from "../types";
-import { BASE_URL } from "../../../utils";
+import { TRADITIONAL_OCL_URL } from "../../../utils";
 import DictionaryVersionForm from "./DictionaryVersionForm";
 
 interface Props {
@@ -81,8 +81,12 @@ const ReleasedVersions: React.FC<Props> = ({
                       </Button>
                     </TableCell>
                     <TableCell>
-                      <CopyToClipboard text={`${dictionaryUrl}${row.id}/`}>
-                        <Tooltip title={`${dictionaryUrl}${row.id}/`}>
+                      <CopyToClipboard
+                        text={`${TRADITIONAL_OCL_URL}${dictionaryUrl}${row.id}/`}
+                      >
+                        <Tooltip
+                          title={`${TRADITIONAL_OCL_URL}${dictionaryUrl}${row.id}/`}
+                        >
                           <Button size="small" variant="text" color="primary">
                             Copy
                           </Button>
