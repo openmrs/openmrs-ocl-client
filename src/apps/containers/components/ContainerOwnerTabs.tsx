@@ -1,42 +1,34 @@
 import React from "react";
 import { makeStyles, Tab, Tabs } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { TabType } from "../types";
 
 interface Props {
   currentPageUrl: string;
+  tabList: TabType[];
 }
 
 const useStyles = makeStyles({
   fullWidth: {
-    width: "100%"
-  }
+    width: "100%",
+  },
 });
 
-export const DictionaryOwnerTabs: React.FC<Props> = ({ currentPageUrl }) => {
+const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
   const classes = useStyles();
 
   return (
     <Tabs
       // centered
       className={classes.fullWidth}
-      variant="fullWidth"
+      variant='fullWidth'
       value={currentPageUrl}
+      data-testid='tabs'
     >
-      <LinkTab
-        label="Public Dictionaries"
-        value="/collections/"
-        to="/collections/"
-      />
-      <LinkTab
-        label="Your Dictionaries"
-        value="/user/collections/"
-        to="/user/collections/"
-      />
-      <LinkTab
-        label="Your Organizations' Dictionaries"
-        value="/user/orgs/collections/"
-        to="/user/orgs/collections/"
-      />
+      {tabList.map(({ labelName, labelURL }, index) => (
+        <LinkTab key={index} label={labelName} value={labelURL} to={labelURL} data-testid={'tab - ' + index} />
+      ))}
+      ;
     </Tabs>
   );
 };
@@ -50,3 +42,5 @@ interface LinkTabProps {
 function LinkTab(props: LinkTabProps) {
   return <Tab component={Link} {...props} />;
 }
+
+export default ContainerOwnerTabs;
