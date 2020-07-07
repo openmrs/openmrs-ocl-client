@@ -1,8 +1,9 @@
 import { NewAPISource } from "./types";
-import { authenticatedInstance } from "../../api";
+import {authenticatedInstance} from "../../api";
 import { AxiosResponse } from "axios";
-import { EditableConceptContainerFields } from "../../utils";
+import {buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA, EditableConceptContainerFields} from "../../utils";
 import { default as containerAPI } from "../containers/api";
+import { OCL_SOURCE_TYPE } from "./constants";
 
 const api = {
   ...containerAPI,
@@ -12,8 +13,25 @@ const api = {
     sourceUrl: string,
     data: EditableConceptContainerFields
   ): Promise<AxiosResponse<any>> => authenticatedInstance.put(sourceUrl, data),
-  retrieve: (sourceUrl: string): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.get(sourceUrl, { params: { verbose: true } })
+  sources: {
+    retrieve: {
+      private: (
+          sourcesUrl: string,
+          q: string = "",
+          limit = 20,
+          page = 1
+      ): Promise<AxiosResponse<any>> =>
+          authenticatedInstance.get(sourcesUrl, {
+            params: {
+              limit,
+              page,
+              q: buildPartialSearchQuery(q),
+              sourceType: OCL_SOURCE_TYPE,
+              timestamp: new Date().getTime() // work around seemingly unhelpful caching
+            }
+          })
+    }
+  },
 };
 
 export default api;

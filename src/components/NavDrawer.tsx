@@ -14,6 +14,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   ExitToApp,
   FolderOpenOutlined,
+  GroupWorkOutlined as OrgDictionariesIcon,
+  FolderSharedOutlined,
+  AccountTreeOutlined,
   Notifications as NotificationsIcon
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
@@ -152,6 +155,22 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
             </Tooltip>
             <ListItemText primary="Dictionaries" />
           </ListItem>
+            <ListItem
+                button
+                dense={false}
+                component={Link}
+                exact
+                activeClassName={classes.selected}
+                to="/user/sources/"
+                key="Your Sources"
+            >
+              <Tooltip title="Sources">
+                  <ListItemIcon className="list-item-icon">
+                      <AccountTreeOutlined />
+                  </ListItemIcon>
+              </Tooltip>
+                <ListItemText primary="Sources" />
+            </ListItem>
         </List>
         <Divider component="hr" />
         <List component="div">

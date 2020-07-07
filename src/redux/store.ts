@@ -5,11 +5,12 @@ import loadingAndErroredReducer from "./reducer";
 import authReducer from "../apps/authentication/redux/reducer"; // failed to respect module here because of a circular import issue
 import { dictionariesReducer } from "../apps/dictionaries";
 import { conceptsReducer } from "../apps/concepts";
+import { sourcesReducer} from "../apps/sources";
 
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
 
-const doNotPersist = ["dictionaries", "concepts", "status"].reduce(
+const doNotPersist = ["dictionaries", "concepts", "status", "sources"].reduce(
   (previousValue, item) => ({ ...previousValue, [item]: undefined }),
   {}
 );
@@ -51,7 +52,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   status: loadingAndErroredReducer,
   dictionaries: dictionariesReducer,
-  concepts: conceptsReducer
+  concepts: conceptsReducer,
+  sources: sourcesReducer
 });
 
 const store = createStore(
