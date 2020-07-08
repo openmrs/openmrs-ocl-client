@@ -6,10 +6,10 @@ import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 import { retrievePersonalSourcesAction } from "../redux";
 import ViewSources from "./ViewSources";
-import {SourceOwnerTabs} from "./SourceOwnerTabs";
 import Header from "../../../components/Header";
+import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
 
-const PER_PAGE = 20;
+import { ContainerOwnerTabs } from "../../containers/components";
 
 interface Props {
   loading: boolean;
@@ -25,7 +25,7 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
-  retrieveSources
+  retrieveSources,
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -41,24 +41,26 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params
+      ...params,
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   return (
-    <Header title="Sources">
-    <SourceOwnerTabs currentPageUrl={url} />
-    <ProgressOverlay loading={loading}>
-      <ViewSources
-        initialQ={initialQ}
-        page={page}
-        onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
-        onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
-        sources={sources}
-        numFound={numFound}
-      />
-    </ProgressOverlay>
+    <Header title='Sources'>
+      <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
+      <ProgressOverlay loading={loading}>
+        <ViewSources
+          initialQ={initialQ}
+          page={page}
+          perPage={PER_PAGE}
+          onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
+          onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
+          sources={sources}
+          numFound={numFound}
+          title={TITLE}
+        />
+      </ProgressOverlay>
     </Header>
   );
 };

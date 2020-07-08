@@ -63,6 +63,7 @@ const baseProps: viewSourcesProps = {
     onSearch: function onSearch() {
     },
     page: 1,
+    perPage: 10,
     initialQ: "",
     title: ""
 };
@@ -76,39 +77,48 @@ function renderUI(props: Partial<viewSourcesProps> = {}) {
 }
 describe('ViewSources', () => {
     it('should display shortCodes and names and owners of the respective sources that are present', () => {
-        const {container} = renderUI({
-            sources: [msfSource, ceilSource]
+        const {container, getAllByTestId} = renderUI({
+            sources: [msfSource, ceilSource],
+            title: "Sources"
         });
-        const sources: HTMLElement | null = container.querySelector("[data-testid='sources']");
-        const msfSourceCard: HTMLElement | null = container.querySelector("[data-testid='MSF-SRC']");
-        const ceilSourceCard: HTMLElement | null = container.querySelector("[data-testid='CEIL-SRC']");
-        const msfSourceShortCode = container.querySelector( "[data-testid='sourceShortCode - MSF-SRC']");
-        const ceilSourceShortCode: HTMLElement | null = container.querySelector("[data-testid='sourceShortCode - CEIL-SRC']");
-        const msfSourceName: HTMLElement | null = container.querySelector("[data-testid='sourceName - MSF-SRC']");
-        const ceilSourceName: HTMLElement | null = container.querySelector("[data-testid='sourceName - CEIL-SRC']");
-        const msfSourceOwnerTypeAndOwner: HTMLElement | null = container.querySelector("[data-testid='sourceOwnerTypeAndOwner - MSF-SRC']");
-        const ceilSourceOwnerTypeAndOwner: HTMLElement | null = container.querySelector("[data-testid='sourceOwnerTypeAndOwner - CEIL-SRC']");
 
-        expect(msfSourceCard).not.toBeNull();
-        expect(ceilSourceCard).not.toBeNull();
-        expect(msfSourceShortCode).toHaveTextContent("MSF-SRC");
-        expect(ceilSourceShortCode).toHaveTextContent("CEIL-SRC");
-        expect(msfSourceName).toHaveTextContent("MSF Source");
-        expect(ceilSourceName).toHaveTextContent("CEIL Source");
-        expect(msfSourceOwnerTypeAndOwner).toHaveTextContent("User/root");
-        expect(ceilSourceOwnerTypeAndOwner).toHaveTextContent("User/root");
-        expect(sources).not.toHaveTextContent("No Sources Found");
+        const noCards: HTMLElement | null = container.querySelector("[data-testid='noCards']");
+
+        expect(noCards).toBeNull();
+
+        expect(getAllByTestId('card').length).toBe(2);
+
+        expect(getAllByTestId('shortCode').length).toBe(2);
+        expect(getAllByTestId('shortCode')[0]).toHaveTextContent("MSF-SRC");
+        expect(getAllByTestId('shortCode')[1]).toHaveTextContent("CEIL-SRC");
+
+        expect(getAllByTestId('name').length).toBe(2);
+        expect(getAllByTestId('name')[0]).toHaveTextContent("MSF Source");
+        expect(getAllByTestId('name')[1]).toHaveTextContent("CEIL Source");
+
+        expect(getAllByTestId('owner').length).toBe(2);
+        expect(getAllByTestId('owner')[0]).toHaveTextContent("User/root");
+        expect(getAllByTestId('owner')[1]).toHaveTextContent("User/root");
+
+        expect(getAllByTestId('description').length).toBe(2);
+        expect(getAllByTestId('description')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+        expect(getAllByTestId('description')[1]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+
+        expect(getAllByTestId('viewButton').length).toBe(2);
+        expect(getAllByTestId('viewButton')[0]).toHaveTextContent("View");
+        expect(getAllByTestId('viewButton')[1]).toHaveTextContent("View");
 
     });
 
     it('should display "No Sources Found" when no sources are present', () => {
         const {container} = renderUI({
-            sources: []
+            sources: [],
+            title: "Sources"
         });
-        const sources: HTMLElement | null = container.querySelector("[data-testid='sources']");
+        const sources: HTMLElement | null = container.querySelector("[data-testid='noCards']");
 
         expect(sources).not.toBeNull();
-        expect(sources).toHaveTextContent("No Sources Found");
+        expect(sources).toHaveTextContent("No Sources");
 
     });
 
