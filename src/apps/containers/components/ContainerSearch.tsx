@@ -58,9 +58,10 @@ const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
           type='search'
           fullWidth
           placeholder={`Search ${title}`}
+          data-testid='searchInput'
           endAdornment={
             <InputAdornment position='end'>
-              <IconButton onClick={() => onSearch(q)}>
+              <IconButton onClick={() => onSearch(q)} data-testid='searchButton' >
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

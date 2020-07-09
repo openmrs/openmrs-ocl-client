@@ -44,6 +44,7 @@ const ContainerPagination: React.FC<Props> = ({
           "aria-label": "next page",
         }}
         onChangePage={(_: any, page: number) => onPageChange(page + 1)}
+        data-testid='pagination'
       />
     </Grid>
   );
