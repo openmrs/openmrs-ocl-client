@@ -23,9 +23,10 @@ const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
       className={classes.fullWidth}
       variant='fullWidth'
       value={currentPageUrl}
+      data-testid='tabs'
     >
       {tabList.map(({ labelName, labelURL }, index) => (
-        <LinkTab key={index} label={labelName} value={labelURL} to={labelURL} />
+        <LinkTab key={index} label={labelName} value={labelURL} to={labelURL} data-testid={'tab - ' + index} />
       ))}
       ;
     </Tabs>
