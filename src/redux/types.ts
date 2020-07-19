@@ -4,7 +4,7 @@ import { ConceptsState } from "../apps/concepts";
 import { AnyAction } from "redux";
 import {SourceState} from "../apps/sources";
 
-interface StatusState {
+export interface StatusState {
   [key: string]: boolean[] | string[] | undefined[];
 }
 

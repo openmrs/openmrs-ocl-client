@@ -1,5 +1,16 @@
 import { BaseConceptContainer } from "../../utils";
 
+interface BaseSource extends BaseConceptContainer {
+  extras?: { source?: string };
+}
+
+export interface Source extends BaseSource {
+  supported_locales: string[];
+  website: string;
+  custom_validation_schema: string;
+  source_type: string;
+  external_id: string;
+}
 interface BaseAPISource extends BaseConceptContainer {
   external_id: string;
   id: string;
@@ -27,6 +38,21 @@ export interface APISource extends BaseAPISource {
 
 export interface SourceState {
     sources: { items: APISource[]; responseMeta?: {} }[];
+    source?: APISource;
 }
 
-export {};
+const apiSourceToSource = (
+    apiSource?: APISource
+): Source | undefined => {
+  if (!apiSource) return apiSource;
+
+  const { url, supported_locales, ...theRest } = apiSource;
+
+  return {
+    supported_locales: supported_locales || [],
+    ...theRest
+  };
+};
+
+export { apiSourceToSource };
+

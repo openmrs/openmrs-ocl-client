@@ -14,7 +14,8 @@ const baseProps: cardProps = {
     owner : "",
     owner_type : "",
     description : "",
-    url : ""
+    url : "",
+    index: 1
 };
 
 function renderUI(props: Partial<cardProps> = {}) {
@@ -35,10 +36,10 @@ describe('ContainerCard', () => {
             url:"/users/root/cards/testCard/"
         });
 
-        const cardShortCode: HTMLElement | null = container.querySelector("[data-testid='shortCode']");
-        const cardName: HTMLElement | null = container.querySelector("[data-testid='name']");
-        const cardOwner: HTMLElement | null = container.querySelector("[data-testid='owner']");
-        const cardDescription: HTMLElement | null = container.querySelector("[data-testid='description']");
+        const cardShortCode: HTMLElement | null = container.querySelector("[data-testid='shortCode-1']");
+        const cardName: HTMLElement | null = container.querySelector("[data-testid='name-1']");
+        const cardOwner: HTMLElement | null = container.querySelector("[data-testid='owner-1']");
+        const cardDescription: HTMLElement | null = container.querySelector("[data-testid='description-1']");
 
         expect(cardShortCode).not.toBeNull();
         expect(cardName).not.toBeNull();
@@ -60,10 +61,10 @@ describe('ContainerCard', () => {
             url: "/users/root/cards/testCard/"
         });
 
-        const cardShortCode: HTMLElement | null = container.querySelector("[data-testid='shortCode']");
-        const cardName: HTMLElement | null = container.querySelector("[data-testid='name']");
-        const cardOwner: HTMLElement | null = container.querySelector("[data-testid='owner']");
-        const cardDescription: HTMLElement | null = container.querySelector("[data-testid='description']");
+        const cardShortCode: HTMLElement | null = container.querySelector("[data-testid='shortCode-1']");
+        const cardName: HTMLElement | null = container.querySelector("[data-testid='name-1']");
+        const cardOwner: HTMLElement | null = container.querySelector("[data-testid='owner-1']");
+        const cardDescription: HTMLElement | null = container.querySelector("[data-testid='description-1']");
 
         expect(cardShortCode).not.toBeNull();
         expect(cardName).not.toBeNull();
@@ -81,7 +82,7 @@ describe('ContainerCard', () => {
             url: "/users/root/cards/testCard/"
         });
 
-        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton']");
+        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton-1']");
 
         expect(viewButton).not.toBeNull();
         expect(viewButton).toHaveTextContent("View");
