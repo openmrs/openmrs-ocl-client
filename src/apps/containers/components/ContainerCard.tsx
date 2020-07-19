@@ -19,6 +19,7 @@ interface Props {
   owner_type: string;
   description: string;
   url: string;
+  index: number;
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,23 +35,24 @@ const ContainerCard: React.FC<Props> = ({
   owner_type,
   description,
   url,
+  index
 }) => {
   const classes = useStyles();
 
   return (
     <Grid item xs={4}>
-      <Card data-testid='card'>
+      <Card>
         <CardContent>
-          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid='shortCode'>
+          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`shortCode-${index}`}>
             {short_code}
           </Typography>
-          <Typography className={classes.containerName} noWrap variant='h5' data-testid='name'>
+          <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
             {name}
           </Typography>
-          <Typography noWrap variant='body2' color='textSecondary' data-testid='owner'>
+          <Typography noWrap variant='body2' color='textSecondary' data-testid={`owner-${index}`}>
             {owner_type}/{owner}
           </Typography>
-          <Typography noWrap variant='body1' component='p' data-testid='description'>
+          <Typography noWrap variant='body1' component='p' data-testid={`description-${index}`}>
             {description}
           </Typography>
         </CardContent>
@@ -61,7 +63,7 @@ const ContainerCard: React.FC<Props> = ({
             size='small'
             variant='text'
             color='primary'
-            data-testid='viewButton'
+            data-testid={`viewButton-${index}`}
           >
             View
           </Button>

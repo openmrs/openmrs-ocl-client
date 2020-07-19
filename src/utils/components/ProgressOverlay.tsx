@@ -84,7 +84,7 @@ const ProgressOverlay: React.FC<Props> = ({
   return (
     <>
       {error ? <Error errorMessage={error} /> : children}
-      {!loading ? "" : <Loader loadingMessage={loadingMessage} />}
+      {!loading ? "" : <Loader loadingMessage={loadingMessage} data-testid='loader-message'/>}
     </>
   );
 };

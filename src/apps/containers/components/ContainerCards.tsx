@@ -18,7 +18,7 @@ interface Props {
 
 const ContainerCards: React.FC<Props> = ({ cards, title }) => {
   return (
-    <Grid item xs={12} container spacing={2} justify='center'>
+    <Grid item xs={12} container spacing={2} justify='center' data-testid='cards'>
       {cards.length === 0 ? (
         <Typography component='span' variant='h6' data-testid='noCards'>
           No {title}
@@ -46,6 +46,7 @@ const ContainerCards: React.FC<Props> = ({ cards, title }) => {
             owner_type={ownerType}
             description={description}
             url={url}
+            index={index}
           />
         )
       )}
