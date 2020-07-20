@@ -25,6 +25,8 @@ import {
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 
+import SourceRoutes, {} from "./apps/sources";
+
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
@@ -80,6 +82,10 @@ const AuthenticatedRoutes: React.FC = () => {
       <Route exact path="/">
         <Redirect to="/user/collections/" />
       </Route>
+      <Route
+        path="/:ownerType/:owner/sources"
+        component={SourceRoutes}
+      />
     </Switch>
   );
 };

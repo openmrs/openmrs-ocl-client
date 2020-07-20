@@ -20,7 +20,7 @@ function renderUI(props: Partial<viewSourcesPageProps> = {}) {
 }
 describe('ViewSourcesPage', () => {
     it('should match snapshot and it should have all the child components', () => {
-        const {container, getByText} = renderUI({
+        const {container} = renderUI({
             loading:true
         });
         const headerComponent: HTMLElement | null = container.querySelector("[data-testid='header']");
