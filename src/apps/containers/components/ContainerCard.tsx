@@ -10,7 +10,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 interface Props {
   name: string;
@@ -38,6 +38,7 @@ const ContainerCard: React.FC<Props> = ({
   index
 }) => {
   const classes = useStyles();
+  const location = useLocation();
 
   return (
     <Grid item xs={4}>
@@ -58,7 +59,7 @@ const ContainerCard: React.FC<Props> = ({
         </CardContent>
         <CardActions>
           <Button
-            to={url}
+            to={{pathname: url, state: { prevPath: location.pathname }}}
             component={Link}
             size='small'
             variant='text'

@@ -1,7 +1,7 @@
 import {createActionThunk, indexedAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 import api from "../api";
-import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX} from "./constants";
+import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
 import {APISource} from "../types";
 
 export const createSourceAction = createActionThunk(
@@ -29,7 +29,8 @@ export const retrieveOrgSourcesAction = createActionThunk(
 
 export function makeRetrieveSourceAction(useCache = false) {
     return createActionThunk(RETRIEVE_SOURCE_ACTION, api.retrieve, useCache);
-}
+};
+
 export const retrieveSourceAndDetailsAction = (sourceUrl: string) => {
     return async (dispatch: Function) => {
         const retrieveSourceResult = await dispatch(
@@ -38,3 +39,11 @@ export const retrieveSourceAndDetailsAction = (sourceUrl: string) => {
         if (!retrieveSourceResult) return;
     };
 };
+
+export const retrievePublicSourcesAction = createActionThunk(
+    indexedAction(
+        RETRIEVE_SOURCES_ACTION,
+        PUBLIC_SOURCES_ACTION_INDEX
+    ),
+    api.sources.retrieve.private
+);

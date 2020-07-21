@@ -1,5 +1,5 @@
 import {AppState, errorSelector, indexedAction, loadingSelector} from "../../../redux";
-import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX} from "./constants";
+import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 
 export const createSourceErrorSelector = errorSelector(
@@ -29,4 +29,10 @@ export const retrieveSourceErrorSelector = errorSelector(
 
 export const retrieveSourceLoadingSelector = loadingSelector(
     RETRIEVE_SOURCE_ACTION
+);
+export const retrievePublicSourcesLoadingSelector = loadingSelector(
+    indexedAction(
+        RETRIEVE_SOURCES_ACTION,
+        PUBLIC_SOURCES_ACTION_INDEX
+    )
 );

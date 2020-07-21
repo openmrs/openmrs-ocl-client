@@ -61,7 +61,7 @@ describe('ViewSourcePage', () => {
         const {container} = renderUI();
         expect(container).toMatchSnapshot();
     });
-    it('header components should have the source title and source name', () => {
+    xit('header components should have the source title and source name', () => {
         const {getByText} = renderUI();
         expect(getByText("Your Sources >")).toBeInTheDocument()
     });

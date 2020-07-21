@@ -1,9 +1,9 @@
-import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPersonalSourcesPage";
-import {retrievePersonalSourcesAction} from "../../redux";
-import {currentState, personalSources, testSource} from '../utils';
+import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPublicSourcesPage";
+import {retrievePublicSourcesAction} from "../../redux";
+import {currentState, publicSources, testSource} from '../utils';
 
-const appState = currentState(personalSources);
-describe('ViewPersonalSourcesPage', () => {
+const appState = currentState(publicSources);
+describe('ViewPublicSourcesPage', () => {
 
     it('should list down all the props of the state', () => {
         expect(mapStateToProps(appState).loading).not.toBeNull();
@@ -24,6 +24,6 @@ describe('ViewPersonalSourcesPage', () => {
     });
 
     it('should point to correct dispatch action', () => {
-        expect(mapDispatchToProps.retrieveSources).toBe(retrievePersonalSourcesAction);
+        expect(mapDispatchToProps.retrieveSources).toBe(retrievePublicSourcesAction);
     })
 });

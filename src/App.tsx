@@ -24,6 +24,7 @@ import {
 } from "./apps/dictionaries/pages";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
+import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
 
 import SourceRoutes, {} from "./apps/sources";
 
@@ -50,6 +51,9 @@ const AuthenticatedRoutes: React.FC = () => {
       </Route>
       <Route exact path="/user/orgs/sources/">
           <ViewOrgSourcesPage />
+      </Route>
+      <Route exact path="/sources/">
+          <ViewPublicSourcesPage />
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
         <ConceptRoutes

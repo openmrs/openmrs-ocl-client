@@ -41,15 +41,28 @@ const ViewSourcePage: React.FC<Props> = ({
                                                  retrieveSourceAndDetails,
                                                  retrieveSourceErrors
                                              }: Props) => {
-    const { pathname: url } = useLocation();
+    const { pathname: url, state } = useLocation();
+    const previousPath = state ? state.prevPath : '';
 
     useEffect(() => {
         retrieveSourceAndDetails(url);
     }, [url, retrieveSourceAndDetails]);
 
-    return (
+    const sourceType = (previousPath: String) => {
+        switch (previousPath) {
+            case '/sources/':
+                return 'Public Sources';
+            case '/user/sources/':
+                return 'Your Sources';
+            case '/user/orgs/sources/':
+                return "Your Organisations' Sources";
+            default:
+                return 'Sources'
+       }
+    };
 
-        <Header title={`Your Sources > ${source?.name || ""}`} justifyChildren="space-around">
+    return (
+        <Header title={`${sourceType(previousPath)} > ${source?.name || ""}`} justifyChildren="space-around">
             <ProgressOverlay
             delayRender
             loading={sourceLoading}
