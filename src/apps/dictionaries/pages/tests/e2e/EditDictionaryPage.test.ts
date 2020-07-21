@@ -1,5 +1,8 @@
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, TestDictionary } from "./testUtils";
+import { initiateExceptionsLogger } from "../../../../exceptions/handler";
+
+initiateExceptionsLogger();
 
 export interface UpdatedDictionary {
   name: string;

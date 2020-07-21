@@ -42,3 +42,6 @@ cypress/videos/**
 public/env-config.js
 /junit.xml
 /oclapi/
+
+# MAC OS
+.DS_Store

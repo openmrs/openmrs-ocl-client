@@ -1,5 +1,8 @@
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, newDictionary } from "./testUtils";
+import { initiateExceptionsLogger } from "../../../../exceptions/handler";
+
+initiateExceptionsLogger();
 
 describe("Create Dictionary", () => {
   beforeEach(() => {

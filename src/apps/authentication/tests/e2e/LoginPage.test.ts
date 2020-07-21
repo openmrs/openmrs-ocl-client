@@ -1,4 +1,7 @@
 import { login, logout } from "./testUtils";
+import { initiateExceptionsLogger } from "../../../exceptions/handler";
+
+initiateExceptionsLogger();
 
 describe("Login", () => {
   it("Happy flow: Should allow user to login", () => {

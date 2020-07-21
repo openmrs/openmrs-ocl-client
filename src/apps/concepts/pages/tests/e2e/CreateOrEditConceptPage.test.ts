@@ -10,6 +10,9 @@ import {
   fillNameRow,
   newConcept
 } from "./testUtils";
+import { initiateExceptionsLogger } from "../../../../exceptions/handler";
+
+initiateExceptionsLogger();
 
 describe("Create Concept", () => {
   // todo add assertions for expected page blank state
