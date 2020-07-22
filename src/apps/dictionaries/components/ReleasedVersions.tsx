@@ -128,13 +128,24 @@ const ReleasedVersions: React.FC<Props> = ({
                       </CopyToClipboard>
                     </TableCell>
                       <TableCell>
-                        <Switch
-                          data-testid={row.id}
-                          checked={row.released}
-                          onChange={() => openDialog(row)}
-                          name="checkReleaseStatus"
-                          color="primary"
-                        />
+                          {showCreateVersionButton ?
+                              <Switch
+                              data-testid={row.id}
+                              checked={row.released}
+                              onChange={() => openDialog(row)}
+                              name="checkReleaseStatus"
+                              color="primary"
+                              /> :
+                              <Tooltip title="You don’t have permission to change the status">
+                                  <Switch
+                                      data-testid={row.id}
+                                      checked={row.released}
+                                      name="checkReleaseStatus"
+                                      disableRipple={true}
+                                      color="primary"
+                                      style={{cursor: "default", opacity: 1, backgroundColor: "transparent"}}
+                                  />
+                              </Tooltip>}
                       </TableCell>
                   </TableRow>
                 ))}
