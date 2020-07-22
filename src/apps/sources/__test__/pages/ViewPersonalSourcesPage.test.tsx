@@ -1,6 +1,6 @@
 import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPersonalSourcesPage";
 import {retrievePersonalSourcesAction} from "../../redux";
-import {currentState, personalSources, testSource} from '../utils';
+import {currentState, personalSources, testSource} from '../test_data';
 
 const appState = currentState(personalSources);
 describe('ViewPersonalSourcesPage', () => {

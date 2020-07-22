@@ -1,6 +1,6 @@
 import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewOrgSourcesPage";
 import {retrieveOrgSourcesAction} from "../../redux";
-import {currentState, orgSources, testSource} from '../utils';
+import {currentState, orgSources, testSource} from '../test_data';
 
 
 const appState = currentState(orgSources);

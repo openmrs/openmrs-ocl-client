@@ -18,7 +18,7 @@ interface Props {
 
 const ContainerCards: React.FC<Props> = ({ cards, title }) => {
   return (
-      <Box p={0}>
+      <Box width="100%" p={4}>
           <Grid item xs={12} container spacing={2} justify='center' data-testid='cards'>
               {cards.length === 0 ? (
                   <Typography component='span' variant='h6' data-testid='noCards'>

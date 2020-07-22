@@ -1,6 +1,6 @@
 import {mapDispatchToProps, mapStateToProps} from "../../pages/ViewPublicSourcesPage";
 import {retrievePublicSourcesAction} from "../../redux";
-import {currentState, publicSources, testSource} from '../utils';
+import {currentState, publicSources, testSource} from '../test_data';
 
 const appState = currentState(publicSources);
 describe('ViewPublicSourcesPage', () => {

@@ -21,6 +21,7 @@ import { AppState } from "../../../redux";
 import {useLocation} from "react-router-dom";
 import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
+import { getSourceTypeFromPreviousPath } from "../utils";
 
 interface Props {
     profile?: APIProfile;
@@ -48,21 +49,10 @@ const ViewSourcePage: React.FC<Props> = ({
         retrieveSourceAndDetails(url);
     }, [url, retrieveSourceAndDetails]);
 
-    const sourceType = (previousPath: String) => {
-        switch (previousPath) {
-            case '/sources/':
-                return 'Public Sources';
-            case '/user/sources/':
-                return 'Your Sources';
-            case '/user/orgs/sources/':
-                return "Your Organisations' Sources";
-            default:
-                return 'Sources'
-       }
-    };
+
 
     return (
-        <Header title={`${sourceType(previousPath)} > ${source?.name || ""}`} justifyChildren="space-around">
+        <Header title={`${getSourceTypeFromPreviousPath(previousPath)} > ${source?.name || ""}`} justifyChildren="space-around">
             <ProgressOverlay
             delayRender
             loading={sourceLoading}
