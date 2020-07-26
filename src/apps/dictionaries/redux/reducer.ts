@@ -8,6 +8,7 @@ import {
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION,
+    EDIT_DICTIONARY_VERSION_ACTION,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
@@ -49,6 +50,13 @@ export const reducer = createReducer(initialState, {
     ...state,
     versions: action.payload
   }),
+    [EDIT_DICTIONARY_VERSION_ACTION]: (state, {actionIndex, payload}) => {
+        const versionIndex = state.versions.findIndex(
+            version => version.id === payload.id
+        );
+        if (versionIndex !== -1) state.versions[versionIndex] = payload;
+        else state.versions.push(payload);
+    },
   [ADD_CONCEPTS_TO_DICTIONARY]: (state, { actionIndex, payload, meta }) => {
     state.addReferencesResults[actionIndex] = { payload, meta };
   },
