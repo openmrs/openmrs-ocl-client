@@ -48,7 +48,7 @@ const Loader = ({ loadingMessage }: { loadingMessage: string }) => {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.overlay, classes.blur)}>
+    <div className={clsx(classes.overlay, classes.blur)} data-testid="loader-message">
       <div className={classes.overlayContent}>
         <CircularProgress thickness={0.8} size={50} />
         <br />

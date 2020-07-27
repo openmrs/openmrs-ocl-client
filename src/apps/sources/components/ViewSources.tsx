@@ -1,5 +1,5 @@
 import React from "react";
-import { APIDictionary } from "../types";
+import { APISource } from "../types";
 import {
   ContainerCards,
   ContainerPagination,
@@ -7,7 +7,7 @@ import {
 } from "../../containers/components";
 
 interface Props {
-  dictionaries: APIDictionary[];
+  sources: APISource[];
   numFound: number;
   onPageChange: Function;
   onSearch: Function;
@@ -17,8 +17,8 @@ interface Props {
   title: string;
 }
 
-const ViewDictionaries: React.FC<Props> = ({
-  dictionaries,
+const ViewSources: React.FC<Props> = ({
+  sources,
   numFound,
   onPageChange,
   onSearch,
@@ -30,7 +30,7 @@ const ViewDictionaries: React.FC<Props> = ({
   return (
     <>
       <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
-      <ContainerCards cards={dictionaries} title={title} />
+      <ContainerCards cards={sources} title={title} />
       <ContainerPagination
         num_found={Number(numFound)}
         per_page={Number(perPage)}
@@ -41,4 +41,4 @@ const ViewDictionaries: React.FC<Props> = ({
   );
 };
 
-export default ViewDictionaries;
+export default ViewSources;

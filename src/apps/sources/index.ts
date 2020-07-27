@@ -1,7 +1,9 @@
 export {
+  default as sourcesReducer,
   createSourceAction,
   createSourceErrorSelector,
   editSourceAction,
-  editSourceErrorSelector
+  editSourceErrorSelector,
+  retrievePersonalSourcesLoadingSelector
 } from "./redux";
 export * from "./types";
