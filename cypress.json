@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:8080",
+  "baseUrl": "http://13.233.127.101",
   "integrationFolder": "./src",
   "testFiles": ["**/tests/e2e/*.test.*", "**/tests/e2e/*.spec.*"],
   "defaultCommandTimeout": 60000,
