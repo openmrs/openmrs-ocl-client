@@ -45,5 +45,5 @@ export const retrievePublicSourcesAction = createActionThunk(
         RETRIEVE_SOURCES_ACTION,
         PUBLIC_SOURCES_ACTION_INDEX
     ),
-    api.sources.retrieve.private
+    api.sources.retrieve.public
 );
