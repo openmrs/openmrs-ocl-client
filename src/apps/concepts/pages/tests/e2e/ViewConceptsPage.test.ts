@@ -168,7 +168,7 @@ describe("View Concepts Page", () => {
       cy.findByText(
         `Switch source (Currently ${dictionary.preferredSource})`
       ).click();
-      cy.runAndAwait(() => cy.findByText("Public Sources").click());
+      cy.runAndAwait(() => {cy.findByText("Public Sources").click();}, "GET", true);
       cy.get(conceptSelector)
         .eq(3)
         .click();
