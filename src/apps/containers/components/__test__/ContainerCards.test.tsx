@@ -44,11 +44,11 @@ describe('ContainerCards', () => {
             title: "Dictionaries"
         });
 
+        const cardsComponent: HTMLElement | null = container.querySelector("[data-testid='cards']");
         const noCards: HTMLElement | null = container.querySelector("[data-testid='noCards']");
-        const availableCards: HTMLElement | null = container.querySelector("[data-testid='cards']");
 
         expect(noCards).not.toBeNull();
-        expect(availableCards).toBeNull();
+        expect(cardsComponent).not.toBeNull();
         expect(noCards).toHaveTextContent("No Dictionaries");
     });
 
@@ -59,20 +59,22 @@ describe('ContainerCards', () => {
         });
 
         const noCards: HTMLElement | null = container.querySelector("[data-testid='noCards']");
+        const cardsComponent: HTMLElement | null = container.querySelector("[data-testid='cards']");
 
         expect(noCards).toBeNull();
+        expect(cardsComponent).not.toBeNull();
 
-        expect(getAllByTestId('shortCode').length).toBe(2);
-        expect(getAllByTestId('shortCode')[0]).toHaveTextContent("MSF-CRD");
-        expect(getAllByTestId('shortCode')[1]).toHaveTextContent("CEIL-CRD");
+        expect(getAllByTestId('shortCode-0')[0]).toHaveTextContent("MSF-CRD");
+        expect(getAllByTestId('shortCode-1')[0]).toHaveTextContent("CEIL-CRD");
 
-        expect(getAllByTestId('name').length).toBe(2);
-        expect(getAllByTestId('name')[0]).toHaveTextContent("MSF Card");
-        expect(getAllByTestId('name')[1]).toHaveTextContent("CEIL Card");
+        expect(getAllByTestId('name-0')[0]).toHaveTextContent("MSF Card");
+        expect(getAllByTestId('name-1')[0]).toHaveTextContent("CEIL Card");
 
-        expect(getAllByTestId('owner').length).toBe(2);
-        expect(getAllByTestId('description').length).toBe(2);
-        expect(getAllByTestId('viewButton').length).toBe(2);
+        expect(getAllByTestId('description-0')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+        expect(getAllByTestId('description-1')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+
+        expect(getAllByTestId('viewButton-0')[0]).toHaveTextContent("View");
+        expect(getAllByTestId('viewButton-1')[0]).toHaveTextContent("View");
 
     });
 });

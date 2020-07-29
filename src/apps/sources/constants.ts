@@ -2,10 +2,6 @@ import { TabType } from "../containers/types";
 
 export const OCL_SOURCE_TYPE = "Dictionary";
 
-export const CONTEXT = {
-  view: "view",
-};
-
 export const TAB_LIST: TabType[] = [
   {
     labelName: "Your Sources",

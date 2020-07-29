@@ -23,6 +23,10 @@ import {
   ViewPersonalDictionariesPage
 } from "./apps/dictionaries/pages";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
+import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
+import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
+
+import SourceRoutes, {} from "./apps/sources";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -44,6 +48,12 @@ const AuthenticatedRoutes: React.FC = () => {
       </Route>
       <Route exact path="/user/sources/">
           <ViewPersonalSourcesPage />
+      </Route>
+      <Route exact path="/user/orgs/sources/">
+          <ViewOrgSourcesPage />
+      </Route>
+      <Route exact path="/sources/">
+          <ViewPublicSourcesPage />
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
         <ConceptRoutes
@@ -76,6 +86,10 @@ const AuthenticatedRoutes: React.FC = () => {
       <Route exact path="/">
         <Redirect to="/user/collections/" />
       </Route>
+      <Route
+        path="/:ownerType/:owner/sources"
+        component={SourceRoutes}
+      />
     </Switch>
   );
 };

@@ -1,6 +1,6 @@
 ///<reference path="../../../../../node_modules/@types/testing-library__dom/queries.d.ts"/>
 import React from 'react';
-import ViewSources from '../../../../apps/sources/components/ViewSources';
+import ViewSources from '../../components/ViewSources';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {
@@ -63,7 +63,7 @@ const baseProps: viewSourcesProps = {
     onSearch: function onSearch() {
     },
     page: 1,
-    perPage: 10,
+    perPage: 20,
     initialQ: "",
     title: ""
 };
@@ -86,27 +86,21 @@ describe('ViewSources', () => {
 
         expect(noCards).toBeNull();
 
-        expect(getAllByTestId('card').length).toBe(2);
 
-        expect(getAllByTestId('shortCode').length).toBe(2);
-        expect(getAllByTestId('shortCode')[0]).toHaveTextContent("MSF-SRC");
-        expect(getAllByTestId('shortCode')[1]).toHaveTextContent("CEIL-SRC");
+        expect(getAllByTestId('shortCode-0')[0]).toHaveTextContent("MSF-SRC");
+        expect(getAllByTestId('shortCode-1')[0]).toHaveTextContent("CEIL-SRC");
 
-        expect(getAllByTestId('name').length).toBe(2);
-        expect(getAllByTestId('name')[0]).toHaveTextContent("MSF Source");
-        expect(getAllByTestId('name')[1]).toHaveTextContent("CEIL Source");
+        expect(getAllByTestId('name-0')[0]).toHaveTextContent("MSF Source");
+        expect(getAllByTestId('name-1')[0]).toHaveTextContent("CEIL Source");
 
-        expect(getAllByTestId('owner').length).toBe(2);
-        expect(getAllByTestId('owner')[0]).toHaveTextContent("User/root");
-        expect(getAllByTestId('owner')[1]).toHaveTextContent("User/root");
+        expect(getAllByTestId('owner-0')[0]).toHaveTextContent("User/root");
+        expect(getAllByTestId('owner-1')[0]).toHaveTextContent("User/root");
 
-        expect(getAllByTestId('description').length).toBe(2);
-        expect(getAllByTestId('description')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
-        expect(getAllByTestId('description')[1]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+        expect(getAllByTestId('description-0')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
+        expect(getAllByTestId('description-1')[0]).toHaveTextContent("A universal code system for identifying laboratory and clinical observations.");
 
-        expect(getAllByTestId('viewButton').length).toBe(2);
-        expect(getAllByTestId('viewButton')[0]).toHaveTextContent("View");
-        expect(getAllByTestId('viewButton')[1]).toHaveTextContent("View");
+        expect(getAllByTestId('viewButton-0')[0]).toHaveTextContent("View");
+        expect(getAllByTestId('viewButton-1')[0]).toHaveTextContent("View");
 
     });
 
@@ -126,7 +120,7 @@ describe('ViewSources', () => {
         const {container} = renderUI({
             sources: [msfSource]
         });
-        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton']");
+        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton-0']");
 
         expect(viewButton).not.toBeNull();
         expect(viewButton).toHaveTextContent("View");
@@ -137,7 +131,7 @@ describe('ViewSources', () => {
         const {container} = renderUI({
             sources: []
         });
-        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton']");
+        const viewButton: HTMLElement | null = container.querySelector("[data-testid='viewButton-0']");
 
         expect(viewButton).toBeNull();
 
@@ -149,8 +143,8 @@ describe('ViewSources', () => {
             onSearch: spyOnSearch,
         });
 
-        const searchInputBox: HTMLElement | null = container.querySelector("[data-testid='sourcesSearch']");
-        const searchSubmitButton: HTMLElement | null = container.querySelector("[data-testid='sourcesSearchButton']");
+        const searchInputBox: HTMLElement | null = container.querySelector("[data-testid='searchInput']");
+        const searchSubmitButton: HTMLElement | null = container.querySelector("[data-testid='searchButton']");
 
         if (searchInputBox !== null && searchSubmitButton !== null) {
             const searchInputElement = searchInputBox.children[0];
@@ -168,7 +162,7 @@ describe('ViewSources', () => {
             page: 1
         });
 
-        const pagination: HTMLElement | null = container.querySelector("[data-testid='sourcesPagination']");
+        const pagination: HTMLElement | null = container.querySelector("[data-testid='pagination']");
         const previousPageIcon = getAllByTitle("Previous page");
         const nextPageIcon = getAllByTitle("Next page");
 
@@ -187,7 +181,7 @@ describe('ViewSources', () => {
             page: 2
         });
 
-        const pagination: HTMLElement | null = container.querySelector("[data-testid='sourcesPagination']");
+        const pagination: HTMLElement | null = container.querySelector("[data-testid='pagination']");
         const previousPageIcon = getAllByTitle("Previous page");
         const nextPageIcon = getAllByTitle("Next page");
 

@@ -1,5 +1,5 @@
 import { NewAPISource } from "./types";
-import { authenticatedInstance } from "../../api";
+import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
 import { AxiosResponse } from "axios";
 import {
   buildPartialSearchQuery,
@@ -33,6 +33,21 @@ const api = {
             timestamp: new Date().getTime(), // work around seemingly unhelpful caching
           },
         }),
+        public: (
+            sourcesUrl: string,
+            q: string = "",
+            limit = 20,
+            page = 1
+        ): Promise<AxiosResponse<any>> =>
+            unAuthenticatedInstance.get(sourcesUrl, {
+                params: {
+                    limit,
+                    page,
+                    q: buildPartialSearchQuery(q),
+                    sourceType: OCL_SOURCE_TYPE,
+                    timestamp: new Date().getTime() // work around seemingly unhelpful caching
+                }
+            }),
     },
   },
 };
