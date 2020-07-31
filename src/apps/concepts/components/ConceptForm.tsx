@@ -125,7 +125,6 @@ const MappingSchema = Yup.object()
     map_type: Yup.string().required("Required"),
     to_source_url: Yup.string().required("Required"),
     to_concept_code: Yup.string().notRequired(),
-    to_concept_url: Yup.string().notRequired(),
     to_concept_name: Yup.string().notRequired()
   })
   .test(

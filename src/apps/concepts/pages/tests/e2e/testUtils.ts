@@ -162,7 +162,7 @@ export function fillMappingRow(
   type: "answers" | "sets" | "mappings"
 ) {
   searchAndSelect(
-    `[data-testRowId="${type}_${index}"]`,
+    `[data-testrowid="${type}_${index}"]`,
     "Select a source",
     concept[type][index].source
   );
@@ -173,7 +173,7 @@ export function fillMappingRow(
       concept[type][index].relationship
     );
   searchAndSelect(
-    `[data-testRowId="${type}_${index}"]`,
+    `[data-testrowid="${type}_${index}"]`,
     "Select a concept",
     concept[type][index].concept
   );
