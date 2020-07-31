@@ -1,17 +1,14 @@
 import React from 'react';
 import ReleasedVersions from '../../../../apps/dictionaries/components/ReleasedVersions';
-import {render, fireEvent, getByText} from '@testing-library/react';
+import {render, fireEvent, getByText} from '../../../../test-utils';
 import '@testing-library/jest-dom'
-import {
-    BrowserRouter as Router,
-} from "react-router-dom";
-import {APIDictionaryVersion, DictionaryVersion} from "../../types";
+import {APIDictionaryVersion} from "../../types";
 
 type releasedVersionProps = React.ComponentProps<typeof ReleasedVersions>;
 
 const baseProps: releasedVersionProps = {
     versions: [],
-    showCreateVersionButton: false,
+    showCreateVersionButton: true,
     createDictionaryVersion: function createDictonaryVersion() {
     },
     createVersionLoading: true,
@@ -23,9 +20,7 @@ const baseProps: releasedVersionProps = {
 
 function renderUI(props: Partial<releasedVersionProps> = {}) {
     return render(
-        <Router>
-            <ReleasedVersions {...baseProps} {...props}/>
-        </Router>
+        <ReleasedVersions {...baseProps} {...props}/>
     );
 }
 
@@ -64,7 +59,7 @@ describe("Dictionary release version table", () => {
             "Subscription URL",
             "Release Status"
         ];
-        const {container, getByText} = renderUI({
+        const {getByText} = renderUI({
             versions: [releasedVersion]
         });
 
@@ -103,7 +98,7 @@ describe("toggleButton for dictionary release status", () => {
     });
 
     it('check if onclick of dictionary toggle button opens confirmation dialog', () => {
-        const {container, getByRole, getByTestId} = renderUI({
+        const {getByRole, getByTestId} = renderUI({
             versions: [unreleasedVersion],
             showCreateVersionButton: true
         });
@@ -166,26 +161,30 @@ describe("toggleButton for dictionary release status", () => {
         expect(spyOnEditDictionaryVersion).not.toBeCalled();
     });
 
-    it('should not open confirmation dialog onclick of dictionary toggle button', () => {
-        const {container, getByRole, getByTestId} = renderUI({
-            versions: [unreleasedVersion],
-            showCreateVersionButton: false
+    describe('when user is not the owner of sources', () => {
+        it('should not open confirmation dialog onclick of dictionary toggle button', () => {
+            const {container, getByRole, getByTestId} = renderUI({
+                versions: [unreleasedVersion],
+                showCreateVersionButton: false
+            });
+            getByRole('checkbox').click();
+            const dialog = container.querySelector('[data-testid="confirm-dialog"]');
+            expect(dialog).toBeNull();
+            expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
         });
-        getByRole('checkbox').click();
-        const dialog = container.querySelector('[data-testid="confirm-dialog"]');
-        expect(dialog).toBeNull();
-        expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
-    });
 
-    it("should show tooltip with valid message on hovering the toggle button", async () => {
-        const {getByTitle, getByTestId} = renderUI({
-            versions: [unreleasedVersion],
-            showCreateVersionButton: false
+        it("should show tooltip with valid message on hovering the toggle button", async () => {
+            const {getByTitle, getByTestId} = renderUI({
+                versions: [unreleasedVersion],
+                showCreateVersionButton: false
+            });
+            const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
+            expect(toggleButton).not.toBeNull();
+            toggleButton !== null && fireEvent.mouseMove(toggleButton);
+            expect(getByTitle("You don’t have permission to change the status")).toBeInTheDocument();
         });
-        const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
-        expect(toggleButton).not.toBeNull();
-        toggleButton !== null && fireEvent.mouseMove(toggleButton);
-        expect(getByTitle("You don’t have permission to change the status")).toBeInTheDocument();
-    });
+    })
+
 
 });
+

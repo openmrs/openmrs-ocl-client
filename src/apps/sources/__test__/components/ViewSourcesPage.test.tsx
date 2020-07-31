@@ -4,7 +4,17 @@ import '@testing-library/jest-dom'
 import {render} from "../../../../test-utils";
 
 import {ViewSourcesPage} from "../../components/index";
+import routeData from 'react-router';
 
+const mockLocation = {
+    pathname: '/sources/',
+    hash: '',
+    search: '',
+    state: ''
+};
+beforeEach(() => {
+    jest.spyOn(routeData, 'useLocation').mockReturnValue(mockLocation)
+});
 
 type viewSourcesPageProps = React.ComponentProps<typeof ViewSourcesPage>;
 
