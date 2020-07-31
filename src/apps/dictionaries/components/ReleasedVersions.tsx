@@ -160,11 +160,11 @@ const ReleasedVersions: React.FC<Props> = ({
           <Typography align="center">No released versions</Typography>
         )}
         <br />
-        <ButtonGroup fullWidth variant="text" color="primary">
-          {!showCreateVersionButton ? null : (
+        {!showCreateVersionButton ? null : (
+          <ButtonGroup fullWidth variant="text" color="primary">
             <Button onClick={handleClickOpen}>Release new version</Button>
-          )}
-        </ButtonGroup>
+          </ButtonGroup>
+        )}
       </fieldset>
       <ConfirmationDialog
           open={confirmDialogOpen}
