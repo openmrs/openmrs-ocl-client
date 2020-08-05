@@ -11,7 +11,7 @@ type releasedVersionProps = React.ComponentProps<typeof ReleasedVersions>;
 
 const baseProps: releasedVersionProps = {
     versions: [],
-    showCreateVersionButton: true,
+    showCreateVersionButton: false,
     createDictionaryVersion: function createDictonaryVersion() {
     },
     createVersionLoading: true,
@@ -47,7 +47,8 @@ const unreleasedVersion: APIDictionaryVersion = {
 describe("ReleasedVersions", () => {
     it('should match snapshot', () => {
         const {container} = renderUI({
-            versions: [releasedVersion]
+            versions: [releasedVersion],
+            showCreateVersionButton: true
         });
 
         expect(container).toMatchSnapshot();
@@ -92,7 +93,7 @@ describe("toggleButton for dictionary release status", () => {
         expect(toggleBtnElement != null && toggleBtnElement.closest('span')).toHaveClass('Mui-checked');
     });
 
-    it('check if toggle button is disabled for an unreleased dictionary', () => {
+    it('check if toggle button is unchecked for an unreleased dictionary', () => {
         const {container} = renderUI({
             versions: [unreleasedVersion]
         });
@@ -103,7 +104,8 @@ describe("toggleButton for dictionary release status", () => {
 
     it('check if onclick of dictionary toggle button opens confirmation dialog', () => {
         const {container, getByRole, getByTestId} = renderUI({
-            versions: [unreleasedVersion]
+            versions: [unreleasedVersion],
+            showCreateVersionButton: true
         });
 
         getByRole('checkbox').click();
@@ -113,7 +115,8 @@ describe("toggleButton for dictionary release status", () => {
 
     it('check if confirmation dialog for releasing unreleased dictionary contains correct confirmation message', () => {
         const { getByRole, getByTestId} = renderUI({
-            versions: [unreleasedVersion]
+            versions: [unreleasedVersion],
+            showCreateVersionButton: true
         });
 
         getByRole('checkbox').click();
@@ -125,7 +128,8 @@ describe("toggleButton for dictionary release status", () => {
 
     it('check if confirmation dialog for un releasing released dictionary contains correct confirmation message', () => {
         const { getByRole, getByTestId} = renderUI({
-            versions: [releasedVersion]
+            versions: [releasedVersion],
+            showCreateVersionButton: true
         });
 
         getByRole('checkbox').click();
@@ -139,6 +143,7 @@ describe("toggleButton for dictionary release status", () => {
         const spyOnEditDictionaryVersion = jest.fn();
         const { getByRole, getByTestId} = renderUI({
             versions: [releasedVersion],
+            showCreateVersionButton: true,
             editDictionaryVersion: spyOnEditDictionaryVersion
         });
         getByRole('checkbox').click();
@@ -151,6 +156,7 @@ describe("toggleButton for dictionary release status", () => {
         const spyOnEditDictionaryVersion = jest.fn();
         const { getByRole, getByTestId} = renderUI({
             versions: [unreleasedVersion],
+            showCreateVersionButton: true,
             editDictionaryVersion: spyOnEditDictionaryVersion
         });
         getByRole('checkbox').click();
@@ -158,6 +164,28 @@ describe("toggleButton for dictionary release status", () => {
         getByText(dialog,"No").click();
         expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
         expect(spyOnEditDictionaryVersion).not.toBeCalled();
+    });
+
+    it('should not open confirmation dialog onclick of dictionary toggle button', () => {
+        const {container, getByRole, getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            showCreateVersionButton: false
+        });
+        getByRole('checkbox').click();
+        const dialog = container.querySelector('[data-testid="confirm-dialog"]');
+        expect(dialog).toBeNull();
+        expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
+    });
+
+    it("should show tooltip with valid message on hovering the toggle button", async () => {
+        const {getByTitle, getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            showCreateVersionButton: false
+        });
+        const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
+        expect(toggleButton).not.toBeNull();
+        toggleButton !== null && fireEvent.mouseMove(toggleButton);
+        expect(getByTitle("You don’t have permission to change the status")).toBeInTheDocument();
     });
 
 });

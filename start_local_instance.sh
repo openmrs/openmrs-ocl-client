@@ -3,12 +3,14 @@
 echo "Starting API..."
 git clone https://github.com/OpenConceptLab/oclapi.git
 cd oclapi || exit
+docker-compose build
 docker-compose up -d
 api_endpoint=http://localhost:8000
 cd ..
 
 echo "Starting App..."
 export OCL_API_HOST=$api_endpoint
+docker-compose build
 docker-compose up -d
 app_endpoint=http://localhost:8080
 
