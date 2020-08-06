@@ -92,7 +92,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
   const sourceUrl = url.substring(0, url.indexOf("concepts/"));
-  const conceptUrl = concept?.version_url || url.replace("/edit", "");
+  const conceptUrl = url.replace("/edit", "");
   const anyMappingsErrors =
     !!allMappingErrors.length && allMappingErrors.some(value => value);
 
