@@ -2,6 +2,7 @@ import {createReducer} from "@reduxjs/toolkit";
 import {Action} from "../../../redux";
 import {SourceState} from "../types";
 import {RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
+import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 
 const initialState: SourceState = {
     sources: []
@@ -18,5 +19,8 @@ export const reducer = createReducer(initialState, {
         ...state,
         source: action.payload
     }),
+    [LOGOUT_ACTION]: () =>{
+        return initialState;
+    },
 });
 export {reducer as default};
