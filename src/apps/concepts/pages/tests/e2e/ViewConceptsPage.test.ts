@@ -12,10 +12,10 @@ describe("View Concepts Page", () => {
     PICK_CONCEPTS: "Pick concepts"
   };
 
-  const conceptSelector = "[data-testRowClass='conceptRow']";
-  const nameSelector = "[data-testClass='name']";
-  const classSelector = "[data-testClass='conceptClass']";
-  const datatypeSelector = "[data-testClass='datatype']";
+  const conceptSelector = "[data-testrowclass='conceptRow']";
+  const nameSelector = "[data-testclass='name']";
+  const classSelector = "[data-testclass='conceptClass']";
+  const datatypeSelector = "[data-testclass='datatype']";
   let dictionary: TestDictionary, dictionaryUrl: string;
 
   function applyFilters() {
