@@ -29,8 +29,13 @@ import {
 import { connect } from "react-redux";
 // resist the temptation to make this like the rest of the action creators
 // because of the potential of a circular dependency(auth/utils->api->auth/api->auth/redux/actions->auth->utils)
-import { LOGOUT_ACTION } from "../apps/authentication";
+import {
+  LOGOUT_ACTION,
+  APIProfile,
+  profileSelector,
+} from "../apps/authentication";
 import { action } from "../redux/utils";
+import { AppState } from "../redux";
 
 const drawerWidth = 240;
 
@@ -91,9 +96,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   children: any;
   logout: Function;
+  profile?: APIProfile;
 }
 
-export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
+export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);
@@ -199,12 +205,15 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
               component='div'
               key={"Logout"}
             >
-              <Tooltip title='Logout'>
+              <Tooltip title={`Logout (${profile?.username})`}>
                 <ListItemIcon className='list-item-icon'>
                   <ExitToApp />
                 </ListItemIcon>
               </Tooltip>
-              <ListItemText primary='Logout' />
+              <ListItemText
+                primary='Logout'
+                secondary={`(${profile?.username})`}
+              />
             </ListItem>
           </List>
           <Dialog
@@ -235,6 +244,9 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
   );
 };
 
+const mapStateToProps = (state: AppState) => ({
+  profile: profileSelector(state),
+});
 const mapDispatchToProps = { logout: () => action(LOGOUT_ACTION) };
 
-export default connect(undefined, mapDispatchToProps)(NavDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(NavDrawer);
