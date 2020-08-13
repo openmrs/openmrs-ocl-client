@@ -100,6 +100,21 @@ export function invalidateCache(action: string, dispatch: Function) {
   dispatch(resetAction(action));
 }
 
+export function errorMsgResponse(response: any) {
+  let errorMsgResponse = [];
+  const genericErrorMessage =
+      "Action could not be completed. Please retry.";
+
+  for (let key in response.data) {
+    errorMsgResponse.push(
+        Array.isArray(response.data[key])
+            ? response.data[key].join(',')
+            : response.data[key]
+    )
+  };
+  return errorMsgResponse.length > 0 ? errorMsgResponse.join('\n') : genericErrorMessage;
+};
+
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
   task: (...args: T) => Promise<AxiosResponse<any>>,
@@ -140,14 +155,17 @@ export const createActionThunk = <T extends any[]>(
           result = response.data;
         } catch (error) {
           debug(error, "redux/utils/#createActionThunk#:catch");
-          const genericErrorMessage =
-            "Action could not be completed. Please retry.";
+
+
 
           const response = error.response;
-          const errorMessage: string | {} | [] =
+
+          let errorMsg = errorMsgResponse(response);
+
+          const errorMessage: string | undefined | {} | [] =
             response?.data || response
-              ? STATUS_CODES_TO_MESSAGES[response.status] || genericErrorMessage
-              : genericErrorMessage;
+              ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
+              : errorMsg;
 
           dispatch({
             type: `${actionType}_${FAILURE}`,
