@@ -470,7 +470,7 @@ const ConceptForm: React.FC<Props> = ({
               <Paper className="fieldsetParent">
                 <fieldset>
                   <Typography component="legend" variant="h5" gutterBottom>
-                    Sets
+                    Set Members
                   </Typography>
                   <FieldArray name={SETS_VALUE_KEY}>
                     {arrayHelpers => (
@@ -484,7 +484,7 @@ const ConceptForm: React.FC<Props> = ({
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
                         handleChange={handleChange}
-                        title="Set"
+                        title="Set Members"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
                         editing={allowEditing}
                       />
