@@ -423,8 +423,8 @@ const ViewConceptsPage: React.FC<Props> = ({
         open={Boolean(customAnchor)}
         onClose={handleCustomClose}
       >
-        {CONCEPT_CLASSES.slice(0, 9).map(conceptClass => (
-          <MenuItem onClick={handleCustomClose}>
+        {CONCEPT_CLASSES.slice(0, 9).map((conceptClass, index) => (
+          <MenuItem onClick={handleCustomClose} key={index}>
             <Link
               className={classes.link}
               to={`${linkedSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${containerUrl}`}

@@ -13,6 +13,7 @@ import {
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
+import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 
 const initialState: DictionaryState = {
   dictionaries: [],
@@ -65,6 +66,9 @@ export const reducer = createReducer(initialState, {
     { actionIndex, payload, meta }
   ) => {
     state.versions = [payload, ...state.versions];
-  }
+  },
+  [LOGOUT_ACTION]: () =>{
+    return initialState;
+  },
 });
 export { reducer as default };
