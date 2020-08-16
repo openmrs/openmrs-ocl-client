@@ -71,6 +71,20 @@ const useStyles = makeStyles({
   }
 });
 
+const supportedLocalesLabel = (values: any) => {
+  const labels: Array<JSX.Element> = [];
+  {LOCALES.filter(
+      ({ value }) => value !== values.default_locale
+  ).map(({ value, label }) => (
+      labels.push(
+        <MenuItem key={value} value={value} style={{whiteSpace: 'normal'}}>
+          { label }
+        </MenuItem>
+      )
+  ))}
+  return labels;
+}
+
 const DictionaryForm: React.FC<Props> = ({
   onSubmit,
   loading,
@@ -143,6 +157,8 @@ const DictionaryForm: React.FC<Props> = ({
               name="name"
               label="Dictionary Name"
               margin="normal"
+              multiline
+              rowsMax={4}
               component={TextField}
             />
             <Field
@@ -154,6 +170,8 @@ const DictionaryForm: React.FC<Props> = ({
               name="short_code"
               label="Short Code"
               margin="normal"
+              multiline
+              rowsMax={4}
               component={TextField}
             />
             <Field
@@ -267,18 +285,16 @@ const DictionaryForm: React.FC<Props> = ({
               </InputLabel>
               <Field
                 multiple
+                fullWidth
+                multiline
+                rowsMax={4}
                 value={[]}
                 name="supported_locales"
                 id="supported_locales"
                 component={Select}
+                style={{whiteSpace: "inherit !important"}}
               >
-                {LOCALES.filter(
-                  ({ value }) => value !== values.default_locale
-                ).map(({ value, label }) => (
-                  <MenuItem key={value} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
+                {supportedLocalesLabel(values)}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="supported_locales" component="span" />
@@ -289,6 +305,8 @@ const DictionaryForm: React.FC<Props> = ({
             ) : (
               <Field
                 fullWidth
+                multiline
+                rowsMax={4}
                 defaultValue="None"
                 id="linked_source"
                 name="extras.source"
