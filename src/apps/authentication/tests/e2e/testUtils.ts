@@ -12,7 +12,7 @@ export function login(username = "admin", password = "Admin123"): string {
 }
 
 export function logout() {
-  cy.findByTitle("Logout").click();
+  cy.findByTitle("Logout (admin)").click();
   cy.focused()
     .findByText("Logout")
     .click();
