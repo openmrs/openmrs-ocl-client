@@ -1,6 +1,10 @@
 const buildAddConceptToDictionaryMessage = (
   results: { expression: string; added: boolean }[]
 ) => {
+    if(!Array.isArray(results)) {
+      return "";
+    }
+
   const conceptResults = results.filter(result =>
     result.expression.includes("/concepts/")
   );

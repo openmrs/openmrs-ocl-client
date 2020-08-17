@@ -105,6 +105,8 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
         <br />
         <div className={classes.buttonWrapper}>
           <Button
+            to={{pathname: `/actions`}}
+            component={Link}
             variant="outlined"
             color="primary"
             size="medium"
