@@ -100,7 +100,7 @@ export function newConcept(
     mappings: [
       {
         source: { search: "CIEL", select: "CIEL" },
-        relationship: "Access",
+        relationship: "Same as",
         concept: { search: "1940", select: "1940- Oral suspension" }
       }
     ]
