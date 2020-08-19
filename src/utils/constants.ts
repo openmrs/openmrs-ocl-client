@@ -14,7 +14,7 @@ export const ORG_TYPE = "orgs";
 
 export const option = (value: string, label: string = value): Option => ({
   value,
-  label
+  label,
 });
 
 export const LOCALES: { [key: string]: string }[] = [
@@ -84,7 +84,7 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: "hz", label: "Herero (hz)" },
   {
     value: "ia",
-    label: "Interlingua (International Auxiliary Language Association) (ia)"
+    label: "Interlingua (International Auxiliary Language Association) (ia)",
   },
   { value: "id", label: "Indonesian (id)" },
   { value: "ie", label: "Occidental (ie)" },
@@ -204,7 +204,7 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: "yo", label: "Yoruba (yo)" },
   { value: "za", label: "Zhuang (za)" },
   { value: "zh", label: "Chinese (zh)" },
-  { value: "zu", label: "Zulu (zu)" }
+  { value: "zu", label: "Zulu (zu)" },
 ];
 
 export const CONCEPT_CLASS_QUESTION = "Question";
@@ -238,7 +238,7 @@ export const CONCEPT_CLASSES: string[] = [
   "Organism",
   "Drug-form",
   "Medical-supply",
-  "InteractSet"
+  "InteractSet",
 ];
 
 export const DATA_TYPES: string[] = [
@@ -253,14 +253,14 @@ export const DATA_TYPES: string[] = [
   "Structured-Numeric",
   "Rule",
   CONCEPT_DATATYPE_NUMERIC,
-  "Text"
+  "Text",
 ];
 
 export const NAME_TYPES: { [key: string]: string }[] = [
   { value: "FULLY_SPECIFIED", label: "Fully Specified" },
   { value: "null", label: "Synonym" }, // value here should be null but inputs html can't handle null as a value
   { value: "SHORT", label: "Short" },
-  { value: "INDEX_TERM", label: "Index Term" }
+  { value: "INDEX_TERM", label: "Index Term" },
 ];
 
 export const MAP_TYPES: Option[] = [
@@ -284,16 +284,16 @@ export const MAP_TYPE_CONCEPT_SET = option("CONCEPT-SET");
 
 const CIEL_SOURCE_URL = "/orgs/CIEL/sources/CIEL/";
 const PIH_SOURCE_URL = "/orgs/PIH/sources/PIH/";
-const MSF_SOURCE_URL = "/orgs/MSF/sources/MSF/";
+const MSFOCP_SOURCE_URL = "/orgs/MSFOCP/sources/MSFOCP/";
 const ALL_PUBLIC_SOURCES_URL = "/";
 
 export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
   PIH: PIH_SOURCE_URL,
-  MSF: MSF_SOURCE_URL
+  MSFOCP: MSFOCP_SOURCE_URL,
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   "Public Sources": ALL_PUBLIC_SOURCES_URL,
-  ...PREFERRED_SOURCES
+  ...PREFERRED_SOURCES,
 };
