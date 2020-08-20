@@ -226,7 +226,8 @@ describe("View Concepts Page", () => {
     ).type("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007");
     cy.runAndAwait(() => cy.findByText(TEXT.ADD_CONCEPTS).click(), "PUT", true);
 
-    cy.findByTitle("Go back").click();
+    cy.visit(dictionaryUrl);
+    cy.findByText("View Concepts").click();
     cy.get(conceptSelector).should("have.length.gte", 3); // account for possible recursively added concepts
   });
 });

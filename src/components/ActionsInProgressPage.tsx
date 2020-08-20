@@ -13,21 +13,22 @@ import { AppState } from "../redux";
 import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
-  addConceptsToDictionaryProgressListSelector,
+  addConceptsToDictionaryProgressListSelector, APIDictionary,
   buildAddConceptToDictionaryMessage
 } from "../apps/dictionaries";
 import { connect } from "react-redux";
 import Header from "./Header";
+import {dictionarySelector} from "../apps/dictionaries/redux";
+import { getLocalStorageObject, updateLocalStorageArray} from "../redux/localStorageUtils";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
   inProgressList?: (string | undefined)[];
   erroredList?: [];
   successList?: ({ payload: {} } | undefined)[];
+  dictionary?: APIDictionary;
 }
-
 const SEPARATOR = "--";
-
 const useStyles = makeStyles({
   card: {
     width: "100%"
@@ -41,35 +42,67 @@ const ActionsInProgressPage: React.FC<Props> = ({
   loadingList = [],
   inProgressList = [],
   erroredList = [],
-  successList = []
+  successList = [],
+  dictionary
 }) => {
-  const inProgressItems = loadingList
+  const dictionaryName = dictionary?.name+"-" || "";
+  const inProgressListLocalStorage = inProgressList?.length > 0 ? updateLocalStorageArray({
+    name:'notification',
+    key: 'inProgressList',
+    value: dictionaryName + inProgressList[inProgressList.length - 1] ,
+    list: inProgressList
+  }) : getLocalStorageObject({name:'notification', key:'inProgressList', value: inProgressList});
+
+  const loadingListLocalStorage = loadingList?.length > 0 ? updateLocalStorageArray({
+      name:'notification',
+      key: 'loadingList',
+      value: loadingList[loadingList.length - 1],
+      list: loadingList
+    }) : getLocalStorageObject({name:'notification', key:'loadingList', value: loadingList});
+
+  const erroredListLocalStorage = erroredList?.length > 0 ? updateLocalStorageArray({
+    name:'notification',
+    key: 'erroredList',
+    value: erroredList[erroredList.length - 1],
+    list: erroredList
+  }) : getLocalStorageObject({name:'notification', key:'erroredList', value: erroredList});
+
+  const successListLocalStorage = successList?.length > 0 ? updateLocalStorageArray({
+    name:'notification',
+    key: 'successList',
+    value: successList[successList.length - 1],
+    list: successList
+  }) : getLocalStorageObject({name:'notification', key:'successList', value: successList});
+
+  const inProgressItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
-      typeof loading == "boolean" && loading ? inProgressList[index] : null
+      typeof loading == "boolean" && loading ? inProgressListLocalStorage[index] : null
     )
-    .filter(item => item)
+    .filter((item: any) => item)
     .reverse() as string[];
-  const successfullItems = loadingList
+
+  const successfullItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
-      typeof loading == "boolean" && !loading && !erroredList[index]
+      typeof loading == "boolean" && !loading && !erroredListLocalStorage[index]
         ? {
-            result: successList[index]?.payload || "Successful",
-            progress: inProgressList[index]
+            result: successListLocalStorage[index]?.payload || "Successful",
+            progress: inProgressListLocalStorage[index]
           }
         : null
     )
-    .filter(item => item && item.progress)
+    .filter((item: any) => item && item.progress)
     .reverse() as { result: []; progress: string }[];
-  const erroredItems = loadingList
+
+  const erroredItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
-      typeof loading == "boolean" && !loading && erroredList[index]
+      typeof loading == "boolean" && !loading && erroredListLocalStorage[index]
         ? {
-            error: erroredList[index],
-            progress: inProgressList[index]
+            error: erroredListLocalStorage[index],
+            progress: inProgressListLocalStorage[index]
           }
         : null
     )
-    .filter(item => item && item.progress)
+    .filter((item: any) => item && item.progress)
     .reverse() as { error: string; progress: string }[];
 
   const classes = useStyles();
@@ -92,6 +125,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
             }
           >
             {inProgressItems.map(item => (
+
               <ListItem key={item}>
                 <Card className={classes.card}>
                   <CardContent>
@@ -171,7 +205,8 @@ const mapStateToProps = (state: AppState) => ({
   loadingList: addConceptsToDictionaryLoadingListSelector(state),
   inProgressList: addConceptsToDictionaryProgressListSelector(state),
   erroredList: addConceptsToDictionaryErrorListSelector(state),
-  successList: state.dictionaries.addReferencesResults
+  successList: state.dictionaries.addReferencesResults,
+  dictionary: dictionarySelector(state),
 });
 const mapDispatchToProps = {};
 
