@@ -27,6 +27,7 @@ import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
 
 import SourceRoutes, {} from "./apps/sources";
+import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -54,6 +55,11 @@ const AuthenticatedRoutes: React.FC = () => {
       </Route>
       <Route exact path="/sources/">
           <ViewPublicSourcesPage />
+      </Route>
+      <Route exact path="/sources/new/">
+          <Header title="Create Source">
+            <CreateSourcePage />
+          </Header>
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
         <ConceptRoutes

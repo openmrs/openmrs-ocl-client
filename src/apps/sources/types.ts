@@ -6,22 +6,23 @@ interface BaseSource extends BaseConceptContainer {
 
 export interface Source extends BaseSource {
   supported_locales: string[];
-  website: string;
-  custom_validation_schema: string;
+  website?: string;
   source_type: string;
-  external_id: string;
+  owner_url?:string;
 }
 interface BaseAPISource extends BaseConceptContainer {
   external_id: string;
   id: string;
   full_name: string;
-  website: string;
+  website?: string;
   custom_validation_schema: string;
 }
 
 export interface NewAPISource extends BaseAPISource {
   // api expects a comma separated string for this in create/ edit data
   supported_locales: string;
+  owner_url: string;
+  source_type?:string;
 }
 
 export interface APISource extends BaseAPISource {
