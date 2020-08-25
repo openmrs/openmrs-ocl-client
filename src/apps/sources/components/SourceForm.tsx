@@ -89,7 +89,7 @@ const SourceForm: React.FC<Props> = ({
 
     const supportedLocalesLabel = (values: any) => {
         const labels: Array<JSX.Element> = [];
-        {LOCALES.filter(
+        LOCALES.filter(
             ({ value }) => value !== values.default_locale
         ).map(({ value, label }) => (
             labels.push(
@@ -97,7 +97,7 @@ const SourceForm: React.FC<Props> = ({
                     { label }
                 </MenuItem>
             )
-        ))}
+        ))
         return labels;
     };
 

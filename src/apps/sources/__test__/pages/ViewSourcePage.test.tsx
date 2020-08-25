@@ -6,9 +6,12 @@ import {APISource} from "../../types";
 import {render} from "@testing-library/react";
 import {Provider} from "react-redux";
 import store from "../../../../redux";
-import {ViewSourcePage} from "../../pages";
+import {ViewSourcePage} from "../../pages/ViewSourcePage";
 import {APIOrg, APIProfile} from "../../../authentication";
 import * as React from "react";
+
+// @ts-ignore
+jest.mock('../../../../components/Header', () => ({ children, title }) => <div><div>{title}</div>{children}</div>);
 
 type viewSourcePageProps = React.ComponentProps<typeof ViewSourcePage>;
 const apiProfile: APIProfile = {
@@ -44,7 +47,9 @@ const baseProps: viewSourcePageProps = {
     source: source,
     retrieveSourceAndDetails: function retrieveSourceAndDetails() {
     },
-    retrieveSourceErrors: {}
+    retrieveConceptsSummary: function retrieveConceptsSummary() {
+    },
+    retrieveSourceErrors: false
 };
 
 function renderUI(props: Partial<viewSourcePageProps> = {}) {
@@ -60,9 +65,5 @@ describe('ViewSourcePage', () => {
     it('viewSourcePage snapshot test', () => {
         const {container} = renderUI();
         expect(container).toMatchSnapshot();
-    });
-    xit('header components should have the source title and source name', () => {
-        const {getByText} = renderUI();
-        expect(getByText("Your Sources >")).toBeInTheDocument()
     });
 });

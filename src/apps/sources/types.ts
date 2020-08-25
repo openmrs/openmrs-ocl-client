@@ -37,22 +37,19 @@ export interface APISource extends BaseAPISource {
 }
 
 export interface SourceState {
-    sources: { items: APISource[]; responseMeta?: {} }[];
-    source?: APISource;
+  sources: { items: APISource[]; responseMeta?: {} }[];
+  source?: APISource;
 }
 
-const apiSourceToSource = (
-    apiSource?: APISource
-): Source | undefined => {
+const apiSourceToSource = (apiSource?: APISource): Source | undefined => {
   if (!apiSource) return apiSource;
 
   const { url, supported_locales, ...theRest } = apiSource;
 
   return {
     supported_locales: supported_locales || [],
-    ...theRest
+    ...theRest,
   };
 };
 
 export { apiSourceToSource };
-

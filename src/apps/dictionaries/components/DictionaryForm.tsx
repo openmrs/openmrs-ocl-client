@@ -73,7 +73,7 @@ const useStyles = makeStyles({
 
 const supportedLocalesLabel = (values: any) => {
   const labels: Array<JSX.Element> = [];
-  {LOCALES.filter(
+  LOCALES.filter(
       ({ value }) => value !== values.default_locale
   ).map(({ value, label }) => (
       labels.push(
@@ -81,7 +81,7 @@ const supportedLocalesLabel = (values: any) => {
           { label }
         </MenuItem>
       )
-  ))}
+  ))
   return labels;
 }
 
