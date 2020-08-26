@@ -294,7 +294,7 @@ const editDictionaryAction = createActionThunk(
   EDIT_DICTIONARY_ACTION,
   api.update
 );
-const retrieveDictionaryVersionsAction = createActionThunk(
+export const retrieveDictionaryVersionsAction = createActionThunk(
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
   api.versions.retrieve
 );

@@ -1,5 +1,5 @@
 import React from 'react';
-import ReleasedVersions from '../../../../apps/dictionaries/components/ReleasedVersions';
+import ReleasedVersions from '../../components/ReleasedVersions';
 import {render, fireEvent, getByText} from '../../../../test-utils';
 import '@testing-library/jest-dom'
 import {APIDictionaryVersion} from "../../types";
@@ -54,10 +54,10 @@ describe("Dictionary release version table", () => {
     it('checks if table headers are as expected', () => {
         const headerRow: Array<string> = [
             "ID",
+            "Date Created",
             "Description",
-            "Concepts",
-            "Subscription URL",
-            "Release Status"
+            "Release Status",
+            "Actions"
         ];
         const {getByText} = renderUI({
             versions: [releasedVersion]
@@ -160,31 +160,52 @@ describe("toggleButton for dictionary release status", () => {
         expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
         expect(spyOnEditDictionaryVersion).not.toBeCalled();
     });
+});
 
-    describe('when user is not the owner of sources', () => {
-        it('should not open confirmation dialog onclick of dictionary toggle button', () => {
-            const {container, getByRole, getByTestId} = renderUI({
-                versions: [unreleasedVersion],
-                showCreateVersionButton: false
-            });
-            getByRole('checkbox').click();
-            const dialog = container.querySelector('[data-testid="confirm-dialog"]');
-            expect(dialog).toBeNull();
-            expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
+describe('when user is not the owner of sources', () => {
+    it('should not open confirmation dialog onclick of dictionary toggle button', () => {
+        const {container, getByRole, getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            showCreateVersionButton: false
         });
+        getByRole('checkbox').click();
+        const dialog = container.querySelector('[data-testid="confirm-dialog"]');
+        expect(dialog).toBeNull();
+        expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
+    });
 
-        it("should show tooltip with valid message on hovering the toggle button", async () => {
-            const {getByTitle, getByTestId} = renderUI({
-                versions: [unreleasedVersion],
-                showCreateVersionButton: false
-            });
-            const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
-            expect(toggleButton).not.toBeNull();
-            toggleButton !== null && fireEvent.mouseMove(toggleButton);
-            expect(getByTitle("You don’t have permission to change the status")).toBeInTheDocument();
+    it("should show tooltip with valid message on hovering the toggle button", async () => {
+        const {getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            showCreateVersionButton: false
         });
-    })
+        const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
+        expect(toggleButton).not.toBeNull();
+        toggleButton !== null && fireEvent.mouseMove(toggleButton);
+        expect(toggleButton).toHaveAttribute("title", "You don't have permission to change the status");
+    });
+});
 
+describe('actions button', () => {
+    it('should give both options on click of actions button for a released version', () => {
+        const {getByTestId} = renderUI({
+            versions: [releasedVersion],
+            showCreateVersionButton: false
+        });
+        getByTestId("more-actions").click();
+        expect(getByTestId("view-concepts")).toBeInTheDocument();
+        expect(getByTestId("copy-subscription-url")).toBeInTheDocument();
+    });
 
+    it("should give only view concepts option on click of actions button for an unreleased version", () => {
+        const {container, getByTestId} = renderUI({
+            versions: [unreleasedVersion],
+            showCreateVersionButton: true
+        });
+        getByTestId("more-actions").click();
+        const copyOptionElement: HTMLElement | null = container.querySelector("[data-testid='copy-subscription-url']");
+        expect(getByTestId("view-concepts")).toBeInTheDocument();
+        expect(copyOptionElement).toBeNull();
+    });
 });
 

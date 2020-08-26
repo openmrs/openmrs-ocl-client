@@ -59,6 +59,7 @@ export interface DictionaryVersion {
   description?: string;
   external_id: string;
   extras?: { [key: string]: string };
+  created_on?: string;
 }
 
 export interface APIDictionaryVersion extends DictionaryVersion {
