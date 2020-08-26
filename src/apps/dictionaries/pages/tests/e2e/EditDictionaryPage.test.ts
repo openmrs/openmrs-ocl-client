@@ -1,8 +1,5 @@
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, TestDictionary } from "./testUtils";
-import { initiateExceptionsLogger } from "../../../../exceptions/handler";
-
-initiateExceptionsLogger();
 
 export interface UpdatedDictionary {
   name: string;
@@ -33,6 +30,7 @@ describe("Edit Dictionary", () => {
   let savedDictionary: TestDictionary, dictionaryUrl: string;
 
   beforeEach(() => {
+  	cy.initiateExceptionsLogger();
     login();
     [savedDictionary, dictionaryUrl] = createDictionary();
   });

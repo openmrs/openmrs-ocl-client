@@ -3,9 +3,6 @@ import {
   TestDictionary
 } from "../../../../dictionaries/pages/tests/e2e/testUtils";
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
-import { initiateExceptionsLogger } from "../../../../exceptions/handler";
-
-initiateExceptionsLogger();
 
 describe("View Concepts Page", () => {
   const TEXT = {
@@ -26,6 +23,7 @@ describe("View Concepts Page", () => {
   }
 
   beforeEach(() => {
+  	cy.initiateExceptionsLogger();
     login();
     [dictionary, dictionaryUrl] = createDictionary();
     cy.visit(dictionaryUrl);

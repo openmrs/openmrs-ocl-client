@@ -77,6 +77,10 @@
     "cypress": "^4.9.0",
     "jest-junit": "^10.0.0",
     "prettier": "^1.19.1",
-    "ts-loader": "^6.2.1"
+    "ts-loader": "^6.2.1",
+    "cypress-cucumber-preprocessor": "^2.5.4"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
   }
 }

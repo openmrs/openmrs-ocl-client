@@ -13,7 +13,8 @@
 // the project's config changing)
 
 const wp = require("@cypress/webpack-preprocessor");
-
+//const cucumber = require('cypress-cucumber-preprocessor').default;
+ 
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -23,4 +24,5 @@ module.exports = on => {
     webpackOptions: require("../webpack.config.js")
   };
   on("file:preprocessor", wp(options));
+  //on("file:preprocessor", cucumber());
 };

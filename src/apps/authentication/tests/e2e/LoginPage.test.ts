@@ -1,9 +1,9 @@
 import { login, logout } from "./testUtils";
-import { initiateExceptionsLogger } from "../../../exceptions/handler";
-
-initiateExceptionsLogger();
 
 describe("Login", () => {
+  beforeEach(() => {
+    cy.initiateExceptionsLogger();
+  });
   it("Happy flow: Should allow user to login", () => {
     cy.visit("/user/collections/");
     // should have redirected us to login
