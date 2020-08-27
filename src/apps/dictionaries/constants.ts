@@ -8,10 +8,6 @@ export const CONTEXT = {
 
 export const TAB_LIST: TabType[] = [
   {
-    labelName: "Public Dictionaries",
-    labelURL: "/collections/",
-  },
-  {
     labelName: "Your Dictionaries",
     labelURL: "/user/collections/",
   },
@@ -19,6 +15,10 @@ export const TAB_LIST: TabType[] = [
     labelName: "Your Organizations' Dictionaries",
     labelURL: "/user/orgs/collections/",
   },
+  {
+    labelName: "Public Dictionaries",
+    labelURL: "/collections/",
+  }
 ];
 
 export const PER_PAGE = 20;

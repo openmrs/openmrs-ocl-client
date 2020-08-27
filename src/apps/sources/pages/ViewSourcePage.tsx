@@ -33,7 +33,9 @@ interface Props {
     ) => void;
     retrieveSourceErrors?: {};
 }
-
+interface UseLocation {
+    prevPath: string;
+}
 const ViewSourcePage: React.FC<Props> = ({
                                                  profile,
                                                  usersOrgs = [],
@@ -42,7 +44,7 @@ const ViewSourcePage: React.FC<Props> = ({
                                                  retrieveSourceAndDetails,
                                                  retrieveSourceErrors
                                              }: Props) => {
-    const { pathname: url, state } = useLocation();
+    const { pathname: url, state } = useLocation<UseLocation>();
     const previousPath = state ? state.prevPath : '';
 
     useEffect(() => {
