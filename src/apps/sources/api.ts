@@ -6,7 +6,6 @@ import {
   EditableConceptContainerFields,
 } from "../../utils";
 import { default as containerAPI } from "../containers/api";
-import { OCL_SOURCE_TYPE } from "./constants";
 
 const api = {
   ...containerAPI,
@@ -29,7 +28,6 @@ const api = {
             limit,
             page,
             q: buildPartialSearchQuery(q),
-            sourceType: OCL_SOURCE_TYPE,
             timestamp: new Date().getTime(), // work around seemingly unhelpful caching
           },
         }),
@@ -44,7 +42,6 @@ const api = {
                     limit,
                     page,
                     q: buildPartialSearchQuery(q),
-                    sourceType: OCL_SOURCE_TYPE,
                     timestamp: new Date().getTime() // work around seemingly unhelpful caching
                 }
             }),
