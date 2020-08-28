@@ -25,7 +25,6 @@ describe('api', () => {
                 "limit": 20,
                 "page": 1,
                 "q": "*",
-                "sourceType": "Dictionary",
                 "timestamp": expect.anything()
             }
         });
@@ -45,7 +44,6 @@ describe('api', () => {
                 "limit": 20,
                 "page": 1,
                 "q": "*",
-                "sourceType": "Dictionary",
                 "timestamp": expect.anything()
             }
         });
