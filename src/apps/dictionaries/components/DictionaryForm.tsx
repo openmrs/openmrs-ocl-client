@@ -228,17 +228,15 @@ const DictionaryForm: React.FC<Props> = ({
                   ""
                 )}
                 {usersOrgs.length > 0 ? (
-                    <>
-                      <ListSubheader>Your Organizations</ListSubheader>
-                      {usersOrgs.map(org => (
-                          <MenuItem key={org.id} value={org.url}>
-                            {org.name}
-                          </MenuItem>
-                      ))}
-                    </>
+                  <ListSubheader>Your Organizations</ListSubheader>
                 ) : (
                     ""
                 )}
+                {usersOrgs.map(org => (
+                    <MenuItem key={org.id} value={org.url}>
+                      {org.name}
+                    </MenuItem>
+                ))}
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="owner_url" component="span" />
