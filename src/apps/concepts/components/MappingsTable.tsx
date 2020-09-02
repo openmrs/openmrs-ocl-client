@@ -71,6 +71,23 @@ const MappingsTable: React.FC<Props> = ({
 
   const [showRetired, setShowRetired] = useState(false);
   const retiredCount = values.filter(value => value.retired).length;
+  const noValuesKeyLabel = () => {
+      switch (valuesKey) {
+        case 'sets':
+          return 'No set members'
+        default:
+          return `No ${valuesKey}`
+      }
+  }
+  const noMappingsMsg = () => {
+    if(values.length <= 0){
+      return(
+        <Typography align="center" component="div">
+          {noValuesKeyLabel()}
+        </Typography>
+      )
+    }
+  }
 
   return (
     <div>
@@ -131,12 +148,7 @@ const MappingsTable: React.FC<Props> = ({
           )}
         </TableBody>
       </Table>
-      {values.length > 0 ? null : (
-        <Typography
-          align="center"
-          component="div"
-        >{`No ${valuesKey}`}</Typography>
-      )}
+      {noMappingsMsg()}
       {typeof errors !== "string" ? null : (
         <Typography
           className={classes.errorContainer}

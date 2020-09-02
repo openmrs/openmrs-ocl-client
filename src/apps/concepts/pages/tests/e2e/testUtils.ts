@@ -100,7 +100,7 @@ export function newConcept(
     mappings: [
       {
         source: { search: "CIEL", select: "CIEL" },
-        relationship: "Access",
+        relationship: "Same as",
         concept: { search: "1940", select: "1940- Oral suspension" }
       }
     ]
@@ -162,7 +162,7 @@ export function fillMappingRow(
   type: "answers" | "sets" | "mappings"
 ) {
   searchAndSelect(
-    `[data-testRowId="${type}_${index}"]`,
+    `[data-testrowid="${type}_${index}"]`,
     "Select a source",
     concept[type][index].source
   );
@@ -173,7 +173,7 @@ export function fillMappingRow(
       concept[type][index].relationship
     );
   searchAndSelect(
-    `[data-testRowId="${type}_${index}"]`,
+    `[data-testrowid="${type}_${index}"]`,
     "Select a concept",
     concept[type][index].concept
   );
@@ -210,7 +210,7 @@ export function createConcept(
   cy.findByText("Add Answer").click();
   fillMappingRow(1, concept, "answers");
 
-  cy.findByText("Add Set").click();
+  cy.findByText("Add Set Members").click();
   fillMappingRow(0, concept, "sets");
 
   cy.findByText("Add Mapping").click();

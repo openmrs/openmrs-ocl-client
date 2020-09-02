@@ -31,6 +31,7 @@ import {
   CREATE_AND_ADD_LINKED_SOURCE_ACTION,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
+  EDIT_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION,
@@ -40,6 +41,13 @@ import {
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
 import { invalidateCache } from "../../../redux/utils";
+import {
+  addToLocalStorageObject,
+  createLocalStorageObject,
+  setUpdate
+} from "../../../redux/localStorageUtils";
+
+
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -286,7 +294,7 @@ const editDictionaryAction = createActionThunk(
   EDIT_DICTIONARY_ACTION,
   api.update
 );
-const retrieveDictionaryVersionsAction = createActionThunk(
+export const retrieveDictionaryVersionsAction = createActionThunk(
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
   api.versions.retrieve
 );
@@ -295,75 +303,95 @@ export const createDictionaryVersionAction = createActionThunk(
   api.versions.create
 );
 
+export const editDictionaryVersionAction = createActionThunk(
+    EDIT_DICTIONARY_VERSION_ACTION,
+    api.versions.update
+);
+
 export const recursivelyAddConceptsToDictionaryAction = (
   sourceUrl: string,
   dictionaryUrl: string,
   rawConcepts: (APIConcept | string)[],
   bulk: boolean = false
-) => async (dispatch: Function, getState: Function) => {
-  const concepts = rawConcepts.map(concept =>
-    typeof concept === "string"
-      ? {
-          id: concept,
-          url: `${sourceUrl}concepts/${concept}/`,
-          display_name: concept
-        }
-      : concept
-  );
-  const conceptOrConcepts =
-    concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
-  const thisOrThese = concepts.length > 1 ? "these" : "this";
-  const actionIndex =
-    addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
-  const updateProgress = (message: string) => {
-    const headerMessage = concepts
-      .map(concept => concept.display_name)
-      .join(", ");
-    dispatch(
-      progressAction(
-        indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
-        `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
-      )
+) => {
+  return async (dispatch: Function, getState: Function) => {
+    const concepts = rawConcepts.map(concept =>
+        typeof concept === "string"
+            ? {
+              id: concept,
+              url: `${sourceUrl}concepts/${concept}/`,
+              display_name: concept
+            }
+            : concept
     );
+    let inProgressList;
+    const conceptOrConcepts =
+        concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
+    const thisOrThese = concepts.length > 1 ? "these" : "this";
+    const actionIndex =
+        addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
+    const updateProgress = (message: string) => {
+      const headerMessage = concepts
+          .map(concept => concept.display_name)
+          .join(", ");
+
+      inProgressList = `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`;
+      dispatch(
+          progressAction(
+              indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
+              `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
+          )
+      );
+    };
+
+    dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex)));
+
+    const referencesToAdd = await recursivelyFetchToConcepts(
+        sourceUrl,
+        concepts.map(concept => concept.id),
+        updateProgress
+    );
+
+    createLocalStorageObject('notification');
+    addToLocalStorageObject('notification','inProgressList', inProgressList || "");
+    addToLocalStorageObject('notification','loadingList', "");
+    addToLocalStorageObject('notification','erroredList', "");
+    addToLocalStorageObject('notification','successList', "");
+    setUpdate('notification','inProgressList', "true");
+
+
+    updateProgress(
+        referencesToAdd.length
+            ? `Adding ${thisOrThese} and ${referencesToAdd.length} dependent concepts...`
+            : `Adding ${conceptOrConcepts}...`
+    );
+
+    try {
+      const response = await api.references.add(dictionaryUrl, [
+        ...referencesToAdd,
+        ...concepts.map(concept => concept.url)
+      ]);
+      dispatch({
+        type: ADD_CONCEPTS_TO_DICTIONARY,
+        actionIndex: actionIndex,
+        payload: response.data,
+        meta: [dictionaryUrl, concepts, bulk]
+      });
+      updateProgress(`Added ${conceptOrConcepts}`);
+    } catch (e) {
+      dispatch({
+        type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
+        actionIndex: actionIndex,
+        payload: e.response?.data,
+        meta: [dictionaryUrl, concepts, bulk]
+      });
+    }
+
+    dispatch(
+        completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
+    );
+    setUpdate('notification','inProgressList', "false");
   };
-
-  dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex)));
-
-  const referencesToAdd = await recursivelyFetchToConcepts(
-    sourceUrl,
-    concepts.map(concept => concept.id),
-    updateProgress
-  );
-  updateProgress(
-    referencesToAdd.length
-      ? `Adding ${thisOrThese} and ${referencesToAdd.length} dependent concepts...`
-      : `Adding ${conceptOrConcepts}...`
-  );
-
-  try {
-    const response = await api.references.add(dictionaryUrl, [
-      ...referencesToAdd,
-      ...concepts.map(concept => concept.url)
-    ]);
-    dispatch({
-      type: ADD_CONCEPTS_TO_DICTIONARY,
-      actionIndex: actionIndex,
-      payload: response.data,
-      meta: [dictionaryUrl, concepts, bulk]
-    });
-    updateProgress(`Added ${conceptOrConcepts}`);
-  } catch (e) {
-    dispatch({
-      type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
-      actionIndex: actionIndex,
-      payload: e.response?.data,
-      meta: [dictionaryUrl, concepts, bulk]
-    });
-  }
-
-  dispatch(
-    completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
-  );
 };
 export const addConceptsToDictionaryAction = createActionThunk(
   // 100 was chosen arbitrarily because this is an indexed action and we need to to slot it in somewhere.

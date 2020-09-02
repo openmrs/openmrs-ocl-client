@@ -9,10 +9,9 @@ import { retrievePublicDictionariesAction } from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { DictionaryOwnerTabs } from "./DictionaryOwnerTabs";
+import { ContainerOwnerTabs } from "../../containers/components";
 import { Header } from "../../../components";
-
-const PER_PAGE = 20;
+import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
 
 interface Props {
   loading: boolean;
@@ -28,7 +27,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   dictionaries = [],
   loading,
   meta = {},
-  retrieveDictionaries
+  retrieveDictionaries,
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -44,26 +43,28 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params
+      ...params,
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   return (
-    <Header title="Dictionaries">
-      <DictionaryOwnerTabs currentPageUrl={url} />
+    <Header title='Dictionaries'>
+      <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewDictionaries
           initialQ={initialQ}
           page={page}
+          perPage={PER_PAGE}
           onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
           onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
           dictionaries={dictionaries}
           numFound={numFound}
+          title={TITLE}
         />
         <Link to={`/collections/new/`}>
-          <Tooltip title="Create new dictionary">
-            <Fab color="primary" className="fab">
+          <Tooltip title='Create new dictionary'>
+            <Fab color='primary' className='fab'>
               <AddIcon />
             </Fab>
           </Tooltip>

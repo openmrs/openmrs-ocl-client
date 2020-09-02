@@ -60,8 +60,27 @@ code {
   }
 }
 
+#viewSourcePage {
+  #source-form {
+    .MuiInput-formControl {
+      .MuiInput-input.Mui-disabled {
+        color: black;
+        -moz-user-select: text;
+      }
+
+      svg {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
 .link {
   text-decoration: none;
   color: inherit;
   width: 100%;
+}
+
+#supported_locales.MuiSelect-selectMenu {
+  white-space: inherit;
 }

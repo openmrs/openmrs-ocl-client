@@ -1,7 +1,10 @@
 import { NewAPISource } from "./types";
-import { authenticatedInstance } from "../../api";
+import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
 import { AxiosResponse } from "axios";
-import { EditableConceptContainerFields } from "../../utils";
+import {
+  buildPartialSearchQuery,
+  EditableConceptContainerFields,
+} from "../../utils";
 import { default as containerAPI } from "../containers/api";
 
 const api = {
@@ -12,8 +15,38 @@ const api = {
     sourceUrl: string,
     data: EditableConceptContainerFields
   ): Promise<AxiosResponse<any>> => authenticatedInstance.put(sourceUrl, data),
-  retrieve: (sourceUrl: string): Promise<AxiosResponse<any>> =>
-    authenticatedInstance.get(sourceUrl, { params: { verbose: true } })
+  sources: {
+    retrieve: {
+      private: (
+        sourcesUrl: string,
+        q: string = "",
+        limit = 20,
+        page = 1
+      ): Promise<AxiosResponse<any>> =>
+        authenticatedInstance.get(sourcesUrl, {
+          params: {
+            limit,
+            page,
+            q: buildPartialSearchQuery(q),
+            timestamp: new Date().getTime(), // work around seemingly unhelpful caching
+          },
+        }),
+        public: (
+            sourcesUrl: string,
+            q: string = "",
+            limit = 20,
+            page = 1
+        ): Promise<AxiosResponse<any>> =>
+            unAuthenticatedInstance.get(sourcesUrl, {
+                params: {
+                    limit,
+                    page,
+                    q: buildPartialSearchQuery(q),
+                    timestamp: new Date().getTime() // work around seemingly unhelpful caching
+                }
+            }),
+    },
+  },
 };
 
 export default api;

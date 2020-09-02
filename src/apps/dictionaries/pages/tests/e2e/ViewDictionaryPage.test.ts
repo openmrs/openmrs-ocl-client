@@ -46,8 +46,8 @@ describe("View Dictionary", () => {
     );
     cy.findByText("View Concepts").should("exist");
 
-    cy.findByText("Releases").should("exist");
-    cy.findByText("No released versions").should("exist");
-    cy.findByText("Release new version").should("exist");
+    cy.findByText("Versions").should("exist");
+    cy.findByText("No versions created").should("exist");
+    cy.findByText("Create new version").should("exist");
   });
 });

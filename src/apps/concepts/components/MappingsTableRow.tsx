@@ -103,8 +103,12 @@ const fetchSourceOptions = async (
       headers: { next = "None" }
     } = response;
 
+    const actualSources: APISource[] = data.filter((source: APISource) => {
+      return (source.owner !== "OCL");
+    });
+
     return {
-      options: data.map((source: APISource) => {
+      options: actualSources.map((source: APISource) => {
         const { name, url } = source;
 
         return {
@@ -258,7 +262,7 @@ const MappingsTableRow: React.FC<Props> = ({
       handleChange(
         buildEvent(
           `${valueKey}.map_type`,
-          MAP_TYPES[isInternalMapping ? 0 : 1].value
+          value.map_type
         )
       );
     // usually doing the following is a mistake and will bite us later
@@ -278,7 +282,7 @@ const MappingsTableRow: React.FC<Props> = ({
   return (
     <>
       <TableRow
-        data-testRowId={`${valuesKey}_${index}`}
+        data-testrowid={`${valuesKey}_${index}`}
         className={clsx(classes.row, { [classes.retired]: retired })}
       >
         <TableCell
@@ -357,7 +361,7 @@ const MappingsTableRow: React.FC<Props> = ({
           >
             <FormControl fullWidth margin="dense">
               <Field
-                key={toSourceUrl}
+                key={`${toSourceUrl}_to_concept_url`}
                 id={`${valueKey}.to_concept_url`}
                 name={`${valueKey}.to_concept_url`}
                 component={AsyncSelect}
@@ -413,7 +417,7 @@ const MappingsTableRow: React.FC<Props> = ({
             scope="row"
           >
             <Field
-              key={toSourceUrl}
+              key={`${toSourceUrl}_to_concept_code`}
               fullWidth
               id={`${valueKey}.to_concept_code`}
               name={`${valueKey}.to_concept_code`}
@@ -423,7 +427,7 @@ const MappingsTableRow: React.FC<Props> = ({
             />
             <br />
             <Field
-              key={toSourceUrl}
+              key={`${toSourceUrl}_to_concept_name`}
               fullWidth
               id={`${valueKey}.to_concept_name`}
               name={`${valueKey}.to_concept_name`}

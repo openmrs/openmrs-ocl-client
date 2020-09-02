@@ -96,8 +96,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     <TableHead data-testid="conceptsTableHeader">
       <TableRow>
         {numSelected <= 0 ? (
-          ""
-        ) : (
+            null
+        )  : (
           <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -237,8 +237,8 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
         </>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon onClick={() => toggleShowOptions()} />
+          <IconButton aria-label="filter list" onClick={() => toggleShowOptions()} >
+            <FilterListIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -453,15 +453,15 @@ const ConceptsTable: React.FC<Props> = ({
                 return (
                   <TableRow
                     hover
-                    data-testRowClass="conceptRow"
+                    data-testrowclass="conceptRow"
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={`${row.id}-${index}`}
                     selected={isItemSelected}
                   >
                     {selected.length <= 0 ? (
-                      ""
+                        null
                     ) : (
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -475,7 +475,7 @@ const ConceptsTable: React.FC<Props> = ({
                     )}
                     <TableCell
                       onClick={event => toggleSelect(event, row.id)}
-                      data-testClass="name"
+                      data-testclass="name"
                       className={row.retired ? classes.retired : ""}
                     >
                       <Link
@@ -487,13 +487,13 @@ const ConceptsTable: React.FC<Props> = ({
                     </TableCell>
                     <TableCell
                       onClick={event => toggleSelect(event, row.id)}
-                      data-testClass="conceptClass"
+                      data-testclass="conceptClass"
                     >
                       {row.concept_class}
                     </TableCell>
                     <TableCell
                       onClick={event => toggleSelect(event, row.id)}
-                      data-testClass="datatype"
+                      data-testclass="datatype"
                     >
                       {row.datatype}
                     </TableCell>

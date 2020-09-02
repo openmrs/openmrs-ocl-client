@@ -12,10 +12,10 @@ describe("View Concepts Page", () => {
     PICK_CONCEPTS: "Pick concepts"
   };
 
-  const conceptSelector = "[data-testRowClass='conceptRow']";
-  const nameSelector = "[data-testClass='name']";
-  const classSelector = "[data-testClass='conceptClass']";
-  const datatypeSelector = "[data-testClass='datatype']";
+  const conceptSelector = "[data-testrowclass='conceptRow']";
+  const nameSelector = "[data-testclass='name']";
+  const classSelector = "[data-testclass='conceptClass']";
+  const datatypeSelector = "[data-testclass='datatype']";
   let dictionary: TestDictionary, dictionaryUrl: string;
 
   function applyFilters() {
@@ -169,7 +169,7 @@ describe("View Concepts Page", () => {
       cy.findByText(
         `Switch source (Currently ${dictionary.preferredSource})`
       ).click();
-      cy.runAndAwait(() => cy.findByText("Public Sources").click());
+      cy.runAndAwait(() => {cy.findByText("Public Sources").click();}, "GET", true);
       cy.get(conceptSelector)
         .eq(3)
         .click();
@@ -227,7 +227,8 @@ describe("View Concepts Page", () => {
     ).type("1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007");
     cy.runAndAwait(() => cy.findByText(TEXT.ADD_CONCEPTS).click(), "PUT", true);
 
-    cy.findByTitle("Go back").click();
+    cy.visit(dictionaryUrl);
+    cy.findByText("View Concepts").click();
     cy.get(conceptSelector).should("have.length.gte", 3); // account for possible recursively added concepts
   });
 });

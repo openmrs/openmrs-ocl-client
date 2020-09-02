@@ -18,10 +18,14 @@ const getUserDetailsAction = () => {
   return async (dispatch: Function) => {
     dispatch(startAction(GET_USER_DETAILS_ACTION));
 
-    let [userProfile, userOrgs] = await Promise.all([
+    let [userProfile] = await Promise.all([
       dispatch(getProfileAction()),
-      dispatch(getUserOrgsAction())
     ]);
+
+    let [userOrgs] = await Promise.all([
+      dispatch(getUserOrgsAction(userProfile.username))
+    ]);
+
     if (!(userProfile || userOrgs)) dispatch({ type: LOGOUT_ACTION });
 
     dispatch(completeAction(GET_USER_DETAILS_ACTION));

@@ -20,6 +20,8 @@ import {
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   createDictionaryVersionAction,
+  editDictionaryVersionAction,
+  retrieveDictionaryVersionsAction,
   createDictionaryVersionErrorSelector,
   createDictionaryVersionLoadingSelector,
   dictionarySelector,
@@ -44,6 +46,12 @@ interface Props {
   createDictionaryVersion: (
     ...args: Parameters<typeof createDictionaryVersionAction>
   ) => void;
+  editDictionaryVersion: (
+      ...args: Parameters<typeof editDictionaryVersionAction>
+  ) => void;
+  retrieveDictionaryVersions: (
+      ...args: Parameters<typeof retrieveDictionaryVersionsAction>
+  ) => void,
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
@@ -51,7 +59,7 @@ interface Props {
   retrieveDictionaryErrors?: {};
 }
 
-const ViewDictionaryPage: React.FC<Props> = ({
+export const ViewDictionaryPage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
   dictionaryLoading,
@@ -60,6 +68,8 @@ const ViewDictionaryPage: React.FC<Props> = ({
   versions,
   versionsLoading,
   createDictionaryVersion,
+  editDictionaryVersion,
+  retrieveDictionaryVersions,
   createVersionLoading,
   createVersionError,
   retrieveDictionaryErrors
@@ -94,7 +104,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
     >
       <Grid id="viewDictionaryPage" item xs={5} component="div">
         <Paper className="fieldsetParent">
-          <fieldset>
+          <fieldset style={{minWidth: "0"}} >
             <Typography component="legend" variant="h5" gutterBottom>
               General Details
             </Typography>
@@ -123,12 +133,23 @@ const ViewDictionaryPage: React.FC<Props> = ({
             <ReleasedVersions
               versions={versions}
               showCreateVersionButton={canEditDictionary}
-              createDictionaryVersion={(data: DictionaryVersion) =>
-                createDictionaryVersion(url, data)
+              createDictionaryVersion={async (data: DictionaryVersion) => {
+                  const response: any = await createDictionaryVersion(url, data);
+                  if (response) {
+                    retrieveDictionaryVersions(url);
+                  }
+                }
               }
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
               dictionaryUrl={url}
+              editDictionaryVersion={async (data: DictionaryVersion) => {
+                  const response: any = await  editDictionaryVersion(url, data);
+                  if (response) {
+                    retrieveDictionaryVersions(url);
+                  }
+                }
+              }
             />
           )}
         </Grid>
@@ -146,7 +167,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
@@ -157,9 +178,11 @@ const mapStateToProps = (state: AppState) => ({
   createVersionError: createDictionaryVersionErrorSelector(state),
   retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state)
 });
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
-  createDictionaryVersion: createDictionaryVersionAction
+  createDictionaryVersion: createDictionaryVersionAction,
+  editDictionaryVersion: editDictionaryVersionAction,
+  retrieveDictionaryVersions: retrieveDictionaryVersionsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);
