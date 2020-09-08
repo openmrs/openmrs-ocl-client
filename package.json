@@ -33,6 +33,7 @@
     "typescript": "3.8.2",
     "url-matcher": "^0.2.2",
     "uuid": "^3.4.0",
+    "uws": "^100.0.1",
     "yup": "^0.27.0"
   },
   "scripts": {
@@ -79,12 +80,13 @@
     "cypress": "^4.9.0",
     "jest-junit": "^10.0.0",
     "prettier": "^1.19.1",
-    "ts-loader": "^6.2.1",
     "react-test-renderer": "^16.13.1",
     "ts-loader": "^6.2.1",
-    "cypress-cucumber-preprocessor": "^2.5.4"
+    "@types/cypress-cucumber-preprocessor": "^1.14.1",
+    "cypress-cucumber-preprocessor": "^2.5.5",
+    "tsify": "^4.0.1"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true
+    "step_definitions": "cypress/integration/step_definitions"
   }
 }

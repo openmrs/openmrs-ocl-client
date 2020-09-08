@@ -45,3 +45,4 @@ public/env-config.js
 
 # MAC OS
 .DS_Store
+openmrs-ocl-client.iml

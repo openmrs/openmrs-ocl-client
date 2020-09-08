@@ -1,4 +1,4 @@
-import { login, logout } from "./testUtils";
+import { login, logout } from "../../../src/apps/authentication/tests/e2e/testUtils";
 import {Given, When, Then} from "cypress-cucumber-preprocessor/steps";
 
 Given("User visits user collection page", async () => {
