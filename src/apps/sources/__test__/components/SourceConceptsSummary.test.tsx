@@ -7,6 +7,7 @@ import { APISource } from "../../types";
 type sourceDetailsProps = React.ComponentProps<typeof SourceConceptDetails>;
 
 const totalConcepts = 3;
+const activeConcepts = 2;
 const msfSource: APISource = {
   id: "MSF-SOURCE",
   short_code: "MSF-SRC",
@@ -32,6 +33,7 @@ const msfSource: APISource = {
 const baseProps: sourceDetailsProps = {
   source: msfSource,
   totalConceptCount: totalConcepts,
+  activeConceptCount: activeConcepts
 };
 
 function renderUI(props: Partial<sourceDetailsProps> = {}) {

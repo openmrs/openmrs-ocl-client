@@ -6,9 +6,12 @@ import {APISource} from "../../types";
 import {render} from "@testing-library/react";
 import {Provider} from "react-redux";
 import store from "../../../../redux";
-import {ViewSourcePage} from "../../pages/ViewSourcePage";
+import {mapDispatchToProps, mapStateToProps, ViewSourcePage} from "../../pages/ViewSourcePage";
 import {APIOrg, APIProfile} from "../../../authentication";
 import * as React from "react";
+import {currentState, personalSources} from "../test_data";
+import {createSourceDispatchAction, retrieveSourceAndDetailsAction} from "../../redux";
+import {retrieveActiveConceptsAction, retrieveConceptsAction} from "../../../concepts/redux";
 
 // @ts-ignore
 jest.mock('../../../../components/Header', () => ({ children, title }) => <div><div>{title}</div>{children}</div>);
@@ -45,10 +48,9 @@ const baseProps: viewSourcePageProps = {
     usersOrgs: [apiOrg],
     sourceLoading: false,
     source: source,
-    retrieveSourceAndDetails: function retrieveSourceAndDetails() {
-    },
-    retrieveConceptsSummary: function retrieveConceptsSummary() {
-    },
+    retrieveSourceAndDetails: jest.fn(),
+    retrieveConceptsSummary: jest.fn(),
+    retrieveActiveConceptsSummary: jest.fn(),
     retrieveSourceErrors: false
 };
 
@@ -60,10 +62,44 @@ function renderUI(props: Partial<viewSourcePageProps> = {}) {
         </Provider>
     );
 }
+const state = currentState(personalSources);
 
 describe('ViewSourcePage', () => {
     it('viewSourcePage snapshot test', () => {
         const {container} = renderUI();
         expect(container).toMatchSnapshot();
+    });
+    it('list of profiles of the state should not be null', () => {
+        expect(mapStateToProps(state).profile).not.toBeNull();
+    });
+    it('total orgs of the state should not be null', () => {
+        expect(mapStateToProps(state).usersOrgs).not.toBeNull();
+    });
+    it('source loading props of the state should not be null', () => {
+        expect(mapStateToProps(state).sourceLoading).not.toBeNull();
+    });
+    it('the source of the state should not be null', () => {
+        expect(mapStateToProps(state).source).not.toBeNull();
+    });
+    it('the metaConceptsCount of the state should not be null', () => {
+        expect(mapStateToProps(state).metaConceptsCount).not.toBeNull();
+    });
+    it('the metaConceptsCount of the state should be 4', () => {
+        expect(mapStateToProps(state).metaConceptsCount).toStrictEqual({ "num_found": 4});
+    });
+    it('the metaActiveConceptsCount of the state should not be null', () => {
+        expect(mapStateToProps(state).metaActiveConceptsCount).not.toBeNull();
+    });
+    it('the metaActiveConceptsCount of the state should be 4', () => {
+        expect(mapStateToProps(state).metaActiveConceptsCount).toStrictEqual({"num_found": 3});
+    });
+    it('retrieveSource should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.retrieveSourceAndDetails).toBe(retrieveSourceAndDetailsAction);
+    });
+    it('retrieveConceptsSummary should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.retrieveConceptsSummary).toBe(retrieveConceptsAction);
+    });
+    it('retrieveActiveConceptsSummary should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.retrieveActiveConceptsSummary).toBe(retrieveActiveConceptsAction);
     });
 });

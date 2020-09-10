@@ -218,6 +218,8 @@ const DictionaryForm: React.FC<Props> = ({
                 disabled={editing || isSubmitting}
                 name="owner_url"
                 id="owner_url"
+                multiline
+                rowsMax={4}
                 component={Select}
               >
                 {profile ? (
@@ -290,8 +292,6 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                multiline
-                rowsMax={4}
                 value={[]}
                 name="supported_locales"
                 id="supported_locales"

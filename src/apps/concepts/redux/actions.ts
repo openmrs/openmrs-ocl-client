@@ -16,6 +16,7 @@ import {
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
+  RETRIEVE_ACTIVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_CONCEPT_AND_MAPPINGS,
   UPSERT_MAPPING_ACTION
@@ -217,4 +218,8 @@ export const upsertConceptAndMappingsAction = (
 export const retrieveConceptsAction = createActionThunk(
   RETRIEVE_CONCEPTS_ACTION,
   api.concepts.retrieve
+);
+export const retrieveActiveConceptsAction = createActionThunk(
+    RETRIEVE_ACTIVE_CONCEPTS_ACTION,
+    api.concepts.retrieveActive
 );

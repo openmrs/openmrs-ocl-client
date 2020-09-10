@@ -194,17 +194,18 @@ const ViewConceptsPage: React.FC<Props> = ({
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
     retrieveDictionary(containerUrl);
-    retrieveConcepts(
-      url,
-      page,
-      limit,
-      initialQ,
-      sortDirection,
-      sortBy,
-      initialDataTypeFilters,
-      initialClassFilters,
-      initialSourceFilters,
-      true
+    retrieveConcepts({
+          conceptsUrl: url,
+          page: page,
+          limit: limit,
+          q: initialQ,
+          sortDirection: sortDirection,
+          sortBy: sortBy,
+          dataTypeFilters: initialDataTypeFilters,
+          classFilters: initialClassFilters,
+          sourceFilters: initialSourceFilters,
+          includeRetired: true
+        }
     );
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that

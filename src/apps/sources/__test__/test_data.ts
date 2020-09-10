@@ -57,7 +57,8 @@ const dictionariesState: DictionaryState = {
 };
 
 const conceptState: ConceptsState = {
-  concepts: { items: [] },
+  concepts: { items: [], responseMeta: {num_found: 4}},
+  activeConcepts: { items: [], responseMeta: {num_found: 3} },
   mappings: [],
 };
 

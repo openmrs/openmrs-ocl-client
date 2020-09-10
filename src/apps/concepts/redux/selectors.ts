@@ -5,6 +5,7 @@ import {
   progressSelector
 } from "../../../redux";
 import {
+  RETRIEVE_ACTIVE_CONCEPTS_ACTION,
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
@@ -30,6 +31,12 @@ export const viewConceptsLoadingSelector = loadingSelector(
 );
 export const viewConceptsErrorsSelector = errorSelector(
   RETRIEVE_CONCEPTS_ACTION
+);
+export const viewActiveConceptsLoadingSelector = loadingSelector(
+    RETRIEVE_ACTIVE_CONCEPTS_ACTION
+);
+export const viewActiveConceptsErrorsSelector = errorSelector(
+    RETRIEVE_ACTIVE_CONCEPTS_ACTION
 );
 export const upsertAllMappingsErrorSelector = errorListSelector(
   UPSERT_MAPPING_ACTION

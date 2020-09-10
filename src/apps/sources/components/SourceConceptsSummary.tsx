@@ -16,13 +16,17 @@ import { StarBorder, DeleteForever } from "@material-ui/icons";
 interface Props {
   source?: APISource;
   totalConceptCount: number;
+  activeConceptCount: number;
 }
 
-const SourceConceptsSummary: React.FC<Props> = ({ source, totalConceptCount }) => {
+const SourceConceptsSummary: React.FC<Props> = ({ source,
+                                                  totalConceptCount,
+                                                  activeConceptCount
+}) => {
 
   const total_concepts: number = totalConceptCount;
-  const active_concepts: number = source?.active_concepts || 0;
-  const retire_concepts: number = totalConceptCount - active_concepts;
+  const active_concepts: number = activeConceptCount;
+  const retire_concepts: number = total_concepts - active_concepts;
 
   return (
     <Paper className='fieldsetParent'>

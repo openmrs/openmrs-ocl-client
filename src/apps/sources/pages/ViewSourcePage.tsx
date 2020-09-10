@@ -2,20 +2,17 @@ import React, { useEffect } from "react";
 import SourceForm from "../components/SourceForm";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
+import { APISource, apiSourceToSource } from "../types";
 import {
-    APISource,
-    apiSourceToSource
-} from "../types";
-import {
-    orgsSelector,
-    profileSelector
+  orgsSelector,
+  profileSelector,
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
 import {
-    sourceSelector,
-    retrieveSourceAndDetailsAction,
-    retrieveSourceErrorSelector,
-    retrieveSourceLoadingSelector
+  sourceSelector,
+  retrieveSourceAndDetailsAction,
+  retrieveSourceErrorSelector,
+  retrieveSourceLoadingSelector,
 } from "../redux";
 import { AppState } from "../../../redux";
 import { useLocation } from "react-router-dom";
@@ -23,7 +20,14 @@ import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
 import { getSourceTypeFromPreviousPath } from "../utils";
 import { SourceConceptDetails } from "../components";
-import { retrieveConceptsAction } from "../../concepts/redux";
+import {
+  retrieveActiveConceptsAction,
+  retrieveConceptsAction,
+  viewConceptsLoadingSelector,
+  viewConceptsErrorsSelector,
+  viewActiveConceptsLoadingSelector,
+  viewActiveConceptsErrorsSelector
+} from "../../concepts/redux";
 
 interface Props {
   profile?: APIProfile;
@@ -37,9 +41,15 @@ interface Props {
   retrieveConceptsSummary: (
     ...args: Parameters<typeof retrieveConceptsAction>
   ) => void;
+  retrieveActiveConceptsSummary: (
+      ...args: Parameters<typeof retrieveActiveConceptsAction>
+  ) => void;
   metaConceptsCount?: { num_found?: number };
+  metaActiveConceptsCount?: { num_found?: number };
 }
-
+interface UseLocation {
+  prevPath: string;
+}
 export const ViewSourcePage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
@@ -48,17 +58,22 @@ export const ViewSourcePage: React.FC<Props> = ({
   retrieveSourceAndDetails,
   retrieveSourceErrors,
   retrieveConceptsSummary,
+  retrieveActiveConceptsSummary,
   metaConceptsCount = {},
+  metaActiveConceptsCount = {}
 }: Props) => {
-  const { pathname: url, state } = useLocation();
+  const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
 
   useEffect(() => {
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary(url + "concepts/");
+    retrieveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1, includeRetired: true});
   }, [url, retrieveConceptsSummary]);
+  useEffect(() => {
+    retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
+  }, [url, retrieveActiveConceptsSummary]);
 
   return (
     <Header
@@ -92,7 +107,11 @@ export const ViewSourcePage: React.FC<Props> = ({
         </Grid>
         <Grid item xs={5} container spacing={2}>
           <Grid item xs={12} component='div'>
-            <SourceConceptDetails source={source} totalConceptCount={metaConceptsCount.num_found || 0} />
+            <SourceConceptDetails
+              source={source}
+              totalConceptCount={metaConceptsCount.num_found || 0}
+              activeConceptCount={metaActiveConceptsCount.num_found || 0}
+            />
           </Grid>
         </Grid>
       </ProgressOverlay>
@@ -100,19 +119,27 @@ export const ViewSourcePage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
-  sourceLoading: retrieveSourceLoadingSelector(state),
+  sourceLoading: retrieveSourceLoadingSelector(state)
+                || viewConceptsLoadingSelector(state)
+                || viewActiveConceptsLoadingSelector(state),
   source: sourceSelector(state),
   metaConceptsCount: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
-  retrieveSourceErrors: retrieveSourceErrorSelector(state),
+  metaActiveConceptsCount: state.concepts.activeConcepts
+      ? state.concepts.activeConcepts.responseMeta
+      : undefined,
+  retrieveSourceErrors: retrieveSourceErrorSelector(state)
+                      || viewConceptsErrorsSelector(state)
+                      || viewActiveConceptsErrorsSelector(state),
 });
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
   retrieveConceptsSummary: retrieveConceptsAction,
+  retrieveActiveConceptsSummary: retrieveActiveConceptsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);

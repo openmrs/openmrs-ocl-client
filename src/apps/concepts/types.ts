@@ -79,6 +79,7 @@ export interface APIConcept extends BaseConcept {
 export interface ConceptsState {
   concept?: APIConcept;
   concepts: { items: APIConcept[]; responseMeta?: {} };
+  activeConcepts: { items: APIConcept[]; responseMeta?: {} };
   mappings: APIMapping[];
 }
 
