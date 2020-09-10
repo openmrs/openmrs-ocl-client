@@ -22,9 +22,9 @@ import {
   ProgressOverlay,
   useAnchor,
   usePrevious,
-  useQueryParams
+  useQueryParams,
+  CONTEXT
 } from "../../../utils";
-import { CONTEXT } from "../constants";
 import {
   DeleteSweepOutlined as DeleteIcon,
   MoreVert as MenuIcon,

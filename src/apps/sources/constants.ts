@@ -19,8 +19,3 @@ export const TAB_LIST: TabType[] = [
 
 export const PER_PAGE = 20;
 export const TITLE = "Sources";
-
-export const CONTEXT = {
-  create: "create",
-  view: "view"
-};

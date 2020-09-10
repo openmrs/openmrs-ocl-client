@@ -1,32 +1,26 @@
-import React, { useEffect } from "react";
-import { DictionaryForm } from "../components";
-import { Fab, Grid, Menu, MenuItem, Paper, Tooltip } from "@material-ui/core";
-import { connect } from "react-redux";
-import { Link, Redirect, useLocation } from "react-router-dom";
+import React, {useEffect} from "react";
+import {DictionaryForm} from "../components";
+import {Grid, MenuItem, Paper} from "@material-ui/core";
+import {connect} from "react-redux";
+import {Link, Redirect, useLocation} from "react-router-dom";
 import {
   createAndAddLinkedSourceAction,
   createAndAddLinkedSourceLoadingSelector,
   createAndAddLinkedSourceProgressSelector,
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
+  editSourceAndDictionaryAction,
   editSourceAndDictionaryErrorsSelector,
+  makeRetrieveDictionaryAction,
   retrieveDictionaryLoadingSelector
 } from "../redux";
-import { APIDictionary, apiDictionaryToDictionary, Dictionary } from "../types";
-import {
-  orgsSelector,
-  profileSelector
-} from "../../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../../authentication";
-import { debug, useAnchor, usePrevious, useQueryParams } from "../../../utils";
-import { CONTEXT } from "../constants";
-import { ProgressOverlay } from "../../../utils/components";
-import {
-  editSourceAndDictionaryAction,
-  makeRetrieveDictionaryAction
-} from "../redux";
-import { MoreVert as MenuIcon } from "@material-ui/icons";
+import {APIDictionary, apiDictionaryToDictionary, Dictionary} from "../types";
+import {orgsSelector, profileSelector} from "../../authentication/redux/reducer";
+import {APIOrg, APIProfile} from "../../authentication";
+import {CONTEXT, debug, usePrevious, useQueryParams} from "../../../utils"
+import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
+import {EditMenu} from "../../containers/components/EditMenu";
 
 interface StateProps {
   errors?: {};
@@ -103,8 +97,6 @@ const EditDictionaryPage: React.FC<Props> = ({
     createAndAddLinkedSource
   ]);
 
-  const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
-
   if (!loading && previouslyLoading && editedDictionary) {
     return <Redirect to={nextUrl || editedDictionary.url} />;
   }
@@ -140,38 +132,20 @@ const EditDictionaryPage: React.FC<Props> = ({
             />
           </Paper>
         </Grid>
-        <>
-          <Tooltip title="Menu">
-            <Fab onClick={handleMenuClick} color="primary" className="fab">
-              <MenuIcon />
-            </Fab>
-          </Tooltip>
-          <Menu
-            anchorEl={menuAnchor}
-            keepMounted
-            open={Boolean(menuAnchor)}
-            onClose={handleMenuClose}
-          >
+        <EditMenu backUrl={dictionaryUrl}/>
+        {createLinkedSource || linkedSource ? (
+            <span/>
+        ) : (
             <MenuItem>
-              <Link replace className="link" to={dictionaryUrl}>
-                Discard changes and view
-              </Link>
-            </MenuItem>
-            {createLinkedSource || linkedSource ? (
-              <span />
-            ) : (
-              <MenuItem>
-                <Link
+              <Link
                   replace
                   className="link"
                   to={`${url}?createLinkedSource=true`}
-                >
-                  Create linked source
-                </Link>
-              </MenuItem>
-            )}
-          </Menu>
-        </>
+              >
+                Create linked source
+              </Link>
+            </MenuItem>
+        )}
       </ProgressOverlay>
     </Header>
   );

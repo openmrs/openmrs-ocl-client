@@ -4,8 +4,10 @@ import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIE
 
 export const createSourceErrorSelector = errorSelector(
     CREATE_SOURCE_ACTION);
+
 export const editSourceErrorSelector = errorSelector(
     EDIT_SOURCE_ACTION);
+
 export const retrievePersonalSourcesLoadingSelector = loadingSelector(
     indexedAction(
         RETRIEVE_SOURCES_ACTION,
@@ -41,9 +43,21 @@ export const createSourceLoadingSelector = loadingSelector(
     CREATE_SOURCE_ACTION
 );
 
+export const editSourceLoadingSelector = loadingSelector(
+    EDIT_SOURCE_ACTION
+);
+
+
 export const createSourceErrorsSelector = (
     state: AppState
 ): { [key: string]: string[] | undefined } | undefined => {
     const createSourceErrors = createSourceErrorSelector(state);
     if (createSourceErrors) return createSourceErrors;
+};
+
+export const editSourceErrorsSelector = (
+    state: AppState
+): { [key: string]: string[] | undefined } | undefined => {
+    const editSourceErrors = editSourceErrorSelector(state);
+    if (editSourceErrors) return editSourceErrors;
 };
