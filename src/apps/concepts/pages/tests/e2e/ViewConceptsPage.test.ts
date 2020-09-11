@@ -1,6 +1,6 @@
 import {
   createDictionary,
-  TestDictionary
+  TestDictionary,
 } from "../../../../dictionaries/pages/tests/e2e/testUtils";
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 
@@ -9,7 +9,7 @@ describe("View Concepts Page", () => {
     ADD_TO_DICTIONARY: "Add to dictionary",
     ADD_CONCEPTS: "Add concepts",
     IMPORT_EXISTING_CONCEPT: "Import existing concept",
-    PICK_CONCEPTS: "Pick concepts"
+    PICK_CONCEPTS: "Pick concepts",
   };
 
   const conceptSelector = "[data-testrowclass='conceptRow']";
@@ -19,7 +19,13 @@ describe("View Concepts Page", () => {
   let dictionary: TestDictionary, dictionaryUrl: string;
 
   function applyFilters() {
-    cy.runAndAwait(() => cy.findByText("Apply Filters").click());
+    cy.runAndAwait(
+      () => {
+        cy.findByText("Apply Filters").click();
+      },
+      "GET",
+      true
+    );
   }
 
   beforeEach(() => {
@@ -42,23 +48,23 @@ describe("View Concepts Page", () => {
     // Classes
     cy.findByLabelText("Diagnosis").click();
     applyFilters();
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy.wrap(element).should("contain", "Diagnosis")
     );
 
     cy.findByLabelText("Diagnosis").click();
     cy.findByLabelText("Procedure").click();
     applyFilters();
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy.wrap(element).should("not.contain", "Diagnosis")
     );
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy.wrap(element).should("contain", "Procedure")
     );
 
     cy.findByLabelText("Question").click();
     applyFilters();
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy
         .wrap(element)
         .invoke("text")
@@ -71,23 +77,23 @@ describe("View Concepts Page", () => {
     // Datatypes
     cy.findByLabelText("Boolean").click();
     applyFilters();
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy.wrap(element).should("contain", "Boolean")
     );
 
     cy.findByLabelText("Boolean").click();
     cy.findByLabelText("Coded").click();
     applyFilters();
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy.wrap(element).should("not.contain", "Boolean")
     );
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy.wrap(element).should("contain", "Coded")
     );
 
     cy.findByLabelText("Complex").click();
     applyFilters();
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy
         .wrap(element)
         .invoke("text")
@@ -101,30 +107,34 @@ describe("View Concepts Page", () => {
     cy.findByLabelText("Diagnosis").click();
     cy.findByLabelText("Boolean").click();
     applyFilters();
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy.wrap(element).should("contain", "Diagnosis")
     );
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy.wrap(element).should("contain", "Boolean")
     );
     cy.runAndAwait(() => cy.findByTitle("Next page").click());
-    cy.get(classSelector).each(element =>
+    cy.get(classSelector).each((element) =>
       cy.wrap(element).should("contain", "Diagnosis")
     );
-    cy.get(datatypeSelector).each(element =>
+    cy.get(datatypeSelector).each((element) =>
       cy.wrap(element).should("contain", "Boolean")
     );
     cy.findByText("Clear all").click();
     applyFilters();
 
     // Sort
-    cy.runAndAwait(() =>
-      cy
-        .findByTestId("conceptsTableHeader")
-        .findByText("Name")
-        .click()
+
+    cy.runAndAwait(
+      () => {
+        cy.findByTestId("conceptsTableHeader")
+          .findByText("Name")
+          .click();
+      },
+      "GET",
+      true
     );
-    cy.get(nameSelector).each(element =>
+    cy.get(nameSelector).each((element) =>
       cy
         .wrap(element)
         .invoke("text")
@@ -168,7 +178,13 @@ describe("View Concepts Page", () => {
       cy.findByText(
         `Switch source (Currently ${dictionary.preferredSource})`
       ).click();
-      cy.runAndAwait(() => {cy.findByText("Public Sources").click();}, "GET", true);
+      cy.runAndAwait(
+        () => {
+          cy.findByText("Public Sources").click();
+        },
+        "GET",
+        true
+      );
       cy.get(conceptSelector)
         .eq(3)
         .click();

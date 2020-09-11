@@ -9,7 +9,7 @@ Cypress.Commands.add('runAndAwait', (callable, method='GET', addArtificialWait=f
     cy.wait(`@${requestId}`);
     cy.route(method, '**').as('untrackedRequest'); // stop recording requests
 
-    if (addArtificialWait) cy.wait(5000);
+    if (addArtificialWait) cy.wait(8000);
   }
 );
 
