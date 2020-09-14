@@ -82,11 +82,9 @@
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.13.1",
     "ts-loader": "^6.2.1",
-    "@types/cypress-cucumber-preprocessor": "^1.14.1",
-    "cypress-cucumber-preprocessor": "^2.5.5",
-    "tsify": "^4.0.1"
+    "cypress-cucumber-preprocessor": "1.9.1"
   },
   "cypress-cucumber-preprocessor": {
-    "step_definitions": "cypress/integration/step_definitions"
+    "step_definitions": "cypress/integration/cucumber/step_definitions"
   }
 }

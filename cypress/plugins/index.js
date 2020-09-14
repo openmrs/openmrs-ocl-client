@@ -13,8 +13,6 @@
 // the project's config changing)
 
 const wp = require("@cypress/webpack-preprocessor");
-const cucumber = require('cypress-cucumber-preprocessor').default;
-const browserify = require("@cypress/browserify-preprocessor");
 
 /**
  * @type {Cypress.PluginConfig}
@@ -25,9 +23,4 @@ module.exports = on => {
     webpackOptions: require("../webpack.config.js")
   };
   on("file:preprocessor", wp(options));
-  /*
-  const options = browserify.defaultOptions;
-  options.browserifyOptions.plugin.unshift(['tsify', {project: '../webpack.config.js'}]);
-  on("file:preprocessor", cucumber(options));
-  */
 };
