@@ -25,6 +25,7 @@ import {
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
+import { ViewUserProfilePage } from "./apps/authentication/pages";
 
 import SourceRoutes, {} from "./apps/sources";
 import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
@@ -32,6 +33,9 @@ import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
+      <Route exact path="/user/">
+        <ViewUserProfilePage />
+      </Route>
       <Route exact path="/actions/" component={InProgressPage} />
       <Route exact path="/collections/new/">
         <Header title="Create Dictionary">

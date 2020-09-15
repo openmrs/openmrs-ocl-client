@@ -1,8 +1,12 @@
 export interface APIProfile {
   username: string;
-  url: string;
-  organizations_url: string;
+  name?: string;
+  url?: string;
+  organizations_url?: string;
   email: string;
+  company?: string;
+  location?: string;
+  created_on?: string;
 }
 
 export interface APIOrg {
