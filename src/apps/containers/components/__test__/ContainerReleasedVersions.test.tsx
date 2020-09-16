@@ -1,42 +1,41 @@
 import React from 'react';
-import ReleasedVersions from '../../components/ReleasedVersions';
+import ContainerReleasedVersions from '../ContainerReleasedVersions';
 import {render, fireEvent, getByText} from '../../../../test-utils';
 import '@testing-library/jest-dom'
-import {APIDictionaryVersion} from "../../types";
+import { Version } from '../../../../utils';
 
-type releasedVersionProps = React.ComponentProps<typeof ReleasedVersions>;
+type releasedVersionProps = React.ComponentProps<typeof ContainerReleasedVersions>;
 
 const baseProps: releasedVersionProps = {
     versions: [],
     showCreateVersionButton: true,
-    createDictionaryVersion: function createDictonaryVersion() {
+    createVersion: function createVersion() {
     },
     createVersionLoading: true,
     createVersionError: {detail: "error"},
-    dictionaryUrl: "Dictionary url",
-    editDictionaryVersion: function editDictonaryVersion() {
+    url: "Dictionary url",
+    editVersion: function editVersion() {
     },
+    type: "Dictionary"
 };
 
 function renderUI(props: Partial<releasedVersionProps> = {}) {
     return render(
-        <ReleasedVersions {...baseProps} {...props}/>
+        <ContainerReleasedVersions {...baseProps} {...props}/>
     );
 }
 
-const releasedVersion: APIDictionaryVersion = {
+const releasedVersion: Version = {
     id: "2",
     released: true,
-    version_url: "version_url",
-    url: "url",
+    description: "url",
     external_id: "3"
 };
-const unreleasedVersion: APIDictionaryVersion = {
+const unreleasedVersion: Version = {
     id: "2",
     released: false,
-    version_url: "version_url",
     external_id: "3",
-    url: "url"
+    description: "url"
 };
 
 describe("ReleasedVersions", () => {
@@ -135,30 +134,30 @@ describe("toggleButton for dictionary release status", () => {
     });
 
     it('check if onclick of released dictionary dialog yes button makes the required function call', () => {
-        const spyOnEditDictionaryVersion = jest.fn();
+        const spyOnEditVersion = jest.fn();
         const { getByRole, getByTestId} = renderUI({
             versions: [releasedVersion],
             showCreateVersionButton: true,
-            editDictionaryVersion: spyOnEditDictionaryVersion
+            editVersion: spyOnEditVersion
         });
         getByRole('checkbox').click();
         const dialog = getByTestId('confirm-dialog');
         getByText(dialog,"Yes").click();
-        expect(spyOnEditDictionaryVersion).toBeCalledWith({"id": "2", "released": false});
+        expect(spyOnEditVersion).toBeCalledWith({"id": "2", "released": false});
     });
 
     it('check if onclick of unreleased dictionary dialog no button does not change the status to released', () => {
-        const spyOnEditDictionaryVersion = jest.fn();
+        const spyOnEditVersion = jest.fn();
         const { getByRole, getByTestId} = renderUI({
             versions: [unreleasedVersion],
             showCreateVersionButton: true,
-            editDictionaryVersion: spyOnEditDictionaryVersion
+            editVersion: spyOnEditVersion
         });
         getByRole('checkbox').click();
         const dialog = getByTestId('confirm-dialog');
         getByText(dialog,"No").click();
         expect(getByTestId('2').closest('span')).not.toHaveClass('Mui-checked');
-        expect(spyOnEditDictionaryVersion).not.toBeCalled();
+        expect(spyOnEditVersion).not.toBeCalled();
     });
 });
 

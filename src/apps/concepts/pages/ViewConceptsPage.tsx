@@ -41,7 +41,8 @@ import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
   FILTER_SOURCE_IDS,
-  SOURCE_CONTAINER
+  SOURCE_CONTAINER,
+  SOURCE_VERSION_CONTAINER,
 } from "../constants";
 import {
   dictionarySelector,
@@ -128,7 +129,11 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   // only relevant with the collection container
   const preferredSource = dictionary?.preferred_source || "Public Sources";
-  const linkedSource = dictionary?.extras?.source;
+  const linkedSource =
+    containerType === SOURCE_CONTAINER ||
+    containerType === SOURCE_VERSION_CONTAINER
+      ? source?.url
+      : dictionary?.extras?.source;
   // end only relevant with the collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
@@ -185,20 +190,22 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
-    retrieveDictionary(containerUrl);
+    (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
+      ? retrieveSource(containerUrl)
+      : retrieveDictionary(containerUrl);
+
     retrieveConcepts({
-          conceptsUrl: url,
-          page: page,
-          limit: limit,
-          q: initialQ,
-          sortDirection: sortDirection,
-          sortBy: sortBy,
-          dataTypeFilters: initialDataTypeFilters,
-          classFilters: initialClassFilters,
-          sourceFilters: initialSourceFilters,
-          includeRetired: true
-        }
-    );
+      conceptsUrl: url,
+      page: page,
+      limit: limit,
+      q: initialQ,
+      sortDirection: sortDirection,
+      sortBy: sortBy,
+      dataTypeFilters: initialDataTypeFilters,
+      classFilters: initialClassFilters,
+      sourceFilters: initialSourceFilters,
+      includeRetired: true,
+    });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps

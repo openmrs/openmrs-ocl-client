@@ -1,4 +1,4 @@
-import {BaseConceptContainer, EditableConceptContainerFields} from "../../utils";
+import {BaseConceptContainer, EditableConceptContainerFields, Version} from "../../utils";
 
 interface BaseSource extends BaseConceptContainer {
   extras?: { source?: string };
@@ -37,9 +37,17 @@ export interface APISource extends BaseAPISource {
   owner_url: string;
 }
 
+export interface SourceVersion extends Version{
+}
+
 export interface SourceState {
   sources: { items: APISource[]; responseMeta?: {} }[];
   source?: APISource;
+  versions: APISourceVersion[];
+}
+export interface APISourceVersion extends SourceVersion {
+  version_url: string;
+  url: string;
 }
 
 export interface EditableSourceFields

@@ -29,6 +29,7 @@ export const testSource: APISource = {
 
 export const personalSources: SourceState = {
   sources: [{ items: [testSource], responseMeta: { key: false } }],
+  versions: []
 };
 
 export const orgSources: SourceState = {
@@ -36,6 +37,7 @@ export const orgSources: SourceState = {
     { items: [] },
     { items: [testSource], responseMeta: { key: false } },
   ],
+  versions: []
 };
 
 export const publicSources: SourceState = {
@@ -44,6 +46,7 @@ export const publicSources: SourceState = {
     { items: [] },
     { items: [testSource], responseMeta: { key: false } },
   ],
+  versions: []
 };
 
 const authState: AuthState = { isLoggedIn: true };

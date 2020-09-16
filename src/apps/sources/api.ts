@@ -1,4 +1,4 @@
-import {EditableSourceFields, NewAPISource} from "./types";
+import { EditableSourceFields, NewAPISource, SourceVersion, APISourceVersion } from "./types";
 import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
 import { AxiosResponse } from "axios";
 import {
@@ -45,6 +45,19 @@ const api = {
                 }
             }),
     },
+  },versions: {
+    retrieve: (sourceUrl: string): Promise<AxiosResponse<any>> =>
+      authenticatedInstance.get(`${sourceUrl}versions/?verbose=true`),
+    create: (
+      sourceUrl: string,
+      data: SourceVersion
+    ): Promise<AxiosResponse<APISourceVersion>> =>
+      authenticatedInstance.post(`${sourceUrl}versions/`, data),
+    update: (
+      sourceUrl: string,
+      data: SourceVersion
+    ): Promise<AxiosResponse<APISourceVersion>> =>
+        authenticatedInstance.put(`${sourceUrl}${data.id}/`, data)
   },
 };
 
