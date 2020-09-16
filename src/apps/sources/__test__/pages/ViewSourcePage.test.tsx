@@ -10,7 +10,7 @@ import {mapDispatchToProps, mapStateToProps, ViewSourcePage} from "../../pages/V
 import {APIOrg, APIProfile} from "../../../authentication";
 import * as React from "react";
 import {currentState, personalSources} from "../test_data";
-import {createSourceDispatchAction, retrieveSourceAndDetailsAction} from "../../redux";
+import { retrieveSourceAndDetailsAction, createSourceVersionAction, retrieveSourceVersionsAction, editSourceVersionAction} from "../../redux";
 import {retrieveActiveConceptsAction, retrieveConceptsAction} from "../../../concepts/redux";
 
 // @ts-ignore
@@ -51,7 +51,13 @@ const baseProps: viewSourcePageProps = {
     retrieveSourceAndDetails: jest.fn(),
     retrieveConceptsSummary: jest.fn(),
     retrieveActiveConceptsSummary: jest.fn(),
-    retrieveSourceErrors: false
+    retrieveSourceErrors: false,
+    createSourceVersion: jest.fn(),
+    retrieveSourceVersions: jest.fn(),
+    editSourceVersion: jest.fn(),
+    versions: [],
+    versionsLoading: false,
+    createVersionLoading: true
 };
 
 function renderUI(props: Partial<viewSourcePageProps> = {}) {
@@ -101,5 +107,23 @@ describe('ViewSourcePage', () => {
     });
     it('retrieveActiveConceptsSummary should point to correct dispatch action', () => {
         expect(mapDispatchToProps.retrieveActiveConceptsSummary).toBe(retrieveActiveConceptsAction);
+    });
+    it('createSourceVersion should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.createSourceVersion).toBe(createSourceVersionAction);
+    });
+    it('retrieveSourceVersions should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.retrieveSourceVersions).toBe(retrieveSourceVersionsAction);
+    });
+    it('editSourceVersion should point to correct dispatch action', () => {
+        expect(mapDispatchToProps.editSourceVersion).toBe(editSourceVersionAction);
+    });
+    it('versions from state should be empty array', () => {
+        expect(mapStateToProps(state).versions).not.toBeNull();
+    });
+    it('versionLoading from state should be false', () => {
+        expect(mapStateToProps(state).versionsLoading).toBe(false);
+    });
+    it('versions from state should be empty array', () => {
+        expect(mapStateToProps(state).createVersionLoading).toBe(false);
     });
 });

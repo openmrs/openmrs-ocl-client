@@ -5,7 +5,7 @@ import {
     retrieveOrgSourcesAction,
     retrievePersonalSourcesAction,
     retrievePublicSourcesAction,
-    makeRetrieveSourceAction, createSourceAction, createSourceDispatchAction
+    makeRetrieveSourceAction, createSourceDispatchAction
 } from "../../redux/actions";
 import {APISource} from "../../types";
 
@@ -24,7 +24,12 @@ jest.mock('../../api', () => ({
         retrieve: {
             private: jest.fn(),
             public: jest.fn()
-        }
+        },
+    },
+    versions: {
+        retrieve: jest.fn(),
+        create: jest.fn(),
+        update: jest.fn()
     }
 }));
 const source: APISource = {

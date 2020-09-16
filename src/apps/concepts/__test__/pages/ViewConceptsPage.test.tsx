@@ -36,6 +36,8 @@ const actionProps: ActionProps = {
     },
     removeConceptsFromDictionary: function () {
     },
+    retrieveSource: function (){
+    }
 };
 
 const ownProps: OwnProps = {

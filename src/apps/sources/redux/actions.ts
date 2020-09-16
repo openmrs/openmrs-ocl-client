@@ -1,5 +1,5 @@
 import {createActionThunk, indexedAction} from "../../../redux";
-import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
+import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION, RETRIEVE_SOURCE_VERSIONS_ACTION, CREATE_SOURCE_VERSION_ACTION, EDIT_SOURCE_VERSION_ACTION} from "./actionTypes";
 import api from "../api";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
 import {APISource, EditableSourceFields, NewAPISource} from "../types";
@@ -40,6 +40,7 @@ export const retrieveSourceAndDetailsAction = (sourceUrl: string) => {
             makeRetrieveSourceAction(false)<APISource>(sourceUrl)
         );
         if (!retrieveSourceResult) return;
+        dispatch(retrieveSourceVersionsAction(sourceUrl));
     };
 };
 
@@ -50,6 +51,22 @@ export const retrievePublicSourcesAction = createActionThunk(
     ),
     api.sources.retrieve.public
 );
+
+export const retrieveSourceVersionsAction = createActionThunk(
+    RETRIEVE_SOURCE_VERSIONS_ACTION,
+    api.versions.retrieve
+);
+
+export const createSourceVersionAction = createActionThunk(
+  CREATE_SOURCE_VERSION_ACTION,
+  api.versions.create
+);
+
+export const editSourceVersionAction = createActionThunk(
+    EDIT_SOURCE_VERSION_ACTION,
+    api.versions.update
+);
+
 export const createSourceDispatchAction = (sourceData: APISource) => {
 
         const {
