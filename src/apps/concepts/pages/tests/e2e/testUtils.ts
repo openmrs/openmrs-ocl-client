@@ -210,7 +210,7 @@ export function createConcept(
   cy.findByText("Add Answer").click();
   fillMappingRow(1, concept, "answers");
 
-  cy.findByText("Add Set Members").click();
+  cy.findByText("Add Set Member").click();
   fillMappingRow(0, concept, "sets");
 
   cy.findByText("Add Mapping").click();
