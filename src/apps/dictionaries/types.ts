@@ -62,6 +62,11 @@ export interface APIDictionaryVersion extends DictionaryVersion {
   url: string;
 }
 
+export type ImportMetaData = {
+  dictionary: string;
+  dateTime: string;
+};
+
 const apiDictionaryToDictionary = (
   apiDictionary?: APIDictionary
 ): Dictionary | undefined => {
