@@ -29,11 +29,10 @@ import {
   MAP_TYPE_Q_AND_A,
   NAME_TYPES,
   CONCEPT_CLASS_QUESTION,
-  CONCEPT_CLASSES_SET,
   CONCEPT_DATATYPE_NUMERIC,
   LOCALES,
   CONTEXT,
-  findLocale
+  findLocale, CONCEPT_DATATYPE_CODED
 } from "../../../utils";
 import NameOrDescriptionTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
@@ -60,14 +59,18 @@ const useStyles = makeStyles({
 });
 
 const prepForApi = (values: Concept) => {
-  const { names, extras } = values;
+  const { names, extras, datatype, answers } = values;
   return {
     ...values,
     names: names.map((name: ConceptName) => ({
       ...name,
       name_type: name.name_type === "null" ? null : name.name_type // api represents 'Synonym' name_type as null
     })),
-    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {}
+    extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {},
+    answers: answers.map((answer) => ({
+      ...answer,
+      retired: datatype !== CONCEPT_DATATYPE_CODED ? true : answer.retired
+    }))
   };
 };
 
@@ -201,15 +204,14 @@ const ConceptForm: React.FC<Props> = ({
 }) => {
   const allowEditing = context === CONTEXT.edit || context === CONTEXT.create;
   const allowIdEdits = context === CONTEXT.create;
-  const showAnswers =
+  let showAnswers =
     (context === CONTEXT.edit && supportLegacyMappings) ||
     (context === CONTEXT.create &&
       (!conceptClass || conceptClass === CONCEPT_CLASS_QUESTION)) ||
     (context === CONTEXT.view && supportLegacyMappings);
-  const showSets =
+  let showSets =
     (context === CONTEXT.edit && supportLegacyMappings) ||
-    (context === CONTEXT.create &&
-      (!conceptClass || CONCEPT_CLASSES_SET.includes(conceptClass))) ||
+    (context === CONTEXT.create ) ||
     (context === CONTEXT.view && supportLegacyMappings);
 
   const classes = useStyles();
@@ -222,6 +224,9 @@ const ConceptForm: React.FC<Props> = ({
   const toggleExternalIDEditable = () =>
     setExternalIDEditable(!isExternalIDEditable);
 
+  const codedFormMembers = (dataType : string | undefined) => {
+    showAnswers = dataType === CONCEPT_DATATYPE_CODED ? true : false ;
+  };
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -346,7 +351,7 @@ const ConceptForm: React.FC<Props> = ({
                   name="concept_class"
                   id="concept_class"
                   component={Select}
-                  disabled={conceptClass}
+                  disabled={conceptClass && (allowEditing && allowIdEdits)}
                 >
                   {CONCEPT_CLASSES.map(conceptClass => (
                     <MenuItem key={conceptClass} value={conceptClass}>
@@ -371,6 +376,7 @@ const ConceptForm: React.FC<Props> = ({
                   <ErrorMessage name="datatype" component="span" />
                 </Typography>
               </FormControl>
+              {codedFormMembers(values.datatype)}
               {values.datatype !== CONCEPT_DATATYPE_NUMERIC ? null : (
                 <PrecisionOptions />
               )}
@@ -443,7 +449,7 @@ const ConceptForm: React.FC<Props> = ({
           <br />
           {!showAnswers ? null : (
             <>
-              <Paper className="fieldsetParent">
+              <Paper className="fieldsetParent" data-testid="answers">
                 <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Answers
@@ -473,7 +479,7 @@ const ConceptForm: React.FC<Props> = ({
           )}
           {!showSets ? null : (
             <>
-              <Paper className="fieldsetParent">
+              <Paper className="fieldsetParent" data-testid="set-members">
                 <fieldset className={classes.container}>
                   <Typography component="legend" variant="h5" gutterBottom>
                     Set Members
