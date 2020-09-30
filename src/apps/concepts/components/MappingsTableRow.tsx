@@ -147,11 +147,11 @@ const fetchConceptOptions = async (
   page: number
 ): Promise<ConceptResults> => {
   try {
-    const response = await api.concepts.retrieve(
-      `${sourceUrl}concepts/`,
-      page,
-      10,
-      query
+    const response = await api.concepts.retrieve({
+          conceptsUrl: `${sourceUrl}concepts/`,
+          page: page,
+          q: query
+        }
     );
     const {
       data,
