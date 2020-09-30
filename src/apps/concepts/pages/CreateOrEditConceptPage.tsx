@@ -113,12 +113,14 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   useEffect(() => {
     // only retrieve the concept if the context was edit at the beginning
     // otherwise we obviously have nothing to edit
-    if (originallyEditing) retrieveConcept(conceptUrl);
-    retrieveDictionary(linkedDictionaryUrl);
+    return () => { resetConceptForm(); }
 
     // usually doing the following is a mistake and will bite us later
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    return () => { resetConceptForm(); }
+}, []);
 
   // everything went hunky-dory, and we should redirect the user to the view concept page
   if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
