@@ -119,6 +119,9 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // usually doing the following is a mistake and will bite us later
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    return () => { resetConceptForm(); }
+}, []);
 
   // everything went hunky-dory, and we should redirect the user to the view concept page
   if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
