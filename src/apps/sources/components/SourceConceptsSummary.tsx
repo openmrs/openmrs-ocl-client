@@ -52,7 +52,7 @@ const SourceConceptsSummary: React.FC<Props> = ({ source,
           </List>
         </Typography>
         <ButtonGroup variant='text' fullWidth>
-          <Button to={""} component={Link} color='primary'>
+          <Button to={source?.concepts_url || ""} component={Link} color='primary'>
             View Concepts
           </Button>
         </ButtonGroup>

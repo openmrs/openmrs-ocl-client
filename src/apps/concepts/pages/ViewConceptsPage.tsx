@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../../../components/Header";
 import {
-  Button,
   createStyles,
   Fab,
   Grid,
@@ -11,7 +9,7 @@ import {
   Theme,
   Tooltip
 } from "@material-ui/core";
-import { ConceptsTable } from "../components";
+import { ConceptsTable, ViewConceptsHeader } from "../components";
 import { connect } from "react-redux";
 import {
   removeConceptsFromDictionaryLoadingSelector,
@@ -42,7 +40,6 @@ import {
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER
 } from "../constants";
@@ -56,7 +53,7 @@ import {
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
 
-interface StateProps {
+export interface StateProps {
   concepts?: APIConcept[];
   dictionary?: APIDictionary;
   loading: boolean;
@@ -66,7 +63,7 @@ interface StateProps {
   usersOrgs?: APIOrg[];
 }
 
-type ActionProps = {
+export type ActionProps = {
   retrieveConcepts: (
     ...args: Parameters<typeof retrieveConceptsAction>
   ) => void;
@@ -81,7 +78,7 @@ type ActionProps = {
   ) => void;
 };
 
-interface OwnProps {
+export interface OwnProps {
   containerType: string;
 }
 
@@ -94,11 +91,11 @@ const useStyles = makeStyles((theme: Theme) =>
       color: "inherit",
       width: "100%"
     },
-    lightColour: {
-      color: theme.palette.background.default
-    },
     largerTooltip: {
       fontSize: "larger"
+    },
+    content: {
+      height: "100%"
     }
   })
 );
@@ -140,11 +137,6 @@ const ViewConceptsPage: React.FC<Props> = ({
     importExistingAnchor,
     handleImportExistingClick,
     handleImportExistingClose
-  ] = useAnchor();
-  const [
-    switchSourceAnchor,
-    handleSwitchSourceClick,
-    handleSwitchSourceClose
   ] = useAnchor();
 
   const queryParams: QueryParams = useQueryParams();
@@ -230,65 +222,22 @@ const ViewConceptsPage: React.FC<Props> = ({
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
 
-  const showHeaderComponent = containerType === SOURCE_CONTAINER;
-
   return (
     <>
-      <Header
-        title={
-          containerType === SOURCE_CONTAINER
-            ? `Import existing concept from ${getContainerIdFromUrl(
-                containerUrl
-              )}`
-            : `Concepts in ${
-                containerType === DICTIONARY_VERSION_CONTAINER ? "v" : ""
-              }${getContainerIdFromUrl(containerUrl)}`
-        }
-        justifyChildren="space-around"
-        headerComponent={
-          !showHeaderComponent ? null : (
-            <>
-              <Button
-                className={classes.lightColour}
-                variant="text"
-                size="large"
-                aria-haspopup="true"
-                onClick={handleSwitchSourceClick}
-              >
-                Switch source (Currently {getContainerIdFromUrl(containerUrl)})
-              </Button>
-              <Menu
-                anchorEl={switchSourceAnchor}
-                keepMounted
-                open={Boolean(switchSourceAnchor)}
-                onClose={handleSwitchSourceClose}
-              >
-                {Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-                  ([preferredSourceName, preferredSourceUrl]) => (
-                    <MenuItem
-                      // replace because we want to keep the back button useful
-                      replace
-                      to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                      component={Link}
-                      onClick={handleSwitchSourceClose}
-                    >
-                      {preferredSourceName}
-                    </MenuItem>
-                  )
-                )}
-              </Menu>
-            </>
-          )
-        }
-        // we can only be confident about the back url when viewing a collection's concepts
-        allowImplicitNavigation
-        backUrl={
-          containerType !== DICTIONARY_CONTAINER ? undefined : containerUrl
-        }
-        backText={
-          containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"
-        }
-      >
+      <ViewConceptsHeader
+          containerType={containerType}
+          containerUrl={containerUrl}
+          gimmeAUrl={gimmeAUrl}
+          addConceptToDictionary={dictionaryToAddTo}
+      />
+        <Grid
+            container
+            className={classes.content}
+            component="div"
+            // @ts-ignore
+            justify="space-around"
+            alignItems="flex-start"
+        >
         <ProgressOverlay
           loading={loading}
           error={
@@ -362,7 +311,8 @@ const ViewConceptsPage: React.FC<Props> = ({
             </Grid>
           )}
         </ProgressOverlay>
-      </Header>
+        </Grid>
+
       {!canModifyDictionary ? null : (
         <>
           <Tooltip title="Add concepts">

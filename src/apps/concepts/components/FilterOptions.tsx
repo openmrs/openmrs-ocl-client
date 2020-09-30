@@ -169,7 +169,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   };
 
   return (
-    <div className={classes.root}>
+    <div data-testid="filterOptions" className={classes.root}>
       <Paper className={classes.paper}>
         <div className={classes.center}>
           <ButtonGroup size="small" variant="text" fullWidth>
