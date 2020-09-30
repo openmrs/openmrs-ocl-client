@@ -5,8 +5,9 @@ import {
     retrieveOrgSourcesAction,
     retrievePersonalSourcesAction,
     retrievePublicSourcesAction,
-    makeRetrieveSourceAction
+    makeRetrieveSourceAction, createSourceAction, createSourceDispatchAction
 } from "../../redux/actions";
+import {APISource} from "../../types";
 
 jest.mock("../../../../redux/", () => ({
         createActionThunk: jest.fn((indexedAction, retrieve) => {
@@ -26,7 +27,26 @@ jest.mock('../../api', () => ({
         }
     }
 }));
-
+const source: APISource = {
+    active_concepts: 0,
+    concepts_url: "",
+    custom_validation_schema: "",
+    default_locale: "",
+    description: "",
+    external_id: "",
+    full_name: "test",
+    id: "",
+    name: "test",
+    owner: "",
+    owner_type: "",
+    owner_url: "",
+    public_access: "",
+    short_code: "MSF01",
+    source_type: "MSF",
+    supported_locales: [],
+    url: "url",
+    website: ""
+};
 describe('action', () => {
 
     it('for personal sources should use action index as 0 along with the corresponding actionType and api', () => {
@@ -72,5 +92,10 @@ describe('action', () => {
             "sources/retrieveSource", api.retrieve, true);
     });
 
-})
+    it('create source under organisation', () => {
+        createSourceDispatchAction(source);
+        expect(createActionThunk).toHaveBeenCalledWith(
+            "sources/create", api.create);
+    });
+});
 

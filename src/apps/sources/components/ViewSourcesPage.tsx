@@ -10,6 +10,9 @@ import Header from "../../../components/Header";
 import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
 
 import { ContainerOwnerTabs } from "../../containers/components";
+import {Link} from "react-router-dom";
+import {Fab, Tooltip} from "@material-ui/core";
+import {Add as AddIcon} from "@material-ui/icons";
 
 interface Props {
   loading: boolean;
@@ -60,6 +63,13 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
           numFound={numFound}
           title={TITLE}
         />
+        <Link to={`/sources/new/`}>
+          <Tooltip title='Create new source'>
+            <Fab color='primary' className='fab'>
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
       </ProgressOverlay>
     </Header>
   );

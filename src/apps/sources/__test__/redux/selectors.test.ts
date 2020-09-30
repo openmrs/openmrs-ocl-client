@@ -1,5 +1,7 @@
 import {errorSelector, indexedAction, loadingSelector} from "../../../../redux";
 import {
+    createSourceErrorSelector,
+    createSourceLoadingSelector,
     retrieveOrgSourcesLoadingSelector,
     retrievePersonalSourcesLoadingSelector,
     retrievePublicSourcesLoadingSelector,
@@ -69,5 +71,12 @@ describe('selector', () => {
         const source = sourceSelector(state);
         expect(source).toBe(testSource);
     });
-
+    it('for loading source should use CREATE_SOURCE_ACTION as actionType',() => {
+        createSourceLoadingSelector;
+        expect(loadingSelector).toHaveBeenCalledWith("sources/create");
+    });
+    it('for error source should use CREATE_SOURCE_ACTION as actionType',() => {
+        createSourceErrorSelector;
+        expect(errorSelector).toHaveBeenCalledWith("sources/create");
+    });
 });

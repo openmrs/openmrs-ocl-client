@@ -36,3 +36,14 @@ export const retrievePublicSourcesLoadingSelector = loadingSelector(
         PUBLIC_SOURCES_ACTION_INDEX
     )
 );
+
+export const createSourceLoadingSelector = loadingSelector(
+    CREATE_SOURCE_ACTION
+);
+
+export const createSourceErrorsSelector = (
+    state: AppState
+): { [key: string]: string[] | undefined } | undefined => {
+    const createSourceErrors = createSourceErrorSelector(state);
+    if (createSourceErrors) return createSourceErrors;
+};

@@ -1,6 +1,6 @@
 import {reducer} from "../../redux/reducer";
 import {APISource, SourceState} from "../../types";
-import {RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "../../redux/actionTypes";
+import {CREATE_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "../../redux/actionTypes";
 
 const testSource: APISource = {
     id: "MSF-SOURCE",
@@ -127,5 +127,36 @@ describe("RETRIEVE_SOURCE_ACTION", () => {
             ]
         };
         expect(reducer(initialState, startAction)).toEqual(expectedState);
+    });
+});
+
+describe("CREATE_SOURCE_ACTION", () => {
+    it('should return updated state with given payload', () => {
+        const startAction = {
+            type: CREATE_SOURCE_ACTION,
+            payload: [testSource]
+        };
+        const expectedState = {
+            sources: [
+                {
+                    items: [],
+                    responseMeta: undefined
+                }
+            ],
+            newSource: [
+                testSource
+            ]
+        };
+        expect(reducer(initialState, startAction)).toEqual(expectedState);
+    });
+
+    it('should return initial state when empty payload is passed', () => {
+        const startAction = {
+            type: CREATE_SOURCE_ACTION,
+            action: {
+                payload: []
+            }
+        };
+        expect(reducer(initialState, startAction)).toEqual(initialState);
     });
 });
