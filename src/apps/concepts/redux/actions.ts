@@ -223,3 +223,10 @@ export const retrieveActiveConceptsAction = createActionThunk(
     RETRIEVE_ACTIVE_CONCEPTS_ACTION,
     api.concepts.retrieveActive
 );
+export const resetConceptFormAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(UPSERT_CONCEPT_ACTION));
+    dispatch(resetAction(UPSERT_CONCEPT_AND_MAPPINGS));
+  }
+}
+
