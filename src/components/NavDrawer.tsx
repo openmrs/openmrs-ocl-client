@@ -16,6 +16,7 @@ import {
   FolderOpenOutlined,
   AccountTreeOutlined,
   Notifications as NotificationsIcon,
+  PersonOutline as ProfileIcon,
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
 import {
@@ -207,6 +208,22 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         <div className={classes.logoutButton}>
           <Divider component='hr' />
           <List component='div'>
+            <ListItem
+                button
+                dense={false}
+                component={Link}
+                exact
+                activeClassName={classes.selected}
+                to='/user/'
+                key='Your Profile'
+            >
+              <Tooltip title='Your Profile'>
+                <ListItemIcon className='list-item-icon'>
+                  <ProfileIcon />
+                </ListItemIcon>
+              </Tooltip>
+              <ListItemText primary='Your Profile' />
+            </ListItem>
             <ListItem
               onClick={() => setConfirmLogoutOpen(true)}
               button
