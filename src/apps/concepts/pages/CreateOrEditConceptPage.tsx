@@ -244,7 +244,7 @@ const mapActionsToProps = {
   resetConceptForm: resetConceptFormAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveConcept: retrieveConceptAction,
-  upsertConcept: upsertConceptAndMappingsAction 
+  upsertConcept: upsertConceptAndMappingsAction
 };
 
 export default connect<StateProps, ActionProps, unknown, AppState>(
