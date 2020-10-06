@@ -33,7 +33,7 @@ describe("Create Concept", () => {
 
     createConcept(dictionaryUrl, [concept, conceptUrl]);
 
-    cy.findByTitle("Edit this concept").should("exist");
+    cy.findByTitle("Edit this Concept").should("exist");
   });
 
   it("Edit a concept", () => {
@@ -43,7 +43,7 @@ describe("Create Concept", () => {
       dictionary.shortCode
     );
     createConcept(dictionaryUrl, [oldConcept, oldConceptUrl]);
-    cy.findByTitle("Edit this concept").click();
+    cy.findByTitle("Edit this Concept").click();
 
     const [concept, conceptUrl] = newConcept(
       dictionary.ownerType,
@@ -66,6 +66,6 @@ describe("Create Concept", () => {
 
     cy.findByText("Submit").click();
 
-    cy.findByTitle("Edit this concept").should("exist");
+    cy.findByTitle("Edit this Concept").should("exist");
   });
 });

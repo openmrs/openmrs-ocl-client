@@ -32,13 +32,13 @@ import {
   CONCEPT_CLASSES_SET,
   CONCEPT_DATATYPE_NUMERIC,
   LOCALES,
+  CONTEXT,
   findLocale
 } from "../../../utils";
 import NameOrDescriptionTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
 import * as Yup from "yup";
 import MappingsTable from "./MappingsTable";
-import { CONTEXT } from "../constants";
 import {
   ANSWERS_BATCH_INDEX,
   MAPPINGS_BATCH_INDEX,

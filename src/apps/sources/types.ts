@@ -1,4 +1,4 @@
-import { BaseConceptContainer } from "../../utils";
+import {BaseConceptContainer, EditableConceptContainerFields} from "../../utils";
 
 interface BaseSource extends BaseConceptContainer {
   extras?: { source?: string };
@@ -40,6 +40,12 @@ export interface APISource extends BaseAPISource {
 export interface SourceState {
   sources: { items: APISource[]; responseMeta?: {} }[];
   source?: APISource;
+}
+
+export interface EditableSourceFields
+    extends EditableConceptContainerFields {
+  public_access?: string;
+  source_type?: string;
 }
 
 const apiSourceToSource = (apiSource?: APISource): Source | undefined => {

@@ -1,28 +1,18 @@
-import React, { useEffect } from "react";
-import { Fab, Grid, Tooltip } from "@material-ui/core";
-import { ConceptForm } from "../components";
-import { AppState } from "../../../redux";
-import {
-  retrieveConceptAction,
-  viewConceptErrorsSelector,
-  viewConceptLoadingSelector
-} from "../redux";
-import { APIConcept, apiConceptToConcept, APIMapping } from "../types";
-import { useLocation, useParams } from "react-router";
-import { connect } from "react-redux";
-import { EditOutlined as EditIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Grid} from "@material-ui/core";
+import {ConceptForm} from "../components";
+import {AppState} from "../../../redux";
+import {retrieveConceptAction, viewConceptErrorsSelector, viewConceptLoadingSelector} from "../redux";
+import {APIConcept, apiConceptToConcept, APIMapping} from "../types";
+import {useLocation, useParams} from "react-router";
+import {connect} from "react-redux";
 import Header from "../../../components/Header";
-import { startCase, toLower } from "lodash";
-import {
-  APIOrg,
-  APIProfile,
-  canModifyContainer,
-  profileSelector
-} from "../../authentication";
-import { orgsSelector } from "../../authentication/redux/reducer";
-import { CONTEXT } from "../constants";
-import { ProgressOverlay, useQueryParams } from "../../../utils";
+import {startCase, toLower} from "lodash";
+import {APIOrg, APIProfile, canModifyContainer, profileSelector} from "../../authentication";
+import {orgsSelector} from "../../authentication/redux/reducer";
+import {CONTEXT, ProgressOverlay, useQueryParams} from "../../../utils";
+import {EditButton} from "../../containers/components/EditButton";
+import {EDIT_BUTTON_TITLE} from "../redux/constants";
 
 interface Props {
   loading: boolean;
@@ -85,13 +75,7 @@ const ViewConceptPage: React.FC<Props> = ({
           />
         </Grid>
         {!showEditButton ? null : (
-          <Link replace to={`${url}edit/?linkedDictionary=${linkedDictionary}`}>
-            <Tooltip title="Edit this concept">
-              <Fab color="primary" className="fab">
-                <EditIcon />
-              </Fab>
-            </Tooltip>
-          </Link>
+            <EditButton url={`${url}edit/?linkedDictionary=${linkedDictionary}`} title={EDIT_BUTTON_TITLE}/>
         )}
       </ProgressOverlay>
     </Header>

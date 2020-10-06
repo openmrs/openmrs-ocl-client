@@ -2,7 +2,7 @@ import {createActionThunk, indexedAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 import api from "../api";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
-import {APISource, NewAPISource} from "../types";
+import {APISource, EditableSourceFields, NewAPISource} from "../types";
 import {CUSTOM_VALIDATION_SCHEMA} from "../../../utils";
 import uuid from "uuid";
 
@@ -82,6 +82,32 @@ export const createSourceDispatchAction = (sourceData: APISource) => {
      return async (dispatch: Function) => {
          dispatch(createSourceAction<APISource>(owner_url, source))
      };
+};
+
+export const editSourceDispatchAction = (sourceData: APISource, url: string) => {
+
+    const {
+        description,
+        name,
+        supported_locales,
+        default_locale,
+        source_type,
+        public_access
+    } = sourceData;
+
+
+    const source: EditableSourceFields = {
+        default_locale,
+        description,
+        name: name,
+        public_access: public_access,
+        source_type:source_type,
+        supported_locales: supported_locales.join(",")
+    };
+
+    return async (dispatch: Function) => {
+        dispatch(editSourceAction<APISource>(url, source))
+    };
 };
 
 

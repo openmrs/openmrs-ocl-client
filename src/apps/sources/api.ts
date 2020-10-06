@@ -1,9 +1,8 @@
-import { NewAPISource } from "./types";
+import {EditableSourceFields, NewAPISource} from "./types";
 import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
 import { AxiosResponse } from "axios";
 import {
-  buildPartialSearchQuery,
-  EditableConceptContainerFields,
+  buildPartialSearchQuery
 } from "../../utils";
 import { default as containerAPI } from "../containers/api";
 
@@ -13,7 +12,7 @@ const api = {
     authenticatedInstance.post(`${ownerUrl}sources/`, data),
   update: (
     sourceUrl: string,
-    data: EditableConceptContainerFields
+    data: EditableSourceFields
   ): Promise<AxiosResponse<any>> => authenticatedInstance.put(sourceUrl, data),
   sources: {
     retrieve: {

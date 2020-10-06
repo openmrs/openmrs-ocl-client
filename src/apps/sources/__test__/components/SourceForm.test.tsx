@@ -4,7 +4,7 @@ import {APIOrg, APIProfile} from "../../../authentication";
 import {Source} from "../../types";
 import {render, fireEvent, act} from "@testing-library/react";
 import {BrowserRouter as Router} from "react-router-dom";
-import {CONTEXT} from "../../constants";
+import {CONTEXT} from "../../../../utils";
 
 type sourcesFormProps = React.ComponentProps<typeof SourceForm>;
 let onSubmit = jest.fn();

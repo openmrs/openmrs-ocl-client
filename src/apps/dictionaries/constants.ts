@@ -1,11 +1,5 @@
 import { TabType } from "../containers/types";
 
-export const CONTEXT = {
-  create: "create",
-  view: "view",
-  edit: "edit",
-};
-
 export const TAB_LIST: TabType[] = [
   {
     labelName: "Your Dictionaries",

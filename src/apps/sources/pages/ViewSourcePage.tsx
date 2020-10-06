@@ -1,23 +1,22 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import SourceForm from "../components/SourceForm";
-import { Grid, Paper, Typography } from "@material-ui/core";
-import { connect } from "react-redux";
-import { APISource, apiSourceToSource } from "../types";
+import {Grid, Paper, Typography} from "@material-ui/core";
+import {connect} from "react-redux";
+import {APISource, apiSourceToSource} from "../types";
+import {orgsSelector, profileSelector,} from "../../authentication/redux/reducer";
+import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
 import {
-  orgsSelector,
-  profileSelector,
-} from "../../authentication/redux/reducer";
-import { APIOrg, APIProfile } from "../../authentication";
-import {
-  sourceSelector,
   retrieveSourceAndDetailsAction,
   retrieveSourceErrorSelector,
   retrieveSourceLoadingSelector,
+  sourceSelector
 } from "../redux";
-import { AppState } from "../../../redux";
-import { useLocation } from "react-router-dom";
-import { ProgressOverlay } from "../../../utils/components";
+import {AppState} from "../../../redux";
+import {useLocation, useParams} from "react-router-dom";
+import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
+import {EditButton} from "../../containers/components/EditButton";
+import {EDIT_BUTTON_TITLE} from "../redux/constants";
 import { getSourceTypeFromPreviousPath } from "../utils";
 import { SourceConceptDetails } from "../components";
 import {
@@ -28,6 +27,7 @@ import {
   viewActiveConceptsLoadingSelector,
   viewActiveConceptsErrorsSelector
 } from "../../concepts/redux";
+
 
 interface Props {
   profile?: APIProfile;
@@ -64,6 +64,10 @@ export const ViewSourcePage: React.FC<Props> = ({
 }: Props) => {
   const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
+  const { ownerType, owner } = useParams<{
+    ownerType: string;
+    owner: string;
+  }>();
 
   useEffect(() => {
     retrieveSourceAndDetails(url);
@@ -74,6 +78,14 @@ export const ViewSourcePage: React.FC<Props> = ({
   useEffect(() => {
     retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
   }, [url, retrieveActiveConceptsSummary]);
+
+  const canEditSource = canModifyContainer(
+      ownerType,
+      owner,
+      profile,
+      usersOrgs
+  );
+  const showEditButton = canEditSource;
 
   return (
     <Header
@@ -114,6 +126,9 @@ export const ViewSourcePage: React.FC<Props> = ({
             />
           </Grid>
         </Grid>
+        {!showEditButton ? null : (
+            <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE}/>
+        )}
       </ProgressOverlay>
     </Header>
   );

@@ -14,8 +14,7 @@ import {
   profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import { usePrevious } from "../../../utils";
-import { CONTEXT } from "../constants";
+import { usePrevious, CONTEXT } from "../../../utils";
 import { createSourceAndDictionaryAction } from "../redux/actions";
 
 interface Props {

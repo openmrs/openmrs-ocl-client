@@ -13,8 +13,7 @@ import {
     profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import {usePrevious} from "../../../utils";
-import { CONTEXT } from "../constants";
+import { CONTEXT, usePrevious } from "../../../utils";
 import SourceForm from "../components/SourceForm";
 
 interface Props {
