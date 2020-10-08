@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   createStyles,
-  Fab,
   Grid,
   makeStyles,
-  Menu,
-  MenuItem,
   Theme,
-  Tooltip
 } from "@material-ui/core";
-import { ConceptsTable, ViewConceptsHeader } from "../components";
+import { ConceptsTable, ViewConceptsHeader, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
 import {
   removeConceptsFromDictionaryLoadingSelector,
@@ -20,17 +16,10 @@ import {
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
-import {
-  CONCEPT_CLASSES,
-  PREFERRED_SOURCES_VIEW_ONLY,
-  useAnchor,
-  useQueryParams
-} from "../../../utils";
+import { useQueryParams } from "../../../utils";
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
 import FilterOptions from "../components/FilterOptions";
-import { Add as AddIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 import {
   APIOrg,
   APIProfile,
@@ -131,14 +120,6 @@ const ViewConceptsPage: React.FC<Props> = ({
   const linkedSource = dictionary?.extras?.source;
   // end only relevant with the collection container
 
-  const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
-  const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
-  const [
-    importExistingAnchor,
-    handleImportExistingClick,
-    handleImportExistingClose
-  ] = useAnchor();
-
   const queryParams: QueryParams = useQueryParams();
   const {
     page = 1,
@@ -221,6 +202,10 @@ const ViewConceptsPage: React.FC<Props> = ({
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
+
+  const canModifySource =
+      containerType === SOURCE_CONTAINER &&
+      canModifyContainer(ownerType, owner, profile, usersOrgs) && !dictionaryToAddTo;
 
   return (
     <>
@@ -313,109 +298,14 @@ const ViewConceptsPage: React.FC<Props> = ({
         </ProgressOverlay>
         </Grid>
 
-      {!canModifyDictionary ? null : (
-        <>
-          <Tooltip title="Add concepts">
-            <Fab onClick={handleAddNewClick} color="primary" className="fab">
-              <AddIcon />
-            </Fab>
-          </Tooltip>
-          <Menu
-            anchorEl={addNewAnchor}
-            keepMounted
-            open={Boolean(addNewAnchor)}
-            onClose={handleAddNewClose}
-          >
-            <MenuItem
-              onClick={e => {
-                handleImportExistingClick(e);
-                handleAddNewClose();
-              }}
-            >
-              Import existing concept
-            </MenuItem>
-            <Tooltip
-              interactive
-              title={
-                linkedSource ? (
-                  ""
-                ) : (
-                  <span className={classes.largerTooltip}>
-                    This dictionary doesn't have a linked source attached to it.
-                    You'll need to{" "}
-                    <Link
-                      to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
-                    >
-                      create one
-                    </Link>{" "}
-                    to keep your custom concepts.
-                  </span>
-                )
-              }
-            >
-              <span>
-                <MenuItem
-                  disabled={!linkedSource}
-                  onClick={e => {
-                    handleCustomClick(e);
-                    handleAddNewClose();
-                  }}
-                >
-                  Create custom concept
-                </MenuItem>
-              </span>
-            </Tooltip>
-          </Menu>
-        </>
-      )}
-      <Menu
-        anchorEl={customAnchor}
-        keepMounted
-        open={Boolean(customAnchor)}
-        onClose={handleCustomClose}
-      >
-        {CONCEPT_CLASSES.slice(0, 9).map((conceptClass, index) => (
-          <MenuItem onClick={handleCustomClose} key={index}>
-            <Link
-              className={classes.link}
-              to={`${linkedSource}concepts/new/?conceptClass=${conceptClass}&linkedDictionary=${containerUrl}`}
-            >
-              {conceptClass} Concept
-            </Link>
-          </MenuItem>
-        ))}
-        <MenuItem onClick={handleCustomClose}>
-          <Link
-            className={classes.link}
-            to={`${linkedSource}concepts/new/?linkedDictionary=${containerUrl}`}
-          >
-            Other kind
-          </Link>
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={importExistingAnchor}
-        keepMounted
-        open={Boolean(importExistingAnchor)}
-        onClose={handleImportExistingClose}
-      >
-        <MenuItem onClick={handleImportExistingClose}>
-          <Link
-            className={classes.link}
-            to={`${PREFERRED_SOURCES_VIEW_ONLY[preferredSource]}concepts/?addToDictionary=${containerUrl}`}
-          >
-            Pick concepts
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleImportExistingClose}>
-          <Link
-            className={classes.link}
-            to={`${containerUrl}add/?fromSource=${preferredSource}`}
-          >
-            Add bulk concepts
-          </Link>
-        </MenuItem>
-      </Menu>
+      <AddConceptsIcon
+          canModifyDictionary={canModifyDictionary}
+          canModifySource={canModifySource}
+          containerUrl={containerUrl}
+          gimmeAUrl={gimmeAUrl}
+          linkedSource={linkedSource}
+          preferredSource={preferredSource}
+      />
     </>
   );
 };

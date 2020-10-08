@@ -55,21 +55,22 @@ function renderUI(props: Partial<viewConceptsPageProps> = {}) {
 }
 
 describe('ViewConceptsPage', () => {
-    let getByTestId: Function;
+    let queryByTestId: Function;
     beforeEach(() => {
-         getByTestId = () => {renderUI(baseProps)};
+        const queries = renderUI(baseProps);
+        queryByTestId = queries.queryByTestId;
     });
 
     it('should contain header', () => {
-        expect(getByTestId("header")).not.toBeNull();
+        expect(queryByTestId("header")).not.toBeNull();
     });
 
     it('should contain conceptsTable', () => {
-        expect(getByTestId("conceptsTableHeader")).not.toBeNull();
+        expect(queryByTestId("conceptsTableHeader")).not.toBeNull();
     });
 
     it('should contain filterOptions', () => {
-        expect(getByTestId("filterOptions")).not.toBeNull();
+        expect(queryByTestId("filterOptions")).not.toBeNull();
     });
 });
 
