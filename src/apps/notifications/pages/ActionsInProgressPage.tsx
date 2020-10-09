@@ -98,13 +98,15 @@ const ActionsInProgressPage: React.FC<Props> = ({
     progress: "",
   });
   const [open, setOpen] = React.useState(false);
+  const [importDateTime, setImportDateTime] = React.useState("");
 
   const handleClose = () => {
     setOpen(false);
   };
-  const openNotificationDetails = (notification: NotificationItem): void => {
+  const openNotificationDetails = (notification: NotificationItem, importDateTime: string): void => {
     setOpen(true);
     setNotification(notification);
+    setImportDateTime(importDateTime);
   };
 
   return (
@@ -176,7 +178,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
             ))}
           </List>
         )}
-        <NotificationDetails handleClose={handleClose} notification={notification} open={open}/>
+        <NotificationDetails handleClose={handleClose} notification={notification} importDateTime={importDateTime} open={open}/>
       </Grid>
     </Header>
   );

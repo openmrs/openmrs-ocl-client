@@ -97,7 +97,7 @@ const NotificationCard: React.FC<Props> = ({
         <Button
           variant="text"
           color="primary"
-          onClick={() => openNotificationDetails(notification)}
+          onClick={() => openNotificationDetails(notification, moment(importDateTime).format("DDMMMYYYY_HHmm"))}
           className={classes.showDetailsButton}
         >
           View Summary

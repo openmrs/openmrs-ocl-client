@@ -20,16 +20,18 @@ import {
   NotificationItemRow,
   NotificationItem
 } from "../types";
-import { EnhancedNotificationSummaryTableHead } from "./EnhancedNotificationSummaryTableHead"
+import { EnhancedNotificationSummaryTableHead } from "./EnhancedNotificationSummaryTableHead";
 import {
   getComparator,
   stableSort
 } from "../../../utils";
+import { CSVLink } from "react-csv";
 
 interface Props {
   open: boolean;
   handleClose: () => void;
   notification: NotificationItem;
+  importDateTime: string;
 }
 
 const useStyles = makeStyles({
@@ -46,12 +48,21 @@ const useStyles = makeStyles({
   },
   noPadding: {
     padding: "0px"
+  },
+  fullWidth: {
+    width: "100%"
+  },
+  exportToCSV: {
+    display: "inline-block"
   }
 });
 
-const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification }) => {
+const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification, importDateTime }) => {
 
   const classes = useStyles();
+
+  const dictionaryName = notification.meta ? notification.meta[0].split("/")[4] : "";
+  const sourceName = notification.result.length > 0 ? notification.result[0].expression.split("/")[4] : "";
 
   const getParentConceptIds = () => {
     const meta = notification.meta;
@@ -84,9 +95,6 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
   };
 
   const getDialogTitle = () => {
-    const dictionaryName = notification.meta ? notification.meta[0].split("/")[4] : "";
-
-    const sourceName = notification.result.length > 0 ? notification.result[0].expression.split("/")[4] : "";
     return (
         <Typography variant='h5'>
           {dictionaryName} - Adding concepts from {sourceName}
@@ -111,7 +119,6 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
       return createData(getConceptId(row), getConceptType(row), getStatus(row), getReason(row));
     });
   };
-
   const summaryRowsToDisplay = getSummaryRowsToDisplay();
 
   type Order = 'asc' | 'desc';
@@ -184,6 +191,13 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
     />;
   };
 
+  const csvHeaders = [
+    { label: 'Concept ID', key: 'conceptId' },
+    { label: 'Concept Type', key: 'conceptType' },
+    { label: 'Status', key: 'status' },
+    { label: 'Reasons', key: 'reasons' }
+  ];
+
   return (
       <>
         <Dialog data-testid="notification-details-dialog" onClose={resetAndClose} open={open} fullWidth maxWidth = {'md'}>
@@ -196,9 +210,17 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification 
           </DialogContent>
           <DialogActions>
             <ButtonGroup fullWidth color="primary" variant="text" size="medium">
-              <Button>
-                Export To CSV
-              </Button>
+              <CSVLink
+                  className={classes.fullWidth}
+                  headers={csvHeaders}
+                  data={summaryRowsToDisplay}
+                  filename={`${dictionaryName}_${importDateTime}.csv`}
+                  enclosingCharacter={``}
+              >
+                <Button className={classes.exportToCSV} fullWidth color="primary">
+                  Export to CSV
+                </Button>
+              </CSVLink>
               <Button onClick={resetAndClose} color="secondary">Close</Button>
             </ButtonGroup>
           </DialogActions>
