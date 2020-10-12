@@ -50,7 +50,8 @@ const conceptState: ConceptsState = {
 };
 
 export const sourceState: SourceState = {
-    sources: [{items: []}]
+    sources: [{items: []}],
+    versions: []
 };
 
 export const initialState: AppState = {

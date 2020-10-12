@@ -1,10 +1,11 @@
 import React, {useEffect} from "react";
-import {DictionaryDetails, DictionaryForm, ReleasedVersions} from "../components";
+import {DictionaryDetails, DictionaryForm} from "../components";
 import {Grid, Paper, Typography} from "@material-ui/core";
 import {connect} from "react-redux";
 import {APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion} from "../types";
 import {orgsSelector, profileSelector} from "../../authentication/redux/reducer";
 import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
+
 import {
   createDictionaryVersionAction,
   createDictionaryVersionErrorSelector,
@@ -23,6 +24,7 @@ import {CONTEXT} from "../../../utils";
 import {ProgressOverlay} from "../../../utils/components";
 import {EditButton} from "../../containers/components/EditButton";
 import {EDIT_BUTTON_TITLE} from "../redux/constants";
+import ContainerReleasedVersions from "../../containers/components/ContainerReleasedVersions";
 
 interface Props {
   profile?: APIProfile;
@@ -115,14 +117,15 @@ export const ViewDictionaryPage: React.FC<Props> = ({
             <span>Couldn't find dictionary details</span>
           )}
         </Grid>
+        
         <Grid item xs={12} component="div">
           {versionsLoading ? (
             "Loading versions..."
           ) : (
-            <ReleasedVersions
+            <ContainerReleasedVersions
               versions={versions}
               showCreateVersionButton={canEditDictionary}
-              createDictionaryVersion={async (data: DictionaryVersion) => {
+              createVersion={async (data: DictionaryVersion) => {
                   const response: any = await createDictionaryVersion(url, data);
                   if (response) {
                     retrieveDictionaryVersions(url);
@@ -131,14 +134,15 @@ export const ViewDictionaryPage: React.FC<Props> = ({
               }
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
-              dictionaryUrl={url}
-              editDictionaryVersion={async (data: DictionaryVersion) => {
+              url={url}
+              editVersion={async (data: DictionaryVersion) => {
                   const response: any = await  editDictionaryVersion(url, data);
                   if (response) {
                     retrieveDictionaryVersions(url);
                   }
                 }
               }
+              type={"Dictionary"}
             />
           )}
         </Grid>

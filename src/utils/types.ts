@@ -24,3 +24,12 @@ export interface EditableConceptContainerFields {
   default_locale?: string;
   preferred_source?: string;
 }
+
+export interface Version {
+  id: string;
+  released: boolean;
+  description?: string;
+  external_id: string;
+  extras?: { [key: string]: string };
+  created_on?: string;
+}

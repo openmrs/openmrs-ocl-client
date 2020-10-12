@@ -98,6 +98,7 @@ const conceptState: ConceptsState = {
 
 const sourceState: SourceState = {
     sources: [],
+    versions: []
 };
 
 const currentState: AppState = {

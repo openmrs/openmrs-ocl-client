@@ -2,14 +2,22 @@ import React, {useEffect} from "react";
 import SourceForm from "../components/SourceForm";
 import {Grid, Paper, Typography} from "@material-ui/core";
 import {connect} from "react-redux";
-import {APISource, apiSourceToSource} from "../types";
+
+import { APISource, apiSourceToSource, APISourceVersion, SourceVersion } from "../types";
+
 import {orgsSelector, profileSelector,} from "../../authentication/redux/reducer";
 import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
 import {
   retrieveSourceAndDetailsAction,
   retrieveSourceErrorSelector,
   retrieveSourceLoadingSelector,
-  sourceSelector
+  sourceSelector,
+  createSourceVersionAction,
+  editSourceVersionAction,
+  retrieveSourceVersionsAction,
+  retrieveSourceVersionLoadingSelector,
+  createSourceVersionLoadingSelector,
+  createSourceVersionErrorSelector,
 } from "../redux";
 import {AppState} from "../../../redux";
 import {useLocation, useParams} from "react-router-dom";
@@ -28,6 +36,7 @@ import {
   viewActiveConceptsErrorsSelector
 } from "../../concepts/redux";
 
+import ContainerReleasedVersions from "../../containers/components/ContainerReleasedVersions";
 
 interface Props {
   profile?: APIProfile;
@@ -44,8 +53,22 @@ interface Props {
   retrieveActiveConceptsSummary: (
       ...args: Parameters<typeof retrieveActiveConceptsAction>
   ) => void;
-  metaConceptsCount?: { num_found?: number };
   metaActiveConceptsCount?: { num_found?: number };
+  createSourceVersion: (
+    ...args: Parameters<typeof createSourceVersionAction>
+  ) => void;
+  editSourceVersion: (
+      ...args: Parameters<typeof editSourceVersionAction>
+  ) => void;
+  retrieveSourceVersions: (
+      ...args: Parameters<typeof retrieveSourceVersionsAction>
+  ) => void,
+  metaConceptsCount?: { num_found?: number };
+  versions: APISourceVersion[];
+  versionsLoading: boolean;
+  createVersionLoading: boolean;
+  createVersionError?: { detail: string };
+
 }
 interface UseLocation {
   prevPath: string;
@@ -55,12 +78,19 @@ export const ViewSourcePage: React.FC<Props> = ({
   usersOrgs = [],
   sourceLoading,
   source,
+  versions,
+  versionsLoading,
   retrieveSourceAndDetails,
   retrieveSourceErrors,
   retrieveConceptsSummary,
   retrieveActiveConceptsSummary,
   metaConceptsCount = {},
-  metaActiveConceptsCount = {}
+  metaActiveConceptsCount = {},
+  createVersionError,
+  createVersionLoading,
+  retrieveSourceVersions,
+  createSourceVersion,
+  editSourceVersion
 }: Props) => {
   const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
@@ -78,7 +108,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   useEffect(() => {
     retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
   }, [url, retrieveActiveConceptsSummary]);
-
+  
   const canEditSource = canModifyContainer(
       ownerType,
       owner,
@@ -125,6 +155,34 @@ export const ViewSourcePage: React.FC<Props> = ({
               activeConceptCount={metaActiveConceptsCount.num_found || 0}
             />
           </Grid>
+          <Grid item xs={12} component="div">
+            {versionsLoading ? (
+              "Loading versions..."
+            ) : (
+              <ContainerReleasedVersions
+                versions={versions}
+                showCreateVersionButton={canEditSource}
+                createVersion={async (data: SourceVersion) => {
+                    const response: any = await createSourceVersion(url, data);
+                    if (response) {
+                      retrieveSourceVersions(url);
+                    }
+                  }
+                }
+                createVersionLoading={createVersionLoading}
+                createVersionError={createVersionError}
+                url={url}
+                editVersion={async (data: SourceVersion) => {
+                    const response: any = await  editSourceVersion(url, data);
+                    if (response) {
+                      retrieveSourceVersions(url);
+                    }
+                  }
+                }
+                type={"Source"}
+              />
+            )}
+          </Grid>
         </Grid>
         {!showEditButton ? null : (
             <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE}/>
@@ -141,6 +199,10 @@ export const mapStateToProps = (state: AppState) => ({
                 || viewConceptsLoadingSelector(state)
                 || viewActiveConceptsLoadingSelector(state),
   source: sourceSelector(state),
+  versions: state.sources.versions,
+  versionsLoading: retrieveSourceVersionLoadingSelector(state),
+  createVersionLoading: createSourceVersionLoadingSelector(state),
+  createVersionError: createSourceVersionErrorSelector(state),
   metaConceptsCount: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
@@ -154,7 +216,10 @@ export const mapStateToProps = (state: AppState) => ({
 export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
   retrieveConceptsSummary: retrieveConceptsAction,
-  retrieveActiveConceptsSummary: retrieveActiveConceptsAction
+  retrieveActiveConceptsSummary: retrieveActiveConceptsAction,
+  createSourceVersion: createSourceVersionAction,
+  editSourceVersion: editSourceVersionAction,
+  retrieveSourceVersions: retrieveSourceVersionsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);
