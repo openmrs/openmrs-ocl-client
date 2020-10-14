@@ -7,7 +7,7 @@ import {
   startAction
 } from "../../../redux";
 import api from "../api";
-import { APIDictionary, Dictionary, NewAPIDictionary } from "../types";
+import { APIDictionary, Dictionary, NewAPIDictionary, ImportMetaData } from "../types";
 import {
   APISource,
   createSourceAction as createSource,
@@ -44,10 +44,9 @@ import { invalidateCache } from "../../../redux/utils";
 import {
   addToLocalStorageObject,
   createLocalStorageObject,
-  setUpdate
+  updateLocalStorageArray
 } from "../../../redux/localStorageUtils";
-
-
+import moment from "moment";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -321,8 +320,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
         typeof concept === "string"
             ? {
               id: concept,
-              url: `${sourceUrl}concepts/${concept}/`,
-              display_name: concept
+              url: `${sourceUrl}concepts/${concept}/`
             }
             : concept
     );
@@ -334,7 +332,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
         addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
     const updateProgress = (message: string) => {
       const headerMessage = concepts
-          .map(concept => concept.display_name)
+          .map(concept => concept.id)
           .join(", ");
 
       inProgressList = `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`;
@@ -354,13 +352,17 @@ export const recursivelyAddConceptsToDictionaryAction = (
         updateProgress
     );
 
-    createLocalStorageObject('notification');
-    addToLocalStorageObject('notification','inProgressList', inProgressList || "");
-    addToLocalStorageObject('notification','loadingList', "");
-    addToLocalStorageObject('notification','erroredList', "");
-    addToLocalStorageObject('notification','successList', "");
-    setUpdate('notification','inProgressList', "true");
+    const importMeta: ImportMetaData = {
+      dictionary: dictionaryUrl,
+      dateTime: moment().toString(),
+    };
 
+    createLocalStorageObject('notification');
+    const index = addToLocalStorageObject('notification','inProgressList', inProgressList || "");
+    addToLocalStorageObject('notification','loadingList', true);
+    addToLocalStorageObject('notification','erroredList', null);
+    addToLocalStorageObject('notification','successList', "");
+    addToLocalStorageObject("notification", "importMetaDataList", importMeta);
 
     updateProgress(
         referencesToAdd.length
@@ -380,7 +382,22 @@ export const recursivelyAddConceptsToDictionaryAction = (
         meta: [dictionaryUrl, concepts, bulk]
       });
       updateProgress(`Added ${conceptOrConcepts}`);
+      const successList = getState().dictionaries.addReferencesResults;
+      if (successList?.length > 0) {
+        updateLocalStorageArray({
+          name:'notification',
+          key: 'successList',
+          value: successList[successList.length - 1],
+          index: index
+        });
+      }
     } catch (e) {
+      updateLocalStorageArray({
+        name:'notification',
+        key: 'erroredList',
+        value: e.response?.data,
+        index: index
+      });
       dispatch({
         type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
         actionIndex: actionIndex,
@@ -389,10 +406,15 @@ export const recursivelyAddConceptsToDictionaryAction = (
       });
     }
 
+    updateLocalStorageArray({
+      name:'notification',
+      key: 'loadingList',
+      value: false,
+      index: index
+    });
     dispatch(
         completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    setUpdate('notification','inProgressList', "false");
   };
 };
 export const addConceptsToDictionaryAction = createActionThunk(
