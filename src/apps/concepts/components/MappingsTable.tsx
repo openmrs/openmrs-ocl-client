@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
   Table,
+  TableContainer,
   TableBody,
   TableCell,
   TableHead,
@@ -24,6 +25,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     errorContainer: {
       textAlign: "center"
+    },
+    tableContainer: {
+      paddingBottom: "250px",
+      marginBottom: "-250px"
     }
   })
 );
@@ -90,90 +95,92 @@ const MappingsTable: React.FC<Props> = ({
   }
 
   return (
-    <div>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Source</TableCell>
-            {fixedMappingType ? null : <TableCell>Relationship</TableCell>}
-            <TableCell>Concept</TableCell>
-            <TableCell>
-              {retiredCount < 1 ? null : (
-                <IconButton
-                  id={`${valuesKey}.menu-icon`}
-                  aria-controls={`${valuesKey}.menu`}
-                  aria-haspopup="true"
-                  onClick={event => toggleMappingMenu(HEADER_MENU_INDEX, event)}
-                >
-                  <MenuIcon />
-                </IconButton>
+      <div>
+        <TableContainer className={classes.tableContainer}>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Source</TableCell>
+                {fixedMappingType ? null : <TableCell>Relationship</TableCell>}
+                <TableCell>Concept</TableCell>
+                <TableCell>
+                  {retiredCount < 1 ? null : (
+                      <IconButton
+                          id={`${valuesKey}.menu-icon`}
+                          aria-controls={`${valuesKey}.menu`}
+                          aria-haspopup="true"
+                          onClick={event => toggleMappingMenu(HEADER_MENU_INDEX, event)}
+                      >
+                        <MenuIcon/>
+                      </IconButton>
+                  )}
+                  <Menu
+                      anchorEl={menu.anchor}
+                      id={`${valuesKey}.menu`}
+                      open={HEADER_MENU_INDEX === menu.index}
+                      onClose={() => toggleMappingMenu(HEADER_MENU_INDEX)}
+                  >
+                    <MenuItem
+                        onClick={() => {
+                          setShowRetired(!showRetired);
+                          toggleMappingMenu(HEADER_MENU_INDEX);
+                        }}
+                    >{`${
+                        showRetired
+                            ? "Hide retired"
+                            : "Show retired(" + retiredCount + ")"
+                        }`}</MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {values.map((value, index) =>
+                  value.retired && !showRetired ? null : (
+                      <MappingsTableRow
+                          key={index}
+                          value={value}
+                          index={index}
+                          valuesKey={valuesKey}
+                          handleChange={handleChange}
+                          toggleMenu={toggleMappingMenu}
+                          menu={menu}
+                          arrayHelpers={arrayHelpers}
+                          fixedMappingType={fixedMappingType}
+                          errors={Array.isArray(errors) ? errors[index] : undefined}
+                          editing={editing}
+                      />
+                  )
               )}
-              <Menu
-                anchorEl={menu.anchor}
-                id={`${valuesKey}.menu`}
-                open={HEADER_MENU_INDEX === menu.index}
-                onClose={() => toggleMappingMenu(HEADER_MENU_INDEX)}
+            </TableBody>
+          </Table>
+          {noMappingsMsg()}
+          {typeof errors !== "string" ? null : (
+              <Typography
+                  className={classes.errorContainer}
+                  color="error"
+                  variant="caption"
+                  component="div"
               >
-                <MenuItem
-                  onClick={() => {
-                    setShowRetired(!showRetired);
-                    toggleMappingMenu(HEADER_MENU_INDEX);
-                  }}
-                >{`${
-                  showRetired
-                    ? "Hide retired"
-                    : "Show retired(" + retiredCount + ")"
-                }`}</MenuItem>
-              </Menu>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {values.map((value, index) =>
-            value.retired && !showRetired ? null : (
-              <MappingsTableRow
-                key={index}
-                value={value}
-                index={index}
-                valuesKey={valuesKey}
-                handleChange={handleChange}
-                toggleMenu={toggleMappingMenu}
-                menu={menu}
-                arrayHelpers={arrayHelpers}
-                fixedMappingType={fixedMappingType}
-                errors={Array.isArray(errors) ? errors[index] : undefined}
-                editing={editing}
-              />
-            )
+                <ErrorMessage name={valuesKey} component="span"/>
+              </Typography>
           )}
-        </TableBody>
-      </Table>
-      {noMappingsMsg()}
-      {typeof errors !== "string" ? null : (
-        <Typography
-          className={classes.errorContainer}
-          color="error"
-          variant="caption"
-          component="div"
-        >
-          <ErrorMessage name={valuesKey} component="span" />
-        </Typography>
-      )}
-      <br />
-      {!editing ? (
-        ""
-      ) : (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          disabled={isSubmitting}
-          onClick={() => arrayHelpers.push(createNewMapping())}
-        >
-          Add {title}
-        </Button>
-      )}
-    </div>
+        </TableContainer>
+        <br/>
+        {!editing ? (
+            ""
+        ) : (
+            <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                disabled={isSubmitting}
+                onClick={() => arrayHelpers.push(createNewMapping())}
+            >
+              Add {title}
+            </Button>
+        )}
+      </div>
   );
 };
 

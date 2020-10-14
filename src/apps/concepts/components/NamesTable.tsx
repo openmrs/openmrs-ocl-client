@@ -9,6 +9,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Theme,
@@ -41,6 +42,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     errorContainer: {
       textAlign: "center"
+    },
+    minimumCellWidth: {
+      minWidth: "150px"
     }
   })
 );
@@ -90,189 +94,192 @@ const NamesTable: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>{title}</TableCell>
-            {useTypes ? <TableCell>Type</TableCell> : null}
-            <TableCell>Language</TableCell>
-            <TableCell>Preferred in language</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {values.map((value, index) => (
-            <TableRow className={classes.row} key={index}>
-              <TableCell
-                className={
-                  multiline ? classes.doubleCellWidth : classes.singleCellWidth
-                }
-                component="td"
-                scope="row"
-              >
-                <Field
-                  fullWidth
-                  id={`${valuesKey}[${index}].${type}`}
-                  name={`${valuesKey}[${index}].${type}`}
-                  data-testid={`${valuesKey}_${index}_${type}`}
-                  margin="dense"
-                  component={TextField}
-                  multiline={multiline}
-                />
-              </TableCell>
-              {!useTypes ? null : (
-                <TableCell
-                  className={classes.singleCellWidth}
-                  component="td"
-                  scope="row"
-                >
-                  <FormControl fullWidth margin="dense">
-                    <Field
-                      id={`${valuesKey}[${index}].${type}_type`}
-                      name={`${valuesKey}[${index}].${type}_type`}
-                      data-testid={`${valuesKey}_${index}_${type}_type`}
-                      component={Select}
+      <div>
+        <TableContainer>
+          <Table stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>{title}</TableCell>
+                {useTypes ? <TableCell>Type</TableCell> : null}
+                <TableCell>Language</TableCell>
+                <TableCell>Preferred in language</TableCell>
+                <TableCell/>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {values.map((value, index) => (
+                  <TableRow className={classes.row} key={index}>
+                    <TableCell
+                        className={
+                          multiline ? classes.doubleCellWidth : classes.singleCellWidth
+                        }
+                        component="td"
+                        scope="row"
                     >
-                      {NAME_TYPES.map(nameType => (
-                        <MenuItem key={nameType.value} value={nameType.value}>
-                          {nameType.label}
-                        </MenuItem>
-                      ))}
-                    </Field>
-                    <Typography color="error" variant="caption" component="div">
-                      <ErrorMessage
-                        name={`${valuesKey}[${index}].${type}_type`}
-                        component="span"
+                      <Field
+                          fullWidth
+                          className={classes.minimumCellWidth}
+                          id={`${valuesKey}[${index}].${type}`}
+                          name={`${valuesKey}[${index}].${type}`}
+                          data-testid={`${valuesKey}_${index}_${type}`}
+                          margin="dense"
+                          component={TextField}
+                          multiline={multiline}
                       />
-                    </Typography>
-                  </FormControl>
-                </TableCell>
-              )}
-              <TableCell
-                className={classes.singleCellWidth}
-                component="td"
-                scope="row"
-              >
-                <FormControl fullWidth margin="dense">
-                  <Field
-                    id={`${valuesKey}[${index}].locale`}
-                    name={`${valuesKey}[${index}].locale`}
-                    data-testid={`${valuesKey}_${index}_locale`}
-                    component={Select}
-                  >
-                    {uniqBy(
-                      [findLocale(value.locale), ...supportedLocales],
-                      locale => locale.value
-                    ).map(locale => (
-                      <MenuItem key={locale.value} value={locale.value}>
-                        {locale.label}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                  <Typography color="error" variant="caption" component="div">
-                    <ErrorMessage
-                      name={`${valuesKey}[${index}].locale`}
-                      component="span"
-                    />
-                  </Typography>
-                </FormControl>
-              </TableCell>
-              <TableCell
-                className={classes.singleCellWidth}
-                component="td"
-                scope="row"
-              >
-                <FormControl fullWidth margin="dense">
-                  <Field
-                    id={`${valuesKey}[${index}].locale_preferred`}
-                    name={`${valuesKey}[${index}].locale_preferred`}
-                    data-testid={`${valuesKey}_${index}_locale_preferred`}
-                    component={Select}
-                  >
-                    <MenuItem
-                      // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                      value={false}
+                    </TableCell>
+                    {!useTypes ? null : (
+                        <TableCell
+                            className={classes.singleCellWidth}
+                            component="td"
+                            scope="row"
+                        >
+                          <FormControl fullWidth margin="dense">
+                            <Field
+                                id={`${valuesKey}[${index}].${type}_type`}
+                                name={`${valuesKey}[${index}].${type}_type`}
+                                data-testid={`${valuesKey}_${index}_${type}_type`}
+                                component={Select}
+                            >
+                              {NAME_TYPES.map(nameType => (
+                                  <MenuItem key={nameType.value} value={nameType.value}>
+                                    {nameType.label}
+                                  </MenuItem>
+                              ))}
+                            </Field>
+                            <Typography color="error" variant="caption" component="div">
+                              <ErrorMessage
+                                  name={`${valuesKey}[${index}].${type}_type`}
+                                  component="span"
+                              />
+                            </Typography>
+                          </FormControl>
+                        </TableCell>
+                    )}
+                    <TableCell
+                        className={classes.singleCellWidth}
+                        component="td"
+                        scope="row"
                     >
-                      No
-                    </MenuItem>
-                    <MenuItem
-                      // @ts-ignore
-                      value={true}
+                      <FormControl fullWidth margin="dense">
+                        <Field
+                            id={`${valuesKey}[${index}].locale`}
+                            name={`${valuesKey}[${index}].locale`}
+                            data-testid={`${valuesKey}_${index}_locale`}
+                            component={Select}
+                        >
+                          {uniqBy(
+                              [findLocale(value.locale), ...supportedLocales],
+                              locale => locale.value
+                          ).map(locale => (
+                              <MenuItem key={locale.value} value={locale.value}>
+                                {locale.label}
+                              </MenuItem>
+                          ))}
+                        </Field>
+                        <Typography color="error" variant="caption" component="div">
+                          <ErrorMessage
+                              name={`${valuesKey}[${index}].locale`}
+                              component="span"
+                          />
+                        </Typography>
+                      </FormControl>
+                    </TableCell>
+                    <TableCell
+                        className={classes.singleCellWidth}
+                        component="td"
+                        scope="row"
                     >
-                      Yes
-                    </MenuItem>
-                  </Field>
-                  <Typography color="error" variant="caption" component="div">
-                    <ErrorMessage
-                      name={`${valuesKey}[${index}].locale_preferred`}
-                      component="span"
-                    />
-                  </Typography>
-                </FormControl>
-              </TableCell>
-              <TableCell
-                className={classes.menuItem}
-                component="td"
-                scope="row"
+                      <FormControl fullWidth margin="dense">
+                        <Field
+                            id={`${valuesKey}[${index}].locale_preferred`}
+                            name={`${valuesKey}[${index}].locale_preferred`}
+                            data-testid={`${valuesKey}_${index}_locale_preferred`}
+                            component={Select}
+                        >
+                          <MenuItem
+                              // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                              value={false}
+                          >
+                            No
+                          </MenuItem>
+                          <MenuItem
+                              // @ts-ignore
+                              value={true}
+                          >
+                            Yes
+                          </MenuItem>
+                        </Field>
+                        <Typography color="error" variant="caption" component="div">
+                          <ErrorMessage
+                              name={`${valuesKey}[${index}].locale_preferred`}
+                              component="span"
+                          />
+                        </Typography>
+                      </FormControl>
+                    </TableCell>
+                    <TableCell
+                        className={classes.menuItem}
+                        component="td"
+                        scope="row"
+                    >
+                      {!editing ? (
+                          ""
+                      ) : (
+                          <IconButton
+                              id={`${valuesKey}[${index}].menu-icon`}
+                              aria-controls={`${valuesKey}[${index}].menu`}
+                              aria-haspopup="true"
+                              onClick={event => toggleNameMenu(index, event)}
+                          >
+                            <MoreVertIcon/>
+                          </IconButton>
+                      )}
+                      <Menu
+                          anchorEl={menu.anchor}
+                          id={`${valuesKey}[${index}].menu`}
+                          open={index === menu.index}
+                          onClose={() => toggleNameMenu(index)}
+                      >
+                        <MenuItem
+                            onClick={() => {
+                              arrayHelpers.remove(index);
+                              toggleNameMenu(index);
+                            }}
+                        >
+                          <DeleteOutlineIcon/> Delete
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          {typeof errors !== "string" ? null : (
+              <Typography
+                  className={classes.errorContainer}
+                  color="error"
+                  variant="caption"
+                  component="div"
               >
-                {!editing ? (
-                  ""
-                ) : (
-                  <IconButton
-                    id={`${valuesKey}[${index}].menu-icon`}
-                    aria-controls={`${valuesKey}[${index}].menu`}
-                    aria-haspopup="true"
-                    onClick={event => toggleNameMenu(index, event)}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                )}
-                <Menu
-                  anchorEl={menu.anchor}
-                  id={`${valuesKey}[${index}].menu`}
-                  open={index === menu.index}
-                  onClose={() => toggleNameMenu(index)}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      arrayHelpers.remove(index);
-                      toggleNameMenu(index);
-                    }}
-                  >
-                    <DeleteOutlineIcon /> Delete
-                  </MenuItem>
-                </Menu>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {typeof errors !== "string" ? null : (
-        <Typography
-          className={classes.errorContainer}
-          color="error"
-          variant="caption"
-          component="div"
-        >
-          <ErrorMessage name={valuesKey} component="span" />
-        </Typography>
-      )}
-      <br />
-      {!editing ? (
-        ""
-      ) : (
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          disabled={isSubmitting}
-          onClick={() => arrayHelpers.push(createNewValue())}
-        >
-          Add {title}
-        </Button>
-      )}
-    </div>
+                <ErrorMessage name={valuesKey} component="span"/>
+              </Typography>
+          )}
+        </TableContainer>
+        <br/>
+        {!editing ? (
+            ""
+        ) : (
+            <Button
+                variant="outlined"
+                color="primary"
+                size="small"
+                disabled={isSubmitting}
+                onClick={() => arrayHelpers.push(createNewValue())}
+            >
+              Add {title}
+            </Button>
+        )}
+      </div>
   );
 };
 
