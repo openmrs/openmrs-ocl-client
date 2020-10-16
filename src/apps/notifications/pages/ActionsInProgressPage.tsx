@@ -3,23 +3,25 @@ import {
   Chip,
   Grid,
   List,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from '@material-ui/icons/Error';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
-import { AppState } from "../redux";
+import { AppState } from "../../../redux";
 import {
   addConceptsToDictionaryErrorListSelector,
   addConceptsToDictionaryLoadingListSelector,
   addConceptsToDictionaryProgressListSelector,
   buildAddConceptToDictionaryMessage,
   ImportMetaData,
-} from "../apps/dictionaries";
+} from "../../dictionaries";
 import { connect } from "react-redux";
-import Header from "./Header";
-import { getLocalStorageObject } from "../redux/localStorageUtils";
-import NotificationCard from "./NotificationCard";
+import Header from "../../../components/Header";
+import { getLocalStorageObject } from "../../../redux/localStorageUtils";
+import NotificationCard from "../components/NotificationCard";
+import NotificationDetails from "../components/NotificationDetails";
+import { NotificationItem } from "../types";
 
 interface Props {
   loadingList?: (boolean | undefined)[];
@@ -45,21 +47,24 @@ const ActionsInProgressPage: React.FC<Props> = ({
 
   const inProgressItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
-      typeof loading == "boolean" && loading ? inProgressListLocalStorage[index] : null
+      typeof loading == "boolean" && loading
+        ? inProgressListLocalStorage[index]
+        : null
     )
-    .filter((item: any) => item)
+    .filter((notification: any) => notification)
     .reverse() as string[];
 
   const successfulItems = loadingListLocalStorage
     .map((loading: boolean | undefined, index: number) =>
       typeof loading == "boolean" && !loading && !erroredListLocalStorage[index]
         ? {
+            meta: successListLocalStorage[index]?.meta,
             result: successListLocalStorage[index]?.payload || "Successful",
-            progress: inProgressListLocalStorage[index]
+            progress: inProgressListLocalStorage[index],
           }
         : null
     )
-    .filter((item: any) => item && item.progress)
+    .filter((notification: NotificationItem) => notification && notification.progress)
     .reverse() as { result: []; progress: string }[];
 
   const erroredItems = loadingListLocalStorage
@@ -67,11 +72,11 @@ const ActionsInProgressPage: React.FC<Props> = ({
       typeof loading == "boolean" && !loading && erroredListLocalStorage[index]
         ? {
             error: erroredListLocalStorage[index],
-            progress: inProgressListLocalStorage[index]
+            progress: inProgressListLocalStorage[index],
           }
         : null
     )
-    .filter((item: any) => item && item.progress)
+    .filter((notification: NotificationItem) => notification && notification.progress)
     .reverse() as { error: string; progress: string }[];
 
   const importMetaDataItemsList: ImportMetaData[] = [];
@@ -81,6 +86,28 @@ const ActionsInProgressPage: React.FC<Props> = ({
     key: "importMetaDataList",
     value: importMetaDataItemsList,
   }).reverse() as ImportMetaData[];
+
+  const [notification, setNotification] = React.useState<NotificationItem>({
+    result: [
+      {
+        expression: "",
+        added: false,
+        message: "",
+      },
+    ],
+    progress: "",
+  });
+  const [open, setOpen] = React.useState(false);
+  const [importDateTime, setImportDateTime] = React.useState("");
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const openNotificationDetails = (notification: NotificationItem, importDateTime: string): void => {
+    setOpen(true);
+    setNotification(notification);
+    setImportDateTime(importDateTime);
+  };
 
   return (
     <Header title="Progress Notifications">
@@ -139,16 +166,19 @@ const ActionsInProgressPage: React.FC<Props> = ({
                   />
                 }
             >
-            {successfulItems.map((item, index) => (
+            {successfulItems.map((notification, index) => (
                 <NotificationCard
                     key={index}
-                    headerMessage={item.progress.split(SEPARATOR)[0]}
-                    subHeaderMessage={buildAddConceptToDictionaryMessage(item.result)}
+                    headerMessage={notification.progress.split(SEPARATOR)[0]}
+                    subHeaderMessage={buildAddConceptToDictionaryMessage(notification.result)}
                     importMetaData={importMetaDataItems[index]}
+                    openNotificationDetails={openNotificationDetails}
+                    notification={notification}
                 />
             ))}
           </List>
         )}
+        <NotificationDetails handleClose={handleClose} notification={notification} importDateTime={importDateTime} open={open}/>
       </Grid>
     </Header>
   );

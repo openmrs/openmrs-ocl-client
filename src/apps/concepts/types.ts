@@ -57,7 +57,7 @@ export interface BaseConcept {
   descriptions: ConceptDescription[];
   url?: string;
   version_url?: string;
-  extras: Extras;
+  extras: Extras | null;
 }
 
 export interface Concept extends BaseConcept {
