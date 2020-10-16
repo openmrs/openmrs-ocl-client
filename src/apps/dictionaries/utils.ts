@@ -20,7 +20,7 @@ export const buildAddConceptToDictionaryMessage = (
       : "";
   const alreadyAddedMessage =
     alreadyInDictionaryCount > 0
-      ? ` ${alreadyInDictionaryCount} already added concept${wasOrWere(
+      ? ` ${alreadyInDictionaryCount} concept${wasOrWere(
           alreadyInDictionaryCount
         )} skipped`
       : "";

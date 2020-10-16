@@ -3,7 +3,6 @@ import {render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {BrowserRouter as Router} from "react-router-dom";
 import ContainerCard from "../ContainerCard";
-import {APISource} from "../../../sources";
 import {fireEvent} from "@testing-library/dom";
 
 type cardProps = React.ComponentProps<typeof ContainerCard>;
