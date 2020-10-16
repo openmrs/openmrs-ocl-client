@@ -174,8 +174,11 @@ export const upsertConceptAndMappingsAction = (
       );
 
       const state: AppState = getState();
+      // we *only* want to import either concept answers or members of the concept set
       const toConceptUrls: string[] = [
-        ...state.concepts.mappings.map(mapping => mapping.to_concept_url)
+        ...state.concepts.mappings
+          .filter(mapping => mapping.map_type === "CONCEPT-SET" || mapping.map_type === "Q-AND-A")
+          .map(mapping => mapping.to_concept_url)
       ].filter(reference => reference) as string[];
 
       try {
