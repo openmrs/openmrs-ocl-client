@@ -11,17 +11,14 @@ WORKDIR /usr/src/app
 # Create an enviroment variable for the node_modules
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
-# Copy the package.json and the package-lock.json to the working directory
-COPY package.json ./
+# Copy the code to the docker image
+ADD . /usr/src/app/
 
 # Set environment to production
 ENV NODE_ENV production
 
-# Install the project dependencies and silence the npm output
+# Install the project dependencies
 RUN npm install
-
-# Copy everything to the working directory
-COPY . /usr/src/app
 
 # Create an optimized build version of the project
 RUN npm run build
