@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import { login, logout } from "./testUtils";
 
 describe("Login", () => {

@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 export function login(username = "admin", password = "Admin123"): string {
   cy.visit("/login");
 
