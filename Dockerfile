@@ -3,7 +3,7 @@
 FROM node:10.13.0 as build-deps
 
 # Create a working directory for the build project
-RUN mkdir /usr/src/app
+RUN mkdir -p /usr/src/app
 
 # Navigate to the created directory
 WORKDIR /usr/src/app
