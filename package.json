@@ -79,6 +79,7 @@
     "@types/uuid": "^3.4.7",
     "@types/yup": "^0.26.30",
     "cypress": "^4.9.0",
+    "eslint-plugin-cypress": "^2.11.2",
     "jest-junit": "^10.0.0",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.13.1",
