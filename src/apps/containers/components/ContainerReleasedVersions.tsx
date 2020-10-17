@@ -28,7 +28,7 @@ import {
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../../../utils";
 import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
-import moment from 'moment';
+import dayjs from 'dayjs';
 import ContainerVersionForm from './ContainerVersionForm';
 import { Version } from "../../../utils";
 
@@ -196,7 +196,7 @@ const ContainerReleasedVersions: React.FC<Props> = ({
               {versionsToDisplay.map((row: Version) => (
                 <TableRow key={row.id}>
                   <TableCell>{row.id}</TableCell>
-                  <TableCell>{row.created_on ? moment(row.created_on).format("DD MMM YYYY") : ""}</TableCell>
+                  <TableCell>{row.created_on ? dayjs(row.created_on).format("DD MMM YYYY") : ""}</TableCell>
                   <TableCell style={{ wordBreak: "break-all" }}>
                     {row.description || "None"}
                   </TableCell>

@@ -10,10 +10,13 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { ImportMetaData } from "../../dictionaries";
 import { dictionaryNameFromUrl } from "../../dictionaries/utils";
 import { NotificationItem } from "../types";
+
+dayjs.extend(relativeTime);
 
 interface Props {
   headerMessage: string;
@@ -66,10 +69,10 @@ const NotificationCard: React.FC<Props> = ({
         className={classes.cardFooter}
       >
         <Tooltip
-          title={moment(importDateTime).format("DD MMM YYYY HH:mm")}
+          title={dayjs(importDateTime).format("DD MMM YYYY HH:mm")}
           enterDelay={700}
         >
-          <span>{moment(importDateTime).fromNow()}</span>
+          <span>{dayjs(importDateTime).fromNow()}</span>
         </Tooltip>
       </Typography>
     );
@@ -97,7 +100,7 @@ const NotificationCard: React.FC<Props> = ({
         <Button
           variant="text"
           color="primary"
-          onClick={() => openNotificationDetails(notification, moment(importDateTime).format("DDMMMYYYY_HHmm"))}
+          onClick={() => openNotificationDetails(notification, dayjs(importDateTime).format("DDMMMYYYY_HHmm"))}
           className={classes.showDetailsButton}
         >
           View Summary

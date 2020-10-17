@@ -5,7 +5,7 @@ import {
 import { Field, Form, Formik} from "formik";
 import { TextField } from "formik-material-ui";
 import { APIProfile } from "../types";
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 interface Props {
     loading: boolean;
@@ -113,7 +113,7 @@ const UserForm: React.FC<Props> = ({
                             autoComplete="off"
                             id="joinedDate"
                             name="joinedDate"
-                            defaultValue={values.created_on ? moment(values.created_on).format("DD MMM YYYY") : ""}
+                            defaultValue={values.created_on ? dayjs(values.created_on).format("DD MMM YYYY") : ""}
                             label="Joined Date"
                             margin="normal"
                             disabled

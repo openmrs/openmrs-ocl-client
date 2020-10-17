@@ -46,7 +46,7 @@ import {
   createLocalStorageObject,
   updateLocalStorageArray
 } from "../../../redux/localStorageUtils";
-import moment from "moment";
+import dayjs from "dayjs";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -354,7 +354,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
-      dateTime: moment().toString(),
+      dateTime: dayjs().toString(),
     };
 
     createLocalStorageObject('notification');
