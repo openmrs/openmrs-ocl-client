@@ -1,6 +1,6 @@
 # Stage-1 Build process
-# Use the official node:9.6.1 runtime image for the build environment and tag the build as build-deps
-FROM node:10.13.0 as build-deps
+# Use the official node:12.19 runtime image for the build environment and tag the build as build-deps
+FROM node:12.19-alpine as build-deps
 
 # Create a working directory for the build project
 RUN mkdir -p /usr/src/app
@@ -24,8 +24,8 @@ RUN npm install
 RUN npm run build
 
 # Stage-2 Production Environment
-# Use the nginx 1.12-alpine runtime image for the production environment
-FROM nginx:1.12-alpine
+# Use the nginx 1.19-alpine runtime image for the production environment
+FROM nginx:1.19-alpine
 
 # Add bash
 RUN apk add --no-cache bash
@@ -46,4 +46,4 @@ COPY ./startup.sh .
 RUN chmod +x startup.sh
 
 # Start the server
-CMD bash startup.sh
+CMD sh startup.sh
