@@ -3,6 +3,7 @@ import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "../components";
 import { AppState } from "../../../redux";
 import {
+  recreateConceptForm,
   resetConceptFormAction,
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
@@ -60,6 +61,7 @@ interface ActionProps {
   upsertConcept: (
     ...args: Parameters<typeof upsertConceptAndMappingsAction>
   ) => void;
+  recreateConceptForm() : void;
   resetConceptForm: () => void;
 }
 
@@ -71,6 +73,7 @@ interface ConceptPageQueryParams {
 }
 
 const CreateOrEditConceptPage: React.FC<Props> = ({
+  recreateConceptForm,
   retrieveConcept,
   retrieveDictionary,
   concept,
@@ -124,6 +127,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   }, []);
 
   useEffect(() => resetConceptForm(),
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   []);
+
+   useEffect(() => recreateConceptForm(),
    // eslint-disable-next-line react-hooks/exhaustive-deps
    []);
 
@@ -241,6 +248,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
+  recreateConceptForm: recreateConceptFormAction,
   resetConceptForm: resetConceptFormAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveConcept: retrieveConceptAction,

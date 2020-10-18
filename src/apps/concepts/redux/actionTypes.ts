@@ -1,4 +1,5 @@
 export const UPSERT_CONCEPT_ACTION = "concepts/upsertConcept";
+export const RECREATE__CONCEPT_ACTION = "concepts/recreateConcept";
 export const RETRIEVE_CONCEPT_ACTION = "concepts/retrieveConcept";
 export const UPSERT_MAPPING_ACTION = "concepts/upsertMapping";
 export const UPSERT_CONCEPT_AND_MAPPINGS = "concepts/createConceptAndMappings";

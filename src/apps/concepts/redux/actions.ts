@@ -14,6 +14,7 @@ import {
   removeReferencesFromDictionaryAction as removeReferencesFromDictionary
 } from "../../dictionaries";
 import {
+  RECREATE_CONCEPT_ACTION,
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   RETRIEVE_ACTIVE_CONCEPTS_ACTION,
@@ -233,3 +234,9 @@ export const resetConceptFormAction = () => {
   }
 }
 
+export const recreateConceptFormAction = () => {
+  return (dispatch: Function) => {
+    dispatch(recreateAction(UPSERT_CONCEPT_ACTION));
+    dispatch(recreateAction(UPSERT_CONCEPT_AND_MAPPINGS));
+  }
+}
