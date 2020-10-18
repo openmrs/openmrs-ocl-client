@@ -1,3 +1,6 @@
+/// <reference types="cypress" />
+/// <reference types="../../../../../../cypress/support" />
+
 import IDGenerator from "shortid";
 
 const shortRandomID = () => {
