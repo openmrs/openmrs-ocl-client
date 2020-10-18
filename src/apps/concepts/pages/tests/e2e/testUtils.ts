@@ -1,4 +1,10 @@
+/// <reference types="cypress" />
+/// <reference types="../../../../../../cypress/support" />
+
 import IDGenerator from "shortid";
+
+const ANSWER_RELATIONSHIP: "Q-AND-A" = "Q-AND-A";
+const SET_RELATIONSHIP: "CONCEPT-SET" = "CONCEPT-SET";
 
 const shortRandomID = () => {
   IDGenerator.characters(
@@ -24,10 +30,12 @@ export interface TestConcept {
   }[];
   answers: {
     source: { search: string; select: string };
+    relationship: typeof ANSWER_RELATIONSHIP;
     concept: { search: string; select: string };
   }[];
   sets: {
     source: { search: string; select: string };
+    relationship: typeof SET_RELATIONSHIP;
     concept: { search: string; select: string };
   }[];
   mappings: {
@@ -84,23 +92,26 @@ export function newConcept(
     answers: [
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: ANSWER_RELATIONSHIP,
         concept: { search: "1983", select: "1983- Unable to drink fluids" }
       },
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: ANSWER_RELATIONSHIP,
         concept: { search: "1944", select: "1944- Beaten earth" }
       }
     ],
     sets: [
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: SET_RELATIONSHIP,
         concept: { search: "1943", select: "1943- Cement" }
       }
     ],
     mappings: [
       {
         source: { search: "CIEL", select: "CIEL" },
-        relationship: "Same as",
+        relationship: "SAME-AS",
         concept: { search: "1940", select: "1940- Oral suspension" }
       }
     ]
@@ -166,7 +177,7 @@ export function fillMappingRow(
     "Select a source",
     concept[type][index].source
   );
-  // @ts-ignore
+
   if (concept[type][index].relationship)
     cy.selectBySelector(
       `[data-testid="${type}_${index}_map_type"]`,
