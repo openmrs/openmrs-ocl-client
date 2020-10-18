@@ -27,9 +27,6 @@ RUN npm run build
 # Use the nginx 1.19-alpine runtime image for the production environment
 FROM nginx:1.19-alpine
 
-# Add bash
-RUN apk add --no-cache bash
-
 # Make port 80 available to the world outside the container
 EXPOSE 80
 
