@@ -5,7 +5,8 @@ import { Redirect } from "react-router-dom";
 import {
     createSourceDispatchAction,
     createSourceErrorsSelector,
-    createSourceLoadingSelector
+    createSourceLoadingSelector,
+    resetCreateSourceAction
 } from "../redux";
 import {APISource} from "../types";
 import {
@@ -25,6 +26,7 @@ interface Props {
     ) => void;
     loading: boolean;
     newSource?: APISource;
+    resetCreateSourceAction: () => void;
 }
 
 const CreateSourcePage: React.FC<Props> = ({
@@ -33,6 +35,7 @@ const CreateSourcePage: React.FC<Props> = ({
   errors,
   createSourceAction,
   loading,
+  reset,
   newSource
   }: Props) => {
     const previouslyLoading = usePrevious(loading);
@@ -65,7 +68,8 @@ export const mapStateToProps = (state: any) => ({
     errors: createSourceErrorsSelector(state)
 });
 export const mapActionsToProps = {
-    createSourceAction: createSourceDispatchAction
+    createSourceAction: createSourceDispatchAction,
+    resetCreateSource: resetCreateSourceAction
 };
 
 export default connect(

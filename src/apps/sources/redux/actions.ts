@@ -14,6 +14,18 @@ export const editSourceAction = createActionThunk(
     EDIT_SOURCE_ACTION,
     api.update);
 
+export const resetCreateSourceAction = () => {
+    return (dispatch: Function) => dispatch(resetAction(CREATE_SOURCE_ACTION));
+      }
+    
+export const resetEditSourceAction = () => {
+    return (dispatch: Function) => dispatch(resetEditAction(CREATE_SOURCE_ACTION));
+      }
+      
+useEffect(() => resetCreateSource(),
+// eslint-disable-next-line react-hooks/exhaustive-deps
+[]);
+
 export const retrievePersonalSourcesAction = createActionThunk(
     indexedAction(
         RETRIEVE_SOURCES_ACTION,
@@ -126,6 +138,7 @@ export const editSourceDispatchAction = (sourceData: APISource, url: string) => 
         dispatch(editSourceAction<APISource>(url, source))
     };
 };
+
 
 
 
