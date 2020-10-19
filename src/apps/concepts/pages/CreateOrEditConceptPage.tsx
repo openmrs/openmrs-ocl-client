@@ -3,7 +3,7 @@ import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "../components";
 import { AppState } from "../../../redux";
 import {
-  recreateConceptForm,
+  recreateConceptFormAction,
   resetConceptFormAction,
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
