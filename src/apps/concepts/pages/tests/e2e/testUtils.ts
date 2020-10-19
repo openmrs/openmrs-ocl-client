@@ -111,7 +111,7 @@ export function newConcept(
     mappings: [
       {
         source: { search: "CIEL", select: "CIEL" },
-        relationship: "SAME-AS",
+        relationship: "Same as",
         concept: { search: "1940", select: "1940- Oral suspension" }
       }
     ]
@@ -178,11 +178,15 @@ export function fillMappingRow(
     concept[type][index].source
   );
 
-  if (concept[type][index].relationship)
+  if (concept[type][index].relationship &&
+      concept[type][index].relationship !== ANSWER_RELATIONSHIP &&
+      concept[type][index].relationship !== SET_RELATIONSHIP) {
     cy.selectBySelector(
       `[data-testid="${type}_${index}_map_type"]`,
       concept[type][index].relationship
     );
+  }
+  
   searchAndSelect(
     `[data-testrowid="${type}_${index}"]`,
     "Select a concept",
