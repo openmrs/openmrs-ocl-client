@@ -76,7 +76,6 @@ const AuthenticatedRoutes: React.FC = () => {
           newConcept={true}
           viewConcept={true}
           viewConcepts={true}
-          resetCreateSourceAction={true}
         />
       </Route>
       <Route path='/:ownerType/:owner/collections/:collection/concepts'>

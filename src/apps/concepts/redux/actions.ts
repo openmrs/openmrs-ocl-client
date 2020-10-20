@@ -4,7 +4,6 @@ import {
   createActionThunk,
   indexedAction,
   progressAction,
-  recreateAction,
   resetAction,
   startAction
 } from "../../../redux";
@@ -233,9 +232,4 @@ export const resetConceptFormAction = () => {
     dispatch(resetAction(UPSERT_CONCEPT_AND_MAPPINGS));
   }
 }
-export const recreateConceptFormAction = () => {
-  return (dispatch: Function) => {
-    dispatch(recreateAction(UPSERT_CONCEPT_ACTION));
-    dispatch(recreateAction(UPSERT_CONCEPT_AND_MAPPINGS));
-  }
-}
+

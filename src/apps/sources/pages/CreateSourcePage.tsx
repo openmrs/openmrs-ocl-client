@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -26,7 +26,7 @@ interface Props {
     ) => void;
     loading: boolean;
     newSource?: APISource;
-    resetCreateSourceAction: () => void;
+    resetCreateSource: () => void;
 }
 
 const CreateSourcePage: React.FC<Props> = ({
@@ -35,10 +35,14 @@ const CreateSourcePage: React.FC<Props> = ({
   errors,
   createSourceAction,
   loading,
-  reset,
+  resetCreateSource,
   newSource
   }: Props) => {
     const previouslyLoading = usePrevious(loading);
+
+    useEffect(() => resetCreateSource(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []);
 
     if (!loading && previouslyLoading && newSource) {
         return <Redirect to={newSource.url} />;
