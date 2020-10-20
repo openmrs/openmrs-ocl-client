@@ -1,5 +1,4 @@
 import { cloneDeep } from "lodash";
-
 import {
   errors,
   loading,
@@ -12,6 +11,7 @@ import {
   meta
 } from "./utils";
 import { Action, LoadingAndErroredState } from "./types";
+import {LOGOUT_ACTION} from "../apps/authentication/redux/actionTypes";
 
 // todo improve these action types args
 const loadingAndErroredReducer = (
@@ -19,6 +19,11 @@ const loadingAndErroredReducer = (
   action: Action
 ) => {
   const { type, payload, actionIndex, meta: actionMeta } = action;
+
+  if(type === LOGOUT_ACTION){
+    return {}
+  }
+
   const matches = /(.*)_(START|PROGRESS|FAILURE|COMPLETE|RESET)/.exec(type);
 
   if (!matches) return state;

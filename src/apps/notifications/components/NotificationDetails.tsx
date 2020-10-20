@@ -49,8 +49,9 @@ const useStyles = makeStyles({
   noPadding: {
     padding: "0px"
   },
-  fullWidth: {
-    width: "100%"
+  csvLink: {
+    width: "100%",
+    borderRight: "1px solid #809fe0"
   },
   exportToCSV: {
     display: "inline-block"
@@ -208,19 +209,19 @@ const NotificationDetails: React.FC<Props> = ({ open, handleClose, notification,
             {getTableContent()}
             {getTablePagination()}
           </DialogContent>
-          <DialogActions>
+          <DialogActions disableSpacing>
+            <CSVLink
+                className={classes.csvLink}
+                headers={csvHeaders}
+                data={summaryRowsToDisplay}
+                filename={`${dictionaryName}_${importDateTime}.csv`}
+                enclosingCharacter={``}
+            >
+              <Button className={classes.exportToCSV} fullWidth color="primary">
+                Export to CSV
+              </Button>
+            </CSVLink>
             <ButtonGroup fullWidth color="primary" variant="text" size="medium">
-              <CSVLink
-                  className={classes.fullWidth}
-                  headers={csvHeaders}
-                  data={summaryRowsToDisplay}
-                  filename={`${dictionaryName}_${importDateTime}.csv`}
-                  enclosingCharacter={``}
-              >
-                <Button className={classes.exportToCSV} fullWidth color="primary">
-                  Export to CSV
-                </Button>
-              </CSVLink>
               <Button onClick={resetAndClose} color="secondary">Close</Button>
             </ButtonGroup>
           </DialogActions>
