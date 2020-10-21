@@ -2,14 +2,14 @@
 
 curl -V > /dev/null
 if [ $? -ne 0 ]; then
-  echo "./wait_for_url.sh requires curl to be installed"
+  echo "$0 requires curl to be installed"
   exit 1
 fi
 
 if [ -n "$1" ]; then
   url=$1
 else
-  echo "Usage: ./wait_for_url.sh url [max_attempts]"
+  echo "Usage: $0 url [max_attempts]"
   exit 1
 fi
 
