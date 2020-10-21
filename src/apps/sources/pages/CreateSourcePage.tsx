@@ -40,9 +40,8 @@ const CreateSourcePage: React.FC<Props> = ({
   }: Props) => {
     const previouslyLoading = usePrevious(loading);
 
-    useEffect(() => resetCreateSource(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []);
+    useEffect(() => resetCreateSource, []);
 
     if (!loading && previouslyLoading && newSource) {
         return <Redirect to={newSource.url} />;
