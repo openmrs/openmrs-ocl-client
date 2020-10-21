@@ -16,11 +16,11 @@ export const editSourceAction = createActionThunk(
 
 export const resetCreateSourceAction = () => {
     return (dispatch: Function) => dispatch(resetAction(CREATE_SOURCE_ACTION));
-      }
+}
     
 export const resetEditSourceAction = () => {
     return (dispatch: Function) => dispatch(resetAction(EDIT_SOURCE_ACTION));
-    }
+}
     
 export const retrievePersonalSourcesAction = createActionThunk(
     indexedAction(
@@ -134,7 +134,4 @@ export const editSourceDispatchAction = (sourceData: APISource, url: string) => 
         dispatch(editSourceAction<APISource>(url, source))
     };
 };
-
-
-
 
