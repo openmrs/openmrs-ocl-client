@@ -20,7 +20,7 @@ else
 fi
 
 if [ -z "$max_attempts" -o $max_attempts -lt 1 ]; then
-  max_attempts=5
+  max_attempts=60
 fi
 
 echo "Waiting for $1"
@@ -33,4 +33,5 @@ until $(curl --output /dev/null --silent --head --fail $url); do
   fi
   printf "."
   attempt_counter=$(expr $attempt_counter + 1)
+  sleep 15
 done
