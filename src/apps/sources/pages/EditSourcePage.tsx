@@ -6,6 +6,7 @@ import {
     editSourceDispatchAction,
     editSourceErrorsSelector,
     editSourceLoadingSelector,
+    resetEditSourceAction,
     retrieveSourceAndDetailsAction
 } from "../redux";
 import {APISource, apiSourceToSource} from "../types";
@@ -30,6 +31,7 @@ export interface ActionProps {
     editSourceAction: (
         ...args: Parameters<typeof editSourceDispatchAction>
     ) => void;
+    
     retrieveSourceAction: (
         ...args: Parameters<typeof retrieveSourceAndDetailsAction>
     ) => void;
@@ -99,6 +101,7 @@ export const mapStateToProps = (state: any) => ({
 });
 export const mapActionsToProps = {
     editSourceAction: editSourceDispatchAction,
+    resetEditSourceAction: resetEditSourceAction,
     retrieveSourceAction: retrieveSourceAndDetailsAction
 };
 

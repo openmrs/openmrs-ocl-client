@@ -1,4 +1,4 @@
-import {createActionThunk, indexedAction} from "../../../redux";
+import {createActionThunk, indexedAction, resetAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION, RETRIEVE_SOURCE_VERSIONS_ACTION, CREATE_SOURCE_VERSION_ACTION, EDIT_SOURCE_VERSION_ACTION} from "./actionTypes";
 import api from "../api";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
@@ -14,6 +14,14 @@ export const editSourceAction = createActionThunk(
     EDIT_SOURCE_ACTION,
     api.update);
 
+export const resetCreateSourceAction = () => {
+    return (dispatch: Function) => dispatch(resetAction(CREATE_SOURCE_ACTION));
+}
+    
+export const resetEditSourceAction = () => {
+    return (dispatch: Function) => dispatch(resetAction(EDIT_SOURCE_ACTION));
+}
+    
 export const retrievePersonalSourcesAction = createActionThunk(
     indexedAction(
         RETRIEVE_SOURCES_ACTION,
@@ -126,6 +134,4 @@ export const editSourceDispatchAction = (sourceData: APISource, url: string) => 
         dispatch(editSourceAction<APISource>(url, source))
     };
 };
-
-
 
