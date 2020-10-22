@@ -12,6 +12,7 @@ import {
   editSourceAndDictionaryAction,
   editSourceAndDictionaryErrorsSelector,
   makeRetrieveDictionaryAction,
+  resetEditDictionaryAction,
   retrieveDictionaryLoadingSelector
 } from "../redux";
 import {APIDictionary, apiDictionaryToDictionary, Dictionary} from "../types";
@@ -43,6 +44,7 @@ interface ActionProps {
   createAndAddLinkedSource: (
     ...args: Parameters<typeof createAndAddLinkedSourceAction>
   ) => void;
+  resetEditDictionary: () => void;
 }
 
 type Props = StateProps & ActionProps;
@@ -63,6 +65,7 @@ const EditDictionaryPage: React.FC<Props> = ({
   dictionaryLoading,
   dictionary,
   editedDictionary,
+  resetEditDictionary,
   retrieveDictionary
 }: Props) => {
   const { pathname: url } = useLocation();
@@ -96,6 +99,8 @@ const EditDictionaryPage: React.FC<Props> = ({
     linkedSource,
     createAndAddLinkedSource
   ]);
+  
+  useEffect(() => resetEditDictionary, []);
 
   if (!loading && previouslyLoading && editedDictionary) {
     return <Redirect to={nextUrl || editedDictionary.url} />;
@@ -171,6 +176,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapActionsToProps = {
   editSourceAndDictionary: editSourceAndDictionaryAction,
+  resetEditDictionary: resetEditDictionaryAction,
   retrieveDictionary: makeRetrieveDictionaryAction(false),
   createAndAddLinkedSource: createAndAddLinkedSourceAction
 };

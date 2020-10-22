@@ -4,7 +4,8 @@ import {
   FAILURE,
   indexedAction,
   progressAction,
-  startAction
+  startAction,
+  resetAction
 } from "../../../redux";
 import api from "../api";
 import { APIDictionary, Dictionary, NewAPIDictionary, ImportMetaData } from "../types";
@@ -137,6 +138,12 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
 };
 export function makeRetrieveDictionaryAction(useCache = false) {
   return createActionThunk(RETRIEVE_DICTIONARY_ACTION, api.retrieve, useCache);
+}
+export const resetCreateDictionaryAction = () => {
+  return (dispatch: Function) => dispatch(resetAction(CREATE_DICTIONARY_ACTION));
+}
+export const resetEditDictionaryAction = () => {
+  return (dispatch: Function) => dispatch(resetAction(EDIT_DICTIONARY_ACTION));
 }
 export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
   return async (dispatch: Function) => {
