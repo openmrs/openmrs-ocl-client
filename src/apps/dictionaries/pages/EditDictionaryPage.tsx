@@ -100,6 +100,7 @@ const EditDictionaryPage: React.FC<Props> = ({
     createAndAddLinkedSource
   ]);
   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetEditDictionary, []);
 
   if (!loading && previouslyLoading && editedDictionary) {
