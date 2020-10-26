@@ -17,6 +17,7 @@ import {
 import { APIOrg, APIProfile } from "../../authentication";
 import { usePrevious, CONTEXT } from "../../../utils";
 import { createSourceAndDictionaryAction } from "../redux/actions";
+import { resetCreateSourceAction, resetEditSourceAction } from "../../sources/redux";
 
 interface Props {
   errors?: {};
