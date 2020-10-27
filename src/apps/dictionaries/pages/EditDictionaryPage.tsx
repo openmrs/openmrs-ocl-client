@@ -12,6 +12,7 @@ import {
   editSourceAndDictionaryAction,
   editSourceAndDictionaryErrorsSelector,
   makeRetrieveDictionaryAction,
+  resetEditDictionaryAction,
   retrieveDictionaryLoadingSelector
 } from "../redux";
 import {APIDictionary, apiDictionaryToDictionary, Dictionary} from "../types";
@@ -21,6 +22,7 @@ import {CONTEXT, debug, usePrevious, useQueryParams} from "../../../utils"
 import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {EditMenu} from "../../containers/components/EditMenu";
+import { resetCreateSourceAction, resetEditSourceAction } from "../../sources/redux";
 
 interface StateProps {
   errors?: {};
@@ -43,6 +45,7 @@ interface ActionProps {
   createAndAddLinkedSource: (
     ...args: Parameters<typeof createAndAddLinkedSourceAction>
   ) => void;
+  resetEditDictionary: () => void;
 }
 
 type Props = StateProps & ActionProps;
@@ -63,6 +66,7 @@ const EditDictionaryPage: React.FC<Props> = ({
   dictionaryLoading,
   dictionary,
   editedDictionary,
+  resetEditDictionary,
   retrieveDictionary
 }: Props) => {
   const { pathname: url } = useLocation();
@@ -96,6 +100,9 @@ const EditDictionaryPage: React.FC<Props> = ({
     linkedSource,
     createAndAddLinkedSource
   ]);
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => resetEditDictionary, []);
 
   if (!loading && previouslyLoading && editedDictionary) {
     return <Redirect to={nextUrl || editedDictionary.url} />;
@@ -171,6 +178,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapActionsToProps = {
   editSourceAndDictionary: editSourceAndDictionaryAction,
+  resetEditDictionary: resetEditDictionaryAction,
   retrieveDictionary: makeRetrieveDictionaryAction(false),
   createAndAddLinkedSource: createAndAddLinkedSourceAction
 };
