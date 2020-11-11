@@ -57,6 +57,7 @@ const SourceSchema = Yup.object().shape<Source>({
     public_access: Yup.string().required(
         "Select who will have access to this dictionary"
     ),
+    owner_url: Yup.string().required("Select this dictionary's owner"),
     source_type:Yup.string(),
     default_locale: Yup.string().required("Select a preferred language"),
     supported_locales: Yup.array(Yup.string())
