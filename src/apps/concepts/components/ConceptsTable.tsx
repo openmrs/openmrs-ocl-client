@@ -122,7 +122,19 @@ export const ConceptsTable: React.FC<Props> = ({
   canModifyConcept,
 }) => {
   const classes = useStyles();
+  // const storages = localStorage.getItem("lastselected")
+  // const lastselected = storages && JSON.parse(storages)
+  // console.log(lastselected.length)
   const [selected, setSelected] = React.useState<string[]>([]);
+  React.useEffect(()=> {
+    const storages = localStorage.getItem("lastselected")
+    const lastselected = storages && JSON.parse(storages)
+    console.log(lastselected, "lastselected")
+    if("lastselected"){
+      setSelected(lastselected);
+    }
+  },[selected]);
+  console.log(selected,"selected")
   const [menu, setMenu] = React.useState<{
     index: number;
     anchor: null | HTMLElement;
@@ -189,6 +201,7 @@ export const ConceptsTable: React.FC<Props> = ({
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    localStorage.setItem("lastselected",JSON.stringify(selected));
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
