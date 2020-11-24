@@ -23,7 +23,8 @@ import { Link, useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
-      paddingLeft: theme.spacing(7) + 1
+      paddingLeft: theme.spacing(7) + 1,
+        position:"relative"
     },
     content: {
       marginTop: "6vh",
@@ -70,7 +71,7 @@ const Header: React.FC<Props> = ({
 
   return (
     <div data-testid='header'>
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar className={classes.appBar}>
         <Toolbar>
           {backUrl ? (
             <Tooltip title={backText}>
