@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar,
     },
     content: {
-      padding: theme.spacing(3),
+      // padding: theme.spacing(3),
       // position: 'absolute',
       width: "100vw",
       // marginLeft: theme.spacing(7) + 1,

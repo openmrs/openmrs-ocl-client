@@ -70,7 +70,7 @@ const Header: React.FC<Props> = ({
 
   return (
     <div data-testid='header'>
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="relative" className={classes.appBar}>
         <Toolbar>
           {backUrl ? (
             <Tooltip title={backText}>
