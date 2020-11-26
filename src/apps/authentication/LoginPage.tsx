@@ -28,7 +28,7 @@ const LoginPage: React.FC<Props> = ({
   isLoggedIn,
   login,
   loading,
-  errors = {}
+  errors 
 }: Props) => {
   const classes = useStyles();
 
@@ -66,7 +66,7 @@ const LoginPage: React.FC<Props> = ({
           <Login
             onSubmit={login}
             loading={loading}
-            status={errors ? errors.detail : ""}
+            status={errors}
           />
         </Grid>
       </Grid>
