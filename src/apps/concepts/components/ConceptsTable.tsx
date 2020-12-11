@@ -191,16 +191,6 @@ export const ConceptsTable: React.FC<Props> = ({
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-
-  useEffect(() => {
-    // reset selected concepts when new ones are fetched
-    resetSelected();
-    // usually doing the following is a mistake and will bite us later
-    // we do it here because otherwise we'll have to enumerate all the possible things that could change
-    // it really is saner to just condition it on the concept list
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [concepts.toString()]);
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
