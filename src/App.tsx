@@ -26,6 +26,7 @@ import {
   ViewOrgDictionariesPage,
   ViewPersonalDictionariesPage,
 } from "./apps/dictionaries/pages";
+import { ViewOrganisationsPage, CreateOrganisationPage } from "./apps/organisations/pages";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
@@ -39,6 +40,14 @@ const AuthenticatedRoutes: React.FC = () => {
     <Switch>
       <Route exact path='/user/'>
         <ViewUserProfilePage />
+      </Route>
+      <Route exact path='/user/organisations/'>
+        <ViewOrganisationsPage />
+      </Route>
+      <Route exact path='/organisation/new/'>
+        <Header title='My Organisations > New Organisation'>
+          <CreateOrganisationPage />
+        </Header>
       </Route>
       <Route exact path='/actions/' component={InProgressPage} />
       <Route exact path='/collections/new/'>
