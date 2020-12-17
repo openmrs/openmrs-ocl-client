@@ -3,9 +3,8 @@ import { Organisation } from './types';
 import { AxiosResponse } from "axios";
 
 const api = {
-  getProfile: () => authenticatedInstance.get("/user/"),
   getUserOrgs: (username:string) => authenticatedInstance.get(`/users/${username}/orgs/?sortDesc=lastUpdated`),
-  retrieve: (username:string, q: string = "") => authenticatedInstance.get(`/users/${username}/orgs/`, {
+  retrieve: (username:string, q: string = "") => authenticatedInstance.get(`/users/${username}/orgs/?limit=0`, {
     params: {
       q
     }

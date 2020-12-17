@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect} from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { OrganisationForm } from "../components";
@@ -25,15 +25,16 @@ interface Props {
 const CreateOrganisationPage: React.FC<Props> = ({
   errors,
   loading,
-  newOrganisation,
   createOrganisation,
   resetCreateOrganisation
 }: Props) => {
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => resetCreateOrganisation(), []);
   const previouslyLoading = usePrevious(loading);
   
   if (!loading && previouslyLoading) {
-    return <Redirect to='/user/organisations/' />;
+    return <Redirect to='/user/orgs/' />;
   }
 
   return (

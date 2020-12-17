@@ -1,2 +1,2 @@
-export { default as ViewOrganisations } from "./ViewOrganisations";
-export { default as OrganisationForm } from "./OrganisationForm";
+export { default as ViewOrganisations } from "./ViewOrgs";
+export { default as OrganisationForm } from "./OrgForm";

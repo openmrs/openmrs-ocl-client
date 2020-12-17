@@ -41,11 +41,11 @@ const AuthenticatedRoutes: React.FC = () => {
       <Route exact path='/user/'>
         <ViewUserProfilePage />
       </Route>
-      <Route exact path='/user/organisations/'>
+      <Route exact path='/user/orgs/'>
         <ViewOrganisationsPage />
       </Route>
-      <Route exact path='/organisation/new/'>
-        <Header title='My Organisations > New Organisation'>
+      <Route exact path='/orgs/new/'>
+        <Header title='Create Organisation'>
           <CreateOrganisationPage />
         </Header>
       </Route>

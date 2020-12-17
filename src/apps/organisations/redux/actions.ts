@@ -8,7 +8,6 @@ import {
  } from "../../../redux";
 import {
   GET_USER_ORGS_ACTION,
-  GET_PROFILE_ACTION,
   CREATE_ORGANISATION_ACTION
 } from "./actionTypes";
 import { Organisation } from '../types';
@@ -18,7 +17,6 @@ const createOrgsAction = createActionThunk(
   api.create
 );
 
-const getProfileAction = createActionThunk(GET_PROFILE_ACTION, api.getProfile);
 
 const createOrganisationAction = (organisationData: Organisation) => {
   return async (dispatch: Function) => {
@@ -53,6 +51,5 @@ const retrieveOrganisationsAction = createActionThunk(
 export { 
   createOrganisationAction,
   resetCreateOrganisationAction,
-  retrieveOrganisationsAction,
-  getProfileAction
+  retrieveOrganisationsAction
  };

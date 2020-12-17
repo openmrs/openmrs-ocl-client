@@ -32,4 +32,4 @@ const getUserDetailsAction = () => {
   };
 };
 
-export { loginAction, getUserDetailsAction };
+export { loginAction, getUserDetailsAction, getProfileAction };

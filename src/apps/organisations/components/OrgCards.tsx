@@ -1,10 +1,11 @@
 import React from "react";
 import { Grid, Typography, Box } from "@material-ui/core";
-import OrganisationCard from "./organisationCard";
+import OrganisationCard from "./OrgCard";
 
 export interface Card {
   name: string;
   url: string;
+  id: string;
 }
 
 interface Props {
@@ -23,19 +24,13 @@ const OrganisationCards: React.FC<Props> = ({ cards, title }) => {
               ) : (
                   ""
               )}
-              {cards.map(
-                  (
-                      {
-                          name,
-                          url,
-                      },
-                      index
-                  ) => (
+              {cards.map(({name, url, id},index) => (
                       <OrganisationCard
                           key={index}
                           name={name}
                           url={url}
                           index={index}
+                          id={id}
                       />
                   )
               )}

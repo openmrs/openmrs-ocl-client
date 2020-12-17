@@ -158,7 +158,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
             component={Link}
             exact
             activeClassName={classes.selected}
-            to='/user/organisations/'
+            to='/user/orgs/'
             key='Organisations'
           >
             <Tooltip title='My Organisations'>

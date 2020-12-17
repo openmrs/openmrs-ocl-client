@@ -1,2 +1,2 @@
-export { default as ViewOrganisationsPage } from "./ViewOrganisationsPage";
-export { default as CreateOrganisationPage } from "./CreateOrganisationPage";
+export { default as ViewOrganisationsPage } from "./ViewOrgsPage";
+export { default as CreateOrganisationPage } from "./CreateOrgPage";

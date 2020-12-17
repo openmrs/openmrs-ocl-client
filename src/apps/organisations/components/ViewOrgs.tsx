@@ -3,7 +3,7 @@ import { APIOrganisation } from "../types";
 import {
   ContainerSearch,
 } from "../../containers/components";
-import  OrganisationCards  from './organisationCards';
+import  OrganisationCards  from './OrgCards';
 
 interface Props {
   organisations: APIOrganisation[];

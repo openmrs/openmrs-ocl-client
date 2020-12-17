@@ -5,7 +5,8 @@ import { sortBy } from 'lodash';
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 
-import { retrieveOrganisationsAction, getProfileAction } from "../redux";
+import { retrieveOrganisationsAction } from "../redux";
+import { getProfileAction } from "../../authentication"
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Header } from "../../../components";
@@ -39,11 +40,9 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
   };
 
 
-
   useEffect(() => {
-    
     retrieveOrgs(username,initialQ);
-  },[retrieveOrgs,initialQ,username]);
+  },[retrieveOrgs, initialQ, username]);
 
   
 
@@ -55,8 +54,8 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
         organisations={sortedOrganisation} 
         title={title}
         onSearch ={(q: string) => goTo(gimmeAUrl({ q }))}
-        initialQ ='' />
-      <Link to={`/organisation/new/`}>
+        initialQ={initialQ} />
+      <Link to={`/orgs/new/`}>
           <Tooltip title='Create new organisation'>
             <Fab color='primary' className='fab'>
               <AddIcon />

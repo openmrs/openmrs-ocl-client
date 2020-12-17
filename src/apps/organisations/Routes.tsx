@@ -7,7 +7,6 @@ import {
 
 
 const Routes: React.FC = () => {
-  // @ts-ignore
   let { path } = useRouteMatch();
 
   return (

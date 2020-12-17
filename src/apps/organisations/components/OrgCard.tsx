@@ -16,6 +16,7 @@ interface Props {
   name: string;
   url: string;
   index: number;
+  id: string
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const OrganisationCard: React.FC<Props> = ({
   name,
   url,
+  id,
   index
 }) => {
   const classes = useStyles();
@@ -40,7 +42,7 @@ const OrganisationCard: React.FC<Props> = ({
             {name}
           </Typography>
           <Typography noWrap variant='body1' component='p' data-testid={`url-${index}`}>
-            {url}
+            {id}
           </Typography>
         </CardContent>
         <CardActions>
@@ -50,6 +52,7 @@ const OrganisationCard: React.FC<Props> = ({
             size='small'
             variant='text'
             color='primary'
+            disabled
             data-testid={`viewButton-${index}`}
           >
             View

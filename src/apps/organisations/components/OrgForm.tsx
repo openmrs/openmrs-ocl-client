@@ -8,7 +8,7 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
-import { Organisation, Extras } from '../types';
+import { Organisation } from '../types';
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
@@ -21,17 +21,13 @@ interface Props {
   errors?: {};
   context?: string;
 }
-const ExtrasSchema = Yup.object().shape<Extras>({
-  source: Yup.string().notRequired()
-});
 
 const OrganisationSchema = Yup.object().shape<Organisation>({
   id: Yup.string().required("Organisation id is required"),
   name: Yup.string().required("Organisation name is required"),
   location: Yup.string().notRequired(),
   company: Yup.string().notRequired(),
-  website: Yup.string().notRequired(),
-  extras: ExtrasSchema.nullable(),
+  website: Yup.string().url().notRequired(),
   public_access: Yup.string().notRequired()
 });
 
@@ -41,8 +37,7 @@ const initialValues: Organisation = {
   company: "",
   website: "",
   location: "",
-  extras: null,
-  public_access: "",
+  public_access: "View",
 };
 
 const useStyles = makeStyles({
@@ -132,17 +127,6 @@ const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
               margin="normal"
               component={TextField}
             />
-            <Field
-              fullWidth
-              multiline
-              rowsMax={4}
-              id="extras"
-              name="extras"
-              label="Extras"
-              margin="normal"
-              component={TextField}
-            />
-            
             <FormControl
               fullWidth
               margin="normal"
@@ -151,6 +135,7 @@ const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
               <Field name="public_access" id="public_access" component={Select}>
                 <MenuItem value="View">View</MenuItem>
                 <MenuItem value="None">Edit</MenuItem>
+                <MenuItem value="None">None</MenuItem>
               </Field>
               <Typography color="error" variant="caption" component="div">
                 <ErrorMessage name="public_access" component="span" />
@@ -169,7 +154,7 @@ const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
                 >
                   Submit
                 </Button>
-              <Link to={`/user/organisations/`}>
+              <Link to={`/user/orgs/`}>
                 <Button 
                   variant="outlined"
                   color="secondary"
