@@ -6,7 +6,6 @@ import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 
 import { retrieveOrganisationsAction } from "../redux";
-import { getProfileAction } from "../../authentication"
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Header } from "../../../components";
@@ -39,6 +38,7 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
     return `${url}?${qs.stringify(newParams)}`;
   };
 
+  console.log(username);
 
   useEffect(() => {
     retrieveOrgs(username,initialQ);
@@ -72,8 +72,7 @@ export const mapStateToProps = (state: AppState) => ({
 });
 
 export const mapDispatchToProps = {
-    retrieveOrgs: retrieveOrganisationsAction,
-    getUser: getProfileAction
+    retrieveOrgs: retrieveOrganisationsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewOrganisationsPage);
