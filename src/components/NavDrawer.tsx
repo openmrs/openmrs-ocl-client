@@ -14,6 +14,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import {
   ExitToApp,
   FolderOpenOutlined,
+  People,
   AccountTreeOutlined,
   Notifications as NotificationsIcon,
   PersonOutline as ProfileIcon,
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: "auto",
     },
     selected: {
-      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main,
     },
   })
 );
@@ -151,6 +152,22 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         </div>
         <Divider component='hr' />
         <List component='div'>
+        <ListItem
+            button
+            dense={false}
+            component={Link}
+            exact
+            activeClassName={classes.selected}
+            to='/user/orgs/'
+            key='Organisations'
+          >
+            <Tooltip title='My Organisations'>
+              <ListItemIcon className='list-item-icon'>
+                <People />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary='Organisations' />
+          </ListItem>
           <ListItem
             button
             dense={false}

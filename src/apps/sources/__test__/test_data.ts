@@ -3,6 +3,7 @@ import { APISource, SourceState } from "../types";
 import { AuthState } from "../../authentication";
 import { DictionaryState } from "../../dictionaries";
 import { ConceptsState } from "../../concepts";
+import { OrganisationState } from "../../organisations";
 
 export const testSource: APISource = {
   id: "MSF-SOURCE",
@@ -49,6 +50,10 @@ export const publicSources: SourceState = {
   versions: []
 };
 
+export const organisationState: OrganisationState = {
+  organisations: []
+}; 
+
 const authState: AuthState = { isLoggedIn: true };
 
 const statusState: StatusState = { key: [] };
@@ -72,6 +77,7 @@ export const currentState = (sources: SourceState) => {
     dictionaries: dictionariesState,
     concepts: conceptState,
     sources: sources,
+    organisations: organisationState
   };
 
   return currentState;

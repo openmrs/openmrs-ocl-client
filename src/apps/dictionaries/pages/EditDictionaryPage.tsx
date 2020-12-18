@@ -22,7 +22,6 @@ import {CONTEXT, debug, usePrevious, useQueryParams} from "../../../utils"
 import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {EditMenu} from "../../containers/components/EditMenu";
-import { resetCreateSourceAction, resetEditSourceAction } from "../../sources/redux";
 
 interface StateProps {
   errors?: {};
