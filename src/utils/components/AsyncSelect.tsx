@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const LoadingMessage = (props: NoticeProps<Option>) => {
+const LoadingMessage = (props: NoticeProps<Option, boolean>) => {
   return (
     <Typography
       color="textSecondary"
@@ -83,7 +83,7 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
   );
 };
 
-function NoOptionsMessage(props: NoticeProps<Option>) {
+function NoOptionsMessage(props: NoticeProps<Option, boolean>) {
   return (
     <Typography
       color="textSecondary"
@@ -102,7 +102,7 @@ function inputComponent({ inputRef, ...props }: InputComponentProps) {
   return <div ref={inputRef} {...props} />;
 }
 
-function Control(props: ControlProps<Option>) {
+function Control(props: ControlProps<Option, boolean>) {
   const {
     children,
     innerProps,
@@ -127,7 +127,7 @@ function Control(props: ControlProps<Option>) {
   );
 }
 
-function OptionComponent(props: OptionProps<Option>) {
+function OptionComponent(props: OptionProps<Option, boolean>) {
   return (
       <Tooltip title={props.label} enterDelay={700}>
         <MenuItem
@@ -146,8 +146,8 @@ function OptionComponent(props: OptionProps<Option>) {
   );
 }
 
-type MuiPlaceholderProps = Omit<PlaceholderProps<Option>, "innerProps"> &
-  Partial<Pick<PlaceholderProps<Option>, "innerProps">>;
+type MuiPlaceholderProps = Omit<PlaceholderProps<Option, boolean>, "innerProps"> &
+  Partial<Pick<PlaceholderProps<Option, boolean>, "innerProps">>;
 
 function Placeholder(props: MuiPlaceholderProps) {
   const { selectProps, innerProps = {}, children } = props;
@@ -173,7 +173,7 @@ function SingleValue(props: SingleValueProps<Option>) {
   );
 }
 
-function ValueContainer(props: ValueContainerProps<Option>) {
+function ValueContainer(props: ValueContainerProps<Option, boolean>) {
   return (
     <div className={props.selectProps.classes.valueContainer}>
       {props.children}
@@ -196,7 +196,7 @@ const IndicatorSeparator = () => {
   return null;
 };
 
-const LoadingIndicator = (props: LoadingIconProps<Option>) => {
+const LoadingIndicator = (props: LoadingIconProps<Option, boolean>) => {
   return (
     <CircularProgress
       className={props.selectProps.classes.icon}
@@ -206,7 +206,7 @@ const LoadingIndicator = (props: LoadingIconProps<Option>) => {
   );
 };
 
-const ClearIndicator = (props: IndicatorProps<Option>) => {
+const ClearIndicator = (props: IndicatorProps<Option, boolean>) => {
   return (
     <ReactSelectComponents.ClearIndicator
       className={props.selectProps.classes.icon}
@@ -217,7 +217,7 @@ const ClearIndicator = (props: IndicatorProps<Option>) => {
   );
 };
 
-function Menu(props: MenuProps<Option>) {
+function Menu(props: MenuProps<Option, boolean>) {
   return (
     <Paper
       square
@@ -270,11 +270,11 @@ const AsyncSelect: React.FC<Props> = props => {
   };
 
   return (
-    // @ts-ignore
     <AsyncPaginate
       isClearable={true}
       classes={classes}
       styles={selectStyles}
+      // @ts-ignore
       components={components}
       {...props}
     />

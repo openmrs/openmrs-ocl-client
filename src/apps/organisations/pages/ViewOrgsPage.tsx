@@ -38,13 +38,9 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
     return `${url}?${qs.stringify(newParams)}`;
   };
 
-  console.log(username);
-
   useEffect(() => {
     retrieveOrgs(username,initialQ);
   },[retrieveOrgs, initialQ, username]);
-
-  
 
   const title = "Organisations"
   const sortedOrganisation = sortBy(organisations, 'asc', 'name');
