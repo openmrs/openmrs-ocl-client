@@ -20,6 +20,18 @@ RUN npm install
 # Set environment to production
 ENV NODE_ENV production
 
+# Set the environment variables actually used in the image
+ENV OCL_API_HOST https://api.qa.openconceptlab.org/
+ENV TRADITIONAL_OCL_HOST https://app.qa.openconceptlab.org/
+ENV OCL_SIGNUP_URL https://app.qa.openconceptlab.org/#/accounts/signup
+ENV BUILD local
+
+# Export them as React environment variables
+ENV REACT_APP_OCL_API_HOST $OCL_API_HOST
+ENV REACT_APP_TRADITIONAL_OCL_HOST $TRADITIONAL_OCL_HOST
+ENV REACT_APP_OCL_SIGNUP_URL $OCL_SIGNUP_URL
+ENV REACT_APP_BUILD $BUILD
+
 # Create an optimized build version of the project
 RUN npm run build
 

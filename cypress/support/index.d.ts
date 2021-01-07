@@ -2,8 +2,9 @@
 
 declare namespace Cypress {
   interface Chainable<Subject> {
-    runAndAwait(callable: Function, method?: String, addArtificialWait?: boolean): Chainable<any> 
-    selectByLabelText(labelText: string, item: string): Chainable<any>
-    selectBySelector(selector: string, item: string): Chainable<any>
+    login(username?: string, password?: string): Chainable<Subject>
+    logout(): Chainable<Subject>
+    createDictionary(username?: string, dictionary?: string): Chainable<string>
+    deleteDictionary(dictionary: string, username?: string): Chainable<Subject>
   }
 }

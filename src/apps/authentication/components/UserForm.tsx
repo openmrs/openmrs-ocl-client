@@ -46,7 +46,7 @@ const UserForm: React.FC<Props> = ({ loading, savedValues }) => {
         onSubmit={(values: APIProfile) => {}}
       >
         {({ values }) => (
-          <Form translate="">
+          <Form>
             <Field
               fullWidth
               autoComplete="off"

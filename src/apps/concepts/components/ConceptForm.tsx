@@ -324,7 +324,7 @@ const ConceptForm: React.FC<Props> = ({
         errors,
         handleChange
       }) => (
-        <Form id="conceptForm" translate="">
+        <Form id="conceptForm">
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>

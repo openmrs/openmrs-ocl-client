@@ -61,7 +61,7 @@ const AddMemberForm: React.FC<Props> = ({
       >
         {({ isSubmitting }) => (
           <>
-            <Form translate="">
+            <Form>
               <DialogContent>
                 <Field
                   fullWidth

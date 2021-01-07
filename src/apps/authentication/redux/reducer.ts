@@ -20,7 +20,7 @@ const reducer = (state = initialState, action: AnyAction) => {
     case LOGIN_ACTION:
       return { ...state, isLoggedIn: true, token: action.payload.token };
     case LOGOUT_ACTION:
-      return { isLoggedIn: false, token: undefined };
+      return { ...initialState };
     case GET_PROFILE_ACTION:
       return { ...state, profile: action.payload };
     case GET_USER_ORGS_ACTION:

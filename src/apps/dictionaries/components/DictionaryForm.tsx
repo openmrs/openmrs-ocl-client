@@ -172,7 +172,7 @@ const DictionaryForm: React.FC<Props> = ({
         enableReinitialize={true}
       >
         {({ isSubmitting, status, values }) => (
-          <Form translate="">
+          <Form>
             <Field
               fullWidth
               autoComplete="off"

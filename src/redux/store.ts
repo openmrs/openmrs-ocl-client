@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import reduxThunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import loadingAndErroredReducer from "./reducer";
@@ -72,3 +72,15 @@ store.subscribe(() => {
 });
 
 export default store;
+
+
+// required for Cypress tests
+declare global {
+  interface Window {
+    store: Store
+  }
+}
+
+if ('__Cypress__' in window) {
+  window.store = store;
+}
