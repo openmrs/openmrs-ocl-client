@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, Typography, Box } from "@material-ui/core";
+  
 import OrganisationCard from "./OrgCard";
 
 export interface Card {
@@ -13,9 +14,9 @@ interface Props {
   title: string;
 }
 
-const OrganisationCards: React.FC<Props> = ({ cards, title }) => {
+const OrganisationCards: React.FC<Props> = ({ cards, title }) => { 
   return (
-      <Box width="100%" p={4}>
+      <Box width="100%" p={4} mb="2rem">
           <Grid item xs={12} container spacing={2} justify='center' data-testid='cards'>
               {cards.length === 0 ? (
                   <Typography component='span' variant='h6' data-testid='noCards'>
@@ -31,6 +32,7 @@ const OrganisationCards: React.FC<Props> = ({ cards, title }) => {
                           url={url}
                           index={index}
                           id={id}
+                          organisation={cards[index]}
                       />
                   )
               )}
@@ -38,5 +40,6 @@ const OrganisationCards: React.FC<Props> = ({ cards, title }) => {
       </Box>
   );
 };
+
 
 export default OrganisationCards;

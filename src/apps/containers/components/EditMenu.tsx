@@ -1,4 +1,4 @@
-import {Fab, Menu, MenuItem, Tooltip} from "@material-ui/core";
+import {Button, Fab, Menu, MenuItem, Tooltip, makeStyles} from "@material-ui/core";
 import {MoreVert as MenuIcon} from "@material-ui/icons";
 import {Link} from "react-router-dom";
 import React from "react";
@@ -6,10 +6,19 @@ import {useAnchor} from "../../../utils";
 
 interface Props {
     backUrl: string;
+    hasDelete?: boolean;
+    openModal?: () => void;
 }
+const useStyles = makeStyles({
+    deleteButton: {
+        textTransform: 'capitalize',
+        background: 'transparent',
+        color: 'red'
+    },  
+});
 
-export const EditMenu: React.FC<Props> = ({backUrl}: Props) => {
-
+export const EditMenu: React.FC<Props> = ({backUrl, hasDelete, openModal}: Props) => {
+    const classes = useStyles();
     const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
     return (
@@ -30,6 +39,13 @@ export const EditMenu: React.FC<Props> = ({backUrl}: Props) => {
                         Discard changes and view
                     </Link>
                 </MenuItem>
+                {hasDelete && 
+                <MenuItem>
+                    <Button onClick={openModal} className={classes.deleteButton}>
+                        Delete Organisation
+                    </Button>
+                </MenuItem>
+                }
             </Menu>
 
         </>

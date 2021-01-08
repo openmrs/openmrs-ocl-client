@@ -26,7 +26,7 @@ import {
   ViewOrgDictionariesPage,
   ViewPersonalDictionariesPage,
 } from "./apps/dictionaries/pages";
-import { ViewOrganisationsPage, CreateOrganisationPage } from "./apps/organisations/pages";
+import OrgsRoutes, { ViewOrganisationsPage, CreateOrganisationPage } from "./apps/organisations";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
@@ -55,6 +55,10 @@ const AuthenticatedRoutes: React.FC = () => {
           <CreateDictionaryPage />
         </Header>
       </Route>
+      <Route
+        path='/user/orgs'
+        component={OrgsRoutes}
+      />
       <Route exact path='/user/collections/'>
         <ViewPersonalDictionariesPage />
       </Route>
