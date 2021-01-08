@@ -122,8 +122,17 @@ const buildInitialValues = (
 ) => ({
   ...initialValues,
   concept_class: conceptClass,
-  names
-});
+  names.sort((n1: { locale: number; name: number; }, n2: { locale: number; name: number; }) => {
+    if (n1.locale !== n2.locale) {
+      return n1.locale < n2.locale ? -1 : 1;
+    }
+  
+    if (n1.name !== n2.name) {
+      return n1.name < n2.name ? -1 : 1;
+    }
+  
+    return 0;
+  }),
 
 const ExtrasSchema = Yup.object().shape<Extras>({
   hi_absolute: Yup.number().notRequired(),
