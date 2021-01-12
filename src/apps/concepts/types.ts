@@ -129,12 +129,16 @@ const sortConceptName = (n1: ConceptName, n2: ConceptName) => {
     return -1;
   }
 
+  if (n1.name === null) {
+    return n2.name == null ? 0 : 1;
+  }
+
+  if (n2.name == null) {
+    return -1;
+  }
+
   if (n1.locale !== n2.locale) {
     return n1.locale < n2.locale ? -1 : 1;
-  }
-  
-  if (n1.locale_preferred !== n2.locale_preferred) {
-    return n1.locale_preferred ? -1 : 1;
   }
 
   if (n1.name_type !== n2.name_type) {
@@ -144,12 +148,12 @@ const sortConceptName = (n1: ConceptName, n2: ConceptName) => {
       return 1;
     }
   }
-
-  if (n1.name !== n2.name) {
-    return n1.name < n2.name ? -1 : 1;
+  
+  if (n1.locale_preferred !== n2.locale_preferred) {
+    return n1.locale_preferred ? -1 : 1;
   }
 
-  return 0;
+  return n1.name.localeCompare(n2.name);
 }
 
 const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription) => {
@@ -161,6 +165,14 @@ const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription)
     return -1;
   }
 
+  if (d1.description === null) {
+    return d2.description == null ? 0 : 1;
+  }
+
+  if (d2.description == null) {
+    return -1;
+  }
+
   if (d1.locale !== d2.locale) {
     return d1.locale < d2.locale ? -1 : 1;
   }
@@ -169,11 +181,7 @@ const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription)
     return d1.locale_preferred ? -1 : 1;
   }
 
-  if (d1.description !== d2.description) {
-    return d1.description < d2.description ? -1 : 1;
-  }
-
-  return 0;
+  return d1.description.localeCompare(d2.description)
 }
 
 export type SortableField =
