@@ -1,11 +1,13 @@
 export { default } from "./reducer";
 export { 
-  retrieveOrganisationsAction, 
   editOrganisationAction, 
   retrieveOrganisationAction, 
   resetEditOrganisationAction,
   retrieveOrgSourcesAction,
   retrieveOrgCollectionsAction,
-  deleteOrganisationAction
+  deleteOrganisationAction,
+  retrievePersonalOrganisationsAction,
+  retrievePublicOrganisationsAction
 } from "./actions";
 export * from './selectors';
+export * from './constants';

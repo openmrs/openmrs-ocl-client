@@ -3,6 +3,7 @@ import { Action } from "../../../redux";
 import {
   GET_USER_ORGS_ACTION,
   CREATE_ORGANISATION_ACTION,
+  RETRIEVE_ORGS_ACTION,
   EDIT_ORGANISATION_ACTION,
   GET_ORG_ACTION,
   GET_ORG_SOURCES_ACTION,
@@ -21,6 +22,12 @@ export const reducer = createReducer(initialState, {
       organisations: payload,
       meta: responseMeta
   }),
+  [RETRIEVE_ORGS_ACTION]: (
+    state,
+    { actionIndex, payload, responseMeta }: Action
+  ) => {
+    state.organisations[actionIndex] = { items: payload, responseMeta };
+  },
   [CREATE_ORGANISATION_ACTION]: (state, action) => ({
     ...state,
     newOrganisation: action.payload

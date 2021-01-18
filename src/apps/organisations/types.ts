@@ -66,7 +66,7 @@ export interface EditableOrganisationFields {
 }
 export interface OrganisationState {
   organisation?: {};
-  organisations?: APIOrganisation[];
+  organisations: { items: APIOrganisation[]; responseMeta?: {} }[];
   meta?: {};
   newOrganisation?:{},
   editedOrganisation?:{}

@@ -79,11 +79,11 @@ const ViewOrganisationPage: React.FC<Props> =
       backText="Back to organisations"
       justifyChildren='space-around'>
       <ProgressOverlay delayRender loading={loading}>
-        <Grid container xs={12} spacing={5} className={classes.gridContainers}>
+        <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
           <OrganisationMembers />
         </Grid>
-        <Grid container xs={12} spacing={5} className={classes.gridContainers}>
+        <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationSources sources={sources}/>
           <OrganisationDictionaries collections={collections}/>
         </Grid>

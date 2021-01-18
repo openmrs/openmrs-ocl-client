@@ -7,10 +7,9 @@ import {
   Grid,
   makeStyles,
   Theme,
-  Typography,
-  Link
+  Typography
 } from "@material-ui/core";
-import {Link as RouterLink, useLocation} from "react-router-dom";
+import {Link as RouterLink, useLocation, useHistory} from "react-router-dom";
 
 interface Props {
   name: string;
@@ -26,6 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     button: {
       margin: theme.spacing(1),
+    },
+    card: {
+      cursor: 'pointer'
     }
   })
 );
@@ -37,17 +39,20 @@ const OrganisationCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { push: goTo } = useHistory();
 
   return (
-    <Grid item xs={4}>
-      <Link underline='none' component={RouterLink} to={`/user${url}`}>
-      <Card>
+    <Grid item xs={4}> 
+      <Card onClick={() => goTo(url)} className={classes.card}>
         <CardContent>
+          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`org-id-${index}`}>
+              {id}
+          </Typography>
           <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
             {name}
           </Typography>
           <Typography noWrap variant='body1' component='p' data-testid={`url-${index}`}>
-            {id}
+            {url}
           </Typography>
         </CardContent>
           <Button
@@ -61,7 +66,6 @@ const OrganisationCard: React.FC<Props> = ({
             View
           </Button>   
       </Card>
-      </Link>
     </Grid>
   );
 };

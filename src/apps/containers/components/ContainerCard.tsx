@@ -8,10 +8,9 @@ import {
   Grid,
   makeStyles,
   Theme,
-  Typography,
-  Link
+  Typography
 } from "@material-ui/core";
-import {Link as RouterLink, useLocation} from "react-router-dom";
+import {Link, useLocation, useHistory} from "react-router-dom";
 
 interface Props {
   name: string;
@@ -27,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
     containerName: {
       overflowX: "auto",
     },
+    card: {
+      cursor: 'pointer'
+    }
   })
 );
 const ContainerCard: React.FC<Props> = ({
@@ -40,39 +42,38 @@ const ContainerCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { push: goTo } = useHistory();
 
   return (
     <Grid item xs={4}>
-      <Link underline='none' component={RouterLink} to={url}>
-        <Card>
-          <CardContent>
-            <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`shortCode-${index}`}>
-              {short_code}
-            </Typography>
-            <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
-              {name}
-            </Typography>
-            <Typography noWrap variant='body2' color='textSecondary' data-testid={`owner-${index}`}>
-              {owner_type}/{owner}
-            </Typography>
-            <Typography noWrap variant='body1' component='p' data-testid={`description-${index}`}>
-              {description}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              to={{pathname: url, state: { prevPath: location.pathname }}}
-              component={RouterLink}
-              size='small'
-              variant='text'
-              color='primary'
-              data-testid={`viewButton-${index}`}
-            >
-              View
-            </Button>
-          </CardActions>
-        </Card>
-      </Link>
+      <Card onClick={() => goTo(url)} className={classes.card}>
+        <CardContent>
+          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`shortCode-${index}`}>
+            {short_code}
+          </Typography>
+          <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
+            {name}
+          </Typography>
+          <Typography noWrap variant='body2' color='textSecondary' data-testid={`owner-${index}`}>
+            {owner_type}/{owner}
+          </Typography>
+          <Typography noWrap variant='body1' component='p' data-testid={`description-${index}`}>
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            to={{pathname: url, state: { prevPath: location.pathname }}}
+            component={Link}
+            size='small'
+            variant='text'
+            color='primary'
+            data-testid={`viewButton-${index}`}
+          >
+            View
+          </Button>
+        </CardActions>
+      </Card>
     </Grid>
   );
 };

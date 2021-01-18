@@ -1,14 +1,15 @@
 import {Fab, Menu, MenuItem, Tooltip} from "@material-ui/core";
-import {MoreVert as MenuIcon} from "@material-ui/icons";
+import {MoreVert as MenuIcon, DeleteSweepOutlined as DeleteIcon,} from "@material-ui/icons";
 import {Link} from "react-router-dom";
 import React from "react";
 import {useAnchor} from "../../../utils";
 
 interface Props {
     backUrl: string;
+    confirmDelete?: () => void;
 }
 
-export const EditMenu: React.FC<Props> = ({backUrl}: Props) => {
+export const MenuButton: React.FC<Props> = ({backUrl, confirmDelete}: Props) => {
     const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
     return (
@@ -28,6 +29,10 @@ export const EditMenu: React.FC<Props> = ({backUrl}: Props) => {
                     <Link replace className="link" to={backUrl}>
                         Discard changes and view
                     </Link>
+                </MenuItem>
+                <MenuItem onClick={confirmDelete}>
+                  <DeleteIcon />
+                  Delete Organisation
                 </MenuItem>
             </Menu>
 

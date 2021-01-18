@@ -1,4 +1,5 @@
 export const GET_USER_ORGS_ACTION = "authentication/getUserOrgs";
+export const RETRIEVE_ORGS_ACTION = "organisations";
 export const GET_PROFILE_ACTION = "authentication/getProfile";
 export const CREATE_ORGANISATION_ACTION = "organisations/create";
 export const DELETE_ORGANISATION_ACTION = "organisations/create";

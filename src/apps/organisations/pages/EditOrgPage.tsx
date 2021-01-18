@@ -16,7 +16,7 @@ import {APIOrganisation, EditableOrganisationFields} from "../types";
 import {CONTEXT, usePrevious} from "../../../utils"
 import {ProgressOverlay, ConfirmationDialog, ToastAlert} from "../../../utils/components";
 import Header from "../../../components/Header";
-import {EditMenu} from "../../containers/components/EditMenu";
+import {MenuButton} from "../components";
 
 interface Props {
   errors?:{};
@@ -50,12 +50,11 @@ const EditOrganisationPage: React.FC<Props> = ({
 
   const [openDialog, setOpenDialog] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const { pathname: url } = useLocation();
+  const { pathname } = useLocation();
   
-  const orgUrl = url.replace("/user", "").replace("edit/", "");
+  const orgUrl = pathname.replace("/user", "").replace("edit/", "");
   
   const previouslyLoading = usePrevious(loading);
-  console.log(deleteError);
 
   useEffect(() => {
      retrieveOrg(orgUrl);
@@ -67,7 +66,7 @@ const EditOrganisationPage: React.FC<Props> = ({
     );
   }
   const { name = '' } = organisation || {};
-
+  
   const confirmationMsg = () => {
     return (
       <div>
@@ -84,7 +83,7 @@ const EditOrganisationPage: React.FC<Props> = ({
   return (
     <Header
       title="Edit Organisation"
-      backUrl="/user/orgs/"
+      backUrl={orgUrl}
       backText="Back to organisations"
     >
       <ToastAlert open={openAlert} setOpen={() => setOpenAlert(!openAlert)} message={deleteError} type="error"/>
@@ -104,7 +103,7 @@ const EditOrganisationPage: React.FC<Props> = ({
             />
           </Paper>
         </Grid>
-        <EditMenu backUrl="/user/orgs/" hasDelete={true} openModal={() => setOpenDialog(true)}/>
+        <MenuButton backUrl={orgUrl} confirmDelete={() => setOpenDialog(true)}/>
         <ConfirmationDialog
           open={openDialog}
           setOpen={() => setOpenDialog(true)}

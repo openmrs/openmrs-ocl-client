@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {connect} from "react-redux";
-import { sortBy } from 'lodash';
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 
-import { retrieveOrganisationsAction, retrieveOrgsLoadingSelector } from "../redux";
+import { retrievePublicOrganisationsAction } from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Header } from "../../../components";
 import { APIOrganisation } from "../types";
-import {AppState} from "../../../redux";
+
 import { ViewOrganisations } from "../components";
 import { useQueryParams } from "../../../utils";
 import {ProgressOverlay} from "../../../utils/components";
+import { ContainerOwnerTabs } from "../../containers/components";
+import { TAB_LIST } from "../constants";
 
 
 interface Props {
@@ -21,12 +21,12 @@ interface Props {
   username?: string;
   meta?: { num_found?: number };
   loading: boolean;
-  retrieveOrgs: (
-    ...args: Parameters<typeof retrieveOrganisationsAction>
+  retrieveOrganisations: (
+    ...args: Parameters<typeof retrievePublicOrganisationsAction>
   ) => void;
 }
 
-export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], retrieveOrgs, username = '', loading, meta = {} }:Props) => {
+const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], retrieveOrganisations, username = '', loading, meta = {} }:Props) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
 
@@ -44,15 +44,15 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
   };
 
   useEffect(() => {
-      retrieveOrgs(username,initialQ,PER_PAGE, page);
-  },[retrieveOrgs, initialQ, username, page]);
+      retrieveOrganisations(url, initialQ, PER_PAGE, page);
+  },[retrieveOrganisations, url, initialQ, page]);
 
-  const sortedOrganisation = sortBy(organisations, 'asc', 'name');
   return (
     <Header title="My Organisations">
+      <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewOrganisations 
-          organisations={sortedOrganisation} 
+          organisations={organisations} 
           title="Organisations"
           onSearch ={(q: string) => goTo(gimmeAUrl({ q }))}
           initialQ={initialQ}
@@ -72,15 +72,4 @@ export const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], ret
   );
 };
 
-export const mapStateToProps = (state: AppState) => ({
-  organisations: state.organisations.organisations,
-  meta: state.organisations.meta,
-  username: state.auth.profile?.username,
-  loading: retrieveOrgsLoadingSelector(state)
-});
-
-export const mapDispatchToProps = {
-    retrieveOrgs: retrieveOrganisationsAction
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ViewOrganisationsPage);
+export default ViewOrganisationsPage;

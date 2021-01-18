@@ -16,7 +16,7 @@ const OrganisationSources: React.FC<Props> = ({ sources }) => {
           <List>
             <ul>
               {sources?.length ? sources.map(s =>
-            <li>{s.name}</li>):
+            <li key={s.short_code}>{s.name}</li>):
             <p>No sources found!</p>}
             </ul>
           </List>

@@ -33,7 +33,6 @@ const CreateOrganisationPage: React.FC<Props> = ({
   username = ''
 }: Props) => {
   
-  const q = '';
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateOrganisation(), []);
   const previouslyLoading = usePrevious(loading);
@@ -48,7 +47,7 @@ const CreateOrganisationPage: React.FC<Props> = ({
         <OrganisationForm
           errors={errors}
           loading={loading}
-          onSubmit={(values: Organisation) => createOrganisation(values, username, q)}
+          onSubmit={(values: Organisation) => createOrganisation(values)}
         />
       </Paper>
     </Grid>

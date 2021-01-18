@@ -4,17 +4,19 @@ import {
   startAction, 
   completeAction,
   progressAction,
-  resetAction
+  resetAction,
+  indexedAction
  } from "../../../redux";
 import {
-  GET_USER_ORGS_ACTION,
   CREATE_ORGANISATION_ACTION,
   EDIT_ORGANISATION_ACTION,
   GET_ORG_ACTION,
   GET_ORG_COLLECTIONS_ACTION,
   GET_ORG_SOURCES_ACTION,
-  DELETE_ORGANISATION_ACTION
+  DELETE_ORGANISATION_ACTION,
+  RETRIEVE_ORGS_ACTION
 } from "./actionTypes";
+import {PERSONAL_ORGS_ACTION_INDEX} from "./constants";
 import { Organisation, EditableOrganisationFields } from '../types';
 
 const createOrgsAction = createActionThunk(
@@ -32,12 +34,21 @@ const retrieveOrgAction =  createActionThunk(
   api.organisation.retrieve
 );
 
-const retrieveOrgsAction = createActionThunk(
-  GET_USER_ORGS_ACTION,
-  api.retrieve.all
+
+const retrievePublicOrganisationsAction = createActionThunk(
+  RETRIEVE_ORGS_ACTION,
+  api.organisations.retrieve.public
 );
 
-const createOrganisationAction = (organisationData: Organisation, username: string, q: any) => {
+const retrievePersonalOrganisationsAction = createActionThunk(
+  indexedAction(
+    RETRIEVE_ORGS_ACTION,
+    PERSONAL_ORGS_ACTION_INDEX
+  ),
+  api.organisations.retrieve.private
+);
+
+const createOrganisationAction = (organisationData: Organisation) => {
   return async (dispatch: Function) => {
     dispatch(startAction(CREATE_ORGANISATION_ACTION));
     let organisationResponse;
@@ -53,7 +64,6 @@ const createOrganisationAction = (organisationData: Organisation, username: stri
     }
 
     dispatch(completeAction(CREATE_ORGANISATION_ACTION));
-    await dispatch(retrieveOrgsAction(username, q));
   }
 }
 
@@ -97,14 +107,6 @@ const retrieveOrganisationAction = (orgUrl: string) => {
   };
 };
 
-const retrieveOrganisationsAction = (username: string, q: string, limit: number, page: number) => {
-  return async (dispatch: Function) => {
-    await dispatch(
-      retrieveOrgsAction(username, q, limit, page)
-    );
-  
-  };
-};
 
 const retrieveOrgSourcesAction = createActionThunk(
   GET_ORG_SOURCES_ACTION,
@@ -127,11 +129,13 @@ const deleteOrganisationAction = createActionThunk(
 export { 
   createOrganisationAction,
   resetCreateOrganisationAction,
-  retrieveOrganisationsAction,
   editOrganisationAction,
   retrieveOrganisationAction,
   resetEditOrganisationAction,
   retrieveOrgCollectionsAction,
   retrieveOrgSourcesAction,
-  deleteOrganisationAction
+  deleteOrganisationAction,
+  retrievePublicOrganisationsAction,
+  retrievePersonalOrganisationsAction
  };
+ 
