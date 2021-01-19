@@ -34,7 +34,6 @@ const retrieveOrgAction =  createActionThunk(
   api.organisation.retrieve
 );
 
-
 const retrievePublicOrganisationsAction = createActionThunk(
   RETRIEVE_ORGS_ACTION,
   api.organisations.retrieve.public
@@ -107,7 +106,6 @@ const retrieveOrganisationAction = (orgUrl: string) => {
   };
 };
 
-
 const retrieveOrgSourcesAction = createActionThunk(
   GET_ORG_SOURCES_ACTION,
   api.organisation.retrieveSources
@@ -122,9 +120,6 @@ const deleteOrganisationAction = createActionThunk(
   DELETE_ORGANISATION_ACTION,
   api.organisation.delete
 );
-
-
-
 
 export { 
   createOrganisationAction,

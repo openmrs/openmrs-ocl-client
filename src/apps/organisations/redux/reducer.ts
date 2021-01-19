@@ -18,9 +18,9 @@ const initialState: OrganisationState = {
 }
 export const reducer = createReducer(initialState, {
   [GET_USER_ORGS_ACTION]: (state, { payload, responseMeta }: Action) => ({
-      ...state,
-      organisations: payload,
-      meta: responseMeta
+    ...state,
+    organisations: payload,
+    meta: responseMeta
   }),
   [RETRIEVE_ORGS_ACTION]: (
     state,
@@ -49,7 +49,7 @@ export const reducer = createReducer(initialState, {
     orgCollections: action.payload
   }),
   [LOGOUT_ACTION]: () =>{
-      return initialState;
+    return initialState;
   },
 });
 

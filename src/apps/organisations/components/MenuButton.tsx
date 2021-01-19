@@ -10,32 +10,31 @@ interface Props {
 }
 
 export const MenuButton: React.FC<Props> = ({backUrl, confirmDelete}: Props) => {
-    const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
+  const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
-    return (
-        <>
-            <Tooltip title="Menu">
-                <Fab onClick={handleMenuClick} color="primary" className="fab">
-                    <MenuIcon/>
-                </Fab>
-            </Tooltip>
-            <Menu
-                anchorEl={menuAnchor}
-                keepMounted
-                open={Boolean(menuAnchor)}
-                onClose={handleMenuClose}
-            >
-                <MenuItem>
-                    <Link replace className="link" to={backUrl}>
-                        Discard changes and view
-                    </Link>
-                </MenuItem>
-                <MenuItem onClick={confirmDelete}>
-                  <DeleteIcon />
-                  Delete Organisation
-                </MenuItem>
-            </Menu>
-
-        </>
-    )
+  return (
+    <>
+      <Tooltip title="Menu">
+        <Fab onClick={handleMenuClick} color="primary" className="fab">
+          <MenuIcon/>
+        </Fab>
+      </Tooltip>
+      <Menu
+        anchorEl={menuAnchor}
+        keepMounted
+        open={Boolean(menuAnchor)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem>
+            <Link replace className="link" to={backUrl}>
+                Discard changes and view
+            </Link>
+        </MenuItem>
+        <MenuItem onClick={confirmDelete}>
+          <DeleteIcon />
+          Delete Organisation
+        </MenuItem>
+      </Menu>
+    </>
+  )
 };

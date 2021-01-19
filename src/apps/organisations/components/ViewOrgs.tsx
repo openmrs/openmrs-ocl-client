@@ -5,7 +5,6 @@ import {
   ContainerPagination
 } from "../../containers/components";
 import  OrganisationCards  from './OrgCards';
-
 interface Props {
   organisations: BaseAPIOrganisation[];
   title: string;
@@ -27,8 +26,6 @@ const ViewOrganisations: React.FC<Props> = ({
   numFound,
   onPageChange,
 }) => {
-  
-
   return (
     <>
       <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />

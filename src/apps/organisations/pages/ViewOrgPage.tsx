@@ -50,28 +50,27 @@ const useStyles = makeStyles((theme) =>
 }),
 );
 
-const ViewOrganisationPage: React.FC<Props> = 
-  ({ 
-    retrieveOrg, 
-    retrieveOrgSources, 
-    retrieveOrgCollections, 
-    organisation,
-    sources,
-    collections,
-    loading 
-  }:Props) => {
-
+const ViewOrganisationPage: React.FC<Props> = ({ 
+  retrieveOrg, 
+  retrieveOrgSources, 
+  retrieveOrgCollections, 
+  organisation,
+  sources,
+  collections,
+  loading
+}: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
   
   const orgUrl = url.replace("/user", "").replace("edit/", "");
+  
   useEffect(() => {
     retrieveOrg(orgUrl);
     retrieveOrgSources(orgUrl);
     retrieveOrgCollections(orgUrl);
- }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources]);
+  }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources]);
 
- const { name } = organisation || {};
+  const { name } = organisation || {};
   return (
     <Header 
       title={` Your Organisations > ${name}`}

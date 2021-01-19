@@ -17,7 +17,6 @@ import {CONTEXT, usePrevious} from "../../../utils"
 import {ProgressOverlay, ConfirmationDialog, ToastAlert} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {MenuButton} from "../components";
-
 interface Props {
   errors?:{};
   editError?: {};

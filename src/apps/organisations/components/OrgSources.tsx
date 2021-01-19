@@ -1,10 +1,10 @@
 import React from "react";
 import { Grid, Paper, Typography, List } from "@material-ui/core";
 import {OrgSource} from "../types";
-
 interface Props {
   sources: OrgSource[];
 }
+
 const OrganisationSources: React.FC<Props> = ({ sources }) => {
   return (
     <Grid item xs={12} component='div'>
@@ -15,9 +15,9 @@ const OrganisationSources: React.FC<Props> = ({ sources }) => {
           </Typography>
           <List>
             <ul>
-              {sources?.length ? sources.map(s =>
-            <li key={s.short_code}>{s.name}</li>):
-            <p>No sources found!</p>}
+              {sources?.length ?
+                sources.map(s => <li key={s.short_code}>{s.name}</li>) :
+                <li>No sources found!</li>}
             </ul>
           </List>
         </fieldset>
@@ -25,4 +25,5 @@ const OrganisationSources: React.FC<Props> = ({ sources }) => {
     </Grid>
   );
 };
+
 export default OrganisationSources;

@@ -32,9 +32,9 @@ const CreateOrganisationPage: React.FC<Props> = ({
   resetCreateOrganisation,
   username = ''
 }: Props) => {
-  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateOrganisation(), []);
+  
   const previouslyLoading = usePrevious(loading);
   
   if (!loading && previouslyLoading && newOrganisation) {

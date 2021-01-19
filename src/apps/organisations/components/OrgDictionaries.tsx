@@ -12,13 +12,13 @@ const OrganisationDictionaries: React.FC<Props> = ({ collections }) => {
       <Paper className='fieldsetParent'>
         <fieldset>
           <Typography component='legend' variant='h5' gutterBottom>
-              Collections
+            Dictionaries
           </Typography>
           <List>
             <ul>
-            {collections?.length ? collections.map(c =>
-            <li key={c.id}>{c.name}</li>):
-            <p>No Collections found!</p>}
+            {collections?.length ?
+              collections.map(c => <li key={c.id}>{c.name}</li>) :
+              <li>No dictionaries found!</li>}
             </ul>
           </List>
         </fieldset>
@@ -26,4 +26,5 @@ const OrganisationDictionaries: React.FC<Props> = ({ collections }) => {
     </Grid>
   );
 };
+
 export default OrganisationDictionaries;

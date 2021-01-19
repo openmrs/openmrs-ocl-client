@@ -10,14 +10,13 @@ import {
   Typography
 } from "@material-ui/core";
 import {Link as RouterLink, useLocation, useHistory} from "react-router-dom";
-
 interface Props {
-  name: string;
-  url: string;
-  index: number;
-  id: string;
-  organisation? : {};
+  name: string
+  url: string
+  index: number
+  id: string
 }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerName: {
@@ -35,7 +34,7 @@ const OrganisationCard: React.FC<Props> = ({
   name,
   url,
   id,
-  index,
+  index
 }) => {
   const classes = useStyles();
   const location = useLocation();

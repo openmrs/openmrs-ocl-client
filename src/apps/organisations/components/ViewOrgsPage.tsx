@@ -15,7 +15,6 @@ import {ProgressOverlay} from "../../../utils/components";
 import { ContainerOwnerTabs } from "../../containers/components";
 import { TAB_LIST } from "../constants";
 
-
 interface Props {
   organisations?: APIOrganisation[];
   username?: string;
@@ -32,7 +31,7 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], retrieveOr
 
   const { num_found: numFound = organisations.length } = meta;
   const queryParams: { page?: number; q?: string } = useQueryParams();
-  const {  page = 1, q: initialQ = "" } = queryParams;
+  const { page = 1, q: initialQ = "" } = queryParams;
   const PER_PAGE = 20;
 
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
