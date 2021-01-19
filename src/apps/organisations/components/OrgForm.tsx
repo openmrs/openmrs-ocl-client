@@ -1,5 +1,4 @@
 import React, { useRef } from "react";
-import { Link } from 'react-router-dom';
 import {
   Button,
   FormControl,
@@ -8,11 +7,11 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
+import { CONTEXT } from "../../../utils";
 import { Organisation } from '../types';
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
-
 
 interface Props {
   onSubmit?: Function;
@@ -20,6 +19,7 @@ interface Props {
   status?: string;
   errors?: {};
   context?: string;
+  savedValues?: Organisation;
 }
 
 const OrganisationSchema = Yup.object().shape<Organisation>({
@@ -45,24 +45,25 @@ const useStyles = makeStyles({
     padding: "2vh 2vw"
   },
   submitButton: {
-    display: "flex",
-    justifyContent: "space-between",
     textAlign: "center"
-  },
-  a:{
-    textDecoration: "none"
   }
 });
 
-const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
+const OrganisationForm: React.FC<Props> = ({ 
+  onSubmit,
+  context = CONTEXT.view,
+  savedValues
+ }) => {
   const classes = useStyles();
+  const editing = context === CONTEXT.edit;
+
   const formikRef: any = useRef(null);
 
   return (
     <div id="organisation-form" className={classes.organisationForm}>
       <Formik
         ref={formikRef}
-        initialValues={initialValues}
+        initialValues={savedValues || initialValues}
         validationSchema={OrganisationSchema}
         validateOnChange={false}
         onSubmit={(values: Organisation) => {
@@ -75,6 +76,7 @@ const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
               // required
               fullWidth
               autoComplete="off"
+              disabled={editing || isSubmitting}
               id="id"
               name="id"
               label="Organisation ID"
@@ -154,14 +156,6 @@ const OrganisationForm: React.FC<Props> = ({ onSubmit }) => {
                 >
                   Submit
                 </Button>
-              <Link to={`/user/orgs/`}>
-                <Button 
-                  variant="outlined"
-                  color="secondary"
-                  size="medium">
-                    Cancel
-                </Button>
-              </Link>
               </div>
           </Form>
         )}

@@ -8,9 +8,9 @@ import {
   Grid,
   makeStyles,
   Theme,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useHistory} from "react-router-dom";
 
 interface Props {
   name: string;
@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme: Theme) =>
     containerName: {
       overflowX: "auto",
     },
+    card: {
+      cursor: 'pointer'
+    }
   })
 );
 const ContainerCard: React.FC<Props> = ({
@@ -39,10 +42,11 @@ const ContainerCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { push: goTo } = useHistory();
 
   return (
     <Grid item xs={4}>
-      <Card>
+      <Card onClick={() => goTo(url)} className={classes.card}>
         <CardContent>
           <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`shortCode-${index}`}>
             {short_code}

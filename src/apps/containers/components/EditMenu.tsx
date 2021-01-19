@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const EditMenu: React.FC<Props> = ({backUrl}: Props) => {
-
     const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
 
     return (

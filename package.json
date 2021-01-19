@@ -9,6 +9,7 @@
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@reduxjs/toolkit": "^1.2.3",
     "@testing-library/react": "^10.4.3",
     "@types/lodash": "^4.14.155",

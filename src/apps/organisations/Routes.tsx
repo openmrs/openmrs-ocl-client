@@ -2,9 +2,8 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 import {
-  ViewOrganisationsPage,
+  ViewPersonalOrganisationsPage
 } from "./pages";
-
 
 const Routes: React.FC = () => {
   let { path } = useRouteMatch();
@@ -12,8 +11,9 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path={`${path}/`}>
-        <ViewOrganisationsPage />
+        <ViewPersonalOrganisationsPage />
       </Route>
+   
     </Switch>
   );
 };

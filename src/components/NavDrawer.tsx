@@ -81,9 +81,7 @@ const useStyles = makeStyles((theme: Theme) =>
       ...theme.mixins.toolbar,
     },
     content: {
-      // position: 'absolute',
       width: "100vw",
-      // marginLeft: theme.spacing(7) + 1,
     },
     logoutButton: {
       marginTop: "auto",
@@ -152,22 +150,6 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         </div>
         <Divider component='hr' />
         <List component='div'>
-        <ListItem
-            button
-            dense={false}
-            component={Link}
-            exact
-            activeClassName={classes.selected}
-            to='/user/orgs/'
-            key='Organisations'
-          >
-            <Tooltip title='My Organisations'>
-              <ListItemIcon className='list-item-icon'>
-                <People />
-              </ListItemIcon>
-            </Tooltip>
-            <ListItemText primary='Organisations' />
-          </ListItem>
           <ListItem
             button
             dense={false}
@@ -240,6 +222,22 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               </Tooltip>
               <ListItemText primary='Your Profile' />
             </ListItem>
+            <ListItem
+              button
+              dense={false}
+              component={Link}
+              exact
+              activeClassName={classes.selected}
+              to='/user/orgs/'
+              key='Organisations'
+            >
+            <Tooltip title='My Organisations'>
+              <ListItemIcon className='list-item-icon'>
+                <People />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary='Organisations' />
+          </ListItem>
             <ListItem
               onClick={() => setConfirmLogoutOpen(true)}
               button

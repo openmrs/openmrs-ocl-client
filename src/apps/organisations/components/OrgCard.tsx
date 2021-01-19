@@ -2,27 +2,32 @@ import React from "react";
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
   createStyles,
   Grid,
   makeStyles,
   Theme,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import {Link, useLocation} from "react-router-dom";
-
+import {Link as RouterLink, useLocation, useHistory} from "react-router-dom";
 interface Props {
-  name: string;
-  url: string;
-  index: number;
+  name: string
+  url: string
+  index: number
   id: string
 }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerName: {
       overflowX: "auto",
     },
+    button: {
+      margin: theme.spacing(1),
+    },
+    card: {
+      cursor: 'pointer'
+    }
   })
 );
 const OrganisationCard: React.FC<Props> = ({
@@ -33,31 +38,32 @@ const OrganisationCard: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const location = useLocation();
+  const { push: goTo } = useHistory();
 
   return (
-    <Grid item xs={4}>
-      <Card>
+    <Grid item xs={4}> 
+      <Card onClick={() => goTo(url)} className={classes.card}>
         <CardContent>
+          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`org-id-${index}`}>
+              {id}
+          </Typography>
           <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
             {name}
           </Typography>
           <Typography noWrap variant='body1' component='p' data-testid={`url-${index}`}>
-            {id}
+            {url}
           </Typography>
         </CardContent>
-        <CardActions>
           <Button
             to={{pathname: url, state: { prevPath: location.pathname }}}
-            component={Link}
+            component={RouterLink}
             size='small'
             variant='text'
             color='primary'
-            disabled
             data-testid={`viewButton-${index}`}
           >
             View
-          </Button>
-        </CardActions>
+          </Button>   
       </Card>
     </Grid>
   );

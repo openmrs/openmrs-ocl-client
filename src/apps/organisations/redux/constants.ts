@@ -1,0 +1,2 @@
+export const PUBLIC_ORGS_ACTION_INDEX = 0;
+export const PERSONAL_ORGS_ACTION_INDEX = 1;

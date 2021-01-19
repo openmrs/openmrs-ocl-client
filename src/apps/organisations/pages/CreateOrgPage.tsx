@@ -11,11 +11,13 @@ import {
 import { Organisation } from "../types";
 import { createOrganisationAction, resetCreateOrganisationAction } from '../redux/actions';
 import { usePrevious } from "../../../utils";
+import {AppState} from "../../../redux";
 
 interface Props {
   errors?: {};
   loading?: boolean;
   newOrganisation?: {};
+  username?:string;
   createOrganisation: (
     ...args: Parameters<typeof createOrganisationAction>
   ) => void;
@@ -25,15 +27,17 @@ interface Props {
 const CreateOrganisationPage: React.FC<Props> = ({
   errors,
   loading,
+  newOrganisation,
   createOrganisation,
-  resetCreateOrganisation
+  resetCreateOrganisation,
+  username = ''
 }: Props) => {
-  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateOrganisation(), []);
+  
   const previouslyLoading = usePrevious(loading);
   
-  if (!loading && previouslyLoading) {
+  if (!loading && previouslyLoading && newOrganisation) {
     return <Redirect to='/user/orgs/' />;
   }
 
@@ -50,10 +54,11 @@ const CreateOrganisationPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) =>  ({
+const mapStateToProps = (state: AppState) =>  ({
   newOrganisation: state.organisations.newOrganisation,
   loading: createOrganisationLoadingSelector(state),
   progress: createOrganisationProgressSelector(state),
+  username: state.auth.profile?.username
 });
 const mapActionsToProps = {
   createOrganisation: createOrganisationAction,

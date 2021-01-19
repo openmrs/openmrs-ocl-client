@@ -1,5 +1,10 @@
 export { default } from "./Routes";
-export { ViewOrganisationsPage, CreateOrganisationPage } from './pages';
+export { 
+  ViewPublicOrganisationsPage, 
+  CreateOrganisationPage, 
+  EditOrganisationPage, 
+  ViewPersonalOrganisationsPage,
+  ViewOrganisationPage } from './pages';
 export * from "./types";
 export { 
   default as organisationsReducer
