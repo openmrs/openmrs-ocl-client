@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import {
+    Button,
     FormControl,
     InputLabel,
     makeStyles,
@@ -7,15 +8,23 @@ import {
     Typography
 } from "@material-ui/core";
 import {
+    getCustomErrorMessage,
     getPrettyError,
-    LOCALES,
+    CONTEXT
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
-
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
+import * as Yup from "yup";
+import {
+    showDefaultLocale,
+    showOrganisationHeader,
+    showUserName,
+    showUserOrganisations,
+    supportedLocalesLabel
+} from "../../containers/components/FormUtils";
 
 interface Props {
     onSubmit?: Function;
@@ -31,19 +40,35 @@ interface Props {
 const initialValues: Source = {
     name: "",
     short_code: "",
-    website: "",
     source_type: "",
     description: "",
     public_access: "",
     default_locale: "",
     supported_locales: [],
-    custom_validation_schema: "",
-    external_id: ""
+    owner_url:""
 };
+
+const SourceSchema = Yup.object().shape<Source>({
+    name: Yup.string().required("Source name is required"),
+    short_code: Yup.string()
+        .required("Short code is required")
+        .matches(/^[a-zA-Z0-9\-.]+$/, "Alphanumeric characters, - and . only"),
+    description: Yup.string().min(0),
+    public_access: Yup.string().required(
+        "Select who will have access to this dictionary"
+    ),
+    owner_url: Yup.string().required("Select this dictionary's owner"),
+    source_type:Yup.string(),
+    default_locale: Yup.string().required("Select a preferred language"),
+    supported_locales: Yup.array(Yup.string())
+});
 
 const useStyles = makeStyles({
     sourceForm: {
         padding: "2vh 2vw"
+    },
+    submitButton: {
+        textAlign: "center"
     }
 });
 
@@ -54,10 +79,12 @@ const SourceForm: React.FC<Props> = ({
                                              profile,
                                              usersOrgs,
                                              errors,
+                                             context = CONTEXT.view,
                                              savedValues
                                          }) => {
     const classes = useStyles();
-
+    const viewing = context === CONTEXT.view;
+    const editing = context === CONTEXT.edit;
     const formikRef: any = useRef(null);
 
     useEffect(() => {
@@ -87,18 +114,36 @@ const SourceForm: React.FC<Props> = ({
         });
     }, [errors]);
 
-    const supportedLocalesLabel = (values: any) => {
-        const labels: Array<JSX.Element> = [];
-        {LOCALES.filter(
-            ({ value }) => value !== values.default_locale
-        ).map(({ value, label }) => (
-            labels.push(
-                <MenuItem key={value} value={value} style={{whiteSpace: 'normal'}}>
-                    { label }
-                </MenuItem>
-            )
-        ))}
-        return labels;
+    const apiErrorStatusCode = {
+        403: `You don't have permission to ${context} a source in this Organisation`
+    };
+    let error: string | undefined = getCustomErrorMessage(
+        getPrettyError(errors),
+        apiErrorStatusCode
+    );
+    const anyError = () =>{
+        return error ? (
+            <Typography color="error" variant="caption" component="span">
+                {error}
+            </Typography>
+        ) :  <br />
+    };
+    const isViewing = (isSubmitting: boolean) => {
+        return viewing ? "": (
+            <div className={classes.submitButton}>
+                {anyError()}
+                <br />
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    size="medium"
+                    type="submit"
+                    disabled={isSubmitting}
+                >
+                    Submit
+                </Button>
+            </div>
+        )
     };
 
     return (
@@ -107,19 +152,20 @@ const SourceForm: React.FC<Props> = ({
                 ref={formikRef}
                 initialValues={savedValues || initialValues}
                 validateOnChange={false}
+                validationSchema={SourceSchema}
                 onSubmit={(values: Source) => {
                     if (onSubmit) onSubmit(values);
                 }}
             >
-                {({values }) => (
+                {({isSubmitting,values }) => (
                     <Form>
                         <Field
                             // required
                             fullWidth
                             autoComplete="off"
-                            id="short_code"
-                            name="short_code"
-                            label="Short Code"
+                            id="name"
+                            name="name"
+                            label="Source Name"
                             margin="normal"
                             multiline
                             rowsMax={4}
@@ -129,9 +175,10 @@ const SourceForm: React.FC<Props> = ({
                             // required
                             fullWidth
                             autoComplete="off"
-                            id="name"
-                            name="name"
-                            label="Source Name"
+                            id="short_code"
+                            disabled={editing || isSubmitting}
+                            name="short_code"
+                            label="Short Code"
                             margin="normal"
                             multiline
                             rowsMax={4}
@@ -147,26 +194,43 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                             component={TextField}
                         />
-                        <Field
-                            // required
+                        <FormControl
                             fullWidth
-                            autoComplete="off"
-                            id="website"
-                            name="website"
-                            label="Website"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <Field
                             // required
-                            fullWidth
-                            autoComplete="off"
-                            id="source_type"
-                            name="source_type"
-                            label="Source type"
                             margin="normal"
-                            component={TextField}
-                        />
+                        >
+                            <InputLabel htmlFor="owner_url">Owner</InputLabel>
+                            <Field
+                                value=""
+                                disabled={editing || isSubmitting}
+                                name="owner_url"
+                                id="owner_url"
+                                component={Select}
+                            >
+                                {showUserName(profile)}
+                                {showOrganisationHeader(usersOrgs)}
+                                {showUserOrganisations(usersOrgs)}
+                            </Field>
+                            <Typography color="error" variant="caption" component="div">
+                                <ErrorMessage name="owner_url" component="span"/>
+                            </Typography>
+                        </FormControl>
+                        <FormControl
+                            fullWidth
+                            // required
+                            margin="normal"
+                        >
+                        <InputLabel htmlFor="source_type">Source Type</InputLabel>
+                        <Field name="source_type" id="source_type" component={Select}>
+                            <MenuItem value="Dictionary">Dictionary</MenuItem>
+                            <MenuItem value="Interface Terminology">Interface Terminology</MenuItem>
+                            <MenuItem value="Indicator Registry">Indicator Registry</MenuItem>
+                            <MenuItem value="External">External</MenuItem>
+                        </Field>
+                            <Typography color="error" variant="caption" component="div">
+                                <ErrorMessage name="source_type" component="span" />
+                            </Typography>
+                        </FormControl>
                         <FormControl
                             fullWidth
                             // required
@@ -187,18 +251,14 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                         >
                             <InputLabel htmlFor="default_locale">
-                                Default Locale
+                                Preferred Language
                             </InputLabel>
                             <Field
                                 name="default_locale"
                                 id="default_locale"
                                 component={Select}
                             >
-                                {LOCALES.map(({ value, label }) => (
-                                    <MenuItem key={value} value={value}>
-                                        {label}
-                                    </MenuItem>
-                                ))}
+                                {showDefaultLocale()}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="default_locale" component="span" />
@@ -210,7 +270,7 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                         >
                             <InputLabel htmlFor="supported_locales">
-                                Supported Locale
+                                Other Languages
                             </InputLabel>
                             <Field
                                 multiple
@@ -225,28 +285,7 @@ const SourceForm: React.FC<Props> = ({
                                 <ErrorMessage name="supported_locales" component="span" />
                             </Typography>
                         </FormControl>
-                        <Field
-                            // required
-                            fullWidth
-                            multiline
-                            rowsMax={4}
-                            autoComplete="off"
-                            id="custom_validation_schema"
-                            name="custom_validation_schema"
-                            label="Custom Validation Schema"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <Field
-                            // required
-                            fullWidth
-                            autoComplete="off"
-                            id="external_id"
-                            name="external_id"
-                            label="External Id"
-                            margin="normal"
-                            component={TextField}
-                        />
+                        {isViewing(isSubmitting)}
                     </Form>
                 )}
             </Formik>

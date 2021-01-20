@@ -57,7 +57,7 @@ export interface BaseConcept {
   descriptions: ConceptDescription[];
   url?: string;
   version_url?: string;
-  extras: Extras;
+  extras: Extras | null;
 }
 
 export interface Concept extends BaseConcept {
@@ -79,6 +79,7 @@ export interface APIConcept extends BaseConcept {
 export interface ConceptsState {
   concept?: APIConcept;
   concepts: { items: APIConcept[]; responseMeta?: {} };
+  activeConcepts: { items: APIConcept[]; responseMeta?: {} };
   mappings: APIMapping[];
 }
 
@@ -98,9 +99,12 @@ const apiConceptToConcept = (
   let { names, descriptions, display_name, ...theRest } = apiConcept;
   descriptions = descriptions || [];
 
+  let sortedNames = names.slice().sort(sortConceptName);
+  let sortedDescriptions = descriptions.slice().sort(sortConceptDescriptions);
+
   return {
-    names: convertNames ? apiNamesToName(names) : names,
-    descriptions,
+    names: convertNames ? apiNamesToName(sortedNames) : sortedNames,
+    descriptions: sortedDescriptions,
     ...theRest,
     answers: mappings.filter(
       mapping => mapping.map_type === MAP_TYPE_Q_AND_A.value
@@ -115,6 +119,70 @@ const apiConceptToConcept = (
     )
   };
 };
+
+const sortConceptName = (n1: ConceptName, n2: ConceptName) => {
+  if (typeof n1 === 'undefined') {
+    return (typeof n2 === 'undefined') ? 0 : 1;
+  }
+
+  if (typeof n2 === 'undefined') {
+    return -1;
+  }
+
+  if (n1.name === null) {
+    return n2.name == null ? 0 : 1;
+  }
+
+  if (n2.name == null) {
+    return -1;
+  }
+
+  if (n1.locale !== n2.locale) {
+    return n1.locale < n2.locale ? -1 : 1;
+  }
+
+  if (n1.name_type !== n2.name_type) {
+    if (n1.name_type === "FULLY_SPECIFIED") {
+      return -1;
+    } else if (n2.name_type === "FULLY_SPECIFIED") {
+      return 1;
+    }
+  }
+  
+  if (n1.locale_preferred !== n2.locale_preferred) {
+    return n1.locale_preferred ? -1 : 1;
+  }
+
+  return n1.name.localeCompare(n2.name);
+}
+
+const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription) => {
+  if (typeof d1 === 'undefined') {
+    return (typeof d2 === 'undefined') ? 0 : 1;
+  }
+
+  if (typeof d2 === 'undefined') {
+    return -1;
+  }
+
+  if (d1.description === null) {
+    return d2.description == null ? 0 : 1;
+  }
+
+  if (d2.description == null) {
+    return -1;
+  }
+
+  if (d1.locale !== d2.locale) {
+    return d1.locale < d2.locale ? -1 : 1;
+  }
+  
+  if (d1.locale_preferred !== d2.locale_preferred) {
+    return d1.locale_preferred ? -1 : 1;
+  }
+
+  return d1.description.localeCompare(d2.description)
+}
 
 export type SortableField =
   | "bestMatch"

@@ -2,6 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { APIConcept, ConceptsState } from "../types";
 import { startAction } from "../../../redux";
 import {
+  RETRIEVE_ACTIVE_CONCEPTS_ACTION,
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
@@ -13,6 +14,9 @@ import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 const initialState: ConceptsState = {
   mappings: [],
   concepts: {
+    items: []
+  },
+  activeConcepts: {
     items: []
   }
 };
@@ -38,6 +42,13 @@ export const reducer = createReducer<ConceptsState>(initialState, {
     ...state,
     concepts: {
       items: action.payload as APIConcept[],
+      responseMeta: action.responseMeta
+    }
+  }),
+  [RETRIEVE_ACTIVE_CONCEPTS_ACTION]: (state, action) => ({
+    ...state,
+    activeConcepts: {
+      items: action.payload as APIConcept[] || [],
       responseMeta: action.responseMeta
     }
   }),

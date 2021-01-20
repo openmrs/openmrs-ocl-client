@@ -3,6 +3,7 @@ import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
 import { ConceptForm } from "../components";
 import { AppState } from "../../../redux";
 import {
+  resetConceptFormAction,
   retrieveConceptAction,
   upsertAllMappingsErrorSelector,
   upsertConceptAndMappingsAction,
@@ -22,9 +23,9 @@ import {
   ProgressOverlay,
   useAnchor,
   usePrevious,
-  useQueryParams
+  useQueryParams,
+  CONTEXT
 } from "../../../utils";
-import { CONTEXT } from "../constants";
 import {
   DeleteSweepOutlined as DeleteIcon,
   MoreVert as MenuIcon,
@@ -59,6 +60,7 @@ interface ActionProps {
   upsertConcept: (
     ...args: Parameters<typeof upsertConceptAndMappingsAction>
   ) => void;
+  resetConceptForm: () => void;
 }
 
 type Props = StateProps & ActionProps;
@@ -79,6 +81,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   errors,
   loading,
   upsertConcept,
+  resetConceptForm,
   allMappingErrors = [],
   progress
 }) => {
@@ -119,6 +122,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // usually doing the following is a mistake and will bite us later
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => resetConceptForm(),
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   []);
 
   // everything went hunky-dory, and we should redirect the user to the view concept page
   if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
@@ -234,6 +241,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
+  resetConceptForm: resetConceptFormAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveConcept: retrieveConceptAction,
   upsertConcept: upsertConceptAndMappingsAction

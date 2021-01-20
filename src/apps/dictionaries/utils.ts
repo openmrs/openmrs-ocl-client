@@ -1,4 +1,4 @@
-const buildAddConceptToDictionaryMessage = (
+export const buildAddConceptToDictionaryMessage = (
   results: { expression: string; added: boolean }[]
 ) => {
     if(!Array.isArray(results)) {
@@ -20,7 +20,7 @@ const buildAddConceptToDictionaryMessage = (
       : "";
   const alreadyAddedMessage =
     alreadyInDictionaryCount > 0
-      ? ` ${alreadyInDictionaryCount} already added concept${wasOrWere(
+      ? ` ${alreadyInDictionaryCount} concept${wasOrWere(
           alreadyInDictionaryCount
         )} skipped`
       : "";
@@ -28,4 +28,7 @@ const buildAddConceptToDictionaryMessage = (
   return addedConceptsMessage + alreadyAddedMessage;
 };
 
-export { buildAddConceptToDictionaryMessage };
+export const dictionaryNameFromUrl = (url: string): string => {
+  let words = url.split("/");
+  return words[words.length - 2];
+};

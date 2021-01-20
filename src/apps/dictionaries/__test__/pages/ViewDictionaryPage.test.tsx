@@ -94,10 +94,12 @@ const dictionariesState: DictionaryState = {
 const conceptState: ConceptsState = {
     concepts: { items: [] },
     mappings: [],
+    activeConcepts: { items: [] }
 };
 
 const sourceState: SourceState = {
     sources: [],
+    versions: []
 };
 
 const currentState: AppState = {

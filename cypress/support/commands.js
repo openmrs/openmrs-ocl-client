@@ -9,7 +9,9 @@ Cypress.Commands.add('runAndAwait', (callable, method='GET', addArtificialWait=f
     cy.wait(`@${requestId}`);
     cy.route(method, '**').as('untrackedRequest'); // stop recording requests
 
-    if (addArtificialWait) cy.wait(5000);
+    // disable eslint warning because we're intentionally waiting
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    if (addArtificialWait) cy.wait(8000);
   }
 );
 

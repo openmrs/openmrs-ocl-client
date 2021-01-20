@@ -16,6 +16,7 @@ import {
 import {
   RETRIEVE_CONCEPT_ACTION,
   RETRIEVE_CONCEPTS_ACTION,
+  RETRIEVE_ACTIVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_CONCEPT_AND_MAPPINGS,
   UPSERT_MAPPING_ACTION
@@ -173,8 +174,11 @@ export const upsertConceptAndMappingsAction = (
       );
 
       const state: AppState = getState();
+      // we *only* want to import either concept answers or members of the concept set
       const toConceptUrls: string[] = [
-        ...state.concepts.mappings.map(mapping => mapping.to_concept_url)
+        ...state.concepts.mappings
+          .filter(mapping => mapping.map_type === "CONCEPT-SET" || mapping.map_type === "Q-AND-A")
+          .map(mapping => mapping.to_concept_url)
       ].filter(reference => reference) as string[];
 
       try {
@@ -218,3 +222,14 @@ export const retrieveConceptsAction = createActionThunk(
   RETRIEVE_CONCEPTS_ACTION,
   api.concepts.retrieve
 );
+export const retrieveActiveConceptsAction = createActionThunk(
+    RETRIEVE_ACTIVE_CONCEPTS_ACTION,
+    api.concepts.retrieveActive
+);
+export const resetConceptFormAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(UPSERT_CONCEPT_ACTION));
+    dispatch(resetAction(UPSERT_CONCEPT_AND_MAPPINGS));
+  }
+}
+

@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, TestDictionary } from "./testUtils";
 

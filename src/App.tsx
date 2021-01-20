@@ -3,59 +3,99 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
 import store from "./redux";
-import { Header, InProgressPage, NavDrawer } from "./components";
+import { InProgressPage } from "./apps/notifications";
+import { Header, NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,
-  ViewPublicDictionariesPage
+  ViewPublicDictionariesPage,
 } from "./apps/dictionaries";
 import ConceptRoutes, {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER
+  DICTIONARY_VERSION_CONTAINER,
 } from "./apps/concepts";
-import { SOURCE_CONTAINER } from "./apps/concepts/constants";
+import {
+  SOURCE_CONTAINER,
+  SOURCE_VERSION_CONTAINER,
+} from "./apps/concepts/constants";
 import {
   ViewOrgDictionariesPage,
-  ViewPersonalDictionariesPage
+  ViewPersonalDictionariesPage,
 } from "./apps/dictionaries/pages";
+import OrgsRoutes, { 
+  ViewPublicOrganisationsPage, 
+  CreateOrganisationPage, 
+  ViewPersonalOrganisationsPage, 
+  ViewOrganisationPage,
+  EditOrganisationPage } from "./apps/organisations";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 import ViewOrgSourcesPage from "./apps/sources/pages/ViewOrgSourcesPage";
 import ViewPublicSourcesPage from "./apps/sources/pages/ViewPublicSourcesPage";
+import { ViewUserProfilePage } from "./apps/authentication/pages";
 
-import SourceRoutes, {} from "./apps/sources";
+import SourceRoutes from "./apps/sources";
+import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/actions/" component={InProgressPage} />
-      <Route exact path="/collections/new/">
-        <Header title="Create Dictionary">
+      <Route exact path='/user/'>
+        <ViewUserProfilePage />
+      </Route>
+      <Route exact path='/user/orgs/'>
+        <ViewPersonalOrganisationsPage />
+      </Route>
+      <Route exact path='/orgs/'>
+        <ViewPublicOrganisationsPage />
+      </Route>
+      <Route exact path='/orgs/new/'>
+        <Header title='Create Organisation'>
+          <CreateOrganisationPage />
+        </Header>
+      </Route>
+      <Route exact path='/actions/' component={InProgressPage} />
+      <Route exact path='/collections/new/'>
+        <Header title='Create Dictionary'>
           <CreateDictionaryPage />
         </Header>
       </Route>
-      <Route exact path="/user/collections/">
+      <Route exact path='/orgs/:org/'>
+         <ViewOrganisationPage />
+      </Route>
+      <Route exact path='/orgs/:org/edit/'>
+         <EditOrganisationPage />
+       </Route>
+      <Route exact path='/user'>
+        <OrgsRoutes />
+      </Route>
+      <Route exact path='/user/collections/'>
         <ViewPersonalDictionariesPage />
       </Route>
-      <Route exact path="/user/orgs/collections/">
+      <Route exact path='/user/orgs/collections/'>
         <ViewOrgDictionariesPage />
       </Route>
-      <Route exact path="/collections/">
+      <Route exact path='/collections/'>
         <ViewPublicDictionariesPage />
       </Route>
-      <Route exact path="/user/sources/">
-          <ViewPersonalSourcesPage />
+      <Route exact path='/user/sources/'>
+        <ViewPersonalSourcesPage />
       </Route>
-      <Route exact path="/user/orgs/sources/">
-          <ViewOrgSourcesPage />
+      <Route exact path='/user/orgs/sources/'>
+        <ViewOrgSourcesPage />
       </Route>
-      <Route exact path="/sources/">
-          <ViewPublicSourcesPage />
+      <Route exact path='/sources/'>
+        <ViewPublicSourcesPage />
       </Route>
-      <Route path="/:ownerType/:owner/sources/:source/concepts">
+      <Route exact path='/sources/new/'>
+        <Header title='Create Source'>
+          <CreateSourcePage />
+        </Header>
+      </Route>
+      <Route path='/:ownerType/:owner/sources/:source/concepts'>
         <ConceptRoutes
           containerType={SOURCE_CONTAINER}
           editConcept={true}
@@ -64,32 +104,35 @@ const AuthenticatedRoutes: React.FC = () => {
           viewConcepts={true}
         />
       </Route>
-      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+      <Route path='/:ownerType/:owner/collections/:collection/concepts'>
         <ConceptRoutes
           containerType={DICTIONARY_CONTAINER}
           viewConcepts={true}
         />
       </Route>
-      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+      <Route path='/:ownerType/:owner/collections/:collection/:version/concepts'>
         <ConceptRoutes
           containerType={DICTIONARY_VERSION_CONTAINER}
           viewConcepts={true}
         />
       </Route>
-      <Route path="/concepts">
+      <Route path='/:ownerType/:owner/sources/:source/:version/concepts'>
+        <ConceptRoutes
+          containerType={SOURCE_VERSION_CONTAINER}
+          viewConcepts={true}
+        />
+      </Route>
+      <Route path='/concepts'>
         <ConceptRoutes containerType={SOURCE_CONTAINER} viewConcepts={true} />
       </Route>
       <Route
-        path="/:ownerType/:owner/collections"
+        path='/:ownerType/:owner/collections'
         component={DictionaryRoutes}
       />
-      <Route exact path="/">
-        <Redirect to="/user/collections/" />
+      <Route exact path='/'>
+        <Redirect to='/user/collections/' />
       </Route>
-      <Route
-        path="/:ownerType/:owner/sources"
-        component={SourceRoutes}
-      />
+      <Route path='/:ownerType/:owner/sources' component={SourceRoutes} />
     </Switch>
   );
 };
@@ -102,10 +145,10 @@ const Routes: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/login">
+        <Route exact path='/login'>
           <LoginPage />
         </Route>
-        <Route path="/">
+        <Route path='/'>
           <AuthenticationRequired>
             {() => (
               <NavDrawer>

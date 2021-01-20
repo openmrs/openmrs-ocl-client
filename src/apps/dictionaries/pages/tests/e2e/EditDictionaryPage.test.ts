@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 import { login, logout } from "../../../../authentication/tests/e2e/testUtils";
 import { createDictionary, TestDictionary } from "./testUtils";
 
@@ -42,7 +44,7 @@ describe("Edit Dictionary", () => {
   it("Happy flow: Should edit a dictionary", () => {
     // todo improve this test to check actual values
     cy.visit(dictionaryUrl);
-    cy.findByTitle("Edit this dictionary").click();
+    cy.findByTitle("Edit this Dictionary").click();
 
     const dictionary = updatedDictionary();
 

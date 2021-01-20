@@ -31,6 +31,15 @@ code {
   position: fixed !important;
 }
 
+.buttonLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.retired {
+  text-decoration-line: line-through;
+}
+
 #viewConceptPage {
   #conceptForm {
     .MuiInput-formControl {
@@ -45,33 +54,34 @@ code {
   }
 }
 
+%form {
+  .MuiInput-formControl {
+    .MuiInput-input.Mui-disabled {
+      color: black;
+      -moz-user-select: text;
+    }
+
+    svg {
+      visibility: hidden;
+    }
+  }
+}
+
 #viewDictionaryPage {
   #dictionary-form {
-    .MuiInput-formControl {
-      .MuiInput-input.Mui-disabled {
-        color: black;
-        -moz-user-select: text;
-      }
-
-      svg {
-        visibility: hidden;
-      }
-    }
+    @extend %form;
   }
 }
 
 #viewSourcePage {
   #source-form {
-    .MuiInput-formControl {
-      .MuiInput-input.Mui-disabled {
-        color: black;
-        -moz-user-select: text;
-      }
+    @extend %form;
+  }
+}
 
-      svg {
-        visibility: hidden;
-      }
-    }
+#viewUserProfilePage {
+  #user-form {
+    @extend %form;
   }
 }
 

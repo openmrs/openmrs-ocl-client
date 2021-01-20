@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
       background: "transparent",
       width: "100%",
       margin: theme.spacing(2),
-      padding: theme.spacing(2),
+      padding: theme.spacing(2)
     },
   })
 );

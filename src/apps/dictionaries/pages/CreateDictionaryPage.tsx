@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect }  from "react";
 import { DictionaryForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
@@ -6,7 +6,8 @@ import { Redirect } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
-  createSourceAndDictionaryErrorsSelector
+  createSourceAndDictionaryErrorsSelector,
+  resetCreateDictionaryAction
 } from "../redux";
 import { APIDictionary, Dictionary } from "../types";
 import {
@@ -14,8 +15,7 @@ import {
   profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import { usePrevious } from "../../../utils";
-import { CONTEXT } from "../constants";
+import { usePrevious, CONTEXT } from "../../../utils";
 import { createSourceAndDictionaryAction } from "../redux/actions";
 
 interface Props {
@@ -27,6 +27,7 @@ interface Props {
   ) => void;
   loading: boolean;
   newDictionary?: APIDictionary;
+  resetCreateDictionary: () => void;
 }
 
 const CreateDictionaryPage: React.FC<Props> = ({
@@ -35,9 +36,13 @@ const CreateDictionaryPage: React.FC<Props> = ({
   errors,
   createSourceAndDictionary,
   loading,
+  resetCreateDictionary,
   newDictionary
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => resetCreateDictionary, []);
 
   if (!loading && previouslyLoading && newDictionary) {
     return <Redirect to={newDictionary.url} />;
@@ -68,7 +73,8 @@ const mapStateToProps = (state: any) => ({
   errors: createSourceAndDictionaryErrorsSelector(state)
 });
 const mapActionsToProps = {
-  createSourceAndDictionary: createSourceAndDictionaryAction
+  createSourceAndDictionary: createSourceAndDictionaryAction,
+  resetCreateDictionary: resetCreateDictionaryAction
 };
 
 export default connect(

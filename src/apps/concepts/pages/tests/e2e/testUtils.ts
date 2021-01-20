@@ -1,4 +1,10 @@
+/// <reference types="cypress" />
+/// <reference types="../../../../../../cypress/support" />
+
 import IDGenerator from "shortid";
+
+const ANSWER_RELATIONSHIP: "Q-AND-A" = "Q-AND-A";
+const SET_RELATIONSHIP: "CONCEPT-SET" = "CONCEPT-SET";
 
 const shortRandomID = () => {
   IDGenerator.characters(
@@ -24,10 +30,12 @@ export interface TestConcept {
   }[];
   answers: {
     source: { search: string; select: string };
+    relationship: typeof ANSWER_RELATIONSHIP;
     concept: { search: string; select: string };
   }[];
   sets: {
     source: { search: string; select: string };
+    relationship: typeof SET_RELATIONSHIP;
     concept: { search: string; select: string };
   }[];
   mappings: {
@@ -84,16 +92,19 @@ export function newConcept(
     answers: [
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: ANSWER_RELATIONSHIP,
         concept: { search: "1983", select: "1983- Unable to drink fluids" }
       },
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: ANSWER_RELATIONSHIP,
         concept: { search: "1944", select: "1944- Beaten earth" }
       }
     ],
     sets: [
       {
         source: { search: "CIEL", select: "CIEL" },
+        relationship: SET_RELATIONSHIP,
         concept: { search: "1943", select: "1943- Cement" }
       }
     ],
@@ -166,12 +177,16 @@ export function fillMappingRow(
     "Select a source",
     concept[type][index].source
   );
-  // @ts-ignore
-  if (concept[type][index].relationship)
+
+  if (concept[type][index].relationship &&
+      concept[type][index].relationship !== ANSWER_RELATIONSHIP &&
+      concept[type][index].relationship !== SET_RELATIONSHIP) {
     cy.selectBySelector(
       `[data-testid="${type}_${index}_map_type"]`,
       concept[type][index].relationship
     );
+  }
+  
   searchAndSelect(
     `[data-testrowid="${type}_${index}"]`,
     "Select a concept",
@@ -210,7 +225,7 @@ export function createConcept(
   cy.findByText("Add Answer").click();
   fillMappingRow(1, concept, "answers");
 
-  cy.findByText("Add Set Members").click();
+  cy.findByText("Add Set Member").click();
   fillMappingRow(0, concept, "sets");
 
   cy.findByText("Add Mapping").click();
@@ -218,7 +233,7 @@ export function createConcept(
 
   cy.findByText("Submit").click();
 
-  cy.findByTitle("Edit this concept");
+  cy.findByTitle("Edit this Concept");
 
   return [concept, conceptUrl];
 }

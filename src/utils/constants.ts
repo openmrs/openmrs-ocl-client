@@ -210,6 +210,8 @@ export const LOCALES: { [key: string]: string }[] = [
 export const CONCEPT_CLASS_QUESTION = "Question";
 export const CONCEPT_CLASSES_SET = ["LabSet", "MedSet", "ConvSet"];
 export const CONCEPT_DATATYPE_NUMERIC = "Numeric";
+export const CONCEPT_DATATYPE_CODED = "Coded";
+
 
 export const CONCEPT_CLASSES: string[] = [
   "Diagnosis",
@@ -296,4 +298,10 @@ export const PREFERRED_SOURCES: { [key: string]: string } = {
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   "Public Sources": ALL_PUBLIC_SOURCES_URL,
   ...PREFERRED_SOURCES,
+};
+
+export const CONTEXT = {
+  create: "create",
+  view: "view",
+  edit: "edit"
 };

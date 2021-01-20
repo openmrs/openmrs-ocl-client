@@ -6,6 +6,7 @@ import authReducer from "../apps/authentication/redux/reducer"; // failed to res
 import { dictionariesReducer } from "../apps/dictionaries";
 import { conceptsReducer } from "../apps/concepts";
 import { sourcesReducer} from "../apps/sources";
+import { organisationsReducer } from "../apps/organisations";
 
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
@@ -53,7 +54,8 @@ const rootReducer = combineReducers({
   status: loadingAndErroredReducer,
   dictionaries: dictionariesReducer,
   concepts: conceptsReducer,
-  sources: sourcesReducer
+  sources: sourcesReducer,
+  organisations: organisationsReducer
 });
 
 const store = createStore(

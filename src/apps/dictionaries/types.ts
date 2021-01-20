@@ -1,6 +1,7 @@
 import {
   BaseConceptContainer,
-  EditableConceptContainerFields
+  EditableConceptContainerFields,
+  Version
 } from "../../utils";
 
 interface BaseDictionary extends BaseConceptContainer {
@@ -53,19 +54,18 @@ export interface EditableDictionaryFields
   extras?: { source?: string };
 }
 
-export interface DictionaryVersion {
-  id: string;
-  released: boolean;
-  description?: string;
-  external_id: string;
-  extras?: { [key: string]: string };
-  created_on?: string;
+export interface DictionaryVersion extends Version{
 }
 
 export interface APIDictionaryVersion extends DictionaryVersion {
   version_url: string;
   url: string;
 }
+
+export type ImportMetaData = {
+  dictionary: string;
+  dateTime: string;
+};
 
 const apiDictionaryToDictionary = (
   apiDictionary?: APIDictionary

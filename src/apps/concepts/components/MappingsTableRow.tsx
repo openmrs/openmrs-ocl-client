@@ -147,11 +147,11 @@ const fetchConceptOptions = async (
   page: number
 ): Promise<ConceptResults> => {
   try {
-    const response = await api.concepts.retrieve(
-      `${sourceUrl}concepts/`,
-      page,
-      10,
-      query
+    const response = await api.concepts.retrieve({
+          conceptsUrl: `${sourceUrl}concepts/`,
+          page: page,
+          q: query
+        }
     );
     const {
       data,
@@ -190,11 +190,17 @@ const useStyles = makeStyles((theme: Theme) =>
     retired: {
       opacity: 0.5
     },
+    minCellWidth: {
+      minWidth: "150px"
+    },
     singleCellWidth: {
       width: "24%"
     },
     doubleCellWidth: {
       width: "48%"
+    },
+    tripleCellWidth: {
+      width: "72%"
     },
     fillParent: {
       width: "100%"
@@ -286,13 +292,11 @@ const MappingsTableRow: React.FC<Props> = ({
         className={clsx(classes.row, { [classes.retired]: retired })}
       >
         <TableCell
-          className={
-            fixedMappingType ? classes.doubleCellWidth : classes.singleCellWidth
-          }
+          className={classes.singleCellWidth}
           component="td"
           scope="row"
         >
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth margin="dense" className={classes.minCellWidth}>
             <Field
               id={`${valueKey}.to_source_url`}
               name={`${valueKey}.to_source_url`}
@@ -335,6 +339,7 @@ const MappingsTableRow: React.FC<Props> = ({
           >
             <FormControl fullWidth margin="dense">
               <Field
+                style={{marginTop:"10px"}}
                 id={`${valueKey}.map_type`}
                 name={`${valueKey}.map_type`}
                 data-testid={`${valuesKey}_${index}_map_type`}
@@ -355,11 +360,11 @@ const MappingsTableRow: React.FC<Props> = ({
 
         {isInternalMapping ? (
           <TableCell
-            className={classes.doubleCellWidth}
+            className={fixedMappingType ? classes.tripleCellWidth : classes.doubleCellWidth}
             component="td"
             scope="row"
           >
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth margin="dense" className={classes.minCellWidth}>
               <Field
                 key={`${toSourceUrl}_to_concept_url`}
                 id={`${valueKey}.to_concept_url`}

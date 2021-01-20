@@ -13,4 +13,4 @@ services:
     - 8080:80
     restart: always
     healthcheck:
-      test: ["CMD", "wget", "-q", "-s", "http://localhost/"]
+      test: ["CMD", "curl", "-sSf", "localhost"]
