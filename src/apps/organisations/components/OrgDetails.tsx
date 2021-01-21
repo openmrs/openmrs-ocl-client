@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const OrganisationDetails: React.FC<Props> = ({ organisation }:Props) => {
-  const {website, location, company, public_access, name} = organisation;
+  const {website, location, company, public_access, name} = organisation || {};
   const classes = useStyles();
   return (
     <Grid item xs={12} component='div'>

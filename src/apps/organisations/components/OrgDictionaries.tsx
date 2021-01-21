@@ -19,7 +19,7 @@ const OrganisationDictionaries: React.FC<Props> = ({ collections }) => {
             <ul>
             {collections?.length ?
               collections.map(c => <li key={c.id}><Link to={c.url}>{c.name}</Link></li>) :
-              <li>No dictionaries found!</li>}
+              <li>No collections found!</li>}
             </ul>
           </List>
         </fieldset>
