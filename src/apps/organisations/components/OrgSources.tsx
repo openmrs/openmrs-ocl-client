@@ -1,6 +1,7 @@
 import React from "react";
 import { Grid, Paper, Typography, List } from "@material-ui/core";
 import {OrgSource} from "../types";
+import { Link } from "react-router-dom";
 interface Props {
   sources: OrgSource[];
 }
@@ -16,7 +17,7 @@ const OrganisationSources: React.FC<Props> = ({ sources }) => {
           <List>
             <ul>
               {sources?.length ?
-                sources.map(s => <li key={s.short_code}>{s.name}</li>) :
+                sources.map(s => <li key={s.short_code}><Link to={s.url}>{s.name}</Link></li>) :
                 <li>No sources found!</li>}
             </ul>
           </List>

@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const OrganisationDetails: React.FC<Props> = ({ organisation }:Props) => {
-  const {website, location, company, public_access} = organisation;
+  const {website, location, company, public_access, name} = organisation || {};
   const classes = useStyles();
   return (
     <Grid item xs={12} component='div'>
@@ -26,9 +26,10 @@ const OrganisationDetails: React.FC<Props> = ({ organisation }:Props) => {
         </Typography>
 
         <List>
-          <ListItem className={classes.listItem}><strong className={classes.name}>Company</strong><span>{company}</span></ListItem>
-          <ListItem className={classes.listItem}><strong className={classes.name}>Website</strong> <span>{website}</span></ListItem>
-          <ListItem className={classes.listItem}><strong className={classes.name}>Location</strong> <span>{location}</span></ListItem>
+          <ListItem className={classes.listItem}><strong className={classes.name}>Name</strong><span>{name}</span></ListItem>
+          {company && <ListItem className={classes.listItem}><strong className={classes.name}>Company</strong><span>{company}</span></ListItem>}
+          {website && <ListItem className={classes.listItem}><strong className={classes.name}>Website</strong> <span>{website}</span></ListItem>}
+          {location && <ListItem className={classes.listItem}><strong className={classes.name}>Location</strong> <span>{location}</span></ListItem>}
           <ListItem className={classes.listItem}><strong className={classes.name}>Public Access</strong> <span>{public_access}</span></ListItem>
         </List>
       </fieldset>
