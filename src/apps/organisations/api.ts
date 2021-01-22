@@ -55,7 +55,9 @@ const api = {
     retrieveSources: (orgUrl: string):Promise<AxiosResponse<any>> =>
         authenticatedInstance.get(`${orgUrl}sources/`),
     retrieveCollections: (orgUrl: string):Promise<AxiosResponse<any>> =>
-        authenticatedInstance.get(`${orgUrl}collections/`)
+        authenticatedInstance.get(`${orgUrl}collections/`),
+    retrieveMembers: (orgUrl: string):Promise<AxiosResponse<any>> =>
+        authenticatedInstance.get(`${orgUrl}members/`)
   },
   
 };

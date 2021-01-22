@@ -7,7 +7,8 @@ export {
   retrieveOrgCollectionsAction,
   deleteOrganisationAction,
   retrievePersonalOrganisationsAction,
-  retrievePublicOrganisationsAction
+  retrievePublicOrganisationsAction,
+  retrieveOrgMembersAction
 } from "./actions";
 export * from './selectors';
 export * from './constants';

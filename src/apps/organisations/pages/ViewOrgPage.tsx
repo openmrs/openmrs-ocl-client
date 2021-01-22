@@ -2,11 +2,12 @@ import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {useLocation} from "react-router-dom";
 
-import {APIOrganisation, OrgSource, OrgCollection} from "../types";
+import {APIOrganisation, OrgSource, OrgCollection,OrgMember} from "../types";
 import {
   retrieveOrganisationAction,
   retrieveOrgSourcesAction,
   retrieveOrgCollectionsAction,
+  retrieveOrgMembersAction,
   retrieveOrgLoadingSelector
 } from "../redux";
 import Header from "../../../components/Header";
@@ -24,6 +25,7 @@ interface Props {
   organisation: APIOrganisation;
   sources: OrgSource[];
   collections: OrgCollection[];
+  members:OrgMember[];
   loading: boolean;
   retrieveOrg: (
     ...args: Parameters<typeof retrieveOrganisationAction>
@@ -34,6 +36,10 @@ interface Props {
   retrieveOrgCollections: (
     ...args: Parameters<typeof retrieveOrgCollectionsAction>
   ) => void;
+  retrieveOrgMembers: (
+      ...args: Parameters<typeof retrieveOrgMembersAction>
+  ) => void;
+
 }
 
 const useStyles = makeStyles((theme) => 
@@ -53,10 +59,12 @@ const useStyles = makeStyles((theme) =>
 const ViewOrganisationPage: React.FC<Props> = ({ 
   retrieveOrg, 
   retrieveOrgSources, 
-  retrieveOrgCollections, 
+  retrieveOrgCollections,
+    retrieveOrgMembers,
   organisation,
   sources,
   collections,
+    members,
   loading
 }: Props) => {
   const classes = useStyles();
@@ -68,7 +76,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
     retrieveOrg(orgUrl);
     retrieveOrgSources(orgUrl);
     retrieveOrgCollections(orgUrl);
-  }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources]);
+    retrieveOrgMembers(orgUrl);
+  }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
 
   const { name } = organisation || {};
   return (
@@ -80,7 +89,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
       <ProgressOverlay delayRender loading={loading}>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
-          <OrganisationMembers />
+          <OrganisationMembers members={members} />
         </Grid>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationSources sources={sources}/>
@@ -96,13 +105,15 @@ const mapStateToProps = (state: any) => ({
   organisation: state.organisations.organisation,
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
+  members:state.organisations.orgMembers,
   loading: retrieveOrgLoadingSelector(state)
 });
 
 const mapActionsToProps = {
   retrieveOrg: retrieveOrganisationAction,
   retrieveOrgSources: retrieveOrgSourcesAction,
-  retrieveOrgCollections: retrieveOrgCollectionsAction
+  retrieveOrgCollections: retrieveOrgCollectionsAction,
+  retrieveOrgMembers: retrieveOrgMembersAction,
 
 };
 

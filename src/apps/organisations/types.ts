@@ -71,6 +71,11 @@ export interface OrganisationState {
   newOrganisation?:{},
   editedOrganisation?:{}
 }
+export interface OrgMember{
+    username: string;
+    name: string;
+    url?: string;
+}
 
 export const apiOrgToOrganisation = (
   apiOrganisation?: APIOrganisation
