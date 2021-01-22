@@ -14,7 +14,8 @@ import {
   GET_ORG_COLLECTIONS_ACTION,
   GET_ORG_SOURCES_ACTION,
   DELETE_ORGANISATION_ACTION,
-  RETRIEVE_ORGS_ACTION
+  RETRIEVE_ORGS_ACTION,
+  GET_ORG_MEMBERS_ACTION
 } from "./actionTypes";
 import {PERSONAL_ORGS_ACTION_INDEX} from "./constants";
 import { Organisation, EditableOrganisationFields } from '../types';
@@ -120,6 +121,10 @@ const deleteOrganisationAction = createActionThunk(
   DELETE_ORGANISATION_ACTION,
   api.organisation.delete
 );
+const retrieveOrgMembersAction = createActionThunk(
+    GET_ORG_MEMBERS_ACTION,
+    api.organisation.retrieveMembers
+);
 
 export { 
   createOrganisationAction,
@@ -131,6 +136,7 @@ export {
   retrieveOrgSourcesAction,
   deleteOrganisationAction,
   retrievePublicOrganisationsAction,
-  retrievePersonalOrganisationsAction
+  retrievePersonalOrganisationsAction,
+  retrieveOrgMembersAction
  };
  

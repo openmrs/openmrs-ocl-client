@@ -7,3 +7,4 @@ export const EDIT_ORGANISATION_ACTION = "organisations/update";
 export const GET_ORG_ACTION = "organisation/retrieve";
 export const GET_ORG_SOURCES_ACTION = "organisation/retrieveSources";
 export const GET_ORG_COLLECTIONS_ACTION = "organisation/retrieveCollections";
+export const GET_ORG_MEMBERS_ACTION = "organisation/retrieveMembers";
