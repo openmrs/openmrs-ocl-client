@@ -170,7 +170,7 @@ export const createActionThunk = <T extends any[]>(
           dispatch({
             type: `${actionType}_${FAILURE}`,
             actionIndex: actionIndex,
-            payload: errorMessage,
+            payload: error.response.data,
             meta: args
           });
           result = false;
