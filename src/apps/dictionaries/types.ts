@@ -37,6 +37,7 @@ export interface APIDictionary extends BaseAPIDictionary {
   active_concepts: string;
   references: { [key: string]: string }[];
   concepts_url: string;
+  updated_on?: string;
 }
 
 export interface DictionaryState {
