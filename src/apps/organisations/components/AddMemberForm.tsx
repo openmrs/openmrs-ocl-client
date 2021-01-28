@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   Button,
   ButtonGroup,
@@ -10,6 +10,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
+import { usePrevious, getPrettyError } from "../../../utils";
 
 import { OrgMember } from "../types";
 
@@ -17,7 +18,7 @@ interface Props {
   onSubmit?: Function;
   orgUrl: string;
   loading?: boolean;
-  error?: { detail: string };
+  error?: {};
   handleClose: () => void;
 }
 
@@ -32,10 +33,22 @@ const initialValues: OrgMember = {
 const AddMemberForm: React.FC<Props> = ({
   onSubmit,
   loading,
-  error,
+  error = '',
   handleClose
 }) => {
   const formikRef: any = useRef(null);
+  const previouslyLoading = usePrevious(loading);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef;
+    if (currentRef) {
+      currentRef.setSubmitting(loading);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading && previouslyLoading && error) handleClose();
+  }, [loading, previouslyLoading, error, handleClose]);
 
   return (
     <>
@@ -73,7 +86,7 @@ const AddMemberForm: React.FC<Props> = ({
                   variant="caption"
                   component="div"
                 >
-                  {error.detail}
+                  {getPrettyError(error) || 'Could not submit'}
                 </Typography>
               )}
               <DialogActions>

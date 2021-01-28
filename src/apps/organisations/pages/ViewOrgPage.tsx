@@ -9,7 +9,9 @@ import {
   retrieveOrgCollectionsAction,
   retrieveOrgMembersAction,
   retrieveOrgLoadingSelector,
-  addOrgMemberAction
+  addOrgMemberErrorSelector,
+  addOrgMemberAction,
+  addOrgMemberLoadingSelector
 } from "../redux";
 import Header from "../../../components/Header";
 import { 
@@ -19,8 +21,9 @@ import {
   OrganisationSources } 
   from "../components";
 import {ProgressOverlay} from "../../../utils/components";
-import { Grid, makeStyles, createStyles } from "@material-ui/core";
+import {Grid, makeStyles, createStyles} from "@material-ui/core";
 import {EditButton} from "../../containers/components/EditButton";
+import {getPrettyError} from "../../../utils";
 
 interface Props {
   organisation: APIOrganisation;
@@ -28,6 +31,8 @@ interface Props {
   collections: OrgCollection[];
   members:OrgMember[];
   loading: boolean;
+  addOrgMemberError?: string;
+  loadingAddMember: boolean;
   retrieveOrg: (
     ...args: Parameters<typeof retrieveOrganisationAction>
   ) => void;
@@ -69,8 +74,10 @@ const ViewOrganisationPage: React.FC<Props> = ({
   organisation,
   sources,
   collections,
-    members,
-  loading
+  members,
+  loading,
+  addOrgMemberError = '',
+  loadingAddMember
 }: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
@@ -94,7 +101,12 @@ const ViewOrganisationPage: React.FC<Props> = ({
       <ProgressOverlay delayRender loading={loading}>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
-          <OrganisationMembers members={members} addMember={addOrgMember} orgUrl={orgUrl} />
+          <OrganisationMembers 
+            members={members} 
+            addMember={addOrgMember} 
+            orgUrl={orgUrl} 
+            loading={loadingAddMember} 
+            error={getPrettyError(addOrgMemberError)} />
         </Grid>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationSources sources={sources}/>
@@ -111,7 +123,9 @@ const mapStateToProps = (state: any) => ({
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
   members:state.organisations.orgMembers,
-  loading: retrieveOrgLoadingSelector(state)
+  loading: retrieveOrgLoadingSelector(state),
+  addOrgMemberError: addOrgMemberErrorSelector(state),
+  loadingAddMember: addOrgMemberLoadingSelector(state)
 });
 
 const mapActionsToProps = {
