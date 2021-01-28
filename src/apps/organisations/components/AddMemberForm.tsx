@@ -22,13 +22,11 @@ interface Props {
 }
 
 const AddMemberSchema = Yup.object().shape<OrgMember>({
-  username: Yup.string().required("Username is Required"),
-  name: Yup.string()
+  username: Yup.string().required("Username is Required")
 });
 
 const initialValues: OrgMember = {
   username: "",
-  name: "",
 };
 
 const AddMemberForm: React.FC<Props> = ({
@@ -61,15 +59,6 @@ const AddMemberForm: React.FC<Props> = ({
                   id="username"
                   name="username"
                   label="Username"
-                  component={TextField}
-                />
-                <Field
-                  fullWidth
-                  multiline
-                  rowsMax={4}
-                  id="name"
-                  name="name"
-                  label="Name"
                   component={TextField}
                 />
                 <br />
