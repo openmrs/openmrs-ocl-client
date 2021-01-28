@@ -8,7 +8,8 @@ import {
   retrieveOrgSourcesAction,
   retrieveOrgCollectionsAction,
   retrieveOrgMembersAction,
-  retrieveOrgLoadingSelector
+  retrieveOrgLoadingSelector,
+  addOrgMemberAction
 } from "../redux";
 import Header from "../../../components/Header";
 import { 
@@ -39,6 +40,9 @@ interface Props {
   retrieveOrgMembers: (
       ...args: Parameters<typeof retrieveOrgMembersAction>
   ) => void;
+  addOrgMember: (
+    ...args: Parameters<typeof addOrgMemberAction>
+  ) => void;
 
 }
 
@@ -60,7 +64,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
   retrieveOrg, 
   retrieveOrgSources, 
   retrieveOrgCollections,
-    retrieveOrgMembers,
+  retrieveOrgMembers,
+  addOrgMember,
   organisation,
   sources,
   collections,
@@ -89,7 +94,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
       <ProgressOverlay delayRender loading={loading}>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
-          <OrganisationMembers members={members} />
+          <OrganisationMembers members={members} addMember={addOrgMember} orgUrl={orgUrl} />
         </Grid>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationSources sources={sources}/>
@@ -114,6 +119,7 @@ const mapActionsToProps = {
   retrieveOrgSources: retrieveOrgSourcesAction,
   retrieveOrgCollections: retrieveOrgCollectionsAction,
   retrieveOrgMembers: retrieveOrgMembersAction,
+  addOrgMember: addOrgMemberAction
 
 };
 

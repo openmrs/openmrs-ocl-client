@@ -1,6 +1,8 @@
-import React from "react";
-import {Button, ButtonGroup, createStyles, Grid, List, makeStyles, Paper, Typography} from "@material-ui/core";
+import React, { useState } from "react";
+import { addOrgMemberAction } from "../redux";
+import {Button, ButtonGroup, createStyles, Grid, List, makeStyles, Paper, Typography, Dialog} from "@material-ui/core";
 import { OrgMember } from "../types";
+import AddMemberForm from "./AddMemberForm";
 import {
     DeleteOutline as DeleteIcon
 } from "@material-ui/icons";
@@ -8,7 +10,12 @@ import {
 
 interface Props {
     members: OrgMember[];
-}
+    addMember: (
+        ...args: Parameters<typeof addOrgMemberAction>
+      ) => void;
+    orgUrl: string;
+};
+
 const useStyles = makeStyles((theme) =>
     createStyles({
         root:{
@@ -18,7 +25,8 @@ const useStyles = makeStyles((theme) =>
         }
     }),
 );
-const OrganisationMembers: React.FC<Props> = ({ members }) => {
+const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember }) => {
+    const [openDialog, setOpenDialog] = useState(false);
     const classes = useStyles();
   return (
     <Grid item xs={12} component="div">
@@ -39,8 +47,11 @@ const OrganisationMembers: React.FC<Props> = ({ members }) => {
                 </ul>
             </List>
             <ButtonGroup fullWidth variant='text' color='primary'>
-                <Button>Add New Member</Button>
+                <Button onClick={() => setOpenDialog(true)}>Add New Member</Button>
             </ButtonGroup>
+            <Dialog onClose={() => setOpenDialog(false)} open={openDialog}>
+               <AddMemberForm orgUrl={orgUrl} handleClose={() => setOpenDialog(false)} onSubmit={(values: OrgMember) => addMember(orgUrl, values)}/>
+            </Dialog>
         </fieldset>
       </Paper>
     </Grid>

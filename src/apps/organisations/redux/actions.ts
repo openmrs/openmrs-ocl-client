@@ -126,6 +126,11 @@ const retrieveOrgMembersAction = createActionThunk(
     api.organisation.retrieveMembers
 );
 
+const addOrgMemberAction = createActionThunk(
+  GET_ORG_MEMBERS_ACTION,
+  api.organisation.AddMember
+);
+
 export { 
   createOrganisationAction,
   resetCreateOrganisationAction,
@@ -137,6 +142,7 @@ export {
   deleteOrganisationAction,
   retrievePublicOrganisationsAction,
   retrievePersonalOrganisationsAction,
-  retrieveOrgMembersAction
+  retrieveOrgMembersAction,
+  addOrgMemberAction
  };
  
