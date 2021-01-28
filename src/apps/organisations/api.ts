@@ -58,8 +58,8 @@ const api = {
         authenticatedInstance.get(`${orgUrl}collections/`),
     retrieveMembers: (orgUrl: string):Promise<AxiosResponse<any>> =>
         authenticatedInstance.get(`${orgUrl}members/`),
-    addMember: (orgUrl: string, data: OrgMember):Promise<AxiosResponse<any>> =>
-        authenticatedInstance.put(`${orgUrl}members/${data.username}`)
+    addMember: (orgUrl: string, member: OrgMember):Promise<AxiosResponse<any>> =>
+        authenticatedInstance.put(`${orgUrl}members/${member.username}`)
   },
   
 };
