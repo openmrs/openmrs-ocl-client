@@ -1,5 +1,5 @@
 import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
-import { Organisation, EditableOrganisationFields } from './types';
+import { Organisation, EditableOrganisationFields, OrgMember } from './types';
 import { buildPartialSearchQuery, CUSTOM_VALIDATION_SCHEMA } from "../../utils";
 import { AxiosResponse } from "axios";
 
@@ -57,7 +57,9 @@ const api = {
     retrieveCollections: (orgUrl: string):Promise<AxiosResponse<any>> =>
         authenticatedInstance.get(`${orgUrl}collections/`),
     retrieveMembers: (orgUrl: string):Promise<AxiosResponse<any>> =>
-        authenticatedInstance.get(`${orgUrl}members/`)
+        authenticatedInstance.get(`${orgUrl}members/`),
+    addMember: (orgUrl: string, member: OrgMember):Promise<AxiosResponse<any>> =>
+        authenticatedInstance.put(`${orgUrl}members/${member.username}`)
   },
   
 };

@@ -73,7 +73,7 @@ export interface OrganisationState {
 }
 export interface OrgMember{
     username: string;
-    name: string;
+    name?: string;
     url?: string;
 }
 
