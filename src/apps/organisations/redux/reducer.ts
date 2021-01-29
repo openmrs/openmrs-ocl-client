@@ -8,7 +8,8 @@ import {
   GET_ORG_ACTION,
   GET_ORG_SOURCES_ACTION,
   GET_ORG_COLLECTIONS_ACTION,
-  GET_ORG_MEMBERS_ACTION
+  GET_ORG_MEMBERS_ACTION,
+  CREATE_ORG_MEMBER_ACTION
 } from "./actionTypes";
 import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 import { OrganisationState } from "../types";
@@ -17,6 +18,7 @@ const initialState: OrganisationState = {
   organisations: [],
   organisation: {}
 }
+
 export const reducer = createReducer(initialState, {
   [GET_USER_ORGS_ACTION]: (state, { payload, responseMeta }: Action) => ({
     ...state,
@@ -52,6 +54,9 @@ export const reducer = createReducer(initialState, {
   [GET_ORG_MEMBERS_ACTION]: (state, action) => ({
     ...state,
     orgMembers: action.payload
+  }),
+  [CREATE_ORG_MEMBER_ACTION]: (state) => ({
+    ...state
   }),
   [LOGOUT_ACTION]: () =>{
     return initialState;
