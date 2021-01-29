@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addOrgMemberAction } from "../redux";
+import { addOrgMemberAction, deleteOrgMemberAction } from "../redux";
 import {
     Button, 
     ButtonGroup, 
@@ -11,7 +11,8 @@ import {
     Typography, 
     Dialog,
     Collapse,
-    IconButton
+    IconButton,
+    MenuItem
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { OrgMember } from "../types";
@@ -20,16 +21,22 @@ import {
     DeleteOutline as DeleteIcon,
     CloseOutlined
 } from "@material-ui/icons";
+import {ConfirmationDialog} from "../../../utils";
 
 
 interface Props {
     members: OrgMember[];
-    error?: string;
+    addError?: string;
     loading: boolean;
     addMember: (
         ...args: Parameters<typeof addOrgMemberAction>
       ) => void;
     orgUrl: string;
+    confirmDelete?: () => void;
+    deleteMember: (
+        ...args: Parameters<typeof deleteOrgMemberAction>
+    ) => void;
+    deleteError?:string,
 };
 
 const useStyles = makeStyles((theme) =>
@@ -41,19 +48,32 @@ const useStyles = makeStyles((theme) =>
         }
     }),
 );
-const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, loading, error }) => {
+const confirmationMsg = () => {
+    return (
+        <div>
+            <h5 id="modal-title">
+                Delete
+            </h5>
+            <p id="delete-modal-description">
+                Are you sure you want to Delete? This could mean that you loose members data within this organisation.
+            </p>
+        </div>
+    );
+};
+const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
+    const [openDialogDelete, setOpenDialogDelete] = useState(false);
+    const confirmDelete=() => {setOpenDialogDelete(true)}
     const classes = useStyles();
 
+
     useEffect(() => {
-        if (error) {
+        if (addError || deleteError) {
             setOpenAlert(true);
         };
-    }, [error]);
-    
-
-  return (
+    }, [addError, deleteError]);
+    return (
     <Grid item xs={12} component="div">
       <Paper className='fieldsetParent'>
         <fieldset>
@@ -73,16 +93,27 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                 </IconButton>
               }
             >
-              {error}
+              {addError &&`Adding:${addError}` || deleteError && `Deleting:${deleteError}`}
             </Alert>
           </Collapse>
             <List>
                 <ul>
                     {members?.length ?
                         members.map(m =>
-                            <li className={classes.root}
-                                key={m.username}>{m.username || m.name}
-                                <DeleteIcon/>
+                            <li className={classes.root} key={m.username}>{m.username || m.name}
+                                <MenuItem onClick={confirmDelete} ><DeleteIcon /></MenuItem>
+                                <ConfirmationDialog
+                                    open={openDialogDelete}
+                                    setOpen={() => setOpenDialogDelete(!openDialogDelete)}
+                                    onConfirm={() =>
+                                    {
+                                        deleteMember(orgUrl, m.username);
+                                        setOpenDialogDelete(!openDialogDelete);
+                                    }}
+                                    message={confirmationMsg()}
+                                    cancelButtonText={"No"}
+                                    confirmButtonText={"Yes"}
+                                />
                             </li>) :
                         <li>No members found!</li>}
                 </ul>
@@ -96,7 +127,7 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                     handleClose={() => setOpenDialog(false)} 
                     onSubmit={(values: OrgMember) => addMember(orgUrl, values)} 
                     loading={loading} 
-                    error={error}/>
+                    error={addError}/>
             </Dialog>
         </fieldset>
       </Paper>

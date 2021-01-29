@@ -11,7 +11,9 @@ import {
   retrieveOrgLoadingSelector,
   addOrgMemberErrorSelector,
   addOrgMemberAction,
-  addOrgMemberLoadingSelector
+  addOrgMemberLoadingSelector,
+  deleteOrgMemberAction,
+  deleteOrgMemberErrorSelector
 } from "../redux";
 import Header from "../../../components/Header";
 import { 
@@ -32,6 +34,7 @@ interface Props {
   members:OrgMember[];
   loading: boolean;
   addOrgMemberError?: string;
+  deleteOrgMemberError?: string;
   loadingAddMember: boolean;
   retrieveOrg: (
     ...args: Parameters<typeof retrieveOrganisationAction>
@@ -48,7 +51,9 @@ interface Props {
   addOrgMember: (
     ...args: Parameters<typeof addOrgMemberAction>
   ) => void;
-
+  deleteMember: (
+      ...args: Parameters<typeof deleteOrgMemberAction>
+  ) => void;
 }
 
 const useStyles = makeStyles((theme) => 
@@ -77,7 +82,10 @@ const ViewOrganisationPage: React.FC<Props> = ({
   members,
   loading,
   addOrgMemberError = '',
-  loadingAddMember
+  deleteOrgMemberError = '',
+  loadingAddMember,
+  deleteMember,
+
 }: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
@@ -106,7 +114,9 @@ const ViewOrganisationPage: React.FC<Props> = ({
             addMember={addOrgMember} 
             orgUrl={orgUrl} 
             loading={loadingAddMember} 
-            error={getPrettyError(addOrgMemberError)} />
+            addError={getPrettyError(addOrgMemberError)}
+            deleteError={getPrettyError(deleteOrgMemberError)}
+            deleteMember={deleteMember}/>
         </Grid>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationSources sources={sources}/>
@@ -125,6 +135,7 @@ const mapStateToProps = (state: any) => ({
   members:state.organisations.orgMembers,
   loading: retrieveOrgLoadingSelector(state),
   addOrgMemberError: addOrgMemberErrorSelector(state),
+  deleteOrgMemberError: deleteOrgMemberErrorSelector(state),
   loadingAddMember: addOrgMemberLoadingSelector(state)
 });
 
@@ -133,7 +144,9 @@ const mapActionsToProps = {
   retrieveOrgSources: retrieveOrgSourcesAction,
   retrieveOrgCollections: retrieveOrgCollectionsAction,
   retrieveOrgMembers: retrieveOrgMembersAction,
-  addOrgMember: addOrgMemberAction
+  addOrgMember: addOrgMemberAction,
+  deleteMember:deleteOrgMemberAction
+
 
 };
 
