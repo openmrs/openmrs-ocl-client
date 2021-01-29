@@ -11,7 +11,11 @@ const useStyles = makeStyles({
     token: {
         wordBreak: "break-all",
         color: "black",
-        textAlign: "center"
+        textAlign: "center",
+        filter: "blur(5px)",
+        '&:hover': {
+            filter: "none"
+        }
     },
     container: {
         minWidth: "0"
