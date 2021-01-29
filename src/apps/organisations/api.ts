@@ -59,7 +59,9 @@ const api = {
     retrieveMembers: (orgUrl: string):Promise<AxiosResponse<any>> =>
         authenticatedInstance.get(`${orgUrl}members/`),
     addMember: (orgUrl: string, member: OrgMember):Promise<AxiosResponse<any>> =>
-        authenticatedInstance.put(`${orgUrl}members/${member.username}`)
+        authenticatedInstance.put(`${orgUrl}members/${member.username}`),
+    deleteMember: (orgUrl: string, user:string): Promise<AxiosResponse<any>> =>
+        authenticatedInstance.delete(`${orgUrl}members/${user}`)
   },
   
 };
