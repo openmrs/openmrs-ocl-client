@@ -11,8 +11,7 @@ import {
     Typography, 
     Dialog,
     Collapse,
-    IconButton,
-    MenuItem
+    IconButton
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { OrgMember } from "../types";
@@ -101,7 +100,7 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                     {members?.length ?
                         members.map(m =>
                             <li className={classes.root} key={m.username}>{m.username || m.name}
-                                <MenuItem onClick={confirmDelete} ><DeleteIcon /></MenuItem>
+                                <IconButton onClick={confirmDelete} ><DeleteIcon /></IconButton>
                                 <ConfirmationDialog
                                     open={openDialogDelete}
                                     setOpen={() => setOpenDialogDelete(!openDialogDelete)}
