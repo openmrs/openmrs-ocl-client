@@ -11,7 +11,8 @@ import {
   GET_USER_ORGS_ACTION,
   RETRIEVE_ORGS_ACTION,
   DELETE_ORGANISATION_ACTION,
-  CREATE_ORG_MEMBER_ACTION } 
+  CREATE_ORG_MEMBER_ACTION,
+  DELETE_ORG_MEMBER_ACTION}
   from './actionTypes';
 import { PERSONAL_ORGS_ACTION_INDEX } from '../redux/constants';
 
@@ -60,4 +61,7 @@ export const addOrgMemberErrorSelector = errorSelector(
 
 export const addOrgMemberLoadingSelector = loadingSelector(
   CREATE_ORG_MEMBER_ACTION
+);
+export const deleteOrgMemberErrorSelector = errorSelector(
+    DELETE_ORG_MEMBER_ACTION
 );
