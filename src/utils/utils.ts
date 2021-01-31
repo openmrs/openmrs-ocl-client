@@ -116,3 +116,11 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   });
   return stabilizedThis.map((el) => el[0]);
 }
+
+export const getDate = (date: any) => {
+  if (typeof date === 'object') {
+    const isoDate = date.toISOString();
+    return isoDate.substr(0, isoDate.indexOf('T'));
+  }
+  return typeof date === 'string' ? date.substr(0, date.indexOf('T')) : date;
+};

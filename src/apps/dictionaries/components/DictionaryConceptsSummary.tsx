@@ -1,4 +1,5 @@
 import React from "react";
+import exportFromJSON from 'export-from-json'; //This seems to be reusuable in all sorts of exports i.e json,csv,txt etc
 import { APIDictionary } from "../../dictionaries";
 import {
   Button,
@@ -8,12 +9,11 @@ import {
   Typography,
   Menu,
   MenuItem,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import { MoreVert, TableChartOutlined, FormatListBulleted } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import {useAnchor} from "../../../utils";
-import { CSVLink } from "react-csv";
+import {useAnchor, getDate} from "../../../utils";
 
 interface Props {
   dictionary: APIDictionary;
@@ -55,13 +55,10 @@ const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
   ).length;
   const customConceptCount = conceptReferences.length - fromPreferredSource;
 
-  const csvHeaders = [
-    { label: 'Concept Expression', key: 'expression' },
-    { label: 'Reference Type', key: 'reference_type' }
-  ];
 
   const { updated_on = ''} = dictionary || {};
-  // console.log(new Date(updated_on).toIsoDate())
+  const updatedDate = getDate(updated_on);
+
   return (
     <Paper className="fieldsetParent">
       <fieldset>
@@ -82,17 +79,11 @@ const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
           anchorEl={menuAnchor}
           open={Boolean(menuAnchor)}
           onClose={handleMenuClose}>
-            <MenuItem>
-            <CSVLink
-                headers={csvHeaders}
-                data={dictionary?.references}
-                filename={`${dictionary.name}_head_${dictionary.updated_on}.csv`}
-                enclosingCharacter={``}>
+            <MenuItem onClick={() => exportFromJSON({data: [dictionary], fileName: `${dictionary.name}_head_${updatedDate}.csv`, exportType: 'csv'})}>
               <TableChartOutlined /> 
               <span className={classes.addLeftPadding}>Export Head as CSV</span>
-              </CSVLink>
             </MenuItem>
-            <MenuItem>
+            <MenuItem onClick={() => exportFromJSON({data: dictionary, fileName: `${dictionary.name}_head_${updatedDate}.json`, exportType: 'json'})}>
               <FormatListBulleted /> 
               <span className={classes.addLeftPadding}>Export Head as JSON</span>
             </MenuItem>
