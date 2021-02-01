@@ -9,7 +9,7 @@ import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
 import store from "./redux";
 import { InProgressPage } from "./apps/notifications";
-import { Header, NavDrawer } from "./components";
+import { NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,
   ViewPublicDictionariesPage,
@@ -53,15 +53,11 @@ const AuthenticatedRoutes: React.FC = () => {
         <ViewPublicOrganisationsPage />
       </Route>
       <Route exact path='/orgs/new/'>
-        <Header title='Create Organisation'>
           <CreateOrganisationPage />
-        </Header>
       </Route>
       <Route exact path='/actions/' component={InProgressPage} />
       <Route exact path='/collections/new/'>
-        <Header title='Create Dictionary'>
           <CreateDictionaryPage />
-        </Header>
       </Route>
       <Route exact path='/orgs/:org/'>
          <ViewOrganisationPage />
@@ -91,9 +87,7 @@ const AuthenticatedRoutes: React.FC = () => {
         <ViewPublicSourcesPage />
       </Route>
       <Route exact path='/sources/new/'>
-        <Header title='Create Source'>
           <CreateSourcePage />
-        </Header>
       </Route>
       <Route path='/:ownerType/:owner/sources/:source/concepts'>
         <ConceptRoutes
