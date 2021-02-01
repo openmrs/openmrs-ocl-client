@@ -122,6 +122,8 @@ export const ViewSourcePage: React.FC<Props> = ({
       title={`${getSourceTypeFromPreviousPath(previousPath)} > ${source?.name ||
         ""}`}
       justifyChildren='space-around'
+      backUrl="/user/sources/"
+      backText="Back to sources"
     >
       <ProgressOverlay
         delayRender

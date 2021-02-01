@@ -83,7 +83,7 @@ const EditOrganisationPage: React.FC<Props> = ({
     <Header
       title="Edit Organisation"
       backUrl={orgUrl}
-      backText="Back to organisations"
+      backText="Back to organisation"
     >
       <ToastAlert open={openAlert} setOpen={() => setOpenAlert(!openAlert)} message={deleteError} type="error"/>
        {editError ? <ToastAlert open={openAlert} setOpen={() => setOpenAlert(!openAlert)} message="An error occured" type="error"/> : null }
