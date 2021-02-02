@@ -146,10 +146,10 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   variant="text"
                   size="medium"
                 >
+                  <Button onClick={handleClose}>Cancel</Button>
                   <Button type="submit" disabled={isSubmitting}>
                     Submit
                   </Button>
-                  <Button onClick={handleClose}>Cancel</Button>
                 </ButtonGroup>
               </DialogActions>
             </Form>
