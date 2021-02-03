@@ -105,11 +105,11 @@ const EditOrganisationPage: React.FC<Props> = ({
         <MenuButton backUrl={orgUrl} confirmDelete={() => setOpenDialog(true)}/>
         <ConfirmationDialog
           open={openDialog}
-          setOpen={() => setOpenDialog(true)}
+          setOpen={() => setOpenDialog(!openDialog)}
           onConfirm={() => 
             {
               deleteOrg(orgUrl);
-              setOpenDialog(false);
+              setOpenDialog(!openDialog);
               setOpenAlert(true);
             }}
           message={confirmationMsg()}
