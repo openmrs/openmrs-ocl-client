@@ -47,11 +47,18 @@ const recursivelyFetchToConcepts = async (
     `Found ${getConceptUrls(mappingsLists).length} dependent concepts to add...`
   );
 
-  for (let i = 0; i < levelsToCheck; i += 1) {
+  const loadedConcepts = new Set();
+   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsLists[i].map(
       mapping => mapping.to_concept_code
-    );
-    if (!toConceptCodes.length) break;
+    ).filter(code => !loadedConcepts.has(code));
+
+    if (!toConceptCodes.length) { 
+      break;
+    }
+
+    toConceptCodes.forEach(code => loadedConcepts.add(code));
+
     const conceptMappings = await fetchMappings(fromSource, toConceptCodes);
     mappingsLists.push(removeExternalMappings(conceptMappings));
     updateNotification(
@@ -61,7 +68,7 @@ const recursivelyFetchToConcepts = async (
     );
   }
 
-  return getConceptUrls(mappingsLists);
+  return getConceptUrls(mappingsLists);   
 };
 
 export { recursivelyFetchToConcepts };
