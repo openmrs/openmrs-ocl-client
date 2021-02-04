@@ -89,13 +89,19 @@ const conceptNameCell = (
       data-testclass='name'
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
-    >
-      <Link
+    >{buttons===undefined?
+      (<Link
+        onClick={(e) => e.stopPropagation()}
+        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
+      >
+        {row.display_name}
+      </Link>):
+      (<Link
         onClick={(e) => e.stopPropagation()}
         to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}&canAddConcept=${btoa((buttons.addToDictionary).toString())}`}
       >
         {row.display_name}
-      </Link>
+      </Link>)}
     </TableCell>
   );
 };
