@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {Grid} from "@material-ui/core";
-import {ConceptForm} from "../components";
+import {ConceptForm, AddConceptToDictionaryIcon} from "../components";
 import {AppState} from "../../../redux";
 import {retrieveConceptAction, viewConceptErrorsSelector, viewConceptLoadingSelector} from "../redux";
 import {APIConcept, apiConceptToConcept, APIMapping} from "../types";
@@ -13,7 +13,7 @@ import {orgsSelector} from "../../authentication/redux/reducer";
 import {CONTEXT, ProgressOverlay, useQueryParams} from "../../../utils";
 import {EditButton} from "../../containers/components/EditButton";
 import {EDIT_BUTTON_TITLE} from "../redux/constants";
-
+import {recursivelyAddConceptsToDictionaryAction} from "../../dictionaries/redux";
 interface Props {
   loading: boolean;
   concept?: APIConcept;
@@ -22,6 +22,9 @@ interface Props {
   retrieveConcept: (...args: Parameters<typeof retrieveConceptAction>) => void;
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
+  addConceptsToDictionary?: (
+    ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
+  ) => void;
 }
 
 const ViewConceptPage: React.FC<Props> = ({
@@ -31,14 +34,18 @@ const ViewConceptPage: React.FC<Props> = ({
   loading,
   errors,
   profile,
-  usersOrgs
+  usersOrgs,
+  addConceptsToDictionary
 }) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
   }>();
-  const { linkedDictionary } = useQueryParams();
+  var { linkedDictionary ,dictionaryToAddTo ,canAddConcept} = useQueryParams();
+  if(canAddConcept){
+    canAddConcept=atob(canAddConcept);
+  }
   const conceptSource = concept?.source_url;
 
   // we can modify the concept and it lives in our dictionary's linked source
@@ -52,6 +59,7 @@ const ViewConceptPage: React.FC<Props> = ({
   }, [url, retrieveConcept]);
 
   return (
+    <>
     <Header
       allowImplicitNavigation
       title={concept ? concept.display_name : "View concept"}
@@ -77,6 +85,20 @@ const ViewConceptPage: React.FC<Props> = ({
         )}
       </ProgressOverlay>
     </Header>
+    <AddConceptToDictionaryIcon
+      dictionaryToAddTo={dictionaryToAddTo}
+      canAddConcept={canAddConcept}
+      concept={concept}
+      addConceptsToDictionary={(concepts: APIConcept[]) =>
+        dictionaryToAddTo &&
+        addConceptsToDictionary?addConceptsToDictionary(
+          linkedDictionary,
+          dictionaryToAddTo,
+          concepts
+        ):null
+      }
+    />
+   </>
   );
 };
 
@@ -90,7 +112,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
-  retrieveConcept: retrieveConceptAction
+  retrieveConcept: retrieveConceptAction,
+  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage);

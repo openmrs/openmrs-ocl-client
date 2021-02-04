@@ -28,6 +28,7 @@ interface Props extends QueryParams {
   setQ: Function;
   buttons?: { [key: string]: boolean };
   addConceptsToDictionary: Function;
+  dictionaryToAddTo?:string;
   removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   linkedDictionary?: string;
   linkedSource?: string;
@@ -114,6 +115,7 @@ export const ConceptsTable: React.FC<Props> = ({
   toggleShowOptions,
   buttons = {},
   addConceptsToDictionary,
+  dictionaryToAddTo,
   removeConceptsFromDictionary,
   // current dictionary, for editing and creating concepts
   linkedDictionary,
@@ -243,6 +245,7 @@ export const ConceptsTable: React.FC<Props> = ({
                     menu={menu}
                     removeConceptsFromDictionary={removeConceptsFromDictionary}
                     addConceptsToDictionary={addConceptsToDictionary}
+                    dictionaryToAddTo={dictionaryToAddTo}
                     isItemSelected={isItemSelected}
                     labelId={labelId}
                   />

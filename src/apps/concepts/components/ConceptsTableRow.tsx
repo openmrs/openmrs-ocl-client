@@ -79,7 +79,9 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
-  linkedDictionary: string | undefined
+  linkedDictionary: string | undefined,
+  dictionaryToAddTo:string | undefined,
+  buttons: { [key: string]: boolean }
 ) => {
   return (
     <TableCell
@@ -90,7 +92,7 @@ const conceptNameCell = (
     >
       <Link
         onClick={(e) => e.stopPropagation()}
-        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
+        to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}&canAddConcept=${btoa((buttons.addToDictionary).toString())}`}
       >
         {row.display_name}
       </Link>
@@ -214,6 +216,7 @@ interface ConceptsTableRowProps {
   menu: { index: number; anchor: null | HTMLElement };
   removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   addConceptsToDictionary: Function;
+  dictionaryToAddTo?:string,
   isItemSelected: boolean;
   labelId: string;
 }
@@ -232,6 +235,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
     menu,
     removeConceptsFromDictionary,
     addConceptsToDictionary,
+    dictionaryToAddTo,
     isItemSelected,
     labelId,
   } = props;
@@ -248,7 +252,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(toggleSelect, row, linkedDictionary)}
+      {conceptNameCell(toggleSelect, row, linkedDictionary,dictionaryToAddTo,buttons)}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
