@@ -89,7 +89,7 @@ const conceptNameCell = (
       data-testclass='name'
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
-    >{buttons===undefined?
+    >{buttons.addToDictionary===undefined?
       (<Link
         onClick={(e) => e.stopPropagation()}
         to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
