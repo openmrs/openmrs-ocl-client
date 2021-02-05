@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import Header from "../../components/Header";
 import {
   EditDictionaryPage,
   ViewDictionaryPage,
@@ -34,9 +33,7 @@ const Routes: React.FC<Props> = ({
       )}
       {!viewDictionary ? null : (
         <Route exact path={`${path}/:collection/`}>
-          <Header title='Details' justifyChildren='space-around'>
             <ViewDictionaryPage />
-          </Header>
         </Route>
       )}
       {!editDictionary ? null : (

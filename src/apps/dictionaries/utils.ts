@@ -32,3 +32,17 @@ export const dictionaryNameFromUrl = (url: string): string => {
   let words = url.split("/");
   return words[words.length - 2];
 };
+
+export const getDictionaryTypeFromPreviousPath = (previousPath: String) => {
+  switch (previousPath) {
+      case '/collections/':
+          return 'Public Dictionaries';
+      case '/user/collections/':
+          return 'Your Dictionaries';
+      case '/user/orgs/collections/' :
+          return "Your Organisations' Dictionaries";
+      default:
+          return 'Dictionaries'
+  }
+};
+

@@ -1,10 +1,18 @@
-import React, {useEffect} from "react";
-import {DictionaryDetails, DictionaryForm} from "../components";
-import {Grid, Paper, Typography} from "@material-ui/core";
-import {connect} from "react-redux";
-import {APIDictionary, apiDictionaryToDictionary, APIDictionaryVersion, DictionaryVersion} from "../types";
-import {orgsSelector, profileSelector} from "../../authentication/redux/reducer";
-import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
+import React, { useEffect } from "react";
+import { DictionaryDetails, DictionaryForm } from "../components";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import { connect } from "react-redux";
+import {
+  APIDictionary,
+  apiDictionaryToDictionary,
+  APIDictionaryVersion,
+  DictionaryVersion,
+} from "../types";
+import {
+  orgsSelector,
+  profileSelector,
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 
 import {
   createDictionaryVersionAction,
@@ -16,16 +24,16 @@ import {
   retrieveDictionaryErrorSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector,
-  retrieveDictionaryVersionsAction
+  retrieveDictionaryVersionsAction,
 } from "../redux";
-import {AppState} from "../../../redux";
-import {useLocation, useParams} from "react-router-dom";
-import {CONTEXT} from "../../../utils";
-import {ProgressOverlay} from "../../../utils/components";
-import {EditButton} from "../../containers/components/EditButton";
-import {EDIT_BUTTON_TITLE} from "../redux/constants";
+import { AppState } from "../../../redux";
+import { useLocation, useParams } from "react-router-dom";
+import { CONTEXT } from "../../../utils";
+import { ProgressOverlay } from "../../../utils/components";
+import { EditButton } from "../../containers/components/EditButton";
+import { EDIT_BUTTON_TITLE } from "../redux/constants";
 import ContainerReleasedVersions from "../../containers/components/ContainerReleasedVersions";
-
+import Header from "../../../components/Header";
 interface Props {
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
@@ -38,11 +46,11 @@ interface Props {
     ...args: Parameters<typeof createDictionaryVersionAction>
   ) => void;
   editDictionaryVersion: (
-      ...args: Parameters<typeof editDictionaryVersionAction>
+    ...args: Parameters<typeof editDictionaryVersionAction>
   ) => void;
   retrieveDictionaryVersions: (
-      ...args: Parameters<typeof retrieveDictionaryVersionsAction>
-  ) => void,
+    ...args: Parameters<typeof retrieveDictionaryVersionsAction>
+  ) => void;
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
@@ -63,7 +71,7 @@ export const ViewDictionaryPage: React.FC<Props> = ({
   retrieveDictionaryVersions,
   createVersionLoading,
   createVersionError,
-  retrieveDictionaryErrors
+  retrieveDictionaryErrors,
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -83,74 +91,83 @@ export const ViewDictionaryPage: React.FC<Props> = ({
   );
   const showEditButton = canEditDictionary; // redundant, yes, but we don't want to couple them
 
+  const { name } = dictionary || {};
   return (
-    <ProgressOverlay
-      delayRender
-      loading={dictionaryLoading}
-      error={
-        retrieveDictionaryErrors
-          ? "Could not load dictionary. Refresh the page to retry"
-          : undefined
-      }
+    <Header
+      title={` Your Dictionaries > ${name}`}
+      backUrl="/user/collections/"
+      backText="Back to dictionaries"
+      justifyChildren="space-around"
     >
-      <Grid id="viewDictionaryPage" item xs={5} component="div">
-        <Paper className="fieldsetParent">
-          <fieldset style={{minWidth: "0"}} >
-            <Typography component="legend" variant="h5" gutterBottom>
-              General Details
-            </Typography>
-            <DictionaryForm
-              context={CONTEXT.view}
-              savedValues={apiDictionaryToDictionary(dictionary)}
-              profile={profile}
-              usersOrgs={usersOrgs}
-              loading={true}
-            />
-          </fieldset>
-        </Paper>
-      </Grid>
-      <Grid item xs={5} container spacing={2}>
-        <Grid item xs={12} component="div">
-          {dictionary ? (
-            <DictionaryDetails dictionary={dictionary} />
-          ) : (
-            <span>Couldn't find dictionary details</span>
-          )}
+      <ProgressOverlay
+        delayRender
+        loading={dictionaryLoading}
+        error={
+          retrieveDictionaryErrors
+            ? "Could not load dictionary. Refresh the page to retry"
+            : undefined
+        }
+      >
+        <Grid id="viewDictionaryPage" item xs={5} component="div">
+          <Paper className="fieldsetParent">
+            <fieldset style={{ minWidth: "0" }}>
+              <Typography component="legend" variant="h5" gutterBottom>
+                General Details
+              </Typography>
+              <DictionaryForm
+                context={CONTEXT.view}
+                savedValues={apiDictionaryToDictionary(dictionary)}
+                profile={profile}
+                usersOrgs={usersOrgs}
+                loading={true}
+              />
+            </fieldset>
+          </Paper>
         </Grid>
-        
-        <Grid item xs={12} component="div">
-          {versionsLoading ? (
-            "Loading versions..."
-          ) : (
-            <ContainerReleasedVersions
-              versions={versions}
-              showCreateVersionButton={canEditDictionary}
-              createVersion={async (data: DictionaryVersion) => {
-                  const response: any = await createDictionaryVersion(url, data);
+        <Grid item xs={5} container spacing={2}>
+          <Grid item xs={12} component="div">
+            {dictionary ? (
+              <DictionaryDetails dictionary={dictionary} />
+            ) : (
+              <span>Couldn't find dictionary details</span>
+            )}
+          </Grid>
+
+          <Grid item xs={12} component="div">
+            {versionsLoading ? (
+              "Loading versions..."
+            ) : (
+              <ContainerReleasedVersions
+                versions={versions}
+                showCreateVersionButton={canEditDictionary}
+                createVersion={async (data: DictionaryVersion) => {
+                  const response: any = await createDictionaryVersion(
+                    url,
+                    data
+                  );
                   if (response) {
                     retrieveDictionaryVersions(url);
                   }
-                }
-              }
-              createVersionLoading={createVersionLoading}
-              createVersionError={createVersionError}
-              url={url}
-              editVersion={async (data: DictionaryVersion) => {
-                  const response: any = await  editDictionaryVersion(url, data);
+                }}
+                createVersionLoading={createVersionLoading}
+                createVersionError={createVersionError}
+                url={url}
+                editVersion={async (data: DictionaryVersion) => {
+                  const response: any = await editDictionaryVersion(url, data);
                   if (response) {
                     retrieveDictionaryVersions(url);
                   }
-                }
-              }
-              type={"Dictionary"}
-            />
-          )}
+                }}
+                type={"Dictionary"}
+              />
+            )}
+          </Grid>
         </Grid>
-      </Grid>
-      {!showEditButton ? null : (
-          <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE}/>
-      )}
-    </ProgressOverlay>
+        {!showEditButton ? null : (
+          <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE} />
+        )}
+      </ProgressOverlay>
+    </Header>
   );
 };
 
@@ -163,13 +180,13 @@ export const mapStateToProps = (state: AppState) => ({
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
   createVersionError: createDictionaryVersionErrorSelector(state),
-  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state)
+  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state),
 });
 export const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
   createDictionaryVersion: createDictionaryVersionAction,
   editDictionaryVersion: editDictionaryVersionAction,
-  retrieveDictionaryVersions: retrieveDictionaryVersionsAction
+  retrieveDictionaryVersions: retrieveDictionaryVersionsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);
