@@ -133,7 +133,7 @@ const ContainerVersionForm: React.FC<Props> = ({
                   variant="caption"
                   component="div"
                 >
-                  {error.detail}
+                  {error}
                 </Typography>
               )}
               <DialogActions>

@@ -136,7 +136,7 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   variant="caption"
                   component="div"
                 >
-                  {error.detail}
+                  {error}
                 </Typography>
               )}
               <DialogActions>
