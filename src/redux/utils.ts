@@ -103,15 +103,19 @@ export function invalidateCache(action: string, dispatch: Function) {
 export function errorMsgResponse(response: any) {
   let errorMsgResponse = [];
   const genericErrorMessage =
-      "Action could not be completed. Please retry.";
-
-  for (let key in response.data) {
-    errorMsgResponse.push(
+      "Action could not be completed. Please retry.";  
+      
+  if (response.data && 'detail' in response.data) {
+    errorMsgResponse.push(response.data.detail);
+  } else {
+    for (let key in response.data) {
+      errorMsgResponse.push(
         Array.isArray(response.data[key])
             ? response.data[key].join(',')
             : response.data[key]
-    )
-  };
+      )
+    };
+  }
   return errorMsgResponse.length > 0 ? errorMsgResponse.join('\n') : genericErrorMessage;
 };
 
