@@ -47,6 +47,13 @@ const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   profileLoading: getUserDetailsLoadingSelector(state)
 });
+const location = {
+  pathname: '/login'
+  state: { from: {pathname: '/Main'}}
+};
+this.props.history.push(location);
+render() {return (<ComposedComponent {...this.props} />
+)};
 
 const mapDispatchToProps = { getProfile: getUserDetailsAction };
 
