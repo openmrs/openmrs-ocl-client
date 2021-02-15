@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import {
   getUserDetailsAction,
   getUserDetailsLoadingSelector,
-  profileSelector
+  profileSelector,
+  setNextPageAction
 } from "../redux";
 import { APIProfile } from "../types";
 import { ProgressOverlay } from "../../../utils/components";
@@ -29,7 +30,13 @@ export const AuthenticationRequired: React.FC<Props> = ({
     if (isLoggedIn) getProfile();
   }, [isLoggedIn, getProfile]);
 
-  if (!isLoggedIn) return <Redirect to="/login" />;
+const location = useLocation();
+
+if (!isLoggedIn) {
+  const currentPage = location.pathname + location.search + location.hash;
+  setNextPageAction(currentPage);
+  return <Redirect to="/login" />;
+}
 
   return (
     <ProgressOverlay
@@ -47,15 +54,8 @@ const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   profileLoading: getUserDetailsLoadingSelector(state)
 });
-const location = {
-  pathname: '/login'
-  state: { from: {pathname: '/Main'}}
-};
-this.props.history.push(location);
-render() {return (<ComposedComponent {...this.props} />
-)};
 
-const mapDispatchToProps = { getProfile: getUserDetailsAction };
+const mapDispatchToProps = { getProfile: getUserDetailsAction,setNextPageAction };
 
 export default connect(
   mapStateToProps,

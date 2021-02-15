@@ -12,6 +12,8 @@ interface Props {
   login: (...args: Parameters<typeof loginAction>) => void;
   loading: boolean;
   errors?: any;
+  nextPage: any;
+  clearNextPage: any;
 }
 
 const useStyles = makeStyles({
@@ -29,7 +31,10 @@ const LoginPage: React.FC<Props> = ({
   isLoggedIn,
   login,
   loading,
-  errors 
+  errors,
+  nextPage,
+  clearNextPage
+
 }: Props) => {
   const classes = useStyles();
 
@@ -41,7 +46,13 @@ const LoginPage: React.FC<Props> = ({
     };
   }, []);
 
-  if (isLoggedIn) return <Redirect to="/" />;
+  if (isLoggedIn) {
+  if (nextPage) {
+    clearNextPage();
+    return <Redirect to={nextPage} />;
+  }
+  return <Redirect to="/" />;
+}
   else
     return (
       <Grid
