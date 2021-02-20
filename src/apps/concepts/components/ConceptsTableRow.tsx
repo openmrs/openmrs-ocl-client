@@ -79,8 +79,8 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
-  linkedDictionary: string | undefined,
-  dictionaryToAddTo:string | undefined,
+  linkedDictionary?: string,
+  dictionaryToAddTo?:string,
   buttons: { [key: string]: boolean }
 ) => {
   return (
