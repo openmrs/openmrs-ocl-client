@@ -79,9 +79,9 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
+  buttons: { [key: string]: boolean },
   linkedDictionary?: string,
-  dictionaryToAddTo?:string,
-  buttons: { [key: string]: boolean }
+  dictionaryToAddTo?:string
 ) => {
   return (
     <TableCell
@@ -211,7 +211,7 @@ interface ConceptsTableRowProps {
   index: number;
   selected: string[];
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void;
-  linkedDictionary: string | undefined;
+  linkedDictionary?: string;
   buttons: { [key: string]: boolean };
   linkedSource: string | undefined;
   canModifyConcept: (concept: APIConcept) => boolean;
@@ -258,7 +258,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(toggleSelect, row, linkedDictionary,dictionaryToAddTo,buttons)}
+      {conceptNameCell(toggleSelect, row, buttons, linkedDictionary,dictionaryToAddTo)}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
