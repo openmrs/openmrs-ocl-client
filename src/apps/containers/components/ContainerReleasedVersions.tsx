@@ -43,6 +43,11 @@ interface Props {
   type: string;
 }
 const useStyles = makeStyles({
+    link: {
+        textDecoration: "none",
+        color: "inherit",
+        width: "100%"
+    },
   container: {
     maxHeight: 400,
   },
@@ -146,6 +151,27 @@ const ContainerReleasedVersions: React.FC<Props> = ({
       )
     }
   };
+    const copyDictionary = () => {
+        if(version.released && type === "Dictionary"){
+            return (
+                <MenuItem onClick={handleCloseMenu}>
+                    <CopyToClipboard
+                        text={`${
+                            version.released
+                                ? `${BASE_URL}${url}references/?cascade=sourcemappings`
+                                : null
+                        }`}
+                    >
+                        <Grid data-testid={"copy-dictionary"}>
+                            <FileCopyIcon fontSize={"small"} />
+                            <Link className={classes.link} to={`/collections/new/`}>Copy Dictionary</Link>
+                        </Grid>
+                    </CopyToClipboard>
+
+                </MenuItem>
+            )
+        }
+    };
 
   const releaseStatus = (row: Version) => {
     if(showCreateVersionButton) {
@@ -229,6 +255,7 @@ const ContainerReleasedVersions: React.FC<Props> = ({
                         </Grid>
                       </MenuItem>
                       {copySubscriptionUrl()}
+                      {copyDictionary()}
                     </Menu>
                   </TableCell>
                 </TableRow>
