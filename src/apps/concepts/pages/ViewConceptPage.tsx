@@ -1,18 +1,15 @@
 import React, {useEffect} from "react";
 import {Grid} from "@material-ui/core";
-import {ConceptForm, AddConceptToDictionaryIcon} from "../components";
+import {ConceptForm, ConceptSpeedDial} from "../components";
 import {AppState} from "../../../redux";
 import {retrieveConceptAction, viewConceptErrorsSelector, viewConceptLoadingSelector} from "../redux";
 import {APIConcept, apiConceptToConcept, APIMapping} from "../types";
 import {useLocation, useParams} from "react-router";
 import {connect} from "react-redux";
 import Header from "../../../components/Header";
-import {startCase, toLower} from "lodash";
-import {APIOrg, APIProfile, canModifyContainer, profileSelector} from "../../authentication";
+import {APIOrg, APIProfile, profileSelector} from "../../authentication";
 import {orgsSelector} from "../../authentication/redux/reducer";
 import {CONTEXT, ProgressOverlay, useQueryParams} from "../../../utils";
-import {EditButton} from "../../containers/components/EditButton";
-import {EDIT_BUTTON_TITLE} from "../redux/constants";
 import {recursivelyAddConceptsToDictionaryAction} from "../../dictionaries/redux";
 interface Props {
   loading: boolean;
@@ -42,17 +39,11 @@ const ViewConceptPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-  var { linkedDictionary ,dictionaryToAddTo ,canAddConcept} = useQueryParams();
-  if(canAddConcept){
-    canAddConcept=atob(canAddConcept);
-  }
+  const { linkedDictionary, dictionaryToAddTo} = useQueryParams<{
+    linkedDictionary: string
+    dictionaryToAddTo: string
+  }>();
   const conceptSource = concept?.source_url;
-
-  // we can modify the concept and it lives in our dictionary's linked source
-  const showEditButton =
-    canModifyContainer(ownerType, owner, profile, usersOrgs) &&
-    conceptSource &&
-    concept?.url.includes(conceptSource);
 
   useEffect(() => {
     retrieveConcept(url);
@@ -80,24 +71,21 @@ const ViewConceptPage: React.FC<Props> = ({
             errors={errors}
           />
         </Grid>
-        {!showEditButton ? null : (
-            <EditButton url={`${url}edit/?linkedDictionary=${linkedDictionary}`} title={EDIT_BUTTON_TITLE}/>
-        )}
+        {concept && conceptSource &&
+          <ConceptSpeedDial
+            concept={concept}
+            conceptSource={conceptSource}
+            ownerType={ownerType}
+            owner={owner}
+            profile={profile}
+            usersOrgs={usersOrgs}
+            linkedDictionary={linkedDictionary}
+            dictionaryToAddTo={dictionaryToAddTo}
+            conceptUrl={url}
+          />
+        }
       </ProgressOverlay>
     </Header>
-    <AddConceptToDictionaryIcon
-      dictionaryToAddTo={dictionaryToAddTo}
-      canAddConcept={canAddConcept}
-      concept={concept}
-      addConceptsToDictionary={(concepts: APIConcept[]) =>
-        dictionaryToAddTo &&
-        addConceptsToDictionary?addConceptsToDictionary(
-          linkedDictionary,
-          dictionaryToAddTo,
-          concepts
-        ):null
-      }
-    />
    </>
   );
 };

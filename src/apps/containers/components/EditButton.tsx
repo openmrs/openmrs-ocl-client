@@ -9,16 +9,16 @@ interface Props {
 }
 
 export const EditButton: React.FC<Props> = ({
-                                                url,
-                                                title
-                                            }) => {
-    return (
-        <Link to={url}>
-            <Tooltip title={title}>
-                <Fab color="primary" className="fab">
-                    <EditIcon/>
-                </Fab>
-            </Tooltip>
-        </Link>
-    )
-};
+  url,
+  title
+}) => {
+  return (
+    <Link to={url}>
+      <Tooltip title={title}>
+        <Fab color="primary" className="fab">
+          <EditIcon/>
+        </Fab>
+      </Tooltip>
+    </Link>
+  );
+}

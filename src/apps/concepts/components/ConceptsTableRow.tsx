@@ -98,7 +98,7 @@ const conceptNameCell = (
       </Link>):
       (<Link
         onClick={(e) => e.stopPropagation()}
-        to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}&canAddConcept=${btoa((buttons.addToDictionary).toString())}`}
+        to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
       >
         {row.display_name}
       </Link>)}
