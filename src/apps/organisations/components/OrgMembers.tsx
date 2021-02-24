@@ -92,7 +92,7 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                 </IconButton>
               }
             >
-              {addError &&`Adding:${addError}` || deleteError && `Deleting:${deleteError}`}
+              {(addError &&`Adding: ${addError}`) || (deleteError && `Deleting: ${deleteError}`)}
             </Alert>
           </Collapse>
             <List>
