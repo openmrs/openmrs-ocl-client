@@ -12,11 +12,12 @@ import { ProgressOverlay } from "../../../utils/components";
 import { AppState } from "../../../redux";
 
 interface Props {
-  children: any;
-  isLoggedIn: boolean;
-  getProfile: Function;
-  profile?: APIProfile;
-  profileLoading: boolean;
+  children: any
+  isLoggedIn: boolean
+  getProfile: Function
+  profile?: APIProfile
+  profileLoading: boolean
+  setNextPage: (...args: Parameters<typeof setNextPageAction>) => void
 }
 
 export const AuthenticationRequired: React.FC<Props> = ({
@@ -24,19 +25,20 @@ export const AuthenticationRequired: React.FC<Props> = ({
   isLoggedIn,
   getProfile,
   profile,
-  profileLoading
+  profileLoading,
+  setNextPage
 }: Props) => {
   useEffect(() => {
     if (isLoggedIn) getProfile();
   }, [isLoggedIn, getProfile]);
 
-const location = useLocation();
+  const location = useLocation();
 
-if (!isLoggedIn) {
-  const currentPage = location.pathname + location.search + location.hash;
-  setNextPageAction(currentPage);
-  return <Redirect to="/login" />;
-}
+  if (!isLoggedIn) {
+    const currentPage = location.pathname + location.search + location.hash;
+    setNextPage(currentPage);
+    return <Redirect to="/login" />;
+  }
 
   return (
     <ProgressOverlay
@@ -55,7 +57,10 @@ const mapStateToProps = (state: AppState) => ({
   profileLoading: getUserDetailsLoadingSelector(state)
 });
 
-const mapDispatchToProps = { getProfile: getUserDetailsAction,setNextPageAction };
+const mapDispatchToProps = {
+  getProfile: getUserDetailsAction,
+  setNextPage: setNextPageAction
+};
 
 export default connect(
   mapStateToProps,

@@ -20,6 +20,7 @@ export interface AuthState {
   token?: string;
   profile?: APIProfile;
   orgs?: APIOrg[];
+  nextPage?: string
 }
 
 export {};
