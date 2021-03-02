@@ -39,13 +39,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  children: any;
+  children: React.ReactNode;
   title: string;
   justifyChildren?: string;
   loadingList: boolean[];
   backUrl?: string;
   backText?: string;
-  headerComponent?: any;
+  headerComponent?: React.ReactNode;
   allowImplicitNavigation?: boolean;
 }
 

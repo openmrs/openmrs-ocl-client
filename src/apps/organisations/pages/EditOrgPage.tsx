@@ -17,6 +17,7 @@ import {CONTEXT, usePrevious} from "../../../utils"
 import {ProgressOverlay, ConfirmationDialog, ToastAlert} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {MenuButton} from "../components";
+import { AppState } from "../../../redux";
 interface Props {
   errors?:{};
   editError?: {};
@@ -120,7 +121,7 @@ const EditOrganisationPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   editedOrganisation: state.organisations.editedOrganisation,
   organisation: state.organisations.organisation,
   loading: editOrganisationLoadingSelector(state),

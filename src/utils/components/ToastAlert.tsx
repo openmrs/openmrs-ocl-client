@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Snackbar } from "@material-ui/core";
+import { makeStyles, Snackbar, SnackbarCloseReason } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 
 interface Props {
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ToastAlert = ({message='', type, open, setOpen}:Props) => {
-  const handleClose = (event:any, reason:any) => {
+  const handleClose = (_: any, reason: SnackbarCloseReason) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -27,10 +27,29 @@ const ToastAlert = ({message='', type, open, setOpen}:Props) => {
   };
 
   const classes = useStyles();
-  return message !== '' ? <div className={classes.root}>
-    {type === "error" ? 
-    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={handleClose}><Alert severity="error">{message}</Alert></Snackbar> :
-    <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open} autoHideDuration={2000} onClose={handleClose}><Alert severity="success">{message}</Alert></Snackbar>}
+  return message !== '' ?
+    <div className={classes.root}>
+      {type === "error" ? 
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open}
+          autoHideDuration={2000}
+          onClose={handleClose}>
+            <Alert severity="error">
+              {message}
+            </Alert>
+        </Snackbar> :
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          open={open}
+          autoHideDuration={2000}
+          onClose={handleClose}>
+            <Alert severity="success">
+              {message}
+            </Alert>
+        </Snackbar>
+      }
     </div> : null;
 }
+
 export default ToastAlert;

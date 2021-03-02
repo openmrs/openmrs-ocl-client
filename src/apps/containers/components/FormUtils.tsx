@@ -1,7 +1,7 @@
 import {ListSubheader, MenuItem} from "@material-ui/core";
 import React from "react";
 import {APIOrg, APIProfile} from "../../authentication";
-import {LOCALES} from "../../../utils";
+import {BaseConceptContainer, LOCALES} from "../../../utils";
 
 export const showUserName = (profile: APIProfile|undefined) => {
     return profile ? (
@@ -34,7 +34,7 @@ function pushLocale(labels: Array<JSX.Element>, value: string, label: string) {
     );
 }
 
-export const supportedLocalesLabel = (values: any) => {
+export const supportedLocalesLabel = (values: BaseConceptContainer | {default_locale: string}) => {
     const labels: Array<JSX.Element> = [];
     LOCALES.filter(
         ({value}) => value !== values.default_locale

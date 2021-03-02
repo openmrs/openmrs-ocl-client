@@ -20,6 +20,7 @@ import Header from "../../../components/Header";
 
 import { getSourceTypeFromPreviousPath } from "../utils";
 import {useLocation, useParams} from "react-router-dom";
+import { AppState } from "../../../redux";
 
 
 interface Props {
@@ -81,7 +82,7 @@ const CreateSourcePage: React.FC<Props> = ({
   );
 };
 
-export const mapStateToProps = (state: any) => ({
+export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   loading: createSourceLoadingSelector(state),

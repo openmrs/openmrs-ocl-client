@@ -7,6 +7,7 @@ import { dictionariesReducer } from "../apps/dictionaries";
 import { conceptsReducer } from "../apps/concepts";
 import { sourcesReducer} from "../apps/sources";
 import { organisationsReducer } from "../apps/organisations";
+import { AppState } from "./types";
 
 export const STORE_VERSION = "1";
 export const CURRENT_STORE_VERSION_KEY = "currentStoreVersion";
@@ -16,7 +17,7 @@ const doNotPersist = ["dictionaries", "concepts", "status", "sources"].reduce(
   {}
 );
 
-const saveState = (appState: any) => {
+const saveState = (appState: AppState) => {
   const state = {
     ...appState,
     ...doNotPersist

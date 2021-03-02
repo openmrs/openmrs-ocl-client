@@ -26,6 +26,7 @@ import {ProgressOverlay} from "../../../utils/components";
 import {Grid, makeStyles, createStyles} from "@material-ui/core";
 import {EditButton} from "../../containers/components/EditButton";
 import {getPrettyError} from "../../../utils";
+import { AppState } from "../../../redux";
 
 interface Props {
   organisation: APIOrganisation;
@@ -128,7 +129,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   organisation: state.organisations.organisation,
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,

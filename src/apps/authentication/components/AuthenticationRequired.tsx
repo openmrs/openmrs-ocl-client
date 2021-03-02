@@ -8,6 +8,7 @@ import {
 } from "../redux";
 import { APIProfile } from "../types";
 import { ProgressOverlay } from "../../../utils/components";
+import { AppState } from "../../../redux";
 
 interface Props {
   children: any;
@@ -41,7 +42,7 @@ export const AuthenticationRequired: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   isLoggedIn: state.auth.isLoggedIn,
   profile: profileSelector(state),
   profileLoading: getUserDetailsLoadingSelector(state)

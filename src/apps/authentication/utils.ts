@@ -15,7 +15,7 @@ const redirectIfNotLoggedIn = (response: AxiosResponse) => {
   return response;
 };
 
-const addAuthToken = (data: any, headers: any) => {
+const addAuthToken = (data: any, headers?: any) => {
   headers["Authorization"] = `Token ${
     (store.getState() as AppState).auth.token
   }`;

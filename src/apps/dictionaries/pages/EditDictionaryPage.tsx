@@ -157,7 +157,7 @@ const EditDictionaryPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   createAndAddLinkedSourceLoading: createAndAddLinkedSourceLoadingSelector(

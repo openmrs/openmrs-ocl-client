@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  children: any;
+  children: React.ReactNode;
   loading: boolean;
   loadingMessage?: string;
   delayRender?: boolean;

@@ -20,6 +20,7 @@ import { createSourceAndDictionaryAction } from "../redux/actions";
 import Header from "../../../components/Header";
 import { getDictionaryTypeFromPreviousPath } from "../utils";
 import { useLocation, useParams } from "react-router-dom";
+import { AppState } from "../../../redux";
 interface Props {
   errors?: {};
   profile?: APIProfile;
@@ -80,7 +81,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   loading: createDictionaryLoadingSelector(state),

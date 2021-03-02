@@ -181,7 +181,7 @@ function ValueContainer(props: ValueContainerProps<Option>) {
   );
 }
 
-const DropdownIndicator = (props: any) => {
+const DropdownIndicator = (props: IndicatorProps<Option>) => {
   return (
     <ReactSelectComponents.DropdownIndicator
       className={props.selectProps.classes.icon}

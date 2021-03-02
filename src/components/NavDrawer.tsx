@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  children: any;
+  children: React.ReactNode;
   logout: Function;
   profile?: APIProfile;
 }
