@@ -3,7 +3,7 @@ import { APISource, SourceState } from "../types";
 import { AuthState } from "../../authentication";
 import { DictionaryState } from "../../dictionaries";
 import { ConceptsState } from "../../concepts";
-import { OrganisationState } from "../../organisations";
+import { APIOrganisation, OrganisationState } from "../../organisations";
 
 export const testSource: APISource = {
   id: "MSF-SOURCE",
@@ -51,6 +51,7 @@ export const publicSources: SourceState = {
 };
 
 export const organisationState: OrganisationState = {
+  organisation: {} as APIOrganisation,
   organisations: []
 }; 
 

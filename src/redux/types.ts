@@ -6,7 +6,7 @@ import {SourceState} from "../apps/sources";
 import { OrganisationState } from "../apps/organisations";
 
 export interface StatusState {
-  [key: string]: boolean[] | string[] | undefined[];
+  [key: string]: any[];
 }
 
 export interface AppState {

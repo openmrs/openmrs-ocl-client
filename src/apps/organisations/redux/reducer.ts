@@ -12,11 +12,11 @@ import {
   CREATE_ORG_MEMBER_ACTION
 } from "./actionTypes";
 import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
-import { OrganisationState } from "../types";
+import { APIOrganisation, OrganisationState } from "../types";
 
 const initialState: OrganisationState = {
   organisations: [],
-  organisation: {}
+  organisation: {} as APIOrganisation
 }
 
 export const reducer = createReducer(initialState, {

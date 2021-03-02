@@ -22,6 +22,7 @@ import {CONTEXT, debug, usePrevious, useQueryParams} from "../../../utils"
 import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
 import {EditMenu} from "../../containers/components/EditMenu";
+import { AppState } from "../../../redux";
 
 interface StateProps {
   errors?: {};
@@ -182,7 +183,7 @@ const mapActionsToProps = {
   createAndAddLinkedSource: createAndAddLinkedSourceAction
 };
 
-export default connect<StateProps, ActionProps, unknown>(
+export default connect(
   mapStateToProps,
   mapActionsToProps
 )(EditDictionaryPage);

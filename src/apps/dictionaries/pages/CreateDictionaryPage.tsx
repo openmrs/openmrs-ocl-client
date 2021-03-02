@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { DictionaryForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
@@ -19,7 +19,6 @@ import { usePrevious, CONTEXT } from "../../../utils";
 import { createSourceAndDictionaryAction } from "../redux/actions";
 import Header from "../../../components/Header";
 import { getDictionaryTypeFromPreviousPath } from "../utils";
-import { useLocation, useParams } from "react-router-dom";
 import { AppState } from "../../../redux";
 interface Props {
   errors?: {};
@@ -46,7 +45,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
   newDictionary,
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
-  const { pathname: url, state } = useLocation<UseLocation>();
+  const { state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

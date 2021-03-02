@@ -3,7 +3,7 @@ import {AppState, StatusState} from "../../../redux";
 import {DictionaryState} from "../../dictionaries";
 import {ConceptsState} from "../../concepts";
 import {SourceState} from "../../sources";
-import {OrganisationState} from "../../organisations";
+import {APIOrganisation, OrganisationState} from "../../organisations";
 
 export const testProfile: APIProfile = {
     username: "TestUser",
@@ -56,6 +56,7 @@ export const sourceState: SourceState = {
 };
 
 export const organisationState: OrganisationState = {
+    organisation: {} as APIOrganisation,
     organisations: []
 }; 
 

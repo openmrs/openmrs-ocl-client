@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import {
   createSourceDispatchAction,
   createSourceErrorsSelector,
@@ -17,9 +17,7 @@ import { APIOrg, APIProfile } from "../../authentication";
 import { CONTEXT, usePrevious } from "../../../utils";
 import SourceForm from "../components/SourceForm";
 import Header from "../../../components/Header";
-
 import { getSourceTypeFromPreviousPath } from "../utils";
-import {useLocation, useParams} from "react-router-dom";
 import { AppState } from "../../../redux";
 
 
@@ -34,10 +32,9 @@ interface Props {
   newSource?: APISource;
   resetCreateSource: () => void;
 }
-
 interface UseLocation {
-    prevPath: string;
-  }
+  prevPath: string;
+}
 
 const CreateSourcePage: React.FC<Props> = ({
   profile,
@@ -49,7 +46,7 @@ const CreateSourcePage: React.FC<Props> = ({
   newSource,
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
-  const { pathname: url, state } = useLocation<UseLocation>();
+  const { state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

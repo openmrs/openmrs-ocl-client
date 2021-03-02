@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import { OrganisationForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import {
@@ -16,9 +16,7 @@ import {
 import { usePrevious } from "../../../utils";
 import { AppState } from "../../../redux";
 import Header from "../../../components/Header";
-
 import { getOrganisationTypeFromPreviousPath } from "../utils";
-import { useLocation, useParams } from "react-router-dom";
 
 interface Props {
   errors?: {};
@@ -43,7 +41,7 @@ const CreateOrganisationPage: React.FC<Props> = ({
   resetCreateOrganisation,
   username = "",
 }: Props) => {
-  const { pathname: url, state } = useLocation<UseLocation>();
+  const { state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateOrganisation(), []);

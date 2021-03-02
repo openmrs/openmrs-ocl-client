@@ -24,7 +24,7 @@ import {ConfirmationDialog} from "../../../utils";
 
 
 interface Props {
-    members: OrgMember[];
+    members?: OrgMember[];
     addError?: string;
     loading: boolean;
     addMember: (
@@ -66,12 +66,12 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
     const confirmDelete=() => {setOpenDialogDelete(true)}
     const classes = useStyles();
 
-
     useEffect(() => {
         if (addError || deleteError) {
             setOpenAlert(true);
         };
     }, [addError, deleteError]);
+
     return (
     <Grid item xs={12} component="div">
       <Paper className='fieldsetParent'>

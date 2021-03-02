@@ -43,6 +43,7 @@ export interface SourceVersion extends Version{
 export interface SourceState {
   sources: { items: APISource[]; responseMeta?: {} }[];
   source?: APISource;
+  newSource?: APISource;
   versions: APISourceVersion[];
 }
 export interface APISourceVersion extends SourceVersion {

@@ -3,7 +3,7 @@ import { Grid, Paper, Typography, List } from "@material-ui/core";
 import {OrgSource} from "../types";
 import { Link } from "react-router-dom";
 interface Props {
-  sources: OrgSource[];
+  sources?: OrgSource[];
 }
 
 const OrganisationSources: React.FC<Props> = ({ sources }) => {

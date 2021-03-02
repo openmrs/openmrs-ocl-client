@@ -134,4 +134,8 @@ const mapActionsToProps = {
   retrieveOrg: retrieveOrganisationAction,
   deleteOrg: deleteOrganisationAction
 };
-export default connect(mapStateToProps, mapActionsToProps)(EditOrganisationPage);
+
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(EditOrganisationPage);

@@ -10,12 +10,12 @@ import {
   START,
   meta
 } from "./utils";
-import { Action, LoadingAndErroredState } from "./types";
+import { Action, StatusState } from "./types";
 import {LOGOUT_ACTION} from "../apps/authentication/redux/actionTypes";
 
 // todo improve these action types args
 const loadingAndErroredReducer = (
-  state: LoadingAndErroredState = {},
+  state: StatusState = {},
   action: Action
 ) => {
   const { type, payload, actionIndex, meta: actionMeta } = action;

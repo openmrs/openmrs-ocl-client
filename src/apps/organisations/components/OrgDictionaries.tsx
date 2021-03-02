@@ -4,7 +4,7 @@ import {OrgCollection} from "../types";
 import { Link } from "react-router-dom";
 
 interface Props {
-  collections: OrgCollection[];
+  collections?: OrgCollection[];
 }
 
 const OrganisationDictionaries: React.FC<Props> = ({ collections }) => {

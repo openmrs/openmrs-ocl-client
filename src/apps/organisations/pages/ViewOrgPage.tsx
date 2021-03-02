@@ -30,9 +30,9 @@ import { AppState } from "../../../redux";
 
 interface Props {
   organisation: APIOrganisation;
-  sources: OrgSource[];
-  collections: OrgCollection[];
-  members:OrgMember[];
+  sources?: OrgSource[];
+  collections?: OrgCollection[];
+  members?: OrgMember[];
   loading: boolean;
   addOrgMemberError?: string;
   deleteOrgMemberError?: string;
@@ -86,7 +86,6 @@ const ViewOrganisationPage: React.FC<Props> = ({
   deleteOrgMemberError = '',
   loadingAddMember,
   deleteMember,
-
 }: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
@@ -101,6 +100,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
   }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
 
   const { name } = organisation || {};
+
   return (
     <Header 
       title={` Your Organisations > ${name}`}
@@ -133,7 +133,7 @@ const mapStateToProps = (state: AppState) => ({
   organisation: state.organisations.organisation,
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
-  members:state.organisations.orgMembers,
+  members: state.organisations.orgMembers,
   loading: retrieveOrgLoadingSelector(state),
   addOrgMemberError: addOrgMemberErrorSelector(state),
   deleteOrgMemberError: deleteOrgMemberErrorSelector(state),
@@ -147,8 +147,9 @@ const mapActionsToProps = {
   retrieveOrgMembers: retrieveOrgMembersAction,
   addOrgMember: addOrgMemberAction,
   deleteMember:deleteOrgMemberAction
-
-
 };
 
-export default connect(mapStateToProps, mapActionsToProps)(ViewOrganisationPage);
+export default connect(
+  mapStateToProps,
+  mapActionsToProps
+)(ViewOrganisationPage);
