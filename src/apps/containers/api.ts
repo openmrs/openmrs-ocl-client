@@ -1,8 +1,7 @@
 import { authenticatedInstance } from "../../api";
-import { AxiosResponse } from "axios";
 
 const api = {
-  retrieve: (containerUrl: string): Promise<AxiosResponse<any>> =>
+  retrieve: (containerUrl: string) =>
     authenticatedInstance.get(containerUrl, { params: { verbose: true } })
 };
 

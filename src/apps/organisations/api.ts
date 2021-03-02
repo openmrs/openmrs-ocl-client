@@ -11,7 +11,7 @@ const api = {
         q: string = "",
         limit = 20,
         page = 1
-      ): Promise<AxiosResponse<any>> =>
+      ) =>
         unAuthenticatedInstance.get(organisationUrl, {
           params: {
             limit,
@@ -28,7 +28,7 @@ const api = {
         q: string = "",
         limit = 20,
         page = 1
-      ): Promise<AxiosResponse<any>> =>
+      ) =>
         authenticatedInstance.get(organisationUrl, {
           params: {
             limit,
@@ -44,13 +44,13 @@ const api = {
   },
   create: (
     data: Organisation
-  ): Promise<AxiosResponse<any>> =>
+  ) =>
     authenticatedInstance.post(`/orgs/`, data),
   organisation : {
     retrieve: (url: string) => authenticatedInstance.get(url) ,
-    update: (orgUrl: string, data: EditableOrganisationFields): Promise<AxiosResponse<any>> =>
+    update: (orgUrl: string, data: EditableOrganisationFields) =>
         authenticatedInstance.post(orgUrl, data),
-    delete: (orgUrl: string): Promise<AxiosResponse<any>> =>
+    delete: (orgUrl: string) =>
         authenticatedInstance.delete(orgUrl),
     retrieveSources: (orgUrl: string):Promise<AxiosResponse<any>> =>
         authenticatedInstance.get(`${orgUrl}sources/`),
@@ -60,7 +60,7 @@ const api = {
         authenticatedInstance.get(`${orgUrl}members/`),
     addMember: (orgUrl: string, member: OrgMember):Promise<AxiosResponse<any>> =>
         authenticatedInstance.put(`${orgUrl}members/${member.username}`),
-    deleteMember: (orgUrl: string, user:string): Promise<AxiosResponse<any>> =>
+    deleteMember: (orgUrl: string, user:string) =>
         authenticatedInstance.delete(`${orgUrl}members/${user}`)
   },
   

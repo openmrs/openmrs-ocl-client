@@ -14,12 +14,12 @@ const api = {
   create: (
     ownerUrl: string,
     data: NewAPIDictionary
-  ): Promise<AxiosResponse<any>> =>
+  ) =>
     authenticatedInstance.post(`${ownerUrl}collections/`, data),
   update: (
     dictionaryUrl: string,
     data: EditableDictionaryFields
-  ): Promise<AxiosResponse<any>> =>
+  ) =>
     authenticatedInstance.put(dictionaryUrl, data),
   dictionaries: {
     retrieve: {
@@ -28,7 +28,7 @@ const api = {
         q: string = "",
         limit = 20,
         page = 1
-      ): Promise<AxiosResponse<any>> =>
+      ) =>
         unAuthenticatedInstance.get(dictionariesUrl, {
           params: {
             limit,
@@ -43,7 +43,7 @@ const api = {
         q: string = "",
         limit = 20,
         page = 1
-      ): Promise<AxiosResponse<any>> =>
+      ) =>
         authenticatedInstance.get(dictionariesUrl, {
           params: {
             limit,
@@ -56,7 +56,7 @@ const api = {
     }
   },
   versions: {
-    retrieve: (dictionaryUrl: string): Promise<AxiosResponse<any>> =>
+    retrieve: (dictionaryUrl: string) =>
       authenticatedInstance.get(`${dictionaryUrl}versions/?verbose=true`),
     create: (
       dictionaryUrl: string,
@@ -72,7 +72,7 @@ const api = {
   retrieveMappings: (
     sourceUrl: string,
     fromConceptIds: string[]
-  ): Promise<AxiosResponse<any>> =>
+  ) =>
     authenticatedInstance.get(`${sourceUrl}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),
@@ -84,7 +84,7 @@ const api = {
       dictionaryUrl: string,
       references: string[],
       cascade: string = "sourcemappings"
-    ): Promise<AxiosResponse<any>> =>
+    ) =>
       authenticatedInstance.put(
         `${dictionaryUrl}references/`,
         { data: { expressions: references } }, // the nesting is not an error. Check API docs
@@ -94,7 +94,7 @@ const api = {
       dictionaryUrl: string,
       references: string[],
       cascade: string = "sourcemappings"
-    ): Promise<AxiosResponse<any>> =>
+    ) =>
       authenticatedInstance.delete(`${dictionaryUrl}references/`, {
         data: { references: references }, // again, Check the API docs
         params: { cascade: cascade }

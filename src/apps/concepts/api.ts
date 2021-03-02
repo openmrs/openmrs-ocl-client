@@ -1,5 +1,4 @@
 import { authenticatedInstance } from "../../api";
-import { AxiosResponse } from "axios";
 import { BaseConcept, Mapping } from "./types";
 import { buildPartialSearchQuery } from "../../utils";
 
@@ -23,7 +22,7 @@ const api = {
     create: (
       sourceUrl: string,
       data: BaseConcept
-    ): Promise<AxiosResponse<any>> =>
+    ) =>
       authenticatedInstance.post(`${sourceUrl}concepts/`, data),
     retrieve: (
         retrieveParams: {
@@ -105,7 +104,7 @@ const api = {
     }
   },
   concept: {
-    retrieve: (conceptUrl: string): Promise<AxiosResponse<any>> =>
+    retrieve: (conceptUrl: string) =>
       authenticatedInstance.get(conceptUrl, {
         params: {
           verbose: true,
@@ -115,15 +114,15 @@ const api = {
     update: (
       conceptUrl: string,
       data: BaseConcept
-    ): Promise<AxiosResponse<any>> =>
+    ) =>
       authenticatedInstance.put(conceptUrl, data)
   },
   mappings: {
-    create: (sourceUrl: string, data: Mapping): Promise<AxiosResponse<any>> =>
+    create: (sourceUrl: string, data: Mapping) =>
       authenticatedInstance.post(`${sourceUrl}mappings/`, data)
   },
   mapping: {
-    update: (mappingUrl: string, data: Mapping): Promise<AxiosResponse<any>> =>
+    update: (mappingUrl: string, data: Mapping) =>
       authenticatedInstance.put(mappingUrl, data)
   }
 };
