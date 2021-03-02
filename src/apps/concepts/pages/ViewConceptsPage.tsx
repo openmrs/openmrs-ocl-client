@@ -278,6 +278,7 @@ const ViewConceptsPage: React.FC<Props> = ({
                   concepts
                 )
               }
+              dictionaryToAddTo={dictionaryToAddTo}
               linkedDictionary={containerUrl}
               linkedSource={linkedSource}
               canModifyConcept={(concept: APIConcept) =>

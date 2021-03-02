@@ -79,7 +79,9 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
-  linkedDictionary: string | undefined
+  buttons: { [key: string]: boolean },
+  linkedDictionary?: string,
+  dictionaryToAddTo?:string
 ) => {
   return (
     <TableCell
@@ -87,13 +89,19 @@ const conceptNameCell = (
       data-testclass='name'
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
-    >
-      <Link
+    >{buttons.addToDictionary===undefined?
+      (<Link
         onClick={(e) => e.stopPropagation()}
         to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
       >
         {row.display_name}
-      </Link>
+      </Link>):
+      (<Link
+        onClick={(e) => e.stopPropagation()}
+        to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
+      >
+        {row.display_name}
+      </Link>)}
     </TableCell>
   );
 };
@@ -203,7 +211,7 @@ interface ConceptsTableRowProps {
   index: number;
   selected: string[];
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void;
-  linkedDictionary: string | undefined;
+  linkedDictionary?: string;
   buttons: { [key: string]: boolean };
   linkedSource: string | undefined;
   canModifyConcept: (concept: APIConcept) => boolean;
@@ -214,6 +222,7 @@ interface ConceptsTableRowProps {
   menu: { index: number; anchor: null | HTMLElement };
   removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   addConceptsToDictionary: Function;
+  dictionaryToAddTo?:string,
   isItemSelected: boolean;
   labelId: string;
 }
@@ -232,6 +241,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
     menu,
     removeConceptsFromDictionary,
     addConceptsToDictionary,
+    dictionaryToAddTo,
     isItemSelected,
     labelId,
   } = props;
@@ -248,7 +258,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(toggleSelect, row, linkedDictionary)}
+      {conceptNameCell(toggleSelect, row, buttons, linkedDictionary,dictionaryToAddTo)}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}

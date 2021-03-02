@@ -233,7 +233,7 @@ export function createConcept(
 
   cy.findByText("Submit").click();
 
-  cy.findByTitle("Edit this Concept");
+  cy.findByTitle(/Edit .+/);
 
   return [concept, conceptUrl];
 }
