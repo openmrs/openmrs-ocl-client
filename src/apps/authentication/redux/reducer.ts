@@ -1,11 +1,13 @@
 import { AnyAction } from "redux";
 import { errorSelector, loadingSelector } from "../../../redux";
 import {
+  CLEAR_NEXT_PAGE_ACTION,
   GET_PROFILE_ACTION,
   GET_USER_DETAILS_ACTION,
   GET_USER_ORGS_ACTION,
   LOGIN_ACTION,
-  LOGOUT_ACTION
+  LOGOUT_ACTION,
+  SET_NEXT_PAGE_ACTION
 } from "./actionTypes";
 import { AuthState } from "../types";
 
@@ -25,6 +27,10 @@ const reducer = (state = initialState, action: AnyAction) => {
       return { ...state, orgs: action.payload };
     default:
       return state;
+    case SET_NEXT_PAGE_ACTION:
+      return { ...state, nextPage: action.payload };
+    case CLEAR_NEXT_PAGE_ACTION:
+      return { ...state, nextPage: undefined };    
   }
 };
 const authLoadingSelector = loadingSelector(LOGIN_ACTION);

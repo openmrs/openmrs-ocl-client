@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Login } from "./components";
-import { connect } from "react-redux";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
-import { loginAction } from "./redux";
-import { AppState } from "../../redux";
+import { clearNextPageAction, loginAction } from "./redux";
+import { AppState } from "../../redux/types"; 
 
 interface Props {
   isLoggedIn: boolean;
   login: (...args: Parameters<typeof loginAction>) => void;
   loading: boolean;
   errors?: any;
+  nextPage?: string;
+  clearNextPage: (...args: Parameters<typeof clearNextPageAction>) => void;
 }
 
 const useStyles = makeStyles({
@@ -29,7 +31,9 @@ const LoginPage: React.FC<Props> = ({
   isLoggedIn,
   login,
   loading,
-  errors 
+  errors,
+  nextPage,
+  clearNextPage
 }: Props) => {
   const classes = useStyles();
 
@@ -41,8 +45,14 @@ const LoginPage: React.FC<Props> = ({
     };
   }, []);
 
-  if (isLoggedIn) return <Redirect to="/" />;
-  else
+  if (isLoggedIn) {
+    if (nextPage) {
+      clearNextPage();
+      return <Redirect to={nextPage} />;
+    }
+
+    return <Redirect to="/" />;
+  } else {
     return (
       <Grid
         container
@@ -72,13 +82,19 @@ const LoginPage: React.FC<Props> = ({
         </Grid>
       </Grid>
     );
+  }
 };
 
 const mapStateToProps = (state: AppState) => ({
   isLoggedIn: state.auth.isLoggedIn,
   loading: authLoadingSelector(state),
-  errors: authErrorsSelector(state)
+  errors: authErrorsSelector(state),
+  nextPage: state.auth.nextPage
 });
-const mapDispatchToProps = { login: loginAction };
+
+const mapDispatchToProps = {
+  login: loginAction,
+  clearNextPage: clearNextPageAction
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
