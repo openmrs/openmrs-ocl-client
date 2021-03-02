@@ -8,6 +8,8 @@ echo "// Version: $(date -u)" > ${ENV_FILE}
   echo "var TRADITIONAL_OCL_HOST = \"${TRADITIONAL_OCL_HOST}\";" >> ${ENV_FILE}
 [ -n "${OCL_API_HOST}" ] && \
   echo "var OCL_API_HOST = \"${OCL_API_HOST}\";" >> ${ENV_FILE}
+[ -n "${OCL_SIGNUP_URL}" ] && \
+  echo "var OCL_SIGNUP_URL = \"${OCL_SIGNUP_URL}\";" >> ${ENV_FILE}
 
 echo "Using env-config.js:"
 cat ${ENV_FILE}
