@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { isEqual } from "lodash";
+import { has, isEqual } from "lodash";
 import { Action, AppState, IndexedAction } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";
@@ -105,7 +105,7 @@ export function errorMsgResponse(response: any) {
   const genericErrorMessage =
       "Action could not be completed. Please retry.";
 
-  if (response.data && 'detail' in response.data) {
+  if (response.data && has(response.data, 'detail')) {
     errorMsgResponse.push(response.data.detail);
   } else {
     for (let key in response.data) {
