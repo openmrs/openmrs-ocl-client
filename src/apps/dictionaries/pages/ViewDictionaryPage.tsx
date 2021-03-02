@@ -139,6 +139,7 @@ export const ViewDictionaryPage: React.FC<Props> = ({
             ) : (
               <ContainerReleasedVersions
                 versions={versions}
+                dictionary={dictionary}
                 showCreateVersionButton={canEditDictionary}
                 createVersion={async (data: DictionaryVersion) => {
                   const response: any = await createDictionaryVersion(

@@ -31,6 +31,7 @@ import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
 import dayjs from 'dayjs';
 import ContainerVersionForm from './ContainerVersionForm';
 import { Version } from "../../../utils";
+import { APIDictionary } from "../../dictionaries/types";
 
 interface Props {
   versions: Version[];
@@ -41,6 +42,7 @@ interface Props {
   createVersionError?: { detail: string };
   url: string;
   type: string;
+  dictionary?: APIDictionary;
 }
 const useStyles = makeStyles({
     link: {
@@ -67,7 +69,8 @@ const ContainerReleasedVersions: React.FC<Props> = ({
   createVersionLoading,
   createVersionError,
   url,
-  type
+  type,
+  dictionary
 }) => {
   const versionsToDisplay = versions.filter((row) => row.id !== "HEAD");
 
@@ -164,7 +167,7 @@ const ContainerReleasedVersions: React.FC<Props> = ({
                     >
                         <Grid data-testid={"copy-dictionary"}>
                             <FileCopyIcon fontSize={"small"} />
-                            <Link className={classes.link} to={`/collections/new/`}>Copy Dictionary</Link>
+                            <Link className={classes.link} to={{ pathname: `/collections/new/?copying=${dictionary?.name}`, state: dictionary }}>Copy Dictionary</Link>
                         </Grid>
                     </CopyToClipboard>
 

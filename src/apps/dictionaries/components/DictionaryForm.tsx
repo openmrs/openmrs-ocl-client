@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   FormControl,
@@ -26,9 +26,12 @@ import {
   showUserOrganisations,
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
+import { useLocation } from "react-router-dom";
+import { useQueryParams } from "../../../utils";
 
 interface Props {
   onSubmit?: Function;
+  createAndAddConcepts?: Function;
   loading: boolean;
   status?: string;
   profile?: APIProfile;
@@ -83,9 +86,32 @@ const DictionaryForm: React.FC<Props> = ({
   usersOrgs,
   errors,
   context = CONTEXT.view,
-  savedValues
+  savedValues,
+  createAndAddConcepts
 }) => {
   const classes = useStyles();
+
+  const { state = { description: '', references: [], default_locale: '', supported_locales: [], owner_url: '', preferred_source: '', public_access: ''} } = useLocation() || {};
+  const { copying } = useQueryParams<{
+    copying: string;
+  }>();
+  const { 
+    description,
+    references, 
+    default_locale, 
+    supported_locales, 
+    owner_url, 
+    preferred_source, 
+    public_access 
+  } = state;
+
+  const [copy, setCopy] = useState({...initialValues, description, references, default_locale, supported_locales: supported_locales !== null ? supported_locales : [], owner_url, preferred_source, public_access});
+
+  useEffect(() => {
+    if (copying !== '') {
+      setCopy({...initialValues, description, references, default_locale, supported_locales: supported_locales !== null ? supported_locales : [], owner_url, preferred_source, public_access})
+    }
+  }, [copying]); //eslint-disable-line
 
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
@@ -126,16 +152,19 @@ const DictionaryForm: React.FC<Props> = ({
     });
   }, [errors]);
 
+  const createDictionary = (values: Dictionary) => {
+    if (copying && createAndAddConcepts && state) {
+      createAndAddConcepts(values, copy.references);
+    } else if (onSubmit) onSubmit(values);
+  }
   return (
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
         ref={formikRef}
-        initialValues={savedValues || initialValues}
+        initialValues={savedValues || copy || initialValues }
         validationSchema={DictionarySchema}
         validateOnChange={false}
-        onSubmit={(values: Dictionary) => {
-          if (onSubmit) onSubmit(values);
-        }}
+        onSubmit={(values: Dictionary) => createDictionary(values)}
       >
         {({ isSubmitting, status, values }) => (
           <Form>
@@ -264,7 +293,7 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                value={[]}
+                // value={[]}
                 name="supported_locales"
                 id="supported_locales"
                 component={Select}
@@ -283,7 +312,7 @@ const DictionaryForm: React.FC<Props> = ({
                 fullWidth
                 multiline
                 rowsMax={4}
-                defaultValue="None"
+                // defaultValue="None"
                 id="linked_source"
                 name="extras.source"
                 label="Linked Source"

@@ -56,7 +56,7 @@ const AuthenticatedRoutes: React.FC = () => {
           <CreateOrganisationPage />
       </Route>
       <Route exact path='/actions/' component={InProgressPage} />
-      <Route exact path='/collections/new/'>
+      <Route path='/collections/new/'>
           <CreateDictionaryPage />
       </Route>
       <Route exact path='/orgs/:org/'>

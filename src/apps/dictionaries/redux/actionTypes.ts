@@ -16,3 +16,4 @@ export const ADD_CONCEPTS_TO_DICTIONARY =
   "dictionaries/Add concept(s) to dictionary";
 export const REMOVE_REFERENCES_FROM_DICTIONARY =
   "dictionaries/Remove reference(s) from dictionary";
+export const COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY = "dictionaries/copy/Add concepts to dictionary";
