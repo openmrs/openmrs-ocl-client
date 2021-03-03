@@ -46,8 +46,7 @@ const api = {
             }),
     },
   },versions: {
-    retrieve: (sourceUrl: string) =>
-      authenticatedInstance.get(`${sourceUrl}versions/?verbose=true`),
+    ...containerAPI.versions,
     create: (
       sourceUrl: string,
       data: SourceVersion
