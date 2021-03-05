@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Button,
   FormControl,
@@ -17,7 +17,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
-import { Dictionary } from "../types";
+import { Dictionary, APIDictionary, dictionaryToCopyableDictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import {
   showDefaultLocale,
@@ -26,18 +26,16 @@ import {
   showUserOrganisations,
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
-import { useLocation } from "react-router-dom";
-import { useQueryParams } from "../../../utils";
 
 interface Props {
   onSubmit?: Function;
-  createAndAddConcepts?: Function;
   loading: boolean;
   status?: string;
   profile?: APIProfile;
   usersOrgs: APIOrg[];
   errors?: {};
   savedValues?: Dictionary;
+  copiedDictionary?: APIDictionary;
   context?: string;
 }
 
@@ -87,31 +85,12 @@ const DictionaryForm: React.FC<Props> = ({
   errors,
   context = CONTEXT.view,
   savedValues,
-  createAndAddConcepts
+  copiedDictionary
 }) => {
   const classes = useStyles();
 
-  const { state = { description: '', references: [], default_locale: '', supported_locales: [], owner_url: '', preferred_source: '', public_access: ''} } = useLocation() || {};
-  const { copying } = useQueryParams<{
-    copying: string;
-  }>();
-  const { 
-    description,
-    references, 
-    default_locale, 
-    supported_locales, 
-    owner_url, 
-    preferred_source, 
-    public_access 
-  } = state;
 
-  const [copy, setCopy] = useState({...initialValues, description, references, default_locale, supported_locales: supported_locales !== null ? supported_locales : [], owner_url, preferred_source, public_access});
-
-  useEffect(() => {
-    if (copying !== '') {
-      setCopy({...initialValues, description, references, default_locale, supported_locales: supported_locales !== null ? supported_locales : [], owner_url, preferred_source, public_access})
-    }
-  }, [copying]); //eslint-disable-line
+  const copy = { ...initialValues, ...copiedDictionary ? dictionaryToCopyableDictionary(copiedDictionary): copiedDictionary } as APIDictionary;
 
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
@@ -152,11 +131,6 @@ const DictionaryForm: React.FC<Props> = ({
     });
   }, [errors]);
 
-  const createDictionary = (values: Dictionary) => {
-    if (copying && createAndAddConcepts && state) {
-      createAndAddConcepts(values, copy.references);
-    } else if (onSubmit) onSubmit(values);
-  }
   return (
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
@@ -164,7 +138,11 @@ const DictionaryForm: React.FC<Props> = ({
         initialValues={savedValues || copy || initialValues }
         validationSchema={DictionarySchema}
         validateOnChange={false}
-        onSubmit={(values: Dictionary) => createDictionary(values)}
+        onSubmit={(values: Dictionary) => {
+          if (onSubmit) {
+            onSubmit(values, copy.references)
+          }
+        }}
       >
         {({ isSubmitting, status, values }) => (
           <Form>
@@ -293,7 +271,7 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                // value={[]}
+                defaultValue={[]}
                 name="supported_locales"
                 id="supported_locales"
                 component={Select}

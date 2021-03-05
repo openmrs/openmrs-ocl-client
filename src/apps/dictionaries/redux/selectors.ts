@@ -27,16 +27,11 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
-  COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
 
 export const createDictionaryLoadingSelector = loadingSelector(
   CREATE_SOURCE_AND_DICTIONARY_ACTION
-);
-
-export const copyCreateDictionaryLoadingSelector = loadingSelector(
-  COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY
 );
 export const createDictionaryProgressSelector = progressSelector(
   CREATE_SOURCE_AND_DICTIONARY_ACTION

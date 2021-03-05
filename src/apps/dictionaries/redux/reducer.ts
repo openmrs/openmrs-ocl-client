@@ -11,8 +11,7 @@ import {
     EDIT_DICTIONARY_VERSION_ACTION,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
-  COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
 import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
 
@@ -27,10 +26,6 @@ export const reducer = createReducer(initialState, {
     newDictionary: undefined
   }),
   [CREATE_DICTIONARY_ACTION]: (state, action) => ({
-    ...state,
-    newDictionary: action.payload
-  }),
-  [COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY]: (state, action) => ({
     ...state,
     newDictionary: action.payload
   }),

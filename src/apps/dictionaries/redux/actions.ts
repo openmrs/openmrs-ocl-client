@@ -39,8 +39,7 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
-  COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
 import { invalidateCache } from "../../../redux/utils";
 import {
@@ -62,7 +61,7 @@ export const addConceptsToDictionaryAction = createActionThunk(
   api.references.add
 );
 
-export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
+export const createSourceAndDictionaryAction = (dictionaryData: Dictionary, references: { [key: string]: string }[]) => {
   return async (dispatch: Function) => {
     dispatch(startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
 
@@ -136,6 +135,11 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     dictionaryResponse = await dispatch(
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
     );
+    const { url }  = dictionaryResponse;
+    console.log(references, 'refs');
+    const refs = references?.map(r => r.expression);
+    await dispatch(addConceptsToDictionaryAction(url, refs));
+
     if (!dictionaryResponse) {
       // todo cleanup here would involve hard deleting the source
       dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
@@ -144,101 +148,6 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
 
     dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
   };
-};
-
-
-export const copyCreateAndAddConcpetsDictionaryAction = (dictionaryData: Dictionary, references: [{ expression: 'AAA'}]) => {
-  return async(dispatch:Function) => {
-    dispatch(startAction(COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY));
-    dispatch(startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
-
-    const {
-      description,
-      name,
-      supported_locales,
-      owner_url,
-      default_locale,
-      preferred_source,
-      short_code,
-      public_access
-    } = dictionaryData;
-
-    let sourceResponse: APISource | boolean;
-    let dictionaryRes;
-
-    dispatch(
-      progressAction(CREATE_SOURCE_AND_DICTIONARY_ACTION, "Creating source...")
-    );
-    const source: NewAPISource = {
-      custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale,
-      description,
-      external_id: uuid(),
-      full_name: name,
-      name: name,
-      public_access: "None",
-      short_code: short_code,
-      id: short_code,
-      supported_locales: supported_locales?.join(","),
-      website: "",
-      owner_url: owner_url
-    };
-    sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
-    if (!sourceResponse) {
-      dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
-      return false;
-    }
-
-    dispatch(
-      progressAction(
-        CREATE_SOURCE_AND_DICTIONARY_ACTION,
-        "Creating dictionary..."
-      )
-    );
-
-    dispatch(
-      progressAction(
-        CREATE_SOURCE_AND_DICTIONARY_ACTION,
-        "Creating dictionary..."
-      )
-    );
-    const dictionary: NewAPIDictionary = {
-      custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
-      default_locale,
-      description,
-      external_id: uuid(),
-      extras: {
-        source: (sourceResponse as APISource).url
-      },
-      preferred_source: preferred_source,
-      full_name: name,
-      name,
-      public_access: public_access,
-      id: short_code,
-      short_code,
-      supported_locales: supported_locales.join(","),
-      website: ""
-    };
-    dictionaryRes = await dispatch(
-      createDictionaryAction<APIDictionary>(owner_url, dictionary)
-    );
-
-    const { url }  = dictionaryRes;
-      dispatch(
-        progressAction(
-          COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY,
-          "Adding concpets..."
-        )
-      );
-    const refs = references.map(r => r.expression);
-    await dispatch(addConceptsToDictionaryAction(url, refs));
-
-    if (!dictionaryRes) {
-      dispatch(completeAction(COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY))
-      return false;
-    }
-    dispatch(completeAction(COPY_CREATE_AND_ADD_CONCEPTS_TO_DICTIONARY));
-};
 };
 
 export function makeRetrieveDictionaryAction(useCache = false) {

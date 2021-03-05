@@ -6,10 +6,10 @@ import { Redirect, useLocation } from "react-router-dom";
 import {
   createDictionaryLoadingSelector,
   createDictionaryProgressSelector,
-  copyCreateDictionaryLoadingSelector,
   createSourceAndDictionaryErrorsSelector,
   resetCreateDictionaryAction,
-  copyCreateAndAddConcpetsDictionaryAction
+  retrieveDictionaryAndDetailsAction,
+  dictionarySelector
 } from "../redux";
 import { APIDictionary, Dictionary } from "../types";
 import {
@@ -22,6 +22,7 @@ import { createSourceAndDictionaryAction } from "../redux/actions";
 import Header from "../../../components/Header";
 import { getDictionaryTypeFromPreviousPath } from "../utils";
 import { AppState } from "../../../redux";
+import { useQueryParams } from "../../../utils";
 interface Props {
   errors?: {};
   profile?: APIProfile;
@@ -29,12 +30,12 @@ interface Props {
   createSourceAndDictionary: (
     ...args: Parameters<typeof createSourceAndDictionaryAction>
   ) => void;
-  createAndAddConceptReferences: (
-    ...args: Parameters<typeof copyCreateAndAddConcpetsDictionaryAction>
+  retrieveDictionaryAndDetails: (
+    ...args: Parameters<typeof retrieveDictionaryAndDetailsAction>
   ) => void;
   loading: boolean;
-  copyLoading: boolean;
   newDictionary?: APIDictionary;
+  dictionary?: APIDictionary;
   resetCreateDictionary: () => void;
 }
 interface UseLocation {
@@ -46,25 +47,31 @@ const CreateDictionaryPage: React.FC<Props> = ({
   usersOrgs,
   errors,
   createSourceAndDictionary,
-  createAndAddConceptReferences,
+  retrieveDictionaryAndDetails,
   loading,
-  copyLoading,
   resetCreateDictionary,
   newDictionary,
+  dictionary
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
-  const previouslyCopyLoading = usePrevious(copyLoading);
   const { state } = useLocation<UseLocation>();
+
+  const { copyFrom } = useQueryParams<{
+    copyFrom: string;
+  }>();
+
   const previousPath = state ? state.prevPath : "";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateDictionary, []);
 
-  if (!copyLoading && previouslyCopyLoading && newDictionary) {
-    return <Redirect to={newDictionary.url} />;
-  }
+  useEffect(() => {
+    if (copyFrom !== undefined) {
+      retrieveDictionaryAndDetails(copyFrom);
+    }
+  }, [copyFrom, retrieveDictionaryAndDetails]);
 
-  if (!loading && !copyLoading && previouslyLoading && newDictionary) {
+  if (!loading && previouslyLoading && newDictionary) {
     return <Redirect to={newDictionary.url} />;
   }
 
@@ -85,8 +92,8 @@ const CreateDictionaryPage: React.FC<Props> = ({
             profile={profile}
             usersOrgs={usersOrgs ? usersOrgs : []}
             loading={loading}
-            createAndAddConcepts={createAndAddConceptReferences}
-            onSubmit={(values: Dictionary) => createSourceAndDictionary(values)}
+            copiedDictionary={dictionary}
+            onSubmit={(values: Dictionary, references: { [key: string]: string }[]) => createSourceAndDictionary(values, references)}
           />
         </Paper>
       </Grid>
@@ -98,15 +105,15 @@ const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   loading: createDictionaryLoadingSelector(state),
-  copyLoading: copyCreateDictionaryLoadingSelector(state),
   progress: createDictionaryProgressSelector(state),
   newDictionary: state.dictionaries.newDictionary,
+  dictionary: dictionarySelector(state),
   errors: createSourceAndDictionaryErrorsSelector(state),
 });
 const mapActionsToProps = {
   createSourceAndDictionary: createSourceAndDictionaryAction,
-  resetCreateDictionary: resetCreateDictionaryAction,
-  createAndAddConceptReferences: copyCreateAndAddConcpetsDictionaryAction, //This is when one copied the dictionary
+  retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
+  resetCreateDictionary: resetCreateDictionaryAction
 };
 
 export default connect(

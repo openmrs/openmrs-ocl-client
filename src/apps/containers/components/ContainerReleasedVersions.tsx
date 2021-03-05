@@ -157,21 +157,15 @@ const ContainerReleasedVersions: React.FC<Props> = ({
     const copyDictionary = () => {
         if(version.released && type === "Dictionary"){
             return (
-                <MenuItem onClick={handleCloseMenu}>
-                    <CopyToClipboard
-                        text={`${
-                            version.released
-                                ? `${BASE_URL}${url}references/?cascade=sourcemappings`
-                                : null
-                        }`}
-                    >
-                        <Grid data-testid={"copy-dictionary"}>
-                            <FileCopyIcon fontSize={"small"} />
-                            <Link className={classes.link} to={{ pathname: `/collections/new/?copying=${dictionary?.name}`, state: dictionary }}>Copy Dictionary</Link>
-                        </Grid>
-                    </CopyToClipboard>
-
-                </MenuItem>
+              <MenuItem onClick={handleCloseMenu}>
+                <Grid data-testid={"copy-dictionary"}>
+                    <FileCopyIcon fontSize={"small"} />
+                    <Link 
+                      className={classes.link} to={`/collections/new/?copyFrom=${dictionary?.url}`}>
+                        Copy Dictionary
+                    </Link>
+                </Grid>
+              </MenuItem>
             )
         }
     };

@@ -3,6 +3,7 @@ import {
   EditableConceptContainerFields,
   Version
 } from "../../utils";
+import { pick } from 'lodash';
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
@@ -66,6 +67,26 @@ export type ImportMetaData = {
   dictionary: string;
   dateTime: string;
 };
+
+export type CopyableDictionary =  Pick<APIDictionary,
+  'description'       |
+  'default_locale'    |
+  'supported_locales' |
+  'owner_url'         |
+  'preferred_source'  |
+  'public_access'     |
+  'references'>
+
+  export const dictionaryToCopyableDictionary = (
+    dictionary: APIDictionary
+  ): CopyableDictionary => {
+    const { supported_locales } = dictionary;
+    const copyFields = pick(dictionary, ['description','default_locale', 'owner_url','preferred_source', 'public_access','references'])
+    return {
+      supported_locales: supported_locales ?? [],
+      ...copyFields
+    }
+}
 
 const apiDictionaryToDictionary = (
   apiDictionary?: APIDictionary
