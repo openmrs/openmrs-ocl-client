@@ -56,8 +56,7 @@ const api = {
     }
   },
   versions: {
-    retrieve: (dictionaryUrl: string) =>
-      authenticatedInstance.get(`${dictionaryUrl}versions/?verbose=true`),
+    ...containerAPI.versions,
     create: (
       dictionaryUrl: string,
       data: DictionaryVersion
@@ -70,10 +69,10 @@ const api = {
         authenticatedInstance.put(`${dictionaryUrl}${data.id}/`, data)
   },
   retrieveMappings: (
-    sourceUrl: string,
+    dictionaryUrl: string,
     fromConceptIds: string[]
   ) =>
-    authenticatedInstance.get(`${sourceUrl}mappings/`, {
+    authenticatedInstance.get(`${dictionaryUrl}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),
         limit: 0 // bad, todo optimize this
