@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Button, Link, makeStyles, Paper, Typography } from "@material-ui/core";
-import { TRADITIONAL_OCL_URL } from "../../../utils/constants";
+import { OCL_SIGNUP_URL, TRADITIONAL_OCL_URL } from "../../../utils/constants";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
@@ -120,7 +120,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                       target="_blank"
                       component="a"
                       variant="body2"
-                      href={`${TRADITIONAL_OCL_URL}/accounts/signup/`}
+                      href={OCL_SIGNUP_URL}
                     >
                       Sign up
                     </Link>

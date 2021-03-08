@@ -6,6 +6,9 @@ export const BASE_URL: string =
 export const TRADITIONAL_OCL_URL =
   // @ts-ignore TRADITIONAL_OCL_HOST is injected at runtime via index.html
   window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
+export const OCL_SIGNUP_URL =
+  // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
+  window.OCL_SIGNUP_URL || "https://qa.openconceptlab.org/accounts/signup/"
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 
