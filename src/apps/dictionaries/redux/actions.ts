@@ -53,7 +53,18 @@ const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
   api.create
 );
-export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
+
+export const addConceptsToDictionaryAction = createActionThunk(
+  // 100 was chosen arbitrarily because this is an indexed action and we need to to slot it in somewhere.
+  // it is unlikely to bite us but in the event that it does, we can always create another action type.
+  indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100),
+  api.references.add
+);
+
+export const createSourceAndDictionaryAction = (
+  dictionaryData: Dictionary,
+  references?: { [key: string]: string }[]
+) => {
   return async (dispatch: Function) => {
     dispatch(startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
 
@@ -84,7 +95,7 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
       public_access: "None",
       short_code: short_code,
       id: short_code,
-      supported_locales: supported_locales.join(","),
+      supported_locales: supported_locales?.join(","),
       website: "",
       owner_url: owner_url
     };
@@ -127,6 +138,11 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     dictionaryResponse = await dispatch(
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
     );
+    const { url }  = dictionaryResponse;
+
+    const refs = references?.map(r => r.expression);
+    await dispatch(addConceptsToDictionaryAction(url, refs));
+
     if (!dictionaryResponse) {
       // todo cleanup here would involve hard deleting the source
       dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
@@ -136,6 +152,7 @@ export const createSourceAndDictionaryAction = (dictionaryData: Dictionary) => {
     dispatch(completeAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
   };
 };
+
 export function makeRetrieveDictionaryAction(useCache = false) {
   return createActionThunk(RETRIEVE_DICTIONARY_ACTION, api.retrieve, useCache);
 }
@@ -149,6 +166,12 @@ export const resetEditDictionaryAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
     dispatch(resetAction(EDIT_DICTIONARY_ACTION));
+  }
+}
+export const resetRetrieveDictionaryAndDetailsAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(RETRIEVE_DICTIONARY_ACTION));
+    dispatch(resetAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION));
   }
 }
 
@@ -431,12 +454,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
     );
   };
 };
-export const addConceptsToDictionaryAction = createActionThunk(
-  // 100 was chosen arbitrarily because this is an indexed action and we need to to slot it in somewhere.
-  // it is unlikely to bite us but in the event that it does, we can always create another action type.
-  indexedAction(ADD_CONCEPTS_TO_DICTIONARY, 100),
-  api.references.add
-);
+
 export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete

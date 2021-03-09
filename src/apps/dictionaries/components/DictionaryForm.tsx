@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   FormControl,
@@ -17,7 +17,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
-import { Dictionary } from "../types";
+import { Dictionary, CopyableDictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import {
   showDefaultLocale,
@@ -26,15 +26,19 @@ import {
   showUserOrganisations,
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
+import { createSourceAndDictionaryAction } from "../redux";
 
 interface Props {
-  onSubmit?: Function;
+  onSubmit?: (
+    ...args: Parameters<typeof createSourceAndDictionaryAction>
+  ) => void;
   loading: boolean;
   status?: string;
   profile?: APIProfile;
   usersOrgs: APIOrg[];
   errors?: {};
   savedValues?: Dictionary;
+  copiedDictionary?: CopyableDictionary;
   context?: string;
 }
 
@@ -83,9 +87,20 @@ const DictionaryForm: React.FC<Props> = ({
   usersOrgs,
   errors,
   context = CONTEXT.view,
-  savedValues
+  savedValues,
+  copiedDictionary
 }) => {
   const classes = useStyles();
+  const [copy, setCopy] = useState<Dictionary | undefined>();
+
+  useEffect(() => {
+    setCopy(
+      copiedDictionary ? {
+        ...initialValues,
+        ...copiedDictionary
+      } : undefined
+    );
+  }, [copiedDictionary]);
 
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
@@ -130,12 +145,15 @@ const DictionaryForm: React.FC<Props> = ({
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
         ref={formikRef}
-        initialValues={savedValues || initialValues}
+        initialValues={savedValues || copy || initialValues}
         validationSchema={DictionarySchema}
         validateOnChange={false}
         onSubmit={(values: Dictionary) => {
-          if (onSubmit) onSubmit(values);
+          if (onSubmit) {
+            onSubmit(values, copiedDictionary?.references)
+          }
         }}
+        enableReinitialize={true}
       >
         {({ isSubmitting, status, values }) => (
           <Form>
@@ -264,7 +282,7 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                value={[]}
+                defaultValue={[]}
                 name="supported_locales"
                 id="supported_locales"
                 component={Select}
@@ -283,7 +301,7 @@ const DictionaryForm: React.FC<Props> = ({
                 fullWidth
                 multiline
                 rowsMax={4}
-                defaultValue="None"
+                // defaultValue="None"
                 id="linked_source"
                 name="extras.source"
                 label="Linked Source"

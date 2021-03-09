@@ -31,6 +31,7 @@ import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
 import dayjs from 'dayjs';
 import ContainerVersionForm from './ContainerVersionForm';
 import { Version } from "../../../utils";
+import { APIDictionary } from "../../dictionaries/types";
 
 interface Props {
   versions: Version[];
@@ -41,8 +42,14 @@ interface Props {
   createVersionError?: { detail: string };
   url: string;
   type: string;
+  dictionary?: APIDictionary;
 }
 const useStyles = makeStyles({
+    link: {
+        textDecoration: "none",
+        color: "inherit",
+        width: "100%"
+    },
   container: {
     maxHeight: 400,
   },
@@ -55,14 +62,15 @@ const useStyles = makeStyles({
     },
 });
 const ContainerReleasedVersions: React.FC<Props> = ({
-  versions,
+  versions = [],
   showCreateVersionButton,
   createVersion,
   editVersion,
   createVersionLoading,
   createVersionError,
   url,
-  type
+  type,
+  dictionary
 }) => {
   const versionsToDisplay = versions.filter((row) => row.id !== "HEAD");
 
@@ -146,6 +154,21 @@ const ContainerReleasedVersions: React.FC<Props> = ({
       )
     }
   };
+    const copyDictionary = () => {
+        if(version.released && type === "Dictionary"){
+            return (
+              <MenuItem onClick={handleCloseMenu}>
+                <Grid data-testid={"copy-dictionary"}>
+                    <FileCopyIcon fontSize={"small"} />
+                    <Link 
+                      className={classes.link} to={`/collections/new/?copyFrom=${dictionary?.url}`}>
+                        Copy Dictionary
+                    </Link>
+                </Grid>
+              </MenuItem>
+            )
+        }
+    };
 
   const releaseStatus = (row: Version) => {
     if(showCreateVersionButton) {
@@ -229,6 +252,7 @@ const ContainerReleasedVersions: React.FC<Props> = ({
                         </Grid>
                       </MenuItem>
                       {copySubscriptionUrl()}
+                      {copyDictionary()}
                     </Menu>
                   </TableCell>
                 </TableRow>
