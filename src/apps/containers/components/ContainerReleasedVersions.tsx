@@ -62,7 +62,7 @@ const useStyles = makeStyles({
     },
 });
 const ContainerReleasedVersions: React.FC<Props> = ({
-  versions,
+  versions = [],
   showCreateVersionButton,
   createVersion,
   editVersion,

@@ -139,7 +139,7 @@ export const createSourceAndDictionaryAction = (
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
     );
     const { url }  = dictionaryResponse;
-    console.log(references, 'refs');
+
     const refs = references?.map(r => r.expression);
     await dispatch(addConceptsToDictionaryAction(url, refs));
 
