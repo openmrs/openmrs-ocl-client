@@ -82,7 +82,7 @@ const api = {
   references: {
     add: (
       dictionaryUrl: string,
-      references: string[],
+      references?: string[],
       cascade: string = "sourcemappings"
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.put(

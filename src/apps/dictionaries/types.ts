@@ -77,15 +77,22 @@ export type CopyableDictionary =  Pick<APIDictionary,
   'public_access'     |
   'references'>
 
-  export const dictionaryToCopyableDictionary = (
-    dictionary: APIDictionary
-  ): CopyableDictionary => {
-    const { supported_locales } = dictionary;
-    const copyFields = pick(dictionary, ['description','default_locale', 'owner_url','preferred_source', 'public_access','references'])
-    return {
-      supported_locales: supported_locales ?? [],
-      ...copyFields
-    }
+export const dictionaryToCopyableDictionary = (
+  dictionary: APIDictionary
+): CopyableDictionary =>  {
+  const newDictionary = pick(dictionary, [
+    'description',
+    'default_locale',
+    'supported_locales',
+    'owner_url',
+    'preferred_source',
+    'public_access',
+    'references'
+  ]);
+
+  newDictionary.supported_locales = newDictionary.supported_locales ?? [];
+
+  return newDictionary;
 }
 
 const apiDictionaryToDictionary = (

@@ -7,6 +7,7 @@ import {
   createAndAddLinkedSourceAction,
   createAndAddLinkedSourceLoadingSelector,
   createAndAddLinkedSourceProgressSelector,
+  dictionarySelector,
   editDictionaryLoadingSelector,
   editDictionaryProgressSelector,
   editSourceAndDictionaryAction,
@@ -173,7 +174,7 @@ const mapStateToProps = (state: AppState) => ({
   editedDictionary: state.dictionaries.editedDictionary,
   errors: editSourceAndDictionaryErrorsSelector(state),
   dictionaryLoading: retrieveDictionaryLoadingSelector(state),
-  dictionary: state.dictionaries.dictionary
+  dictionary: dictionarySelector(state)
 });
 
 const mapActionsToProps = {

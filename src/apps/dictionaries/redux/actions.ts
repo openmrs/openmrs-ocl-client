@@ -61,7 +61,10 @@ export const addConceptsToDictionaryAction = createActionThunk(
   api.references.add
 );
 
-export const createSourceAndDictionaryAction = (dictionaryData: Dictionary, references: { [key: string]: string }[]) => {
+export const createSourceAndDictionaryAction = (
+  dictionaryData: Dictionary,
+  references?: { [key: string]: string }[]
+) => {
   return async (dispatch: Function) => {
     dispatch(startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
 
@@ -163,6 +166,12 @@ export const resetEditDictionaryAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
     dispatch(resetAction(EDIT_DICTIONARY_ACTION));
+  }
+}
+export const resetRetrieveDictionaryAndDetailsAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(RETRIEVE_DICTIONARY_ACTION));
+    dispatch(resetAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION));
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { DictionaryForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
@@ -11,14 +11,18 @@ import {
   retrieveDictionaryAndDetailsAction,
   dictionarySelector
 } from "../redux";
-import { APIDictionary, Dictionary } from "../types";
+import { 
+  APIDictionary,
+  CopyableDictionary,
+  dictionaryToCopyableDictionary
+} from "../types";
 import {
   orgsSelector,
   profileSelector,
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
 import { usePrevious, CONTEXT } from "../../../utils";
-import { createSourceAndDictionaryAction } from "../redux/actions";
+import { createSourceAndDictionaryAction, resetRetrieveDictionaryAndDetailsAction } from "../redux/actions";
 import Header from "../../../components/Header";
 import { getDictionaryTypeFromPreviousPath } from "../utils";
 import { AppState } from "../../../redux";
@@ -36,7 +40,12 @@ interface Props {
   loading: boolean;
   newDictionary?: APIDictionary;
   dictionary?: APIDictionary;
-  resetCreateDictionary: () => void;
+  resetCreateDictionary: (
+    ...args: Parameters<typeof resetCreateDictionaryAction>
+  ) => void;
+  resetCopyDictionary: (
+    ...args: Parameters<typeof resetRetrieveDictionaryAndDetailsAction>
+  ) => void;
 }
 interface UseLocation {
   prevPath: string;
@@ -50,26 +59,37 @@ const CreateDictionaryPage: React.FC<Props> = ({
   retrieveDictionaryAndDetails,
   loading,
   resetCreateDictionary,
+  resetCopyDictionary,
   newDictionary,
   dictionary
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
   const { state } = useLocation<UseLocation>();
+  const previousPath = state ? state.prevPath : "";
+  const [copiedDictionary, setCopiedDictionary] = useState<CopyableDictionary | undefined>();
 
   const { copyFrom } = useQueryParams<{
     copyFrom: string;
   }>();
 
-  const previousPath = state ? state.prevPath : "";
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateDictionary, []);
 
   useEffect(() => {
-    if (copyFrom !== undefined) {
+    if (copyFrom) {
       retrieveDictionaryAndDetails(copyFrom);
+    } else if (dictionary) {
+      resetCopyDictionary();
     }
-  }, [copyFrom, retrieveDictionaryAndDetails]);
+  }, [copyFrom, dictionary, retrieveDictionaryAndDetails, resetCopyDictionary]);
+
+  useEffect(() => {
+    if (dictionary) {
+      setCopiedDictionary(dictionaryToCopyableDictionary(dictionary));
+    } else {
+      setCopiedDictionary(undefined);
+    }
+  }, [dictionary]);
 
   if (!loading && previouslyLoading && newDictionary) {
     return <Redirect to={newDictionary.url} />;
@@ -90,10 +110,10 @@ const CreateDictionaryPage: React.FC<Props> = ({
             context={CONTEXT.create}
             errors={errors}
             profile={profile}
-            usersOrgs={usersOrgs ? usersOrgs : []}
+            usersOrgs={usersOrgs ?? []}
             loading={loading}
-            copiedDictionary={dictionary}
-            onSubmit={(values: Dictionary, references: { [key: string]: string }[]) => createSourceAndDictionary(values, references)}
+            onSubmit={createSourceAndDictionary}
+            copiedDictionary={copiedDictionary}
           />
         </Paper>
       </Grid>
@@ -113,7 +133,8 @@ const mapStateToProps = (state: AppState) => ({
 const mapActionsToProps = {
   createSourceAndDictionary: createSourceAndDictionaryAction,
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
-  resetCreateDictionary: resetCreateDictionaryAction
+  resetCreateDictionary: resetCreateDictionaryAction,
+  resetCopyDictionary: resetRetrieveDictionaryAndDetailsAction
 };
 
 export default connect(

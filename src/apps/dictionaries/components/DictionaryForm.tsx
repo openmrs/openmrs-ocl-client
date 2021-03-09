@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   FormControl,
@@ -17,7 +17,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
-import { Dictionary, APIDictionary, dictionaryToCopyableDictionary } from "../types";
+import { Dictionary, CopyableDictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import {
   showDefaultLocale,
@@ -26,16 +26,19 @@ import {
   showUserOrganisations,
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
+import { createSourceAndDictionaryAction } from "../redux";
 
 interface Props {
-  onSubmit?: Function;
+  onSubmit?: (
+    ...args: Parameters<typeof createSourceAndDictionaryAction>
+  ) => void;
   loading: boolean;
   status?: string;
   profile?: APIProfile;
   usersOrgs: APIOrg[];
   errors?: {};
   savedValues?: Dictionary;
-  copiedDictionary?: APIDictionary;
+  copiedDictionary?: CopyableDictionary;
   context?: string;
 }
 
@@ -88,9 +91,16 @@ const DictionaryForm: React.FC<Props> = ({
   copiedDictionary
 }) => {
   const classes = useStyles();
+  const [copy, setCopy] = useState<Dictionary | undefined>();
 
-
-  const copy = { ...initialValues, ...copiedDictionary ? dictionaryToCopyableDictionary(copiedDictionary): copiedDictionary } as APIDictionary;
+  useEffect(() => {
+    setCopy(
+      copiedDictionary ? {
+        ...initialValues,
+        ...copiedDictionary
+      } : undefined
+    );
+  }, [copiedDictionary]);
 
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
@@ -135,14 +145,15 @@ const DictionaryForm: React.FC<Props> = ({
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
         ref={formikRef}
-        initialValues={savedValues || copy || initialValues }
+        initialValues={savedValues || copy || initialValues}
         validationSchema={DictionarySchema}
         validateOnChange={false}
         onSubmit={(values: Dictionary) => {
           if (onSubmit) {
-            onSubmit(values, copy.references)
+            onSubmit(values, copiedDictionary?.references)
           }
         }}
+        enableReinitialize={true}
       >
         {({ isSubmitting, status, values }) => (
           <Form>
