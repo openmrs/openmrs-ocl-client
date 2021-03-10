@@ -13,6 +13,7 @@ interface BaseDictionary extends BaseConceptContainer {
 export interface Dictionary extends BaseDictionary {
   supported_locales: string[];
   owner_url: string;
+  owner?: string;
 }
 
 interface BaseAPIDictionary extends BaseDictionary {

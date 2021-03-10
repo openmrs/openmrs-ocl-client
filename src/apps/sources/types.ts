@@ -9,6 +9,7 @@ export interface Source extends BaseSource {
   website?: string;
   source_type: string;
   owner_url?:string;
+  owner?: string;
 }
 interface BaseAPISource extends BaseConceptContainer {
   external_id: string;
