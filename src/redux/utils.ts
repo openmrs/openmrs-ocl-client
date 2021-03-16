@@ -160,8 +160,6 @@ export const createActionThunk = <T extends any[]>(
         } catch (error) {
           debug(error, "redux/utils/#createActionThunk#:catch");
 
-
-
           const response = error.response;
 
           let errorMsg = errorMsgResponse(response);
@@ -185,7 +183,7 @@ export const createActionThunk = <T extends any[]>(
         dispatch({
           type: `${actionType}_${FAILURE}`,
           actionIndex: actionIndex,
-          payload: { __all__: ["The action could not be completed (1)"] },
+          payload: "The action could not be completed (1)",
           meta: args
         });
 
