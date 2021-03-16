@@ -143,7 +143,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
       title={
         context === CONTEXT.edit
           ? "Edit " +
-            (concept ? concept.display_name : "concept")
+            ( concept ? concept.display_name : "concept" )
           : "Create concept"
       }
     >
