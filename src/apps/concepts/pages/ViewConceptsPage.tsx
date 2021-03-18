@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { includes } from 'lodash';
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -76,6 +77,7 @@ export type ActionProps = {
 
 export interface OwnProps {
   containerType: string;
+  viewDictConcepts?: boolean;
 }
 
 type Props = StateProps & ActionProps & OwnProps;
@@ -111,9 +113,13 @@ const ViewConceptsPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   containerType,
+  viewDictConcepts,
   addConceptsToDictionary,
   removeConceptsFromDictionary,
 }) => {
+  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const modifiedConcepts = concepts?.map(c => includes(dictionaryConcepts, c.version_url) ? {...c, added: true} : {...c});
+
   const classes = useStyles();
 
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
@@ -145,6 +151,14 @@ const ViewConceptsPage: React.FC<Props> = ({
     sourceFilters: initialSourceFilters = [],
     addToDictionary: dictionaryToAddTo,
   } = queryParams;
+
+  // This useEffect is to fetch the dictionary while on the concepts page,
+  // before when one would refresh the page the would lose the dictionary.
+  useEffect(() => {
+    if (dictionary === undefined && dictionaryToAddTo) {
+    retrieveDictionary(dictionaryToAddTo);
+    }
+  }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showOptions, setShowOptions] = useState(true);
   // why did he put the filtered state here and not inside the component, you ask?
@@ -254,7 +268,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             component='div'
           >
             <ConceptsTable
-              concepts={concepts || []}
+              concepts={viewDictConcepts ? concepts || [] : modifiedConcepts || []}
               buttons={{
                 edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:

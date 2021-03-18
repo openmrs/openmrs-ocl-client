@@ -10,6 +10,7 @@ import {
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { ConceptsActionMenu } from "./ConceptsActionMenu";
+import { AlreadyAddedIcon } from "./AlreadyAddedIcon";
 
 export function showEditMenuItem(
   concept: APIConcept,
@@ -206,6 +207,12 @@ const actionCell = (
   );
 };
 
+const AlreadyCheckedCell = () =>
+  <TableCell padding='checkbox'>
+    <AlreadyAddedIcon />
+  </TableCell>;
+
+
 interface ConceptsTableRowProps {
   row: APIConcept;
   index: number;
@@ -254,6 +261,8 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       tabIndex={-1}
       key={`${row.id}-${index}`}
       selected={isItemSelected}
+      className={row?.added ? 'added': ''}
+      style={row?.added ? { backgroundColor: '#bbc5fb' } : { backgroundColor: 'none' }}
     >
       {selected.length <= 0
         ? null
@@ -262,18 +271,20 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
-      {actionCell(
-        row,
-        buttons,
-        canModifyConcept,
-        index,
-        toggleMenu,
-        menu,
-        removeConceptsFromDictionary,
-        addConceptsToDictionary,
-        linkedSource,
-        linkedDictionary
-      )}
+      {row.added ? AlreadyCheckedCell(): 
+        actionCell(
+          row,
+          buttons,
+          canModifyConcept,
+          index,
+          toggleMenu,
+          menu,
+          removeConceptsFromDictionary,
+          addConceptsToDictionary,
+          linkedSource,
+          linkedDictionary
+        )
+      }
     </TableRow>
   );
 }
