@@ -48,6 +48,7 @@ import ViewConceptsHeader from "../components/ViewConceptsHeader";
 
 export interface StateProps {
   concepts?: APIConcept[];
+  modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
   loading: boolean;
@@ -102,6 +103,7 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
+  modifiedConcepts,
   dictionary,
   source,
   loading,
@@ -117,9 +119,6 @@ const ViewConceptsPage: React.FC<Props> = ({
   addConceptsToDictionary,
   removeConceptsFromDictionary,
 }) => {
-  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
-  const modifiedConcepts = concepts?.map(c => includes(dictionaryConcepts, c.version_url) ? {...c, added: true} : {...c});
-
   const classes = useStyles();
 
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
@@ -156,7 +155,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
     if (dictionary === undefined && dictionaryToAddTo) {
-    retrieveDictionary(dictionaryToAddTo);
+      retrieveDictionary(dictionaryToAddTo);
     }
   }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -268,7 +267,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             component='div'
           >
             <ConceptsTable
-              concepts={viewDictConcepts ? concepts || [] : modifiedConcepts || []}
+              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
                 edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
@@ -341,22 +340,29 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  profile: profileSelector(state),
-  usersOrgs: orgsSelector(state),
-  concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
-  dictionary: dictionarySelector(state),
-  source: sourceSelector(state),
-  meta: state.concepts.concepts
-    ? state.concepts.concepts.responseMeta
-    : undefined,
-  loading:
-    viewConceptsLoadingSelector(state) ||
-    retrieveDictionaryLoadingSelector(state) ||
-    removeConceptsFromDictionaryLoadingSelector(state) ||
-    retrieveSourceLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state),
-});
+const mapStateToProps = (state: AppState) => {
+  const dictionary = dictionarySelector(state);
+  const concepts = state.concepts.concepts.items || [];
+  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const modifiedConcepts = concepts?.map(c => includes(dictionaryConcepts, c.version_url) ? {...c, added: true} : {...c});
+  return ({
+    profile: profileSelector(state),
+    usersOrgs: orgsSelector(state),
+    concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
+    modifiedConcepts: modifiedConcepts,
+    dictionary: dictionarySelector(state),
+    source: sourceSelector(state),
+    meta: state.concepts.concepts
+      ? state.concepts.concepts.responseMeta
+      : undefined,
+    loading:
+      viewConceptsLoadingSelector(state) ||
+      retrieveDictionaryLoadingSelector(state) ||
+      removeConceptsFromDictionaryLoadingSelector(state) ||
+      retrieveSourceLoadingSelector(state),
+    errors: viewConceptsErrorsSelector(state),
+  });
+}
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
