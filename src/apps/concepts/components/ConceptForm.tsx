@@ -3,8 +3,8 @@ import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import {
   Concept,
   ConceptDescription,
+  ConceptExtras,
   ConceptName,
-  Extras,
   Mapping
 } from "../types";
 import uuid from "uuid";
@@ -125,7 +125,7 @@ const buildInitialValues = (
   names
 });
 
-const ExtrasSchema = Yup.object().shape<Extras>({
+const ExtrasSchema = Yup.object().shape<ConceptExtras>({
   hi_absolute: Yup.number().notRequired(),
   hi_critical: Yup.number().notRequired(),
   hi_normal: Yup.number().notRequired(),

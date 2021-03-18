@@ -1,13 +1,14 @@
 import {
   BaseConceptContainer,
   EditableConceptContainerFields,
+  Extras,
   Version
 } from "../../utils";
 import { pick } from 'lodash';
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
-  extras?: { source?: string };
+  extras?: { source?: string } | Omit<Extras, "source">;
 }
 
 export interface Dictionary extends BaseDictionary {
@@ -21,7 +22,7 @@ interface BaseAPIDictionary extends BaseDictionary {
   full_name: string;
   website: string;
   custom_validation_schema: string;
-  extras: { source: string };
+  extras: { source: string } | Omit<Extras, "source">;
 }
 
 export interface NewAPIDictionary extends BaseAPIDictionary {
@@ -52,7 +53,7 @@ export interface DictionaryState {
 export interface EditableDictionaryFields
   extends EditableConceptContainerFields {
   public_access?: string;
-  extras?: { source?: string };
+  extras?: { source?: string } | Omit<Extras, "source">;
 }
 
 export interface DictionaryVersion extends Version{

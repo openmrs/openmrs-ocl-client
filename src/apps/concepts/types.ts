@@ -1,4 +1,4 @@
-import { MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from "../../utils";
+import { Extras, MAP_TYPE_CONCEPT_SET, MAP_TYPE_Q_AND_A } from "../../utils";
 
 export interface ConceptName {
   name: string;
@@ -25,7 +25,8 @@ export interface Mapping {
   to_concept_name?: string | null;
   url?: string;
   retired?: boolean;
-  extras?:{sort_weight?:number};
+  extras?: { sort_weight?: number } |
+    Omit<Extras, "sort_weight">;
 }
 
 export interface APIMapping extends Mapping {
@@ -38,7 +39,7 @@ export interface InternalAPIMapping extends APIMapping {
   to_concept_url: string;
 }
 
-export interface Extras {
+export interface NumericConceptExtras {
   hi_absolute?: number;
   hi_critical?: number;
   hi_normal?: number;
@@ -49,6 +50,10 @@ export interface Extras {
   precise?: boolean;
 }
 
+export type ConceptExtras = NumericConceptExtras |
+  Omit<Extras, keyof NumericConceptExtras>
+  
+
 export interface BaseConcept {
   id: string;
   external_id: string;
@@ -58,7 +63,7 @@ export interface BaseConcept {
   descriptions: ConceptDescription[];
   url?: string;
   version_url?: string;
-  extras: Extras | null;
+  extras?: ConceptExtras | null;
 }
 
 export interface Concept extends BaseConcept {
