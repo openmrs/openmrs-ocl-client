@@ -35,6 +35,7 @@ const api = {
             sortBy?: string;
             dataTypeFilters?: string[];
             classFilters?: string[];
+            generalFilters?: string[];
             sourceFilters?: string[];
             includeRetired?: boolean;
         }
@@ -48,6 +49,7 @@ const api = {
             sortBy = "bestMatch",
             dataTypeFilters = [] as string[],
             classFilters = [] as string[],
+            generalFilters = [],
             sourceFilters = [] as string[],
             includeRetired = false
         } = retrieveParams;
