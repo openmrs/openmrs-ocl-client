@@ -25,6 +25,7 @@ export interface Mapping {
   to_concept_name?: string | null;
   url?: string;
   retired?: boolean;
+  extras?:{sort_weight?:number};
 }
 
 export interface APIMapping extends Mapping {

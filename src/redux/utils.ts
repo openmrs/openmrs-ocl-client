@@ -101,11 +101,11 @@ export function invalidateCache(action: string, dispatch: Function) {
 }
 
 export function errorMsgResponse(response: any) {
-  let errorMsgResponse = [];
+  let errorMsgResponse : string[] = [];
   const genericErrorMessage =
       "Action could not be completed. Please retry.";
 
-  if (response.data && has(response.data, 'detail')) {
+  if (response.data && Object.prototype.hasOwnProperty.call(response.data, 'detail')) {    
     errorMsgResponse.push(response.data.detail);
   } else {
     for (let key in response.data) {

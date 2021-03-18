@@ -20,6 +20,8 @@ import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
 import { MoreVert as MenuIcon } from "@material-ui/icons";
+import { DragHandle } from "../../../components/DragHandle";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -61,7 +63,27 @@ const MappingsTable: React.FC<Props> = ({
   editing
 }) => {
   const classes = useStyles();
-
+  const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
+  var sorted =values;
+  if(title==="Answer"){
+    sorted =sorted.sort((a,b) => {
+      if((a.extras?.sort_weight) && (b.extras?.sort_weight)){
+        return (a.extras?.sort_weight)<(b.extras?.sort_weight)?-1:1;
+      }
+      return -1;
+    })
+    console.log("sorted");
+    console.log(sorted);
+  }
+  console.log(isSubmitting);
+  
+  // if(isSubmitting && title==="Answer"){
+  //   for(var i =0;i<values.length;i++){
+  //     handleChange(buildEvent(`${values}[${i}].extras`, {sort_weight:i}));
+  //   }
+  //   console.log("submitting");
+  // }
+  
   const [menu, setMenu] = React.useState<{
     index: number;
     anchor: null | HTMLElement;
@@ -134,6 +156,88 @@ const MappingsTable: React.FC<Props> = ({
                 </TableCell>
               </TableRow>
             </TableHead>
+            {(title==="Answer" && editing)?(
+              <DragDropContext
+              onDragEnd={(param) => {
+                // console.log(props);
+                // var valueKey;
+
+                const srcI = param.source.index;
+                const desI = param.destination?.index;
+                if (desI) {
+                  values.splice(desI, 0, values.splice(srcI, 1)[0]);
+                  console.log(srcI);
+                  console.log(desI);
+                  
+                  // valueKey = `${valuesKey}[${srcI}]`;
+                  // handleChange(buildEvent(`${valueKey}.extras`, {sort_weight:desI}));
+                  
+                  // if(srcI<desI){
+                  //   for(var i=desI;i>srcI;i--){
+                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i-1}));
+                  //   }
+                  // }
+                  // if(srcI>desI){
+                  //   for(var i=desI;i<srcI;i++){
+                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i+1}));
+                  //   }
+                  // }
+                  
+                }
+              }}
+            > 
+              <TableBody>
+                <Droppable droppableId="droppable-1">
+                {(provided, _) => (
+                  <div ref={provided.innerRef} {...provided.droppableProps}>
+
+                  {sorted.map((value, index) =>
+                    value.retired && !showRetired ? null : (
+
+                      <Draggable
+                        key={value.external_id}
+                        draggableId={"draggable-" + value.external_id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div 
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              boxShadow: snapshot.isDragging
+                                ? "0 0 .4rem #666"
+                                : "none",
+                            }}
+                          >
+                            <DragHandle {...provided.dragHandleProps}/>
+                            {index}
+                              <MappingsTableRow
+                                  key={index}
+                                  value={value}
+                                  index={index}
+                                  valuesKey={valuesKey}
+                                  handleChange={handleChange}
+                                  toggleMenu={toggleMappingMenu}
+                                  menu={menu}
+                                  arrayHelpers={arrayHelpers}
+                                  fixedMappingType={fixedMappingType}
+                                  errors={Array.isArray(errors) ? errors[index] : undefined}
+                                  editing={editing}
+                              />
+                          </div>
+                        )}
+                      </Draggable>
+
+                  ))
+                  }
+                  {provided.placeholder}
+                  </div>
+                )}
+                </Droppable>
+              </TableBody>
+            </DragDropContext>
+            ) : (
             <TableBody>
               {values.map((value, index) =>
                   value.retired && !showRetired ? null : (
@@ -153,6 +257,7 @@ const MappingsTable: React.FC<Props> = ({
                   )
               )}
             </TableBody>
+            )}
           </Table>
           {noMappingsMsg()}
           {typeof errors !== "string" ? null : (
