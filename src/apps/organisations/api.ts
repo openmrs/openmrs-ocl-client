@@ -24,12 +24,12 @@ const api = {
           }
         }),
       private: (
-        organisationUrl: string,
+        username: string,
         q: string = "",
         limit = 20,
         page = 1
       ) =>
-        authenticatedInstance.get(organisationUrl, {
+        authenticatedInstance.get(`/users/${username}/orgs/`, {
           params: {
             limit,
             page,
