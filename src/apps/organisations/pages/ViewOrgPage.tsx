@@ -13,7 +13,9 @@ import {
   addOrgMemberAction,
   addOrgMemberLoadingSelector,
   deleteOrgMemberAction,
-  deleteOrgMemberErrorSelector
+  deleteOrgMemberErrorSelector,
+  resetAddOrgMemberAction,
+  resetDeleteOrgMemberAction
 } from "../redux";
 import Header from "../../../components/Header";
 import { 
@@ -55,6 +57,8 @@ interface Props {
   deleteMember: (
       ...args: Parameters<typeof deleteOrgMemberAction>
   ) => void;
+  resetAddOrgMember: () => void;
+  resetDeleteOrgMember: () => void;
 }
 
 const useStyles = makeStyles((theme) => 
@@ -76,6 +80,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
   retrieveOrgSources, 
   retrieveOrgCollections,
   retrieveOrgMembers,
+  resetAddOrgMember,
+  resetDeleteOrgMember,
   addOrgMember,
   organisation,
   sources,
@@ -92,6 +98,11 @@ const ViewOrganisationPage: React.FC<Props> = ({
   
   const orgUrl = url.replace("/user", "").replace("edit/", "");
   
+  useEffect(() => {
+    resetAddOrgMember();
+    resetDeleteOrgMember();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     retrieveOrg(orgUrl);
     retrieveOrgSources(orgUrl);
@@ -145,6 +156,8 @@ const mapActionsToProps = {
   retrieveOrgSources: retrieveOrgSourcesAction,
   retrieveOrgCollections: retrieveOrgCollectionsAction,
   retrieveOrgMembers: retrieveOrgMembersAction,
+  resetAddOrgMember: resetAddOrgMemberAction,
+  resetDeleteOrgMember: resetDeleteOrgMemberAction,
   addOrgMember: addOrgMemberAction,
   deleteMember:deleteOrgMemberAction
 };
