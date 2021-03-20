@@ -162,9 +162,10 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
             errors={errors}
             allMappingErrors={allMappingErrors}
             supportLegacyMappings={originallyEditing}
-            onSubmit={(data: Concept) =>
+            onSubmit={(data: Concept) =>{
+              console.log(data);
               upsertConcept(data, sourceUrl, linkedDictionaryUrl)
-            }
+            }}
             defaultLocale={defaultLocale}
             supportedLocales={supportedLocales}
           />

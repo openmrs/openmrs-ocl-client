@@ -73,8 +73,15 @@ const MappingsTable: React.FC<Props> = ({
       }
       return -1;
     })
+    // console.log("sorted",sorted);
   }
-  
+  if(isSubmitting && title==="Answer"){
+    for(var i=0;i<values.length;i++){
+      handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i}));
+      console.log(i);
+    }
+    console.log("end");
+  }
   const [menu, setMenu] = React.useState<{
     index: number;
     anchor: null | HTMLElement;
@@ -151,29 +158,29 @@ const MappingsTable: React.FC<Props> = ({
               <DragDropContext
               onDragEnd={(param) => {
                 // console.log(props);
-                var valueKey;
+                // var valueKey;
 
                 const srcI = param.source.index;
                 const desI = param.destination?.index;
                 if (desI) {
+                  // if(srcI<desI){
+                  //   for(var i=desI;i>srcI;i--){
+                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i-1}));
+                  //   }
+                  // }
+                  // if(srcI>desI){
+                  //   for(var i=desI;i<srcI;i++){
+                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i+1}));
+                  //   }
+                  // }
                   
-                  if(srcI<desI){
-                    for(var i=desI;i>srcI;i--){
-                      handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i-1}));
-                    }
-                  }
-                  if(srcI>desI){
-                    for(var i=desI;i<srcI;i++){
-                      handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i+1}));
-                    }
-                  }
-                  
+                  // valueKey = `${valuesKey}[${srcI}]`;
+                  // handleChange(buildEvent(`${valueKey}.extras`, {sort_weight:desI}));
+
                   values.splice(desI, 0, values.splice(srcI, 1)[0]);
                   console.log(srcI);
                   console.log(desI);
-
-                  valueKey = `${valuesKey}[${srcI}]`;
-                  handleChange(buildEvent(`${valueKey}.extras`, {sort_weight:desI}));
+                  console.log(values);
                   
                 }
               }}
@@ -203,7 +210,6 @@ const MappingsTable: React.FC<Props> = ({
                             }}
                           >
                             <DragHandle {...provided.dragHandleProps}/>
-                            {index}
                               <MappingsTableRow
                                   key={index}
                                   value={value}

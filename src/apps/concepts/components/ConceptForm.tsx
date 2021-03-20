@@ -553,10 +553,6 @@ const ConceptForm: React.FC<Props> = ({
                 </Typography>
               )}
               <Button
-                onClick={()=>{
-                  console.log(values.answers);
-                  alert("submit")
-                }}
                 variant="outlined"
                 color="primary"
                 size="large"
