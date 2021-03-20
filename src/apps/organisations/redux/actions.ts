@@ -100,6 +100,18 @@ const resetEditOrganisationAction = () => {
   }
 };
 
+const resetAddOrgMemberAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(CREATE_ORG_MEMBER_ACTION));
+  }
+};
+
+const resetDeleteOrgMemberAction = () => {
+  return (dispatch: Function) => {
+    dispatch(resetAction(DELETE_ORG_MEMBER_ACTION));
+  }
+};
+
 const retrieveOrganisationAction = (orgUrl: string) => {
   return async (dispatch: Function) => {
     await dispatch(
@@ -143,6 +155,8 @@ export {
   editOrganisationAction,
   retrieveOrganisationAction,
   resetEditOrganisationAction,
+  resetAddOrgMemberAction,
+  resetDeleteOrgMemberAction,
   retrieveOrgCollectionsAction,
   retrieveOrgSourcesAction,
   deleteOrganisationAction,

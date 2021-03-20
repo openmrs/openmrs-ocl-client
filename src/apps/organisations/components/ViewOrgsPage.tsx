@@ -45,7 +45,7 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, r
 
   useEffect(() => {
     if (profile) {
-      retrieveOrganisations(profile?.username);
+      retrieveOrganisations(profile?.username, initialQ, PER_PAGE, page);
     } else retrieveOrganisations(url, initialQ, PER_PAGE, page); 
   },[retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
