@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 
 import {APIOrganisation, OrgSource, OrgCollection,OrgMember} from "../types";
 import {
@@ -29,8 +29,12 @@ import {Grid, makeStyles, createStyles} from "@material-ui/core";
 import {EditButton} from "../../containers/components/EditButton";
 import {getPrettyError} from "../../../utils";
 import { AppState } from "../../../redux";
+import {APIOrg, APIProfile, canModifyContainer, profileSelector} from "../../authentication";
+import {orgsSelector} from "../../authentication/redux/reducer";
 
 interface Props {
+  profile?: APIProfile;
+  usersOrgs?: APIOrg[];
   organisation: APIOrganisation;
   sources?: OrgSource[];
   collections?: OrgCollection[];
@@ -75,7 +79,9 @@ const useStyles = makeStyles((theme) =>
 }),
 );
 
-const ViewOrganisationPage: React.FC<Props> = ({ 
+const ViewOrganisationPage: React.FC<Props> = ({
+  profile,
+  usersOrgs = [],
   retrieveOrg, 
   retrieveOrgSources, 
   retrieveOrgCollections,
@@ -109,9 +115,10 @@ const ViewOrganisationPage: React.FC<Props> = ({
     retrieveOrgCollections(orgUrl);
     retrieveOrgMembers(orgUrl);
   }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
+  const isAnOrgMember = (owner: string, id:string) => Boolean(profile?.username === owner || usersOrgs?.map(org => org.id).includes(id));
+  const canModify=isAnOrgMember(organisation.created_by, organisation.id);
 
   const { name } = organisation || {};
-
   return (
     <Header 
       title={` Your Organisations > ${name}`}
@@ -121,7 +128,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
       <ProgressOverlay delayRender loading={loading}>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
-          <OrganisationMembers 
+          <OrganisationMembers
+            canModifyMembers={canModify}
             members={members} 
             addMember={addOrgMember} 
             orgUrl={orgUrl} 
@@ -134,13 +142,17 @@ const ViewOrganisationPage: React.FC<Props> = ({
           <OrganisationSources sources={sources}/>
           <OrganisationDictionaries collections={collections}/>
         </Grid>
-        <EditButton url={`${url}edit/`} title="Edit this Organisation"/>
+        {!canModify ? null : (
+            <EditButton url={`${url}edit/`} title="Edit this Organisation"/>
+            )}
       </ProgressOverlay>
     </Header>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
+  profile: profileSelector(state),
+  usersOrgs: orgsSelector(state),
   organisation: state.organisations.organisation,
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
