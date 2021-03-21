@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {connect} from "react-redux";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 import {APIOrganisation, OrgSource, OrgCollection,OrgMember} from "../types";
 import {
@@ -29,7 +29,7 @@ import {Grid, makeStyles, createStyles} from "@material-ui/core";
 import {EditButton} from "../../containers/components/EditButton";
 import {getPrettyError} from "../../../utils";
 import { AppState } from "../../../redux";
-import {APIOrg, APIProfile, canModifyContainer, profileSelector} from "../../authentication";
+import {APIOrg, APIProfile, profileSelector} from "../../authentication";
 import {orgsSelector} from "../../authentication/redux/reducer";
 
 interface Props {
@@ -116,7 +116,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
     retrieveOrgMembers(orgUrl);
   }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
   const isAnOrgMember = (owner: string, id:string) => Boolean(profile?.username === owner || usersOrgs?.map(org => org.id).includes(id));
-  const canModify=isAnOrgMember(organisation.created_by, organisation.id);
+  const canModify = isAnOrgMember(organisation.created_by, organisation.id);
 
   const { name } = organisation || {};
   return (

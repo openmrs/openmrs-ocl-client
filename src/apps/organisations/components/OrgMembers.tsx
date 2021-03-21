@@ -25,7 +25,7 @@ import {ConfirmationDialog} from "../../../utils";
 
 interface Props {
     members?: OrgMember[];
-    canModifyMembers:boolean;
+    canModifyMembers: boolean;
     addError?: string;
     loading: boolean;
     addMember: (
@@ -60,7 +60,7 @@ const confirmationMsg = () => {
         </div>
     );
 };
-const OrganisationMembers: React.FC<Props> = ({ canModifyMembers,members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
+const OrganisationMembers: React.FC<Props> = ({ canModifyMembers, members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
