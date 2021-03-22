@@ -17,7 +17,6 @@ import { APIConcept, apiConceptToConcept, APIMapping, Concept } from "../types";
 import { Redirect, useLocation, useParams } from "react-router";
 import { connect } from "react-redux";
 import Header from "../../../components/Header";
-import { startCase, toLower } from "lodash";
 import {
   debug,
   ProgressOverlay,

@@ -25,6 +25,7 @@ import {ConfirmationDialog} from "../../../utils";
 
 interface Props {
     members?: OrgMember[];
+    canModifyMembers: boolean;
     addError?: string;
     loading: boolean;
     addMember: (
@@ -59,7 +60,7 @@ const confirmationMsg = () => {
         </div>
     );
 };
-const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
+const OrganisationMembers: React.FC<Props> = ({ canModifyMembers, members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [openDialogDelete, setOpenDialogDelete] = useState(false);
@@ -71,7 +72,6 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
             setOpenAlert(true);
         };
     }, [addError, deleteError]);
-
     return (
     <Grid item xs={12} component="div">
       <Paper className='fieldsetParent'>
@@ -100,7 +100,9 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                     {members?.length ?
                         members.map(m =>
                             <li className={classes.root} key={m.username}>{m.username || m.name}
-                                <IconButton onClick={confirmDelete} ><DeleteIcon /></IconButton>
+                                {!canModifyMembers ? null : (
+                                    <IconButton onClick={confirmDelete} ><DeleteIcon /></IconButton>
+                                    )}
                                 <ConfirmationDialog
                                     open={openDialogDelete}
                                     setOpen={() => setOpenDialogDelete(!openDialogDelete)}
@@ -117,9 +119,11 @@ const OrganisationMembers: React.FC<Props> = ({ members, orgUrl, addMember, load
                         <li>No members found!</li>}
                 </ul>
             </List>
-            <ButtonGroup fullWidth variant='text' color='primary'>
+            {!canModifyMembers ? null : (
+                <ButtonGroup fullWidth variant='text' color='primary'>
                 <Button onClick={() => setOpenDialog(true)}>Add New Member</Button>
             </ButtonGroup>
+            )}
             <Dialog onClose={() => setOpenDialog(false)} open={openDialog}>
                <AddMemberForm 
                     orgUrl={orgUrl} 
