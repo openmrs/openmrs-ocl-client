@@ -3,6 +3,7 @@ import { Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { APIOrg } from "../types";
 import List from "@material-ui/core/List";
+import { Link } from "react-router-dom";
 interface Props {
   orgs?: APIOrg[];
 }
@@ -32,7 +33,7 @@ const UserOrganisationDetails: React.FC<Props> = ({ orgs }) => {
           )
           .map(org => (
             <li key={org.id} className={classes.orgItem}>
-              {org.name}
+              <Link to={org.url}>{org.name}</Link>
             </li>
           ))
       : [];
