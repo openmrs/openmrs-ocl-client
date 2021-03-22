@@ -50,7 +50,7 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, r
   },[retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Header title="My Organisations">
+    <Header title="Organisations">
       <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewOrganisations 
