@@ -64,6 +64,7 @@ export interface BaseConcept {
   url?: string;
   version_url?: string;
   extras?: ConceptExtras | null;
+  added?: boolean;
 }
 
 export interface Concept extends BaseConcept {

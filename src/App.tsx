@@ -96,12 +96,14 @@ const AuthenticatedRoutes: React.FC = () => {
           newConcept={true}
           viewConcept={true}
           viewConcepts={true}
+          viewDictConcepts={false}
         />
       </Route>
       <Route path='/:ownerType/:owner/collections/:collection/concepts'>
         <ConceptRoutes
           containerType={DICTIONARY_CONTAINER}
           viewConcepts={true}
+          viewDictConcepts={true}
         />
       </Route>
       <Route path='/:ownerType/:owner/collections/:collection/:version/concepts'>

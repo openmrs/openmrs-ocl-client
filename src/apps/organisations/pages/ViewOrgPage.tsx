@@ -13,7 +13,9 @@ import {
   addOrgMemberAction,
   addOrgMemberLoadingSelector,
   deleteOrgMemberAction,
-  deleteOrgMemberErrorSelector
+  deleteOrgMemberErrorSelector,
+  resetAddOrgMemberAction,
+  resetDeleteOrgMemberAction
 } from "../redux";
 import Header from "../../../components/Header";
 import { 
@@ -27,8 +29,12 @@ import {Grid, makeStyles, createStyles} from "@material-ui/core";
 import {EditButton} from "../../containers/components/EditButton";
 import {getPrettyError} from "../../../utils";
 import { AppState } from "../../../redux";
+import {APIOrg, APIProfile, profileSelector} from "../../authentication";
+import {orgsSelector} from "../../authentication/redux/reducer";
 
 interface Props {
+  profile?: APIProfile;
+  usersOrgs?: APIOrg[];
   organisation: APIOrganisation;
   sources?: OrgSource[];
   collections?: OrgCollection[];
@@ -55,6 +61,8 @@ interface Props {
   deleteMember: (
       ...args: Parameters<typeof deleteOrgMemberAction>
   ) => void;
+  resetAddOrgMember: () => void;
+  resetDeleteOrgMember: () => void;
 }
 
 const useStyles = makeStyles((theme) => 
@@ -71,11 +79,15 @@ const useStyles = makeStyles((theme) =>
 }),
 );
 
-const ViewOrganisationPage: React.FC<Props> = ({ 
+const ViewOrganisationPage: React.FC<Props> = ({
+  profile,
+  usersOrgs = [],
   retrieveOrg, 
   retrieveOrgSources, 
   retrieveOrgCollections,
   retrieveOrgMembers,
+  resetAddOrgMember,
+  resetDeleteOrgMember,
   addOrgMember,
   organisation,
   sources,
@@ -93,14 +105,20 @@ const ViewOrganisationPage: React.FC<Props> = ({
   const orgUrl = url.replace("/user", "").replace("edit/", "");
   
   useEffect(() => {
+    resetAddOrgMember();
+    resetDeleteOrgMember();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
     retrieveOrg(orgUrl);
     retrieveOrgSources(orgUrl);
     retrieveOrgCollections(orgUrl);
     retrieveOrgMembers(orgUrl);
   }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
+  const isAnOrgMember = (owner: string, id:string) => Boolean(profile?.username === owner || usersOrgs?.map(org => org.id).includes(id));
+  const canModify = isAnOrgMember(organisation.created_by, organisation.id);
 
   const { name } = organisation || {};
-
   return (
     <Header 
       title={` Your Organisations > ${name}`}
@@ -110,7 +128,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
       <ProgressOverlay delayRender loading={loading}>
         <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
           <OrganisationDetails organisation={organisation}/>
-          <OrganisationMembers 
+          <OrganisationMembers
+            canModifyMembers={canModify}
             members={members} 
             addMember={addOrgMember} 
             orgUrl={orgUrl} 
@@ -123,13 +142,17 @@ const ViewOrganisationPage: React.FC<Props> = ({
           <OrganisationSources sources={sources}/>
           <OrganisationDictionaries collections={collections}/>
         </Grid>
-        <EditButton url={`${url}edit/`} title="Edit this Organisation"/>
+        {!canModify ? null : (
+            <EditButton url={`${url}edit/`} title="Edit this Organisation"/>
+            )}
       </ProgressOverlay>
     </Header>
   );
 };
 
 const mapStateToProps = (state: AppState) => ({
+  profile: profileSelector(state),
+  usersOrgs: orgsSelector(state),
   organisation: state.organisations.organisation,
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
@@ -145,6 +168,8 @@ const mapActionsToProps = {
   retrieveOrgSources: retrieveOrgSourcesAction,
   retrieveOrgCollections: retrieveOrgCollectionsAction,
   retrieveOrgMembers: retrieveOrgMembersAction,
+  resetAddOrgMember: resetAddOrgMemberAction,
+  resetDeleteOrgMember: resetDeleteOrgMemberAction,
   addOrgMember: addOrgMemberAction,
   deleteMember:deleteOrgMemberAction
 };

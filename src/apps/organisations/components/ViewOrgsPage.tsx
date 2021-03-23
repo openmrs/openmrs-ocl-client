@@ -7,17 +7,18 @@ import { retrievePublicOrganisationsAction } from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Header } from "../../../components";
-import { APIOrganisation } from "../types";
+import { BaseAPIOrganisation } from "../types";
 
 import { ViewOrganisations } from "../components";
 import { useQueryParams } from "../../../utils";
 import {ProgressOverlay} from "../../../utils/components";
 import { ContainerOwnerTabs } from "../../containers/components";
 import { TAB_LIST } from "../constants";
+import { APIProfile } from "../../authentication";
 
 interface Props {
-  organisations?: APIOrganisation[];
-  username?: string;
+  organisations?: BaseAPIOrganisation[];
+  profile?: APIProfile;
   meta?: { num_found?: number };
   loading: boolean;
   retrieveOrganisations: (
@@ -25,7 +26,7 @@ interface Props {
   ) => void;
 }
 
-const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], retrieveOrganisations, username = '', loading, meta = {} }:Props) => {
+const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, retrieveOrganisations, loading, meta = {} }:Props) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
 
@@ -43,11 +44,13 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], retrieveOr
   };
 
   useEffect(() => {
-      retrieveOrganisations(url, initialQ, PER_PAGE, page);
-  },[retrieveOrganisations, url, initialQ, page]);
+    if (profile) {
+      retrieveOrganisations(profile?.username, initialQ, PER_PAGE, page);
+    } else retrieveOrganisations(url, initialQ, PER_PAGE, page); 
+  },[retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Header title="My Organisations">
+    <Header title="Organisations">
       <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewOrganisations 
