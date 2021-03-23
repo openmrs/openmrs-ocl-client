@@ -15,7 +15,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
@@ -36,19 +36,24 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  valuesKey: string;
-  values: Mapping[];
-  errors?: {} | string;
-  createNewMapping: Function;
-  arrayHelpers: ArrayHelpers;
-  isSubmitting: boolean;
-  handleChange: Function;
-  title: string;
-  fixedMappingType?: Option;
-  editing: boolean;
+  valuesKey: string
+  values: Mapping[]
+  errors?: {} | string
+  createNewMapping: Function
+  arrayHelpers: ArrayHelpers
+  isSubmitting: boolean
+  submitCount: number
+  handleChange: Function
+  title: string
+  fixedMappingType?: Option
+  editing: boolean
 }
 
 const HEADER_MENU_INDEX = -100;
+
+const buildEvent = (name: string, value: any) => ({
+  target: { name, value }
+});
 
 const MappingsTable: React.FC<Props> = ({
   valuesKey,
@@ -57,31 +62,61 @@ const MappingsTable: React.FC<Props> = ({
   createNewMapping,
   arrayHelpers,
   isSubmitting,
+  submitCount,
   handleChange,
   title,
   fixedMappingType,
   editing
 }) => {
   const classes = useStyles();
-  const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
+  const [sorted] = useState(values);
+  const [isAnswer, setAnswer] = useState(false);
   
-  var sorted =values;
-  if(title==="Answer"){
-    sorted =sorted.sort((a,b) => {
-      if((a.extras?.sort_weight) && (b.extras?.sort_weight)){
-        return (a.extras?.sort_weight)<(b.extras?.sort_weight)?-1:1;
-      }
-      return -1;
-    })
-    // console.log("sorted",sorted);
-  }
-  if(isSubmitting && title==="Answer"){
-    for(var i=0;i<values.length;i++){
-      handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i}));
-      console.log(i);
+  useEffect(() => setAnswer(title === "Answer"), [title]);
+
+  useEffect(() => {
+    if (isAnswer) {
+      sorted.sort((v1, v2) => {
+        if (v1.extras?.sort_weight) {
+          if (v2.extras?.sort_weight) {
+            return (
+              (v1.extras.sort_weight as number) -
+              (v2.extras.sort_weight as number)
+            );
+          }
+
+          return 1;
+        }
+  
+        if (v2.extras?.sort_weight) {
+          return -1;
+        }
+
+        return 0;
+      });
     }
-    console.log("end");
-  }
+  }, [sorted, isAnswer]);
+
+  useEffect(() => {
+    if (isAnswer && isSubmitting) {
+      for (var i = 0; i < values.length; i++) {
+        handleChange(
+          buildEvent(
+            `${valuesKey}[${i}].extras`,
+            { sort_weight: i + 1 }
+          )
+        );
+      }
+    }
+  }, [
+    isAnswer,
+    isSubmitting,
+    submitCount,
+    handleChange,
+    values.length,
+    valuesKey
+  ])
+
   const [menu, setMenu] = React.useState<{
     index: number;
     anchor: null | HTMLElement;
@@ -154,84 +189,62 @@ const MappingsTable: React.FC<Props> = ({
                 </TableCell>
               </TableRow>
             </TableHead>
-            {(title==="Answer" && editing)?(
+            {(isAnswer && editing)?(
               <DragDropContext
-              onDragEnd={(param) => {
-                // console.log(props);
-                // var valueKey;
-
-                const srcI = param.source.index;
-                const desI = param.destination?.index;
-                if (desI) {
-                  // if(srcI<desI){
-                  //   for(var i=desI;i>srcI;i--){
-                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i-1}));
-                  //   }
-                  // }
-                  // if(srcI>desI){
-                  //   for(var i=desI;i<srcI;i++){
-                  //     handleChange(buildEvent(`${valuesKey}[${i}].extras`, {sort_weight:i+1}));
-                  //   }
-                  // }
-                  
-                  // valueKey = `${valuesKey}[${srcI}]`;
-                  // handleChange(buildEvent(`${valueKey}.extras`, {sort_weight:desI}));
-
-                  values.splice(desI, 0, values.splice(srcI, 1)[0]);
-                  console.log(srcI);
-                  console.log(desI);
-                  console.log(values);
-                  
-                }
-              }}
-            > 
+                onDragEnd={(param) => {
+                  const srcI = param.source.index;
+                  const desI = param.destination?.index;
+                  if (desI) {
+                    values.splice(desI, 0, values.splice(srcI, 1)[0]);
+                  }
+                }}
+              > 
               <TableBody>
                 <Droppable droppableId="droppable-1">
-                {(provided, _) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps}>
-
-                  {sorted.map((value, index) =>
-                    value.retired && !showRetired ? null : (
-
-                      <Draggable
-                        key={value.external_id}
-                        draggableId={"draggable-" + value.external_id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <div 
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            style={{
-                              ...provided.draggableProps.style,
-                              boxShadow: snapshot.isDragging
-                                ? "0 0 .4rem #666"
-                                : "none",
-                            }}
-                          >
-                            <DragHandle {...provided.dragHandleProps}/>
-                              <MappingsTableRow
-                                  key={index}
-                                  value={value}
-                                  index={index}
-                                  valuesKey={valuesKey}
-                                  handleChange={handleChange}
-                                  toggleMenu={toggleMappingMenu}
-                                  menu={menu}
-                                  arrayHelpers={arrayHelpers}
-                                  fixedMappingType={fixedMappingType}
-                                  errors={Array.isArray(errors) ? errors[index] : undefined}
-                                  editing={editing}
-                              />
-                          </div>
-                        )}
-                      </Draggable>
-
-                  ))
-                  }
-                  {provided.placeholder}
-                  </div>
-                )}
+                  {(provided, _) => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {sorted.map((value, index) =>
+                      value.retired && !showRetired ? null : (
+                        <Draggable
+                          key={value.external_id}
+                          draggableId={"draggable-" + value.external_id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div 
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              style={{
+                                ...provided.draggableProps.style,
+                                boxShadow: snapshot.isDragging
+                                  ? "0 0 .4rem #666"
+                                  : "none",
+                                  display: 'flex',
+                                  alignItems: 'center'
+                              }}
+                            >
+                              <DragHandle {...provided.dragHandleProps}/>
+                                <MappingsTableRow
+                                    key={index}
+                                    value={value}
+                                    index={index}
+                                    valuesKey={valuesKey}
+                                    handleChange={handleChange}
+                                    toggleMenu={toggleMappingMenu}
+                                    menu={menu}
+                                    arrayHelpers={arrayHelpers}
+                                    fixedMappingType={fixedMappingType}
+                                    errors={Array.isArray(errors) ? errors[index] : undefined}
+                                    editing={editing}
+                                />
+                            </div>
+                          )}
+                        </Draggable>
+                    ))
+                    }
+                    {provided.placeholder}
+                    </div>
+                  )}
                 </Droppable>
               </TableBody>
             </DragDropContext>
