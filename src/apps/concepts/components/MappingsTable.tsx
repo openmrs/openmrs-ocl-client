@@ -76,7 +76,7 @@ const MappingsTable: React.FC<Props> = ({
 
   useEffect(() => {
     if (isAnswer) {
-      sorted.sort((v1, v2) => {
+      values=sorted.sort((v1, v2) => {
         if (v1.extras?.sort_weight) {
           if (v2.extras?.sort_weight) {
             return (
@@ -203,7 +203,7 @@ const MappingsTable: React.FC<Props> = ({
                 <Droppable droppableId="droppable-1">
                   {(provided, _) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
-                    {sorted.map((value, index) =>
+                    {values.map((value, index) =>
                       value.retired && !showRetired ? null : (
                         <Draggable
                           key={value.external_id}
