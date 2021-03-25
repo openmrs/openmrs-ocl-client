@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 
 import {
-  ViewPersonalOrganisationsPage
+  ViewPublicOrganisationsPage
 } from "./pages";
 
 const Routes: React.FC = () => {
@@ -11,7 +11,7 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path={`${path}/`}>
-        <ViewPersonalOrganisationsPage />
+        <ViewPublicOrganisationsPage />
       </Route>
    
     </Switch>

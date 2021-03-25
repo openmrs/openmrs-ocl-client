@@ -52,16 +52,16 @@ const api = {
         authenticatedInstance.post(orgUrl, data),
     delete: (orgUrl: string) =>
         authenticatedInstance.delete(orgUrl),
-    retrieveSources: (orgUrl: string):Promise<AxiosResponse<any>> =>
+    retrieveSources: (orgUrl: string) =>
         authenticatedInstance.get(`${orgUrl}sources/`),
-    retrieveCollections: (orgUrl: string):Promise<AxiosResponse<any>> =>
+    retrieveCollections: (orgUrl: string) =>
         authenticatedInstance.get(`${orgUrl}collections/`),
-    retrieveMembers: (orgUrl: string):Promise<AxiosResponse<any>> =>
+    retrieveMembers: (orgUrl: string) =>
         authenticatedInstance.get(`${orgUrl}members/`),
-    addMember: (orgUrl: string, member: OrgMember):Promise<AxiosResponse<any>> =>
-        authenticatedInstance.put(`${orgUrl}members/${member.username}`),
+    addMember: (orgUrl: string, member: OrgMember) =>
+        authenticatedInstance.put(`${orgUrl}members/${member.username}/`),
     deleteMember: (orgUrl: string, user:string) =>
-        authenticatedInstance.delete(`${orgUrl}members/${user}`)
+        authenticatedInstance.delete(`${orgUrl}members/${user}/`)
   },
   
 };
