@@ -6,6 +6,7 @@ import { Field, Form, Formik} from "formik";
 import { TextField } from "formik-material-ui";
 import { APIProfile } from "../types";
 import dayjs from 'dayjs';
+import { omitBy, isNull } from "lodash";
 
 interface Props {
     loading: boolean;
@@ -46,7 +47,7 @@ const UserForm: React.FC<Props> = ({
         <div id="user-form" className={classes.userForm}>
             <Formik
                 ref={formikRef}
-                initialValues={savedValues || initialValues}
+                initialValues={{...initialValues, ...omitBy(savedValues, isNull)}}
                 validateOnChange={false}
                 onSubmit={(values: APIProfile) => {
                 }}
