@@ -45,9 +45,14 @@ const LoginPage: React.FC<Props> = ({
     };
   }, []);
 
+  useEffect(() => {
+    if (isLoggedIn && nextPage) {
+      clearNextPage();
+    }
+  }, [isLoggedIn, nextPage, clearNextPage]);
+
   if (isLoggedIn) {
     if (nextPage) {
-      clearNextPage();
       return <Redirect to={nextPage} />;
     }
 

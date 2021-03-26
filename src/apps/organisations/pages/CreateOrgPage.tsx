@@ -4,14 +4,13 @@ import { Redirect, useLocation } from "react-router-dom";
 import { OrganisationForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
 import {
-  createOrganisationLoadingSelector,
-  createOrganisationProgressSelector,
+  createOrganisationErrorSelector,
+  createOrganisationLoadingSelector
 } from "../redux";
-
-import { Organisation } from "../types";
+import { APIOrganisation, Organisation } from "../types";
 import {
   createOrganisationAction,
-  resetCreateOrganisationAction,
+  resetCreateOrganisationAction
 } from "../redux/actions";
 import { usePrevious } from "../../../utils";
 import { AppState } from "../../../redux";
@@ -20,8 +19,8 @@ import { getOrganisationTypeFromPreviousPath } from "../utils";
 
 interface Props {
   errors?: {};
-  loading?: boolean;
-  newOrganisation?: {};
+  loading: boolean;
+  newOrganisation?: APIOrganisation;
   username?: string;
   createOrganisation: (
     ...args: Parameters<typeof createOrganisationAction>
@@ -38,8 +37,7 @@ const CreateOrganisationPage: React.FC<Props> = ({
   loading,
   newOrganisation,
   createOrganisation,
-  resetCreateOrganisation,
-  username = "",
+  resetCreateOrganisation
 }: Props) => {
   const { state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
@@ -48,8 +46,10 @@ const CreateOrganisationPage: React.FC<Props> = ({
 
   const previouslyLoading = usePrevious(loading);
 
-  if (!loading && previouslyLoading && newOrganisation) {
-    return <Redirect to="/user/orgs/" />;
+  if (!loading && previouslyLoading && newOrganisation && !errors) {
+    // TODO Fix this when we have a working "My Organisation" page
+    // return <Redirect to="/user/orgs" />
+    return <Redirect to={newOrganisation.url} />;
   }
 
   return (
@@ -57,7 +57,7 @@ const CreateOrganisationPage: React.FC<Props> = ({
       title={`${getOrganisationTypeFromPreviousPath(
         previousPath
       )} > Create Organisation`}
-      backUrl="/user/orgs/"
+      backUrl="/orgs/"
       backText="Back to organisations"
       justifyChildren="space-around"
     >
@@ -77,12 +77,12 @@ const CreateOrganisationPage: React.FC<Props> = ({
 const mapStateToProps = (state: AppState) => ({
   newOrganisation: state.organisations.newOrganisation,
   loading: createOrganisationLoadingSelector(state),
-  progress: createOrganisationProgressSelector(state),
   username: state.auth.profile?.username,
+  errors: createOrganisationErrorSelector(state)
 });
 const mapActionsToProps = {
   createOrganisation: createOrganisationAction,
-  resetCreateOrganisation: resetCreateOrganisationAction,
+  resetCreateOrganisation: resetCreateOrganisationAction
 };
 
 export default connect(

@@ -30,9 +30,10 @@ const reducer = (state = initialState, action: AnyAction) => {
     case SET_NEXT_PAGE_ACTION:
       return { ...state, nextPage: action.payload };
     case CLEAR_NEXT_PAGE_ACTION:
-      return { ...state, nextPage: undefined };    
+      return { ...state, nextPage: undefined };
   }
 };
+
 const authLoadingSelector = loadingSelector(LOGIN_ACTION);
 const authErrorsSelector = errorSelector(LOGIN_ACTION);
 

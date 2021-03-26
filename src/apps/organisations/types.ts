@@ -2,7 +2,6 @@ export interface BaseAPIOrganisation {
   id: string;
   name: string;
   url: string;
-
 }
 export interface OrgSource {
   short_code: string;
@@ -30,17 +29,17 @@ export interface APIOrganisation extends BaseAPIOrganisation {
   extras: Extras | null;
   members_url: string;
   sources_url: string;
-  collections_url: string
-  members: number,
-  public_collections: number,
-  public_sources: number,
-  created_on: string,
-  created_by: string,
-  updated_on: string,
+  collections_url: string;
+  members: number;
+  public_collections: number;
+  public_sources: number;
+  created_on: string;
+  created_by: string;
+  updated_on: string;
   updated_by: string;
 }
 export interface Extras {
-  source?: string
+  source?: string;
 }
 
 export interface Organisation {
@@ -62,16 +61,18 @@ export interface EditableOrganisationFields {
   public_access?: string;
 }
 export interface OrganisationState {
-  organisation: APIOrganisation
-  organisations: { items: APIOrganisation[]; responseMeta?: any }[]
-  meta?: any
-  newOrganisation?: APIOrganisation
-  editedOrganisation?: APIOrganisation
-  orgSources?: OrgSource[]
-  orgCollections?: OrgCollection[]
-  orgMembers?: OrgMember[]
+  organisation: APIOrganisation;
+  organisations: { items: APIOrganisation[]; responseMeta?: any }[];
+  meta?: any;
+  newOrganisation?: APIOrganisation;
+  editedOrganisation?: APIOrganisation;
+  orgSources?: OrgSource[];
+  orgCollections?: OrgCollection[];
+  orgMembers?: OrgMember[];
+  showAddMemberDialog: boolean;
+  showDeleteMemberDialog: boolean;
 }
-export interface OrgMember{
+export interface OrgMember {
   username: string;
   name?: string;
   url?: string;

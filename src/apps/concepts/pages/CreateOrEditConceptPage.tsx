@@ -85,7 +85,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
   progress
 }) => {
   const { pathname: url } = useLocation();
-  const { concept: conceptId } = useParams();
+  const { concept: conceptId } = useParams<{ concept: string }>();
   const {
     conceptClass,
     linkedDictionary: linkedDictionaryUrl
@@ -122,9 +122,11 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => resetConceptForm(),
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   []);
+  useEffect(
+    () => resetConceptForm(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   // everything went hunky-dory, and we should redirect the user to the view concept page
   if (!loading && previouslyLoading && concept && !errors && !anyMappingsErrors)
@@ -141,8 +143,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
       allowImplicitNavigation
       title={
         context === CONTEXT.edit
-          ? "Edit " +
-            ( concept ? concept.display_name : "concept" )
+          ? "Edit " + (concept ? concept.display_name : "concept")
           : "Create concept"
       }
     >

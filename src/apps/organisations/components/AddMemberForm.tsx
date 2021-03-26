@@ -10,10 +10,10 @@ import {
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
-import { usePrevious, getPrettyError } from "../../../utils";
-
 import { OrgMember } from "../types";
-
+import { AppState } from "../../../redux";
+import { addOrgMemberLoadingSelector } from "../redux";
+import { connect } from "react-redux";
 interface Props {
   onSubmit?: Function;
   orgUrl: string;
@@ -27,17 +27,16 @@ const AddMemberSchema = Yup.object().shape<OrgMember>({
 });
 
 const initialValues: OrgMember = {
-  username: "",
+  username: ""
 };
 
 const AddMemberForm: React.FC<Props> = ({
   onSubmit,
   loading,
-  error = '',
+  error,
   handleClose
 }) => {
   const formikRef: any = useRef(null);
-  const previouslyLoading = usePrevious(loading);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -45,10 +44,6 @@ const AddMemberForm: React.FC<Props> = ({
       currentRef.setSubmitting(loading);
     }
   }, [loading]);
-
-  useEffect(() => {
-    if (!loading && previouslyLoading && error) handleClose();
-  }, [loading, previouslyLoading, error, handleClose]);
 
   return (
     <>
@@ -59,7 +54,9 @@ const AddMemberForm: React.FC<Props> = ({
         validationSchema={AddMemberSchema}
         validateOnChange={false}
         onSubmit={(values: OrgMember) => {
-          if (onSubmit) onSubmit(values);
+          if (onSubmit) {
+            onSubmit(values);
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -86,7 +83,7 @@ const AddMemberForm: React.FC<Props> = ({
                   variant="caption"
                   component="div"
                 >
-                  {getPrettyError(error) || 'Could not submit'}
+                  {error}
                 </Typography>
               )}
               <DialogActions>
@@ -110,4 +107,8 @@ const AddMemberForm: React.FC<Props> = ({
   );
 };
 
-export default AddMemberForm;
+const mapStateToProps = (state: AppState) => ({
+  loading: addOrgMemberLoadingSelector(state)
+});
+
+export default connect(mapStateToProps)(AddMemberForm);

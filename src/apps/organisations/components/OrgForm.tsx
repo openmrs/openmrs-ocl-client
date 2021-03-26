@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Button,
   FormControl,
@@ -7,15 +7,15 @@ import {
   MenuItem,
   Typography
 } from "@material-ui/core";
-import { CONTEXT } from "../../../utils";
-import { Organisation } from '../types';
+import { CONTEXT, getPrettyError } from "../../../utils";
+import { Organisation } from "../types";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 
 interface Props {
-  onSubmit?: Function;
-  loading?: boolean;
+  onSubmit?: (values: Organisation) => void;
+  loading: boolean;
   status?: string;
   errors?: {};
   context?: string;
@@ -27,7 +27,9 @@ const OrganisationSchema = Yup.object().shape<Organisation>({
   name: Yup.string().required("Organisation name is required"),
   location: Yup.string().notRequired(),
   company: Yup.string().notRequired(),
-  website: Yup.string().url().notRequired(),
+  website: Yup.string()
+    .url()
+    .notRequired(),
   public_access: Yup.string().notRequired()
 });
 
@@ -37,7 +39,7 @@ const initialValues: Organisation = {
   company: "",
   website: "",
   location: "",
-  public_access: "View",
+  public_access: "View"
 };
 
 const useStyles = makeStyles({
@@ -49,15 +51,33 @@ const useStyles = makeStyles({
   }
 });
 
-const OrganisationForm: React.FC<Props> = ({ 
+const OrganisationForm: React.FC<Props> = ({
   onSubmit,
   context = CONTEXT.view,
-  savedValues
- }) => {
+  savedValues,
+  errors,
+  status,
+  loading
+}) => {
   const classes = useStyles();
   const editing = context === CONTEXT.edit;
+  const error = getPrettyError(errors);
 
   const formikRef: any = useRef(null);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef;
+    if (currentRef) {
+      currentRef.setSubmitting(loading);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    const { current: currentRef } = formikRef;
+    if (currentRef) {
+      currentRef.setStatus(status);
+    }
+  }, [status]);
 
   return (
     <div id="organisation-form" className={classes.organisationForm}>
@@ -129,10 +149,7 @@ const OrganisationForm: React.FC<Props> = ({
               margin="normal"
               component={TextField}
             />
-            <FormControl
-              fullWidth
-              margin="normal"
-            >
+            <FormControl fullWidth margin="normal">
               <InputLabel htmlFor="public_access">Public Access</InputLabel>
               <Field name="public_access" id="public_access" component={Select}>
                 <MenuItem value="View">View</MenuItem>
@@ -143,20 +160,27 @@ const OrganisationForm: React.FC<Props> = ({
                 <ErrorMessage name="public_access" component="span" />
               </Typography>
             </FormControl>
-            
+
             <br />
             <br />
-              <div className={classes.submitButton}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="medium"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Submit
-                </Button>
-              </div>
+            <div className={classes.submitButton}>
+              {!error ? (
+                <br />
+              ) : (
+                <Typography color="error" variant="caption" component="div">
+                  {error}
+                </Typography>
+              )}
+              <Button
+                variant="outlined"
+                color="primary"
+                size="medium"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                Submit
+              </Button>
+            </div>
           </Form>
         )}
       </Formik>

@@ -1,36 +1,25 @@
-import React, {useEffect} from "react";
-import {connect} from "react-redux";
-import {useLocation} from "react-router-dom";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { useLocation } from "react-router-dom";
 
-import {APIOrganisation, OrgSource, OrgCollection,OrgMember} from "../types";
+import { APIOrganisation, OrgSource, OrgCollection, OrgMember } from "../types";
 import {
   retrieveOrganisationAction,
-  retrieveOrgSourcesAction,
-  retrieveOrgCollectionsAction,
-  retrieveOrgMembersAction,
-  retrieveOrgLoadingSelector,
-  addOrgMemberErrorSelector,
-  addOrgMemberAction,
-  addOrgMemberLoadingSelector,
-  deleteOrgMemberAction,
-  deleteOrgMemberErrorSelector,
-  resetAddOrgMemberAction,
-  resetDeleteOrgMemberAction
+  retrieveOrgLoadingSelector
 } from "../redux";
 import Header from "../../../components/Header";
-import { 
-  OrganisationDetails, 
-  OrganisationMembers, 
-  OrganisationDictionaries, 
-  OrganisationSources } 
-  from "../components";
-import {ProgressOverlay} from "../../../utils/components";
-import {Grid, makeStyles, createStyles} from "@material-ui/core";
-import {EditButton} from "../../containers/components/EditButton";
-import {getPrettyError} from "../../../utils";
+import {
+  OrganisationDetails,
+  OrganisationMembers,
+  OrganisationDictionaries,
+  OrganisationSources
+} from "../components";
+import { ProgressOverlay } from "../../../utils/components";
+import { Grid, makeStyles, createStyles } from "@material-ui/core";
+import { EditButton } from "../../containers/components/EditButton";
 import { AppState } from "../../../redux";
-import {APIOrg, APIProfile, profileSelector} from "../../authentication";
-import {orgsSelector} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, profileSelector } from "../../authentication";
+import { orgsSelector } from "../../authentication/redux/reducer";
 
 interface Props {
   profile?: APIProfile;
@@ -40,111 +29,87 @@ interface Props {
   collections?: OrgCollection[];
   members?: OrgMember[];
   loading: boolean;
-  addOrgMemberError?: string;
-  deleteOrgMemberError?: string;
-  loadingAddMember: boolean;
-  retrieveOrg: (
-    ...args: Parameters<typeof retrieveOrganisationAction>
-  ) => void;
-  retrieveOrgSources: (
-    ...args: Parameters<typeof retrieveOrgSourcesAction>
-  ) => void;
-  retrieveOrgCollections: (
-    ...args: Parameters<typeof retrieveOrgCollectionsAction>
-  ) => void;
-  retrieveOrgMembers: (
-      ...args: Parameters<typeof retrieveOrgMembersAction>
-  ) => void;
-  addOrgMember: (
-    ...args: Parameters<typeof addOrgMemberAction>
-  ) => void;
-  deleteMember: (
-      ...args: Parameters<typeof deleteOrgMemberAction>
-  ) => void;
-  resetAddOrgMember: () => void;
-  resetDeleteOrgMember: () => void;
+  retrieveOrg: (...args: Parameters<typeof retrieveOrganisationAction>) => void;
 }
 
-const useStyles = makeStyles((theme) => 
+const useStyles = makeStyles(theme =>
   createStyles({
-    gridContainers:{
-    display: 'flex',
-    flexWrap: 'nowrap',
-    marginTop: '0',
-    margin: '1.25rem',
-  },
-  name: {
-    marginRight: '1rem'
-  }
-}),
+    gridContainers: {
+      display: "flex",
+      flexWrap: "nowrap",
+      marginTop: "0",
+      margin: "1.25rem"
+    },
+    name: {
+      marginRight: "1rem"
+    }
+  })
 );
 
 const ViewOrganisationPage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
-  retrieveOrg, 
-  retrieveOrgSources, 
-  retrieveOrgCollections,
-  retrieveOrgMembers,
-  resetAddOrgMember,
-  resetDeleteOrgMember,
-  addOrgMember,
   organisation,
   sources,
   collections,
   members,
   loading,
-  addOrgMemberError = '',
-  deleteOrgMemberError = '',
-  loadingAddMember,
-  deleteMember,
+  retrieveOrg
 }: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
-  
+
   const orgUrl = url.replace("/user", "").replace("edit/", "");
-  
-  useEffect(() => {
-    resetAddOrgMember();
-    resetDeleteOrgMember();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     retrieveOrg(orgUrl);
-    retrieveOrgSources(orgUrl);
-    retrieveOrgCollections(orgUrl);
-    retrieveOrgMembers(orgUrl);
-  }, [orgUrl, retrieveOrg, retrieveOrgCollections, retrieveOrgSources,retrieveOrgMembers]);
-  const isAnOrgMember = (owner: string, id:string) => Boolean(profile?.username === owner || usersOrgs?.map(org => org.id).includes(id));
+  }, [orgUrl, retrieveOrg]);
+
+  const isAnOrgMember = (owner: string, id: string) =>
+    Boolean(
+      profile?.username === owner || usersOrgs?.map(org => org.id).includes(id)
+    );
   const canModify = isAnOrgMember(organisation.created_by, organisation.id);
 
   const { name } = organisation || {};
+
   return (
-    <Header 
+    <Header
       title={` Your Organisations > ${name}`}
-      backUrl="/user/orgs/"
+      // backUrl="/user/orgs/"
+      backUrl="/orgs/"
       backText="Back to organisations"
-      justifyChildren='space-around'>
+      justifyChildren="space-around"
+    >
       <ProgressOverlay delayRender loading={loading}>
-        <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
-          <OrganisationDetails organisation={organisation}/>
+        <Grid
+          item
+          container
+          xs={12}
+          spacing={5}
+          className={classes.gridContainers}
+        >
+          <OrganisationDetails organisation={organisation} />
           <OrganisationMembers
             canModifyMembers={canModify}
-            members={members} 
-            addMember={addOrgMember} 
-            orgUrl={orgUrl} 
-            loading={loadingAddMember} 
-            addError={getPrettyError(addOrgMemberError)}
-            deleteError={getPrettyError(deleteOrgMemberError)}
-            deleteMember={deleteMember}/>
+            members={members}
+            orgUrl={orgUrl}
+            orgName={name}
+          />
         </Grid>
-        <Grid item container xs={12} spacing={5} className={classes.gridContainers}>
-          <OrganisationSources sources={sources}/>
-          <OrganisationDictionaries collections={collections}/>
+        <Grid
+          item
+          container
+          xs={12}
+          spacing={5}
+          className={classes.gridContainers}
+        >
+          <OrganisationSources sources={sources} />
+          <OrganisationDictionaries collections={collections} />
         </Grid>
         {!canModify ? null : (
-            <EditButton url={`${url}edit/`} title="Edit this Organisation"/>
-            )}
+          <EditButton url={`${url}edit/`} title="Edit this Organisation" />
+        )}
       </ProgressOverlay>
     </Header>
   );
@@ -157,21 +122,11 @@ const mapStateToProps = (state: AppState) => ({
   sources: state.organisations.orgSources,
   collections: state.organisations.orgCollections,
   members: state.organisations.orgMembers,
-  loading: retrieveOrgLoadingSelector(state),
-  addOrgMemberError: addOrgMemberErrorSelector(state),
-  deleteOrgMemberError: deleteOrgMemberErrorSelector(state),
-  loadingAddMember: addOrgMemberLoadingSelector(state)
+  loading: retrieveOrgLoadingSelector(state)
 });
 
 const mapActionsToProps = {
-  retrieveOrg: retrieveOrganisationAction,
-  retrieveOrgSources: retrieveOrgSourcesAction,
-  retrieveOrgCollections: retrieveOrgCollectionsAction,
-  retrieveOrgMembers: retrieveOrgMembersAction,
-  resetAddOrgMember: resetAddOrgMemberAction,
-  resetDeleteOrgMember: resetDeleteOrgMemberAction,
-  addOrgMember: addOrgMemberAction,
-  deleteMember:deleteOrgMemberAction
+  retrieveOrg: retrieveOrganisationAction
 };
 
 export default connect(
