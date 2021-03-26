@@ -17,7 +17,7 @@ import {
   People,
   AccountTreeOutlined,
   Notifications as NotificationsIcon,
-  PersonOutline as ProfileIcon,
+  PersonOutline as ProfileIcon
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
 import {
@@ -26,7 +26,7 @@ import {
   DialogActions,
   DialogTitle,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { connect } from "react-redux";
 // resist the temptation to make this like the rest of the action creators
@@ -34,7 +34,7 @@ import { connect } from "react-redux";
 import {
   LOGOUT_ACTION,
   APIProfile,
-  profileSelector,
+  profileSelector
 } from "../apps/authentication";
 import { action } from "../redux/utils";
 import { AppState } from "../redux";
@@ -44,51 +44,51 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: "flex"
     },
     hide: {
-      display: "none",
+      display: "none"
     },
     drawer: {
       width: drawerWidth,
-      flexShrink: 0,
+      flexShrink: 0
     },
     drawerOpen: {
       width: drawerWidth,
       whiteSpace: "normal",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
+        duration: theme.transitions.duration.enteringScreen
+      })
     },
     drawerClose: {
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        duration: theme.transitions.duration.leavingScreen
       }),
       overflowX: "hidden",
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9) + 1,
+        width: theme.spacing(9) + 1
       },
-      whiteSpace: "nowrap",
+      whiteSpace: "nowrap"
     },
     toolbar: {
       display: "flex",
       alignItems: "center",
       justifyContent: "flex-end",
       padding: theme.spacing(0, 2),
-      ...theme.mixins.toolbar,
+      ...theme.mixins.toolbar
     },
     content: {
-      width: "100vw",
+      width: "100vw"
     },
     logoutButton: {
-      marginTop: "auto",
+      marginTop: "auto"
     },
     selected: {
-      backgroundColor: theme.palette.primary.main,
-    },
+      backgroundColor: theme.palette.primary.main
+    }
   })
 );
 
@@ -108,8 +108,8 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
   };
   const clearNotificationStorageAndLogout = () => {
     try {
-      localStorage.removeItem('notification');
-    } catch(error){
+      localStorage.removeItem("notification");
+    } catch (error) {
       console.log(error);
     }
     logout();
@@ -119,23 +119,23 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
     <div className={classes.root}>
       <CssBaseline />
       <Drawer
-        variant='permanent'
+        variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
+          [classes.drawerClose]: !open
         })}
         classes={{
           paper: clsx({
             [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
+            [classes.drawerClose]: !open
+          })
         }}
         open={open}
       >
         <div className={classes.toolbar}>
           {open ? (
             <span>
-              <Typography variant='h6' noWrap>
+              <Typography variant="h6" noWrap>
                 Open Concept Lab
                 <IconButton onClick={toggleDrawer}>
                   <ChevronLeftIcon />
@@ -148,23 +148,23 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
             </IconButton>
           )}
         </div>
-        <Divider component='hr' />
-        <List component='div'>
+        <Divider component="hr" />
+        <List component="div">
           <ListItem
             button
             dense={false}
             component={Link}
             exact
             activeClassName={classes.selected}
-            to='/user/collections/'
-            key='Dictionaries'
+            to="/user/collections/"
+            key="Dictionaries"
           >
-            <Tooltip title='Dictionaries'>
-              <ListItemIcon className='list-item-icon'>
+            <Tooltip title="Dictionaries">
+              <ListItemIcon className="list-item-icon">
                 <FolderOpenOutlined />
               </ListItemIcon>
             </Tooltip>
-            <ListItemText primary='Dictionaries' />
+            <ListItemText primary="Dictionaries" />
           </ListItem>
           <ListItem
             button
@@ -172,55 +172,55 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
             component={Link}
             exact
             activeClassName={classes.selected}
-            to='/user/sources/'
-            key='Your Sources'
+            to="/user/sources/"
+            key="Your Sources"
           >
-            <Tooltip title='Sources'>
-              <ListItemIcon className='list-item-icon'>
+            <Tooltip title="Sources">
+              <ListItemIcon className="list-item-icon">
                 <AccountTreeOutlined />
               </ListItemIcon>
             </Tooltip>
-            <ListItemText primary='Sources' />
+            <ListItemText primary="Sources" />
           </ListItem>
         </List>
-        <Divider component='hr' />
-        <List component='div'>
+        <Divider component="hr" />
+        <List component="div">
           <ListItem
             button
             dense={false}
             component={Link}
             exact
             activeClassName={classes.selected}
-            to='/actions/'
-            key='Progress Notifications'
+            to="/actions/"
+            key="Progress Notifications"
           >
-            <Tooltip title='Progress Notifications'>
-              <ListItemIcon className='list-item-icon'>
+            <Tooltip title="Progress Notifications">
+              <ListItemIcon className="list-item-icon">
                 <NotificationsIcon />
               </ListItemIcon>
             </Tooltip>
-            <ListItemText primary='Progress Notifications' />
+            <ListItemText primary="Progress Notifications" />
           </ListItem>
         </List>
-        <Divider component='hr' />
+        <Divider component="hr" />
         <div className={classes.logoutButton}>
-          <Divider component='hr' />
-          <List component='div'>
+          <Divider component="hr" />
+          <List component="div">
             <ListItem
-                button
-                dense={false}
-                component={Link}
-                exact
-                activeClassName={classes.selected}
-                to='/user/'
-                key='Your Profile'
+              button
+              dense={false}
+              component={Link}
+              exact
+              activeClassName={classes.selected}
+              to="/user/"
+              key="Your Profile"
             >
-              <Tooltip title='Your Profile'>
-                <ListItemIcon className='list-item-icon'>
+              <Tooltip title="Your Profile">
+                <ListItemIcon className="list-item-icon">
                   <ProfileIcon />
                 </ListItemIcon>
               </Tooltip>
-              <ListItemText primary='Your Profile' />
+              <ListItemText primary="Your Profile" />
             </ListItem>
             <ListItem
               button
@@ -228,50 +228,54 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               component={Link}
               exact
               activeClassName={classes.selected}
-              to='/user/orgs/'
-              key='Organisations'
+              // to="/user/orgs/"
+              to="/orgs/"
+              key="Organisations"
             >
-            <Tooltip title='My Organisations'>
-              <ListItemIcon className='list-item-icon'>
-                <People />
-              </ListItemIcon>
-            </Tooltip>
-            <ListItemText primary='Organisations' />
-          </ListItem>
+              <Tooltip title="Organisations">
+                <ListItemIcon className="list-item-icon">
+                  <People />
+                </ListItemIcon>
+              </Tooltip>
+              <ListItemText primary="Organisations" />
+            </ListItem>
             <ListItem
               onClick={() => setConfirmLogoutOpen(true)}
               button
-              component='div'
+              component="div"
               key={"Logout"}
             >
               <Tooltip title={`Logout (${profile?.username})`}>
-                <ListItemIcon className='list-item-icon'>
+                <ListItemIcon className="list-item-icon">
                   <ExitToApp />
                 </ListItemIcon>
               </Tooltip>
               <ListItemText
-                primary='Logout'
+                primary="Logout"
                 secondary={`(${profile?.username})`}
               />
             </ListItem>
           </List>
           <Dialog
-            maxWidth='xs'
-            aria-labelledby='confirmation-dialog-title'
+            maxWidth="xs"
+            aria-labelledby="confirmation-dialog-title"
             open={confirmLogoutOpen}
             onClose={() => setConfirmLogoutOpen(false)}
           >
-            <DialogTitle id='confirmation-dialog-title'>
+            <DialogTitle id="confirmation-dialog-title">
               Confirm Logout
             </DialogTitle>
             <DialogActions>
               <Button
                 onClick={() => setConfirmLogoutOpen(false)}
-                color='primary'
+                color="primary"
               >
                 Cancel
               </Button>
-              <Button onClick={clearNotificationStorageAndLogout} color='secondary'>
+              <Button
+                onClick={clearNotificationStorageAndLogout}
+                color="secondary"
+              >
                 Logout
               </Button>
             </DialogActions>
@@ -284,7 +288,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-  profile: profileSelector(state),
+  profile: profileSelector(state)
 });
 
 const mapDispatchToProps = { logout: () => action(LOGOUT_ACTION) };

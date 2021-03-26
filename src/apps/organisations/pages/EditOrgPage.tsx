@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {isEmpty} from 'lodash';
-import {OrganisationForm} from "../components";
-import {Grid, Paper} from "@material-ui/core";
-import {connect} from "react-redux";
-import {Redirect, useLocation} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { isEmpty } from "lodash";
+import { OrganisationForm } from "../components";
+import { Grid, Paper } from "@material-ui/core";
+import { connect } from "react-redux";
+import { Redirect, useLocation } from "react-router-dom";
 import {
   editOrganisationAction,
   retrieveOrganisationAction,
@@ -12,34 +12,32 @@ import {
   deleteOrganisationErrorSelector,
   editOrganisationErrorSelector
 } from "../redux";
-import {APIOrganisation, EditableOrganisationFields} from "../types";
-import {CONTEXT, usePrevious} from "../../../utils"
-import {ProgressOverlay, ConfirmationDialog, ToastAlert} from "../../../utils/components";
+import { APIOrganisation, EditableOrganisationFields } from "../types";
+import { CONTEXT, usePrevious } from "../../../utils";
+import {
+  ProgressOverlay,
+  ConfirmationDialog,
+  ToastAlert
+} from "../../../utils/components";
 import Header from "../../../components/Header";
-import {MenuButton} from "../components";
+import { MenuButton } from "../components";
 import { AppState } from "../../../redux";
 interface Props {
-  errors?:{};
+  errors?: {};
   editError?: {};
   loading: boolean;
   editedOrganisation?: APIOrganisation;
   organisation?: APIOrganisation;
   deleteError?: string;
-  editOrg: (
-    ...args: Parameters<typeof editOrganisationAction>
-  ) => void;
-  retrieveOrg: (
-    ...args: Parameters<typeof retrieveOrganisationAction>
-  ) => void;
-  deleteOrg: (
-    ...args: Parameters<typeof deleteOrganisationAction>
-  ) => void;
+  editOrg: (...args: Parameters<typeof editOrganisationAction>) => void;
+  retrieveOrg: (...args: Parameters<typeof retrieveOrganisationAction>) => void;
+  deleteOrg: (...args: Parameters<typeof deleteOrganisationAction>) => void;
 }
 
 const EditOrganisationPage: React.FC<Props> = ({
   errors,
-  editError = '',
-  deleteError = '',
+  editError = "",
+  deleteError = "",
   loading,
   organisation,
   editedOrganisation,
@@ -47,26 +45,23 @@ const EditOrganisationPage: React.FC<Props> = ({
   retrieveOrg,
   deleteOrg
 }: Props) => {
-
   const [openDialog, setOpenDialog] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const { pathname } = useLocation();
-  
+
   const orgUrl = pathname.replace("/user", "").replace("edit/", "");
-  
+
   const previouslyLoading = usePrevious(loading);
 
   useEffect(() => {
-     retrieveOrg(orgUrl);
+    retrieveOrg(orgUrl);
   }, [orgUrl, retrieveOrg]);
 
   if (!loading && previouslyLoading && editedOrganisation) {
-    return (
-      <Redirect to='/user/orgs' />
-    );
+    return <Redirect to={orgUrl} />;
   }
-  const { name = '' } = organisation || {};
-  
+  const { name = "" } = organisation || {};
+
   const confirmationMsg = () => {
     return (
       <div>
@@ -74,20 +69,33 @@ const EditOrganisationPage: React.FC<Props> = ({
           Delete: <b>{name}</b>
         </h5>
         <p id="delete-modal-description">
-          Are you sure you want to Delete? This could mean that you loose all the data within this organisation.
+          Are you sure you want to Delete? This could mean that you loose all
+          the data within this organisation.
         </p>
       </div>
     );
   };
-  
+
   return (
     <Header
       title="Edit Organisation"
       backUrl={orgUrl}
       backText="Back to organisation"
     >
-      <ToastAlert open={openAlert} setOpen={() => setOpenAlert(!openAlert)} message={deleteError} type="error"/>
-       {editError ? <ToastAlert open={openAlert} setOpen={() => setOpenAlert(!openAlert)} message="An error occured" type="error"/> : null }
+      <ToastAlert
+        open={openAlert}
+        setOpen={() => setOpenAlert(!openAlert)}
+        message={deleteError}
+        type="error"
+      />
+      {editError ? (
+        <ToastAlert
+          open={openAlert}
+          setOpen={() => setOpenAlert(!openAlert)}
+          message="An error occured"
+          type="error"
+        />
+      ) : null}
       <ProgressOverlay loading={loading}>
         <Grid id="edit-organisation-page" item xs={6} component="div">
           <Paper>
@@ -95,7 +103,7 @@ const EditOrganisationPage: React.FC<Props> = ({
               context={CONTEXT.edit}
               errors={errors}
               loading={loading}
-              savedValues={!isEmpty(organisation) ? organisation: organisation}
+              savedValues={!isEmpty(organisation) ? organisation : organisation}
               onSubmit={(values: EditableOrganisationFields) => {
                 editOrg(orgUrl, values);
                 setOpenAlert(true);
@@ -103,19 +111,22 @@ const EditOrganisationPage: React.FC<Props> = ({
             />
           </Paper>
         </Grid>
-        <MenuButton backUrl={orgUrl} confirmDelete={() => setOpenDialog(true)}/>
+        <MenuButton
+          backUrl={orgUrl}
+          confirmDelete={() => setOpenDialog(true)}
+        />
         <ConfirmationDialog
           open={openDialog}
           setOpen={() => setOpenDialog(!openDialog)}
-          onConfirm={() => 
-            {
-              deleteOrg(orgUrl);
-              setOpenDialog(!openDialog);
-              setOpenAlert(true);
-            }}
+          onConfirm={() => {
+            deleteOrg(orgUrl);
+            setOpenDialog(!openDialog);
+            setOpenAlert(true);
+          }}
           message={confirmationMsg()}
           cancelButtonText={"No"}
-          confirmButtonText={"Yes"} />
+          confirmButtonText={"Yes"}
+        />
       </ProgressOverlay>
     </Header>
   );

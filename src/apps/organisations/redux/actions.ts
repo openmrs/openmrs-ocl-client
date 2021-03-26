@@ -3,7 +3,6 @@ import {
   createActionThunk,
   startAction,
   completeAction,
-  progressAction,
   resetAction,
   indexedAction,
   AppState,
@@ -31,22 +30,16 @@ import {
   HIDE_DELETE_MEMBER_DIALOG
 } from "./actionTypes";
 import { PERSONAL_ORGS_ACTION_INDEX } from "./constants";
-import { Organisation, EditableOrganisationFields } from "../types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../../../utils";
 
-const createOrgsAction = createActionThunk(
+const createOrganisationAction = createActionThunk(
   CREATE_ORGANISATION_ACTION,
   api.create
 );
 
-const editOrgsAction = createActionThunk(
+const editOrganisationAction = createActionThunk(
   EDIT_ORGANISATION_ACTION,
   api.organisation.update
-);
-
-const retrieveOrgAction = createActionThunk(
-  GET_ORG_ACTION,
-  api.organisation.retrieve
 );
 
 const retrievePublicOrganisationsAction = createActionThunk(
@@ -58,47 +51,6 @@ const retrievePersonalOrganisationsAction = createActionThunk(
   indexedAction(RETRIEVE_ORGS_ACTION, PERSONAL_ORGS_ACTION_INDEX),
   api.organisations.retrieve.private
 );
-
-const createOrganisationAction = (organisationData: Organisation) => {
-  return async (dispatch: Function) => {
-    dispatch(startAction(CREATE_ORGANISATION_ACTION));
-    let organisationResponse;
-    organisationResponse = await dispatch(
-      createOrgsAction<Organisation>(organisationData)
-    );
-    dispatch(
-      progressAction(CREATE_ORGANISATION_ACTION, "Creating organisation...")
-    );
-    if (!organisationResponse) {
-      dispatch(completeAction(CREATE_ORGANISATION_ACTION));
-      return false;
-    }
-
-    dispatch(completeAction(CREATE_ORGANISATION_ACTION));
-  };
-};
-
-const editOrganisationAction = (
-  orgUrl: string,
-  edittedOrganisation: EditableOrganisationFields
-) => {
-  return async (dispatch: Function) => {
-    dispatch(startAction(EDIT_ORGANISATION_ACTION));
-    let organisationResponse;
-    organisationResponse = await dispatch(
-      editOrgsAction<EditableOrganisationFields>(orgUrl, edittedOrganisation)
-    );
-    dispatch(
-      progressAction(EDIT_ORGANISATION_ACTION, "Editing organisation...")
-    );
-    if (!organisationResponse) {
-      dispatch(completeAction(EDIT_ORGANISATION_ACTION));
-      return false;
-    }
-
-    dispatch(completeAction(EDIT_ORGANISATION_ACTION));
-  };
-};
 
 const resetCreateOrganisationAction = () => {
   return (dispatch: Function) => {
@@ -125,8 +77,57 @@ const resetDeleteOrgMemberAction = () => {
 };
 
 const retrieveOrganisationAction = (orgUrl: string) => {
-  return async (dispatch: Function) => {
-    await dispatch(retrieveOrgAction(orgUrl));
+  const action = getIndexedAction(GET_ORG_ACTION);
+  const { actionType, actionIndex } = action;
+  return async (dispatch: (action: Action) => {}, getState: () => AppState) => {
+    retrieveOrgSourcesAction(orgUrl)(dispatch, getState);
+    retrieveOrgCollectionsAction(orgUrl)(dispatch, getState);
+    retrieveOrgMembersAction(orgUrl)(dispatch, getState);
+
+    try {
+      dispatch(startAction(action, orgUrl));
+
+      try {
+        const response = await api.organisation.retrieve(orgUrl);
+
+        dispatch({
+          type: actionType,
+          actionIndex: actionIndex,
+          payload: response.data,
+          meta: [orgUrl],
+          responseMeta: response.headers
+        });
+      } catch (error) {
+        debug(error, "redux/utils/#createActionThunk#:catch");
+
+        const response = error.response;
+
+        let errorMsg = errorMsgResponse(response);
+
+        const errorMessage: string | undefined | {} | [] =
+          response?.data || response
+            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
+            : errorMsg;
+
+        dispatch({
+          type: `${actionType}_${FAILURE}`,
+          actionIndex: actionIndex,
+          payload: errorMessage,
+          meta: [orgUrl]
+        });
+      }
+    } catch (error) {
+      debug("should not happen", error);
+
+      dispatch({
+        type: `${actionType}_${FAILURE}`,
+        actionIndex: actionIndex,
+        payload: "The action could not be completed (1)",
+        meta: [orgUrl]
+      });
+    } finally {
+      dispatch(completeAction(action, [orgUrl]));
+    }
   };
 };
 
@@ -238,7 +239,6 @@ const deleteOrgMemberAction = (
   ...args: Parameters<typeof api.organisation.deleteMember>
 ) => {
   const action = getIndexedAction(DELETE_ORG_MEMBER_ACTION);
-  console.log("action", action);
   const { actionType, actionIndex } = action;
   return async (dispatch: (action: Action) => {}, getState: () => AppState) => {
     try {

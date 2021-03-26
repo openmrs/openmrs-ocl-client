@@ -53,14 +53,16 @@ export function startAction(
 
 export function progressAction(
   actionOrActionType: IndexedAction | string,
-  payload: string
+  payload: string,
+  ...args: any[]
 ) {
   const { actionType, actionIndex } = getIndexedAction(actionOrActionType);
 
   return {
     type: `${actionType}_${PROGRESS}`,
     actionIndex,
-    payload
+    payload,
+    meta: args
   };
 }
 
@@ -104,6 +106,7 @@ export function errorMsgResponse(response: any) {
   let errorMsgResponse = [];
   const genericErrorMessage = "Action could not be completed. Please retry.";
 
+  console.log("response", response);
   if (response.data && has(response.data, "detail")) {
     errorMsgResponse.push(response.data.detail);
   } else {

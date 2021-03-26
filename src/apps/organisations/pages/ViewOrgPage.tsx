@@ -5,9 +5,6 @@ import { useLocation } from "react-router-dom";
 import { APIOrganisation, OrgSource, OrgCollection, OrgMember } from "../types";
 import {
   retrieveOrganisationAction,
-  retrieveOrgSourcesAction,
-  retrieveOrgCollectionsAction,
-  retrieveOrgMembersAction,
   retrieveOrgLoadingSelector
 } from "../redux";
 import Header from "../../../components/Header";
@@ -33,15 +30,6 @@ interface Props {
   members?: OrgMember[];
   loading: boolean;
   retrieveOrg: (...args: Parameters<typeof retrieveOrganisationAction>) => void;
-  retrieveOrgSources: (
-    ...args: Parameters<typeof retrieveOrgSourcesAction>
-  ) => void;
-  retrieveOrgCollections: (
-    ...args: Parameters<typeof retrieveOrgCollectionsAction>
-  ) => void;
-  retrieveOrgMembers: (
-    ...args: Parameters<typeof retrieveOrgMembersAction>
-  ) => void;
 }
 
 const useStyles = makeStyles(theme =>
@@ -66,10 +54,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
   collections,
   members,
   loading,
-  retrieveOrg,
-  retrieveOrgSources,
-  retrieveOrgCollections,
-  retrieveOrgMembers
+  retrieveOrg
 }: Props) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
@@ -78,16 +63,8 @@ const ViewOrganisationPage: React.FC<Props> = ({
 
   useEffect(() => {
     retrieveOrg(orgUrl);
-    retrieveOrgSources(orgUrl);
-    retrieveOrgCollections(orgUrl);
-    retrieveOrgMembers(orgUrl);
-  }, [
-    orgUrl,
-    retrieveOrg,
-    retrieveOrgCollections,
-    retrieveOrgSources,
-    retrieveOrgMembers
-  ]);
+  }, [orgUrl, retrieveOrg]);
+
   const isAnOrgMember = (owner: string, id: string) =>
     Boolean(
       profile?.username === owner || usersOrgs?.map(org => org.id).includes(id)
@@ -95,10 +72,12 @@ const ViewOrganisationPage: React.FC<Props> = ({
   const canModify = isAnOrgMember(organisation.created_by, organisation.id);
 
   const { name } = organisation || {};
+
   return (
     <Header
       title={` Your Organisations > ${name}`}
-      backUrl="/user/orgs/"
+      // backUrl="/user/orgs/"
+      backUrl="/orgs/"
       backText="Back to organisations"
       justifyChildren="space-around"
     >
@@ -147,10 +126,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
-  retrieveOrg: retrieveOrganisationAction,
-  retrieveOrgSources: retrieveOrgSourcesAction,
-  retrieveOrgCollections: retrieveOrgCollectionsAction,
-  retrieveOrgMembers: retrieveOrgMembersAction
+  retrieveOrg: retrieveOrganisationAction
 };
 
 export default connect(
