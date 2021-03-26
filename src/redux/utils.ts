@@ -106,7 +106,6 @@ export function errorMsgResponse(response: any) {
   let errorMsgResponse = [];
   const genericErrorMessage = "Action could not be completed. Please retry.";
 
-  console.log("response", response);
   if (response.data && has(response.data, "detail")) {
     errorMsgResponse.push(response.data.detail);
   } else {

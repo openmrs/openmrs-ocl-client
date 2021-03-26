@@ -46,8 +46,6 @@ const CreateOrganisationPage: React.FC<Props> = ({
 
   const previouslyLoading = usePrevious(loading);
 
-  console.log("errors", errors);
-
   if (!loading && previouslyLoading && newOrganisation && !errors) {
     // TODO Fix this when we have a working "My Organisation" page
     // return <Redirect to="/user/orgs" />
