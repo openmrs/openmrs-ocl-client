@@ -1,4 +1,4 @@
-import {createReducer} from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import { Action } from "../../../redux";
 import {
   GET_USER_ORGS_ACTION,
@@ -9,15 +9,20 @@ import {
   GET_ORG_SOURCES_ACTION,
   GET_ORG_COLLECTIONS_ACTION,
   GET_ORG_MEMBERS_ACTION,
-  CREATE_ORG_MEMBER_ACTION
+  SHOW_ADD_MEMBER_DIALOG,
+  HIDE_ADD_MEMBER_DIALOG,
+  SHOW_DELETE_MEMBER_DIALOG,
+  HIDE_DELETE_MEMBER_DIALOG
 } from "./actionTypes";
-import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
+import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 import { APIOrganisation, OrganisationState } from "../types";
 
 const initialState: OrganisationState = {
   organisations: [],
-  organisation: {} as APIOrganisation
-}
+  organisation: {} as APIOrganisation,
+  showAddMemberDialog: false,
+  showDeleteMemberDialog: false
+};
 
 export const reducer = createReducer(initialState, {
   [GET_USER_ORGS_ACTION]: (state, { payload, responseMeta }: Action) => ({
@@ -41,7 +46,7 @@ export const reducer = createReducer(initialState, {
   }),
   [GET_ORG_ACTION]: (state, action) => ({
     ...state,
-    organisation: action.payload,
+    organisation: action.payload
   }),
   [GET_ORG_SOURCES_ACTION]: (state, action) => ({
     ...state,
@@ -55,14 +60,25 @@ export const reducer = createReducer(initialState, {
     ...state,
     orgMembers: action.payload
   }),
-  [CREATE_ORG_MEMBER_ACTION]: (state) => ({
-    ...state
+  [SHOW_ADD_MEMBER_DIALOG]: state => ({
+    ...state,
+    showAddMemberDialog: true
   }),
-  [LOGOUT_ACTION]: () =>{
+  [HIDE_ADD_MEMBER_DIALOG]: state => ({
+    ...state,
+    showAddMemberDialog: false
+  }),
+  [SHOW_DELETE_MEMBER_DIALOG]: state => ({
+    ...state,
+    showDeleteMemberDialog: true
+  }),
+  [HIDE_DELETE_MEMBER_DIALOG]: state => ({
+    ...state,
+    showDeleteMemberDialog: false
+  }),
+  [LOGOUT_ACTION]: () => {
     return initialState;
-  },
+  }
 });
 
-export {
-  reducer as default
-};
+export { reducer as default };

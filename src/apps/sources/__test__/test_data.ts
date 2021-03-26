@@ -25,7 +25,7 @@ export const testSource: APISource = {
   supported_locales: ["en", "fr"],
   custom_validation_schema: "Dictionary",
   active_concepts: 2,
-  concepts_url: "",
+  concepts_url: ""
 };
 
 export const personalSources: SourceState = {
@@ -36,7 +36,7 @@ export const personalSources: SourceState = {
 export const orgSources: SourceState = {
   sources: [
     { items: [] },
-    { items: [testSource], responseMeta: { key: false } },
+    { items: [testSource], responseMeta: { key: false } }
   ],
   versions: []
 };
@@ -45,15 +45,17 @@ export const publicSources: SourceState = {
   sources: [
     { items: [] },
     { items: [] },
-    { items: [testSource], responseMeta: { key: false } },
+    { items: [testSource], responseMeta: { key: false } }
   ],
   versions: []
 };
 
 export const organisationState: OrganisationState = {
   organisation: {} as APIOrganisation,
-  organisations: []
-}; 
+  organisations: [],
+  showAddMemberDialog: false,
+  showDeleteMemberDialog: false
+};
 
 const authState: AuthState = { isLoggedIn: true };
 
@@ -62,13 +64,13 @@ const statusState: StatusState = { key: [] };
 const dictionariesState: DictionaryState = {
   dictionaries: [{ items: [] }],
   versions: [],
-  addReferencesResults: [],
+  addReferencesResults: []
 };
 
 const conceptState: ConceptsState = {
-  concepts: { items: [], responseMeta: {num_found: 4}},
-  activeConcepts: { items: [], responseMeta: {num_found: 3} },
-  mappings: [],
+  concepts: { items: [], responseMeta: { num_found: 4 } },
+  activeConcepts: { items: [], responseMeta: { num_found: 3 } },
+  mappings: []
 };
 
 export const currentState = (sources: SourceState) => {

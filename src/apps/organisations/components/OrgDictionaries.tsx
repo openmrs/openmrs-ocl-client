@@ -1,6 +1,6 @@
 import React from "react";
-import { Grid, Paper, Typography, List } from "@material-ui/core";
-import {OrgCollection} from "../types";
+import { Grid, Paper, Typography, List, ListItem } from "@material-ui/core";
+import { OrgCollection } from "../types";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -9,18 +9,22 @@ interface Props {
 
 const OrganisationDictionaries: React.FC<Props> = ({ collections }) => {
   return (
-    <Grid item xs={12} component='div'>
-      <Paper className='fieldsetParent'>
+    <Grid item xs={12} component="div">
+      <Paper className="fieldsetParent">
         <fieldset>
-          <Typography component='legend' variant='h5' gutterBottom>
-            Collections
+          <Typography component="legend" variant="h5" gutterBottom>
+            Dictionaries
           </Typography>
           <List>
-            <ul>
-            {collections?.length ?
-              collections.map(c => <li key={c.id}><Link to={c.url}>{c.name}</Link></li>) :
-              <li>No collections found!</li>}
-            </ul>
+            {collections?.length ? (
+              collections.map(c => (
+                <ListItem key={c.id}>
+                  <Link to={c.url}>{c.name}</Link>
+                </ListItem>
+              ))
+            ) : (
+              <ListItem>No dictionaries found!</ListItem>
+            )}
           </List>
         </fieldset>
       </Paper>

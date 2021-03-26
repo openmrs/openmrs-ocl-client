@@ -1,141 +1,158 @@
-import React, { useState, useEffect } from "react";
-import { addOrgMemberAction, deleteOrgMemberAction } from "../redux";
+import React from "react";
 import {
-    Button, 
-    ButtonGroup, 
-    createStyles, 
-    Grid, 
-    List, 
-    makeStyles, 
-    Paper, 
-    Typography, 
-    Dialog,
-    Collapse,
-    IconButton
+  addOrgMemberAction,
+  deleteOrgMemberAction,
+  hideAddMemberDialogAction,
+  hideDeleteMemberDialogAction,
+  resetAddOrgMemberAction,
+  resetDeleteOrgMemberAction,
+  showAddMemberDialogAction,
+  showDeleteMemberDialogAction
+} from "../redux";
+import {
+  Button,
+  ButtonGroup,
+  createStyles,
+  Grid,
+  List,
+  makeStyles,
+  Paper,
+  Typography,
+  Dialog,
+  IconButton,
+  ListItem
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import { OrgMember } from "../types";
 import AddMemberForm from "./AddMemberForm";
+import { DeleteOutline as DeleteIcon } from "@material-ui/icons";
+import DeleteMemberDialog from "./DeleteMemberDialog";
+import { AppState, errorSelector } from "../../../redux";
+import { connect } from "react-redux";
 import {
-    DeleteOutline as DeleteIcon,
-    CloseOutlined
-} from "@material-ui/icons";
-import {ConfirmationDialog} from "../../../utils";
-
+  CREATE_ORG_MEMBER_ACTION,
+  DELETE_ORG_MEMBER_ACTION
+} from "../redux/actionTypes";
+import { getPrettyError } from "../../../utils";
 
 interface Props {
-    members?: OrgMember[];
-    canModifyMembers: boolean;
-    addError?: string;
-    loading: boolean;
-    addMember: (
-        ...args: Parameters<typeof addOrgMemberAction>
-      ) => void;
-    orgUrl: string;
-    confirmDelete?: () => void;
-    deleteMember: (
-        ...args: Parameters<typeof deleteOrgMemberAction>
-    ) => void;
-    deleteError?:string,
-};
+  members?: OrgMember[];
+  canModifyMembers: boolean;
+  addError?: string;
+  addMember: (...args: Parameters<typeof addOrgMemberAction>) => void;
+  resetAddMember: (...args: Parameters<typeof resetAddOrgMemberAction>) => void;
+  showAddMemberDialog: boolean;
+  displayAddMemberDialog: () => void;
+  hideAddMemberDialog: () => void;
+  orgName: string;
+  orgUrl: string;
+  deleteMember: (...args: Parameters<typeof deleteOrgMemberAction>) => void;
+  resetDeleteMember: (
+    ...args: Parameters<typeof resetDeleteOrgMemberAction>
+  ) => void;
+  deleteError?: string;
+  showDeleteMemberDialog: boolean;
+  displayDeleteMemberDialog: () => void;
+  hideDeleteMemberDialog: () => void;
+}
 
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        root:{
-            width:'100%',
-            display:"flex",
-            justifyContent:"space-between"
-        }
-    }),
+const useStyles = makeStyles(theme =>
+  createStyles({
+    root: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "space-between"
+    }
+  })
 );
-const confirmationMsg = () => {
-    return (
-        <div>
-            <h5 id="modal-title">
-                Delete
-            </h5>
-            <p id="delete-modal-description">
-                Are you sure you want to Delete? This could mean that you loose members data within this organisation.
-            </p>
-        </div>
-    );
-};
-const OrganisationMembers: React.FC<Props> = ({ canModifyMembers, members, orgUrl, addMember, loading, addError, deleteMember ,deleteError}) => {
-    const [openDialog, setOpenDialog] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
-    const [openDialogDelete, setOpenDialogDelete] = useState(false);
-    const confirmDelete=() => {setOpenDialogDelete(true)}
-    const classes = useStyles();
 
-    useEffect(() => {
-        if (addError || deleteError) {
-            setOpenAlert(true);
-        };
-    }, [addError, deleteError]);
-    return (
+const OrganisationMembers: React.FC<Props> = ({
+  canModifyMembers,
+  members,
+  orgName,
+  orgUrl,
+  addMember,
+  addError,
+  showAddMemberDialog,
+  displayAddMemberDialog,
+  hideAddMemberDialog,
+  deleteMember,
+  deleteError,
+  showDeleteMemberDialog,
+  displayDeleteMemberDialog,
+  hideDeleteMemberDialog
+}) => {
+  const classes = useStyles();
+
+  return (
     <Grid item xs={12} component="div">
-      <Paper className='fieldsetParent'>
+      <Paper className="fieldsetParent">
         <fieldset>
-          <Typography component='legend' variant='h5' gutterBottom>
-              Members
+          <Typography component="legend" variant="h5" gutterBottom>
+            Members
           </Typography>
-          <Collapse in={openAlert}>
-            <Alert
-              severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => setOpenAlert(false)}>
-                  <CloseOutlined fontSize="inherit" />
-                </IconButton>
-              }
-            >
-              {(addError &&`Adding: ${addError}`) || (deleteError && `Deleting: ${deleteError}`)}
-            </Alert>
-          </Collapse>
-            <List>
-                <ul>
-                    {members?.length ?
-                        members.map(m =>
-                            <li className={classes.root} key={m.username}>{m.username || m.name}
-                                {!canModifyMembers ? null : (
-                                    <IconButton onClick={confirmDelete} ><DeleteIcon /></IconButton>
-                                    )}
-                                <ConfirmationDialog
-                                    open={openDialogDelete}
-                                    setOpen={() => setOpenDialogDelete(!openDialogDelete)}
-                                    onConfirm={() =>
-                                    {
-                                        deleteMember(orgUrl, m.username);
-                                        setOpenDialogDelete(!openDialogDelete);
-                                    }}
-                                    message={confirmationMsg()}
-                                    cancelButtonText={"No"}
-                                    confirmButtonText={"Yes"}
-                                />
-                            </li>) :
-                        <li>No members found!</li>}
-                </ul>
-            </List>
-            {!canModifyMembers ? null : (
-                <ButtonGroup fullWidth variant='text' color='primary'>
-                <Button onClick={() => setOpenDialog(true)}>Add New Member</Button>
-            </ButtonGroup>
+          <List>
+            {members?.length ? (
+              members.map(m => (
+                <ListItem className={classes.root} key={m.username}>
+                  {m.username || m.name}
+                  {!canModifyMembers ? null : (
+                    <>
+                      <IconButton onClick={displayDeleteMemberDialog}>
+                        <DeleteIcon />
+                      </IconButton>
+                      <DeleteMemberDialog
+                        open={showDeleteMemberDialog}
+                        handleClose={hideDeleteMemberDialog}
+                        handleSubmit={() => deleteMember(orgUrl, m.username)}
+                        user={m.name ?? m.username}
+                        orgName={orgName}
+                        error={deleteError}
+                      />
+                    </>
+                  )}
+                </ListItem>
+              ))
+            ) : (
+              <li>No members found!</li>
             )}
-            <Dialog onClose={() => setOpenDialog(false)} open={openDialog}>
-               <AddMemberForm 
-                    orgUrl={orgUrl} 
-                    handleClose={() => setOpenDialog(false)} 
-                    onSubmit={(values: OrgMember) => addMember(orgUrl, values)} 
-                    loading={loading} 
-                    error={addError}/>
-            </Dialog>
+          </List>
+          {!canModifyMembers ? null : (
+            <>
+              <ButtonGroup fullWidth variant="text" color="primary">
+                <Button onClick={displayAddMemberDialog}>Add New Member</Button>
+              </ButtonGroup>
+              <Dialog onClose={hideAddMemberDialog} open={showAddMemberDialog}>
+                <AddMemberForm
+                  orgUrl={orgUrl}
+                  handleClose={hideAddMemberDialog}
+                  onSubmit={(values: OrgMember) => addMember(orgUrl, values)}
+                  error={addError}
+                />
+              </Dialog>
+            </>
+          )}
         </fieldset>
       </Paper>
     </Grid>
   );
 };
 
-export default OrganisationMembers;
+const mapStateToProps = (state: AppState) => ({
+  showAddMemberDialog: state.organisations.showAddMemberDialog,
+  showDeleteMemberDialog: state.organisations.showDeleteMemberDialog,
+  addError: getPrettyError(errorSelector(CREATE_ORG_MEMBER_ACTION)(state)),
+  deleteError: getPrettyError(errorSelector(DELETE_ORG_MEMBER_ACTION)(state))
+});
+
+const mapActionsToProps = {
+  addMember: addOrgMemberAction,
+  resetAddMember: resetAddOrgMemberAction,
+  displayAddMemberDialog: showAddMemberDialogAction,
+  hideAddMemberDialog: hideAddMemberDialogAction,
+  deleteMember: deleteOrgMemberAction,
+  resetDeleteMember: resetDeleteOrgMemberAction,
+  displayDeleteMemberDialog: showDeleteMemberDialogAction,
+  hideDeleteMemberDialog: hideDeleteMemberDialogAction
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(OrganisationMembers);

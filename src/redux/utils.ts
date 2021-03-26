@@ -102,22 +102,23 @@ export function invalidateCache(action: string, dispatch: Function) {
 
 export function errorMsgResponse(response: any) {
   let errorMsgResponse = [];
-  const genericErrorMessage =
-      "Action could not be completed. Please retry.";
+  const genericErrorMessage = "Action could not be completed. Please retry.";
 
-  if (response.data && has(response.data, 'detail')) {
+  if (response.data && has(response.data, "detail")) {
     errorMsgResponse.push(response.data.detail);
   } else {
     for (let key in response.data) {
       errorMsgResponse.push(
         Array.isArray(response.data[key])
-            ? response.data[key].join(',')
-            : response.data[key]
-      )
-    };
+          ? response.data[key].join(",")
+          : response.data[key]
+      );
+    }
   }
-  return errorMsgResponse.length > 0 ? errorMsgResponse.join('\n') : genericErrorMessage;
-};
+  return errorMsgResponse.length > 0
+    ? errorMsgResponse.join("\n")
+    : genericErrorMessage;
+}
 
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
@@ -175,6 +176,7 @@ export const createActionThunk = <T extends any[]>(
             payload: errorMessage,
             meta: args
           });
+
           result = false;
         }
       } catch (error) {
@@ -191,6 +193,7 @@ export const createActionThunk = <T extends any[]>(
       } finally {
         dispatch(completeAction(action, ...args));
       }
+
       return result;
     };
   };

@@ -5,7 +5,7 @@ import loadingAndErroredReducer from "./reducer";
 import authReducer from "../apps/authentication/redux/reducer"; // failed to respect module here because of a circular import issue
 import { dictionariesReducer } from "../apps/dictionaries";
 import { conceptsReducer } from "../apps/concepts";
-import { sourcesReducer} from "../apps/sources";
+import { sourcesReducer } from "../apps/sources";
 import { organisationsReducer } from "../apps/organisations";
 import { AppState } from "./types";
 
