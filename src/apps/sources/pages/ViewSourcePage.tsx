@@ -103,7 +103,7 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1, includeRetired: false});
+    retrieveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1, includeRetired: true});
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {
     retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
