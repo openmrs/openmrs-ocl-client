@@ -1,12 +1,20 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import SourceForm from "../components/SourceForm";
-import {Grid, Paper, Typography} from "@material-ui/core";
-import {connect} from "react-redux";
+import { Grid, Paper, Typography } from "@material-ui/core";
+import { connect } from "react-redux";
 
-import { APISource, apiSourceToSource, APISourceVersion, SourceVersion } from "../types";
+import {
+  APISource,
+  apiSourceToSource,
+  APISourceVersion,
+  SourceVersion,
+} from "../types";
 
-import {orgsSelector, profileSelector,} from "../../authentication/redux/reducer";
-import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
+import {
+  orgsSelector,
+  profileSelector,
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   retrieveSourceAndDetailsAction,
   retrieveSourceErrorSelector,
@@ -19,12 +27,12 @@ import {
   createSourceVersionLoadingSelector,
   createSourceVersionErrorSelector,
 } from "../redux";
-import {AppState} from "../../../redux";
-import {useLocation, useParams} from "react-router-dom";
-import {ProgressOverlay} from "../../../utils/components";
+import { AppState } from "../../../redux";
+import { useLocation, useParams } from "react-router-dom";
+import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
-import {EditButton} from "../../containers/components/EditButton";
-import {EDIT_BUTTON_TITLE} from "../redux/constants";
+import { EditButton } from "../../containers/components/EditButton";
+import { EDIT_BUTTON_TITLE } from "../redux/constants";
 import { getSourceTypeFromPreviousPath } from "../utils";
 import { SourceConceptDetails } from "../components";
 import {
@@ -33,7 +41,7 @@ import {
   viewConceptsLoadingSelector,
   viewConceptsErrorsSelector,
   viewActiveConceptsLoadingSelector,
-  viewActiveConceptsErrorsSelector
+  viewActiveConceptsErrorsSelector,
 } from "../../concepts/redux";
 
 import ContainerReleasedVersions from "../../containers/components/ContainerReleasedVersions";
@@ -51,24 +59,23 @@ interface Props {
     ...args: Parameters<typeof retrieveConceptsAction>
   ) => void;
   retrieveActiveConceptsSummary: (
-      ...args: Parameters<typeof retrieveActiveConceptsAction>
+    ...args: Parameters<typeof retrieveActiveConceptsAction>
   ) => void;
   metaActiveConceptsCount?: { num_found?: number };
   createSourceVersion: (
     ...args: Parameters<typeof createSourceVersionAction>
   ) => void;
   editSourceVersion: (
-      ...args: Parameters<typeof editSourceVersionAction>
+    ...args: Parameters<typeof editSourceVersionAction>
   ) => void;
   retrieveSourceVersions: (
-      ...args: Parameters<typeof retrieveSourceVersionsAction>
-  ) => void,
+    ...args: Parameters<typeof retrieveSourceVersionsAction>
+  ) => void;
   metaConceptsCount?: { num_found?: number };
   versions: APISourceVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
-
 }
 interface UseLocation {
   prevPath: string;
@@ -90,7 +97,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   createVersionLoading,
   retrieveSourceVersions,
   createSourceVersion,
-  editSourceVersion
+  editSourceVersion,
 }: Props) => {
   const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
@@ -103,17 +110,21 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1, includeRetired: true});
+    retrieveConceptsSummary({
+      conceptsUrl: `${url}concepts/`,
+      limit: 1,
+      includeRetired: true,
+    });
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {
-    retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
+    retrieveActiveConceptsSummary({ conceptsUrl: `${url}concepts/`, limit: 1 });
   }, [url, retrieveActiveConceptsSummary]);
-  
+
   const canEditSource = canModifyContainer(
-      ownerType,
-      owner,
-      profile,
-      usersOrgs
+    ownerType,
+    owner,
+    profile,
+    usersOrgs
   );
   const showEditButton = canEditSource;
 
@@ -121,7 +132,7 @@ export const ViewSourcePage: React.FC<Props> = ({
     <Header
       title={`${getSourceTypeFromPreviousPath(previousPath)} > ${source?.name ||
         ""}`}
-      justifyChildren='space-around'
+      justifyChildren="space-around"
       backUrl="/user/sources/"
       backText="Back to sources"
     >
@@ -134,10 +145,10 @@ export const ViewSourcePage: React.FC<Props> = ({
             : undefined
         }
       >
-        <Grid id='viewSourcePage' item xs={5} component='div'>
-          <Paper className='fieldsetParent'>
-            <fieldset>
-              <Typography component='legend' variant='h5' gutterBottom>
+        <Grid id="viewSourcePage" item xs={5} component="div">
+          <Paper className="fieldsetParent">
+            <fieldset style={{ minWidth: "0" }}>
+              <Typography component="legend" variant="h5" gutterBottom>
                 General Details
               </Typography>
               <SourceForm
@@ -150,7 +161,7 @@ export const ViewSourcePage: React.FC<Props> = ({
           </Paper>
         </Grid>
         <Grid item xs={5} container spacing={2}>
-          <Grid item xs={12} component='div'>
+          <Grid item xs={12} component="div">
             <SourceConceptDetails
               source={source}
               totalConceptCount={metaConceptsCount.num_found || 0}
@@ -165,29 +176,27 @@ export const ViewSourcePage: React.FC<Props> = ({
                 versions={versions}
                 showCreateVersionButton={canEditSource}
                 createVersion={async (data: SourceVersion) => {
-                    const response: any = await createSourceVersion(url, data);
-                    if (response) {
-                      retrieveSourceVersions(url);
-                    }
+                  const response: any = await createSourceVersion(url, data);
+                  if (response) {
+                    retrieveSourceVersions(url);
                   }
-                }
+                }}
                 createVersionLoading={createVersionLoading}
                 createVersionError={createVersionError}
                 url={url}
                 editVersion={async (data: SourceVersion) => {
-                    const response: any = await  editSourceVersion(url, data);
-                    if (response) {
-                      retrieveSourceVersions(url);
-                    }
+                  const response: any = await editSourceVersion(url, data);
+                  if (response) {
+                    retrieveSourceVersions(url);
                   }
-                }
+                }}
                 type={"Source"}
               />
             )}
           </Grid>
         </Grid>
         {!showEditButton ? null : (
-            <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE}/>
+          <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE} />
         )}
       </ProgressOverlay>
     </Header>
@@ -197,9 +206,10 @@ export const ViewSourcePage: React.FC<Props> = ({
 export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
-  sourceLoading: retrieveSourceLoadingSelector(state)
-                || viewConceptsLoadingSelector(state)
-                || viewActiveConceptsLoadingSelector(state),
+  sourceLoading:
+    retrieveSourceLoadingSelector(state) ||
+    viewConceptsLoadingSelector(state) ||
+    viewActiveConceptsLoadingSelector(state),
   source: sourceSelector(state),
   versions: state.sources.versions,
   versionsLoading: retrieveSourceVersionLoadingSelector(state),
@@ -209,11 +219,12 @@ export const mapStateToProps = (state: AppState) => ({
     ? state.concepts.concepts.responseMeta
     : undefined,
   metaActiveConceptsCount: state.concepts.activeConcepts
-      ? state.concepts.activeConcepts.responseMeta
-      : undefined,
-  retrieveSourceErrors: retrieveSourceErrorSelector(state)
-                      || viewConceptsErrorsSelector(state)
-                      || viewActiveConceptsErrorsSelector(state),
+    ? state.concepts.activeConcepts.responseMeta
+    : undefined,
+  retrieveSourceErrors:
+    retrieveSourceErrorSelector(state) ||
+    viewConceptsErrorsSelector(state) ||
+    viewActiveConceptsErrorsSelector(state),
 });
 export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
@@ -221,7 +232,7 @@ export const mapDispatchToProps = {
   retrieveActiveConceptsSummary: retrieveActiveConceptsAction,
   createSourceVersion: createSourceVersionAction,
   editSourceVersion: editSourceVersionAction,
-  retrieveSourceVersions: retrieveSourceVersionsAction
+  retrieveSourceVersions: retrieveSourceVersionsAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);

@@ -20,7 +20,6 @@ import Header from "../../../components/Header";
 import { getSourceTypeFromPreviousPath } from "../utils";
 import { AppState } from "../../../redux";
 
-
 interface Props {
   errors?: {};
   profile?: APIProfile;
