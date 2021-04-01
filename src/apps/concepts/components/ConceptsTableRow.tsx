@@ -5,7 +5,7 @@ import {
   TableCell,
   Checkbox,
   Tooltip,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import { MoreVert as MoreVertIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -63,13 +63,13 @@ const actionIcon = (
   ) => void
 ) => {
   return (
-    <Tooltip title='More actions' enterDelay={700}>
+    <Tooltip title="More actions" enterDelay={700}>
       <IconButton
         data-testid={"action-icon"}
         id={`${index}.menu-icon`}
         aria-controls={`${index}.menu`}
-        aria-haspopup='true'
-        onClick={(event) => toggleMenu(index, event)}
+        aria-haspopup="true"
+        onClick={event => toggleMenu(index, event)}
       >
         <MoreVertIcon />
       </IconButton>
@@ -82,27 +82,30 @@ const conceptNameCell = (
   row: APIConcept,
   buttons: { [key: string]: boolean },
   linkedDictionary?: string,
-  dictionaryToAddTo?:string
+  dictionaryToAddTo?: string
 ) => {
   return (
     <TableCell
-      onClick={(event) => toggleSelect(event, row.id)}
-      data-testclass='name'
+      onClick={event => toggleSelect(event, row.id)}
+      data-testclass="name"
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
-    >{buttons.addToDictionary===undefined?
-      (<Link
-        onClick={(e) => e.stopPropagation()}
-        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
-      >
-        {row.display_name}
-      </Link>):
-      (<Link
-        onClick={(e) => e.stopPropagation()}
-        to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
-      >
-        {row.display_name}
-      </Link>)}
+    >
+      {buttons.addToDictionary === undefined ? (
+        <Link
+          onClick={e => e.stopPropagation()}
+          to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
+        >
+          {row.display_name}
+        </Link>
+      ) : (
+        <Link
+          onClick={e => e.stopPropagation()}
+          to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
+        >
+          {row.display_name}
+        </Link>
+      )}
     </TableCell>
   );
 };
@@ -113,8 +116,8 @@ const conceptClassCell = (
 ) => {
   return (
     <TableCell
-      onClick={(event) => toggleSelect(event, row.id)}
-      data-testclass='conceptClass'
+      onClick={event => toggleSelect(event, row.id)}
+      data-testclass="conceptClass"
       style={{ wordWrap: "break-word" }}
     >
       {row.concept_class}
@@ -128,8 +131,8 @@ const conceptDataTypeCell = (
 ) => {
   return (
     <TableCell
-      onClick={(event) => toggleSelect(event, row.id)}
-      data-testclass='datatype'
+      onClick={event => toggleSelect(event, row.id)}
+      data-testclass="datatype"
       style={{ wordWrap: "break-word" }}
     >
       {row.datatype}
@@ -143,7 +146,7 @@ const conceptIDCell = (
 ) => {
   return (
     <TableCell
-      onClick={(event) => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.id)}
       style={{ wordBreak: "break-all" }}
     >
       {row.id}
@@ -158,11 +161,11 @@ const checkBoxCell = (
   labelId: string
 ) => {
   return (
-    <TableCell padding='checkbox'>
+    <TableCell padding="checkbox">
       <Checkbox
         // ideally, we would have made this apply to the entire row, but there
         // seems to be a problem with an implicit click when the row popup closes
-        onClick={(event) => toggleSelect(event, row.id)}
+        onClick={event => toggleSelect(event, row.id)}
         checked={isItemSelected}
         inputProps={{ "aria-labelledby": labelId }}
       />
@@ -187,7 +190,7 @@ const actionCell = (
   linkedDictionary: string | undefined
 ) => {
   return (
-    <TableCell padding='checkbox'>
+    <TableCell padding="checkbox">
       {!showActionIcon(row, buttons, linkedSource, canModifyConcept)
         ? null
         : actionIcon(index, toggleMenu)}
@@ -207,11 +210,11 @@ const actionCell = (
   );
 };
 
-const AlreadyCheckedCell = () =>
-  <TableCell padding='checkbox'>
+const AlreadyCheckedCell = () => (
+  <TableCell padding="checkbox">
     <AlreadyAddedIcon />
-  </TableCell>;
-
+  </TableCell>
+);
 
 interface ConceptsTableRowProps {
   row: APIConcept;
@@ -229,7 +232,7 @@ interface ConceptsTableRowProps {
   menu: { index: number; anchor: null | HTMLElement };
   removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   addConceptsToDictionary: Function;
-  dictionaryToAddTo?:string,
+  dictionaryToAddTo?: string;
   isItemSelected: boolean;
   labelId: string;
 }
@@ -250,41 +253,51 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
     addConceptsToDictionary,
     dictionaryToAddTo,
     isItemSelected,
-    labelId,
+    labelId
   } = props;
   return (
     <TableRow
       hover
-      data-testrowclass='conceptRow'
-      role='checkbox'
+      data-testrowclass="conceptRow"
+      role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
       key={`${row.id}-${index}`}
       selected={isItemSelected}
-      className={row?.added ? 'added': ''}
-      style={row?.added ? { backgroundColor: '#bbc5fb' } : { backgroundColor: 'none' }}
+      className={row?.added ? "added" : ""}
+      style={
+        row?.added
+          ? { backgroundColor: "#bbc5fb" }
+          : { backgroundColor: "none" }
+      }
     >
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(toggleSelect, row, buttons, linkedDictionary,dictionaryToAddTo)}
+      {conceptNameCell(
+        toggleSelect,
+        row,
+        buttons,
+        linkedDictionary,
+        dictionaryToAddTo
+      )}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
-      {row.added ? AlreadyCheckedCell(): 
-        actionCell(
-          row,
-          buttons,
-          canModifyConcept,
-          index,
-          toggleMenu,
-          menu,
-          removeConceptsFromDictionary,
-          addConceptsToDictionary,
-          linkedSource,
-          linkedDictionary
-        )
-      }
+      {row.added
+        ? AlreadyCheckedCell()
+        : actionCell(
+            row,
+            buttons,
+            canModifyConcept,
+            index,
+            toggleMenu,
+            menu,
+            removeConceptsFromDictionary,
+            addConceptsToDictionary,
+            linkedSource,
+            linkedDictionary
+          )}
     </TableRow>
   );
 }

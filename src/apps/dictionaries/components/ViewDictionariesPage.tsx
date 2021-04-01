@@ -27,7 +27,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   dictionaries = [],
   loading,
   meta = {},
-  retrieveDictionaries,
+  retrieveDictionaries
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -43,13 +43,13 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params,
+      ...params
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   return (
-    <Header title='Dictionaries'>
+    <Header title="Dictionaries">
       <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewDictionaries
@@ -63,8 +63,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           title={TITLE}
         />
         <Link to={`/collections/new/`}>
-          <Tooltip title='Create new dictionary'>
-            <Fab color='primary' className='fab'>
+          <Tooltip title="Create new dictionary">
+            <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>
           </Tooltip>

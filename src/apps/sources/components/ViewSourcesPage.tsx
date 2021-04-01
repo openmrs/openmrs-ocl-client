@@ -10,9 +10,9 @@ import Header from "../../../components/Header";
 import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
 
 import { ContainerOwnerTabs } from "../../containers/components";
-import {Link} from "react-router-dom";
-import {Fab, Tooltip} from "@material-ui/core";
-import {Add as AddIcon} from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { Fab, Tooltip } from "@material-ui/core";
+import { Add as AddIcon } from "@material-ui/icons";
 
 interface Props {
   loading: boolean;
@@ -28,7 +28,7 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
-  retrieveSources,
+  retrieveSources
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -44,13 +44,13 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params,
+      ...params
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   return (
-    <Header title='Sources'>
+    <Header title="Sources">
       <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
         <ViewSources
@@ -64,8 +64,8 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
           title={TITLE}
         />
         <Link to={`/sources/new/`}>
-          <Tooltip title='Create new source'>
-            <Fab color='primary' className='fab'>
+          <Tooltip title="Create new source">
+            <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>
           </Tooltip>

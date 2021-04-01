@@ -30,7 +30,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     orderBy,
     numSelected,
     rowCount,
-    onRequestSort,
+    onRequestSort
   } = props;
   const createSortHandler = (property: SortableField) => (
     event: React.MouseEvent<unknown>
@@ -38,10 +38,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort(event, property);
   };
   return (
-    <TableHead data-testid='conceptsTableHeader'>
+    <TableHead data-testid="conceptsTableHeader">
       <TableRow>
         {numSelected <= 0 ? null : (
-          <TableCell padding='checkbox'>
+          <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={numSelected === rowCount}
@@ -50,7 +50,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
             />
           </TableCell>
         )}
-        {headCells.map((headCell) => (
+        {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
             padding={headCell.disablePadding ? "none" : "default"}
@@ -78,7 +78,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
-        <TableCell padding='checkbox' />
+        <TableCell padding="checkbox" />
       </TableRow>
     </TableHead>
   );

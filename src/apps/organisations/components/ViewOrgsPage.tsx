@@ -11,7 +11,7 @@ import { BaseAPIOrganisation } from "../types";
 
 import { ViewOrganisations } from "../components";
 import { useQueryParams } from "../../../utils";
-import {ProgressOverlay} from "../../../utils/components";
+import { ProgressOverlay } from "../../../utils/components";
 import { ContainerOwnerTabs } from "../../containers/components";
 import { TAB_LIST } from "../constants";
 import { APIProfile } from "../../authentication";
@@ -26,7 +26,13 @@ interface Props {
   ) => void;
 }
 
-const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, retrieveOrganisations, loading, meta = {} }:Props) => {
+const ViewOrganisationsPage: React.FC<Props> = ({
+  organisations = [],
+  profile,
+  retrieveOrganisations,
+  loading,
+  meta = {}
+}: Props) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
 
@@ -38,7 +44,7 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, r
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params,
+      ...params
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
@@ -46,30 +52,31 @@ const ViewOrganisationsPage: React.FC<Props> = ({ organisations = [], profile, r
   useEffect(() => {
     if (profile) {
       retrieveOrganisations(profile?.username, initialQ, PER_PAGE, page);
-    } else retrieveOrganisations(url, initialQ, PER_PAGE, page); 
-  },[retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
+    } else retrieveOrganisations(url, initialQ, PER_PAGE, page);
+  }, [retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Header title="Organisations">
       <ContainerOwnerTabs currentPageUrl={url} tabList={TAB_LIST} />
       <ProgressOverlay loading={loading}>
-        <ViewOrganisations 
-          organisations={organisations} 
+        <ViewOrganisations
+          organisations={organisations}
           title="Organisations"
-          onSearch ={(q: string) => goTo(gimmeAUrl({ q }))}
+          onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
           initialQ={initialQ}
           page={page}
           perPage={PER_PAGE}
           onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
-          numFound={numFound} />
-          <Link to={`/orgs/new/`}>
-              <Tooltip title='Create new organisation'>
-                <Fab color='primary' className='fab'>
-                  <AddIcon />
-                </Fab>
-              </Tooltip>
-            </Link>
-        </ProgressOverlay>
+          numFound={numFound}
+        />
+        <Link to={`/orgs/new/`}>
+          <Tooltip title="Create new organisation">
+            <Fab color="primary" className="fab">
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      </ProgressOverlay>
     </Header>
   );
 };

@@ -10,8 +10,8 @@ interface Props {
 
 const useStyles = makeStyles({
   fullWidth: {
-    width: "100%",
-  },
+    width: "100%"
+  }
 });
 
 const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
@@ -21,12 +21,18 @@ const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
     <Tabs
       // centered
       className={classes.fullWidth}
-      variant='fullWidth'
+      variant="fullWidth"
       value={currentPageUrl}
-      data-testid='tabs'
+      data-testid="tabs"
     >
       {tabList.map(({ labelName, labelURL }, index) => (
-        <LinkTab key={index} label={labelName} value={labelURL} to={labelURL} data-testid={'tab - ' + index} />
+        <LinkTab
+          key={index}
+          label={labelName}
+          value={labelURL}
+          to={labelURL}
+          data-testid={"tab - " + index}
+        />
       ))}
       ;
     </Tabs>

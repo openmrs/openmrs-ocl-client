@@ -2,14 +2,13 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import NotificationDetails from "../../components/NotificationDetails";
-import {
-  NotificationItem,
-  NotificationItemRow
-} from "../../types";
+import { NotificationItem, NotificationItemRow } from "../../types";
 
-type notificationDetailsProps = React.ComponentProps<typeof NotificationDetails>;
+type notificationDetailsProps = React.ComponentProps<
+  typeof NotificationDetails
+>;
 
-const notificationItemRow: NotificationItemRow ={
+const notificationItemRow: NotificationItemRow = {
   expression: "/orgs/testOrg/sources/testSource/concepts/testConceptID/",
   added: true,
   message: "concept imported successfully"
@@ -28,34 +27,38 @@ const baseProps: notificationDetailsProps = {
 };
 
 function renderUI(props: Partial<notificationDetailsProps> = {}) {
-  return render(
-    <NotificationDetails {...baseProps} {...props} />
-  );
+  return render(<NotificationDetails {...baseProps} {...props} />);
 }
 
 describe("NotificationDetails", () => {
   it("should show the correct title", () => {
     const { queryByTestId } = renderUI();
-    const title = queryByTestId('title') || {textContent:null};
+    const title = queryByTestId("title") || { textContent: null };
 
-    expect(title.textContent).toBe("testDictionary - Adding concepts from testSource");
+    expect(title.textContent).toBe(
+      "testDictionary - Adding concepts from testSource"
+    );
   });
 
   it("should hide dialog on click of close button", () => {
     const { getByText } = renderUI();
-    const closeButton = getByText('Close');
+    const closeButton = getByText("Close");
     fireEvent.click(closeButton);
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 });
 
 describe("Notification Summary Table Header", () => {
-  let enhancedTableHeadRowData: NodeListOf<HTMLTableHeaderCellElement> | never[];
+  let enhancedTableHeadRowData:
+    | NodeListOf<HTMLTableHeaderCellElement>
+    | never[];
   beforeEach(() => {
     const queries = renderUI();
     const queryByTestId = queries.queryByTestId;
-    const enhancedTableHeadRow = queryByTestId('enhancedTableHead');
-    enhancedTableHeadRowData = enhancedTableHeadRow ? enhancedTableHeadRow.querySelectorAll("th"): [];
+    const enhancedTableHeadRow = queryByTestId("enhancedTableHead");
+    enhancedTableHeadRowData = enhancedTableHeadRow
+      ? enhancedTableHeadRow.querySelectorAll("th")
+      : [];
   });
 
   it("should have 5 columns in table header", () => {
@@ -75,7 +78,9 @@ describe("Notification Summary Table Header", () => {
   });
 
   it("should have the correct table header for Status", () => {
-    expect(enhancedTableHeadRowData[3].textContent).toBe("Statussorted descending");
+    expect(enhancedTableHeadRowData[3].textContent).toBe(
+      "Statussorted descending"
+    );
   });
 
   it("should have the correct table header for Reasons", () => {
@@ -84,31 +89,41 @@ describe("Notification Summary Table Header", () => {
 });
 
 describe("Notification Summary Table data", () => {
-  const notificationItemRow1: NotificationItemRow ={
+  const notificationItemRow1: NotificationItemRow = {
     expression: "/orgs/testOrg/sources/testSource/concepts/testConceptID1/",
     added: true,
     message: "concept imported successfully"
   };
-  const notificationItemRow2: NotificationItemRow ={
+  const notificationItemRow2: NotificationItemRow = {
     expression: "/orgs/testOrg/sources/testSource/concepts/testConceptID2/",
     added: false,
     message: "concept import failed due to conflicts"
   };
-  const notificationItemRow3: NotificationItemRow ={
-    expression: "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID1/",
+  const notificationItemRow3: NotificationItemRow = {
+    expression:
+      "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID1/",
     added: true,
     message: "concept imported successfully"
   };
-  const notificationItemRow4: NotificationItemRow ={
-    expression: "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID2/",
+  const notificationItemRow4: NotificationItemRow = {
+    expression:
+      "/orgs/testOrg/sources/testSource/concepts/testDependentConceptID2/",
     added: false,
     message: "concept import failed due to conflicts"
   };
 
   const notificationItem: NotificationItem = {
-    result: [notificationItemRow1, notificationItemRow2, notificationItemRow3, notificationItemRow4],
+    result: [
+      notificationItemRow1,
+      notificationItemRow2,
+      notificationItemRow3,
+      notificationItemRow4
+    ],
     progress: "",
-    meta: ["/users/testUser/collections/testDictionary/", [{id: "testConceptID1"}, {id: "testConceptID2"}]]
+    meta: [
+      "/users/testUser/collections/testDictionary/",
+      [{ id: "testConceptID1" }, { id: "testConceptID2" }]
+    ]
   };
 
   let queryByTestId: Function;
@@ -122,8 +137,8 @@ describe("Notification Summary Table data", () => {
   describe("Notification Summary Table data - Parent Concept Imported", () => {
     let tableRowData: NodeListOf<HTMLElement>;
     beforeEach(() => {
-      const tableRow = queryByTestId('testConceptID1');
-      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+      const tableRow = queryByTestId("testConceptID1");
+      tableRowData = tableRow ? tableRow.querySelectorAll("td") : [];
     });
 
     it("should have 5 columns in a row", () => {
@@ -150,8 +165,8 @@ describe("Notification Summary Table data", () => {
   describe("Notification Summary Table data - Parent Concept Skipped", () => {
     let tableRowData: NodeListOf<HTMLElement>;
     beforeEach(() => {
-      const tableRow = queryByTestId('testConceptID2');
-      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+      const tableRow = queryByTestId("testConceptID2");
+      tableRowData = tableRow ? tableRow.querySelectorAll("td") : [];
     });
 
     it("should have 5 columns in a row", () => {
@@ -171,15 +186,17 @@ describe("Notification Summary Table data", () => {
     });
 
     it("should have the correct data for Reasons", () => {
-      expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+      expect(tableRowData[4].textContent).toBe(
+        "concept import failed due to conflicts"
+      );
     });
   });
 
   describe("Notification Summary Table data - Dependent Concept Imported", () => {
     let tableRowData: NodeListOf<HTMLElement>;
     beforeEach(() => {
-      const tableRow = queryByTestId('testDependentConceptID1');
-      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+      const tableRow = queryByTestId("testDependentConceptID1");
+      tableRowData = tableRow ? tableRow.querySelectorAll("td") : [];
     });
 
     it("should have 5 columns in a row", () => {
@@ -206,8 +223,8 @@ describe("Notification Summary Table data", () => {
   describe("Notification Summary Table data - Dependent Concept Skipped", () => {
     let tableRowData: NodeListOf<HTMLElement>;
     beforeEach(() => {
-      const tableRow = queryByTestId('testDependentConceptID2');
-      tableRowData = tableRow ? tableRow.querySelectorAll("td"): [];
+      const tableRow = queryByTestId("testDependentConceptID2");
+      tableRowData = tableRow ? tableRow.querySelectorAll("td") : [];
     });
 
     it("should have 5 columns in a row", () => {
@@ -227,7 +244,9 @@ describe("Notification Summary Table data", () => {
     });
 
     it("should have the correct data for Reasons", () => {
-      expect(tableRowData[4].textContent).toBe("concept import failed due to conflicts");
+      expect(tableRowData[4].textContent).toBe(
+        "concept import failed due to conflicts"
+      );
     });
   });
 });

@@ -15,7 +15,7 @@ import {
   Theme,
   Typography
 } from "@material-ui/core";
-import { CONCEPT_CLASSES, DATA_TYPES,  CONCEPT_GENERAL } from "../../../utils";
+import { CONCEPT_CLASSES, DATA_TYPES, CONCEPT_GENERAL } from "../../../utils";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>

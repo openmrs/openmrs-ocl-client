@@ -157,4 +157,4 @@ const ContainerVersionForm: React.FC<Props> = ({
   );
 };
 
-export default ContainerVersionForm
+export default ContainerVersionForm;

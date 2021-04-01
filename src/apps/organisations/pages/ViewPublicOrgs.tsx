@@ -10,8 +10,7 @@ const mapStateToProps = (state: AppState) => ({
   organisations:
     state.organisations.organisations[PUBLIC_ORGS_ACTION_INDEX]?.items,
   meta:
-    state.organisations.organisations[PUBLIC_ORGS_ACTION_INDEX]
-      ?.responseMeta
+    state.organisations.organisations[PUBLIC_ORGS_ACTION_INDEX]?.responseMeta
 });
 
 const mapDispatchToProps = {

@@ -6,11 +6,11 @@ import {
   APIDictionary,
   apiDictionaryToDictionary,
   APIDictionaryVersion,
-  DictionaryVersion,
+  DictionaryVersion
 } from "../types";
 import {
   orgsSelector,
-  profileSelector,
+  profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 
@@ -24,7 +24,7 @@ import {
   retrieveDictionaryErrorSelector,
   retrieveDictionaryLoadingSelector,
   retrieveDictionaryVersionLoadingSelector,
-  retrieveDictionaryVersionsAction,
+  retrieveDictionaryVersionsAction
 } from "../redux";
 import { AppState } from "../../../redux";
 import { useLocation, useParams } from "react-router-dom";
@@ -71,7 +71,7 @@ export const ViewDictionaryPage: React.FC<Props> = ({
   retrieveDictionaryVersions,
   createVersionLoading,
   createVersionError,
-  retrieveDictionaryErrors,
+  retrieveDictionaryErrors
 }: Props) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -181,13 +181,13 @@ export const mapStateToProps = (state: AppState) => ({
   versionsLoading: retrieveDictionaryVersionLoadingSelector(state),
   createVersionLoading: createDictionaryVersionLoadingSelector(state),
   createVersionError: createDictionaryVersionErrorSelector(state),
-  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state),
+  retrieveDictionaryErrors: retrieveDictionaryErrorSelector(state)
 });
 export const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
   createDictionaryVersion: createDictionaryVersionAction,
   editDictionaryVersion: editDictionaryVersionAction,
-  retrieveDictionaryVersions: retrieveDictionaryVersionsAction,
+  retrieveDictionaryVersions: retrieveDictionaryVersionsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);

@@ -7,12 +7,12 @@ import {
   APISource,
   apiSourceToSource,
   APISourceVersion,
-  SourceVersion,
+  SourceVersion
 } from "../types";
 
 import {
   orgsSelector,
-  profileSelector,
+  profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
@@ -25,7 +25,7 @@ import {
   retrieveSourceVersionsAction,
   retrieveSourceVersionLoadingSelector,
   createSourceVersionLoadingSelector,
-  createSourceVersionErrorSelector,
+  createSourceVersionErrorSelector
 } from "../redux";
 import { AppState } from "../../../redux";
 import { useLocation, useParams } from "react-router-dom";
@@ -41,7 +41,7 @@ import {
   viewConceptsLoadingSelector,
   viewConceptsErrorsSelector,
   viewActiveConceptsLoadingSelector,
-  viewActiveConceptsErrorsSelector,
+  viewActiveConceptsErrorsSelector
 } from "../../concepts/redux";
 
 import ContainerReleasedVersions from "../../containers/components/ContainerReleasedVersions";
@@ -97,7 +97,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   createVersionLoading,
   retrieveSourceVersions,
   createSourceVersion,
-  editSourceVersion,
+  editSourceVersion
 }: Props) => {
   const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
@@ -113,7 +113,7 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveConceptsSummary({
       conceptsUrl: `${url}concepts/`,
       limit: 1,
-      includeRetired: true,
+      includeRetired: true
     });
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {
@@ -224,7 +224,7 @@ export const mapStateToProps = (state: AppState) => ({
   retrieveSourceErrors:
     retrieveSourceErrorSelector(state) ||
     viewConceptsErrorsSelector(state) ||
-    viewActiveConceptsErrorsSelector(state),
+    viewActiveConceptsErrorsSelector(state)
 });
 export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
@@ -232,7 +232,7 @@ export const mapDispatchToProps = {
   retrieveActiveConceptsSummary: retrieveActiveConceptsAction,
   createSourceVersion: createSourceVersionAction,
   editSourceVersion: editSourceVersionAction,
-  retrieveSourceVersions: retrieveSourceVersionsAction,
+  retrieveSourceVersions: retrieveSourceVersionsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);

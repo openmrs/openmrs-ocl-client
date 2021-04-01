@@ -3,7 +3,7 @@ import { Route, Switch, useRouteMatch } from "react-router-dom";
 import {
   EditDictionaryPage,
   ViewDictionaryPage,
-  ViewPersonalDictionariesPage,
+  ViewPersonalDictionariesPage
 } from "./pages";
 import AddBulkConceptsPage from "./pages/AddBulkConceptsPage";
 
@@ -18,7 +18,7 @@ const Routes: React.FC<Props> = ({
   viewDictionaries = true,
   viewDictionary = true,
   editDictionary = true,
-  concepts = true,
+  concepts = true
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();
@@ -33,7 +33,7 @@ const Routes: React.FC<Props> = ({
       )}
       {!viewDictionary ? null : (
         <Route exact path={`${path}/:collection/`}>
-            <ViewDictionaryPage />
+          <ViewDictionaryPage />
         </Route>
       )}
       {!editDictionary ? null : (

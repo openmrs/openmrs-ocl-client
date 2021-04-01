@@ -10,7 +10,7 @@ import {
   Theme,
   Typography
 } from "@material-ui/core";
-import {Link, useLocation, useHistory} from "react-router-dom";
+import { Link, useLocation, useHistory } from "react-router-dom";
 
 interface Props {
   name: string;
@@ -24,10 +24,10 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerName: {
-      overflowX: "auto",
+      overflowX: "auto"
     },
     card: {
-      cursor: 'pointer'
+      cursor: "pointer"
     }
   })
 );
@@ -48,26 +48,47 @@ const ContainerCard: React.FC<Props> = ({
     <Grid item xs={4}>
       <Card onClick={() => goTo(url)} className={classes.card}>
         <CardContent>
-          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid={`shortCode-${index}`}>
+          <Typography
+            noWrap
+            variant="body1"
+            color="textSecondary"
+            gutterBottom
+            data-testid={`shortCode-${index}`}
+          >
             {short_code}
           </Typography>
-          <Typography className={classes.containerName} noWrap variant='h5' data-testid={`name-${index}`}>
+          <Typography
+            className={classes.containerName}
+            noWrap
+            variant="h5"
+            data-testid={`name-${index}`}
+          >
             {name}
           </Typography>
-          <Typography noWrap variant='body2' color='textSecondary' data-testid={`owner-${index}`}>
+          <Typography
+            noWrap
+            variant="body2"
+            color="textSecondary"
+            data-testid={`owner-${index}`}
+          >
             {owner_type}/{owner}
           </Typography>
-          <Typography noWrap variant='body1' component='p' data-testid={`description-${index}`}>
+          <Typography
+            noWrap
+            variant="body1"
+            component="p"
+            data-testid={`description-${index}`}
+          >
             {description}
           </Typography>
         </CardContent>
         <CardActions>
           <Button
-            to={{pathname: url, state: { prevPath: location.pathname }}}
+            to={{ pathname: url, state: { prevPath: location.pathname } }}
             component={Link}
-            size='small'
-            variant='text'
-            color='primary'
+            size="small"
+            variant="text"
+            color="primary"
             data-testid={`viewButton-${index}`}
           >
             View

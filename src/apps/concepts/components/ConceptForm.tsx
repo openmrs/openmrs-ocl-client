@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ErrorMessage, Field, FieldArray, Form, Formik, FormikProps, FormikValues } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  FieldArray,
+  Form,
+  Formik,
+  FormikProps,
+  FormikValues
+} from "formik";
 import {
   Concept,
   ConceptDescription,
@@ -32,7 +40,8 @@ import {
   CONCEPT_DATATYPE_NUMERIC,
   LOCALES,
   CONTEXT,
-  findLocale, CONCEPT_DATATYPE_CODED
+  findLocale,
+  CONCEPT_DATATYPE_CODED
 } from "../../../utils";
 import NameOrDescriptionTable from "./NamesTable";
 import { EditOutlined as EditIcon } from "@material-ui/icons";
@@ -67,7 +76,7 @@ const prepForApi = (values: Concept) => {
       name_type: name.name_type === "null" ? null : name.name_type // api represents 'Synonym' name_type as null
     })),
     extras: values.datatype === CONCEPT_DATATYPE_NUMERIC ? extras : {},
-    answers: answers.map((answer) => ({
+    answers: answers.map(answer => ({
       ...answer,
       retired: datatype !== CONCEPT_DATATYPE_CODED ? true : answer.retired
     }))
@@ -211,7 +220,7 @@ const ConceptForm: React.FC<Props> = ({
     (context === CONTEXT.view && supportLegacyMappings);
   let showSets =
     (context === CONTEXT.edit && supportLegacyMappings) ||
-    (context === CONTEXT.create ) ||
+    context === CONTEXT.create ||
     (context === CONTEXT.view && supportLegacyMappings);
 
   const classes = useStyles();
@@ -224,8 +233,8 @@ const ConceptForm: React.FC<Props> = ({
   const toggleExternalIDEditable = () =>
     setExternalIDEditable(!isExternalIDEditable);
 
-  const codedFormMembers = (dataType : string | undefined) => {
-    showAnswers = dataType === CONCEPT_DATATYPE_CODED ? true : false ;
+  const codedFormMembers = (dataType: string | undefined) => {
+    showAnswers = dataType === CONCEPT_DATATYPE_CODED ? true : false;
   };
 
   useEffect(() => {
@@ -307,7 +316,14 @@ const ConceptForm: React.FC<Props> = ({
         if (onSubmit) onSubmit(prepForApi(values));
       }}
     >
-      {({ isSubmitting, submitCount, status, values, errors, handleChange }) => (
+      {({
+        isSubmitting,
+        submitCount,
+        status,
+        values,
+        errors,
+        handleChange
+      }) => (
         <Form id="conceptForm" translate="">
           <Paper className="fieldsetParent">
             <fieldset>
@@ -351,7 +367,7 @@ const ConceptForm: React.FC<Props> = ({
                   name="concept_class"
                   id="concept_class"
                   component={Select}
-                  disabled={conceptClass && (allowEditing && allowIdEdits)}
+                  disabled={conceptClass && allowEditing && allowIdEdits}
                 >
                   {CONCEPT_CLASSES.map(conceptClass => (
                     <MenuItem key={conceptClass} value={conceptClass}>
@@ -646,7 +662,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
             </MenuItem>
           </Field>
           <Typography color="error" variant="caption" component="div">
-            <ErrorMessage name="extras.precise" component="span"/>
+            <ErrorMessage name="extras.precise" component="span" />
           </Typography>
         </FormControl>
       </Grid>

@@ -7,7 +7,7 @@ import { NotificationItem, NotificationItemRow } from "../../types";
 
 type notificationCardProps = React.ComponentProps<typeof NotificationCard>;
 
-const notificationItemRow: NotificationItemRow ={
+const notificationItemRow: NotificationItemRow = {
   expression: "",
   added: true,
   message: "1 notification added"
@@ -23,7 +23,7 @@ const baseProps: notificationCardProps = {
   subHeaderMessage: "This is sub-header message",
   importMetaData: {
     dictionary: "/users/root/collections/testBulk2/",
-    dateTime: "Mon Sep 28 2020 09:24:36 GMT+0530",
+    dateTime: "Mon Sep 28 2020 09:24:36 GMT+0530"
   }
 };
 
@@ -43,8 +43,8 @@ describe("NotificationCard", () => {
 
   it("should not show view summary button if list is not succeslist", () => {
     const { queryByText } = renderUI();
-    const viewSummaryLink = queryByText('View Summary');
-    expect(viewSummaryLink).toBeNull(); 
+    const viewSummaryLink = queryByText("View Summary");
+    expect(viewSummaryLink).toBeNull();
   });
 
   it("should call openNotificationDetails on click of view summary button", () => {
@@ -52,8 +52,8 @@ describe("NotificationCard", () => {
       notification: notificationItem,
       openNotificationDetails: openNotificationDetails
     });
-    const viewSummaryLink = getByText('View Summary');
+    const viewSummaryLink = getByText("View Summary");
     fireEvent.click(viewSummaryLink);
-    expect(openNotificationDetails).toHaveBeenCalledTimes(1)
+    expect(openNotificationDetails).toHaveBeenCalledTimes(1);
   });
 });

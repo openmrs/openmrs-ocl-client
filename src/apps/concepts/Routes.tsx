@@ -21,7 +21,7 @@ const Routes: React.FC<Props> = ({
   newConcept = false,
   viewConcept = false,
   editConcept = false,
-  viewDictConcepts = false,
+  viewDictConcepts = false
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();
@@ -30,7 +30,11 @@ const Routes: React.FC<Props> = ({
     <Switch>
       {!viewConcepts ? null : (
         <Route exact path={`${path}/`}>
-          <ViewConceptsPage key={containerType} containerType={containerType} viewDictConcepts={viewDictConcepts} />
+          <ViewConceptsPage
+            key={containerType}
+            containerType={containerType}
+            viewDictConcepts={viewDictConcepts}
+          />
         </Route>
       )}
       {!newConcept ? null : (

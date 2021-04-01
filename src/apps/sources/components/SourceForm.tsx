@@ -6,10 +6,17 @@ import {
   makeStyles,
   MenuItem,
   Typography,
-  TextField as MuiTextField,
+  TextField as MuiTextField
 } from "@material-ui/core";
 import { getCustomErrorMessage, getPrettyError, CONTEXT } from "../../../utils";
-import { ErrorMessage, Field, Form, Formik, FormikProps, FormikValues } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik,
+  FormikProps,
+  FormikValues
+} from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
 import { Source } from "../types";
@@ -20,7 +27,7 @@ import {
   showOrganisationHeader,
   showUserName,
   showUserOrganisations,
-  supportedLocalesLabel,
+  supportedLocalesLabel
 } from "../../containers/components/FormUtils";
 
 interface Props {
@@ -58,16 +65,16 @@ const SourceSchema = Yup.object().shape<Source>({
   owner_url: Yup.string().required("Select this dictionary's owner"),
   source_type: Yup.string(),
   default_locale: Yup.string().required("Select a preferred language"),
-  supported_locales: Yup.array(Yup.string()),
+  supported_locales: Yup.array(Yup.string())
 });
 
 const useStyles = makeStyles({
   sourceForm: {
-    padding: "2vh 2vw",
+    padding: "2vh 2vw"
   },
   submitButton: {
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
 
 const SourceForm: React.FC<Props> = ({
@@ -78,7 +85,7 @@ const SourceForm: React.FC<Props> = ({
   usersOrgs,
   errors,
   context = CONTEXT.view,
-  savedValues,
+  savedValues
 }) => {
   const classes = useStyles();
   const viewing = context === CONTEXT.view;
@@ -103,7 +110,7 @@ const SourceForm: React.FC<Props> = ({
     const { current: currentRef } = formikRef;
     if (!currentRef) return;
 
-    Object.keys(initialValues).forEach((key) => {
+    Object.keys(initialValues).forEach(key => {
       const error = getPrettyError(
         errors,
         snakeCase(key === "short_code" ? "id" : key) // id and short_code are the same value. error comes back in id
@@ -113,7 +120,7 @@ const SourceForm: React.FC<Props> = ({
   }, [errors]);
 
   const apiErrorStatusCode = {
-    403: `You don't have permission to ${context} a source in this Organisation`,
+    403: `You don't have permission to ${context} a source in this Organisation`
   };
   let error: string | undefined = getCustomErrorMessage(
     getPrettyError(errors),
@@ -148,9 +155,10 @@ const SourceForm: React.FC<Props> = ({
     );
   };
 
-  const owner = savedValues ? savedValues.owner: "";
+  const owner = savedValues ? savedValues.owner : "";
   const dictOwner = savedValues ? savedValues.owner_url : "";
-  const getOrg = usersOrgs?.filter(org => org.url === dictOwner)[0]?.name || owner;
+  const getOrg =
+    usersOrgs?.filter(org => org.url === dictOwner)[0]?.name || owner;
 
   return (
     <div id="source-form" className={classes.sourceForm}>

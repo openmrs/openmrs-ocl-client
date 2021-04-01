@@ -6,12 +6,12 @@ import {
   createSourceDispatchAction,
   createSourceErrorsSelector,
   createSourceLoadingSelector,
-  resetCreateSourceAction,
+  resetCreateSourceAction
 } from "../redux";
 import { APISource } from "../types";
 import {
   orgsSelector,
-  profileSelector,
+  profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
 import { CONTEXT, usePrevious } from "../../../utils";
@@ -42,7 +42,7 @@ const CreateSourcePage: React.FC<Props> = ({
   createSourceAction,
   loading,
   resetCreateSource,
-  newSource,
+  newSource
 }: Props) => {
   const previouslyLoading = usePrevious(loading);
   const { state } = useLocation<UseLocation>();
@@ -83,11 +83,11 @@ export const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   loading: createSourceLoadingSelector(state),
   newSource: state.sources.newSource,
-  errors: createSourceErrorsSelector(state),
+  errors: createSourceErrorsSelector(state)
 });
 export const mapActionsToProps = {
   createSourceAction: createSourceDispatchAction,
-  resetCreateSource: resetCreateSourceAction,
+  resetCreateSource: resetCreateSourceAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(CreateSourcePage);

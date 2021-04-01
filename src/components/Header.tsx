@@ -69,7 +69,7 @@ const Header: React.FC<Props> = ({
   const history = useHistory();
 
   return (
-    <div data-testid='header'>
+    <div data-testid="header">
       <AppBar position="relative" className={classes.appBar}>
         <Toolbar>
           {backUrl ? (

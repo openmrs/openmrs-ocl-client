@@ -17,15 +17,15 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "fixed",
       bottom: 0,
       background: theme.palette.background.default,
-      width: "100%",
-    },
+      width: "100%"
+    }
   })
 );
 const ContainerPagination: React.FC<Props> = ({
   num_found,
   per_page,
   page,
-  onPageChange,
+  onPageChange
 }) => {
   const classes = useStyles();
 
@@ -33,18 +33,18 @@ const ContainerPagination: React.FC<Props> = ({
     <Grid item xs={12} className={classes.pagination}>
       <TablePagination
         rowsPerPageOptions={[per_page]}
-        component='div'
+        component="div"
         count={Number(num_found)}
         rowsPerPage={per_page}
         page={page - 1}
         backIconButtonProps={{
-          "aria-label": "previous page",
+          "aria-label": "previous page"
         }}
         nextIconButtonProps={{
-          "aria-label": "next page",
+          "aria-label": "next page"
         }}
         onChangePage={(_: any, page: number) => onPageChange(page + 1)}
-        data-testid='pagination'
+        data-testid="pagination"
       />
     </Grid>
   );
