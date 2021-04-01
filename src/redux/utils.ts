@@ -109,7 +109,7 @@ export function errorMsgResponse(response: any) {
 
   for (let key in response.data) {
     if (key === "detail") continue;
-    errorMsgResponse[key] =
+    errorMsgResponse =
       Array.isArray(response.data[key])
         ? response.data[key].join(",")
         : response.data[key];

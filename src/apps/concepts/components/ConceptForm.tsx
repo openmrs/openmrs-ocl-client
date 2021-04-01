@@ -269,7 +269,7 @@ const ConceptForm: React.FC<Props> = ({
     if (!formikRef) return;
   
     Object.keys(initialValues).forEach(key => {
-      const error = errors[key];
+      const error = getPrettyError(key);
       if (error) formikRef.setFieldError(key, error);
     });
   }, [errors]);
