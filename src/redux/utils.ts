@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { isEqual } from "lodash";
+import { has, isEqual } from "lodash";
 import { Action, AppState, IndexedAction } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";
@@ -101,19 +101,22 @@ export function invalidateCache(action: string, dispatch: Function) {
 }
 
 export function errorMsgResponse(response: any) {
-  let errorMsgResponse = [];
-  const genericErrorMessage =
-      "Action could not be completed. Please retry.";
+  let errorMsgResponse = { __detail__: "Action could not be completed. Please retry." };
+
+  if (response.data && has(response.data, "detail")) {
+    errorMsgResponse["__detail__"] = response.data.detail
+  }
 
   for (let key in response.data) {
-    errorMsgResponse.push(
-        Array.isArray(response.data[key])
-            ? response.data[key].join(',')
-            : response.data[key]
-    )
-  };
-  return errorMsgResponse.length > 0 ? errorMsgResponse.join('\n') : genericErrorMessage;
-};
+    if (key === "detail") continue;
+    errorMsgResponse[key] =
+      Array.isArray(response.data[key])
+        ? response.data[key].join(",")
+        : response.data[key];
+  }
+
+  return errorMsgResponse;
+}
 
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,

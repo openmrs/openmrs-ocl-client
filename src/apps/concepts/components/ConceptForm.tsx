@@ -266,12 +266,11 @@ const ConceptForm: React.FC<Props> = ({
   }, [savedValues]);
 
   useEffect(() => {
-    const { current: currentRef } = formikRef;
-    if (!currentRef) return;
-
+    if (!formikRef) return;
+  
     Object.keys(initialValues).forEach(key => {
-      const error = getPrettyError(errors, key);
-      if (error) currentRef.setFieldError(key, error);
+      const error = errors[key];
+      if (error) formikRef.setFieldError(key, error);
     });
   }, [errors]);
 
