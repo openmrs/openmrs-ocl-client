@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import {
     makeStyles
 } from "@material-ui/core";
-import { Field, Form, Formik} from "formik";
+import { Field, Form, Formik, FormikProps, FormikValues} from "formik";
 import { TextField } from "formik-material-ui";
 import { APIProfile } from "../types";
 import dayjs from 'dayjs';
@@ -34,7 +34,7 @@ const UserForm: React.FC<Props> = ({
                                          savedValues
                                      }) => {
     const classes = useStyles();
-    const formikRef: any = useRef(null);
+    const formikRef = useRef<FormikProps<FormikValues & APIProfile>>(null);
 
     useEffect(() => {
         const { current: currentRef } = formikRef;
@@ -46,14 +46,14 @@ const UserForm: React.FC<Props> = ({
     return (
         <div id="user-form" className={classes.userForm}>
             <Formik
-                ref={formikRef}
+                innerRef={formikRef}
                 initialValues={{...initialValues, ...omitBy(savedValues, isNull)}}
                 validateOnChange={false}
                 onSubmit={(values: APIProfile) => {
                 }}
             >
                 {({ values }) => (
-                    <Form>
+                    <Form translate="">
                         <Field
                             fullWidth
                             autoComplete="off"

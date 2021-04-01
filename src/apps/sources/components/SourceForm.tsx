@@ -9,7 +9,7 @@ import {
   TextField as MuiTextField,
 } from "@material-ui/core";
 import { getCustomErrorMessage, getPrettyError, CONTEXT } from "../../../utils";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
 import { Source } from "../types";
@@ -83,7 +83,7 @@ const SourceForm: React.FC<Props> = ({
   const classes = useStyles();
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Source>>(null);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -155,7 +155,7 @@ const SourceForm: React.FC<Props> = ({
   return (
     <div id="source-form" className={classes.sourceForm}>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={savedValues || initialValues}
         validateOnChange={false}
         validationSchema={SourceSchema}
@@ -164,7 +164,7 @@ const SourceForm: React.FC<Props> = ({
         }}
       >
         {({ isSubmitting, values }) => (
-          <Form>
+          <Form translate="">
             <Field
               fullWidth
               autoComplete="off"

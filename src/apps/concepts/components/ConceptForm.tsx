@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { ErrorMessage, Field, FieldArray, Form, Formik, FormikProps, FormikValues } from "formik";
 import {
   Concept,
   ConceptDescription,
@@ -218,7 +218,7 @@ const ConceptForm: React.FC<Props> = ({
 
   const error: string | undefined = getPrettyError(errors);
 
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Concept>>(null);
 
   const [isExternalIDEditable, setExternalIDEditable] = useState(false);
   const toggleExternalIDEditable = () =>
@@ -285,7 +285,7 @@ const ConceptForm: React.FC<Props> = ({
       [SETS_VALUE_KEY, SETS_BATCH_INDEX],
       [MAPPINGS_VALUE_KEY, MAPPINGS_BATCH_INDEX]
     ].forEach(([key, batchIndex]) => {
-      currentRef.state.values[key].forEach((_: Mapping, index: number) => {
+      currentRef.values[key].forEach((_: Mapping, index: number) => {
         const error = allMappingErrors[Number(`${batchIndex}${index}`)];
         if (error) currentRef.setFieldError(`${key}[${index}]`, error.errors);
       });
@@ -297,7 +297,7 @@ const ConceptForm: React.FC<Props> = ({
 
   return (
     <Formik
-      ref={formikRef}
+      innerRef={formikRef}
       initialValues={
         savedValues ||
         buildInitialValues(conceptClass, [createName(defaultLocale)])
@@ -308,7 +308,7 @@ const ConceptForm: React.FC<Props> = ({
       }}
     >
       {({ isSubmitting, submitCount, status, values, errors, handleChange }) => (
-        <Form id="conceptForm">
+        <Form id="conceptForm" translate="">
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>

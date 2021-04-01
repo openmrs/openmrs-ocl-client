@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Button, Link, makeStyles, Paper, Typography } from "@material-ui/core";
 import { OCL_SIGNUP_URL, TRADITIONAL_OCL_URL } from "../../../utils/constants";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 
@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
   const classes = useStyles();
 
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues>>(null);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -53,13 +53,13 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
   return (
     <Paper id="login-form">
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={{ username: "", password: "" }}
         validationSchema={LoginSchema}
         onSubmit={({ username, password }) => onSubmit(username, password)}
       >
         {({ isSubmitting, status }) => (
-          <Form className="fieldsetParent">
+          <Form className="fieldsetParent" translate="">
             <fieldset>
               <Typography variant="h6" component="legend">
                 Log In to Open Concept Lab

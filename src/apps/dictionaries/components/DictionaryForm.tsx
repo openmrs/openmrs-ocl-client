@@ -14,7 +14,7 @@ import {
   PREFERRED_SOURCES,
   CONTEXT,
 } from "../../../utils";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
@@ -107,7 +107,7 @@ const DictionaryForm: React.FC<Props> = ({
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
 
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Dictionary>>(null);
   const statusCodesWeCareAbout = {
     403: `You don't have permission to ${context} a dictionary in this Organisation`,
   };
@@ -151,7 +151,7 @@ const DictionaryForm: React.FC<Props> = ({
   return (
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={savedValues || copy || initialValues}
         validationSchema={DictionarySchema}
         validateOnChange={false}
@@ -163,7 +163,7 @@ const DictionaryForm: React.FC<Props> = ({
         enableReinitialize={true}
       >
         {({ isSubmitting, status, values }) => (
-          <Form>
+          <Form translate="">
             <Field
               fullWidth
               autoComplete="off"

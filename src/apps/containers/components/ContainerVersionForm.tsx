@@ -11,7 +11,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { usePrevious } from "../../../utils";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 
@@ -47,7 +47,7 @@ const ContainerVersionForm: React.FC<Props> = ({
   error,
   handleClose
 }) => {
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Version>>(null);
   const previouslyLoading = usePrevious(loading);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const ContainerVersionForm: React.FC<Props> = ({
     <>
       <DialogTitle>Create new version</DialogTitle>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={ContainerVersionSchema}
         validateOnChange={false}
@@ -75,7 +75,7 @@ const ContainerVersionForm: React.FC<Props> = ({
       >
         {({ isSubmitting }) => (
           <>
-            <Form>
+            <Form translate="">
               <DialogContent>
                 <Field
                   fullWidth

@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import qs from "qs";
 
-export function usePrevious(value: any) {
-  const ref = useRef();
+export function usePrevious<T>(value: T) {
+  const ref = useRef<T>();
   useEffect(() => {
     ref.current = value;
   });

@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { has, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import { Action, AppState, IndexedAction } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";

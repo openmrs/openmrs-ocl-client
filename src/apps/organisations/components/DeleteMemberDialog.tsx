@@ -9,7 +9,7 @@ import {
   DialogTitle,
   Typography
 } from "@material-ui/core";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikProps, FormikValues } from "formik";
 
 interface Props {
   open: boolean;
@@ -28,7 +28,7 @@ const DeleteMemberDialog: React.FC<Props> = ({
   orgName,
   error
 }) => {
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues>>(null);
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -38,7 +38,7 @@ const DeleteMemberDialog: React.FC<Props> = ({
           Are you sure you want to remove {user} from {orgName}?
         </DialogContentText>
         <Formik
-          ref={formikRef}
+          innerRef={formikRef}
           initialValues={{}}
           onSubmit={() => {
             if (handleSubmit) {
@@ -47,7 +47,7 @@ const DeleteMemberDialog: React.FC<Props> = ({
           }}
         >
           {({ isSubmitting }) => (
-            <Form>
+            <Form translate="">
               {!error ? (
                 <br />
               ) : (
