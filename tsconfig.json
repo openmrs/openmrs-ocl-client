@@ -11,15 +11,14 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
-//    "noUnusedLocals": true,  // todo, we'd like to make stuff even more strict, but pausing this work for the moment
     "forceConsistentCasingInFileNames": true,
-//    "noImplicitReturns": true,  // todo, we'd like to make stuff even more strict, but pausing this work for the moment
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"
