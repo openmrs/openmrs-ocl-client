@@ -107,7 +107,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
       backText={
         containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"
       }
-    ></Header>
+    />
   );
 };
 

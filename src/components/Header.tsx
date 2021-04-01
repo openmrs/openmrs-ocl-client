@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title: string;
   justifyChildren?: string;
   loadingList: boolean[];

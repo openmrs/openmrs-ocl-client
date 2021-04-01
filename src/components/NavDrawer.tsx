@@ -38,6 +38,7 @@ import {
 } from "../apps/authentication";
 import { action } from "../redux/utils";
 import { AppState } from "../redux";
+import { BUILD } from "../utils";
 
 const drawerWidth = 240;
 
@@ -134,14 +135,14 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
       >
         <div className={classes.toolbar}>
           {open ? (
-            <span>
+            <div>
               <Typography variant="h6" noWrap>
                 Open Concept Lab
                 <IconButton onClick={toggleDrawer}>
                   <ChevronLeftIcon />
                 </IconButton>
               </Typography>
-            </span>
+            </div>
           ) : (
             <IconButton onClick={toggleDrawer}>
               <MenuIcon />
@@ -280,6 +281,15 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               </Button>
             </DialogActions>
           </Dialog>
+          {open && (
+            <Typography
+              variant="caption"
+              component="div"
+              className="MuiListItem-gutters"
+            >
+              OCL for OMRS Build: {BUILD}
+            </Typography>
+          )}
         </div>
       </Drawer>
       <main className={classes.content}>{children}</main>
