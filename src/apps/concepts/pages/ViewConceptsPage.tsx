@@ -147,6 +147,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
+    generalFilters: initialGeneralFilters = [],
     sourceFilters: initialSourceFilters = [],
     addToDictionary: dictionaryToAddTo,
   } = queryParams;
@@ -169,6 +170,9 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
+  const [generalFilters, setGeneralFilters] = useState(
+    initialGeneralFilters
+  );
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
@@ -180,6 +184,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       ...{
         classFilters: classFilters,
         dataTypeFilters: dataTypeFilters,
+        generalFilters: generalFilters,
         sourceFilters: sourceFilters,
         page: 1,
         q,
@@ -206,7 +211,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       dataTypeFilters: initialDataTypeFilters,
       classFilters: initialClassFilters,
       sourceFilters: initialSourceFilters,
-      includeRetired: true,
+      includeRetired: initialGeneralFilters.includes('IncludeRetired'),
     });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
@@ -225,6 +230,8 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialClassFilters.toString(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialSourceFilters.toString(),
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     initialGeneralFilters.toString(),
   ]);
 
   const canModifyDictionary =
@@ -311,6 +318,8 @@ const ViewConceptsPage: React.FC<Props> = ({
                 setCheckedClasses={setClassFilters}
                 checkedDataTypes={dataTypeFilters}
                 setCheckedDataTypes={setInitialDataTypeFilters}
+                checkedGeneral={generalFilters}
+                setCheckedGeneral={setGeneralFilters}
                 checkedSources={sourceFilters}
                 setCheckedSources={setSourceFilters}
                 showSources={containerType !== SOURCE_CONTAINER}

@@ -308,3 +308,6 @@ export const CONTEXT = {
   view: "view",
   edit: "edit"
 };
+export const CONCEPT_GENERAL: string[] = [
+  "IncludeRetired",
+];

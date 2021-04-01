@@ -60,7 +60,7 @@ const api = {
                 ...optionallyIncludeList("conceptClass", classFilters),
                 ...optionallyIncludeList("source", sourceFilters),
                 timestamp: new Date().getTime(),
-                includeRetired
+                includeRetired: includeRetired ? 1 : 0
             }
         })
       },
