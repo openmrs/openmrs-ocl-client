@@ -15,11 +15,13 @@ import {
   Typography
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
 import { MoreVert as MenuIcon } from "@material-ui/icons";
+import { DragHandle } from "../../../components/DragHandle";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -34,19 +36,24 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  valuesKey: string;
-  values: Mapping[];
-  errors?: {} | string;
-  createNewMapping: Function;
-  arrayHelpers: ArrayHelpers;
-  isSubmitting: boolean;
-  handleChange: Function;
-  title: string;
-  fixedMappingType?: Option;
-  editing: boolean;
+  valuesKey: string
+  values: Mapping[]
+  errors?: {} | string
+  createNewMapping: Function
+  arrayHelpers: ArrayHelpers
+  isSubmitting: boolean
+  submitCount: number
+  handleChange: Function
+  title: string
+  fixedMappingType?: Option
+  editing: boolean
 }
 
 const HEADER_MENU_INDEX = -100;
+
+const buildEvent = (name: string, value: any) => ({
+  target: { name, value }
+});
 
 const MappingsTable: React.FC<Props> = ({
   valuesKey,
@@ -55,12 +62,60 @@ const MappingsTable: React.FC<Props> = ({
   createNewMapping,
   arrayHelpers,
   isSubmitting,
+  submitCount,
   handleChange,
   title,
   fixedMappingType,
   editing
 }) => {
   const classes = useStyles();
+  const [sorted] = useState(values);
+  const [isAnswer, setAnswer] = useState(false);
+  
+  useEffect(() => setAnswer(title === "Answer"), [title]);
+
+  useEffect(() => {
+    if (isAnswer) {
+      values=sorted.sort((v1, v2) => {
+        if (v1.extras?.sort_weight) {
+          if (v2.extras?.sort_weight) {
+            return (
+              (v1.extras.sort_weight as number) -
+              (v2.extras.sort_weight as number)
+            );
+          }
+
+          return 1;
+        }
+  
+        if (v2.extras?.sort_weight) {
+          return -1;
+        }
+
+        return 0;
+      });
+    }
+  }, [sorted, isAnswer]);
+
+  useEffect(() => {
+    if (isAnswer && isSubmitting) {
+      for (var i = 0; i < values.length; i++) {
+        handleChange(
+          buildEvent(
+            `${valuesKey}[${i}].extras`,
+            { sort_weight: i + 1 }
+          )
+        );
+      }
+    }
+  }, [
+    isAnswer,
+    isSubmitting,
+    submitCount,
+    handleChange,
+    values.length,
+    valuesKey
+  ])
 
   const [menu, setMenu] = React.useState<{
     index: number;
@@ -134,6 +189,66 @@ const MappingsTable: React.FC<Props> = ({
                 </TableCell>
               </TableRow>
             </TableHead>
+            {(isAnswer && editing)?(
+              <DragDropContext
+                onDragEnd={(param) => {
+                  const srcI = param.source.index;
+                  const desI = param.destination?.index;
+                  if (desI) {
+                    values.splice(desI, 0, values.splice(srcI, 1)[0]);
+                  }
+                }}
+              > 
+              <TableBody>
+                <Droppable droppableId="droppable-1">
+                  {(provided, _) => (
+                    <div ref={provided.innerRef} {...provided.droppableProps}>
+                    {values.map((value, index) =>
+                      value.retired && !showRetired ? null : (
+                        <Draggable
+                          key={value.external_id}
+                          draggableId={"draggable-" + value.external_id}
+                          index={index}
+                        >
+                          {(provided, snapshot) => (
+                            <div 
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              style={{
+                                ...provided.draggableProps.style,
+                                boxShadow: snapshot.isDragging
+                                  ? "0 0 .4rem #666"
+                                  : "none",
+                                  display: 'flex',
+                                  alignItems: 'center'
+                              }}
+                            >
+                              <DragHandle {...provided.dragHandleProps}/>
+                                <MappingsTableRow
+                                    key={index}
+                                    value={value}
+                                    index={index}
+                                    valuesKey={valuesKey}
+                                    handleChange={handleChange}
+                                    toggleMenu={toggleMappingMenu}
+                                    menu={menu}
+                                    arrayHelpers={arrayHelpers}
+                                    fixedMappingType={fixedMappingType}
+                                    errors={Array.isArray(errors) ? errors[index] : undefined}
+                                    editing={editing}
+                                />
+                            </div>
+                          )}
+                        </Draggable>
+                    ))
+                    }
+                    {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </TableBody>
+            </DragDropContext>
+            ) : (
             <TableBody>
               {values.map((value, index) =>
                   value.retired && !showRetired ? null : (
@@ -153,6 +268,7 @@ const MappingsTable: React.FC<Props> = ({
                   )
               )}
             </TableBody>
+            )}
           </Table>
           {noMappingsMsg()}
           {typeof errors !== "string" ? null : (

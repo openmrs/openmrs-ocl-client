@@ -9,12 +9,17 @@ export interface OptionResponse {
   additional: {};
 }
 
+export interface Extras {
+  [key: string]: string | undefined;
+}
+
 export interface BaseConceptContainer {
   name: string;
   short_code: string;
   description: string;
   public_access: string;
   default_locale: string;
+  extras?: Extras;
 }
 
 export interface EditableConceptContainerFields {
@@ -30,6 +35,6 @@ export interface Version {
   released: boolean;
   description?: string;
   external_id: string;
-  extras?: { [key: string]: string };
+  extras?: Extras;
   created_on?: string;
 }

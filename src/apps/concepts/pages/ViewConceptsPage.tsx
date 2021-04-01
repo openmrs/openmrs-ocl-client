@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { includes } from 'lodash';
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -47,6 +48,7 @@ import ViewConceptsHeader from "../components/ViewConceptsHeader";
 
 export interface StateProps {
   concepts?: APIConcept[];
+  modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
   loading: boolean;
@@ -76,6 +78,7 @@ export type ActionProps = {
 
 export interface OwnProps {
   containerType: string;
+  viewDictConcepts?: boolean;
 }
 
 type Props = StateProps & ActionProps & OwnProps;
@@ -100,6 +103,7 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
+  modifiedConcepts,
   dictionary,
   source,
   loading,
@@ -111,6 +115,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   containerType,
+  viewDictConcepts,
   addConceptsToDictionary,
   removeConceptsFromDictionary,
 }) => {
@@ -145,6 +150,14 @@ const ViewConceptsPage: React.FC<Props> = ({
     sourceFilters: initialSourceFilters = [],
     addToDictionary: dictionaryToAddTo,
   } = queryParams;
+
+  // This useEffect is to fetch the dictionary while on the concepts page,
+  // before when one would refresh the page the would lose the dictionary.
+  useEffect(() => {
+    if (dictionary === undefined && dictionaryToAddTo) {
+      retrieveDictionary(dictionaryToAddTo);
+    }
+  }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showOptions, setShowOptions] = useState(true);
   // why did he put the filtered state here and not inside the component, you ask?
@@ -254,7 +267,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             component='div'
           >
             <ConceptsTable
-              concepts={concepts || []}
+              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
                 edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
@@ -327,22 +340,29 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  profile: profileSelector(state),
-  usersOrgs: orgsSelector(state),
-  concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
-  dictionary: dictionarySelector(state),
-  source: sourceSelector(state),
-  meta: state.concepts.concepts
-    ? state.concepts.concepts.responseMeta
-    : undefined,
-  loading:
-    viewConceptsLoadingSelector(state) ||
-    retrieveDictionaryLoadingSelector(state) ||
-    removeConceptsFromDictionaryLoadingSelector(state) ||
-    retrieveSourceLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state),
-});
+const mapStateToProps = (state: AppState) => {
+  const dictionary = dictionarySelector(state);
+  const concepts = state.concepts.concepts.items || [];
+  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const modifiedConcepts = concepts?.map(c => includes(dictionaryConcepts, c.version_url) ? {...c, added: true} : {...c});
+  return ({
+    profile: profileSelector(state),
+    usersOrgs: orgsSelector(state),
+    concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
+    modifiedConcepts: modifiedConcepts,
+    dictionary: dictionarySelector(state),
+    source: sourceSelector(state),
+    meta: state.concepts.concepts
+      ? state.concepts.concepts.responseMeta
+      : undefined,
+    loading:
+      viewConceptsLoadingSelector(state) ||
+      retrieveDictionaryLoadingSelector(state) ||
+      removeConceptsFromDictionaryLoadingSelector(state) ||
+      retrieveSourceLoadingSelector(state),
+    errors: viewConceptsErrorsSelector(state),
+  });
+}
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,

@@ -3,8 +3,8 @@ import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import {
   Concept,
   ConceptDescription,
+  ConceptExtras,
   ConceptName,
-  Extras,
   Mapping
 } from "../types";
 import uuid from "uuid";
@@ -125,7 +125,7 @@ const buildInitialValues = (
   names
 });
 
-const ExtrasSchema = Yup.object().shape<Extras>({
+const ExtrasSchema = Yup.object().shape<ConceptExtras>({
   hi_absolute: Yup.number().notRequired(),
   hi_critical: Yup.number().notRequired(),
   hi_normal: Yup.number().notRequired(),
@@ -307,7 +307,7 @@ const ConceptForm: React.FC<Props> = ({
         if (onSubmit) onSubmit(prepForApi(values));
       }}
     >
-      {({ isSubmitting, status, values, errors, handleChange }) => (
+      {({ isSubmitting, submitCount, status, values, errors, handleChange }) => (
         <Form id="conceptForm">
           <Paper className="fieldsetParent">
             <fieldset>
@@ -465,6 +465,7 @@ const ConceptForm: React.FC<Props> = ({
                         errors={errors.answers}
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
+                        submitCount={submitCount}
                         handleChange={handleChange}
                         title="Answer"
                         fixedMappingType={MAP_TYPE_Q_AND_A}
@@ -495,6 +496,7 @@ const ConceptForm: React.FC<Props> = ({
                         errors={errors.sets}
                         arrayHelpers={arrayHelpers}
                         isSubmitting={isSubmitting}
+                        submitCount={submitCount}
                         handleChange={handleChange}
                         title="Set Member"
                         fixedMappingType={MAP_TYPE_CONCEPT_SET}
@@ -521,6 +523,7 @@ const ConceptForm: React.FC<Props> = ({
                     errors={errors.mappings}
                     arrayHelpers={arrayHelpers}
                     isSubmitting={isSubmitting}
+                    submitCount={submitCount}
                     handleChange={handleChange}
                     title="Mapping"
                     editing={allowEditing}

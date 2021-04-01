@@ -105,9 +105,10 @@ export const upsertConceptAndMappingsAction = (
           map_type,
           to_concept_name,
           retired,
-          url
+          url,
+          extras
         } = mapping;
-        const common = { external_id, map_type, to_concept_name, retired, url };
+        const common = { external_id, map_type, to_concept_name, retired, url ,extras};
         return to_concept_url
           ? {
               ...common,
