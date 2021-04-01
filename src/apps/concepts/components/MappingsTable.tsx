@@ -99,7 +99,7 @@ const MappingsTable: React.FC<Props> = ({
 
   useEffect(() => {
     if (isAnswer && isSubmitting) {
-      for (var i = 0; i < values.length; i++) {
+      for (let i = 0; i < values.length; i++) {
         handleChange(
           buildEvent(
             `${valuesKey}[${i}].extras`,
