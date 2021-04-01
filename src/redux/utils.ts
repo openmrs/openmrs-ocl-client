@@ -103,23 +103,21 @@ export function invalidateCache(action: string, dispatch: Function) {
 }
 
 export function errorMsgResponse(response: any) {
-  let errorMsgResponse = [];
-  const genericErrorMessage = "Action could not be completed. Please retry.";
+  let errorMsgResponse = { __detail__: "Action could not be completed. Please retry." };
 
   if (response.data && has(response.data, "detail")) {
-    errorMsgResponse.push(response.data.detail);
-  } else {
-    for (let key in response.data) {
-      errorMsgResponse.push(
-        Array.isArray(response.data[key])
-          ? response.data[key].join(",")
-          : response.data[key]
-      );
-    }
+    errorMsgResponse["__detail__"] = response.data.detail
   }
-  return errorMsgResponse.length > 0
-    ? errorMsgResponse.join("\n")
-    : genericErrorMessage;
+
+  for (let key in response.data) {
+    if (key === "detail") continue;
+    errorMsgResponse =
+      Array.isArray(response.data[key])
+        ? response.data[key].join(",")
+        : response.data[key];
+  }
+
+  return errorMsgResponse;
 }
 
 export const createActionThunk = <T extends any[]>(
