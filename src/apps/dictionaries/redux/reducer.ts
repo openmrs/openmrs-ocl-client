@@ -13,7 +13,7 @@ import {
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
-import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
+import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 
 const initialState: DictionaryState = {
   dictionaries: [],
@@ -33,7 +33,7 @@ export const reducer = createReducer(initialState, {
     ...state,
     dictionary: action.payload
   }),
-  [resetAction(RETRIEVE_DICTIONARY_ACTION).type]: (state) => ({
+  [resetAction(RETRIEVE_DICTIONARY_ACTION).type]: state => ({
     ...state,
     dictionary: undefined
   }),
@@ -55,13 +55,13 @@ export const reducer = createReducer(initialState, {
     ...state,
     versions: action.payload
   }),
-  [resetAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION).type]: (state) => ({
+  [resetAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION).type]: state => ({
     ...state,
     versions: undefined
   }),
-  [EDIT_DICTIONARY_VERSION_ACTION]: (state, {actionIndex, payload}) => {
+  [EDIT_DICTIONARY_VERSION_ACTION]: (state, { actionIndex, payload }) => {
     const versionIndex = state.versions.findIndex(
-        version => version.id === payload.id
+      version => version.id === payload.id
     );
     if (versionIndex !== -1) state.versions[versionIndex] = payload;
     else state.versions.push(payload);
@@ -69,14 +69,11 @@ export const reducer = createReducer(initialState, {
   [ADD_CONCEPTS_TO_DICTIONARY]: (state, { actionIndex, payload, meta }) => {
     state.addReferencesResults[actionIndex] = { payload, meta };
   },
-  [CREATE_DICTIONARY_VERSION_ACTION]: (
-    state,
-    { payload }
-  ) => {
+  [CREATE_DICTIONARY_VERSION_ACTION]: (state, { payload }) => {
     state.versions = [payload, ...state.versions];
   },
-  [LOGOUT_ACTION]: () =>{
+  [LOGOUT_ACTION]: () => {
     return initialState;
-  },
+  }
 });
 export { reducer as default };

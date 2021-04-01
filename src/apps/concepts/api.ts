@@ -19,88 +19,81 @@ const api = {
       }
     }),
   concepts: {
-    create: (
-      sourceUrl: string,
-      data: BaseConcept
-    ) =>
+    create: (sourceUrl: string, data: BaseConcept) =>
       authenticatedInstance.post(`${sourceUrl}concepts/`, data),
-    retrieve: (
-        retrieveParams: {
-            conceptsUrl?: string;
-            page?: number;
-            limit?: number;
-            q?: string;
-            sortDirection?: string;
-            sortBy?: string;
-            dataTypeFilters?: string[];
-            classFilters?: string[];
-            sourceFilters?: string[];
-            includeRetired?: boolean;
+    retrieve: (retrieveParams: {
+      conceptsUrl?: string;
+      page?: number;
+      limit?: number;
+      q?: string;
+      sortDirection?: string;
+      sortBy?: string;
+      dataTypeFilters?: string[];
+      classFilters?: string[];
+      sourceFilters?: string[];
+      includeRetired?: boolean;
+    }) => {
+      const {
+        conceptsUrl = "#",
+        page = 1,
+        limit = 10,
+        q = "",
+        sortDirection = "sortAsc",
+        sortBy = "bestMatch",
+        dataTypeFilters = [] as string[],
+        classFilters = [] as string[],
+        sourceFilters = [] as string[],
+        includeRetired = false
+      } = retrieveParams;
+      return authenticatedInstance.get(conceptsUrl, {
+        params: {
+          page,
+          limit,
+          q: buildPartialSearchQuery(q),
+          [sortDirection]: sortBy,
+          ...optionallyIncludeList("datatype", dataTypeFilters),
+          ...optionallyIncludeList("conceptClass", classFilters),
+          ...optionallyIncludeList("source", sourceFilters),
+          timestamp: new Date().getTime(),
+          includeRetired: includeRetired ? 1 : 0
         }
-    ) => {
-        const {
-            conceptsUrl="#",
-            page = 1,
-            limit = 10,
-            q = "",
-            sortDirection = "sortAsc",
-            sortBy = "bestMatch",
-            dataTypeFilters = [] as string[],
-            classFilters = [] as string[],
-            sourceFilters = [] as string[],
-            includeRetired = false
-        } = retrieveParams;
-        return authenticatedInstance.get(conceptsUrl, {
-            params: {
-                page,
-                limit,
-                q: buildPartialSearchQuery(q),
-                [sortDirection]: sortBy,
-                ...optionallyIncludeList("datatype", dataTypeFilters),
-                ...optionallyIncludeList("conceptClass", classFilters),
-                ...optionallyIncludeList("source", sourceFilters),
-                timestamp: new Date().getTime(),
-                includeRetired: includeRetired ? 1 : 0
-            }
-        })
-      },
-    retrieveActive: (
-        retrieveActiveParams: {
-            conceptsUrl?: string;
-            page?: number;
-            limit?: number;
-            q?: string;
-            sortDirection?: string;
-            sortBy?: string;
-            dataTypeFilters?: string[];
-            classFilters?: string[];
-            sourceFilters?: string[];
-            includeRetired?: boolean;
+      });
+    },
+    retrieveActive: (retrieveActiveParams: {
+      conceptsUrl?: string;
+      page?: number;
+      limit?: number;
+      q?: string;
+      sortDirection?: string;
+      sortBy?: string;
+      dataTypeFilters?: string[];
+      classFilters?: string[];
+      sourceFilters?: string[];
+      includeRetired?: boolean;
+    }) => {
+      const {
+        conceptsUrl = "#",
+        page = 1,
+        limit = 10,
+        q = "",
+        sortDirection = "sortAsc",
+        sortBy = "bestMatch",
+        dataTypeFilters = [] as string[],
+        classFilters = [] as string[],
+        sourceFilters = [] as string[]
+      } = retrieveActiveParams;
+      return authenticatedInstance.get(conceptsUrl, {
+        params: {
+          page,
+          limit,
+          q: buildPartialSearchQuery(q),
+          [sortDirection]: sortBy,
+          ...optionallyIncludeList("datatype", dataTypeFilters),
+          ...optionallyIncludeList("conceptClass", classFilters),
+          ...optionallyIncludeList("source", sourceFilters),
+          timestamp: new Date().getTime()
         }
-    ) =>{
-        const {
-            conceptsUrl="#",
-            page = 1,
-            limit = 10,
-            q = "",
-            sortDirection = "sortAsc",
-            sortBy = "bestMatch",
-            dataTypeFilters = [] as string[],
-            classFilters = [] as string[],
-            sourceFilters = [] as string[]
-        } = retrieveActiveParams;
-        return authenticatedInstance.get(conceptsUrl, {
-            params: {
-                page,
-                limit,
-                q: buildPartialSearchQuery(q),
-                [sortDirection]: sortBy,
-                ...optionallyIncludeList("datatype", dataTypeFilters),
-                ...optionallyIncludeList("conceptClass", classFilters),
-                ...optionallyIncludeList("source", sourceFilters),
-                timestamp: new Date().getTime()
-            }
-        })
+      });
     }
   },
   concept: {
@@ -111,10 +104,7 @@ const api = {
           includeMappings: true
         }
       }),
-    update: (
-      conceptUrl: string,
-      data: BaseConcept
-    ) =>
+    update: (conceptUrl: string, data: BaseConcept) =>
       authenticatedInstance.put(conceptUrl, data)
   },
   mappings: {

@@ -48,12 +48,12 @@ const recursivelyFetchToConcepts = async (
   );
 
   const loadedConcepts = new Set();
-   for (let i = 0; i < levelsToCheck; i += 1) {
-    const toConceptCodes = mappingsLists[i].map(
-      mapping => mapping.to_concept_code
-    ).filter(code => !loadedConcepts.has(code));
+  for (let i = 0; i < levelsToCheck; i += 1) {
+    const toConceptCodes = mappingsLists[i]
+      .map(mapping => mapping.to_concept_code)
+      .filter(code => !loadedConcepts.has(code));
 
-    if (!toConceptCodes.length) { 
+    if (!toConceptCodes.length) {
       break;
     }
 
@@ -68,7 +68,7 @@ const recursivelyFetchToConcepts = async (
     );
   }
 
-  return getConceptUrls(mappingsLists);   
+  return getConceptUrls(mappingsLists);
 };
 
 export { recursivelyFetchToConcepts };

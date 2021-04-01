@@ -3,15 +3,15 @@ import { TabType } from "../containers/types";
 export const TAB_LIST: TabType[] = [
   {
     labelName: "Your Dictionaries",
-    labelURL: "/user/collections/",
+    labelURL: "/user/collections/"
   },
   {
     labelName: "Your Organizations' Dictionaries",
-    labelURL: "/user/orgs/collections/",
+    labelURL: "/user/orgs/collections/"
   },
   {
     labelName: "Public Dictionaries",
-    labelURL: "/collections/",
+    labelURL: "/collections/"
   }
 ];
 

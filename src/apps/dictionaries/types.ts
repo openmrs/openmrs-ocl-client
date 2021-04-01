@@ -4,7 +4,7 @@ import {
   Extras,
   Version
 } from "../../utils";
-import { pick } from 'lodash';
+import { pick } from "lodash";
 
 interface BaseDictionary extends BaseConceptContainer {
   preferred_source: string;
@@ -57,8 +57,7 @@ export interface EditableDictionaryFields
   extras?: { source?: string } | Omit<Extras, "source">;
 }
 
-export interface DictionaryVersion extends Version{
-}
+export interface DictionaryVersion extends Version {}
 
 export interface APIDictionaryVersion extends DictionaryVersion {
   version_url: string;
@@ -70,32 +69,34 @@ export type ImportMetaData = {
   dateTime: string;
 };
 
-export type CopyableDictionary =  Pick<APIDictionary,
-  'description'       |
-  'default_locale'    |
-  'supported_locales' |
-  'owner_url'         |
-  'preferred_source'  |
-  'public_access'     |
-  'references'>
+export type CopyableDictionary = Pick<
+  APIDictionary,
+  | "description"
+  | "default_locale"
+  | "supported_locales"
+  | "owner_url"
+  | "preferred_source"
+  | "public_access"
+  | "references"
+>;
 
 export const dictionaryToCopyableDictionary = (
   dictionary: APIDictionary
-): CopyableDictionary =>  {
+): CopyableDictionary => {
   const newDictionary = pick(dictionary, [
-    'description',
-    'default_locale',
-    'supported_locales',
-    'owner_url',
-    'preferred_source',
-    'public_access',
-    'references'
+    "description",
+    "default_locale",
+    "supported_locales",
+    "owner_url",
+    "preferred_source",
+    "public_access",
+    "references"
   ]);
 
   newDictionary.supported_locales = newDictionary.supported_locales ?? [];
 
   return newDictionary;
-}
+};
 
 const apiDictionaryToDictionary = (
   apiDictionary?: APIDictionary

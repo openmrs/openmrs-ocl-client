@@ -3,17 +3,17 @@ import { authenticatedInstance } from "../../api";
 const api = {
   retrieve: (containerUrl: string) =>
     authenticatedInstance.get(containerUrl, {
-      params: { 
+      params: {
         verbose: true,
         includeReferences: true
-      } 
+      }
     }),
   versions: {
     retrieve: (containerUrl: string) =>
       authenticatedInstance.get(`${containerUrl}versions/`, {
-        params: { 
+        params: {
           verbose: true
-        } 
+        }
       })
   }
 };

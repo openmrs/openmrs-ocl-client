@@ -1,11 +1,10 @@
 export { default } from "./Routes";
-export { 
-  ViewPublicOrganisationsPage, 
-  CreateOrganisationPage, 
-  EditOrganisationPage, 
+export {
+  ViewPublicOrganisationsPage,
+  CreateOrganisationPage,
+  EditOrganisationPage,
   ViewPersonalOrganisationsPage,
-  ViewOrganisationPage } from './pages';
+  ViewOrganisationPage
+} from "./pages";
 export * from "./types";
-export { 
-  default as organisationsReducer
-} from "./redux";
+export { default as organisationsReducer } from "./redux";

@@ -108,7 +108,14 @@ export const upsertConceptAndMappingsAction = (
           url,
           extras
         } = mapping;
-        const common = { external_id, map_type, to_concept_name, retired, url ,extras};
+        const common = {
+          external_id,
+          map_type,
+          to_concept_name,
+          retired,
+          url,
+          extras
+        };
         return to_concept_url
           ? {
               ...common,
@@ -178,7 +185,11 @@ export const upsertConceptAndMappingsAction = (
       // we *only* want to import either concept answers or members of the concept set
       const toConceptUrls: string[] = [
         ...state.concepts.mappings
-          .filter(mapping => mapping.map_type === "CONCEPT-SET" || mapping.map_type === "Q-AND-A")
+          .filter(
+            mapping =>
+              mapping.map_type === "CONCEPT-SET" ||
+              mapping.map_type === "Q-AND-A"
+          )
           .map(mapping => mapping.to_concept_url)
       ].filter(reference => reference) as string[];
 
@@ -224,13 +235,12 @@ export const retrieveConceptsAction = createActionThunk(
   api.concepts.retrieve
 );
 export const retrieveActiveConceptsAction = createActionThunk(
-    RETRIEVE_ACTIVE_CONCEPTS_ACTION,
-    api.concepts.retrieveActive
+  RETRIEVE_ACTIVE_CONCEPTS_ACTION,
+  api.concepts.retrieveActive
 );
 export const resetConceptFormAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(UPSERT_CONCEPT_ACTION));
     dispatch(resetAction(UPSERT_CONCEPT_AND_MAPPINGS));
-  }
-}
-
+  };
+};

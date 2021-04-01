@@ -178,15 +178,17 @@ export function fillMappingRow(
     concept[type][index].source
   );
 
-  if (concept[type][index].relationship &&
-      concept[type][index].relationship !== ANSWER_RELATIONSHIP &&
-      concept[type][index].relationship !== SET_RELATIONSHIP) {
+  if (
+    concept[type][index].relationship &&
+    concept[type][index].relationship !== ANSWER_RELATIONSHIP &&
+    concept[type][index].relationship !== SET_RELATIONSHIP
+  ) {
     cy.selectBySelector(
       `[data-testid="${type}_${index}_map_type"]`,
       concept[type][index].relationship
     );
   }
-  
+
   searchAndSelect(
     `[data-testrowid="${type}_${index}"]`,
     "Select a concept",

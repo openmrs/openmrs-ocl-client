@@ -25,8 +25,7 @@ export interface Mapping {
   to_concept_name?: string | null;
   url?: string;
   retired?: boolean;
-  extras?: { sort_weight?: number } |
-    Omit<Extras, "sort_weight">;
+  extras?: { sort_weight?: number } | Omit<Extras, "sort_weight">;
 }
 
 export interface APIMapping extends Mapping {
@@ -50,9 +49,9 @@ export interface NumericConceptExtras {
   precise?: boolean;
 }
 
-export type ConceptExtras = NumericConceptExtras |
-  Omit<Extras, keyof NumericConceptExtras>
-  
+export type ConceptExtras =
+  | NumericConceptExtras
+  | Omit<Extras, keyof NumericConceptExtras>;
 
 export interface BaseConcept {
   id: string;
@@ -128,11 +127,11 @@ const apiConceptToConcept = (
 };
 
 const sortConceptName = (n1: ConceptName, n2: ConceptName) => {
-  if (typeof n1 === 'undefined') {
-    return (typeof n2 === 'undefined') ? 0 : 1;
+  if (typeof n1 === "undefined") {
+    return typeof n2 === "undefined" ? 0 : 1;
   }
 
-  if (typeof n2 === 'undefined') {
+  if (typeof n2 === "undefined") {
     return -1;
   }
 
@@ -155,20 +154,23 @@ const sortConceptName = (n1: ConceptName, n2: ConceptName) => {
       return 1;
     }
   }
-  
+
   if (n1.locale_preferred !== n2.locale_preferred) {
     return n1.locale_preferred ? -1 : 1;
   }
 
   return n1.name.localeCompare(n2.name);
-}
+};
 
-const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription) => {
-  if (typeof d1 === 'undefined') {
-    return (typeof d2 === 'undefined') ? 0 : 1;
+const sortConceptDescriptions = (
+  d1: ConceptDescription,
+  d2: ConceptDescription
+) => {
+  if (typeof d1 === "undefined") {
+    return typeof d2 === "undefined" ? 0 : 1;
   }
 
-  if (typeof d2 === 'undefined') {
+  if (typeof d2 === "undefined") {
     return -1;
   }
 
@@ -183,13 +185,13 @@ const sortConceptDescriptions = (d1: ConceptDescription, d2: ConceptDescription)
   if (d1.locale !== d2.locale) {
     return d1.locale < d2.locale ? -1 : 1;
   }
-  
+
   if (d1.locale_preferred !== d2.locale_preferred) {
     return d1.locale_preferred ? -1 : 1;
   }
 
-  return d1.description.localeCompare(d2.description)
-}
+  return d1.description.localeCompare(d2.description);
+};
 
 export type SortableField =
   | "bestMatch"
@@ -207,7 +209,7 @@ export interface OptionalQueryParams {
   limit?: number;
   classFilters?: string[];
   dataTypeFilters?: string[];
-  generalFilters?: string[],
+  generalFilters?: string[];
   sourceFilters?: string[];
   addToDictionary?: string;
 }

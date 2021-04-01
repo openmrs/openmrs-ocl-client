@@ -2,6 +2,11 @@
   "name": "ocl-client",
   "version": "0.1.0",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && npm:lint"
+    }
+  },
   "engines": {
     "node": ">=10.13.0",
     "npm": ">=6.4.1"
@@ -55,11 +60,13 @@
   "scripts": {
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
+    "lint": "eslint src --ext tsx",
     "test": "react-scripts test --testPathPattern='.*/tests/unit/|.*/__test__/'",
     "test:integration": "cypress run",
     "test:ci": "CI=true react-scripts test -u --testPathPattern='.*/tests/unit/|.*/__test__/' --ci --coverage",
     "test:bamboo": "node -v && CI=true react-scripts test --testPathPattern='.*/tests/unit/' --ci --coverage --env=jsdom --testResultsProcessor ./node_modules/jest-junit",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -84,8 +91,10 @@
     "@types/react-beautiful-dnd": "^13.0.0",
     "cypress": "^4.9.0",
     "eslint-plugin-cypress": "^2.11.2",
+    "husky": "^6.0.0",
     "jest-junit": "^10.0.0",
     "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.2",
     "react-test-renderer": "^16.13.1",
     "ts-loader": "^6.2.1"
   }
