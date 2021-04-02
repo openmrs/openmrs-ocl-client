@@ -28,7 +28,7 @@ const msfSource: APISource = {
   supported_locales: ["en", "fr"],
   custom_validation_schema: "Dictionary",
   active_concepts: 2,
-  concepts_url: "",
+  concepts_url: ""
 };
 const baseProps: sourceDetailsProps = {
   source: msfSource,
@@ -64,7 +64,7 @@ describe("Source Concept Summary", () => {
     const { container } = renderUI(baseProps);
 
     const conceptsSummary: HTMLElement | null = container.querySelector(
-        "[data-testid='concepts-summary']"
+      "[data-testid='concepts-summary']"
     );
 
     expect(conceptsSummary).not.toBeNull();
@@ -75,7 +75,7 @@ describe("Source Concept Summary", () => {
     const { container } = renderUI(baseProps);
 
     const conceptsSummary: HTMLElement | null = container.querySelector(
-        "[data-testid='concepts-summary']"
+      "[data-testid='concepts-summary']"
     );
 
     expect(conceptsSummary).not.toBeNull();

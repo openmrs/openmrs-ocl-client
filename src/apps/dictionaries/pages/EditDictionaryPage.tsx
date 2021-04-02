@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
-import {DictionaryForm} from "../components";
-import {Grid, MenuItem, Paper} from "@material-ui/core";
-import {connect} from "react-redux";
-import {Link, Redirect, useLocation} from "react-router-dom";
+import React, { useEffect } from "react";
+import { DictionaryForm } from "../components";
+import { Grid, MenuItem, Paper } from "@material-ui/core";
+import { connect } from "react-redux";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import {
   createAndAddLinkedSourceAction,
   createAndAddLinkedSourceLoadingSelector,
@@ -16,13 +16,16 @@ import {
   resetEditDictionaryAction,
   retrieveDictionaryLoadingSelector
 } from "../redux";
-import {APIDictionary, apiDictionaryToDictionary, Dictionary} from "../types";
-import {orgsSelector, profileSelector} from "../../authentication/redux/reducer";
-import {APIOrg, APIProfile} from "../../authentication";
-import {CONTEXT, debug, usePrevious, useQueryParams} from "../../../utils"
-import {ProgressOverlay} from "../../../utils/components";
+import { APIDictionary, apiDictionaryToDictionary, Dictionary } from "../types";
+import {
+  orgsSelector,
+  profileSelector
+} from "../../authentication/redux/reducer";
+import { APIOrg, APIProfile } from "../../authentication";
+import { CONTEXT, debug, usePrevious, useQueryParams } from "../../../utils";
+import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
-import {EditMenu} from "../../containers/components/EditMenu";
+import { EditMenu } from "../../containers/components/EditMenu";
 import { AppState } from "../../../redux";
 
 interface StateProps {
@@ -101,7 +104,7 @@ const EditDictionaryPage: React.FC<Props> = ({
     linkedSource,
     createAndAddLinkedSource
   ]);
-  
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetEditDictionary, []);
 
@@ -140,19 +143,19 @@ const EditDictionaryPage: React.FC<Props> = ({
             />
           </Paper>
         </Grid>
-        <EditMenu backUrl={dictionaryUrl}/>
+        <EditMenu backUrl={dictionaryUrl} />
         {createLinkedSource || linkedSource ? (
-            <span/>
+          <span />
         ) : (
-            <MenuItem>
-              <Link
-                  replace
-                  className="link"
-                  to={`${url}?createLinkedSource=true`}
-              >
-                Create linked source
-              </Link>
-            </MenuItem>
+          <MenuItem>
+            <Link
+              replace
+              className="link"
+              to={`${url}?createLinkedSource=true`}
+            >
+              Create linked source
+            </Link>
+          </MenuItem>
         )}
       </ProgressOverlay>
     </Header>
@@ -184,7 +187,4 @@ const mapActionsToProps = {
   createAndAddLinkedSource: createAndAddLinkedSourceAction
 };
 
-export default connect(
-  mapStateToProps,
-  mapActionsToProps
-)(EditDictionaryPage);
+export default connect(mapStateToProps, mapActionsToProps)(EditDictionaryPage);

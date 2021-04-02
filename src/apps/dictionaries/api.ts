@@ -11,24 +11,13 @@ import { default as containerAPI } from "../containers/api";
 
 const api = {
   ...containerAPI,
-  create: (
-    ownerUrl: string,
-    data: NewAPIDictionary
-  ) =>
+  create: (ownerUrl: string, data: NewAPIDictionary) =>
     authenticatedInstance.post(`${ownerUrl}collections/`, data),
-  update: (
-    dictionaryUrl: string,
-    data: EditableDictionaryFields
-  ) =>
+  update: (dictionaryUrl: string, data: EditableDictionaryFields) =>
     authenticatedInstance.put(dictionaryUrl, data),
   dictionaries: {
     retrieve: {
-      public: (
-        dictionariesUrl: string,
-        q: string = "",
-        limit = 20,
-        page = 1
-      ) =>
+      public: (dictionariesUrl: string, q: string = "", limit = 20, page = 1) =>
         unAuthenticatedInstance.get(dictionariesUrl, {
           params: {
             limit,
@@ -66,12 +55,9 @@ const api = {
       dictionaryUrl: string,
       data: DictionaryVersion
     ): Promise<AxiosResponse<APIDictionaryVersion>> =>
-        authenticatedInstance.put(`${dictionaryUrl}${data.id}/`, data)
+      authenticatedInstance.put(`${dictionaryUrl}${data.id}/`, data)
   },
-  retrieveMappings: (
-    dictionaryUrl: string,
-    fromConceptIds: string[]
-  ) =>
+  retrieveMappings: (dictionaryUrl: string, fromConceptIds: string[]) =>
     authenticatedInstance.get(`${dictionaryUrl}mappings/`, {
       params: {
         fromConcept: fromConceptIds.join(","),

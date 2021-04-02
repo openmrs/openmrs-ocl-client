@@ -8,7 +8,12 @@ import {
   resetAction
 } from "../../../redux";
 import api from "../api";
-import { APIDictionary, Dictionary, NewAPIDictionary, ImportMetaData } from "../types";
+import {
+  APIDictionary,
+  Dictionary,
+  NewAPIDictionary,
+  ImportMetaData
+} from "../types";
 import {
   APISource,
   createSourceAction as createSource,
@@ -138,7 +143,7 @@ export const createSourceAndDictionaryAction = (
     dictionaryResponse = await dispatch(
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
     );
-    const { url }  = dictionaryResponse;
+    const { url } = dictionaryResponse;
 
     const refs = references?.map(r => r.expression);
     await dispatch(addConceptsToDictionaryAction(url, refs));
@@ -160,20 +165,20 @@ export const resetCreateDictionaryAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(CREATE_SOURCE_AND_DICTIONARY_ACTION));
     dispatch(resetAction(CREATE_DICTIONARY_ACTION));
-  }
-}
+  };
+};
 export const resetEditDictionaryAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(EDIT_SOURCE_AND_DICTIONARY_ACTION));
     dispatch(resetAction(EDIT_DICTIONARY_ACTION));
-  }
-}
+  };
+};
 export const resetRetrieveDictionaryAndDetailsAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(RETRIEVE_DICTIONARY_ACTION));
     dispatch(resetAction(RETRIEVE_DICTIONARY_VERSIONS_ACTION));
-  }
-}
+  };
+};
 
 export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
   return async (dispatch: Function) => {
@@ -342,8 +347,8 @@ export const createDictionaryVersionAction = createActionThunk(
 );
 
 export const editDictionaryVersionAction = createActionThunk(
-    EDIT_DICTIONARY_VERSION_ACTION,
-    api.versions.update
+  EDIT_DICTIONARY_VERSION_ACTION,
+  api.versions.update
 );
 
 export const recursivelyAddConceptsToDictionaryAction = (
@@ -354,57 +359,61 @@ export const recursivelyAddConceptsToDictionaryAction = (
 ) => {
   return async (dispatch: Function, getState: Function) => {
     const concepts = rawConcepts.map(concept =>
-        typeof concept === "string"
-            ? {
-              id: concept,
-              url: `${sourceUrl}concepts/${concept}/`
-            }
-            : concept
+      typeof concept === "string"
+        ? {
+            id: concept,
+            url: `${sourceUrl}concepts/${concept}/`
+          }
+        : concept
     );
     let inProgressList;
     const conceptOrConcepts =
-        concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
+      concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
     const thisOrThese = concepts.length > 1 ? "these" : "this";
     const actionIndex =
-        addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
+      addConceptsToDictionaryProgressListSelector(getState())?.length || 0;
     const updateProgress = (message: string) => {
-      const headerMessage = concepts
-          .map(concept => concept.id)
-          .join(", ");
+      const headerMessage = concepts.map(concept => concept.id).join(", ");
 
       inProgressList = `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`;
       dispatch(
-          progressAction(
-              indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
-              `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
-          )
+        progressAction(
+          indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex),
+          `Adding ${conceptOrConcepts}: ${headerMessage}--${message}`
+        )
       );
     };
 
-    dispatch(startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex)));
+    dispatch(
+      startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
+    );
 
     const referencesToAdd = await recursivelyFetchToConcepts(
-        sourceUrl,
-        concepts.map(concept => concept.id),
-        updateProgress
+      sourceUrl,
+      concepts.map(concept => concept.id),
+      updateProgress
     );
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
-      dateTime: dayjs().toString(),
+      dateTime: dayjs().toString()
     };
 
-    createLocalStorageObject('notification');
-    const index = addToLocalStorageObject('notification','inProgressList', inProgressList || "");
-    addToLocalStorageObject('notification','loadingList', true);
-    addToLocalStorageObject('notification','erroredList', null);
-    addToLocalStorageObject('notification','successList', "");
+    createLocalStorageObject("notification");
+    const index = addToLocalStorageObject(
+      "notification",
+      "inProgressList",
+      inProgressList || ""
+    );
+    addToLocalStorageObject("notification", "loadingList", true);
+    addToLocalStorageObject("notification", "erroredList", null);
+    addToLocalStorageObject("notification", "successList", "");
     addToLocalStorageObject("notification", "importMetaDataList", importMeta);
 
     updateProgress(
-        referencesToAdd.length
-            ? `Adding ${thisOrThese} and ${referencesToAdd.length} dependent concepts...`
-            : `Adding ${conceptOrConcepts}...`
+      referencesToAdd.length
+        ? `Adding ${thisOrThese} and ${referencesToAdd.length} dependent concepts...`
+        : `Adding ${conceptOrConcepts}...`
     );
 
     try {
@@ -422,16 +431,16 @@ export const recursivelyAddConceptsToDictionaryAction = (
       const successList = getState().dictionaries.addReferencesResults;
       if (successList?.length > 0) {
         updateLocalStorageArray({
-          name:'notification',
-          key: 'successList',
+          name: "notification",
+          key: "successList",
           value: successList[successList.length - 1],
           index: index
         });
       }
     } catch (e) {
       updateLocalStorageArray({
-        name:'notification',
-        key: 'erroredList',
+        name: "notification",
+        key: "erroredList",
         value: e.response?.data,
         index: index
       });
@@ -444,13 +453,13 @@ export const recursivelyAddConceptsToDictionaryAction = (
     }
 
     updateLocalStorageArray({
-      name:'notification',
-      key: 'loadingList',
+      name: "notification",
+      key: "loadingList",
       value: false,
       index: index
     });
     dispatch(
-        completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
+      completeAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
   };
 };

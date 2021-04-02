@@ -9,7 +9,14 @@ import {
 } from "@material-ui/core";
 import { CONTEXT, getPrettyError } from "../../../utils";
 import { Organisation } from "../types";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik,
+  FormikProps,
+  FormikValues
+} from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 
@@ -63,7 +70,7 @@ const OrganisationForm: React.FC<Props> = ({
   const editing = context === CONTEXT.edit;
   const error = getPrettyError(errors);
 
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Organisation>>(null);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
@@ -82,7 +89,7 @@ const OrganisationForm: React.FC<Props> = ({
   return (
     <div id="organisation-form" className={classes.organisationForm}>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={savedValues || initialValues}
         validationSchema={OrganisationSchema}
         validateOnChange={false}
@@ -91,7 +98,7 @@ const OrganisationForm: React.FC<Props> = ({
         }}
       >
         {({ isSubmitting }) => (
-          <Form>
+          <Form translate="">
             <Field
               // required
               fullWidth

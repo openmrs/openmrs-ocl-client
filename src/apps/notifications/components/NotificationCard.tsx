@@ -8,7 +8,7 @@ import {
   ListItem,
   makeStyles,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -28,19 +28,19 @@ interface Props {
 
 const useStyles = makeStyles({
   card: {
-    width: "100%",
+    width: "100%"
   },
   chip: {
-    maxWidth: 200,
+    maxWidth: 200
   },
   cardFooter: {
-    paddingLeft: 8,
+    paddingLeft: 8
   },
   cardContent: {
-    paddingBottom: 2,
+    paddingBottom: 2
   },
   showDetailsButton: {
-      textAlign: "right"
+    textAlign: "right"
   },
   cardActions: {
     justifyContent: "space-between"
@@ -52,13 +52,13 @@ const NotificationCard: React.FC<Props> = ({
   subHeaderMessage,
   importMetaData,
   openNotificationDetails,
-  notification,
+  notification
 }) => {
   const classes = useStyles();
 
   const [importDateTime, importDictionary] = [
     new Date(importMetaData.dateTime),
-    importMetaData.dictionary,
+    importMetaData.dictionary
   ];
 
   const showImportDateTime = () => {
@@ -100,7 +100,12 @@ const NotificationCard: React.FC<Props> = ({
         <Button
           variant="text"
           color="primary"
-          onClick={() => openNotificationDetails(notification, dayjs(importDateTime).format("DDMMMYYYY_HHmm"))}
+          onClick={() =>
+            openNotificationDetails(
+              notification,
+              dayjs(importDateTime).format("DDMMMYYYY_HHmm")
+            )
+          }
           className={classes.showDetailsButton}
         >
           View Summary
@@ -124,8 +129,8 @@ const NotificationCard: React.FC<Props> = ({
               </Typography>
             </CardContent>
             <CardActions className={classes.cardActions}>
-                {showImportDateTime()}
-                {showDetails()}
+              {showImportDateTime()}
+              {showDetails()}
             </CardActions>
           </Card>
         </ListItem>

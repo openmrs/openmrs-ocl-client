@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import { BaseAPIOrganisation } from "../types";
 import {
   ContainerSearch,
   ContainerPagination
 } from "../../containers/components";
-import  OrganisationCards  from './OrgCards';
+import OrganisationCards from "./OrgCards";
 interface Props {
   organisations: BaseAPIOrganisation[];
   title: string;
@@ -24,7 +24,7 @@ const ViewOrganisations: React.FC<Props> = ({
   page,
   perPage,
   numFound,
-  onPageChange,
+  onPageChange
 }) => {
   return (
     <>

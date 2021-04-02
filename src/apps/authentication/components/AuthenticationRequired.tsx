@@ -12,12 +12,12 @@ import { ProgressOverlay } from "../../../utils/components";
 import { AppState } from "../../../redux";
 
 interface Props {
-  children: any
-  isLoggedIn: boolean
-  getProfile: Function
-  profile?: APIProfile
-  profileLoading: boolean
-  setNextPage: (...args: Parameters<typeof setNextPageAction>) => void
+  children: any;
+  isLoggedIn: boolean;
+  getProfile: Function;
+  profile?: APIProfile;
+  profileLoading: boolean;
+  setNextPage: (...args: Parameters<typeof setNextPageAction>) => void;
 }
 
 export const AuthenticationRequired: React.FC<Props> = ({

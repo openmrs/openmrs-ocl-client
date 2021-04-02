@@ -26,10 +26,7 @@ import {
   ArrowDropDown as ArrowDropDownIcon,
   Close as CloseIcon
 } from "@material-ui/icons";
-import {
-  CircularProgress,
-  Tooltip
-} from "@material-ui/core";
+import { CircularProgress, Tooltip } from "@material-ui/core";
 import { LoadingIconProps } from "react-select/src/components/indicators";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -129,20 +126,20 @@ function Control(props: ControlProps<Option>) {
 
 function OptionComponent(props: OptionProps<Option>) {
   return (
-      <Tooltip title={props.label} enterDelay={700}>
-        <MenuItem
-            ref={props.innerRef}
-            selected={props.isFocused}
-            component="div"
-            style={{
-              fontWeight: props.isSelected ? 500 : 400,
-              whiteSpace: 'normal'
-            }}
-            {...props.innerProps}
-        >
-          {props.children}
-        </MenuItem>
-      </Tooltip>
+    <Tooltip title={props.label} enterDelay={700}>
+      <MenuItem
+        ref={props.innerRef}
+        selected={props.isFocused}
+        component="div"
+        style={{
+          fontWeight: props.isSelected ? 500 : 400,
+          whiteSpace: "normal"
+        }}
+        {...props.innerProps}
+      >
+        {props.children}
+      </MenuItem>
+    </Tooltip>
   );
 }
 

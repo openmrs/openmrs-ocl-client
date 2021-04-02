@@ -6,7 +6,7 @@ import {
   APIConcept,
   ConceptName,
   ConceptDescription,
-  APIMapping,
+  APIMapping
 } from "../../types";
 
 type conceptsActionMenuProps = React.ComponentProps<typeof ConceptsActionMenu>;
@@ -16,14 +16,14 @@ const testConceptName: ConceptName = {
   locale: "en",
   external_id: "1234",
   locale_preferred: true,
-  name_type: "Fully Specified",
+  name_type: "Fully Specified"
 };
 
 const testDescription: ConceptDescription = {
   description: "concept description",
   locale: "en",
   external_id: "3456",
-  locale_preferred: true,
+  locale_preferred: true
 };
 
 const testMapping: APIMapping = {
@@ -32,7 +32,7 @@ const testMapping: APIMapping = {
   from_concept_url: "from_concept_url",
   url: "concept_url",
   retired: false,
-  to_concept_code: "concept_code",
+  to_concept_code: "concept_code"
 };
 const testConcept: APIConcept = {
   id: "123",
@@ -47,7 +47,7 @@ const testConcept: APIConcept = {
   display_name: "display_name",
   mappings: [testMapping],
   retired: false,
-  source_url: "source_url",
+  source_url: "source_url"
 };
 const baseProps: conceptsActionMenuProps = {
   index: 1,
@@ -61,7 +61,7 @@ const baseProps: conceptsActionMenuProps = {
   removeConceptsFromDictionary: function() {},
   addConceptsToDictionary: function() {},
   linkedSource: "",
-  linkedDictionary: "",
+  linkedDictionary: ""
 };
 
 function renderUI(props: Partial<conceptsActionMenuProps> = {}) {

@@ -1,7 +1,5 @@
 import { AppState } from "../../../redux";
-import {
-  profileSelector,
-} from "../../authentication/redux/reducer";
+import { profileSelector } from "../../authentication/redux/reducer";
 import { retrievePersonalOrganisationsLoadingSelector } from "../redux";
 import { connect } from "react-redux";
 import { retrievePersonalOrganisationsAction } from "../redux/actions";
@@ -14,8 +12,7 @@ const mapStateToProps = (state: AppState) => ({
   organisations:
     state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]?.items,
   meta:
-    state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]
-      ?.responseMeta
+    state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]?.responseMeta
 });
 
 const mapDispatchToProps = {

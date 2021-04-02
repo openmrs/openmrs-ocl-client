@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { has, isEqual } from "lodash";
+import { isEqual } from "lodash";
 import { Action, AppState, IndexedAction } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";
@@ -107,6 +107,22 @@ export function errorMsgResponse(response: any) {
 
   if (response.data && has(response.data, "detail")) {
     errorMsgResponse["__detail__"] = response.data.detail
+  let errorMsgResponse: string[] = [];
+  const genericErrorMessage = "Action could not be completed. Please retry.";
+
+  if (
+    response.data &&
+    Object.prototype.hasOwnProperty.call(response.data, "detail")
+  ) {
+    errorMsgResponse.push(response.data.detail);
+  } else {
+    for (let key in response.data) {
+      errorMsgResponse.push(
+        Array.isArray(response.data[key])
+          ? response.data[key].join(",")
+          : response.data[key]
+      );
+    }
   }
 
   for (let key in response.data) {

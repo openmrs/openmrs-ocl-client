@@ -3,13 +3,13 @@ import { Menu, MenuItem } from "@material-ui/core";
 import { APIConcept } from "../types";
 import {
   showEditMenuItem,
-  showRemoveFromDictionaryMenuItem,
+  showRemoveFromDictionaryMenuItem
 } from "./ConceptsTableRow";
 import { Link } from "react-router-dom";
 import {
   Add as AddIcon,
   DeleteSweepOutlined as DeleteIcon,
-  EditOutlined as EditIcon,
+  EditOutlined as EditIcon
 } from "@material-ui/icons";
 
 const addConceptsToDictionaryMenu = (
@@ -67,7 +67,7 @@ const editConceptMenu = (
   return (
     <MenuItem onClick={() => toggleMenu(index)}>
       <Link
-        className='buttonLink'
+        className="buttonLink"
         to={`${row.version_url}edit/?linkedDictionary=${linkedDictionary}`}
       >
         <EditIcon /> Edit
@@ -161,7 +161,7 @@ export function ConceptsActionMenu(props: ConceptsActionMenuProps) {
     removeConceptsFromDictionary,
     addConceptsToDictionary,
     linkedSource,
-    linkedDictionary,
+    linkedDictionary
   } = props;
   return (
     <Menu

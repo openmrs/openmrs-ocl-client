@@ -26,39 +26,39 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     q,
     setQ,
     showAddConcepts,
-    addSelectedConcepts,
+    addSelectedConcepts
   } = props;
   const classes = useToolbarStyles();
   return (
     <Toolbar
       className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
+        [classes.highlight]: numSelected > 0
       })}
     >
       {numSelected > 0 ? (
         <Typography
           className={classes.title}
-          color='inherit'
-          variant='subtitle1'
+          color="inherit"
+          variant="subtitle1"
         >
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant='h6' id='tableTitle'>
+        <Typography className={classes.title} variant="h6" id="tableTitle">
           <form
-            onSubmit={(e) => {
+            onSubmit={e => {
               e.preventDefault();
               search(q);
             }}
           >
             <Input
               fullWidth
-              placeholder='Search concepts'
-              type='search'
+              placeholder="Search concepts"
+              type="search"
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={e => setQ(e.target.value)}
               endAdornment={
-                <InputAdornment position='end'>
+                <InputAdornment position="end">
                   <IconButton onClick={() => search(q)}>
                     <SearchIcon />
                   </IconButton>
@@ -71,20 +71,17 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <>
           {!showAddConcepts ? null : (
-            <Tooltip title='Add selected to dictionary'>
-              <IconButton
-                onClick={(e) => addSelectedConcepts()}
-                aria-label='add'
-              >
+            <Tooltip title="Add selected to dictionary">
+              <IconButton onClick={e => addSelectedConcepts()} aria-label="add">
                 <AddIcon />
               </IconButton>
             </Tooltip>
           )}
         </>
       ) : (
-        <Tooltip title='Filter list'>
+        <Tooltip title="Filter list">
           <IconButton
-            aria-label='filter list'
+            aria-label="filter list"
             onClick={() => toggleShowOptions()}
           >
             <FilterListIcon />

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title: string;
   justifyChildren?: string;
   loadingList: boolean[];
@@ -69,7 +69,7 @@ const Header: React.FC<Props> = ({
   const history = useHistory();
 
   return (
-    <div data-testid='header'>
+    <div data-testid="header">
       <AppBar position="relative" className={classes.appBar}>
         <Toolbar>
           {backUrl ? (

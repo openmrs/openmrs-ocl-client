@@ -2,7 +2,7 @@ import { AuthState } from "../apps/authentication";
 import { DictionaryState } from "../apps/dictionaries";
 import { ConceptsState } from "../apps/concepts";
 import { AnyAction } from "redux";
-import {SourceState} from "../apps/sources";
+import { SourceState } from "../apps/sources";
 import { OrganisationState } from "../apps/organisations";
 
 export interface StatusState {

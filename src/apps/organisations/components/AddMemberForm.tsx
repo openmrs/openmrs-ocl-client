@@ -7,7 +7,7 @@ import {
   DialogTitle,
   Typography
 } from "@material-ui/core";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";
 import { OrgMember } from "../types";
@@ -36,12 +36,12 @@ const AddMemberForm: React.FC<Props> = ({
   error,
   handleClose
 }) => {
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & OrgMember>>(null);
 
   useEffect(() => {
     const { current: currentRef } = formikRef;
     if (currentRef) {
-      currentRef.setSubmitting(loading);
+      currentRef.setSubmitting(!!loading);
     }
   }, [loading]);
 
@@ -49,7 +49,7 @@ const AddMemberForm: React.FC<Props> = ({
     <>
       <DialogTitle>Add new member</DialogTitle>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={AddMemberSchema}
         validateOnChange={false}
@@ -61,7 +61,7 @@ const AddMemberForm: React.FC<Props> = ({
       >
         {({ isSubmitting }) => (
           <>
-            <Form>
+            <Form translate="">
               <DialogContent>
                 <Field
                   fullWidth

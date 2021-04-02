@@ -21,9 +21,7 @@ const getUserDetailsAction = () => {
   return async (dispatch: Function) => {
     dispatch(startAction(GET_USER_DETAILS_ACTION));
 
-    let [userProfile] = await Promise.all([
-      dispatch(getProfileAction()),
-    ]);
+    let [userProfile] = await Promise.all([dispatch(getProfileAction())]);
 
     let [userOrgs] = await Promise.all([
       dispatch(getUserOrgsAction(userProfile.username))
@@ -43,15 +41,22 @@ const setNextPageAction = (nextPage: string) => {
       index: action.actionIndex,
       payload: nextPage
     });
-  }
-}
+  };
+};
 
 const clearNextPageAction = () => {
-  return (dispatch: Function) =>  {
-    const { actionType, actionIndex } =
-      getIndexedAction(CLEAR_NEXT_PAGE_ACTION);
-    dispatch({type: actionType, index: actionIndex});
-  }
-}
+  return (dispatch: Function) => {
+    const { actionType, actionIndex } = getIndexedAction(
+      CLEAR_NEXT_PAGE_ACTION
+    );
+    dispatch({ type: actionType, index: actionIndex });
+  };
+};
 
-export { loginAction, getUserDetailsAction, getProfileAction, setNextPageAction, clearNextPageAction };
+export {
+  loginAction,
+  getUserDetailsAction,
+  getProfileAction,
+  setNextPageAction,
+  clearNextPageAction
+};

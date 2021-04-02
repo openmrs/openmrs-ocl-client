@@ -104,7 +104,7 @@ const fetchSourceOptions = async (
     } = response;
 
     const actualSources: APISource[] = data.filter((source: APISource) => {
-      return (source.owner !== "OCL");
+      return source.owner !== "OCL";
     });
 
     return {
@@ -148,11 +148,10 @@ const fetchConceptOptions = async (
 ): Promise<ConceptResults> => {
   try {
     const response = await api.concepts.retrieve({
-          conceptsUrl: `${sourceUrl}concepts/`,
-          page: page,
-          q: query
-        }
-    );
+      conceptsUrl: `${sourceUrl}concepts/`,
+      page: page,
+      q: query
+    });
     const {
       data,
       headers: { next = "None" }
@@ -265,12 +264,7 @@ const MappingsTableRow: React.FC<Props> = ({
   // update default map_type
   useEffect(() => {
     if (!fixedMappingType)
-      handleChange(
-        buildEvent(
-          `${valueKey}.map_type`,
-          value.map_type
-        )
-      );
+      handleChange(buildEvent(`${valueKey}.map_type`, value.map_type));
     // usually doing the following is a mistake and will bite us later
     // we do it here because updating the default map_type should only ever be triggered when this changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -296,7 +290,11 @@ const MappingsTableRow: React.FC<Props> = ({
           component="td"
           scope="row"
         >
-          <FormControl fullWidth margin="dense" className={classes.minCellWidth}>
+          <FormControl
+            fullWidth
+            margin="dense"
+            className={classes.minCellWidth}
+          >
             <Field
               id={`${valueKey}.to_source_url`}
               name={`${valueKey}.to_source_url`}
@@ -339,7 +337,7 @@ const MappingsTableRow: React.FC<Props> = ({
           >
             <FormControl fullWidth margin="dense">
               <Field
-                style={{marginTop:"10px"}}
+                style={{ marginTop: "10px" }}
                 id={`${valueKey}.map_type`}
                 name={`${valueKey}.map_type`}
                 data-testid={`${valuesKey}_${index}_map_type`}
@@ -360,11 +358,19 @@ const MappingsTableRow: React.FC<Props> = ({
 
         {isInternalMapping ? (
           <TableCell
-            className={fixedMappingType ? classes.tripleCellWidth : classes.doubleCellWidth}
+            className={
+              fixedMappingType
+                ? classes.tripleCellWidth
+                : classes.doubleCellWidth
+            }
             component="td"
             scope="row"
           >
-            <FormControl fullWidth margin="dense" className={classes.minCellWidth}>
+            <FormControl
+              fullWidth
+              margin="dense"
+              className={classes.minCellWidth}
+            >
               <Field
                 key={`${toSourceUrl}_to_concept_url`}
                 id={`${valueKey}.to_concept_url`}

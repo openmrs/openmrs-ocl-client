@@ -3,7 +3,7 @@ import {
   createStyles,
   lighten,
   makeStyles,
-  Theme,
+  Theme
 } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 
@@ -28,7 +28,7 @@ interface Props extends QueryParams {
   setQ: Function;
   buttons?: { [key: string]: boolean };
   addConceptsToDictionary: Function;
-  dictionaryToAddTo?:string;
+  dictionaryToAddTo?: string;
   removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
   linkedDictionary?: string;
   linkedSource?: string;
@@ -45,28 +45,28 @@ export const headCells: HeadCell[] = [
   { id: "name", disablePadding: false, label: "Name" },
   { id: "conceptClass", disablePadding: false, label: "Class" },
   { id: "datatype", disablePadding: false, label: "Datatype" },
-  { id: "id", disablePadding: false, label: "ID" },
+  { id: "id", disablePadding: false, label: "ID" }
 ];
 
 export const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(1),
+      paddingRight: theme.spacing(1)
     },
     highlight:
       theme.palette.type === "light"
         ? {
             color: theme.palette.secondary.main,
-            backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            backgroundColor: lighten(theme.palette.secondary.light, 0.85)
           }
         : {
             color: theme.palette.text.primary,
-            backgroundColor: theme.palette.secondary.dark,
+            backgroundColor: theme.palette.secondary.dark
           },
     title: {
-      flex: "1 1 100%",
-    },
+      flex: "1 1 100%"
+    }
   })
 );
 
@@ -74,18 +74,18 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: "100%",
-      marginTop: theme.spacing(3),
+      marginTop: theme.spacing(3)
     },
     paper: {
       width: "100%",
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(2)
     },
     table: {
-      minWidth: 750,
+      minWidth: 750
     },
     tableWrapper: {
       overflowX: "auto",
-      height: "72vh",
+      height: "72vh"
     },
     visuallyHidden: {
       border: 0,
@@ -96,8 +96,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding: 0,
       position: "absolute",
       top: 20,
-      width: 1,
-    },
+      width: 1
+    }
   })
 );
 
@@ -121,7 +121,7 @@ export const ConceptsTable: React.FC<Props> = ({
   linkedDictionary,
   // source to store new concepts in and use as criteria for whether a user can edit a concept
   linkedSource,
-  canModifyConcept,
+  canModifyConcept
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState<string[]>([]);
@@ -157,7 +157,7 @@ export const ConceptsTable: React.FC<Props> = ({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = concepts.map((concept) => concept.id);
+      const newSelecteds = concepts.map(concept => concept.id);
       setSelected(newSelecteds);
       return;
     }
@@ -205,7 +205,7 @@ export const ConceptsTable: React.FC<Props> = ({
           showAddConcepts={buttons.addToDictionary}
           addSelectedConcepts={() => {
             addConceptsToDictionary(
-              concepts.filter((concept) => selected.includes(concept.id))
+              concepts.filter(concept => selected.includes(concept.id))
             );
             resetSelected();
           }}
@@ -214,8 +214,8 @@ export const ConceptsTable: React.FC<Props> = ({
           <Table
             stickyHeader
             className={classes.table}
-            aria-labelledby='tableTitle'
-            size='medium'
+            aria-labelledby="tableTitle"
+            size="medium"
           >
             <EnhancedTableHead
               classes={classes}
@@ -256,15 +256,15 @@ export const ConceptsTable: React.FC<Props> = ({
         </div>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
-          component='div'
+          component="div"
           count={Number(count)}
           rowsPerPage={limit}
           page={page - 1}
           backIconButtonProps={{
-            "aria-label": "previous page",
+            "aria-label": "previous page"
           }}
           nextIconButtonProps={{
-            "aria-label": "next page",
+            "aria-label": "next page"
           }}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}

@@ -1,4 +1,8 @@
-import {BaseConceptContainer, EditableConceptContainerFields, Version} from "../../utils";
+import {
+  BaseConceptContainer,
+  EditableConceptContainerFields,
+  Version
+} from "../../utils";
 
 interface BaseSource extends BaseConceptContainer {
   extras?: { source?: string };
@@ -8,7 +12,7 @@ export interface Source extends BaseSource {
   supported_locales: string[];
   website?: string;
   source_type: string;
-  owner_url?:string;
+  owner_url?: string;
   owner?: string;
 }
 interface BaseAPISource extends BaseConceptContainer {
@@ -23,7 +27,7 @@ export interface NewAPISource extends BaseAPISource {
   // api expects a comma separated string for this in create/ edit data
   supported_locales: string;
   owner_url: string;
-  source_type?:string;
+  source_type?: string;
 }
 
 export interface APISource extends BaseAPISource {
@@ -38,8 +42,7 @@ export interface APISource extends BaseAPISource {
   owner_url: string;
 }
 
-export interface SourceVersion extends Version{
-}
+export interface SourceVersion extends Version {}
 
 export interface SourceState {
   sources: { items: APISource[]; responseMeta?: {} }[];
@@ -52,8 +55,7 @@ export interface APISourceVersion extends SourceVersion {
   url: string;
 }
 
-export interface EditableSourceFields
-    extends EditableConceptContainerFields {
+export interface EditableSourceFields extends EditableConceptContainerFields {
   public_access?: string;
   source_type?: string;
 }
@@ -65,7 +67,7 @@ const apiSourceToSource = (apiSource?: APISource): Source | undefined => {
 
   return {
     supported_locales: supported_locales || [],
-    ...theRest,
+    ...theRest
   };
 };
 

@@ -5,7 +5,7 @@ import {
   Input,
   InputAdornment,
   makeStyles,
-  Theme,
+  Theme
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { Search as SearchIcon } from "@material-ui/icons";
@@ -19,11 +19,11 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
-      marginBottom: "2vw",
+      marginBottom: "2vw"
     },
     searchInput: {
       textAlign: "center",
-      fontSize: "larger",
+      fontSize: "larger"
     },
     searchContainer: {
       justifyItems: "center",
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "100%",
       margin: theme.spacing(2),
       padding: theme.spacing(2)
-    },
+    }
   })
 );
 
@@ -43,25 +43,28 @@ const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
   return (
     <Grid className={classes.searchContainer} item xs={12}>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
           onSearch(q);
         }}
       >
         <Input
           inputProps={{
-            className: classes.searchInput,
+            className: classes.searchInput
           }}
-          onChange={(e) => setQ(e.target.value)}
+          onChange={e => setQ(e.target.value)}
           value={q}
-          color='secondary'
-          type='search'
+          color="secondary"
+          type="search"
           fullWidth
           placeholder={`Search ${title}`}
-          data-testid='searchInput'
+          data-testid="searchInput"
           endAdornment={
-            <InputAdornment position='end'>
-              <IconButton onClick={() => onSearch(q)} data-testid='searchButton' >
+            <InputAdornment position="end">
+              <IconButton
+                onClick={() => onSearch(q)}
+                data-testid="searchButton"
+              >
                 <SearchIcon />
               </IconButton>
             </InputAdornment>

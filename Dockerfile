@@ -14,11 +14,11 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 # Copy the code to the docker image
 ADD . /usr/src/app/
 
-# Set environment to production
-ENV NODE_ENV production
-
 # Install the project dependencies
 RUN npm install
+
+# Set environment to production
+ENV NODE_ENV production
 
 # Create an optimized build version of the project
 RUN npm run build

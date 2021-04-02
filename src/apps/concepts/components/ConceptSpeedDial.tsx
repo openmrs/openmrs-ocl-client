@@ -9,15 +9,15 @@ import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries";
 import { APIConcept } from "../types";
 
 interface Props {
-  concept: APIConcept
-  conceptSource: string
-  ownerType: string
-  owner: string
-  linkedDictionary: string
-  dictionaryToAddTo: string
-  profile?: APIProfile
-  usersOrgs?: APIOrg[]
-  conceptUrl: string
+  concept: APIConcept;
+  conceptSource: string;
+  ownerType: string;
+  owner: string;
+  linkedDictionary: string;
+  dictionaryToAddTo: string;
+  profile?: APIProfile;
+  usersOrgs?: APIOrg[];
+  conceptUrl: string;
   addConceptsToDictionary?: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
@@ -73,15 +73,22 @@ export const ConceptSpeedDial: React.FC<Props> = ({
   } else if (!showAddConceptButton) {
     return (
       <Tooltip
-        title={`Add ${concept.names ? concept.names[0].name : "concept"} to dictionary`}
-        data-testid="addConceptToDictionaryIcon">
+        title={`Add ${
+          concept.names ? concept.names[0].name : "concept"
+        } to dictionary`}
+        data-testid="addConceptToDictionaryIcon"
+      >
         <Fab
-          onClick={() => addConceptsToDictionary && addConceptsToDictionary(
-            linkedDictionary, dictionaryToAddTo, [concept]
-          )}
+          onClick={() =>
+            addConceptsToDictionary &&
+            addConceptsToDictionary(linkedDictionary, dictionaryToAddTo, [
+              concept
+            ])
+          }
           color="primary"
-          className="fab">    
-          <AddOutlined/>
+          className="fab"
+        >
+          <AddOutlined />
         </Fab>
       </Tooltip>
     );
@@ -91,14 +98,17 @@ export const ConceptSpeedDial: React.FC<Props> = ({
     <SpeedDial
       ariaLabel="Concept Actions"
       className="fab"
-      icon={<MoreVert/>}
+      icon={<MoreVert />}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      open={open}>
+      open={open}
+    >
       <SpeedDialAction
         key="edit_concept"
-        icon={<EditOutlined/>}
-        tooltipTitle={`Edit ${concept.names ? concept.names[0].name : "concept"}`}
+        icon={<EditOutlined />}
+        tooltipTitle={`Edit ${
+          concept.names ? concept.names[0].name : "concept"
+        }`}
         onClick={() => {
           setOpen(false);
           return (
@@ -110,17 +120,20 @@ export const ConceptSpeedDial: React.FC<Props> = ({
       />
       <SpeedDialAction
         key="add_concept"
-        icon={<AddOutlined/>}
-        tooltipTitle={`Add ${concept.names ? concept.names[0].name : "concept"} to dictionary`}
+        icon={<AddOutlined />}
+        tooltipTitle={`Add ${
+          concept.names ? concept.names[0].name : "concept"
+        } to dictionary`}
         onClick={() => {
           setOpen(false);
-          addConceptsToDictionary && addConceptsToDictionary(
-            linkedDictionary, dictionaryToAddTo, [concept]
-          );
+          addConceptsToDictionary &&
+            addConceptsToDictionary(linkedDictionary, dictionaryToAddTo, [
+              concept
+            ]);
         }}
       />
     </SpeedDial>
   );
-}
+};
 
 export default ConceptSpeedDial;

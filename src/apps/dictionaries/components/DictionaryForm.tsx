@@ -6,15 +6,22 @@ import {
   makeStyles,
   MenuItem,
   Typography,
-  TextField as MuiTextField,
+  TextField as MuiTextField
 } from "@material-ui/core";
 import {
   getCustomErrorMessage,
   getPrettyError,
   PREFERRED_SOURCES,
-  CONTEXT,
+  CONTEXT
 } from "../../../utils";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import {
+  ErrorMessage,
+  Field,
+  Form,
+  Formik,
+  FormikProps,
+  FormikValues
+} from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 import { snakeCase } from "lodash";
@@ -25,7 +32,7 @@ import {
   showOrganisationHeader,
   showUserName,
   showUserOrganisations,
-  supportedLocalesLabel,
+  supportedLocalesLabel
 } from "../../containers/components/FormUtils";
 import { createSourceAndDictionaryAction } from "../redux";
 
@@ -57,7 +64,7 @@ const DictionarySchema = Yup.object().shape<Dictionary>({
     "Select who will have access to this dictionary"
   ),
   default_locale: Yup.string().required("Select a preferred language"),
-  supported_locales: Yup.array(Yup.string()),
+  supported_locales: Yup.array(Yup.string())
 });
 
 const initialValues: Dictionary = {
@@ -74,11 +81,11 @@ const initialValues: Dictionary = {
 
 const useStyles = makeStyles({
   dictionaryForm: {
-    padding: "2vh 2vw",
+    padding: "2vh 2vw"
   },
   submitButton: {
-    textAlign: "center",
-  },
+    textAlign: "center"
+  }
 });
 
 const DictionaryForm: React.FC<Props> = ({
@@ -97,19 +104,21 @@ const DictionaryForm: React.FC<Props> = ({
 
   useEffect(() => {
     setCopy(
-      copiedDictionary ? {
-        ...initialValues,
-        ...copiedDictionary
-      } : undefined
+      copiedDictionary
+        ? {
+            ...initialValues,
+            ...copiedDictionary
+          }
+        : undefined
     );
   }, [copiedDictionary]);
 
   const viewing = context === CONTEXT.view;
   const editing = context === CONTEXT.edit;
 
-  const formikRef: any = useRef(null);
+  const formikRef = useRef<FormikProps<FormikValues & Dictionary>>(null);
   const statusCodesWeCareAbout = {
-    403: `You don't have permission to ${context} a dictionary in this Organisation`,
+    403: `You don't have permission to ${context} a dictionary in this Organisation`
   };
   let error: string | undefined = getCustomErrorMessage(
     getPrettyError(errors),
@@ -134,7 +143,7 @@ const DictionaryForm: React.FC<Props> = ({
     const { current: currentRef } = formikRef;
     if (!currentRef) return;
 
-    Object.keys(initialValues).forEach((key) => {
+    Object.keys(initialValues).forEach(key => {
       const error = getPrettyError(
         errors,
         snakeCase(key === "short_code" ? "id" : key) // id and short_code are the same value. error comes back in id
@@ -143,27 +152,27 @@ const DictionaryForm: React.FC<Props> = ({
     });
   }, [errors]);
 
- 
-  const owner = savedValues ? savedValues.owner: "";
+  const owner = savedValues ? savedValues.owner : "";
   const dictOwner = savedValues ? savedValues.owner_url : "";
-  const getOrg = usersOrgs?.filter(org => org.url === dictOwner)[0]?.name || owner;
-  
+  const getOrg =
+    usersOrgs?.filter(org => org.url === dictOwner)[0]?.name || owner;
+
   return (
     <div id="dictionary-form" className={classes.dictionaryForm}>
       <Formik
-        ref={formikRef}
+        innerRef={formikRef}
         initialValues={savedValues || copy || initialValues}
         validationSchema={DictionarySchema}
         validateOnChange={false}
         onSubmit={(values: Dictionary) => {
           if (onSubmit) {
-            onSubmit(values, copiedDictionary?.references)
+            onSubmit(values, copiedDictionary?.references);
           }
         }}
         enableReinitialize={true}
       >
         {({ isSubmitting, status, values }) => (
-          <Form>
+          <Form translate="">
             <Field
               fullWidth
               autoComplete="off"
@@ -206,7 +215,7 @@ const DictionaryForm: React.FC<Props> = ({
                 id="preferred_source"
                 component={Select}
               >
-                {Object.keys(PREFERRED_SOURCES).map((preferredSource) => (
+                {Object.keys(PREFERRED_SOURCES).map(preferredSource => (
                   <MenuItem key={preferredSource} value={preferredSource}>
                     {preferredSource}
                   </MenuItem>

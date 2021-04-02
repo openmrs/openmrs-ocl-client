@@ -3,7 +3,7 @@ import { APISource } from "../types";
 import {
   ContainerCards,
   ContainerPagination,
-  ContainerSearch,
+  ContainerSearch
 } from "../../containers/components";
 
 interface Props {
@@ -25,7 +25,7 @@ const ViewSources: React.FC<Props> = ({
   page,
   perPage,
   initialQ,
-  title,
+  title
 }) => {
   return (
     <>

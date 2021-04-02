@@ -5,7 +5,7 @@ import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Login } from "./components";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
 import { clearNextPageAction, loginAction } from "./redux";
-import { AppState } from "../../redux/types"; 
+import { AppState } from "../../redux/types";
 
 interface Props {
   isLoggedIn: boolean;
@@ -79,11 +79,7 @@ const LoginPage: React.FC<Props> = ({
               mixing expert-defined content with your own custom concepts.
             </Typography>
           </div>
-          <Login
-            onSubmit={login}
-            loading={loading}
-            status={errors}
-          />
+          <Login onSubmit={login} loading={loading} status={errors} />
         </Grid>
       </Grid>
     );

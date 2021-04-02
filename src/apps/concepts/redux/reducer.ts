@@ -9,7 +9,7 @@ import {
   UPSERT_MAPPING_ACTION
 } from "./actionTypes";
 import { REMOVE_REFERENCES_FROM_DICTIONARY } from "../../dictionaries/redux/actionTypes";
-import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
+import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 
 const initialState: ConceptsState = {
   mappings: [],
@@ -48,7 +48,7 @@ export const reducer = createReducer<ConceptsState>(initialState, {
   [RETRIEVE_ACTIVE_CONCEPTS_ACTION]: (state, action) => ({
     ...state,
     activeConcepts: {
-      items: action.payload as APIConcept[] || [],
+      items: (action.payload as APIConcept[]) || [],
       responseMeta: action.responseMeta
     }
   }),
@@ -70,7 +70,8 @@ export const reducer = createReducer<ConceptsState>(initialState, {
     state.concepts.items = state.concepts.items.filter(
       (concept: APIConcept) => !meta[1].includes(concept.version_url)
     );
-  },[LOGOUT_ACTION]: () =>{
+  },
+  [LOGOUT_ACTION]: () => {
     return initialState;
   }
 });

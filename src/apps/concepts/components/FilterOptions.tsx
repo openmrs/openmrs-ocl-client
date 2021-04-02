@@ -15,7 +15,7 @@ import {
   Theme,
   Typography
 } from "@material-ui/core";
-import { CONCEPT_CLASSES, DATA_TYPES } from "../../../utils";
+import { CONCEPT_CLASSES, DATA_TYPES, CONCEPT_GENERAL } from "../../../utils";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -142,6 +142,8 @@ interface FilterOptionsProps {
   setCheckedClasses: Function;
   checkedDataTypes: string[];
   setCheckedDataTypes: Function;
+  checkedGeneral: string[];
+  setCheckedGeneral: Function;
   checkedSources: string[];
   setCheckedSources: Function;
   sourceOptions: string[];
@@ -152,9 +154,11 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   url,
   checkedClasses,
   checkedDataTypes,
+  checkedGeneral,
   checkedSources,
   setCheckedClasses,
   setCheckedDataTypes,
+  setCheckedGeneral,
   setCheckedSources,
   sourceOptions,
   showSources = true
@@ -165,6 +169,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
   const clearAllFilters = () => {
     setCheckedClasses([]);
     setCheckedDataTypes([]);
+    setCheckedGeneral([]);
     setCheckedSources([]);
   };
 
@@ -215,6 +220,13 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
           searchText={searchText}
           title="Data types"
           items={DATA_TYPES}
+        />
+        <FilterGroup
+          checked={checkedGeneral}
+          setChecked={setCheckedGeneral}
+          searchText={searchText}
+          title="General"
+          items={CONCEPT_GENERAL}
         />
       </Paper>
     </div>

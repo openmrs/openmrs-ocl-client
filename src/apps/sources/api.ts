@@ -1,51 +1,43 @@
-import { EditableSourceFields, NewAPISource, SourceVersion, APISourceVersion } from "./types";
-import {authenticatedInstance, unAuthenticatedInstance} from "../../api";
-import { AxiosResponse } from "axios";
 import {
-  buildPartialSearchQuery
-} from "../../utils";
+  EditableSourceFields,
+  NewAPISource,
+  SourceVersion,
+  APISourceVersion
+} from "./types";
+import { authenticatedInstance, unAuthenticatedInstance } from "../../api";
+import { AxiosResponse } from "axios";
+import { buildPartialSearchQuery } from "../../utils";
 import { default as containerAPI } from "../containers/api";
 
 const api = {
   ...containerAPI,
   create: (ownerUrl: string, data: NewAPISource) =>
     authenticatedInstance.post(`${ownerUrl}sources/`, data),
-  update: (
-    sourceUrl: string,
-    data: EditableSourceFields
-  ) => authenticatedInstance.put(sourceUrl, data),
+  update: (sourceUrl: string, data: EditableSourceFields) =>
+    authenticatedInstance.put(sourceUrl, data),
   sources: {
     retrieve: {
-      private: (
-        sourcesUrl: string,
-        q: string = "",
-        limit = 20,
-        page = 1
-      ) =>
+      private: (sourcesUrl: string, q: string = "", limit = 20, page = 1) =>
         authenticatedInstance.get(sourcesUrl, {
           params: {
             limit,
             page,
             q: buildPartialSearchQuery(q),
-            timestamp: new Date().getTime(), // work around seemingly unhelpful caching
-          },
+            timestamp: new Date().getTime() // work around seemingly unhelpful caching
+          }
         }),
-        public: (
-            sourcesUrl: string,
-            q: string = "",
-            limit = 20,
-            page = 1
-        ) =>
-            unAuthenticatedInstance.get(sourcesUrl, {
-                params: {
-                    limit,
-                    page,
-                    q: buildPartialSearchQuery(q),
-                    timestamp: new Date().getTime() // work around seemingly unhelpful caching
-                }
-            }),
-    },
-  },versions: {
+      public: (sourcesUrl: string, q: string = "", limit = 20, page = 1) =>
+        unAuthenticatedInstance.get(sourcesUrl, {
+          params: {
+            limit,
+            page,
+            q: buildPartialSearchQuery(q),
+            timestamp: new Date().getTime() // work around seemingly unhelpful caching
+          }
+        })
+    }
+  },
+  versions: {
     ...containerAPI.versions,
     create: (
       sourceUrl: string,
@@ -56,8 +48,8 @@ const api = {
       sourceUrl: string,
       data: SourceVersion
     ): Promise<AxiosResponse<APISourceVersion>> =>
-        authenticatedInstance.put(`${sourceUrl}${data.id}/`, data)
-  },
+      authenticatedInstance.put(`${sourceUrl}${data.id}/`, data)
+  }
 };
 
 export default api;

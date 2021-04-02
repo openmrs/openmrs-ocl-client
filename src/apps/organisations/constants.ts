@@ -8,6 +8,6 @@ export const TAB_LIST: TabType[] = [
   // },
   {
     labelName: "Public Organisations",
-    labelURL: "/orgs/",
+    labelURL: "/orgs/"
   }
 ];

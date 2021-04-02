@@ -8,7 +8,7 @@ export const TRADITIONAL_OCL_URL =
   window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
 export const OCL_SIGNUP_URL =
   // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
-  window.OCL_SIGNUP_URL || "https://qa.openconceptlab.org/accounts/signup/"
+  window.OCL_SIGNUP_URL || "https://qa.openconceptlab.org/accounts/signup/";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 
@@ -17,7 +17,7 @@ export const ORG_TYPE = "orgs";
 
 export const option = (value: string, label: string = value): Option => ({
   value,
-  label,
+  label
 });
 
 export const LOCALES: { [key: string]: string }[] = [
@@ -87,7 +87,7 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: "hz", label: "Herero (hz)" },
   {
     value: "ia",
-    label: "Interlingua (International Auxiliary Language Association) (ia)",
+    label: "Interlingua (International Auxiliary Language Association) (ia)"
   },
   { value: "id", label: "Indonesian (id)" },
   { value: "ie", label: "Occidental (ie)" },
@@ -207,14 +207,13 @@ export const LOCALES: { [key: string]: string }[] = [
   { value: "yo", label: "Yoruba (yo)" },
   { value: "za", label: "Zhuang (za)" },
   { value: "zh", label: "Chinese (zh)" },
-  { value: "zu", label: "Zulu (zu)" },
+  { value: "zu", label: "Zulu (zu)" }
 ];
 
 export const CONCEPT_CLASS_QUESTION = "Question";
 export const CONCEPT_CLASSES_SET = ["LabSet", "MedSet", "ConvSet"];
 export const CONCEPT_DATATYPE_NUMERIC = "Numeric";
 export const CONCEPT_DATATYPE_CODED = "Coded";
-
 
 export const CONCEPT_CLASSES: string[] = [
   "Diagnosis",
@@ -243,7 +242,7 @@ export const CONCEPT_CLASSES: string[] = [
   "Organism",
   "Drug-form",
   "Medical-supply",
-  "InteractSet",
+  "InteractSet"
 ];
 
 export const DATA_TYPES: string[] = [
@@ -258,14 +257,14 @@ export const DATA_TYPES: string[] = [
   "Structured-Numeric",
   "Rule",
   CONCEPT_DATATYPE_NUMERIC,
-  "Text",
+  "Text"
 ];
 
 export const NAME_TYPES: { [key: string]: string }[] = [
   { value: "FULLY_SPECIFIED", label: "Fully Specified" },
   { value: "null", label: "Synonym" }, // value here should be null but inputs html can't handle null as a value
   { value: "SHORT", label: "Short" },
-  { value: "INDEX_TERM", label: "Index Term" },
+  { value: "INDEX_TERM", label: "Index Term" }
 ];
 
 export const MAP_TYPES: Option[] = [
@@ -295,12 +294,12 @@ const ALL_PUBLIC_SOURCES_URL = "/";
 export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
   PIH: PIH_SOURCE_URL,
-  MSFOCP: MSFOCP_SOURCE_URL,
+  MSFOCP: MSFOCP_SOURCE_URL
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   "Public Sources": ALL_PUBLIC_SOURCES_URL,
-  ...PREFERRED_SOURCES,
+  ...PREFERRED_SOURCES
 };
 
 export const CONTEXT = {
@@ -308,3 +307,4 @@ export const CONTEXT = {
   view: "view",
   edit: "edit"
 };
+export const CONCEPT_GENERAL: string[] = ["IncludeRetired"];

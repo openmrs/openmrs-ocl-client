@@ -3,7 +3,7 @@ import { APIDictionary } from "../types";
 import {
   ContainerCards,
   ContainerPagination,
-  ContainerSearch,
+  ContainerSearch
 } from "../../containers/components";
 
 interface Props {
@@ -25,7 +25,7 @@ const ViewDictionaries: React.FC<Props> = ({
   page,
   perPage,
   initialQ,
-  title,
+  title
 }) => {
   return (
     <>

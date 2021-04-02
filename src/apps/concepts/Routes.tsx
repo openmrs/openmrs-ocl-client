@@ -11,6 +11,7 @@ interface Props {
   newConcept?: boolean;
   viewConcept?: boolean;
   editConcept?: boolean;
+  viewDictConcepts?: boolean;
   containerType: string;
 }
 
@@ -19,7 +20,8 @@ const Routes: React.FC<Props> = ({
   viewConcepts = false,
   newConcept = false,
   viewConcept = false,
-  editConcept = false
+  editConcept = false,
+  viewDictConcepts = false
 }) => {
   // @ts-ignore
   let { path } = useRouteMatch();
@@ -28,7 +30,11 @@ const Routes: React.FC<Props> = ({
     <Switch>
       {!viewConcepts ? null : (
         <Route exact path={`${path}/`}>
-          <ViewConceptsPage key={containerType} containerType={containerType} />
+          <ViewConceptsPage
+            key={containerType}
+            containerType={containerType}
+            viewDictConcepts={viewDictConcepts}
+          />
         </Route>
       )}
       {!newConcept ? null : (

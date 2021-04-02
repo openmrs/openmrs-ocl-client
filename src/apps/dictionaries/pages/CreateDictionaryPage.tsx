@@ -11,18 +11,21 @@ import {
   retrieveDictionaryAndDetailsAction,
   dictionarySelector
 } from "../redux";
-import { 
+import {
   APIDictionary,
   CopyableDictionary,
   dictionaryToCopyableDictionary
 } from "../types";
 import {
   orgsSelector,
-  profileSelector,
+  profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
 import { usePrevious, CONTEXT } from "../../../utils";
-import { createSourceAndDictionaryAction, resetRetrieveDictionaryAndDetailsAction } from "../redux/actions";
+import {
+  createSourceAndDictionaryAction,
+  resetRetrieveDictionaryAndDetailsAction
+} from "../redux/actions";
 import Header from "../../../components/Header";
 import { getDictionaryTypeFromPreviousPath } from "../utils";
 import { AppState } from "../../../redux";
@@ -67,7 +70,9 @@ const CreateDictionaryPage: React.FC<Props> = ({
   const previouslyLoading = usePrevious(loading);
   const { state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
-  const [copiedDictionary, setCopiedDictionary] = useState<CopyableDictionary | undefined>();
+  const [copiedDictionary, setCopiedDictionary] = useState<
+    CopyableDictionary | undefined
+  >();
 
   const { copyFrom } = useQueryParams<{
     copyFrom: string;
@@ -129,7 +134,7 @@ const mapStateToProps = (state: AppState) => ({
   progress: createDictionaryProgressSelector(state),
   newDictionary: state.dictionaries.newDictionary,
   dictionary: dictionarySelector(state),
-  errors: createSourceAndDictionaryErrorsSelector(state),
+  errors: createSourceAndDictionaryErrorsSelector(state)
 });
 const mapActionsToProps = {
   createSourceAndDictionary: createSourceAndDictionaryAction,

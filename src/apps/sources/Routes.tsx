@@ -11,7 +11,7 @@ interface Props {
 const Routes: React.FC<Props> = ({
   viewSource = true,
   editSource = true,
-  concepts = true,
+  concepts = true
 }) => {
   let { path } = useRouteMatch();
   return (

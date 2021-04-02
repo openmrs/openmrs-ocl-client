@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { includes } from "lodash";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -6,7 +7,7 @@ import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
   viewConceptsLoadingSelector,
-  viewConceptsErrorsSelector,
+  viewConceptsErrorsSelector
 } from "../redux";
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
@@ -19,34 +20,35 @@ import {
   APIOrg,
   APIProfile,
   canModifyContainer,
-  profileSelector,
+  profileSelector
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
   FILTER_SOURCE_IDS,
   SOURCE_CONTAINER,
-  SOURCE_VERSION_CONTAINER,
+  SOURCE_VERSION_CONTAINER
 } from "../constants";
 import {
   dictionarySelector,
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   makeRetrieveDictionaryAction,
-  retrieveDictionaryLoadingSelector,
+  retrieveDictionaryLoadingSelector
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
 import {
   sourceSelector,
   retrieveSourceLoadingSelector,
-  retrieveSourceAndDetailsAction,
+  retrieveSourceAndDetailsAction
 } from "../../sources/redux";
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
 
 export interface StateProps {
   concepts?: APIConcept[];
+  modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
   loading: boolean;
@@ -76,6 +78,7 @@ export type ActionProps = {
 
 export interface OwnProps {
   containerType: string;
+  viewDictConcepts?: boolean;
 }
 
 type Props = StateProps & ActionProps & OwnProps;
@@ -85,14 +88,14 @@ const useStyles = makeStyles((theme: Theme) =>
     link: {
       textDecoration: "none",
       color: "inherit",
-      width: "100%",
+      width: "100%"
     },
     largerTooltip: {
-      fontSize: "larger",
+      fontSize: "larger"
     },
     content: {
-      height: "100%",
-    },
+      height: "100%"
+    }
   })
 );
 
@@ -100,6 +103,7 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
+  modifiedConcepts,
   dictionary,
   source,
   loading,
@@ -111,8 +115,9 @@ const ViewConceptsPage: React.FC<Props> = ({
   profile,
   usersOrgs,
   containerType,
+  viewDictConcepts,
   addConceptsToDictionary,
-  removeConceptsFromDictionary,
+  removeConceptsFromDictionary
 }) => {
   const classes = useStyles();
 
@@ -142,9 +147,18 @@ const ViewConceptsPage: React.FC<Props> = ({
     q: initialQ = "",
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
+    generalFilters: initialGeneralFilters = [],
     sourceFilters: initialSourceFilters = [],
-    addToDictionary: dictionaryToAddTo,
+    addToDictionary: dictionaryToAddTo
   } = queryParams;
+
+  // This useEffect is to fetch the dictionary while on the concepts page,
+  // before when one would refresh the page the would lose the dictionary.
+  useEffect(() => {
+    if (dictionary === undefined && dictionaryToAddTo) {
+      retrieveDictionary(dictionaryToAddTo);
+    }
+  }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showOptions, setShowOptions] = useState(true);
   // why did he put the filtered state here and not inside the component, you ask?
@@ -156,6 +170,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
+  const [generalFilters, setGeneralFilters] = useState(initialGeneralFilters);
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
@@ -167,11 +182,12 @@ const ViewConceptsPage: React.FC<Props> = ({
       ...{
         classFilters: classFilters,
         dataTypeFilters: dataTypeFilters,
+        generalFilters: generalFilters,
         sourceFilters: sourceFilters,
         page: 1,
-        q,
+        q
       },
-      ...params,
+      ...params
     };
     return `${conceptsUrl}?${qs.stringify(newParams)}`;
   };
@@ -179,7 +195,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
-    (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
+    containerType === SOURCE_CONTAINER ||
+    containerType === SOURCE_VERSION_CONTAINER
       ? retrieveSource(containerUrl)
       : retrieveDictionary(containerUrl);
 
@@ -193,7 +210,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       dataTypeFilters: initialDataTypeFilters,
       classFilters: initialClassFilters,
       sourceFilters: initialSourceFilters,
-      includeRetired: true,
+      includeRetired: initialGeneralFilters.includes("IncludeRetired")
     });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
@@ -212,6 +229,8 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialClassFilters.toString(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialSourceFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialGeneralFilters.toString()
   ]);
 
   const canModifyDictionary =
@@ -234,10 +253,10 @@ const ViewConceptsPage: React.FC<Props> = ({
       <Grid
         container
         className={classes.content}
-        component='div'
+        component="div"
         // @ts-ignore
-        justify='space-around'
-        alignItems='flex-start'
+        justify="space-around"
+        alignItems="flex-start"
       >
         <ProgressOverlay
           loading={loading}
@@ -248,17 +267,17 @@ const ViewConceptsPage: React.FC<Props> = ({
           }
         >
           <Grid
-            id='viewConceptsPage'
+            id="viewConceptsPage"
             item
             xs={showOptions ? 9 : 12}
-            component='div'
+            component="div"
           >
             <ConceptsTable
-              concepts={concepts || []}
+              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
                 edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
-                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo, // relevant for SOURCE_CONTAINER
+                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo // relevant for SOURCE_CONTAINER
               }}
               q={q}
               setQ={setQ}
@@ -292,12 +311,14 @@ const ViewConceptsPage: React.FC<Props> = ({
           {!showOptions ? (
             ""
           ) : (
-            <Grid item xs={2} component='div'>
+            <Grid item xs={2} component="div">
               <FilterOptions
                 checkedClasses={classFilters}
                 setCheckedClasses={setClassFilters}
                 checkedDataTypes={dataTypeFilters}
                 setCheckedDataTypes={setInitialDataTypeFilters}
+                checkedGeneral={generalFilters}
+                setCheckedGeneral={setGeneralFilters}
                 checkedSources={sourceFilters}
                 setCheckedSources={setSourceFilters}
                 showSources={containerType !== SOURCE_CONTAINER}
@@ -305,8 +326,8 @@ const ViewConceptsPage: React.FC<Props> = ({
                 sourceOptions={
                   [
                     getContainerIdFromUrl(linkedSource),
-                    ...FILTER_SOURCE_IDS,
-                  ].filter((source) => source !== undefined) as string[]
+                    ...FILTER_SOURCE_IDS
+                  ].filter(source => source !== undefined) as string[]
                 }
                 url={gimmeAUrl()}
               />
@@ -327,29 +348,42 @@ const ViewConceptsPage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  profile: profileSelector(state),
-  usersOrgs: orgsSelector(state),
-  concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
-  dictionary: dictionarySelector(state),
-  source: sourceSelector(state),
-  meta: state.concepts.concepts
-    ? state.concepts.concepts.responseMeta
-    : undefined,
-  loading:
-    viewConceptsLoadingSelector(state) ||
-    retrieveDictionaryLoadingSelector(state) ||
-    removeConceptsFromDictionaryLoadingSelector(state) ||
-    retrieveSourceLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state),
-});
+const mapStateToProps = (state: AppState) => {
+  const dictionary = dictionarySelector(state);
+  const concepts = state.concepts.concepts.items || [];
+  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const modifiedConcepts = concepts?.map(c =>
+    includes(dictionaryConcepts, c.version_url)
+      ? { ...c, added: true }
+      : { ...c }
+  );
+  return {
+    profile: profileSelector(state),
+    usersOrgs: orgsSelector(state),
+    concepts: state.concepts.concepts
+      ? state.concepts.concepts.items
+      : undefined,
+    modifiedConcepts: modifiedConcepts,
+    dictionary: dictionarySelector(state),
+    source: sourceSelector(state),
+    meta: state.concepts.concepts
+      ? state.concepts.concepts.responseMeta
+      : undefined,
+    loading:
+      viewConceptsLoadingSelector(state) ||
+      retrieveDictionaryLoadingSelector(state) ||
+      removeConceptsFromDictionaryLoadingSelector(state) ||
+      retrieveSourceLoadingSelector(state),
+    errors: viewConceptsErrorsSelector(state)
+  };
+};
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(

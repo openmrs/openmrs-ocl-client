@@ -1,9 +1,9 @@
 export const buildAddConceptToDictionaryMessage = (
   results: { expression: string; added: boolean }[]
 ) => {
-    if(!Array.isArray(results)) {
-      return "";
-    }
+  if (!Array.isArray(results)) {
+    return "";
+  }
 
   const conceptResults = results.filter(result =>
     result.expression.includes("/concepts/")
@@ -35,14 +35,13 @@ export const dictionaryNameFromUrl = (url: string): string => {
 
 export const getDictionaryTypeFromPreviousPath = (previousPath: String) => {
   switch (previousPath) {
-      case '/collections/':
-          return 'Public Dictionaries';
-      case '/user/collections/':
-          return 'Your Dictionaries';
-      case '/user/orgs/collections/' :
-          return "Your Organisations' Dictionaries";
-      default:
-          return 'Dictionaries'
+    case "/collections/":
+      return "Public Dictionaries";
+    case "/user/collections/":
+      return "Your Dictionaries";
+    case "/user/orgs/collections/":
+      return "Your Organisations' Dictionaries";
+    default:
+      return "Dictionaries";
   }
 };
-
