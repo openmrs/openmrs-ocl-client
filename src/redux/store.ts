@@ -62,7 +62,9 @@ const rootReducer = combineReducers({
 const store = createStore(
   rootReducer,
   loadState(),
-  composeWithDevTools(applyMiddleware(reduxThunk))
+  process.env.NODE_ENV === "production" ?
+    applyMiddleware(reduxThunk) :
+    composeWithDevTools(applyMiddleware(reduxThunk))
 );
 
 store.subscribe(() => {
