@@ -66,6 +66,7 @@ export const upsertConceptAndMappingsAction = (
           sourceUrl
         ];
     response = await dispatch(action<APIConcept>(url, concept));
+    
 
     if (response === false) {
       // I think that at this point, it is generally sane not to try dealing with the mappings if the concept can't be updated. todo could improve.
@@ -103,7 +104,7 @@ export const upsertConceptAndMappingsAction = (
           to_concept_url,
           external_id,
           map_type,
-          to_concept_name,
+          to_concept_name_resolved,
           retired,
           url,
           extras
@@ -111,7 +112,7 @@ export const upsertConceptAndMappingsAction = (
         const common = {
           external_id,
           map_type,
-          to_concept_name,
+          to_concept_name_resolved,
           retired,
           url,
           extras

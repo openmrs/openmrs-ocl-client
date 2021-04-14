@@ -22,6 +22,7 @@ export interface Mapping {
   to_concept_url?: string | null; // internal mapping
   to_source_url?: string; // external mapping
   to_concept_code?: string; // external mapping
+  to_concept_name_resolved?: string | null;
   to_concept_name?: string | null;
   url?: string;
   retired?: boolean;

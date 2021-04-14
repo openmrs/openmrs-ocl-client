@@ -44,7 +44,7 @@ export const MappingSchema = Yup.object()
     to_concept_url: Yup.string()
       .notRequired()
       .nullable(),
-    to_concept_name: Yup.string()
+    to_concept_name_resolved: Yup.string()
       .notRequired()
       .nullable()
   })
@@ -59,11 +59,11 @@ const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
 const option = (value?: string, label?: string) => ({ value, label });
 
 const buildConceptLabel = (
-  toConceptName?: string | null,
+  to_concept_name?: string | null,
   toConceptUrl?: string | null
 ) =>
-  toConceptName && toConceptUrl
-    ? `${conceptCodeFromUrl(toConceptUrl)}- ${toConceptName}`
+to_concept_name && toConceptUrl
+    ? `${conceptCodeFromUrl(toConceptUrl)}- ${to_concept_name}`
     : "";
 
 export const isExternalSource = ({ source_type: sourceType }: APISource) =>
@@ -243,10 +243,17 @@ const MappingsTableRow: React.FC<Props> = ({
   const {
     to_source_url: toSourceUrl,
     to_concept_url: toConceptUrl,
-    to_concept_name: toConceptName,
+    to_concept_name_resolved,
+    to_concept_name,
     url,
     retired
   } = value;
+  const [toConceptName, setToConceptName] = useState(to_concept_name);
+
+useEffect(() => {
+  setToConceptName(to_concept_name ?? to_concept_name_resolved);
+}, [to_concept_name, to_concept_name_resolved]);
+
   const valueKey = `${valuesKey}[${index}]`;
   const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl);
 
