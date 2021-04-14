@@ -30,6 +30,10 @@ FROM nginx:1.19-alpine
 # Make port 80 available to the world outside the container
 EXPOSE 80
 
+# Copy the CI build number
+ARG OCL_BUILD
+ENV OCL_BUILD $OCL_BUILD
+
 # Copy the tagged files from the build to the production environmnet of the nginx server
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 
