@@ -287,13 +287,22 @@ export const MAP_TYPE_CONCEPT_SET = option("CONCEPT-SET");
 
 const CIEL_SOURCE_URL = "/orgs/CIEL/sources/CIEL/";
 const PIH_SOURCE_URL = "/orgs/PIH/sources/PIH/";
+<<<<<<< HEAD
 const MSFOCP_SOURCE_URL = "/orgs/MSFOCP/sources/MSFOCP/"
+=======
+const MSFOCP_SOURCE_URL = "/orgs/MSFOCP/sources/MSFOCP/";
+const MySource_SOURCE_URL = "/orgs/MySource/sources/MySource/";
+>>>>>>> 14e78d1... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
 const ALL_PUBLIC_SOURCES_URL = "/";
 
 export const PREFERRED_SOURCES: { [key: string]: string } = {
   CIEL: CIEL_SOURCE_URL,
   PIH: PIH_SOURCE_URL,
   MSFOCP: MSFOCP_SOURCE_URL,
+<<<<<<< HEAD
+=======
+  MySource: MySource_SOURCE_URL
+>>>>>>> 14e78d1... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
