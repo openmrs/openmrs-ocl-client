@@ -292,7 +292,10 @@ const MSFOCP_SOURCE_URL = "/orgs/MSFOCP/sources/MSFOCP/"
 =======
 const MSFOCP_SOURCE_URL = "/orgs/MSFOCP/sources/MSFOCP/";
 const MySource_SOURCE_URL = "/orgs/MySource/sources/MySource/";
+<<<<<<< HEAD
 >>>>>>> 14e78d1... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
+=======
+>>>>>>> 8aab21f... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
 const ALL_PUBLIC_SOURCES_URL = "/";
 
 export const PREFERRED_SOURCES: { [key: string]: string } = {
@@ -300,9 +303,13 @@ export const PREFERRED_SOURCES: { [key: string]: string } = {
   PIH: PIH_SOURCE_URL,
   MSFOCP: MSFOCP_SOURCE_URL,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   MySource: MySource_SOURCE_URL
 >>>>>>> 14e78d1... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
+=======
+  MySource: MySource_SOURCE_URL
+>>>>>>> 8aab21f... OCLOMRS-965:Set Source to whatever user want it to be (maybe “Your Recent Sources” instead of hardcoded)
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
