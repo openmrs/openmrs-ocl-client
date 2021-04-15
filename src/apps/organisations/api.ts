@@ -35,7 +35,7 @@ const api = {
   organisation: {
     retrieve: (url: string) => authenticatedInstance.get(url),
     update: (orgUrl: string, data: EditableOrganisationFields) =>
-      authenticatedInstance.post(orgUrl, data),
+      authenticatedInstance.put(orgUrl, data),
     delete: (orgUrl: string) => authenticatedInstance.delete(orgUrl),
     retrieveSources: (orgUrl: string) =>
       authenticatedInstance.get(`${orgUrl}sources/`),
