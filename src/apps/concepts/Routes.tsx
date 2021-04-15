@@ -43,12 +43,12 @@ const Routes: React.FC<Props> = ({
         </Route>
       )}
       {!viewConcept ? null : (
-        <Route exact path={`${path}/:concept/:version/`}>
+        <Route exact path={`${path}/:concept/`}>
           <ViewConceptPage />
         </Route>
       )}
       {!editConcept ? null : (
-        <Route exact path={`${path}/:concept/:version/edit/`}>
+        <Route exact path={`${path}/:concept/edit/`}>
           <CreateOrEditConceptPage />
         </Route>
       )}
