@@ -243,10 +243,17 @@ const MappingsTableRow: React.FC<Props> = ({
   const {
     to_source_url: toSourceUrl,
     to_concept_url: toConceptUrl,
-    to_concept_name: toConceptName,
+    to_concept_name,
+    to_concept_name_resolved,
     url,
     retired
   } = value;
+  const [toConceptName, setToConceptName] = useState(to_concept_name);
+
+  useEffect(() => {
+    setToConceptName(to_concept_name ?? to_concept_name_resolved);
+  }, [to_concept_name, to_concept_name_resolved]);
+
   const valueKey = `${valuesKey}[${index}]`;
   const conceptLabel = buildConceptLabel(toConceptName, toConceptUrl);
 
