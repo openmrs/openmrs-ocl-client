@@ -66,7 +66,8 @@ describe("selector", () => {
   it("for source should return source from the given state", () => {
     const testSources: SourceState = {
       sources: [{ items: [testSource] }],
-      source: testSource
+      source: testSource,
+      versions: []
     };
     const state = currentState(testSources);
     const source = sourceSelector(state);
