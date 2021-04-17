@@ -245,7 +245,6 @@ const DictionaryForm: React.FC<Props> = ({
               <FormControl fullWidth margin="normal">
                 <InputLabel htmlFor="owner_url">Owner</InputLabel>
                 <Field
-                  value=""
                   disabled={editing || isSubmitting}
                   name="owner_url"
                   id="owner_url"
