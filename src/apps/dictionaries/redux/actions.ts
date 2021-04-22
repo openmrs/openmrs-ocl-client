@@ -102,7 +102,8 @@ export const createSourceAndDictionaryAction = (
       id: short_code,
       supported_locales: supported_locales?.join(","),
       website: "",
-      owner_url: owner_url
+      owner_url: owner_url,
+      source_type: "Dictionary"
     };
     sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
     if (!sourceResponse) {
@@ -138,7 +139,8 @@ export const createSourceAndDictionaryAction = (
       id: short_code,
       short_code,
       supported_locales: supported_locales.join(","),
-      website: ""
+      website: "",
+      collection_type: "Dictionary"
     };
     dictionaryResponse = await dispatch(
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
