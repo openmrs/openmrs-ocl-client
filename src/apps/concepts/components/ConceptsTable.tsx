@@ -45,6 +45,7 @@ export const headCells: HeadCell[] = [
   { id: "name", disablePadding: false, label: "Name" },
   { id: "conceptClass", disablePadding: false, label: "Class" },
   { id: "datatype", disablePadding: false, label: "Datatype" },
+  { id: "source", disablePadding: false, label: "Source" },
   { id: "id", disablePadding: false, label: "ID" }
 ];
 

@@ -68,7 +68,8 @@ const testConcept: APIConcept = {
   display_name: "display_name",
   mappings: [testMapping],
   retired: false,
-  source_url: "source_url"
+  source_url: "source_url",
+  source: "My source"
 };
 
 function renderUI(props: Partial<conceptsTableProps> = {}) {
