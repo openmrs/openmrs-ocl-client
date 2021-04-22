@@ -23,7 +23,10 @@ import { Link, useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
-      paddingLeft: theme.spacing(7) + 1
+      paddingLeft: theme.spacing(7) + 1,
+      position: "sticky",
+      top: "0",
+      width: "100%"
     },
     content: {
       marginTop: "6vh",
