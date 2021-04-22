@@ -28,6 +28,7 @@ interface BaseAPIDictionary extends BaseDictionary {
 
 export interface NewAPIDictionary extends BaseAPIDictionary {
   supported_locales: string;
+  collection_type: string;
 }
 
 export interface APIDictionary extends BaseAPIDictionary {
