@@ -58,7 +58,7 @@ const AddConceptsIcon: React.FC<Props> = ({
 
   const getAddConceptIcon = () => {
     return canModifyDictionary ? (
-      <Tooltip title="Add concepts" data-testid="addConceptsIcon">
+      <Tooltip title="Add concepts" data-testid="addConceptsIcon" style={{zIndex:1}}>
         <Fab onClick={handleAddNewClick} color="primary" className="fab">
           <AddIcon />
         </Fab>
