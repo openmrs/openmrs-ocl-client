@@ -210,7 +210,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       dataTypeFilters: initialDataTypeFilters,
       classFilters: initialClassFilters,
       sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("IncludeRetired")
+      includeRetired: initialGeneralFilters.includes("Include Retired")
     });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
