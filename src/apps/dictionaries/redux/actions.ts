@@ -24,7 +24,7 @@ import {
   CUSTOM_VALIDATION_SCHEMA,
   EditableConceptContainerFields
 } from "../../../utils";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX

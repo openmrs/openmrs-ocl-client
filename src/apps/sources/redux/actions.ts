@@ -16,7 +16,7 @@ import {
 } from "./constants";
 import { APISource, EditableSourceFields, NewAPISource } from "../types";
 import { CUSTOM_VALIDATION_SCHEMA } from "../../../utils";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 
 export const createSourceAction = createActionThunk(
   CREATE_SOURCE_ACTION,
