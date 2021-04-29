@@ -27,7 +27,7 @@ export const AuthenticationRequired: React.FC<Props> = ({
   profile,
   profileLoading,
   setNextPage
-}: Props) => {
+}) => {
   useEffect(() => {
     if (isLoggedIn) getProfile();
   }, [isLoggedIn, getProfile]);

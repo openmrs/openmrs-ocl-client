@@ -172,7 +172,7 @@ const SourceForm: React.FC<Props> = ({
         }}
       >
         {({ isSubmitting, values }) => (
-          <Form translate="">
+          <Form>
             <Field
               fullWidth
               autoComplete="off"

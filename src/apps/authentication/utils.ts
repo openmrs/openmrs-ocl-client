@@ -8,21 +8,21 @@ import { USER_TYPE } from "../../utils";
 import { APIOrg, APIProfile } from "./types";
 import { action } from "../../redux/utils";
 
-const redirectIfNotLoggedIn = (response: AxiosResponse) => {
+export const redirectIfNotLoggedIn = (response: AxiosResponse) => {
   if (response.status === 401) {
     store.dispatch(action(LOGOUT_ACTION));
   }
   return response;
 };
 
-const addAuthToken = (data: any, headers?: any) => {
+export const addAuthToken = (data: any, headers?: any) => {
   headers["Authorization"] = `Token ${
     (store.getState() as AppState).auth.token
   }`;
   return data;
 };
 
-const canModifyContainer = (
+export const canModifyContainer = (
   ownerType: string,
   owner: string,
   profile?: APIProfile,
@@ -33,5 +33,3 @@ const canModifyContainer = (
       ? profile?.username === owner
       : usersOrgs.map(org => org.id).includes(owner)
   );
-
-export { redirectIfNotLoggedIn, addAuthToken, canModifyContainer };

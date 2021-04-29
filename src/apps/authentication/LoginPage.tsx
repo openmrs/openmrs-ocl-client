@@ -106,9 +106,9 @@ const mapStateToProps = (state: AppState) => ({
   nextPage: state.auth.nextPage
 });
 
-const mapDispatchToProps = {
+const mapActionsToProps = {
   login: loginAction,
   clearNextPage: clearNextPageAction
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapActionsToProps)(LoginPage);

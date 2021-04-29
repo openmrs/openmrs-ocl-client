@@ -47,7 +47,7 @@ const DeleteMemberDialog: React.FC<Props> = ({
           }}
         >
           {({ isSubmitting }) => (
-            <Form translate="">
+            <Form>
               {!error ? (
                 <br />
               ) : (

@@ -6,9 +6,9 @@ services:
     build:
       context: .
     environment:
-    - OCL_API_HOST=${OCL_API_HOST:-https://api.qa.openconceptlab.org/}
-    - TRADITIONAL_OCL_HOST=${TRADITIONAL_OCL_HOST:-https://qa.openconceptlab.org}
-    - OCL_SIGNUP_URL=${OCL_SIGNUP_URL:-https://app.qa.openconceptlab.org/#/accounts/signup}
+    - REACT_APP_OCL_API_HOST=${OCL_API_HOST:-https://api.qa.openconceptlab.org/}
+    - REACT_APP_TRADITIONAL_OCL_HOST=${TRADITIONAL_OCL_HOST:-https://qa.openconceptlab.org}
+    - REACT_APP_OCL_SIGNUP_URL=${OCL_SIGNUP_URL:-https://app.qa.openconceptlab.org/#/accounts/signup}
     - ENVIRONMENT=${ENVIRONMENT:-dev}
     ports:
     - 8080:80

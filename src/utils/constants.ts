@@ -1,17 +1,13 @@
 import { Option } from "./types";
 
 export const BASE_URL: string =
-  // @ts-ignore OCL_API_HOST is injected at runtime via index.html
-  window.OCL_API_HOST || "https://api.qa.openconceptlab.org";
+  process.env.REACT_APP_OCL_API_HOST || "https://api.qa.openconceptlab.org";
 export const TRADITIONAL_OCL_URL =
-  // @ts-ignore TRADITIONAL_OCL_HOST is injected at runtime via index.html
-  window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
+  process.env.REACT_APP_TRADITIONAL_OCL_HOST|| "https://app.qa.openconceptlab.org";
 export const OCL_SIGNUP_URL =
-  // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
-  window.OCL_SIGNUP_URL || "https://app.qa.openconceptlab.org/#/accounts/signup";
+  process.env.REACT_APP_OCL_SIGNUP_URL || "https://app.qa.openconceptlab.org/#/accounts/signup";
 export const BUILD: string =
-  // @ts-ignore BUILD is injected at runtime via index.html
-  window.BUILD || "local";
+  process.env.REACT_APP_BUILD || "local";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 

@@ -59,7 +59,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
         onSubmit={({ username, password }) => onSubmit(username, password)}
       >
         {({ isSubmitting, status }) => (
-          <Form className="fieldsetParent" translate="">
+          <Form className="fieldsetParent">
             <fieldset>
               <Typography variant="h6" component="legend">
                 Log In to Open Concept Lab
@@ -108,6 +108,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                     color="error"
                     variant="caption"
                     component="span"
+                    data-testid="login-status-message"
                   >
                     {status}
                   </Typography>

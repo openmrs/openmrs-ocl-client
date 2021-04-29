@@ -75,7 +75,7 @@ const DictionaryVersionForm: React.FC<Props> = ({
       >
         {({ isSubmitting }) => (
           <>
-            <Form translate="">
+            <Form>
               <DialogContent>
                 <Field
                   fullWidth
