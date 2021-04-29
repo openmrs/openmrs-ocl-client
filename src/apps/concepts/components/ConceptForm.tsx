@@ -15,7 +15,7 @@ import {
   ConceptName,
   Mapping
 } from "../types";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import {
   Button,
   FormControl,

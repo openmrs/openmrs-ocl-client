@@ -1,5 +1,5 @@
 import React from "react";
-import uuid from "uuid";
+import {v4 as uuid} from "uuid";
 import { render } from "../../../../test-utils";
 import { ConceptForm } from "../../components";
 import { Concept } from "../../types";
