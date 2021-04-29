@@ -1,7 +1,6 @@
 {
   "baseUrl": "http://localhost:8080",
   "supportFile": "cypress/support/index.ts",
-  "testFiles": [ "LoginPage.spec.ts", "ViewConceptsPage.spec.ts" ],
   "viewportWidth": 1000,
   "viewportHeight": 1000,
   "video": false
