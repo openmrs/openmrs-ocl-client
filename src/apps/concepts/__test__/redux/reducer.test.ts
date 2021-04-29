@@ -8,6 +8,7 @@ const testConcept: APIConcept = {
   version_url: "versionUrl",
   mappings: [],
   retired: false,
+  source: "source",
   source_url: "sourceUrl",
   id: "testId",
   external_id: "extId",
@@ -48,6 +49,7 @@ describe("RETRIEVE_ACTIVE_CONCEPTS_ACTION", () => {
       payload: [testConcept],
       responseMeta: { num_found: 1 }
     };
+
     const expectedState = {
       mappings: [],
       concepts: {
@@ -59,6 +61,7 @@ describe("RETRIEVE_ACTIVE_CONCEPTS_ACTION", () => {
         responseMeta: { num_found: 1 }
       }
     };
+    
     expect(reducer(initialState, startAction)).toEqual(expectedState);
   });
 });

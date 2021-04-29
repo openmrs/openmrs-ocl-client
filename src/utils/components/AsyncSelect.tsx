@@ -1,4 +1,9 @@
-import React, { CSSProperties, HTMLAttributes } from "react";
+import React, {
+  ChangeEventHandler,
+  CSSProperties,
+  FocusEventHandler,
+  HTMLAttributes
+} from "react";
 import {
   createStyles,
   makeStyles,
@@ -17,10 +22,12 @@ import { PlaceholderProps } from "react-select/src/components/Placeholder";
 import { SingleValueProps } from "react-select/src/components/SingleValue";
 import { Omit } from "@material-ui/types";
 import {
+  ActionMeta,
   components as ReactSelectComponents,
-  IndicatorProps
+  IndicatorProps,
+  ValueType
 } from "react-select";
-import AsyncPaginate from "react-select-async-paginate";
+import AsyncPaginate, { AsyncResult } from "react-select-async-paginate";
 import { Option } from "../types";
 import {
   ArrowDropDown as ArrowDropDownIcon,
@@ -245,11 +252,18 @@ const components = {
 interface Props {
   placeholder: string;
   value: any;
-  onChange: Function;
-  loadOptions: Function;
+  onChange: (
+    value: ValueType<Option, false>,
+    action: ActionMeta<Option>
+  ) => void;
+  loadOptions: (
+    inputValue: string,
+    prevOptions: Option[],
+    additional: {}
+  ) => Promise<AsyncResult<Option, {}>>;
   additional: {};
   isDisabled: boolean;
-  onBlur: Function;
+  onBlur: FocusEventHandler;
 }
 
 const AsyncSelect: React.FC<Props> = props => {
@@ -267,7 +281,6 @@ const AsyncSelect: React.FC<Props> = props => {
   };
 
   return (
-    // @ts-ignore
     <AsyncPaginate
       isClearable={true}
       classes={classes}

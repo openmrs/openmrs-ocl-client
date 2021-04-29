@@ -20,7 +20,6 @@ const Routes: React.FC<Props> = ({
   editDictionary = true,
   concepts = true
 }) => {
-  // @ts-ignore
   let { path } = useRouteMatch();
 
   return (

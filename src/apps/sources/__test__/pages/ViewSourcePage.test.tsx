@@ -23,13 +23,21 @@ import {
   retrieveConceptsAction
 } from "../../../concepts/redux";
 
-// @ts-ignore
-jest.mock("../../../../components/Header", () => ({ children, title }) => (
-  <div>
-    <div>{title}</div>
-    {children}
-  </div>
-));
+jest.mock(
+  "../../../../components/Header",
+  () => ({
+    children,
+    title
+  }: {
+    children?: React.ReactNode[];
+    title: string;
+  }) => (
+    <div>
+      <div>{title}</div>
+      {children}
+    </div>
+  )
+);
 
 type viewSourcePageProps = React.ComponentProps<typeof ViewSourcePage>;
 const apiProfile: APIProfile = {

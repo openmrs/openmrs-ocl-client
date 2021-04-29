@@ -13,12 +13,11 @@ import {
 
 describe("showUserName", () => {
   it("should return empty string if profile does not exists", () => {
-    expect(showUserName(undefined)).toBe("");
+    expect(showUserName(undefined)).toBe(null);
   });
 
   it("should return Menu Item if profile exists", () => {
-    // @ts-ignore
-    const menuItemProps = showUserName(testProfile).props.children;
+    const menuItemProps = showUserName(testProfile)?.props.children;
     expect(menuItemProps.includes("(You)", "TestUser")).toBe(true);
   });
 });
@@ -29,8 +28,7 @@ describe("showOrganisationHeader", () => {
   });
 
   it("should return Your Organisations Sub header if user is part of any organisation", () => {
-    // @ts-ignore
-    const organisationsSubHeader = showOrganisationHeader(testAPIOrgList).props
+    const organisationsSubHeader = showOrganisationHeader(testAPIOrgList)?.props
       .children;
     expect(organisationsSubHeader).toBe("Your Organizations");
   });

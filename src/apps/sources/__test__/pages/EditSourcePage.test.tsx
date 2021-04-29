@@ -13,7 +13,7 @@ import {
   retrieveSourceAndDetailsAction
 } from "../../redux";
 
-type editSourcePageProps = React.ComponentProps<typeof EditSourcePage>;
+type EditSourcePageProps = React.ComponentProps<typeof EditSourcePage>;
 
 const apiProfile: APIProfile = {
   email: "",
@@ -21,6 +21,7 @@ const apiProfile: APIProfile = {
   url: "",
   username: ""
 };
+
 const apiOrg: APIOrg = {
   id: "",
   name: "",
@@ -41,12 +42,11 @@ const actionProps: ActionProps = {
   retrieveSourceAction: function retrieveSourceAction() {}
 };
 
-// @ts-ignore
-const baseProps: editSourcePageProps = stateProps & actionProps;
+const baseProps: EditSourcePageProps = { ...stateProps, ...actionProps };
 
 const state = currentState(personalSources);
 
-function renderUI(props: Partial<editSourcePageProps> = {}) {
+function renderUI(props: Partial<EditSourcePageProps> = {}) {
   return render(<EditSourcePage {...baseProps} {...props} />);
 }
 

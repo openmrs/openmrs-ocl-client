@@ -4,6 +4,7 @@ import {
   Badge,
   createStyles,
   Grid,
+  GridJustification,
   IconButton,
   makeStyles,
   Theme,
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   children?: React.ReactNode;
   title: string;
-  justifyChildren?: string;
+  justifyChildren?: GridJustification;
   loadingList: boolean[];
   backUrl?: string;
   backText?: string;
@@ -113,7 +114,6 @@ const Header: React.FC<Props> = ({
         container
         className={classes.content}
         component="div"
-        // @ts-ignore
         justify={justifyChildren}
         alignItems="flex-start"
       >

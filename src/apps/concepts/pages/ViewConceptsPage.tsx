@@ -254,7 +254,6 @@ const ViewConceptsPage: React.FC<Props> = ({
         container
         className={classes.content}
         component="div"
-        // @ts-ignore
         justify="space-around"
         alignItems="flex-start"
       >

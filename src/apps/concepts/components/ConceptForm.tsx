@@ -267,8 +267,9 @@ const ConceptForm: React.FC<Props> = ({
     if (!currentRef || !savedValues) return;
 
     [ANSWERS_VALUE_KEY, SETS_VALUE_KEY, MAPPINGS_VALUE_KEY].forEach(key => {
-      // @ts-ignore
-      savedValues[key].forEach((value: Mapping, index: number) =>
+      savedValues[
+        key as "answers" | "sets" | "mappings"
+      ].forEach((value: Mapping, index: number) =>
         currentRef.setFieldValue(`${key}[${index}].url`, value.url, false)
       );
     });
