@@ -24,13 +24,11 @@ ENV NODE_ENV production
 ENV OCL_API_HOST https://api.qa.openconceptlab.org/
 ENV TRADITIONAL_OCL_HOST https://app.qa.openconceptlab.org/
 ENV OCL_SIGNUP_URL https://app.qa.openconceptlab.org/#/accounts/signup
-ENV BUILD local
 
 # Export them as React environment variables
 ENV REACT_APP_OCL_API_HOST $OCL_API_HOST
 ENV REACT_APP_TRADITIONAL_OCL_HOST $TRADITIONAL_OCL_HOST
 ENV REACT_APP_OCL_SIGNUP_URL $OCL_SIGNUP_URL
-ENV REACT_APP_BUILD $BUILD
 
 # Create an optimized build version of the project
 RUN npm run build
@@ -44,7 +42,7 @@ EXPOSE 80
 
 # Copy the CI build number
 ARG OCL_BUILD
-ENV OCL_BUILD $OCL_BUILD
+ENV REACT_APP_BUILD $OCL_BUILD
 
 # Copy the tagged files from the build to the production environmnet of the nginx server
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
