@@ -74,8 +74,7 @@ export const useToolbarStyles = makeStyles((theme: Theme) =>
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: "100%",
-      marginTop: theme.spacing(3)
+      width: "100%"
     },
     paper: {
       width: "100%",

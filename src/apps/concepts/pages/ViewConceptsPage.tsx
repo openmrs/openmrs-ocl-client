@@ -243,13 +243,12 @@ const ViewConceptsPage: React.FC<Props> = ({
     !dictionaryToAddTo;
 
   return (
-    <>
-      <ViewConceptsHeader
-        containerType={containerType}
-        containerUrl={containerUrl}
-        gimmeAUrl={gimmeAUrl}
-        addConceptToDictionary={dictionaryToAddTo}
-      />
+    <ViewConceptsHeader
+      containerType={containerType}
+      containerUrl={containerUrl}
+      gimmeAUrl={gimmeAUrl}
+      addConceptToDictionary={dictionaryToAddTo}
+    >
       <Grid
         container
         className={classes.content}
@@ -343,7 +342,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         linkedSource={linkedSource}
         preferredSource={preferredSource}
       />
-    </>
+    </ViewConceptsHeader>
   );
 };
 

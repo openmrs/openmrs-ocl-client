@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(7) + 1
     },
     content: {
-      marginTop: "6vh",
+      marginTop: "32px",
       height: "100%"
     },
     grow: {
@@ -71,7 +71,7 @@ const Header: React.FC<Props> = ({
 
   return (
     <div data-testid="header">
-      <AppBar position="relative" className={classes.appBar}>
+      <AppBar position="sticky" className={classes.appBar}>
         <Toolbar>
           {backUrl ? (
             <Tooltip title={backText}>

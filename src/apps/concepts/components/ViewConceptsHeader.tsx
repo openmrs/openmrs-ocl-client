@@ -22,6 +22,7 @@ interface Props {
   containerUrl?: string;
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
+  children?: React.ReactNode[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -36,7 +37,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
   containerType,
   containerUrl,
   gimmeAUrl,
-  addConceptToDictionary
+  addConceptToDictionary,
+  children
 }) => {
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
@@ -107,7 +109,9 @@ const ViewConceptsHeader: React.FC<Props> = ({
       backText={
         containerType === SOURCE_CONTAINER ? undefined : "Back to dictionary"
       }
-    />
+    >
+      {children}
+    </Header>
   );
 };
 
