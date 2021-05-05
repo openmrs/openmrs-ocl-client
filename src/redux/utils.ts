@@ -113,7 +113,7 @@ export function errorMsgResponse(response: any) {
     Array.isArray(response.data[key])
     ? response.data[key].join(",")
     : response.data[key]
-    }
+     }
   };
 
 export const createActionThunk = <T extends any[]>(
@@ -161,10 +161,9 @@ export const createActionThunk = <T extends any[]>(
 
           let errorMsg = errorMsgResponse(response);
 
-          const errorMessage: {[key: string]: string} =
-            response?.data || response
-              ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-              : errorMsg;
+          const errorMessage: {[key: string]: string} = {
+            "__detail__": "Action could not be completed. Please retry."
+          };
 
           dispatch({
             type: `${actionType}_${FAILURE}`,
