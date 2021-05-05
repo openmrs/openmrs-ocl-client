@@ -102,12 +102,13 @@ const retrieveOrganisationAction = (orgUrl: string) => {
 
         const response = error.response;
 
+
         let errorMsg = errorMsgResponse(response);
 
-        const errorMessage: string | undefined | {} | [] =
+        const errorMessage =
           response?.data || response
             ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-            : errorMsg;
+            : errorMsg?["__detail__"]:
 
         dispatch({
           type: `${actionType}_${FAILURE}`,
@@ -187,12 +188,9 @@ const addOrgMemberAction = (
 
         const response = error.response;
 
-        let errorMsg = errorMsgResponse(response);
-
-        const errorMessage: string | undefined | {} | [] =
-          response?.data || response
-            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-            : errorMsg;
+        const errorMsgResponse: {[key: string]: string} = {
+          "__detail__": "Action could not be completed. Please retry."
+        }
 
         dispatch({
           type: `${actionType}_${FAILURE}`,
@@ -259,12 +257,10 @@ const deleteOrgMemberAction = (
 
         const response = error.response;
 
-        let errorMsg = errorMsgResponse(response);
 
-        const errorMessage: string | undefined | {} | [] =
-          response?.data || response
-            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-            : errorMsg;
+        const errorMsgResponse: {[key: string]: string} = {
+          "__detail__": "Action could not be completed. Please retry."
+        }
 
         dispatch({
           type: `${actionType}_${FAILURE}`,
