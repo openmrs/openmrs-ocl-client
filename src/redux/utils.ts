@@ -113,6 +113,7 @@ export function errorMsgResponse(response: any) {
     Array.isArray(response.data[key])
     ? response.data[key].join(",")
     : response.data[key]
+    }
   };
 
 export const createActionThunk = <T extends any[]>(
@@ -160,7 +161,7 @@ export const createActionThunk = <T extends any[]>(
 
           let errorMsg = errorMsgResponse(response);
 
-          const errorMessage: string | undefined | {} | [] =
+          const errorMessage: {[key: string]: string} =
             response?.data || response
               ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
               : errorMsg;
@@ -193,4 +194,3 @@ export const createActionThunk = <T extends any[]>(
       };
     };
   };
-};

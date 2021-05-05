@@ -104,7 +104,7 @@ const retrieveOrganisationAction = (orgUrl: string) => {
 
         let errorMsg = errorMsgResponse(response);
 
-        const errorMessage: string | undefined | {} | [] =
+        const errorMessage: {[key: string]: string}=
           response?.data || response
             ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
             : errorMsg;
@@ -189,7 +189,7 @@ const addOrgMemberAction = (
 
         let errorMsg = errorMsgResponse(response);
 
-        const errorMessage: string | undefined | {} | [] =
+        const errorMessage: {[key: string]: string} =
           response?.data || response
             ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
             : errorMsg;
@@ -261,7 +261,7 @@ const deleteOrgMemberAction = (
 
         let errorMsg = errorMsgResponse(response);
 
-        const errorMessage: string | undefined | {} | [] =
+        const errorMessage: {[key: string]: string} =
           response?.data || response
             ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
             : errorMsg;
