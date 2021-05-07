@@ -16,6 +16,7 @@ import {
   Theme
 } from "@material-ui/core";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
+import { APISource } from "../../sources";
 
 interface Props {
   containerType: string;
@@ -23,6 +24,7 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
+  sources?:APISource[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -38,7 +40,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
   containerUrl,
   gimmeAUrl,
   addConceptToDictionary,
-  children
+  children,
+  sources
 }) => {
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
@@ -77,18 +80,18 @@ const ViewConceptsHeader: React.FC<Props> = ({
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          {Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-            ([preferredSourceName, preferredSourceUrl]) => (
+           {sources?.map(
+            ({name, url}) => (
               <MenuItem
                 // replace because we want to keep the back button useful
                 replace
-                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                key={preferredSourceName}
+                to={gimmeAUrl({}, `${url}concepts/`)}
+                key={name}
                 component={Link}
                 onClick={handleSwitchSourceClose}
-                data-testid={preferredSourceName}
+                data-testid={name}
               >
-                {preferredSourceName}
+                {name}
               </MenuItem>
             )
           )}
@@ -96,7 +99,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
       </>
     );
   };
-
+  
   return (
     <Header
       title={getTitleBasedOnContainerType()}
@@ -116,3 +119,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
 };
 
 export default ViewConceptsHeader;
+function SELECT_A_SOURCE_VIEW_ONLY(SELECT_A_SOURCE_VIEW_ONLY: any) {
+  throw new Error("Function not implemented.");
+}
+
