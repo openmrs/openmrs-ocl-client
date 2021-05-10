@@ -160,13 +160,11 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
-  console.log(url, 'URL');
-  console.log(sources, 'SOURCES');
   const sourceUrl = '/sources/';
   const sourcesLimit = 0;
   useEffect(() => {
     retrieveSources(sourceUrl, initialQ, sourcesLimit, page);
-  }, []);
+  }, [initialQ, page, retrieveSources]);
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {

@@ -46,6 +46,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
+  const formattedPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
 
   const [
     switchSourceAnchor,
