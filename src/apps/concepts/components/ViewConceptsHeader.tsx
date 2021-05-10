@@ -24,7 +24,7 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources:APISource[]
+  sources: APISource[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
