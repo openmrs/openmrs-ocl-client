@@ -24,7 +24,7 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources?:APISource[]
+  sources:APISource[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -81,7 +81,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-           {sources?.map(
+            {formattedPrefferedSources.concat(sources)?.map(
             ({name, url}) => (
               <MenuItem
                 // replace because we want to keep the back button useful

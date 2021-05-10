@@ -53,7 +53,7 @@ export interface StateProps {
   modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
-  sources?:APISource[];
+  sources: APISource[];
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -113,7 +113,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   dictionary,
   source,
   retrieveSources,
-  sources,
+  sources = [],
   loading,
   errors,
   retrieveConcepts,
