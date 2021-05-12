@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header";
 import {
@@ -13,6 +13,7 @@ import {
   makeStyles,
   Menu,
   MenuItem,
+  TextField,
   Theme
 } from "@material-ui/core";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
@@ -31,6 +32,23 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
       color: theme.palette.background.default
+    },
+    textField: {
+      padding: "0.2rem 1rem",
+      cursor: "none"
+    },
+    input: {
+      cursor: "pointer",
+      borderBottom: "1px dotted black",
+      paddingBottom: "0.25rem"
+    },
+    underline: {
+      "&&&:before": {
+        borderBottom: "none"
+      },
+      "&&:after": {
+        borderBottom: "none"
+      }
     }
   })
 );
@@ -43,6 +61,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
   children,
   sources
 }) => {
+  const [showSources, setShowSources] = useState(false);
+  const formatPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
@@ -76,26 +96,61 @@ const ViewConceptsHeader: React.FC<Props> = ({
           Switch source (Currently {getContainerIdFromUrl(containerUrl)})
         </Button>
         <Menu
+          PaperProps={{
+            style: {
+             marginTop: "30px",
+             marginLeft: "10px"
+            }
+           }}
           anchorEl={switchSourceAnchor}
           keepMounted
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-            {formattedPrefferedSources.concat(sources)?.map(
-            ({name, url}) => (
+          <TextField 
+            multiline
+            className={classes.textField} 
+            InputProps={{
+              className: classes.underline
+            }}
+            inputProps={{
+              className: classes.input,
+            }}
+            value={showSources ? "Choose a source" : "Select a different source"} 
+            onClick={() => setShowSources(!showSources)} />
+          {showSources ? 
+            (formatPrefferedSources.concat(sources)?.map(
+              ({name, url}) => (
+                <MenuItem
+                  // replace because we want to keep the back button useful
+                  replace
+                  to={gimmeAUrl({}, `${url}concepts/`)}
+                  key={name}
+                  component={Link}
+                  onClick={handleSwitchSourceClose}
+                  data-testid={name}
+                >
+                  {name}
+                </MenuItem>
+              )
+            ))
+          : (Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
+            ([preferredSourceName, preferredSourceUrl]) => (
               <MenuItem
                 // replace because we want to keep the back button useful
                 replace
-                to={gimmeAUrl({}, `${url}concepts/`)}
-                key={name}
+                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                key={preferredSourceName}
                 component={Link}
                 onClick={handleSwitchSourceClose}
-                data-testid={name}
+                data-testid={preferredSourceName}
               >
-                {name}
+                {preferredSourceName}
               </MenuItem>
             )
-          )}
+          ))
+          }
+          
         </Menu>
       </>
     );
