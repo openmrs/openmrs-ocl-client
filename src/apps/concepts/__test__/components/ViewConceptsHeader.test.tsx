@@ -17,7 +17,8 @@ const baseProps: viewConceptsHeaderProps = {
   gimmeAUrl: function(arg1: string, arg2: string) {
     return arg2;
   },
-  addConceptToDictionary: undefined
+  addConceptToDictionary: undefined,
+  sources: [{ name: 'test source', url: '/test/test123' }]
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {
