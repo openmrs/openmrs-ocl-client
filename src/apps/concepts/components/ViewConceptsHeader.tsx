@@ -14,10 +14,11 @@ import {
   Menu,
   MenuItem,
   TextField,
-  Theme
+  Theme,
 } from "@material-ui/core";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
+import { AccountTreeOutlined } from "@material-ui/icons";
 
 interface Props {
   containerType: string;
@@ -49,6 +50,10 @@ const useStyles = makeStyles((theme: Theme) =>
       "&&:after": {
         borderBottom: "none"
       }
+    },
+    sourceIcon:{
+      marginRight: "0.2rem",
+      fill: "#8080809c"
     }
   })
 );
@@ -130,6 +135,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
                   onClick={handleSwitchSourceClose}
                   data-testid={name}
                 >
+                  <AccountTreeOutlined className={classes.sourceIcon}/> 
                   {name}
                 </MenuItem>
               )
@@ -145,6 +151,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
                 onClick={handleSwitchSourceClose}
                 data-testid={preferredSourceName}
               >
+                <AccountTreeOutlined className={classes.sourceIcon}/> 
                 {preferredSourceName}
               </MenuItem>
             )
