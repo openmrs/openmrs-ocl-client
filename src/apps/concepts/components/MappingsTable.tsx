@@ -69,14 +69,15 @@ const MappingsTable: React.FC<Props> = ({
   editing
 }) => {
   const classes = useStyles();
-  const [sorted] = useState(values);
+  const [sorted, setSorted] = useState<Mapping[]>();
   const [isAnswer, setAnswer] = useState(false);
 
   useEffect(() => setAnswer(title === "Answer"), [title]);
 
   useEffect(() => {
-    if (isAnswer) {
-      values = sorted.sort((v1, v2) => {
+    if (sorted && isAnswer) {
+      const values = sorted;
+      values.sort((v1, v2) => {
         if (v1.extras?.sort_weight) {
           if (v2.extras?.sort_weight) {
             return (
@@ -94,6 +95,7 @@ const MappingsTable: React.FC<Props> = ({
 
         return 0;
       });
+      setSorted(values);
     }
   }, [sorted, isAnswer]);
 
