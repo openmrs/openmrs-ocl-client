@@ -77,7 +77,7 @@ export type ActionProps = {
   retrieveSource: (
     ...args: Parameters<typeof retrieveSourceAndDetailsAction>
   ) => void;
-  retrieveSources: (
+  retrievePublicSources: (
     ...args: Parameters<typeof retrievePublicSourcesAction>
   ) => void;
 };
@@ -112,7 +112,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   modifiedConcepts,
   dictionary,
   source,
-  retrieveSources,
+  retrievePublicSources,
   sources = [],
   loading,
   errors,
@@ -163,8 +163,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   const sourceUrl = '/sources/';
   const sourcesLimit = 0;
   useEffect(() => {
-    retrieveSources(sourceUrl, initialQ, sourcesLimit, page);
-  }, [initialQ, page, retrieveSources]);
+    retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
+  }, [initialQ, page, retrievePublicSources]);
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
@@ -397,7 +397,7 @@ const mapActionsToProps = {
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
-  retrieveSources: retrievePublicSourcesAction
+  retrievePublicSources: retrievePublicSourcesAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(
