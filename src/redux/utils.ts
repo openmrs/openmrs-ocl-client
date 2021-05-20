@@ -117,8 +117,8 @@ export function errorMsgResponse(response: any) {
         Array.isArray(response.data[key])
           ? response.data[key].join(",")
           : response.data[key]
-          return errorMsgResponse;
-    }
+    } 
+    return errorMsgResponse;
   };
 
 export const createActionThunk = <T extends any[]>(
