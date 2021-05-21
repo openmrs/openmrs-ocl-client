@@ -41,16 +41,19 @@ import { APIDictionary } from "../../dictionaries";
 import {
   sourceSelector,
   retrieveSourceLoadingSelector,
-  retrieveSourceAndDetailsAction
+  retrieveSourceAndDetailsAction,
+  retrievePublicSourcesAction
 } from "../../sources/redux";
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
+import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
 
 export interface StateProps {
   concepts?: APIConcept[];
   modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
+  sources: APISource[];
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -73,6 +76,9 @@ export type ActionProps = {
   ) => void;
   retrieveSource: (
     ...args: Parameters<typeof retrieveSourceAndDetailsAction>
+  ) => void;
+  retrievePublicSources: (
+    ...args: Parameters<typeof retrievePublicSourcesAction>
   ) => void;
 };
 
@@ -106,6 +112,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   modifiedConcepts,
   dictionary,
   source,
+  retrievePublicSources,
+  sources = [],
   loading,
   errors,
   retrieveConcepts,
@@ -152,6 +160,11 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
+  const sourceUrl = '/sources/';
+  const sourcesLimit = 0;
+  useEffect(() => {
+    retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
+  }, [initialQ, page, retrievePublicSources]);
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
@@ -248,6 +261,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       containerUrl={containerUrl}
       gimmeAUrl={gimmeAUrl}
       addConceptToDictionary={dictionaryToAddTo}
+      sources={sources}
     >
       <Grid
         container
@@ -364,6 +378,7 @@ const mapStateToProps = (state: AppState) => {
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
     source: sourceSelector(state),
+    sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
       ? state.concepts.concepts.responseMeta
       : undefined,
@@ -381,7 +396,8 @@ const mapActionsToProps = {
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  removeConceptsFromDictionary: removeReferencesFromDictionaryAction
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
+  retrievePublicSources: retrievePublicSourcesAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(
