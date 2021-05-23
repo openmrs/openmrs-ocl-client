@@ -105,7 +105,7 @@ const retrieveOrganisationAction = (orgUrl: string) => {
 
         let errorMsg = errorMsgResponse(response);
 
-        const errorMessage =
+        const errorMessage: string | undefined =
           response?.data || response
             ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
             : errorMsg?["__detail__"]:
