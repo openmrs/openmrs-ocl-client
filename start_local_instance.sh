@@ -10,6 +10,7 @@ else
   echo "Please remove the oclapi directory"
   exit 1
 fi
+
 [ $? -ne 0 ] && exit 1
 pushd oclapi >/dev/null 2>&1 || exit 1
 docker-compose build || exit $?
@@ -19,7 +20,7 @@ popd >/dev/null 2>&1 || exit 1
 
 echo "Building App..."
 export OCL_API_HOST=$api_endpoint
-docker-compose build || exit $?
+docker-compose build --build-arg OCL_BUILD=$(git rev-parse --short HEAD) || exit $?
 echo "Starting App..."
 docker-compose up -d || exit $?
 app_endpoint=http://localhost:8080
