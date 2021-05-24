@@ -49,8 +49,9 @@ The build is minified and the filenames include the hashes.<br />
 The API accessed by this UI falls back to the OpenMRS demo environment.
 To specify your own API server create a file called `env-config.js` under the public directory containing;
 ```javascript
-var OCL_API_HOST = "<your endpoint, e.g https://api.qa.openconceptlab.org>";
-var TRADITIONAL_OCL_HOST = "<your endpoint, e.g https://qa.openconceptlab.org>";
+var OCL_API_HOST = "<your endpoint, e.g https://api.staging.openconceptlab.org>";
+var TRADITIONAL_OCL_HOST = "<your endpoint, e.g https://staging.openconceptlab.org>";
+var OCL_SIGNUP_URL = "<your endpoint, e.g https://app.staging.openconceptlab.org/#/accounts/signup>"
 ```
 These variables will automatically be injected into the app at runtime. This is the same strategy we use while deploying the application.
 

@@ -47,9 +47,9 @@ COPY ./startup.sh .
 RUN chmod +x startup.sh
 
 # Set the environment variables actually used in the image
-ENV OCL_API_HOST https://api.qa.openconceptlab.org/
-ENV TRADITIONAL_OCL_HOST https://app.qa.openconceptlab.org/
-ENV OCL_SIGNUP_URL https://app.qa.openconceptlab.org/#/accounts/signup
+ENV OCL_API_HOST https://api.staging.openconceptlab.org/
+ENV TRADITIONAL_OCL_HOST https://app.staging.openconceptlab.org/
+ENV OCL_SIGNUP_URL https://app.staging.openconceptlab.org/#/accounts/signup
 
 # Start the server
 CMD sh startup.sh
