@@ -1,6 +1,6 @@
 <img src="https://cloud.githubusercontent.com/assets/668093/12567089/0ac42774-c372-11e5-97eb-00baf0fccc37.jpg" alt="OpenMRS"/>
 
-### [![Build Status](https://travis-ci.org/openmrs/openmrs-ocl-client.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-ocl-client) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
+### [![Build Status](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
 
 # openmrs-ocl-client
 > OCL client for OpenMRS is a web service that will allow OpenMRS users to manage their dictionaries in the cloud,
