@@ -71,7 +71,7 @@ describe("api", () => {
       params: {
         limit: 1,
         page: 1,
-        q: "*",
+        q: "",
         sortAsc: "bestMatch",
         timestamp: expect.anything()
       }

@@ -15,13 +15,4 @@ describe("findLocale", () => {
   });
 });
 
-describe("buildPartialSearchQuery", () => {
-  it("should add asterisks before all spaces", () => {
-    expect(buildPartialSearchQuery("a b")).toBe("a* b*");
-  });
-  it("should add asterisks to end of search string", () => {
-    expect(buildPartialSearchQuery("ab")).toBe("ab*");
-  });
-});
-
 export {};

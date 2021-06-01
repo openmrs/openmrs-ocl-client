@@ -77,7 +77,7 @@ export const keysToSnakeCase = (item?: any) => {
 };
 
 export const buildPartialSearchQuery = (query: string): string =>
-  `${query.replace(new RegExp(" ", "g"), "* ")}*`;
+  `${query.replace(new RegExp(" ", "g"), "* ")}`;
 
 export const delay = (seconds: number) =>
   new Promise(resolve => setTimeout(resolve, seconds * 1000));

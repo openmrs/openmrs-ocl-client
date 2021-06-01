@@ -24,7 +24,7 @@ describe("api", () => {
       params: {
         limit: 20,
         page: 1,
-        q: "*",
+        q: "",
         timestamp: expect.anything()
       }
     });
@@ -42,7 +42,7 @@ describe("api", () => {
       params: {
         limit: 20,
         page: 1,
-        q: "*",
+        q: "",
         timestamp: expect.anything()
       }
     });
