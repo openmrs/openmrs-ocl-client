@@ -4,9 +4,14 @@
     "strict": true,
     "baseUrl": "../node_modules",
     "isolatedModules": false,
-    "types": [ "cypress", "@testing-library/cypress" ]
+    "target": "es5",
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "types": [ "cypress", "@testing-library/cypress", "node" ]
   },
   "include": [
     "./**/*.ts"
-  ]
+, "plugins/index.ts"  ]
 }
