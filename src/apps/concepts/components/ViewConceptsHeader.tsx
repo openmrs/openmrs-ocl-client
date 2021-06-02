@@ -70,13 +70,25 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-  sources,
+
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const formatPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
+  const [preferredSources, setPreferredSources] = useState();
+useEffect(() => {
+  sources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
+
+  if (showSources) {
+    sources.concat(sources).concat(dictionaries);
+  }
+
+  setPreferredSources(
+    sources.map(([key, value]) => ({ name: key, url: value }));
+  );
+}, [PREFERRED_SOURCES_VIEW_ONLY, showSources, sources, dictionaries])
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
+  
 
   const [
     switchSourceAnchor,
@@ -128,9 +140,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
             }}
             value={showSources ? "Choose a source" : "Select a different source"} 
             onClick={() => setShowSources(!showSources)} />
-          {showSources ? 
-            (formatPrefferedSources.concat(sources)?.map(
-              ({name, url}) => (
+            {(preferredSources?.map(
+              ({ name, url }) => (
                 <MenuItem
                   // replace because we want to keep the back button useful
                   replace
@@ -140,31 +151,15 @@ const ViewConceptsHeader: React.FC<Props> = ({
                   onClick={handleSwitchSourceClose}
                   data-testid={name}
                 >
-                  <AccountTreeOutlined className={classes.sourceIcon}/> 
-                  {name}
-                  <FolderOpen  className={classes.dictionaryIcon}/> 
+                  { url?.contains("/collection") ? (
+                    <FolderOpen className={classes.sourceIcon} />
+                  ) : (
+                    <AccountTreeOutlined className={classes.sourceIcon} />
+                  ) }
+                  { name }
                 </MenuItem>
               )
-            ))
-          : (Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-            ([preferredSourceName, preferredSourceUrl]) => (
-              <MenuItem
-                // replace because we want to keep the back button useful
-                replace
-                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                key={preferredSourceName}
-                component={Link}
-                onClick={handleSwitchSourceClose}
-                data-testid={preferredSourceName}
-              >
-                <AccountTreeOutlined className={classes.sourceIcon}/> 
-                {preferredSourceName}
-                <FolderOpen  className={classes.dictionaryIcon}/> 
-              </MenuItem>
-            )
-          ))
-          }
-          
+           ))}
         </Menu>
       </>
     );
