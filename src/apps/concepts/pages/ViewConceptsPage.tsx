@@ -7,8 +7,7 @@ import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
   viewConceptsLoadingSelector,
-  viewConceptsErrorsSelector
-} from "../redux";
+  viewConceptsErrorsSelector} from "../redux";
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
@@ -34,7 +33,8 @@ import {
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   makeRetrieveDictionaryAction,
-  retrieveDictionaryLoadingSelector
+  retrieveDictionaryLoadingSelector,
+  retrievePublicDictionariesAction
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
@@ -47,11 +47,13 @@ import {
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
 import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
+import { PUBLIC_DICTIONARIES_ACTION_INDEX } from "../../dictionaries/redux/constants";
 
 export interface StateProps {
   concepts?: APIConcept[];
   modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
+  dictionaries?: APIDictionary[];
   source?: APISource;
   sources: APISource[];
   loading: boolean;
@@ -67,6 +69,9 @@ export type ActionProps = {
   ) => void;
   retrieveDictionary: (
     ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
+  ) => void;
+  retrievePublicDictionaries: (
+    ...args: Parameters<typeof retrievePublicDictionariesAction>
   ) => void;
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
@@ -111,6 +116,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   modifiedConcepts,
   dictionary,
+  dictionaries = [],
   source,
   retrievePublicSources,
   sources = [],
@@ -118,6 +124,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   errors,
   retrieveConcepts,
   retrieveDictionary,
+  retrievePublicDictionaries,
   retrieveSource,
   meta = {},
   profile,
@@ -262,6 +269,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       gimmeAUrl={gimmeAUrl}
       addConceptToDictionary={dictionaryToAddTo}
       sources={sources}
+      dictionaries={dictionaries}
     >
       <Grid
         container
@@ -377,6 +385,7 @@ const mapStateToProps = (state: AppState) => {
       : undefined,
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
+    dictionaries: state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
     source: sourceSelector(state),
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
@@ -397,7 +406,8 @@ const mapActionsToProps = {
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
-  retrievePublicSources: retrievePublicSourcesAction
+  retrievePublicSources: retrievePublicSourcesAction,
+  retrievePublicDictionaries: retrievePublicDictionariesAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(

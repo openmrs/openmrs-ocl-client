@@ -18,7 +18,8 @@ import {
 } from "@material-ui/core";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined } from "@material-ui/icons";
+import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
+import { APIDictionary } from '../../dictionaries/types';
 
 interface Props {
   containerType: string;
@@ -26,7 +27,8 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources: APISource[]
+  sources: APISource[];
+  dictionaries: APIDictionary[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -54,6 +56,10 @@ const useStyles = makeStyles((theme: Theme) =>
     sourceIcon:{
       marginRight: "0.2rem",
       fill: "#8080809c"
+    },
+    dictionaryIcon:{
+      marginRight: "0.2rem",
+      fill: "#8080809c"
     }
   })
 );
@@ -64,7 +70,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-  sources
+  sources,
 }) => {
   const [showSources, setShowSources] = useState(false);
   const formatPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
@@ -136,6 +142,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
                 >
                   <AccountTreeOutlined className={classes.sourceIcon}/> 
                   {name}
+                  <FolderOpen  className={classes.dictionaryIcon}/> 
                 </MenuItem>
               )
             ))
@@ -152,6 +159,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
               >
                 <AccountTreeOutlined className={classes.sourceIcon}/> 
                 {preferredSourceName}
+                <FolderOpen  className={classes.dictionaryIcon}/> 
               </MenuItem>
             )
           ))
