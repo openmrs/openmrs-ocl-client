@@ -1,4 +1,4 @@
-import React, {  useEffect, useState  } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header";
 import {
@@ -14,12 +14,12 @@ import {
   Menu,
   MenuItem,
   TextField,
-  Theme,
+  Theme
 } from "@material-ui/core";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
 import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
-import { APIDictionary } from '../../dictionaries/types';
+import { APIDictionary } from "../../dictionaries/types";
 
 interface Props {
   containerType: string;
@@ -28,7 +28,7 @@ interface Props {
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
   sources: APISource[];
-  dictionaries: APIDictionary[]
+  dictionaries: APIDictionary[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -53,11 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
         borderBottom: "none"
       }
     },
-    sourceIcon:{
-      marginRight: "0.2rem",
-      fill: "#8080809c"
-    },
-    dictionaryIcon:{
+    sourceIcon: {
       marginRight: "0.2rem",
       fill: "#8080809c"
     }
@@ -74,22 +70,25 @@ const ViewConceptsHeader: React.FC<Props> = ({
   dictionaries
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const [preferredSources, setPreferredSources] = useState();
-useEffect(() => {
-  const sources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
+  const [preferredSources, setPreferredSources] = useState<
+    { name: string; url: string }[]
+  >();
+  useEffect(() => {
+    const defaultSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
 
-  if (showSources) {
-    sources.concat(sources).concat(dictionaries);
-  }
-  setPreferredSources(
-    sources.map(([key, value]) => ({ name: key, url: value }))
-  );
-}, [showSources, sources, dictionaries]);
+    if (showSources) {
+      defaultSources
+        .concat(sources.map(s => [s.name, s.url]))
+        .concat(dictionaries.map(d => [d.name, d.url]));
+    }
+    setPreferredSources(
+      defaultSources.map(([key, value]) => ({ name: key, url: value }))
+    );
+  }, [showSources, sources, dictionaries]);
 
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
-  
 
   const [
     switchSourceAnchor,
@@ -121,46 +120,47 @@ useEffect(() => {
         <Menu
           PaperProps={{
             style: {
-             marginTop: "30px",
-             marginLeft: "10px"
+              marginTop: "30px",
+              marginLeft: "10px"
             }
-           }}
+          }}
           anchorEl={switchSourceAnchor}
           keepMounted
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
+          <TextField
             multiline
-            className={classes.textField} 
+            className={classes.textField}
             InputProps={{
               className: classes.underline
             }}
             inputProps={{
-              className: classes.input,
+              className: classes.input
             }}
-            value={showSources ? "Choose a source" : "Select a different source"} 
-            onClick={() => setShowSources(!showSources)} />
-            {(preferredSources?.map(
-              ({ name, url }) => (
-                <MenuItem
-                  // replace because we want to keep the back button useful
-                  replace
-                  to={gimmeAUrl({}, `${url}concepts/`)}
-                  key={name}
-                  component={Link}
-                  onClick={handleSwitchSourceClose}
-                  data-testid={name}
-                >
-                  { url?.contains("/collection") ? (
-                    <FolderOpen className={classes.sourceIcon} />
-                  ) : (
-                    <AccountTreeOutlined className={classes.sourceIcon} />
-                  ) }
-                  { name }
-                </MenuItem>
-              )
-           ))}
+            value={
+              showSources ? "Choose a source" : "Select a different source"
+            }
+            onClick={() => setShowSources(!showSources)}
+          />
+          {preferredSources?.map(({ name, url }) => (
+            <MenuItem
+              // replace because we want to keep the back button useful
+              replace
+              to={gimmeAUrl({}, `${url}concepts/`)}
+              key={name}
+              component={Link}
+              onClick={handleSwitchSourceClose}
+              data-testid={name}
+            >
+              {url?.includes("/collection") ? (
+                <FolderOpen className={classes.sourceIcon} />
+              ) : (
+                <AccountTreeOutlined className={classes.sourceIcon} />
+              )}
+              {name}
+            </MenuItem>
+          ))}
         </Menu>
       </>
     );

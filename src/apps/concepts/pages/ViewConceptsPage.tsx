@@ -7,7 +7,8 @@ import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
   viewConceptsLoadingSelector,
-  viewConceptsErrorsSelector} from "../redux";
+  viewConceptsErrorsSelector
+} from "../redux";
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
@@ -167,7 +168,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
-  const sourceUrl = '/sources/';
+  const sourceUrl = "/sources/";
   const sourcesLimit = 0;
   useEffect(() => {
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
@@ -385,7 +386,8 @@ const mapStateToProps = (state: AppState) => {
       : undefined,
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
-    dictionaries: state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
+    dictionaries:
+      state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
     source: sourceSelector(state),
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts

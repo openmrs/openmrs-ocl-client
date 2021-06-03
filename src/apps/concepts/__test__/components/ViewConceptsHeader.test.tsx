@@ -18,8 +18,8 @@ const baseProps: viewConceptsHeaderProps = {
     return arg2;
   },
   addConceptToDictionary: undefined,
-  sources: [{ name: 'test source', url: '/test/test123' }],
-  dictionaries: [{ name: 'test dictionary', url: '/test/test123' }]
+  sources: [{ name: "test source", url: "/test/test123" }],
+  dictionaries: [{ name: "test dictionary", url: "/test/test123" }]
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {
