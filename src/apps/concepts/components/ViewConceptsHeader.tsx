@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {  useEffect, useState  } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header";
 import {
@@ -70,21 +70,22 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-
+  sources,
+  dictionaries
 }) => {
   const [showSources, setShowSources] = useState(false);
   const [preferredSources, setPreferredSources] = useState();
 useEffect(() => {
-  sources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
+  const sources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
 
   if (showSources) {
     sources.concat(sources).concat(dictionaries);
   }
-
   setPreferredSources(
-    sources.map(([key, value]) => ({ name: key, url: value }));
+    sources.map(([key, value]) => ({ name: key, url: value }))
   );
-}, [PREFERRED_SOURCES_VIEW_ONLY, showSources, sources, dictionaries])
+}, [showSources, sources, dictionaries]);
+
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
