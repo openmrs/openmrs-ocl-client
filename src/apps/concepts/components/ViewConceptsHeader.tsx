@@ -74,16 +74,16 @@ const ViewConceptsHeader: React.FC<Props> = ({
     { name: string; url: string }[]
   >();
   useEffect(() => {
-    const defaultSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY);
+    const defaultSources = Object.entries(
+      PREFERRED_SOURCES_VIEW_ONLY
+    ).map(([key, value]) => ({ name: key, url: value }));
 
     if (showSources) {
       defaultSources
-        .concat(sources.map(s => [s.name, s.url]))
-        .concat(dictionaries.map(d => [d.name, d.url]));
+        .concat(sources.map(s => ({ name: s.name, url: s.url })))
+        .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
     }
-    setPreferredSources(
-      defaultSources.map(([key, value]) => ({ name: key, url: value }))
-    );
+    setPreferredSources(defaultSources);
   }, [showSources, sources, dictionaries]);
 
   const classes = useStyles();
