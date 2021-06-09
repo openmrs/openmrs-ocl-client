@@ -88,15 +88,14 @@
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@cypress/webpack-preprocessor": "^5.9.0",
     "@testing-library/cypress": "^7.0.6",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
     "@types/cypress-cucumber-preprocessor": "^4.0.0",
     "@types/jest": "^26.0.23",
     "@types/node": "^12.7.12",
-    "cypress": "^7.2.0",
-    "cypress-cucumber-preprocessor": "1.9.1",
+    "cypress": "^7.5.0",
+    "cypress-cucumber-preprocessor": "^4.1.2",
     "eslint-plugin-cypress": "^2.11.2",
     "husky": "^6.0.0",
     "jest-junit": "^12.0.0",
@@ -108,6 +107,6 @@
     "ts-loader": "^6.2.1"
   },
   "cypress-cucumber-preprocessor": {
-    "step_definitions": "cypress/integration/cucumber/step_definitions"
+    "nonGlobalStepDefinitions": true
   }
 }

@@ -5,13 +5,8 @@
     "baseUrl": "../node_modules",
     "isolatedModules": false,
     "target": "es5",
-    "lib": [
-      "es5",
-      "dom"
-    ],
-    "types": [ "cypress", "@testing-library/cypress", "node" ]
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "@testing-library/cypress", "node"]
   },
-  "include": [
-    "./**/*.ts"
-, "plugins/index.ts"  ]
+  "include": ["./**/*.ts", "plugins/index.ts"]
 }
