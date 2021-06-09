@@ -5,6 +5,7 @@ import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 // ensure the user is logged out
 Given("the user is not logged in", () => {
   cy.logout();
+  cy.visit("/login");
 });
 
 Given("the user is on the login page", () => {
