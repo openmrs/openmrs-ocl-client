@@ -32,6 +32,7 @@ Feature: Login Page
      Then the user should still be on the login page
       And the password field should be marked as having an error
       And the error message "Password is required" should be visible
+
   
   Scenario: The login form should display an error when the user's credentials are invalid
     Given the user is on the login page
