@@ -43,3 +43,14 @@ Feature: Login Page
       And the user submits the form
      Then the user should still be on the login page
       And the backend's authentication failed message should be visible
+
+  Scenario: The user should need to login
+    Given the user navigates to the public sources page
+     Then the user should be redirected to the login page
+
+  Scenario: The user should land on the expected page after logging in
+    Given the user navigates to the public sources page
+      And the user is redirected to the login page
+     When the user enters their credentials
+      And the user submits the form
+     Then the user should be on the public sources page

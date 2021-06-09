@@ -11,6 +11,14 @@ Given("the user is on the login page", () => {
   cy.visit("/login");
 });
 
+Given("the user navigates to the public sources page", () => {
+  cy.visit("/sources");
+});
+
+Given("the user is redirected to the login page", () => {
+  cy.url().should("contain", "/login");
+});
+
 When("the user enters their credentials", () => {
   cy.get("#username").type("admin");
   cy.get("#password").type("Admin123");
@@ -45,9 +53,12 @@ Then("the user should be logged in", () => {
   cy.url().should("not.contain", "/login");
 });
 
-Then("the user should still be on the login page", () => {
-  cy.url().should("contain", "/login");
-});
+Then(
+  /(?:the user should still be on the login page)|(?:the user should be redirected to the login page)/,
+  () => {
+    cy.url().should("contain", "/login");
+  }
+);
 
 Then(
   /the (username|password) field should be marked as having an error/,
@@ -62,4 +73,8 @@ Then(/the error message "(.+)" should be visible/, (errMsg: string) => {
 
 Then("the backend's authentication failed message should be visible", () => {
   cy.get('[data-testid="login-status-message"]').should("be.visible");
+});
+
+Then("the user should be on the public sources page", () => {
+  cy.url().should("contain", "/sources");
 });
