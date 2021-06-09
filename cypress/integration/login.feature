@@ -1,4 +1,7 @@
 Feature: Login Page
+  Background:
+    Given the user is not logged in
+
   Scenario: A user should be able to login
     Given the user is on the login page
      When the user enters their credentials
@@ -39,4 +42,4 @@ Feature: Login Page
      When the user enters the wrong credentials
       And the user submits the form
      Then the user should still be on the login page
-      And the error message "Unable to log in with provided credentials." should be visible
+      And the backend's authentication failed message should be visible

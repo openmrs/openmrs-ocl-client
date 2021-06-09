@@ -1,14 +1,11 @@
 /// <reference types="cypress" />
 /// <reference types="../../support" />
-import {
-  Before,
-  Given,
-  When,
-  Then
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 
 // ensure the user is logged out
-Before(() => cy.logout());
+Given("the user is not logged in", () => {
+  cy.logout();
+});
 
 Given("the user is on the login page", () => {
   cy.visit("/login");
@@ -26,7 +23,7 @@ When("the user enters the wrong credentials", () => {
 
 When("the user enters their username", () => {
   cy.get("#username").type("admin");
-})
+});
 
 When("the user enters their password", () => {
   cy.get("#password").type("Admin123");
@@ -61,4 +58,8 @@ Then(
 
 Then(/the error message "(.+)" should be visible/, (errMsg: string) => {
   cy.findByText(errMsg).should("be.visible");
+});
+
+Then("the backend's authentication failed message should be visible", () => {
+  cy.get('[data-testid="login-status-message"]').should("be.visible");
 });
