@@ -21,6 +21,12 @@ jobs:
       - name: Start OCL instance
         run: bash ./start_local_instance.sh
       - run: npm run test:integration
+      # capture the screenshots on failure
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
       - uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
