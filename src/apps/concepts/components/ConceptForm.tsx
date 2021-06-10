@@ -335,7 +335,7 @@ const ConceptForm: React.FC<Props> = ({
                 fullWidth
                 id="external_id"
                 name="external_id"
-                label="OpenMRS UUID (OCL External ID)"
+                label="OpenMRS UUID"
                 margin="normal"
                 disabled={!isExternalIDEditable}
                 component={TextField}

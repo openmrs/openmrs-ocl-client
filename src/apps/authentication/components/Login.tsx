@@ -62,7 +62,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
           <Form className="fieldsetParent">
             <fieldset>
               <Typography variant="h6" component="legend">
-                Log In to Open Concept Lab
+                Log In
               </Typography>
               <div className={classes.fields}>
                 <Field
@@ -133,7 +133,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                       variant="body2"
                       href={TRADITIONAL_OCL_URL}
                     >
-                      Go to Traditional OCL
+                      Go to Open Concept Lab
                     </Link>
                   </div>
                 </div>

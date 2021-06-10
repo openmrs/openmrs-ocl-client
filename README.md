@@ -2,9 +2,9 @@
 
 ### [![Build Status](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
 
-# openmrs-ocl-client
-> OCL client for OpenMRS is a web service that will allow OpenMRS users to manage their dictionaries in the cloud,
-> allow re-usability of the existing concepts and allow one to create custom concepts to complement existing ones while building their dictionaries.
+# OpenMRS Dictionary Manager
+
+The OpenMRS Dictionary Manager is a tool to create and maintain OpenMRS concept dictionaries in the cloud, using both expert-curated concepts from sources such as CIEL as well as custom implementation-specific concepts.
 
 ## Available Scripts
 ### `npm start`

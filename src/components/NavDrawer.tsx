@@ -55,7 +55,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexShrink: 0
     },
     drawerOpen: {
-      width: drawerWidth,
       whiteSpace: "normal",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
@@ -135,14 +134,16 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
       >
         <div className={classes.toolbar}>
           {open ? (
+            <>
             <div>
-              <Typography variant="h6" noWrap>
-                Open Concept Lab
-                <IconButton onClick={toggleDrawer}>
-                  <ChevronLeftIcon />
-                </IconButton>
+              <Typography variant="h6">
+                Dictionary Manager
               </Typography>
             </div>
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon />
+            </IconButton>
+            </>
           ) : (
             <IconButton onClick={toggleDrawer}>
               <MenuIcon />
@@ -193,14 +194,14 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
             exact
             activeClassName={classes.selected}
             to="/actions/"
-            key="Progress Notifications"
+            key="Notifications"
           >
-            <Tooltip title="Progress Notifications">
+            <Tooltip title="Notifications">
               <ListItemIcon className="list-item-icon">
                 <NotificationsIcon />
               </ListItemIcon>
             </Tooltip>
-            <ListItemText primary="Progress Notifications" />
+            <ListItemText primary="Notifications" />
           </ListItem>
         </List>
         <Divider component="hr" />
@@ -281,16 +282,16 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               </Button>
             </DialogActions>
           </Dialog>
-          {open && (
+        </div>
+        {open && (
             <Typography
               variant="caption"
               component="div"
               className="MuiListItem-gutters"
             >
-              OCL for OMRS Build: {BUILD}
+              OpenMRS Dictionary Manager: {BUILD}
             </Typography>
           )}
-        </div>
       </Drawer>
       <main className={classes.content}>{children}</main>
     </div>
