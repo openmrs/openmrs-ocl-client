@@ -1,19 +1,8 @@
 #!/bin/sh
 
 echo "Starting API..."
-if [ ! -d oclapi ]; then
-  git clone https://github.com/OpenConceptLab/oclapi.git
-elif [ -d oclapi/.git ]; then
-  git --git-dir=oclapi/.git --work-tree=oclapi pull --ff-only --rebase --autostash
-else
-  echo "Directory oclapi does not seem to be a valid git repository"
-  echo "Please remove the oclapi directory"
-  exit 1
-fi
-
 [ $? -ne 0 ] && exit 1
 pushd oclapi >/dev/null 2>&1 || exit 1
-docker-compose build || exit $?
 docker-compose up -d || exit $?
 api_endpoint=http://localhost:8000
 popd >/dev/null 2>&1 || exit 1

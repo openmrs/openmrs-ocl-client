@@ -20,6 +20,7 @@ npm-debug.log*
 .vscode/
 .idea/
 *.iml
+*.code-workspace
 
 # CI infrastructure
 .github/
@@ -30,3 +31,7 @@ npm-debug.log*
 # Docker-related stuff
 docker-compose.yml
 Dockerfile
+
+# scripts
+start_local_instance.sh
+stop_local_instance.sh

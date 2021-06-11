@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import { UserOrganisationDetails } from "../../components";
 import { testAPIOrgList } from "../test_data";
 

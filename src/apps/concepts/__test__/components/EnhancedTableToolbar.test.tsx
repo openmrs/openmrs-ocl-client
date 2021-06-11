@@ -1,6 +1,6 @@
 import React from "react";
 import { EnhancedTableToolbar } from "../../components/EnhancedTableToolbar";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 
 type enhancedTableToolbarProps = React.ComponentProps<

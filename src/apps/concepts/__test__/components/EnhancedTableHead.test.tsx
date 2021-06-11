@@ -1,15 +1,13 @@
 import React from "react";
 import { EnhancedTableHead } from "../../components/EnhancedTableHead";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import Table from "@material-ui/core/Table";
 
 type enhancedTableHeadProps = React.ComponentProps<typeof EnhancedTableHead>;
 const baseProps: enhancedTableHeadProps = {
   classes: {
-    buttonLink: "makeStyles-buttonLink-93",
     paper: "makeStyles-paper-89",
-    retired: "makeStyles-retired-94",
     root: "makeStyles-root-88",
     table: "makeStyles-table-90",
     tableWrapper: "makeStyles-tableWrapper-91",
