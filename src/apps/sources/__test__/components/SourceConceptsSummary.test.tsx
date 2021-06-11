@@ -1,6 +1,6 @@
 import React from "react";
 import SourceConceptDetails from "../../../../apps/sources/components/SourceConceptsSummary";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import { APISource } from "../../types";
 

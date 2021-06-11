@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import ConceptsActionMenu from "../../components/ConceptsActionMenu";
 import {
@@ -47,6 +47,7 @@ const testConcept: APIConcept = {
   display_name: "display_name",
   mappings: [testMapping],
   retired: false,
+  source: "source",
   source_url: "source_url"
 };
 const baseProps: conceptsActionMenuProps = {

@@ -10,7 +10,8 @@ export const OCL_SIGNUP_URL =
   // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
   window.OCL_SIGNUP_URL || "https://app.staging.openconceptlab.org/#/accounts/signup";
 export const BUILD: string =
-  process.env.REACT_APP_BUILD || "local";
+  // @ts-ignore OCL_BUILD is injected at runtime via index.html
+  window.OCL_BUILD || "local";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 

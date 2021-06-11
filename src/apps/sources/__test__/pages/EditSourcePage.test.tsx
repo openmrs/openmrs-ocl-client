@@ -7,7 +7,7 @@ import EditSourcePage, {
 } from "../../pages/EditSourcePage";
 import { APIOrg, APIProfile } from "../../../authentication";
 import { currentState, personalSources, testSource } from "../test_data";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import {
   editSourceDispatchAction,
   retrieveSourceAndDetailsAction

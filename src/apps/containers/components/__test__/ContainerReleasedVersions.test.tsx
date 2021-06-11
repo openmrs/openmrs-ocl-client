@@ -1,6 +1,6 @@
 import React from "react";
 import ContainerReleasedVersions from "../ContainerReleasedVersions";
-import { render, fireEvent, getByText } from "../../../../test-utils";
+import { render, fireEvent, getByText } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import { Version } from "../../../../utils";
 

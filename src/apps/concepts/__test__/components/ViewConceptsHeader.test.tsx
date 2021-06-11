@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import ViewConceptsHeader from "../../components/ViewConceptsHeader";
 import {
@@ -8,6 +8,7 @@ import {
   DICTIONARY_VERSION_CONTAINER
 } from "../../constants";
 import { PREFERRED_SOURCES_VIEW_ONLY } from "../../../../utils/constants";
+import { APISource } from "../../../sources";
 
 type viewConceptsHeaderProps = React.ComponentProps<typeof ViewConceptsHeader>;
 
@@ -18,7 +19,7 @@ const baseProps: viewConceptsHeaderProps = {
     return arg2;
   },
   addConceptToDictionary: undefined,
-  sources: [{ name: 'test source', url: '/test/test123' }]
+  sources: [{ name: 'test source', url: '/test/test123' } as APISource]
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {
