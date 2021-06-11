@@ -74,22 +74,30 @@ const LoginPage: React.FC<Props> = ({
           className={classes.loginPage}
           component={Container}
         >
-          <Grid xs={5} item component="div" justify="center" alignItems="center" className={classes.header}>
-              <Typography variant="h3" component="h3" className={classes.title}>
-                OpenMRS Dictionary Manager
-              </Typography>
-              <Typography variant="subtitle1" component="span">
-                Use the shared{" "}
-                <a
-                  href={TRADITIONAL_OCL_URL}
-                  target="_blank"
-                  rel="external noopener noreferrer"
-                >
-                  Open Concept Lab
-                </a>{" "}
-                environment to create OpenMRS dictionary by mixing
-                expert-defined content with your own custom concepts.
-              </Typography>
+          <Grid
+            xs={5}
+            container
+            item
+            component="div"
+            justify="center"
+            alignItems="center"
+            className={classes.header}
+          >
+            <Typography variant="h3" component="h3" className={classes.title}>
+              OpenMRS Dictionary Manager
+            </Typography>
+            <Typography variant="subtitle1" component="span">
+              Use the shared{" "}
+              <a
+                href={TRADITIONAL_OCL_URL}
+                target="_blank"
+                rel="external noopener noreferrer"
+              >
+                Open Concept Lab
+              </a>{" "}
+              environment to create OpenMRS dictionary by mixing expert-defined
+              content with your own custom concepts.
+            </Typography>
             <Login onSubmit={login} loading={loading} status={errors} />
           </Grid>
         </Grid>
