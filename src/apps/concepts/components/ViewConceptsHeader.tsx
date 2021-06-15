@@ -4,7 +4,7 @@ import Header from "../../../components/Header";
 import {
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
-  SOURCE_CONTAINER
+  SOURCE_CONTAINER,
 } from "../constants";
 import { getContainerIdFromUrl } from "../utils";
 import {
@@ -16,9 +16,14 @@ import {
   TextField,
   Theme,
 } from "@material-ui/core";
-import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
+import {
+  PREFERRED_SOURCES_VIEW_ONLY,
+  useAnchor,
+  VERIFIED_SOURCES,
+} from "../../../utils";
 import { APISource } from "../../sources";
 import { AccountTreeOutlined } from "@material-ui/icons";
+import { VerifiedUser } from "@material-ui/icons";
 
 interface Props {
   containerType: string;
@@ -26,35 +31,38 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources: APISource[]
+  sources: APISource[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
-      color: theme.palette.background.default
+      color: theme.palette.background.default,
     },
     textField: {
       padding: "0.2rem 1rem",
-      cursor: "none"
+      cursor: "none",
     },
     input: {
       cursor: "pointer",
       borderBottom: "1px dotted black",
-      paddingBottom: "0.25rem"
+      paddingBottom: "0.25rem",
     },
     underline: {
       "&&&:before": {
-        borderBottom: "none"
+        borderBottom: "none",
       },
       "&&:after": {
-        borderBottom: "none"
-      }
+        borderBottom: "none",
+      },
     },
-    sourceIcon:{
+    sourceIcon: {
       marginRight: "0.2rem",
-      fill: "#8080809c"
-    }
+      fill: "#8080809c",
+    },
+    trustedIcon: {
+      fill: "#3F51B5",
+    },
   })
 );
 
@@ -64,10 +72,12 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-  sources
+  sources,
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const formatPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
+  const formatPrefferedSources = Object.entries(
+    PREFERRED_SOURCES_VIEW_ONLY
+  ).map(([key, value]) => ({ name: key, url: value }));
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
@@ -75,7 +85,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
   const [
     switchSourceAnchor,
     handleSwitchSourceClick,
-    handleSwitchSourceClose
+    handleSwitchSourceClose,
   ] = useAnchor();
 
   const getTitleBasedOnContainerType = () => {
@@ -102,29 +112,31 @@ const ViewConceptsHeader: React.FC<Props> = ({
         <Menu
           PaperProps={{
             style: {
-             marginTop: "30px",
-             marginLeft: "10px"
-            }
-           }}
+              marginTop: "30px",
+              marginLeft: "10px",
+            },
+          }}
           anchorEl={switchSourceAnchor}
           keepMounted
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
+          <TextField
             multiline
-            className={classes.textField} 
+            className={classes.textField}
             InputProps={{
-              className: classes.underline
+              className: classes.underline,
             }}
             inputProps={{
               className: classes.input,
             }}
-            value={showSources ? "Choose a source" : "Select a different source"} 
-            onClick={() => setShowSources(!showSources)} />
-          {showSources ? 
-            (formatPrefferedSources.concat(sources)?.map(
-              ({name, url}) => (
+            value={
+              showSources ? "Choose a source" : "Select a different source"
+            }
+            onClick={() => setShowSources(!showSources)}
+          />
+          {showSources
+            ? formatPrefferedSources.concat(sources)?.map(({ name, url }) => (
                 <MenuItem
                   // replace because we want to keep the back button useful
                   replace
@@ -134,29 +146,31 @@ const ViewConceptsHeader: React.FC<Props> = ({
                   onClick={handleSwitchSourceClose}
                   data-testid={name}
                 >
-                  <AccountTreeOutlined className={classes.sourceIcon}/> 
+                  <AccountTreeOutlined className={classes.sourceIcon} />
                   {name}
                 </MenuItem>
-              )
-            ))
-          : (Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-            ([preferredSourceName, preferredSourceUrl]) => (
-              <MenuItem
-                // replace because we want to keep the back button useful
-                replace
-                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                key={preferredSourceName}
-                component={Link}
-                onClick={handleSwitchSourceClose}
-                data-testid={preferredSourceName}
-              >
-                <AccountTreeOutlined className={classes.sourceIcon}/> 
-                {preferredSourceName}
-              </MenuItem>
-            )
-          ))
-          }
-          
+              ))
+            : Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
+                ([preferredSourceName, preferredSourceUrl]) => (
+                  <MenuItem
+                    // replace because we want to keep the back button useful
+                    replace
+                    to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                    key={preferredSourceName}
+                    component={Link}
+                    onClick={handleSwitchSourceClose}
+                    data-testid={preferredSourceName}
+                  >
+                    <AccountTreeOutlined className={classes.sourceIcon} />
+                    {preferredSourceName}
+                    {preferredSourceName === VERIFIED_SOURCES.CIEL ? (
+                      <VerifiedUser className={classes.trustedIcon} />
+                    ) : (
+                      ""
+                    )}
+                  </MenuItem>
+                )
+              )}
         </Menu>
       </>
     );

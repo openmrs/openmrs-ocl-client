@@ -305,6 +305,10 @@ export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   ...PREFERRED_SOURCES
 };
 
+export const VERIFIED_SOURCES ={
+  CIEL: "CIEL"
+};
+
 export const CONTEXT = {
   create: "create",
   view: "view",

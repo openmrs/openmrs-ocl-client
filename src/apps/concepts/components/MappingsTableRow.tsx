@@ -12,11 +12,11 @@ import {
   TableCell,
   TableRow,
   Theme,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
-import { MAP_TYPES, Option } from "../../../utils";
+import { MAP_TYPES, Option, VERIFIED_SOURCES } from "../../../utils";
 import { Select, TextField } from "formik-material-ui";
 import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
@@ -25,7 +25,8 @@ import { APISource } from "../../sources";
 import { includes } from "lodash";
 import {
   DeleteOutline as DeleteOutlineIcon,
-  MoreVert as MoreVertIcon
+  MoreVert as MoreVertIcon,
+  VerifiedUser,
 } from "@material-ui/icons";
 import clsx from "clsx";
 import * as Yup from "yup";
@@ -46,17 +47,16 @@ export const MappingSchema = Yup.object()
       .nullable(),
     to_concept_name: Yup.string()
       .notRequired()
-      .nullable()
+      .nullable(),
   })
   .test(
     "User should select a to concept",
     "A to concept is required",
     (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
   );
-
 const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
 
-const option = (value?: string, label?: string) => ({ value, label });
+const option = (value?: any, label?: string) => ({ value, label });
 
 const buildConceptLabel = (
   toConceptName?: string | null,
@@ -100,7 +100,7 @@ const fetchSourceOptions = async (
     const response = await api.retrievePublicSources(page, 10, query);
     const {
       data,
-      headers: { next = "None" }
+      headers: { next = "None" },
     } = response;
 
     const actualSources: APISource[] = data.filter((source: APISource) => {
@@ -110,25 +110,31 @@ const fetchSourceOptions = async (
     return {
       options: actualSources.map((source: APISource) => {
         const { name, url } = source;
-
+        const icon = () => {
+          return name === VERIFIED_SOURCES.CIEL ? (
+            <VerifiedUser style={{ color: "#3F51B5" }} />
+          ) : (
+            ""
+          );
+        };
         return {
-          label: name,
+          label: [name, icon()],
           value: url,
-          isInternalSource: !isExternalSource(source)
+          isInternalSource: !isExternalSource(source),
         };
       }),
       hasMore: next !== "None",
       additional: {
-        page: page + 1
-      }
+        page: page + 1,
+      },
     };
   } catch (e) {
     return {
       options: [],
       hasMore: false,
       additional: {
-        page: 1
-      }
+        page: 1,
+      },
     };
   }
 };
@@ -150,11 +156,11 @@ const fetchConceptOptions = async (
     const response = await api.concepts.retrieve({
       conceptsUrl: `${sourceUrl}concepts/`,
       page: page,
-      q: query
+      q: query,
     });
     const {
       data,
-      headers: { next = "None" }
+      headers: { next = "None" },
     } = response;
 
     return {
@@ -162,21 +168,21 @@ const fetchConceptOptions = async (
         ({ display_name, url }: { display_name: string; url: string }) => ({
           label: buildConceptLabel(display_name, url),
           value: url,
-          displayName: display_name
+          displayName: display_name,
         })
       ),
       hasMore: next !== "None",
       additional: {
-        page: page + 1
-      }
+        page: page + 1,
+      },
     };
   } catch (e) {
     return {
       options: [],
       hasMore: false,
       additional: {
-        page: 1
-      }
+        page: 1,
+      },
     };
   }
 };
@@ -184,32 +190,32 @@ const fetchConceptOptions = async (
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     row: {
-      verticalAlign: "top"
+      verticalAlign: "top",
     },
     retired: {
-      opacity: 0.5
+      opacity: 0.5,
     },
     minCellWidth: {
-      minWidth: "150px"
+      minWidth: "150px",
     },
     singleCellWidth: {
-      width: "24%"
+      width: "24%",
     },
     doubleCellWidth: {
-      width: "48%"
+      width: "48%",
     },
     tripleCellWidth: {
-      width: "72%"
+      width: "72%",
     },
     fillParent: {
-      width: "100%"
+      width: "100%",
     },
     menuItem: {
-      width: "4%"
+      width: "4%",
     },
     errorContainer: {
-      textAlign: "center"
-    }
+      textAlign: "center",
+    },
   })
 );
 
@@ -236,7 +242,7 @@ const MappingsTableRow: React.FC<Props> = ({
   arrayHelpers,
   fixedMappingType,
   errors,
-  editing
+  editing,
 }) => {
   const classes = useStyles();
 
@@ -246,7 +252,7 @@ const MappingsTableRow: React.FC<Props> = ({
     to_concept_name,
     to_concept_name_resolved,
     url,
-    retired
+    retired,
   } = value;
   const [toConceptName, setToConceptName] = useState(to_concept_name);
 
@@ -350,7 +356,7 @@ const MappingsTableRow: React.FC<Props> = ({
                 data-testid={`${valuesKey}_${index}_map_type`}
                 component={Select}
               >
-                {MAP_TYPES.map(mapType => (
+                {MAP_TYPES.map((mapType) => (
                   <MenuItem key={mapType.value} value={mapType.value}>
                     {mapType.label}
                   </MenuItem>
@@ -418,8 +424,8 @@ const MappingsTableRow: React.FC<Props> = ({
                       options: [],
                       hasMore: false,
                       additional: {
-                        page: 1
-                      }
+                        page: 1,
+                      },
                     };
                   return fetchConceptOptions(toSourceUrl, query, page);
                 }}
@@ -463,7 +469,7 @@ const MappingsTableRow: React.FC<Props> = ({
               id={`${valueKey}.menu-icon`}
               aria-controls={`${valueKey}.menu`}
               aria-haspopup="true"
-              onClick={event => toggleMenu(index, event)}
+              onClick={(event) => toggleMenu(index, event)}
             >
               <MoreVertIcon />
             </IconButton>

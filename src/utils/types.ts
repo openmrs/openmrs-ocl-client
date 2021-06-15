@@ -1,5 +1,5 @@
 export interface Option {
-  label: string;
+  label: any;
   value: string;
 }
 
