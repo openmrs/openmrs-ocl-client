@@ -1,6 +1,6 @@
 import React from "react";
 import UserForm from "../../components/UserForm";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import { BrowserRouter as Router } from "react-router-dom";
 import { testProfile } from "../test_data";
 

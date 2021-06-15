@@ -65,7 +65,7 @@ const Header: React.FC<Props> = ({
 
   const classes = useStyles();
   useEffect(() => {
-    document.title = `${title} | OCL for OpenMRS`;
+    document.title = `${title} | OpenMRS Dictionary Manager`;
   }, [title]);
   const history = useHistory();
 

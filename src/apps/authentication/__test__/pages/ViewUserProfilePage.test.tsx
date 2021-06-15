@@ -6,7 +6,7 @@ import {
   testProfile,
   testToken
 } from "../test_data";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import {
   mapDispatchToProps,
   mapStateToProps,

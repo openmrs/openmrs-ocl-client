@@ -7,7 +7,7 @@ import { APIOrg, APIProfile } from "../../../authentication";
 import { APISource } from "../../types";
 import { createSourceDispatchAction } from "../../redux";
 import { currentState, personalSources } from "../test_data";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 
 type createSourcePageProps = React.ComponentProps<typeof CreateSourcePage>;
 const apiProfile: APIProfile = {

@@ -6,7 +6,7 @@ import { Login } from "./components";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
 import { clearNextPageAction, loginAction } from "./redux";
 import { AppState } from "../../redux/types";
-import { BUILD } from "../../utils";
+import { BUILD, TRADITIONAL_OCL_URL } from "../../utils";
 
 interface Props {
   isLoggedIn: boolean;
@@ -22,9 +22,12 @@ const useStyles = makeStyles({
     display: "flex",
     height: "100vh"
   },
-  headerText: {
+  header: {
     textAlign: "center",
     margin: "-6vh 0 5vh 0"
+  },
+  title: {
+    marginBottom: "1.3rem"
   },
   footerText: {
     textAlign: "center"
@@ -42,10 +45,10 @@ const LoginPage: React.FC<Props> = ({
   const classes = useStyles();
 
   useEffect(() => {
-    document.title = `Login | OCL for OpenMRS`;
+    document.title = `Login | OpenMRS Dictionary Manager`;
 
     return () => {
-      document.title = "OCL for OpenMRS";
+      document.title = "OpenMRS Dictionary Manager";
     };
   }, []);
 
@@ -71,19 +74,30 @@ const LoginPage: React.FC<Props> = ({
           className={classes.loginPage}
           component={Container}
         >
-          <Grid xs={4} item component="div">
-            <div className={classes.headerText}>
-              <Typography variant="h3" component="h3">
+          <Grid
+            xs={5}
+            container
+            item
+            component="div"
+            justify="center"
+            alignItems="center"
+            className={classes.header}
+          >
+            <Typography variant="h3" component="h3" className={classes.title}>
+              OpenMRS Dictionary Manager
+            </Typography>
+            <Typography variant="subtitle1" component="span">
+              Use the shared{" "}
+              <a
+                href={TRADITIONAL_OCL_URL}
+                target="_blank"
+                rel="external noopener noreferrer"
+              >
                 Open Concept Lab
-              </Typography>
-              <Typography variant="h4" component="h4">
-                for OpenMRS
-              </Typography>
-              <Typography variant="subtitle1" component="span">
-                Use the shared Open Concept Lab to create OpenMRS dictionaries
-                by mixing expert-defined content with your own custom concepts.
-              </Typography>
-            </div>
+              </a>{" "}
+              environment to create OpenMRS dictionary by mixing expert-defined
+              content with your own custom concepts.
+            </Typography>
             <Login onSubmit={login} loading={loading} status={errors} />
           </Grid>
         </Grid>
@@ -92,7 +106,7 @@ const LoginPage: React.FC<Props> = ({
           className={classes.footerText}
           component="div"
         >
-          OCL for OMRS Build: {BUILD}
+          OpenMRS Dictionary Manager: {BUILD}
         </Typography>
       </>
     );

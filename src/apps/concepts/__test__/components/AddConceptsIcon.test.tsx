@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import AddConceptsIcon from "../../components/AddConceptsIcon";
 import { CONCEPT_CLASSES } from "../../../../utils";

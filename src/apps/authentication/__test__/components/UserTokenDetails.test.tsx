@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import { UserTokenDetails } from "../../components";
 import { testToken } from "../test_data";
 
