@@ -38,20 +38,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     textField: {
       padding: "0.2rem 1rem",
-      cursor: "none"
+      cursor: "none",
+      width: "100%"
     },
     input: {
       cursor: "pointer",
-      borderBottom: "1px dotted black",
       paddingBottom: "0.25rem"
-    },
-    underline: {
-      "&&&:before": {
-        borderBottom: "none"
-      },
-      "&&:after": {
-        borderBottom: "none"
-      }
     },
     sourceIcon: {
       marginRight: "0.2rem",
@@ -79,11 +71,11 @@ const ViewConceptsHeader: React.FC<Props> = ({
     ).map(([key, value]) => ({ name: key, url: value }));
 
     if (showSources) {
-      defaultSources
+      const allSources = defaultSources
         .concat(sources.map(s => ({ name: s.name, url: s.url })))
         .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
-    }
-    setPreferredSources(defaultSources);
+      setPreferredSources(allSources);
+    } else setPreferredSources(defaultSources);
   }, [showSources, sources, dictionaries]);
 
   const classes = useStyles();
@@ -132,14 +124,11 @@ const ViewConceptsHeader: React.FC<Props> = ({
           <TextField
             multiline
             className={classes.textField}
-            InputProps={{
-              className: classes.underline
-            }}
             inputProps={{
               className: classes.input
             }}
             value={
-              showSources ? "Choose a source" : "Select a different source"
+              showSources ? "Choose a source/dictionary" : "Select a different source/dictionary"
             }
             onClick={() => setShowSources(!showSources)}
           />

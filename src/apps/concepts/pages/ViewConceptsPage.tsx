@@ -169,10 +169,15 @@ const ViewConceptsPage: React.FC<Props> = ({
   } = queryParams;
 
   const sourceUrl = "/sources/";
+  const collectionsUrl = "/collections/";
   const sourcesLimit = 0;
+  const collectionsLimit = 0;
   useEffect(() => {
+    retrievePublicDictionaries(collectionsUrl, initialQ, collectionsLimit, page);
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
-  }, [initialQ, page, retrievePublicSources]);
+  }, [initialQ, page, retrievePublicSources, retrievePublicDictionaries]);
+
+
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
