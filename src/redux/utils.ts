@@ -102,13 +102,15 @@ export function invalidateCache(action: string, dispatch: Function) {
   dispatch(resetAction(action));
 }
 
-export function errorMsgResponse(response: any) {
+export function errorMsgResponse(response: AxiosResponse) {
   const errorMsgResponse: {[key: string]: string} = {
     "__detail__": "Action could not be completed. Please retry."
   };
 
   if (response.data && Object.prototype.hasOwnProperty.call(response.data, "detail")) { 
     errorMsgResponse["__detail__"] = response.data.detail;
+  } else if (response.status in STATUS_CODES_TO_MESSAGES) {
+    errorMsgResponse["__detail__"] = STATUS_CODES_TO_MESSAGES[response.status];
   }
   
   for (let key in response.data) {
@@ -119,8 +121,8 @@ export function errorMsgResponse(response: any) {
           : response.data[key]
     } 
     
-    return errorMsgResponse;
-  };
+  return errorMsgResponse;
+};
 
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
