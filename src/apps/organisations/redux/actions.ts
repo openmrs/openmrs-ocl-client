@@ -10,7 +10,6 @@ import {
 } from "../../../redux";
 import {
   getIndexedAction,
-  errorMsgResponse,
   FAILURE
 } from "../../../redux/utils";
 import {
@@ -30,7 +29,8 @@ import {
   HIDE_DELETE_MEMBER_DIALOG
 } from "./actionTypes";
 import { PERSONAL_ORGS_ACTION_INDEX } from "./constants";
-import { debug, STATUS_CODES_TO_MESSAGES } from "../../../utils";
+import { debug } from "../../../utils";
+import { AxiosResponse } from "axios";
 
 const createOrganisationAction = createActionThunk(
   CREATE_ORGANISATION_ACTION,
@@ -100,15 +100,8 @@ const retrieveOrganisationAction = (orgUrl: string) => {
       } catch (error) {
         debug(error, "redux/utils/#createActionThunk#:catch");
 
-        const response = error.response;
+        const response: AxiosResponse = error.response;
 
-
-        let errorMsg = errorMsgResponse(response);
-
-        const errorMessage: string | undefined =
-          response?.data || response
-            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-            : errorMsg?["__detail__"]:
 
         dispatch({
           type: `${actionType}_${FAILURE}`,
@@ -186,7 +179,7 @@ const addOrgMemberAction = (
       } catch (error) {
         debug(error, "redux/utils/#createActionThunk#:catch");
 
-        const response = error.response;
+        const response: AxiosResponse = error.response;
 
         const errorMsgResponse: {[key: string]: string} = {
           "__detail__": "Action could not be completed. Please retry."
@@ -255,7 +248,7 @@ const deleteOrgMemberAction = (
       } catch (error) {
         debug(error, "redux/utils/#createActionThunk#:catch");
 
-        const response = error.response;
+        const response: AxiosResponse = error.response;
 
 
         const errorMsgResponse: {[key: string]: string} = {
