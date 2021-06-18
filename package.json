@@ -107,6 +107,7 @@
     "ts-loader": "^6.2.1"
   },
   "cypress-cucumber-preprocessor": {
-    "nonGlobalStepDefinitions": true
+    "nonGlobalStepDefinitions": true,
+    "nonGlobalStepBaseDir": "cypress/support/step_definitions"
   }
 }

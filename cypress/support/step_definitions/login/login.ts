@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-/// <reference types="../../support" />
+/// <reference types="../../" />
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 
 // ensure the user is logged out
