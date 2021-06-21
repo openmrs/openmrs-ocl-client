@@ -78,7 +78,7 @@ describe("action", () => {
     expect(indexedAction).toHaveBeenCalledWith("sources/retrieveSources", 1);
   });
 
-  it("for public sources should use action index as 2 along with the corresponding actionType and api", () => {
+  it("forAll Public Concepts should use action index as 2 along with the corresponding actionType and api", () => {
     retrievePublicSourcesAction;
     expect(createActionThunk).toHaveBeenCalledWith(
       {

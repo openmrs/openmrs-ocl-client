@@ -12,7 +12,7 @@ Given("the user is on the login page", () => {
   cy.visit("/login");
 });
 
-Given("the user navigates to the public sources page", () => {
+Given("the user navigates to the All Public Concepts page", () => {
   cy.visit("/sources");
 });
 
@@ -76,6 +76,6 @@ Then("the backend's authentication failed message should be visible", () => {
   cy.get('[data-testid="login-status-message"]').should("be.visible");
 });
 
-Then("the user should be on the public sources page", () => {
+Then("the user should be on the All Public Concepts page", () => {
   cy.url().should("contain", "/sources");
 });

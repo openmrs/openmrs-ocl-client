@@ -45,12 +45,12 @@ Feature: Login Page
       And the backend's authentication failed message should be visible
 
   Scenario: The user should need to login
-    Given the user navigates to the public sources page
+    Given the user navigates to the All Public Concepts page
      Then the user should be redirected to the login page
 
   Scenario: The user should land on the expected page after logging in
-    Given the user navigates to the public sources page
+    Given the user navigates to the All Public Concepts page
       And the user is redirected to the login page
      When the user enters their credentials
       And the user submits the form
-     Then the user should be on the public sources page
+     Then the user should be on the All Public Concepts page

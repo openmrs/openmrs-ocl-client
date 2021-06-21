@@ -146,7 +146,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   }>();
 
   // only relevant with the collection container
-  const preferredSource = dictionary?.preferred_source || "Public Sources";
+  const preferredSource = dictionary?.preferred_source || "All Public Concepts";
   const linkedSource =
     containerType === SOURCE_CONTAINER ||
     containerType === SOURCE_VERSION_CONTAINER
