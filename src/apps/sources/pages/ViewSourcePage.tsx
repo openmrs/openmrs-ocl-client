@@ -113,7 +113,8 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveConceptsSummary({
       conceptsUrl: `${url}concepts/`,
       limit: 1,
-      includeRetired: true
+      includeRetired: true,
+      includeAdded: false
     });
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {

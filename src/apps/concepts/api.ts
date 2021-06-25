@@ -32,6 +32,7 @@ const api = {
       classFilters?: string[];
       sourceFilters?: string[];
       includeRetired?: boolean;
+      includeAdded?: boolean;
     }) => {
       const {
         conceptsUrl = "#",
@@ -43,7 +44,8 @@ const api = {
         dataTypeFilters = [] as string[],
         classFilters = [] as string[],
         sourceFilters = [] as string[],
-        includeRetired = false
+        includeRetired = false,
+        includeAdded = false
       } = retrieveParams;
       return authenticatedInstance.get(conceptsUrl, {
         params: {
@@ -55,7 +57,8 @@ const api = {
           ...optionallyIncludeList("conceptClass", classFilters),
           ...optionallyIncludeList("source", sourceFilters),
           timestamp: new Date().getTime(),
-          includeRetired
+          includeRetired,
+          includeAdded
         }
       });
     },

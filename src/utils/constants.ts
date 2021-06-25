@@ -311,4 +311,4 @@ export const CONTEXT = {
   edit: "edit"
 };
 
-export const CONCEPT_GENERAL: string[] = ["Include Retired"];
+export const CONCEPT_GENERAL: string[] = ["Include Retired", "Include Added Concepts"];
