@@ -183,10 +183,15 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
-  const [generalFilters, setGeneralFilters] = useState(initialGeneralFilters);
+  const [generalFilters, setGeneralFilters] = useState<string[]>(initialGeneralFilters);
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
+
+  const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
+  const includeAddedConcepts = generalFilters.includes('Include Added Concepts');
+  const isImporting = dictionaryToAddTo !== undefined;
+
   const [q, setQ] = useState(initialQ);
 
   const gimmeAUrl = (params: QueryParams = {}, conceptsUrl: string = url) => {
@@ -214,7 +219,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       : retrieveDictionary(containerUrl);
 
     retrieveConcepts({
-      conceptsUrl: url,
+      conceptsUrl: isImporting ? (includeAddedConcepts ? url : excludeAddedConceptsUrl) : url,
       page: page,
       limit: limit,
       q: initialQ,
@@ -223,7 +228,8 @@ const ViewConceptsPage: React.FC<Props> = ({
       dataTypeFilters: initialDataTypeFilters,
       classFilters: initialClassFilters,
       sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("Include Retired")
+      includeRetired: initialGeneralFilters.includes("Include Retired"),
+      includeAdded: generalFilters.includes("Include Added Concepts")
     });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
