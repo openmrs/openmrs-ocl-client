@@ -12,7 +12,7 @@ Given('the user is on the user collections page', () => {
   cy.visit("/user/collections");
 });
 
-Then('the user clicks on Create new dictionary Icon', () => {
+When('the user clicks on Create new dictionary Icon', () => {
   cy.visit("/user/collections");
 });
 
