@@ -2,8 +2,10 @@
 /// <reference types="../../" />
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
 
+// ensure the user is logged in
 Given('the user is logged in', () => {
   cy.login();
+  cy.visit("/collections");
 });
 
 Given('the user is on the user collections page', () => {
