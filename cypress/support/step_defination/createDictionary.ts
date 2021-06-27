@@ -7,14 +7,14 @@ Given('the user is logged in', () => {
 });
 
 Given('the user is on the user collections page', () => {
-  cy.visit("/collections");
+  cy.visit("/user/collections");
 });
 
 Then('the user clicks on Create new dictionary Icon', () => {
-  cy.visit("/collections");
+  cy.visit("/user/collections");
 });
 
-Then('the user should be sent to the Create Dictionary page', () => {
-  cy.visit("/new");
+Then('a user should be sent to the Create Dictionary page', () => {
+  cy.visit("/collections/new");
 });
 

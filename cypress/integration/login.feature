@@ -1,6 +1,6 @@
 Feature: Login Page
-  // Background:
-   // Given the user is not logged in
+  Background:
+   Given the user is not logged in
 
   Scenario: A user should be able to login
     Given the user is on the login page
