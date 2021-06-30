@@ -32,7 +32,7 @@ interface Props {
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
   sources: APISource[];
-  dictionaries: APIDictionary[]
+  dictionaries: APIDictionary[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
