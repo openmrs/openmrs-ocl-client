@@ -81,9 +81,10 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         <Fab
           onClick={() =>
             addConceptsToDictionary &&
-            addConceptsToDictionary(linkedDictionary, dictionaryToAddTo, [
+            addConceptsToDictionary( dictionaryToAddTo, [
               concept
-            ])
+            ],false, linkedDictionary)
+            
           }
           color="primary"
           className="fab"
@@ -127,9 +128,9 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         onClick={() => {
           setOpen(false);
           addConceptsToDictionary &&
-            addConceptsToDictionary(linkedDictionary, dictionaryToAddTo, [
+            addConceptsToDictionary( dictionaryToAddTo, [
               concept
-            ]);
+            ],false, linkedDictionary);
         }}
       />
     </SpeedDial>

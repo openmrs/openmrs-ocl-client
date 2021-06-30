@@ -1,7 +1,7 @@
 export const getSourceTypeFromPreviousPath = (previousPath: String) => {
   switch (previousPath) {
     case "/sources/":
-      return "Public Sources";
+      return "All Public Concepts";
     case "/user/sources/":
       return "Your Sources";
     case "/user/orgs/sources/":
