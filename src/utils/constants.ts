@@ -302,7 +302,7 @@ export const PREFERRED_SOURCES: { [key: string]: string } = {
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
-  "Public Sources": ALL_PUBLIC_SOURCES_URL,
+  "All Public Concepts": ALL_PUBLIC_SOURCES_URL,
   ...PREFERRED_SOURCES
 };
 

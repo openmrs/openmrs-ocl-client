@@ -114,10 +114,10 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
             onClick={() => {
               setConceptsToAdd([]);
               addConceptsToDictionary(
-                PREFERRED_SOURCES[fromSource],
                 dictionaryUrl,
                 conceptsToAdd,
-                true
+                true,
+                PREFERRED_SOURCES[fromSource]
               );
             }}
           >
