@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header";
 import {
@@ -22,8 +22,8 @@ import {
   VERIFIED_SOURCES
 } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined } from "@material-ui/icons";
-import { VerifiedSource } from "../../../components/VerifiedSource";
+import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
+import { APIDictionary } from '../../dictionaries/types';
 
 interface Props {
   containerType: string;
@@ -31,7 +31,8 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources: APISource[];
+  sources: APISource[]
+  dictionaries: APIDictionary[]
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
     sourceIcon: {
       marginRight: "0.2rem",
       fill: "#8080809c"
-    }
+    },
   })
 );
 
@@ -69,16 +70,24 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-  sources
+  sources,
+  dictionaries
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const formatPrefferedSources = Object.entries(
-    PREFERRED_SOURCES_VIEW_ONLY
-  ).map(([key, value]) => ({ name: key, url: value }));
+  const [preferredSources, setPreferredSources] = useState< { name: string; url: string }[] >();
+  useEffect(() => {
+  const defaultSources = Object.entries( PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key, url: value }));
+  if (showSources) {
+  const allSources = defaultSources
+        .concat(sources.map(s => ({ name: s.name, url: s.url })))
+        .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
+        setPreferredSources(allSources);
+      } else setPreferredSources(defaultSources);
+    }, [showSources, sources, dictionaries]);
+
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
-
   const [
     switchSourceAnchor,
     handleSwitchSourceClick,
@@ -118,56 +127,38 @@ const ViewConceptsHeader: React.FC<Props> = ({
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField
-            multiline
-            className={classes.textField}
-            InputProps={{
-              className: classes.underline
-            }}
+          <TextField 
+          multiline
+          className={classes.textField} 
+          InputProps={{
+            className: classes.underline
+          }} 
             inputProps={{
               className: classes.input
             }}
             value={
-              showSources ? "Choose a source" : "Select a different source"
+              showSources ? "Choose a source/dictionary" : "Select a different source/dictionary"
             }
             onClick={() => setShowSources(!showSources)}
           />
-          {showSources
-            ? formatPrefferedSources.concat(sources)?.map(({ name, url }) => (
-                <MenuItem
-                  // replace because we want to keep the back button useful
-                  replace
-                  to={gimmeAUrl({}, `${url}concepts/`)}
-                  key={name}
-                  component={Link}
-                  onClick={handleSwitchSourceClose}
-                  data-testid={name}
-                >
-                  <AccountTreeOutlined className={classes.sourceIcon} />
-                  {name}
-                </MenuItem>
-              ))
-            : Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-                ([preferredSourceName, preferredSourceUrl]) => (
-                  <MenuItem
-                    // replace because we want to keep the back button useful
-                    replace
-                    to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                    key={preferredSourceName}
-                    component={Link}
-                    onClick={handleSwitchSourceClose}
-                    data-testid={preferredSourceName}
-                  >
-                    <AccountTreeOutlined className={classes.sourceIcon} />
-                    {preferredSourceName}
-                    {VERIFIED_SOURCES.includes(preferredSourceName) ? (
-                      <VerifiedSource />
-                    ) : (
-                      ""
-                    )}
-                  </MenuItem>
-                )
+            {preferredSources?.map(({ name, url }) => (
+            <MenuItem
+              // replace because we want to keep the back button useful
+              replace
+              to={gimmeAUrl({}, `${url}concepts/`)}
+              key={name}
+              component={Link}
+              onClick={handleSwitchSourceClose}
+              data-testid={name}
+            >
+              {url?.includes("/collection") ? (
+                <FolderOpen className={classes.sourceIcon} />
+              ) : (
+                <AccountTreeOutlined className={classes.sourceIcon} />
               )}
+              {name}
+            </MenuItem>
+          ))}
         </Menu>
       </>
     );

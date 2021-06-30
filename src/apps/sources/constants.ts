@@ -12,7 +12,7 @@ export const TAB_LIST: TabType[] = [
     labelURL: "/user/orgs/sources/"
   },
   {
-    labelName: "Public Sources",
+    labelName: "All Public Concepts",
     labelURL: "/sources/"
   }
 ];

@@ -6,7 +6,7 @@ import { getParams } from "url-matcher";
 export function getContainerIdFromUrl(sourceUrl?: string) {
   // /orgs/FOO/sources/FOO/ => FOO
   // /orgs/FOO/collections/FOO/ => FOO
-  // / => Public Sources
+  // / => All Public Concepts
 
   if (!sourceUrl) return undefined;
   const withoutTrailingSlash = sourceUrl.endsWith("/")
@@ -16,7 +16,7 @@ export function getContainerIdFromUrl(sourceUrl?: string) {
     withoutTrailingSlash.lastIndexOf("/") + 1
   );
 
-  return sourceName ? sourceName : "Public Sources";
+  return sourceName ? sourceName : "All Public Concepts";
 }
 
 export function canModifyConcept(
