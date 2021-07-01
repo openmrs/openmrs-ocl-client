@@ -1,5 +1,5 @@
 export interface Option {
-  label: any;
+  label: string | [string, React.ReactNode];
   value: string;
 }
 

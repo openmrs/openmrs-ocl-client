@@ -8,10 +8,11 @@ import {
   Grid,
   makeStyles,
   Theme,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import { VerifiedUser } from "@material-ui/icons";
+import { VERIFIED_SOURCES } from "../../../utils";
+import { VerifiedSource } from "../../../components/VerifiedSource";
 
 interface Props {
   name: string;
@@ -25,23 +26,22 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     containerName: {
-      overflowX: "auto",
+      overflowX: "auto"
     },
     card: {
       cursor: "pointer",
       display: "flex",
       width: "100%",
-      justifyContent: "space-between",
+      justifyContent: "space-between"
     },
     details: {
       display: "flex",
-      flexDirection: "column",
+      flexDirection: "column"
     },
     trustedIcon: {
-      fill: "#3F51B5",
-      fontSize: 50,
-      margin: "2rem",
-    },
+      margin: "3rem",
+      transform: "scale(1.8)"
+    }
   })
 );
 const ContainerCard: React.FC<Props> = ({
@@ -51,7 +51,7 @@ const ContainerCard: React.FC<Props> = ({
   owner_type,
   description,
   url,
-  index,
+  index
 }) => {
   const classes = useStyles();
   const location = useLocation();
@@ -109,13 +109,13 @@ const ContainerCard: React.FC<Props> = ({
             </Button>
           </CardActions>
         </div>
-        <div>
-          {name === "CIEL" ? (
-            <VerifiedUser className={classes.trustedIcon} />
-          ) : (
-            ""
-          )}
-        </div>
+        {short_code && VERIFIED_SOURCES.includes(short_code) ? (
+          <div className={classes.trustedIcon}>
+            <VerifiedSource />
+          </div>
+        ) : (
+          ""
+        )}
       </Card>
     </Grid>
   );

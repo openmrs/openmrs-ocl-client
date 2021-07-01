@@ -4,7 +4,7 @@ import Header from "../../../components/Header";
 import {
   DICTIONARY_CONTAINER,
   DICTIONARY_VERSION_CONTAINER,
-  SOURCE_CONTAINER,
+  SOURCE_CONTAINER
 } from "../constants";
 import { getContainerIdFromUrl } from "../utils";
 import {
@@ -14,16 +14,16 @@ import {
   Menu,
   MenuItem,
   TextField,
-  Theme,
+  Theme
 } from "@material-ui/core";
 import {
   PREFERRED_SOURCES_VIEW_ONLY,
   useAnchor,
-  VERIFIED_SOURCES,
+  VERIFIED_SOURCES
 } from "../../../utils";
 import { APISource } from "../../sources";
 import { AccountTreeOutlined } from "@material-ui/icons";
-import { VerifiedUser } from "@material-ui/icons";
+import { VerifiedSource } from "../../../components/VerifiedSource";
 
 interface Props {
   containerType: string;
@@ -37,32 +37,29 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
-      color: theme.palette.background.default,
+      color: theme.palette.background.default
     },
     textField: {
       padding: "0.2rem 1rem",
-      cursor: "none",
+      cursor: "none"
     },
     input: {
       cursor: "pointer",
       borderBottom: "1px dotted black",
-      paddingBottom: "0.25rem",
+      paddingBottom: "0.25rem"
     },
     underline: {
       "&&&:before": {
-        borderBottom: "none",
+        borderBottom: "none"
       },
       "&&:after": {
-        borderBottom: "none",
-      },
+        borderBottom: "none"
+      }
     },
     sourceIcon: {
       marginRight: "0.2rem",
-      fill: "#8080809c",
-    },
-    trustedIcon: {
-      fill: "#3F51B5",
-    },
+      fill: "#8080809c"
+    }
   })
 );
 
@@ -72,7 +69,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
   gimmeAUrl,
   addConceptToDictionary,
   children,
-  sources,
+  sources
 }) => {
   const [showSources, setShowSources] = useState(false);
   const formatPrefferedSources = Object.entries(
@@ -85,7 +82,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
   const [
     switchSourceAnchor,
     handleSwitchSourceClick,
-    handleSwitchSourceClose,
+    handleSwitchSourceClose
   ] = useAnchor();
 
   const getTitleBasedOnContainerType = () => {
@@ -113,8 +110,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
           PaperProps={{
             style: {
               marginTop: "30px",
-              marginLeft: "10px",
-            },
+              marginLeft: "10px"
+            }
           }}
           anchorEl={switchSourceAnchor}
           keepMounted
@@ -125,10 +122,10 @@ const ViewConceptsHeader: React.FC<Props> = ({
             multiline
             className={classes.textField}
             InputProps={{
-              className: classes.underline,
+              className: classes.underline
             }}
             inputProps={{
-              className: classes.input,
+              className: classes.input
             }}
             value={
               showSources ? "Choose a source" : "Select a different source"
@@ -163,8 +160,8 @@ const ViewConceptsHeader: React.FC<Props> = ({
                   >
                     <AccountTreeOutlined className={classes.sourceIcon} />
                     {preferredSourceName}
-                    {preferredSourceName === VERIFIED_SOURCES.CIEL ? (
-                      <VerifiedUser className={classes.trustedIcon} />
+                    {VERIFIED_SOURCES.includes(preferredSourceName) ? (
+                      <VerifiedSource />
                     ) : (
                       ""
                     )}
