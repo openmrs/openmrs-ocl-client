@@ -28,6 +28,7 @@ export interface EditableConceptContainerFields {
   supported_locales?: string;
   default_locale?: string;
   preferred_source?: string;
+  public_access?: string;
 }
 
 export interface Version {

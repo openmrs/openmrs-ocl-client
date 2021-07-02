@@ -97,7 +97,7 @@ export const createSourceAndDictionaryAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales?.join(","),
@@ -230,7 +230,8 @@ export const editSourceAndDictionaryAction = (
       name,
       supported_locales: supported_locales.join(","),
       default_locale,
-      preferred_source
+      preferred_source,
+      public_access
     };
 
     if (linkedSource) {
@@ -282,7 +283,8 @@ export const createAndAddLinkedSourceAction = (
       supported_locales,
       owner_url,
       default_locale,
-      short_code
+      short_code,
+      public_access
     } = dictionaryData;
 
     let sourceResponse: APISource | boolean;
@@ -297,7 +299,7 @@ export const createAndAddLinkedSourceAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales.join(","),
