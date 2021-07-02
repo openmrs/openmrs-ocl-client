@@ -15,54 +15,62 @@ Cypress.Commands.add(
     password: string = Cypress.env("PASSWORD") || "Admin123"
   ) => {
     cy.url().then(url => {
-      if (url === undefined || url === null) {
+      if (url === undefined || url === null || url === "about:blank") {
         cy.visit("/");
       }
-    });
 
-    getStore().then(store => {
-      if (store === undefined) {
-        throw "Could not load the Redux store for this application";
-      }
+      getStore().then(store => {
+        if (store === undefined) {
+          throw "Could not load the Redux store for this application";
+        }
 
-      // already logged in
-      if (
-        store.getState().auth.profile?.username === username &&
-        store.getState().auth.token
-      ) {
-        return;
-      }
+        // already logged in
+        if (
+          store.getState().auth.profile?.username === username &&
+          store.getState().auth.token
+        ) {
+          return;
+        }
 
-      const token = Cypress.env("TOKEN");
+        const token = Cypress.env("TOKEN");
 
-      if (!token) {
-        cy.request({
-          method: "POST",
-          url: `${apiUrl}/users/login/`,
-          body: {
-            username: username,
-            password: password
-          }
-        }).then(response => {
-          store.dispatch({
-            type: LOGIN_ACTION,
-            payload: response.body
+        if (!token) {
+          cy.request({
+            method: "POST",
+            url: `${apiUrl}/users/login/`,
+            body: {
+              username: username,
+              password: password
+            }
+          }).then(response => {
+            store.dispatch({
+              type: LOGIN_ACTION,
+              payload: response.body
+            });
           });
-        });
-      } else {
-        store.dispatch({ type: LOGIN_ACTION, payload: { token: token } });
-      }
+        } else {
+          store.dispatch({ type: LOGIN_ACTION, payload: { token: token } });
+        }
+      });
     });
   }
 );
 
-Cypress.Commands.add("logout", async () => {
-  getStore().then(store => {
-    if (typeof store === "undefined") {
+Cypress.Commands.add("logout", () => {
+  // if we're not on a page, we're not logged in
+  cy.url().then(url => {
+    if (url === undefined || url === null || url === "about:blank") {
       return;
     }
 
-    store.dispatch({ type: LOGOUT_ACTION });
+    getStore().then(store => {
+      // if we don't have  store, we're not logged in
+      if (typeof store === "undefined") {
+        return;
+      }
+
+      store.dispatch({ type: LOGOUT_ACTION });
+    });
   });
 });
 
