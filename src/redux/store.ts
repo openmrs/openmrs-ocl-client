@@ -62,9 +62,9 @@ const rootReducer = combineReducers({
 const store = createStore(
   rootReducer,
   loadState(),
-  process.env.NODE_ENV === "production" ?
-    applyMiddleware(reduxThunk) :
-    composeWithDevTools(applyMiddleware(reduxThunk))
+  process.env.NODE_ENV === "production"
+    ? applyMiddleware(reduxThunk)
+    : composeWithDevTools(applyMiddleware(reduxThunk))
 );
 
 store.subscribe(() => {
@@ -73,14 +73,13 @@ store.subscribe(() => {
 
 export default store;
 
-
 // required for Cypress tests
 declare global {
   interface Window {
-    store: Store
+    store: Store;
   }
 }
 
-if ('__Cypress__' in window) {
+if ("Cypress" in window) {
   window.store = store;
 }
