@@ -25,5 +25,16 @@ declare namespace Cypress {
       isCleanup?: boolean
     ): Chainable<Subject>;
     getSource(source: string, username?: string): Chainable<Subject>;
+   createOrganisation(
+    organisation?: string,
+    username?: string,
+    public_access?: boolean
+  ): Chainable<Subject>;
+  deleteOrganisation(
+    organisation: string,
+    username?: string,
+    isCleanup?: boolean
+  ): Chainable<Subject>;
+  getOrganisation(organisation: string, username?: string): Chainable<Subject>;
   }
 }

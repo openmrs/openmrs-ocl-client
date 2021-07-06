@@ -241,3 +241,89 @@ Cypress.Commands.add(
     });
   }
 );
+
+Cypress.Commands.add(
+  "createOrganisation”,
+  (
+   organisation: string = `TD-${nanoid()}`,
+    username: string = Cypress.env("USERNAME") || "admin",
+    public_access: boolean = false) => {getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/orgs/`,
+              body: {
+                id: organisation,
+                custom_validation_schema: "OpenMRS",
+                name: "Test Organisation",
+                company: "",
+                website: "",
+                location: "",
+                public_access: public_access ? "View" : "None",
+                orgs_type: "organisation"
+              }
+            });
+          }
+        })
+    ),
+
+    return cy.wrap(organisation),
+  }
+);
+
+Cypress.Commands.add(
+  "deleteOrganisation",
+  (
+    organisation: string,
+    username: string = Cypress.env("USERNAME") || "admin",
+    isCleanup: boolean = false
+  ) => {
+    getAuthToken().then(authToken =>
+      cy.request({
+        method: "DELETE",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}/orgs/${organisation}/`,
+        failOnStatusCode: !!!isCleanup
+      })
+    );
+  }
+);
+
+Cypress.Commands.add(
+  "getOrganisation",
+  (
+    organisation: string,
+    username: string = Cypress.env("USERNAME") || "admin"
+  ) => {
+    return getAuthToken().then(authToken => {
+      return cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/`
+        })
+        .its("body");
+    });
+  }
+);
+
+function organisation(_organisation: any) {
+  throw new Error("Function not implemented.");
+}
