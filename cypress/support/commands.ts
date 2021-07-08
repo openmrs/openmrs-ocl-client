@@ -243,11 +243,9 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
-  "createOrganisation”,
-  (
-   organisation: string = `TD-${nanoid()}`,
-    username: string = Cypress.env("USERNAME") || "admin",
-    public_access: boolean = false) => {getAuthToken().then(authToken =>
+  "createOrganisation",
+  (organisation: string = `TD-${nanoid()}`, public_access: boolean = false) => {
+    getAuthToken().then(authToken =>
       cy
         .request({
           method: "GET",
@@ -278,19 +276,15 @@ Cypress.Commands.add(
             });
           }
         })
-    ),
+    );
 
-    return cy.wrap(organisation),
+    return cy.wrap(organisation);
   }
 );
 
 Cypress.Commands.add(
   "deleteOrganisation",
-  (
-    organisation: string,
-    username: string = Cypress.env("USERNAME") || "admin",
-    isCleanup: boolean = false
-  ) => {
+  (organisation: string, isCleanup: boolean = false) => {
     getAuthToken().then(authToken =>
       cy.request({
         method: "DELETE",
@@ -304,26 +298,16 @@ Cypress.Commands.add(
   }
 );
 
-Cypress.Commands.add(
-  "getOrganisation",
-  (
-    organisation: string,
-    username: string = Cypress.env("USERNAME") || "admin"
-  ) => {
-    return getAuthToken().then(authToken => {
-      return cy
-        .request({
-          method: "GET",
-          headers: {
-            Authorization: authToken
-          },
-          url: `${apiUrl}/orgs/${organisation}/`
-        })
-        .its("body");
-    });
-  }
-);
-
-function organisation(_organisation: any) {
-  throw new Error("Function not implemented.");
-}
+Cypress.Commands.add("getOrganisation", (organisation: string) => {
+  return getAuthToken().then(authToken => {
+    return cy
+      .request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}/orgs/${organisation}/`
+      })
+      .its("body");
+  });
+});
