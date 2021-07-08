@@ -10,7 +10,6 @@ import {
 import { customAlphabet } from "nanoid";
 import { isLoggedIn } from "../../../utils";
 
-const user = Cypress.env("USERNAME") || "admin";
 let organisationId = "";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
 
@@ -56,7 +55,7 @@ Then(
 );
 
 Before({ tags: "@organisation" }, () => {
-  organisationId = `TD-${nanoid()}`;
+  organisationId = `Org-${nanoid()}`;
 });
 
 After({ tags: "@organisation" }, () => {

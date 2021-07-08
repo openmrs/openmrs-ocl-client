@@ -10,7 +10,6 @@ import {
 import { customAlphabet } from "nanoid";
 import { isLoggedIn } from "../../../utils";
 
-const user = Cypress.env("USERNAME") || "admin";
 let organisationID = "";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
 
@@ -73,7 +72,7 @@ Then("the organisation should be viewed publicly accessed", () =>
 );
 
 Before({ tags: "@organisation" }, () => {
-  organisationID = `TD-${nanoid()}`;
+  organisationID = `Org-${nanoid()}`;
 });
 
 After({ tags: "@organisation" }, () => {
