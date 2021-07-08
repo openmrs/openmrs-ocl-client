@@ -55,6 +55,11 @@ var OCL_SIGNUP_URL = "<your endpoint, e.g https://app.staging.openconceptlab.org
 ```
 These variables will automatically be injected into the app at runtime. This is the same strategy we use while deploying the application.
 
+### Running Cypress Tests
+As opposed to the tests built into the package using Jest, we also supply some end-to-end tests written using [Cypress](https://www.cypress.io/). These are run automatically on each PR or commit. In the CI environments, we actually spin up a local instance of the OCL API and then the OpenMRS Dictionary Manager via Docker. This can be done locally by running the [`start_local_instance.sh`](start_local_instance.sh) script. From there, the CI will run `npm test:integration` which will run Cypress and all tests locally.
+
+If Cypress fails to run on your local instance for whatever reason, you can use the [`run_e2e.sh`](run_e2e.sh) script to run the Cypress tests inside a Docker container. This is useful for running the tests locally, but if tests fail, it is easier to use the Cypress UI to diagnose the issues. To run Cypress with the UI (assuming Cypress works locally), you can run `npx cypress open`. Unfortunately, it's not possible to run the Cypress UI in the Docker container to the best of my knowledge.
+
 ## Contributing to this project
 - Visit the project [wiki](https://wiki.openmrs.org/display/projects/Contributing+to+OCL+for+OpenMRS%3A+Developer+Guide) for a layout of the project and how you can start contributing.
 
