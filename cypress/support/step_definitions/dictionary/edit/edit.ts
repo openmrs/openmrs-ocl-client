@@ -7,20 +7,17 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { customAlphabet } from "nanoid";
-import { isLoggedIn } from "../../../utils";
-
-const user = Cypress.env("USERNAME") || "admin";
-let dictionaryId = "";
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
+import { getDictionaryId, getUser } from "../../../utils";
 
 Given(/a (public|private) dictionary exists/, type => {
+  const dictionaryId = getDictionaryId();
+  const user = getUser();
   cy.createDictionary(dictionaryId, user, type === "public");
   cy.createSource(dictionaryId, user, type === "public");
 });
 
 Given("the user is on the edit dictionary page", () =>
-  cy.visit(`/users/${user}/collections/${dictionaryId}/edit/`)
+  cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/edit/`)
 );
 
 When(/the user selects "(.+)" visibility/, public_access => {
@@ -43,41 +40,28 @@ When("the user submits the form", () => {
 
 Then("the dictionary should be publicly visible", () =>
   cy
-    .getDictionary(dictionaryId)
+    .getDictionary(getDictionaryId())
     .its("public_access")
     .should("eq", "View")
 );
 
 Then("the dictionary should not be publicly visible", () =>
   cy
-    .getDictionary(dictionaryId)
+    .getDictionary(getDictionaryId())
     .its("public_access")
     .should("eq", "None")
 );
 
 Then("the source should be publicly visible", () =>
   cy
-    .getSource(dictionaryId)
+    .getSource(getDictionaryId())
     .its("public_access")
     .should("eq", "View")
 );
 
 Then("the source should not be publicly visible", () =>
   cy
-    .getSource(dictionaryId)
+    .getSource(getDictionaryId())
     .its("public_access")
     .should("eq", "None")
 );
-
-Before({ tags: "@dictionary" }, () => {
-  dictionaryId = `TD-${nanoid()}`;
-});
-
-After({ tags: "@dictionary" }, () => {
-  isLoggedIn().then(loggedIn => {
-    if (loggedIn) {
-      cy.deleteDictionary(dictionaryId, user, true);
-      cy.deleteSource(dictionaryId, user, true);
-    }
-  });
-});

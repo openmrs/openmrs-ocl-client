@@ -7,12 +7,7 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { customAlphabet } from "nanoid";
-import { isLoggedIn } from "../../../utils";
-
-const user = Cypress.env("USERNAME") || "admin";
-let dictionaryId = "";
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
+import { getDictionaryId, getUser } from "../../../utils";
 
 Given("the user is on the dictionaries page", () =>
   cy.visit("/user/collections/")
@@ -27,8 +22,8 @@ When("the user clicks on the create new dictionary button", () =>
 );
 
 When("the user enters the dictionary information", () => {
-  cy.findByLabelText(/Dictionary Name/i).type(dictionaryId);
-  cy.findByLabelText(/Short Code/i).type(dictionaryId);
+  cy.findByLabelText(/Dictionary Name/i).type(getDictionaryId());
+  cy.findByLabelText(/Short Code/i).type(getDictionaryId());
   // these are the form drop-downs, which are quite hard to
   // to automate, so I've elected to do this kind of hack
   // hopefully it can be replaced with something better
@@ -53,7 +48,7 @@ When(/the user selects "(.+)" visibility/, public_access => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
-  cy.url().should("contain", `/users/${user}/collections/${dictionaryId}/`);
+  cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/`);
 });
 
 Then("the user should be on the create new dictionary page", () =>
@@ -61,50 +56,37 @@ Then("the user should be on the create new dictionary page", () =>
 );
 
 Then("the new dictionary should be created", () =>
-  cy.getDictionary(dictionaryId).should("exist")
+  cy.getDictionary(getDictionaryId()).should("exist")
 );
 
 Then("the dictionary should be publicly visible", () =>
   cy
-    .getDictionary(dictionaryId)
+    .getDictionary(getDictionaryId())
     .its("public_access")
     .should("eq", "View")
 );
 
 Then("the dictionary should not be publicly visible", () =>
   cy
-    .getDictionary(dictionaryId)
+    .getDictionary(getDictionaryId())
     .its("public_access")
     .should("eq", "None")
 );
 
 Then("the new source should be created", () =>
-  cy.getSource(dictionaryId).should("exist")
+  cy.getSource(getDictionaryId()).should("exist")
 );
 
 Then("the source should be publicly visible", () =>
   cy
-    .getSource(dictionaryId)
+    .getSource(getDictionaryId())
     .its("public_access")
     .should("eq", "View")
 );
 
 Then("the source should not be publicly visible", () =>
   cy
-    .getSource(dictionaryId)
+    .getSource(getDictionaryId())
     .its("public_access")
     .should("eq", "None")
 );
-
-Before({ tags: "@dictionary" }, () => {
-  dictionaryId = `TD-${nanoid()}`;
-});
-
-After({ tags: "@dictionary" }, () => {
-  isLoggedIn().then(loggedIn => {
-    if (loggedIn) {
-      cy.deleteDictionary(dictionaryId, user, true);
-      cy.deleteSource(dictionaryId, user, true);
-    }
-  });
-});
