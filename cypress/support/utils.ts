@@ -3,6 +3,7 @@ import { AppState } from "../../src/redux/types";
 
 const user = Cypress.env("USERNAME") || "admin";
 let dictionaryId: string = "";
+let organisationId: string = "";
 
 export const getStore = (): Cypress.Chainable<Store<AppState>> =>
   cy.window().its("store");
@@ -26,3 +27,5 @@ export const getAuthToken = () =>
 export const getDictionaryId = () => dictionaryId;
 export const setDictionaryId = (dictId: string) => dictionaryId = dictId;
 export const getUser = () => user;
+export const getOrganisationId = () => organisationId;
+export const setOrganisationId = (orgId: string) => organisationId = orgId;
