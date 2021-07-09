@@ -39,5 +39,5 @@ When("the user enters the concept information", () => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
-  cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/concepts/${getConceptId()}`);
+  cy.url().should("not.contain", `/new`);
 });
