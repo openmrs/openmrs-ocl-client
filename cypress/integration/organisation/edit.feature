@@ -3,7 +3,7 @@ Feature: Editing a organisation
     Given the user is logged in
 
   @organisation
-  Scenario: The user should be able to make a public organisation 
+  Scenario: The user should be able to make an organisation public Access View 
     Given a public organisation exists
       And the user is on the edit organisation page
      When the user selects "View" Public Access
@@ -12,7 +12,7 @@ Feature: Editing a organisation
       And the source found should be publicly visible
   
   @organisation
-  Scenario: The user should be able to make a public Access none
+  Scenario: The user should be able to make an organisation public Access none
     Given a public organisation exists
       And the user is on the edit organisation page
      When the user selects "None" Public Access

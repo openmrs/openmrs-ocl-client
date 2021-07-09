@@ -38,7 +38,7 @@ When("the user submits the form", () => {
   cy.url().should("not.contain", `/edit/`);
 });
 
-Then("the organisation should be publicly visible", () =>
+Then("the organisation should be publicly visible with View public access", () =>
   cy
     .getOrganisation(organisationId)
     .its("public_access")

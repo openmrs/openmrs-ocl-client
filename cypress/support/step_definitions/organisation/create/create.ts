@@ -8,7 +8,7 @@ import {
   When
 } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
-import { isLoggedIn } from "../../../utils";
+import { isLoggedIn, getOrganisationId } from "../../../utils";
 
 let organisationID = "";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
