@@ -62,13 +62,11 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           numFound={numFound}
           title={TITLE}
         />
-        <Link to={`/collections/new/`}>
-          <Tooltip title="Create new dictionary" style={{zIndex:3}}>
-            <Fab color="primary" className="fab">
-              <AddIcon />
-            </Fab>
-          </Tooltip>
-        </Link>
+        <Tooltip title="Create new dictionary">
+          <Fab color="primary" className="fab">
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </ProgressOverlay>
     </Header>
   );

@@ -5,25 +5,20 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { customAlphabet } from "nanoid";
-import { getDictionaryId, getUser, setConceptId, getConceptId } from "../../../utils";
+import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 
-const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
 
-Given("the user is on the dictionary concepts page", () =>
-  cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`)
-);
-
-When("the user clicks the add concepts button", () => {
-  cy.get("[data-testid='addConceptsIcon']").click();
+Given("the user is on the dictionary concepts page", () => {
+  cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
+  cy.findByText(`Concepts in ${getDictionaryId()}`).should("be.visible");
 });
 
-When("selects Create custom concept menuListItem", () =>
-  cy.get("li").eq(1).click()
-);
+When("the user clicks the add concepts button", () => {
+  cy.findByTitle("Add concepts").click();
+});
 
-When("the user selects Other Kind menuListItem", () =>
-  cy.get("li").eq(9).click()
+When(/the user selects the "(.+)" menu list item/, menuItem =>
+  cy.findByText(menuItem).click()
 );
 
 Then("the user should be on the create concept page", () =>
@@ -32,13 +27,11 @@ Then("the user should be on the create concept page", () =>
 
 Given("the user is on the create concept page", () => {
   cy.visit(`/users/${getUser()}/sources/${getDictionaryId()}/concepts/new/?linkedDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
-  cy.get('header h5').should('contain', 'Create concept');
-  cy.get("form").should("exist");
+  cy.findByText("Create concept").should("be.visible");
 });
 
 When("the user enters the concept information", () => {
-  
-  cy.get("input[name='id']").type(setConceptId(`TC-${nanoid()}`));
+  cy.findByLabelText("OCL ID").type(getConceptId());
   cy.get("#concept_class").type("{enter}");
   cy.get("#datatype").type("{enter}");
   cy.get("input[name='names[0].name']").type("test concept");
