@@ -49,8 +49,8 @@ describe("api", () => {
   const page: number = 1;
   const limit: number = 1;
   const q: string = "";
-  const sortDirection: string = "sortAsc";
-  const sortBy: string = "bestMatch";
+  const sortDirection: string = "sortDesc";
+  const sortBy: string = "_score";
   const dataTypeFilters: string[] = [];
   const classFilters: string[] = [];
   const sourceFilters: string[] = [];
@@ -72,7 +72,7 @@ describe("api", () => {
         limit: 1,
         page: 1,
         q: "",
-        sortAsc: "bestMatch",
+        sortDesc: "_score",
         timestamp: expect.anything()
       }
     });

@@ -196,7 +196,7 @@ const sortConceptDescriptions = (
 };
 
 export type SortableField =
-  | "bestMatch"
+  | "_score"
   | "lastUpdate"
   | "name"
   | "id"
