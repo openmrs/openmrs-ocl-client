@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 /// <reference types="../../" />
 import { Given, When, Then } from "cypress-cucumber-preprocessor/steps";
+import { getPassword, getUser } from "../../utils";
 
 // ensure the user is logged out
 Given("the user is not logged in", () => {
@@ -20,8 +21,8 @@ Given("the user is redirected to the login page", () => {
 });
 
 When("the user enters their credentials", () => {
-  cy.get("#username").type("admin");
-  cy.get("#password").type("Admin123");
+  cy.get("#username").type(getUser());
+  cy.get("#password").type(getPassword());
 });
 
 When("the user enters the wrong credentials", () => {
@@ -30,11 +31,11 @@ When("the user enters the wrong credentials", () => {
 });
 
 When("the user enters their username", () => {
-  cy.get("#username").type("admin");
+  cy.get("#username").type(getUser());
 });
 
 When("the user enters their password", () => {
-  cy.get("#password").type("Admin123");
+  cy.get("#password").type(getPassword());
 });
 
 When("the user submits the form", () => {
