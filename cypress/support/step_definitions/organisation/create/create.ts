@@ -8,7 +8,7 @@ import {
   When
 } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
-import { isLoggedIn, getOrganisationId } from "../../../utils";
+import { getOrganisationId, isLoggedIn } from "../../../utils";
 
 let organisationID = "";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
@@ -32,7 +32,7 @@ When("the user enters the organisation information", () => {
   cy.get("#Public Access").type("{enter}");
 });
 
-When(/the user selects "(.+)" visibility/, public_access => {
+When(/the user selects "(.+)" view/, public_access => {
   switch (public_access) {
     case "View":
       cy.get("#public_access").type("{downarrow}{uparrow}{enter}");
@@ -46,7 +46,7 @@ When(/the user selects "(.+)" visibility/, public_access => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
-  cy.url().should("contain", `/orgs/${organisationID}/`);
+  cy.url().should("contain", `/orgs/${getOrganisationId()}/`);
 });
 
 Then("the user should be on the create new organisation page", () =>

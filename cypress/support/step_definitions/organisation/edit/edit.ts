@@ -8,7 +8,7 @@ import {
   When
 } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
-import { isLoggedIn } from "../../../utils";
+import { getOrganisationId, isLoggedIn } from "../../../utils";
 
 let organisationId = "";
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
@@ -46,7 +46,7 @@ Then("the organisation should be publicly visible with View public access", () =
 );
 
 Then(
-  "the organisation should be publicly visible with none public access",
+  "the organisation should be publicly visible with None public access",
   () =>
     cy
       .getOrganisation(organisationId)
