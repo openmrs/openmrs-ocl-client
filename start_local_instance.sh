@@ -1,11 +1,8 @@
 #!/bin/sh
 
 echo "Starting API..."
-[ $? -ne 0 ] && exit 1
-pushd oclapi >/dev/null 2>&1 || exit 1
-docker-compose up -d || exit $?
+docker-compose -f oclapi/docker-compose.yml up -d || exit $?
 api_endpoint=http://localhost:8000
-popd >/dev/null 2>&1 || exit 1
 
 echo "Building App..."
 export OCL_API_HOST=$api_endpoint
