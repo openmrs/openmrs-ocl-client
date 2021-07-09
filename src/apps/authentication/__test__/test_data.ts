@@ -53,14 +53,16 @@ const conceptState: ConceptsState = {
 
 export const sourceState: SourceState = {
   sources: [{ items: [] }],
-  versions: []
+  versions: [],
+  showOnlyVerified: false
 };
 
 export const organisationState: OrganisationState = {
   organisation: {} as APIOrganisation,
   organisations: [],
   showAddMemberDialog: false,
-  showDeleteMemberDialog: false
+  showDeleteMemberDialog: false,
+  showOnlyVerified: false
 };
 
 export const initialState: AppState = {

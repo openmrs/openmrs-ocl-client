@@ -14,3 +14,4 @@ export const SHOW_ADD_MEMBER_DIALOG = "organisation/showAddMember";
 export const HIDE_ADD_MEMBER_DIALOG = "organisation/hideAddMember";
 export const SHOW_DELETE_MEMBER_DIALOG = "organisation/showDeleteMember";
 export const HIDE_DELETE_MEMBER_DIALOG = "organisation/hideDeleteMember";
+export const TOGGLE_SHOW_VERIFIED_ACTION = "organisation/toggleShowVerified";

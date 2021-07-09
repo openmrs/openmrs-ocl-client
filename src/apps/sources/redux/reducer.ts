@@ -8,16 +8,22 @@ import {
   RETRIEVE_SOURCES_ACTION,
   RETRIEVE_SOURCE_VERSIONS_ACTION,
   EDIT_SOURCE_VERSION_ACTION,
-  CREATE_SOURCE_VERSION_ACTION
+  CREATE_SOURCE_VERSION_ACTION,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 
 const initialState: SourceState = {
   sources: [],
-  versions: []
+  versions: [],
+  showOnlyVerified: false
 };
 
 export const reducer = createReducer(initialState, {
+  [TOGGLE_SHOW_VERIFIED_ACTION]: (state, action) => ({
+    ...state,
+    showOnlyVerified: !state.showOnlyVerified
+  }),
   [CREATE_SOURCE_ACTION]: (state, action) => ({
     ...state,
     newSource: action.payload

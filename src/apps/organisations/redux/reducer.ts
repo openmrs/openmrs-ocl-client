@@ -12,7 +12,8 @@ import {
   SHOW_ADD_MEMBER_DIALOG,
   HIDE_ADD_MEMBER_DIALOG,
   SHOW_DELETE_MEMBER_DIALOG,
-  HIDE_DELETE_MEMBER_DIALOG
+  HIDE_DELETE_MEMBER_DIALOG,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 import { APIOrganisation, OrganisationState } from "../types";
@@ -21,10 +22,15 @@ const initialState: OrganisationState = {
   organisations: [],
   organisation: {} as APIOrganisation,
   showAddMemberDialog: false,
-  showDeleteMemberDialog: false
+  showDeleteMemberDialog: false,
+  showOnlyVerified: false
 };
 
 export const reducer = createReducer(initialState, {
+  [TOGGLE_SHOW_VERIFIED_ACTION]: (state, action) => ({
+    ...state,
+    showOnlyVerified: !state.showOnlyVerified
+  }),
   [GET_USER_ORGS_ACTION]: (state, { payload, responseMeta }: Action) => ({
     ...state,
     organisations: payload,
