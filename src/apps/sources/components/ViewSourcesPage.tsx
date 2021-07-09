@@ -13,6 +13,7 @@ import { ContainerOwnerTabs } from "../../containers/components";
 import { Link } from "react-router-dom";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
+import { toggleShowVerifiedAction } from "../../dictionaries/redux";
 
 interface Props {
   loading: boolean;
@@ -22,13 +23,19 @@ interface Props {
   retrieveSources: (
     ...args: Parameters<typeof retrievePersonalSourcesAction>
   ) => void;
+  toggleShowVerified: (
+    ...args: Parameters<typeof toggleShowVerifiedAction>
+  ) => void;
+  showOnlyVerified: boolean;
 }
 
 const ViewPersonalSourcesPage: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
-  retrieveSources
+  retrieveSources,
+  toggleShowVerified,
+  showOnlyVerified
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -62,6 +69,8 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
           sources={sources}
           numFound={numFound}
           title={TITLE}
+          showOnlyVerified={showOnlyVerified}
+          toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/sources/new/`}>
           <Tooltip title="Create new source">

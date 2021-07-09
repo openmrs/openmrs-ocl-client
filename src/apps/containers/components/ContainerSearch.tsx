@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createStyles,
   Grid,
@@ -18,6 +18,8 @@ interface Props {
   title: string;
   onSearch: Function;
   initialQ: string;
+  showOnlyVerified: boolean;
+  toggleShowVerified: Function;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -41,15 +43,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
+const ContainerSearch: React.FC<Props> = ({
+  title,
+  onSearch,
+  initialQ,
+  showOnlyVerified,
+  toggleShowVerified
+}) => {
   const classes = useStyles();
   const [q, setQ] = useState(initialQ);
-  const [verified, displayVerified] = useState(false);
-
-  const handleChange = (event: any) => {
-    displayVerified(event.target.checked);
-    return event.target.checked ? onSearch(VERIFIED_SOURCES[0]) : onSearch();
-  };
+  useEffect(
+    () => (showOnlyVerified ? onSearch(VERIFIED_SOURCES[0]) : onSearch()),
+    [showOnlyVerified]
+  );
   return (
     <Grid className={classes.searchContainer} item xs={12}>
       <form
@@ -85,13 +91,17 @@ const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
         control={
           <Switch
             checkedIcon={<VerifiedSource />}
-            checked={verified}
-            onChange={handleChange}
+            checked={showOnlyVerified}
+            onChange={() => {
+              return toggleShowVerified();
+            }}
             color="primary"
             name="displayVerified"
           />
         }
-        label={verified ? "Showing verified only" : "Showing all results"}
+        label={
+          showOnlyVerified ? "Showing verified only" : "Showing all results"
+        }
       />
     </Grid>
   );

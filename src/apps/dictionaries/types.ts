@@ -50,6 +50,7 @@ export interface DictionaryState {
   dictionaries: { items: APIDictionary[]; responseMeta?: {} }[];
   versions: APIDictionaryVersion[];
   addReferencesResults: { payload: {}; meta: [] }[];
+  showOnlyVerified: boolean;
 }
 
 export interface EditableDictionaryFields

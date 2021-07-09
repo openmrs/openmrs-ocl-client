@@ -41,7 +41,8 @@ const statusState: StatusState = { key: [] };
 const dictionariesState: DictionaryState = {
   dictionaries: [{ items: [] }],
   versions: [],
-  addReferencesResults: []
+  addReferencesResults: [],
+  showOnlyVerified: false
 };
 
 const conceptState: ConceptsState = {
