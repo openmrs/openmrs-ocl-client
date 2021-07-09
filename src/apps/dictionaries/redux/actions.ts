@@ -473,6 +473,7 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete
 );
+
 export const toggleShowVerifiedAction = () => {
-  return (dispatch: Function) => dispatch(TOGGLE_SHOW_VERIFIED_ACTION);
+  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
 };

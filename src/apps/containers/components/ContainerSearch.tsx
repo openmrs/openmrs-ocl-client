@@ -19,7 +19,7 @@ interface Props {
   onSearch: Function;
   initialQ: string;
   showOnlyVerified: boolean;
-  toggleShowVerified: Function;
+  toggleShowVerified: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -92,9 +92,7 @@ const ContainerSearch: React.FC<Props> = ({
           <Switch
             checkedIcon={<VerifiedSource />}
             checked={showOnlyVerified}
-            onChange={() => {
-              return toggleShowVerified();
-            }}
+            onChange={toggleShowVerified}
             color="primary"
             name="displayVerified"
           />

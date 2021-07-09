@@ -15,7 +15,7 @@ interface Props {
   numFound: number;
   onPageChange: Function;
   showOnlyVerified: boolean;
-  toggleShowVerified: Function;
+  toggleShowVerified: () => void;
 }
 
 const ViewOrganisations: React.FC<Props> = ({

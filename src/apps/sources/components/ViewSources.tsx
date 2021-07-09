@@ -16,7 +16,7 @@ interface Props {
   initialQ: string;
   title: string;
   showOnlyVerified: boolean;
-  toggleShowVerified: Function;
+  toggleShowVerified: () => void;
 }
 
 const ViewSources: React.FC<Props> = ({
