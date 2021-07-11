@@ -57,7 +57,7 @@ Then("the new organisation should be created", () =>
   cy.getOrganisation(organisationID).should("exist")
 );
 
-Then("the organisation should be  publicly visible", () =>
+Then("the organisation should be publicly visible", () =>
   cy
     .getOrganisation(organisationID)
     .its("public_access")
