@@ -46,7 +46,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
 
   useEffect(() => {
     retrieveDictionaries(url, showOnlyVerified ? "CIEL" : initialQ, PER_PAGE, page);
-  }, [retrieveDictionaries, url, initialQ, page]);
+  }, [retrieveDictionaries, url, initialQ, page, showOnlyVerified]);
 
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {

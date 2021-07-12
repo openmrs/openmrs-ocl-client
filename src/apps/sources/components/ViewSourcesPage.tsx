@@ -46,7 +46,7 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
 
   useEffect(() => {
     retrieveSources(url, showOnlyVerified ? "CIEL" : initialQ, PER_PAGE, page);
-  }, [retrieveSources, url, initialQ, page]);
+  }, [retrieveSources, url, initialQ, page, showOnlyVerified]);
 
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
