@@ -1,5 +1,6 @@
 {
   "baseUrl": "http://localhost:8080",
+  "responseTimeout": 180000 ,
   "retries": {
     "runMode": 1,
     "openMode": 0

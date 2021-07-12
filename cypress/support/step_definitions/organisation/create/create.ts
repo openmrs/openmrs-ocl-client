@@ -29,7 +29,7 @@ When("the user enters the organisation information", () => {
   // these are the form drop-downs, which are quite hard to
   // to automate, so I've elected to do this kind of hack
   // hopefully it can be replaced with something better
-  cy.get("#Public Access").type("{enter}");
+  cy.get("#public_access").type("{enter}");
 });
 
 When(/the user selects "(.+)" view/, public_access => {
@@ -46,7 +46,7 @@ When(/the user selects "(.+)" view/, public_access => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
-  cy.url().should("contain", `/orgs/${getOrganisationId()}/`);
+  cy.url().should("contain", `/orgs/${organisationID}/`);
 });
 
 Then("the user should be on the create new organisation page", () =>
