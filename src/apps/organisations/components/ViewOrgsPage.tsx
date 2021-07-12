@@ -57,9 +57,10 @@ const ViewOrganisationsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    const query = showOnlyVerified ? "CIEL" : initialQ;
     if (profile) {
-      retrieveOrganisations(profile?.username, initialQ, PER_PAGE, page);
-    } else retrieveOrganisations(url, initialQ, PER_PAGE, page);
+      retrieveOrganisations(profile?.username, query, PER_PAGE, page);
+    } else retrieveOrganisations(url, query, PER_PAGE, page);
   }, [retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

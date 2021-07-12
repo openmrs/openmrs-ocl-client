@@ -52,10 +52,12 @@ const ContainerSearch: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const [q, setQ] = useState(initialQ);
+
   useEffect(
     () => (showOnlyVerified ? onSearch(VERIFIED_SOURCES[0]) : onSearch()),
     [showOnlyVerified]
   );
+  
   return (
     <Grid className={classes.searchContainer} item xs={12}>
       <form
