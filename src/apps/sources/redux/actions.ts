@@ -6,7 +6,8 @@ import {
   RETRIEVE_SOURCES_ACTION,
   RETRIEVE_SOURCE_VERSIONS_ACTION,
   CREATE_SOURCE_VERSION_ACTION,
-  EDIT_SOURCE_VERSION_ACTION
+  EDIT_SOURCE_VERSION_ACTION,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import api from "../api";
 import {
@@ -137,4 +138,8 @@ export const editSourceDispatchAction = (
   return async (dispatch: Function) => {
     dispatch(editSourceAction<APISource>(url, source));
   };
+};
+export const toggleShowVerifiedAction = () => {
+  return (dispatch: Function) =>
+    dispatch({ type: TOGGLE_SHOW_VERIFIED_ACTION });
 };

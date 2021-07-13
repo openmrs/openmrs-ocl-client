@@ -27,7 +27,8 @@ import {
   SHOW_ADD_MEMBER_DIALOG,
   HIDE_ADD_MEMBER_DIALOG,
   SHOW_DELETE_MEMBER_DIALOG,
-  HIDE_DELETE_MEMBER_DIALOG
+  HIDE_DELETE_MEMBER_DIALOG,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { PERSONAL_ORGS_ACTION_INDEX } from "./constants";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../../../utils";
@@ -290,6 +291,10 @@ const deleteOrgMemberAction = (
     retrieveOrgMembersAction(args[0])(dispatch, getState);
   };
 };
+const toggleShowVerifiedAction = () => {
+  return (dispatch: Function) =>
+    dispatch({ type: TOGGLE_SHOW_VERIFIED_ACTION });
+};
 
 export {
   createOrganisationAction,
@@ -310,5 +315,6 @@ export {
   showAddMemberDialogAction,
   hideAddMemberDialogAction,
   showDeleteMemberDialogAction,
-  hideDeleteMemberDialogAction
+  hideDeleteMemberDialogAction,
+  toggleShowVerifiedAction
 };

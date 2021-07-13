@@ -30,7 +30,8 @@ export const testSource: APISource = {
 
 export const personalSources: SourceState = {
   sources: [{ items: [testSource], responseMeta: { key: false } }],
-  versions: []
+  versions: [],
+  showOnlyVerified: false
 };
 
 export const orgSources: SourceState = {
@@ -38,7 +39,8 @@ export const orgSources: SourceState = {
     { items: [] },
     { items: [testSource], responseMeta: { key: false } }
   ],
-  versions: []
+  versions: [],
+  showOnlyVerified: false
 };
 
 export const publicSources: SourceState = {
@@ -47,14 +49,16 @@ export const publicSources: SourceState = {
     { items: [] },
     { items: [testSource], responseMeta: { key: false } }
   ],
-  versions: []
+  versions: [],
+  showOnlyVerified: false
 };
 
 export const organisationState: OrganisationState = {
   organisation: {} as APIOrganisation,
   organisations: [],
   showAddMemberDialog: false,
-  showDeleteMemberDialog: false
+  showDeleteMemberDialog: false,
+  showOnlyVerified: false
 };
 
 const authState: AuthState = { isLoggedIn: true };
@@ -64,7 +68,8 @@ const statusState: StatusState = { key: [] };
 const dictionariesState: DictionaryState = {
   dictionaries: [{ items: [] }],
   versions: [],
-  addReferencesResults: []
+  addReferencesResults: [],
+  showOnlyVerified: true
 };
 
 const conceptState: ConceptsState = {

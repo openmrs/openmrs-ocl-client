@@ -11,16 +11,22 @@ import {
   EDIT_DICTIONARY_VERSION_ACTION,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 
 const initialState: DictionaryState = {
   dictionaries: [],
   versions: [],
-  addReferencesResults: []
+  addReferencesResults: [],
+  showOnlyVerified: false
 };
 export const reducer = createReducer(initialState, {
+  [TOGGLE_SHOW_VERIFIED_ACTION]: (state, action) => ({
+    ...state,
+    showOnlyVerified: !state.showOnlyVerified
+  }),
   [startAction(CREATE_SOURCE_AND_DICTIONARY_ACTION).type]: state => ({
     ...state,
     newDictionary: undefined

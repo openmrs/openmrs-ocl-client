@@ -14,6 +14,8 @@ interface Props {
   perPage: number;
   numFound: number;
   onPageChange: Function;
+  showOnlyVerified: boolean;
+  toggleShowVerified: () => void;
 }
 
 const ViewOrganisations: React.FC<Props> = ({
@@ -24,11 +26,19 @@ const ViewOrganisations: React.FC<Props> = ({
   page,
   perPage,
   numFound,
-  onPageChange
+  onPageChange,
+  showOnlyVerified,
+  toggleShowVerified
 }) => {
   return (
     <>
-      <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
+      <ContainerSearch
+        title={title}
+        onSearch={onSearch}
+        initialQ={initialQ}
+        showOnlyVerified={showOnlyVerified}
+        toggleShowVerified={toggleShowVerified}
+      />
       <OrganisationCards cards={organisations} title="Organisations" />
       <ContainerPagination
         num_found={Number(numFound)}

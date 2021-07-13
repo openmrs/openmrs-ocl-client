@@ -5,7 +5,10 @@ import { useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 import ViewDictionaries from "../components/ViewDictionaries";
-import { retrievePublicDictionariesAction } from "../redux";
+import {
+  retrievePublicDictionariesAction,
+  toggleShowVerifiedAction
+} from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -21,13 +24,18 @@ interface Props {
   retrieveDictionaries: (
     ...args: Parameters<typeof retrievePublicDictionariesAction>
   ) => void;
+  toggleShowVerified: (
+    ...args: Parameters<typeof toggleShowVerifiedAction>
+  ) => void;
+  showOnlyVerified: boolean;
 }
-
 const ViewPublicDictionariesPage: React.FC<Props> = ({
   dictionaries = [],
   loading,
   meta = {},
-  retrieveDictionaries
+  retrieveDictionaries,
+  toggleShowVerified,
+  showOnlyVerified
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -37,8 +45,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   const { page = 1, q: initialQ = "" } = queryParams;
 
   useEffect(() => {
-    retrieveDictionaries(url, initialQ, PER_PAGE, page);
-  }, [retrieveDictionaries, url, initialQ, page]);
+    retrieveDictionaries(url, showOnlyVerified ? "CIEL" : initialQ, PER_PAGE, page);
+  }, [retrieveDictionaries, url, initialQ, page, showOnlyVerified]);
 
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
@@ -61,6 +69,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           dictionaries={dictionaries}
           numFound={numFound}
           title={TITLE}
+          showOnlyVerified={showOnlyVerified}
+          toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/collections/new/`}>
           <Tooltip title="Create new dictionary">

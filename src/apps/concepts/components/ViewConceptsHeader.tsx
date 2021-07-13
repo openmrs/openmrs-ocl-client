@@ -14,11 +14,16 @@ import {
   Menu,
   MenuItem,
   TextField,
-  Theme,
+  Theme
 } from "@material-ui/core";
-import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
+import {
+  PREFERRED_SOURCES_VIEW_ONLY,
+  useAnchor,
+  VERIFIED_SOURCES
+} from "../../../utils";
 import { APISource } from "../../sources";
 import { AccountTreeOutlined } from "@material-ui/icons";
+import { VerifiedSource } from "../../../components/VerifiedSource";
 
 interface Props {
   containerType: string;
@@ -26,7 +31,7 @@ interface Props {
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
   children?: React.ReactNode[];
-  sources: APISource[]
+  sources: APISource[];
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) =>
         borderBottom: "none"
       }
     },
-    sourceIcon:{
+    sourceIcon: {
       marginRight: "0.2rem",
       fill: "#8080809c"
     }
@@ -67,7 +72,9 @@ const ViewConceptsHeader: React.FC<Props> = ({
   sources
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const formatPrefferedSources = Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key , url: value }));
+  const formatPrefferedSources = Object.entries(
+    PREFERRED_SOURCES_VIEW_ONLY
+  ).map(([key, value]) => ({ name: key, url: value }));
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
@@ -102,29 +109,31 @@ const ViewConceptsHeader: React.FC<Props> = ({
         <Menu
           PaperProps={{
             style: {
-             marginTop: "30px",
-             marginLeft: "10px"
+              marginTop: "30px",
+              marginLeft: "10px"
             }
-           }}
+          }}
           anchorEl={switchSourceAnchor}
           keepMounted
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
+          <TextField
             multiline
-            className={classes.textField} 
+            className={classes.textField}
             InputProps={{
               className: classes.underline
             }}
             inputProps={{
-              className: classes.input,
+              className: classes.input
             }}
-            value={showSources ? "Choose a source" : "Select a different source"} 
-            onClick={() => setShowSources(!showSources)} />
-          {showSources ? 
-            (formatPrefferedSources.concat(sources)?.map(
-              ({name, url}) => (
+            value={
+              showSources ? "Choose a source" : "Select a different source"
+            }
+            onClick={() => setShowSources(!showSources)}
+          />
+          {showSources
+            ? formatPrefferedSources.concat(sources)?.map(({ name, url }) => (
                 <MenuItem
                   // replace because we want to keep the back button useful
                   replace
@@ -134,29 +143,31 @@ const ViewConceptsHeader: React.FC<Props> = ({
                   onClick={handleSwitchSourceClose}
                   data-testid={name}
                 >
-                  <AccountTreeOutlined className={classes.sourceIcon}/> 
+                  <AccountTreeOutlined className={classes.sourceIcon} />
                   {name}
                 </MenuItem>
-              )
-            ))
-          : (Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-            ([preferredSourceName, preferredSourceUrl]) => (
-              <MenuItem
-                // replace because we want to keep the back button useful
-                replace
-                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                key={preferredSourceName}
-                component={Link}
-                onClick={handleSwitchSourceClose}
-                data-testid={preferredSourceName}
-              >
-                <AccountTreeOutlined className={classes.sourceIcon}/> 
-                {preferredSourceName}
-              </MenuItem>
-            )
-          ))
-          }
-          
+              ))
+            : Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
+                ([preferredSourceName, preferredSourceUrl]) => (
+                  <MenuItem
+                    // replace because we want to keep the back button useful
+                    replace
+                    to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                    key={preferredSourceName}
+                    component={Link}
+                    onClick={handleSwitchSourceClose}
+                    data-testid={preferredSourceName}
+                  >
+                    <AccountTreeOutlined className={classes.sourceIcon} />
+                    {preferredSourceName}
+                    {VERIFIED_SOURCES.includes(preferredSourceName) ? (
+                      <VerifiedSource />
+                    ) : (
+                      ""
+                    )}
+                  </MenuItem>
+                )
+              )}
         </Menu>
       </>
     );

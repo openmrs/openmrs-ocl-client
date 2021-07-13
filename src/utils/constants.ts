@@ -8,7 +8,8 @@ export const TRADITIONAL_OCL_URL =
   window.TRADITIONAL_OCL_HOST || "https://staging.openconceptlab.org";
 export const OCL_SIGNUP_URL =
   // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
-  window.OCL_SIGNUP_URL || "https://app.staging.openconceptlab.org/#/accounts/signup";
+  window.OCL_SIGNUP_URL ||
+  "https://app.staging.openconceptlab.org/#/accounts/signup";
 export const BUILD: string =
   // @ts-ignore OCL_BUILD is injected at runtime via index.html
   window.OCL_BUILD || "local";
@@ -304,6 +305,8 @@ export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   "Public Sources": ALL_PUBLIC_SOURCES_URL,
   ...PREFERRED_SOURCES
 };
+
+export const VERIFIED_SOURCES = ["CIEL"];
 
 export const CONTEXT = {
   create: "create",

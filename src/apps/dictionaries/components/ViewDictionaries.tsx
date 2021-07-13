@@ -15,8 +15,9 @@ interface Props {
   perPage: number;
   initialQ: string;
   title: string;
+  showOnlyVerified: boolean;
+  toggleShowVerified: () => void;
 }
-
 const ViewDictionaries: React.FC<Props> = ({
   dictionaries,
   numFound,
@@ -25,11 +26,19 @@ const ViewDictionaries: React.FC<Props> = ({
   page,
   perPage,
   initialQ,
-  title
+  title,
+  showOnlyVerified,
+  toggleShowVerified
 }) => {
   return (
     <>
-      <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
+      <ContainerSearch
+        title={title}
+        onSearch={onSearch}
+        initialQ={initialQ}
+        showOnlyVerified={showOnlyVerified}
+        toggleShowVerified={toggleShowVerified}
+      />
       <ContainerCards cards={dictionaries} title={title} />
       <ContainerPagination
         num_found={Number(numFound)}

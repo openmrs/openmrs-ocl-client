@@ -15,6 +15,7 @@ import { ProgressOverlay } from "../../../utils/components";
 import { ContainerOwnerTabs } from "../../containers/components";
 import { TAB_LIST } from "../constants";
 import { APIProfile } from "../../authentication";
+import { toggleShowVerifiedAction } from "../../dictionaries/redux";
 
 interface Props {
   organisations?: BaseAPIOrganisation[];
@@ -24,6 +25,10 @@ interface Props {
   retrieveOrganisations: (
     ...args: Parameters<typeof retrievePublicOrganisationsAction>
   ) => void;
+  toggleShowVerified: (
+    ...args: Parameters<typeof toggleShowVerifiedAction>
+  ) => void;
+  showOnlyVerified: boolean;
 }
 
 const ViewOrganisationsPage: React.FC<Props> = ({
@@ -31,7 +36,9 @@ const ViewOrganisationsPage: React.FC<Props> = ({
   profile,
   retrieveOrganisations,
   loading,
-  meta = {}
+  meta = {},
+  toggleShowVerified,
+  showOnlyVerified
 }: Props) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -50,9 +57,10 @@ const ViewOrganisationsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    const query = showOnlyVerified ? "CIEL" : initialQ;
     if (profile) {
-      retrieveOrganisations(profile?.username, initialQ, PER_PAGE, page);
-    } else retrieveOrganisations(url, initialQ, PER_PAGE, page);
+      retrieveOrganisations(profile?.username, query, PER_PAGE, page);
+    } else retrieveOrganisations(url, query, PER_PAGE, page);
   }, [retrieveOrganisations, url, initialQ, page, profile]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -68,6 +76,8 @@ const ViewOrganisationsPage: React.FC<Props> = ({
           perPage={PER_PAGE}
           onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
           numFound={numFound}
+          showOnlyVerified={showOnlyVerified}
+          toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/orgs/new/`}>
           <Tooltip title="Create new organisation">
