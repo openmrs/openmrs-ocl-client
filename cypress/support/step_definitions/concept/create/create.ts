@@ -39,5 +39,9 @@ When("the user enters the concept information", () => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
+});
+
+Then("the new concept should be created", () => {
   cy.url().should("not.contain", `/new`);
+  cy.findByText("test concept").should("be.visible");
 });
