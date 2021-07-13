@@ -149,8 +149,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   const queryParams: QueryParams = useQueryParams();
   const {
     page = 1,
-    sortDirection = "sortAsc",
-    sortBy = "id",
+    sortDirection = "sortDesc",
+    sortBy = "_score",
     limit = INITIAL_LIMIT,
     q: initialQ = "",
     classFilters: initialClassFilters = [],

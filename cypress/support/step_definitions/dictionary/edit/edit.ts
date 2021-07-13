@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 /// <reference types="../../../" />
 import {
-  After,
-  Before,
   Given,
   Then,
   When
