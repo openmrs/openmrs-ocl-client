@@ -15,6 +15,7 @@ import { APIOrg, APIProfile, profileSelector } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import { CONTEXT, ProgressOverlay, useQueryParams } from "../../../utils";
 import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries/redux";
+
 interface Props {
   loading: boolean;
   concept?: APIConcept;
@@ -57,7 +58,8 @@ const ViewConceptPage: React.FC<Props> = ({
     <>
       <Header
         allowImplicitNavigation
-        title={concept ? concept.display_name : "View concept"}
+        title={concept && concept.display_name ?
+          concept.display_name : "View concept"}
       >
         <ProgressOverlay
           delayRender

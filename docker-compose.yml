@@ -1,17 +1,17 @@
-version: '2.1'
+version: '3.5'
 
 services:
   oclclient:
-    image: openmrs/ocl-client:${ENVIRONMENT-dev}
     build:
       context: .
+      dockerfile: docker/Dockerfile
     environment:
     - OCL_API_HOST=${OCL_API_HOST:-https://api.qa.openconceptlab.org/}
     - TRADITIONAL_OCL_HOST=${TRADITIONAL_OCL_HOST:-https://qa.openconceptlab.org}
-    - OCL_SIGNUP_URL=${OCL_SIGNUP_URL:-https://qa.openconceptlab.org/accounts/signup/}
+    - OCL_SIGNUP_URL=${OCL_SIGNUP_URL:-https://app.qa.openconceptlab.org/#/accounts/signup}
     - ENVIRONMENT=${ENVIRONMENT:-dev}
     ports:
     - 8080:80
-    restart: always
+    restart: "no"
     healthcheck:
       test: ["CMD", "curl", "-sSf", "localhost"]

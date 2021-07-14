@@ -2,16 +2,17 @@ import { Option } from "./types";
 
 export const BASE_URL: string =
   // @ts-ignore OCL_API_HOST is injected at runtime via index.html
-  window.OCL_API_HOST || "https://api.qa.openconceptlab.org";
+  window.OCL_API_HOST || "https://api.staging.openconceptlab.org";
 export const TRADITIONAL_OCL_URL =
   // @ts-ignore TRADITIONAL_OCL_HOST is injected at runtime via index.html
-  window.TRADITIONAL_OCL_HOST || "https://qa.openconceptlab.org";
+  window.TRADITIONAL_OCL_HOST || "https://staging.openconceptlab.org";
 export const OCL_SIGNUP_URL =
   // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
-  window.OCL_SIGNUP_URL || "https://qa.openconceptlab.org/accounts/signup/";
+  window.OCL_SIGNUP_URL ||
+  "https://app.staging.openconceptlab.org/#/accounts/signup";
 export const BUILD: string =
-  // @ts-ignore BUILD is injected at runtime via index.html
-  window.BUILD || "local";
+  // @ts-ignore OCL_BUILD is injected at runtime via index.html
+  window.OCL_BUILD || "local";
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 
@@ -305,9 +306,12 @@ export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   ...PREFERRED_SOURCES
 };
 
+export const VERIFIED_SOURCES = ["CIEL"];
+
 export const CONTEXT = {
   create: "create",
   view: "view",
   edit: "edit"
 };
-export const CONCEPT_GENERAL: string[] = ["IncludeRetired"];
+
+export const CONCEPT_GENERAL: string[] = ["Include Retired", "Include Added Concepts"];

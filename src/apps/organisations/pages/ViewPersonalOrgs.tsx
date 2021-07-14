@@ -2,7 +2,10 @@ import { AppState } from "../../../redux";
 import { profileSelector } from "../../authentication/redux/reducer";
 import { retrievePersonalOrganisationsLoadingSelector } from "../redux";
 import { connect } from "react-redux";
-import { retrievePersonalOrganisationsAction } from "../redux/actions";
+import {
+  retrievePersonalOrganisationsAction,
+  toggleShowVerifiedAction
+} from "../redux/actions";
 import { ViewOrganisationsPage } from "../components";
 import { PERSONAL_ORGS_ACTION_INDEX } from "../redux/constants";
 
@@ -12,11 +15,13 @@ const mapStateToProps = (state: AppState) => ({
   organisations:
     state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]?.items,
   meta:
-    state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]?.responseMeta
+    state.organisations.organisations[PERSONAL_ORGS_ACTION_INDEX]?.responseMeta,
+  showOnlyVerified: state.organisations.showOnlyVerified
 });
 
 const mapDispatchToProps = {
-  retrieveOrganisations: retrievePersonalOrganisationsAction
+  retrieveOrganisations: retrievePersonalOrganisationsAction,
+  toggleShowVerified: toggleShowVerifiedAction
 };
 
 export default connect(

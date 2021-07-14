@@ -1,5 +1,8 @@
 import { AppState } from "../../../redux";
-import { retrievePublicDictionariesLoadingSelector } from "../redux";
+import {
+  retrievePublicDictionariesLoadingSelector,
+  toggleShowVerifiedAction
+} from "../redux";
 import { connect } from "react-redux";
 import { retrievePublicDictionariesAction } from "../redux/actions";
 import { ViewDictionariesPage } from "../components";
@@ -11,11 +14,13 @@ const mapStateToProps = (state: AppState) => ({
     state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
   meta:
     state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]
-      ?.responseMeta
+      ?.responseMeta,
+  showOnlyVerified: state.dictionaries.showOnlyVerified
 });
 
 const mapDispatchToProps = {
-  retrieveDictionaries: retrievePublicDictionariesAction
+  retrieveDictionaries: retrievePublicDictionariesAction,
+  toggleShowVerified: toggleShowVerifiedAction
 };
 
 export default connect(

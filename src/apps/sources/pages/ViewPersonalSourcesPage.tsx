@@ -1,7 +1,8 @@
 import { AppState } from "../../../redux";
 import {
   retrievePersonalSourcesAction,
-  retrievePersonalSourcesLoadingSelector
+  retrievePersonalSourcesLoadingSelector,
+  toggleShowVerifiedAction
 } from "../redux";
 import { connect } from "react-redux";
 
@@ -11,11 +12,13 @@ import { ViewSourcesPage } from "../components";
 export const mapStateToProps = (state: AppState) => ({
   loading: retrievePersonalSourcesLoadingSelector(state),
   sources: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.items,
-  meta: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.responseMeta
+  meta: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.responseMeta,
+  showOnlyVerified: state.sources.showOnlyVerified
 });
 
 export const mapDispatchToProps = {
-  retrieveSources: retrievePersonalSourcesAction
+  retrieveSources: retrievePersonalSourcesAction,
+  toggleShowVerified: toggleShowVerifiedAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcesPage);

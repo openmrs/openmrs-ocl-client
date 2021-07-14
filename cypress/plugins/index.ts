@@ -1,4 +1,3 @@
-/// <reference types="cypress" />
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -12,15 +11,20 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-const wp = require("@cypress/webpack-preprocessor");
+const browserify = require("@cypress/browserify-preprocessor");
+const cucumber = require("cypress-cucumber-preprocessor").default;
 
 /**
  * @type {Cypress.PluginConfig}
  */
-
-module.exports = on => {
-  const options = {
-    webpackOptions: require("../webpack.config.js")
-  };
-  on("file:preprocessor", wp(options));
+const plugins: Cypress.PluginConfig = (on) => {
+  on(
+    "file:preprocessor",
+    cucumber({
+      ...browserify.defaultOptions,
+      typescript: require.resolve("typescript")
+    })
+  );
 };
+
+export default plugins;

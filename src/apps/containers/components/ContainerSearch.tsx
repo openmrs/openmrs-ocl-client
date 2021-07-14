@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   createStyles,
   Grid,
@@ -9,11 +9,17 @@ import {
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import { Search as SearchIcon } from "@material-ui/icons";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { VERIFIED_SOURCES } from "../../../utils";
+import { VerifiedSource } from "../../../components/VerifiedSource";
 
 interface Props {
   title: string;
   onSearch: Function;
   initialQ: string;
+  showOnlyVerified: boolean;
+  toggleShowVerified: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -37,9 +43,21 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
+const ContainerSearch: React.FC<Props> = ({
+  title,
+  onSearch,
+  initialQ,
+  showOnlyVerified,
+  toggleShowVerified
+}) => {
   const classes = useStyles();
   const [q, setQ] = useState(initialQ);
+
+  useEffect(
+    () => (showOnlyVerified ? onSearch(VERIFIED_SOURCES[0]) : onSearch()),
+    [showOnlyVerified]
+  );
+  
   return (
     <Grid className={classes.searchContainer} item xs={12}>
       <form
@@ -71,6 +89,20 @@ const ContainerSearch: React.FC<Props> = ({ title, onSearch, initialQ }) => {
           }
         />
       </form>
+      <FormControlLabel
+        control={
+          <Switch
+            checkedIcon={<VerifiedSource />}
+            checked={showOnlyVerified}
+            onChange={toggleShowVerified}
+            color="primary"
+            name="displayVerified"
+          />
+        }
+        label={
+          showOnlyVerified ? "Showing verified only" : "Showing all results"
+        }
+      />
     </Grid>
   );
 };

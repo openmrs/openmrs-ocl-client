@@ -140,6 +140,21 @@ const conceptDataTypeCell = (
   );
 };
 
+const conceptSourceCell = (
+  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  row: APIConcept
+) => {
+  return (
+    <TableCell
+      onClick={event => toggleSelect(event, row.id)}
+      data-testclass="source"
+      style={{ wordWrap: "break-word" }}
+    >
+      {row.source}
+    </TableCell>
+  );
+};
+
 const conceptIDCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept
@@ -283,6 +298,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       )}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
+      {conceptSourceCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
       {row.added
         ? AlreadyCheckedCell()

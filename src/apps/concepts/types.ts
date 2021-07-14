@@ -81,6 +81,7 @@ export interface APIConcept extends BaseConcept {
   mappings: APIMapping[];
   retired: boolean;
   source_url: string;
+  source: string;
 }
 
 export interface ConceptsState {
@@ -195,11 +196,12 @@ const sortConceptDescriptions = (
 };
 
 export type SortableField =
-  | "bestMatch"
+  | "_score"
   | "lastUpdate"
   | "name"
   | "id"
   | "datatype"
+  | "source"
   | "conceptClass";
 
 export interface OptionalQueryParams {

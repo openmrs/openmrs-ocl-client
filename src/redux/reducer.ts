@@ -13,12 +13,17 @@ import {
 import { Action, StatusState } from "./types";
 import { LOGOUT_ACTION } from "../apps/authentication/redux/actionTypes";
 
+const initialState: StatusState = {};
+
 // todo improve these action types args
-const loadingAndErroredReducer = (state: StatusState = {}, action: Action) => {
+const loadingAndErroredReducer = (
+  state: StatusState = initialState,
+  action: Action
+) => {
   const { type, payload, actionIndex, meta: actionMeta } = action;
 
-  if (type === LOGOUT_ACTION) {
-    return {};
+  if(type === LOGOUT_ACTION){
+    return Object.assign({}, initialState);
   }
 
   const matches = /(.*)_(START|PROGRESS|FAILURE|COMPLETE|RESET)/.exec(type);

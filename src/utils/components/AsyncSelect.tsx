@@ -1,4 +1,9 @@
-import React, { CSSProperties, HTMLAttributes } from "react";
+import React, {
+  ChangeEventHandler,
+  CSSProperties,
+  FocusEventHandler,
+  HTMLAttributes
+} from "react";
 import {
   createStyles,
   makeStyles,
@@ -17,17 +22,19 @@ import { PlaceholderProps } from "react-select/src/components/Placeholder";
 import { SingleValueProps } from "react-select/src/components/SingleValue";
 import { Omit } from "@material-ui/types";
 import {
+  ActionMeta,
   components as ReactSelectComponents,
-  IndicatorProps
+  IndicatorProps,
+  ValueType
 } from "react-select";
-import AsyncPaginate from "react-select-async-paginate";
+import AsyncPaginate, { AsyncResult } from "react-select-async-paginate";
 import { Option } from "../types";
 import {
   ArrowDropDown as ArrowDropDownIcon,
   Close as CloseIcon
 } from "@material-ui/icons";
 import { CircularProgress, Tooltip } from "@material-ui/core";
-import { LoadingIconProps } from "react-select/src/components/indicators";
+import { LoadingIndicatorProps } from "react-select/src/components/indicators";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const LoadingMessage = (props: NoticeProps<Option>) => {
+const LoadingMessage = (props: NoticeProps<Option, false>) => {
   return (
     <Typography
       color="textSecondary"
@@ -80,7 +87,7 @@ const LoadingMessage = (props: NoticeProps<Option>) => {
   );
 };
 
-function NoOptionsMessage(props: NoticeProps<Option>) {
+function NoOptionsMessage(props: NoticeProps<Option, false>) {
   return (
     <Typography
       color="textSecondary"
@@ -99,7 +106,7 @@ function inputComponent({ inputRef, ...props }: InputComponentProps) {
   return <div ref={inputRef} {...props} />;
 }
 
-function Control(props: ControlProps<Option>) {
+function Control(props: ControlProps<Option, false>) {
   const {
     children,
     innerProps,
@@ -124,7 +131,7 @@ function Control(props: ControlProps<Option>) {
   );
 }
 
-function OptionComponent(props: OptionProps<Option>) {
+function OptionComponent(props: OptionProps<Option, false>) {
   return (
     <Tooltip title={props.label} enterDelay={700}>
       <MenuItem
@@ -143,8 +150,8 @@ function OptionComponent(props: OptionProps<Option>) {
   );
 }
 
-type MuiPlaceholderProps = Omit<PlaceholderProps<Option>, "innerProps"> &
-  Partial<Pick<PlaceholderProps<Option>, "innerProps">>;
+type MuiPlaceholderProps = Omit<PlaceholderProps<Option, false>, "innerProps"> &
+  Partial<Pick<PlaceholderProps<Option, false>, "innerProps">>;
 
 function Placeholder(props: MuiPlaceholderProps) {
   const { selectProps, innerProps = {}, children } = props;
@@ -170,7 +177,7 @@ function SingleValue(props: SingleValueProps<Option>) {
   );
 }
 
-function ValueContainer(props: ValueContainerProps<Option>) {
+function ValueContainer(props: ValueContainerProps<Option, false>) {
   return (
     <div className={props.selectProps.classes.valueContainer}>
       {props.children}
@@ -178,7 +185,7 @@ function ValueContainer(props: ValueContainerProps<Option>) {
   );
 }
 
-const DropdownIndicator = (props: IndicatorProps<Option>) => {
+const DropdownIndicator = (props: IndicatorProps<Option, false>) => {
   return (
     <ReactSelectComponents.DropdownIndicator
       className={props.selectProps.classes.icon}
@@ -193,7 +200,7 @@ const IndicatorSeparator = () => {
   return null;
 };
 
-const LoadingIndicator = (props: LoadingIconProps<Option>) => {
+const LoadingIndicator = (props: LoadingIndicatorProps<Option, false>) => {
   return (
     <CircularProgress
       className={props.selectProps.classes.icon}
@@ -203,7 +210,7 @@ const LoadingIndicator = (props: LoadingIconProps<Option>) => {
   );
 };
 
-const ClearIndicator = (props: IndicatorProps<Option>) => {
+const ClearIndicator = (props: IndicatorProps<Option, false>) => {
   return (
     <ReactSelectComponents.ClearIndicator
       className={props.selectProps.classes.icon}
@@ -214,7 +221,7 @@ const ClearIndicator = (props: IndicatorProps<Option>) => {
   );
 };
 
-function Menu(props: MenuProps<Option>) {
+function Menu(props: MenuProps<Option, false>) {
   return (
     <Paper
       square
@@ -245,11 +252,18 @@ const components = {
 interface Props {
   placeholder: string;
   value: any;
-  onChange: Function;
-  loadOptions: Function;
+  onChange: (
+    value: ValueType<Option, false>,
+    action: ActionMeta<Option>
+  ) => void;
+  loadOptions: (
+    inputValue: string,
+    prevOptions: Option[],
+    additional: {}
+  ) => Promise<AsyncResult<Option, {}>>;
   additional: {};
   isDisabled: boolean;
-  onBlur: Function;
+  onBlur: FocusEventHandler;
 }
 
 const AsyncSelect: React.FC<Props> = props => {
@@ -267,7 +281,6 @@ const AsyncSelect: React.FC<Props> = props => {
   };
 
   return (
-    // @ts-ignore
     <AsyncPaginate
       isClearable={true}
       classes={classes}

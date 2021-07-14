@@ -1,7 +1,6 @@
-///<reference path="../../../../../node_modules/@types/testing-library__dom/queries.d.ts"/>
 import React from "react";
 import "@testing-library/jest-dom";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 
 import { ViewSourcesPage } from "../../components/index";
 import routeData from "react-router";

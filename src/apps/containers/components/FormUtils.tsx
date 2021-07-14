@@ -6,9 +6,7 @@ import { BaseConceptContainer, LOCALES } from "../../../utils";
 export const showUserName = (profile: APIProfile | undefined) => {
   return profile ? (
     <MenuItem value={profile.url}>{profile.username}(You)</MenuItem>
-  ) : (
-    ""
-  );
+  ) : null;
 };
 
 export const showOrganisationHeader = (userOrgs: APIOrg[]) => {

@@ -15,7 +15,7 @@ import {
   ConceptName,
   Mapping
 } from "../types";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 import {
   Button,
   FormControl,
@@ -267,8 +267,9 @@ const ConceptForm: React.FC<Props> = ({
     if (!currentRef || !savedValues) return;
 
     [ANSWERS_VALUE_KEY, SETS_VALUE_KEY, MAPPINGS_VALUE_KEY].forEach(key => {
-      // @ts-ignore
-      savedValues[key].forEach((value: Mapping, index: number) =>
+      savedValues[
+        key as "answers" | "sets" | "mappings"
+      ].forEach((value: Mapping, index: number) =>
         currentRef.setFieldValue(`${key}[${index}].url`, value.url, false)
       );
     });
@@ -324,7 +325,7 @@ const ConceptForm: React.FC<Props> = ({
         errors,
         handleChange
       }) => (
-        <Form id="conceptForm" translate="">
+        <Form id="conceptForm">
           <Paper className="fieldsetParent">
             <fieldset>
               <Typography component="legend" variant="h5" gutterBottom>
@@ -334,7 +335,7 @@ const ConceptForm: React.FC<Props> = ({
                 fullWidth
                 id="external_id"
                 name="external_id"
-                label="OpenMRS UUID (OCL External ID)"
+                label="OpenMRS UUID"
                 margin="normal"
                 disabled={!isExternalIDEditable}
                 component={TextField}

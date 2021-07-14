@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
 
 import { DictionaryVersion } from "../types";
-import uuid from "uuid";
+import { v4 as uuid } from "uuid";
 
 interface Props {
   onSubmit: Function;
@@ -75,7 +75,7 @@ const DictionaryVersionForm: React.FC<Props> = ({
       >
         {({ isSubmitting }) => (
           <>
-            <Form translate="">
+            <Form>
               <DialogContent>
                 <Field
                   fullWidth

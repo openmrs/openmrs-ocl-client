@@ -45,6 +45,7 @@ export const headCells: HeadCell[] = [
   { id: "name", disablePadding: false, label: "Name" },
   { id: "conceptClass", disablePadding: false, label: "Class" },
   { id: "datatype", disablePadding: false, label: "Datatype" },
+  { id: "source", disablePadding: false, label: "Source" },
   { id: "id", disablePadding: false, label: "ID" }
 ];
 
@@ -73,8 +74,7 @@ export const useToolbarStyles = makeStyles((theme: Theme) =>
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: "100%",
-      marginTop: theme.spacing(3)
+      width: "100%"
     },
     paper: {
       width: "100%",

@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import reduxThunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import loadingAndErroredReducer from "./reducer";
@@ -62,9 +62,9 @@ const rootReducer = combineReducers({
 const store = createStore(
   rootReducer,
   loadState(),
-  process.env.NODE_ENV === "production" ?
-    applyMiddleware(reduxThunk) :
-    composeWithDevTools(applyMiddleware(reduxThunk))
+  process.env.NODE_ENV === "production"
+    ? applyMiddleware(reduxThunk)
+    : composeWithDevTools(applyMiddleware(reduxThunk))
 );
 
 store.subscribe(() => {
@@ -72,3 +72,14 @@ store.subscribe(() => {
 });
 
 export default store;
+
+// required for Cypress tests
+declare global {
+  interface Window {
+    store: Store;
+  }
+}
+
+if ("Cypress" in window) {
+  window.store = store;
+}

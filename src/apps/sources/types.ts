@@ -49,6 +49,7 @@ export interface SourceState {
   source?: APISource;
   newSource?: APISource;
   versions: APISourceVersion[];
+  showOnlyVerified: boolean;
 }
 export interface APISourceVersion extends SourceVersion {
   version_url: string;

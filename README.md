@@ -1,10 +1,10 @@
 <img src="https://cloud.githubusercontent.com/assets/668093/12567089/0ac42774-c372-11e5-97eb-00baf0fccc37.jpg" alt="OpenMRS"/>
 
-### [![Build Status](https://travis-ci.org/openmrs/openmrs-ocl-client.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-ocl-client) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
+### [![Build Status](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
 
-# openmrs-ocl-client
-> OCL client for OpenMRS is a web service that will allow OpenMRS users to manage their dictionaries in the cloud,
-> allow re-usability of the existing concepts and allow one to create custom concepts to complement existing ones while building their dictionaries.
+# OpenMRS Dictionary Manager
+
+The OpenMRS Dictionary Manager is a tool to create and maintain OpenMRS concept dictionaries in the cloud, using both expert-curated concepts from sources such as CIEL as well as custom implementation-specific concepts.
 
 ## Available Scripts
 ### `npm start`
@@ -49,10 +49,16 @@ The build is minified and the filenames include the hashes.<br />
 The API accessed by this UI falls back to the OpenMRS demo environment.
 To specify your own API server create a file called `env-config.js` under the public directory containing;
 ```javascript
-var OCL_API_HOST = "<your endpoint, e.g https://api.qa.openconceptlab.org>";
-var TRADITIONAL_OCL_HOST = "<your endpoint, e.g https://qa.openconceptlab.org>";
+var OCL_API_HOST = "<your endpoint, e.g https://api.staging.openconceptlab.org>";
+var TRADITIONAL_OCL_HOST = "<your endpoint, e.g https://staging.openconceptlab.org>";
+var OCL_SIGNUP_URL = "<your endpoint, e.g https://app.staging.openconceptlab.org/#/accounts/signup>"
 ```
 These variables will automatically be injected into the app at runtime. This is the same strategy we use while deploying the application.
+
+### Running Cypress Tests
+As opposed to the tests built into the package using Jest, we also supply some end-to-end tests written using [Cypress](https://www.cypress.io/). These are run automatically on each PR or commit. In the CI environments, we actually spin up a local instance of the OCL API and then the OpenMRS Dictionary Manager via Docker. This can be done locally by running the [`start_local_instance.sh`](start_local_instance.sh) script. From there, the CI will run `npm test:integration` which will run Cypress and all tests locally.
+
+If Cypress fails to run on your local instance for whatever reason, you can use the [`run_e2e.sh`](run_e2e.sh) script to run the Cypress tests inside a Docker container. This is useful for running the tests locally, but if tests fail, it is easier to use the Cypress UI to diagnose the issues. To run Cypress with the UI (assuming Cypress works locally), you can run `npx cypress open`. Unfortunately, it's not possible to run the Cypress UI in the Docker container to the best of my knowledge.
 
 ## Contributing to this project
 - Visit the project [wiki](https://wiki.openmrs.org/display/projects/Contributing+to+OCL+for+OpenMRS%3A+Developer+Guide) for a layout of the project and how you can start contributing.

@@ -28,6 +28,7 @@ interface BaseAPIDictionary extends BaseDictionary {
 
 export interface NewAPIDictionary extends BaseAPIDictionary {
   supported_locales: string;
+  collection_type: string;
 }
 
 export interface APIDictionary extends BaseAPIDictionary {
@@ -49,6 +50,7 @@ export interface DictionaryState {
   dictionaries: { items: APIDictionary[]; responseMeta?: {} }[];
   versions: APIDictionaryVersion[];
   addReferencesResults: { payload: {}; meta: [] }[];
+  showOnlyVerified: boolean;
 }
 
 export interface EditableDictionaryFields

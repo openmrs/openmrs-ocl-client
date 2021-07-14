@@ -24,7 +24,7 @@ import {
   CUSTOM_VALIDATION_SCHEMA,
   EditableConceptContainerFields
 } from "../../../utils";
-import uuid from "uuid/v4";
+import { v4 as uuid } from "uuid";
 import {
   ORG_DICTIONARIES_ACTION_INDEX,
   PERSONAL_DICTIONARIES_ACTION_INDEX
@@ -44,7 +44,8 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { invalidateCache } from "../../../redux/utils";
 import {
@@ -97,12 +98,13 @@ export const createSourceAndDictionaryAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales?.join(","),
       website: "",
-      owner_url: owner_url
+      owner_url: owner_url,
+      source_type: "Dictionary"
     };
     sourceResponse = await dispatch(createSource<APISource>(owner_url, source));
     if (!sourceResponse) {
@@ -138,7 +140,8 @@ export const createSourceAndDictionaryAction = (
       id: short_code,
       short_code,
       supported_locales: supported_locales.join(","),
-      website: ""
+      website: "",
+      collection_type: "Dictionary"
     };
     dictionaryResponse = await dispatch(
       createDictionaryAction<APIDictionary>(owner_url, dictionary)
@@ -228,7 +231,8 @@ export const editSourceAndDictionaryAction = (
       name,
       supported_locales: supported_locales.join(","),
       default_locale,
-      preferred_source
+      preferred_source,
+      public_access
     };
 
     if (linkedSource) {
@@ -280,7 +284,8 @@ export const createAndAddLinkedSourceAction = (
       supported_locales,
       owner_url,
       default_locale,
-      short_code
+      short_code,
+      public_access
     } = dictionaryData;
 
     let sourceResponse: APISource | boolean;
@@ -295,7 +300,7 @@ export const createAndAddLinkedSourceAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales.join(","),
@@ -468,3 +473,7 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete
 );
+
+export const toggleShowVerifiedAction = () => {
+  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
+};

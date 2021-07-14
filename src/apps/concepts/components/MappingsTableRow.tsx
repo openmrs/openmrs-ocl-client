@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
-import { MAP_TYPES, Option } from "../../../utils";
+import { MAP_TYPES, Option, VERIFIED_SOURCES } from "../../../utils";
 import { Select, TextField } from "formik-material-ui";
 import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
@@ -29,6 +29,7 @@ import {
 } from "@material-ui/icons";
 import clsx from "clsx";
 import * as Yup from "yup";
+import { VerifiedSource } from "../../../components/VerifiedSource";
 
 interface ConceptOption extends Option {
   displayName: string;
@@ -53,7 +54,6 @@ export const MappingSchema = Yup.object()
     "A to concept is required",
     (value: Mapping) => !!value.to_concept_code || !!value.to_concept_url
   );
-
 const buildEvent = (name: string, value?: any) => ({ target: { name, value } });
 
 const option = (value?: string, label?: string) => ({ value, label });
@@ -110,9 +110,11 @@ const fetchSourceOptions = async (
     return {
       options: actualSources.map((source: APISource) => {
         const { name, url } = source;
-
+        const icon = () => {
+          return VERIFIED_SOURCES.includes(name) ? <VerifiedSource /> : "";
+        };
         return {
-          label: name,
+          label: [name, icon()],
           value: url,
           isInternalSource: !isExternalSource(source)
         };

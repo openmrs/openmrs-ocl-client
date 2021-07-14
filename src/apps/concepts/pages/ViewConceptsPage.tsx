@@ -41,16 +41,19 @@ import { APIDictionary } from "../../dictionaries";
 import {
   sourceSelector,
   retrieveSourceLoadingSelector,
-  retrieveSourceAndDetailsAction
+  retrieveSourceAndDetailsAction,
+  retrievePublicSourcesAction
 } from "../../sources/redux";
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
+import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
 
 export interface StateProps {
   concepts?: APIConcept[];
   modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
   source?: APISource;
+  sources: APISource[];
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -73,6 +76,9 @@ export type ActionProps = {
   ) => void;
   retrieveSource: (
     ...args: Parameters<typeof retrieveSourceAndDetailsAction>
+  ) => void;
+  retrievePublicSources: (
+    ...args: Parameters<typeof retrievePublicSourcesAction>
   ) => void;
 };
 
@@ -106,6 +112,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   modifiedConcepts,
   dictionary,
   source,
+  retrievePublicSources,
+  sources = [],
   loading,
   errors,
   retrieveConcepts,
@@ -141,8 +149,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   const queryParams: QueryParams = useQueryParams();
   const {
     page = 1,
-    sortDirection = "sortAsc",
-    sortBy = "id",
+    sortDirection = "sortDesc",
+    sortBy = "_score",
     limit = INITIAL_LIMIT,
     q: initialQ = "",
     classFilters: initialClassFilters = [],
@@ -152,6 +160,11 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
+  const sourceUrl = '/sources/';
+  const sourcesLimit = 0;
+  useEffect(() => {
+    retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
+  }, [initialQ, page, retrievePublicSources]);
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
@@ -170,10 +183,15 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
-  const [generalFilters, setGeneralFilters] = useState(initialGeneralFilters);
+  const [generalFilters, setGeneralFilters] = useState<string[]>(initialGeneralFilters);
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
+
+  const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
+  const includeAddedConcepts = generalFilters.includes('Include Added Concepts');
+  const isImporting = dictionaryToAddTo !== undefined;
+
   const [q, setQ] = useState(initialQ);
 
   const gimmeAUrl = (params: QueryParams = {}, conceptsUrl: string = url) => {
@@ -201,7 +219,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       : retrieveDictionary(containerUrl);
 
     retrieveConcepts({
-      conceptsUrl: url,
+      conceptsUrl: isImporting ? (includeAddedConcepts ? url : excludeAddedConceptsUrl) : url,
       page: page,
       limit: limit,
       q: initialQ,
@@ -210,7 +228,8 @@ const ViewConceptsPage: React.FC<Props> = ({
       dataTypeFilters: initialDataTypeFilters,
       classFilters: initialClassFilters,
       sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("IncludeRetired")
+      includeRetired: initialGeneralFilters.includes("Include Retired"),
+      includeAdded: generalFilters.includes("Include Added Concepts")
     });
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
@@ -243,18 +262,17 @@ const ViewConceptsPage: React.FC<Props> = ({
     !dictionaryToAddTo;
 
   return (
-    <>
-      <ViewConceptsHeader
-        containerType={containerType}
-        containerUrl={containerUrl}
-        gimmeAUrl={gimmeAUrl}
-        addConceptToDictionary={dictionaryToAddTo}
-      />
+    <ViewConceptsHeader
+      containerType={containerType}
+      containerUrl={containerUrl}
+      gimmeAUrl={gimmeAUrl}
+      addConceptToDictionary={dictionaryToAddTo}
+      sources={sources}
+    >
       <Grid
         container
         className={classes.content}
         component="div"
-        // @ts-ignore
         justify="space-around"
         alignItems="flex-start"
       >
@@ -344,7 +362,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         linkedSource={linkedSource}
         preferredSource={preferredSource}
       />
-    </>
+    </ViewConceptsHeader>
   );
 };
 
@@ -366,6 +384,7 @@ const mapStateToProps = (state: AppState) => {
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
     source: sourceSelector(state),
+    sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
       ? state.concepts.concepts.responseMeta
       : undefined,
@@ -383,7 +402,8 @@ const mapActionsToProps = {
   retrieveDictionary: makeRetrieveDictionaryAction(true),
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  removeConceptsFromDictionary: removeReferencesFromDictionaryAction
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
+  retrievePublicSources: retrievePublicSourcesAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(

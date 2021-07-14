@@ -59,10 +59,10 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
         onSubmit={({ username, password }) => onSubmit(username, password)}
       >
         {({ isSubmitting, status }) => (
-          <Form className="fieldsetParent" translate="">
+          <Form className="fieldsetParent">
             <fieldset>
               <Typography variant="h6" component="legend">
-                Log In to Open Concept Lab
+                Log In
               </Typography>
               <div className={classes.fields}>
                 <Field
@@ -108,6 +108,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                     color="error"
                     variant="caption"
                     component="span"
+                    data-testid="login-status-message"
                   >
                     {status}
                   </Typography>
@@ -132,7 +133,7 @@ const Login: React.FC<Props> = ({ onSubmit, loading, status }) => {
                       variant="body2"
                       href={TRADITIONAL_OCL_URL}
                     >
-                      Go to Traditional OCL
+                      Go to Open Concept Lab
                     </Link>
                   </div>
                 </div>

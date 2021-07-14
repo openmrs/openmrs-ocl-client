@@ -98,7 +98,7 @@ const OrganisationForm: React.FC<Props> = ({
         }}
       >
         {({ isSubmitting }) => (
-          <Form translate="">
+          <Form>
             <Field
               // required
               fullWidth

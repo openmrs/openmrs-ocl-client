@@ -24,6 +24,7 @@ const currentState: AuthState = {
   ],
   token: "1234567890"
 };
+
 describe("auth reducer on logout action", () => {
   it("should return auth state only with isLoggedIn as false on logout action ", () => {
     const logoutAction: AnyAction = {

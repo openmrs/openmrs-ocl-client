@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "../../../../test-utils";
+import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
 import ConceptsTable from "../../components/ConceptsTable";
 import {
@@ -68,7 +68,8 @@ const testConcept: APIConcept = {
   display_name: "display_name",
   mappings: [testMapping],
   retired: false,
-  source_url: "source_url"
+  source_url: "source_url",
+  source: "My source"
 };
 
 function renderUI(props: Partial<conceptsTableProps> = {}) {

@@ -1,11 +1,9 @@
-import React from "react";
-import { Field, getIn } from "formik";
+import { Field, FormikState, getIn } from "formik";
 
 const NestedErrorMessage = ({ name }: { name: string }) => (
   <Field
     name={name}
-    // @ts-ignore
-    render={({ form }) => {
+    render={({ form }: { form: FormikState<any> }) => {
       const error = getIn(form.errors, name);
       const touch = getIn(form.touched, name);
       return touch && error ? <span>{error}</span> : null;

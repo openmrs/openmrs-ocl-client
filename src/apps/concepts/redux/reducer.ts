@@ -20,6 +20,7 @@ const initialState: ConceptsState = {
     items: []
   }
 };
+
 export const reducer = createReducer<ConceptsState>(initialState, {
   [startAction(UPSERT_CONCEPT_ACTION).type]: state => ({
     ...state,
@@ -75,4 +76,5 @@ export const reducer = createReducer<ConceptsState>(initialState, {
     return initialState;
   }
 });
-export { reducer as default };
+
+export default reducer;

@@ -4,6 +4,7 @@ import {
   Badge,
   createStyles,
   Grid,
+  GridJustification,
   IconButton,
   makeStyles,
   Theme,
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(7) + 1
     },
     content: {
-      marginTop: "6vh",
+      marginTop: "32px",
       height: "100%"
     },
     grow: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   children?: React.ReactNode;
   title: string;
-  justifyChildren?: string;
+  justifyChildren?: GridJustification;
   loadingList: boolean[];
   backUrl?: string;
   backText?: string;
@@ -64,13 +65,13 @@ const Header: React.FC<Props> = ({
 
   const classes = useStyles();
   useEffect(() => {
-    document.title = `${title} | OCL for OpenMRS`;
+    document.title = `${title} | OpenMRS Dictionary Manager`;
   }, [title]);
   const history = useHistory();
 
   return (
     <div data-testid="header">
-      <AppBar position="relative" className={classes.appBar}>
+      <AppBar position="sticky" className={classes.appBar}>
         <Toolbar>
           {backUrl ? (
             <Tooltip title={backText}>
@@ -113,7 +114,6 @@ const Header: React.FC<Props> = ({
         container
         className={classes.content}
         component="div"
-        // @ts-ignore
         justify={justifyChildren}
         alignItems="flex-start"
       >

@@ -23,6 +23,7 @@ import {
 } from "../../redux";
 import { ConceptsState } from "../../../concepts";
 import { SourceState } from "../../../sources";
+import { APIOrganisation, OrganisationState } from "../../../organisations";
 
 type viewDictionaryPageProps = React.ComponentProps<typeof ViewDictionaryPage>;
 
@@ -31,7 +32,6 @@ const testDictionary: APIDictionary = {
   default_locale: "en",
   description: "None",
   external_id: "2",
-  // @ts-ignore
   extras: { source: undefined },
   full_name: "Test Dictionary",
   id: "2",
@@ -109,12 +109,20 @@ const sourceState: SourceState = {
   versions: []
 };
 
+const organisationState: OrganisationState = {
+  organisation: {} as APIOrganisation,
+  organisations: [],
+  showAddMemberDialog: false,
+  showDeleteMemberDialog: false
+};
+
 const currentState: AppState = {
   auth: authState,
   status: statusState,
   dictionaries: dictionariesState,
   concepts: conceptState,
-  sources: sourceState
+  sources: sourceState,
+  organisations: organisationState
 };
 
 function renderUI(props: Partial<viewDictionaryPageProps> = {}) {

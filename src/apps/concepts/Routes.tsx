@@ -23,7 +23,6 @@ const Routes: React.FC<Props> = ({
   editConcept = false,
   viewDictConcepts = false
 }) => {
-  // @ts-ignore
   let { path } = useRouteMatch();
 
   return (

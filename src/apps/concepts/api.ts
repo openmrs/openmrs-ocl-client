@@ -32,18 +32,20 @@ const api = {
       classFilters?: string[];
       sourceFilters?: string[];
       includeRetired?: boolean;
+      includeAdded?: boolean;
     }) => {
       const {
         conceptsUrl = "#",
         page = 1,
         limit = 10,
         q = "",
-        sortDirection = "sortAsc",
-        sortBy = "bestMatch",
+        sortDirection = "sortDesc",
+        sortBy = "_score",
         dataTypeFilters = [] as string[],
         classFilters = [] as string[],
         sourceFilters = [] as string[],
-        includeRetired = false
+        includeRetired = false,
+        includeAdded = false
       } = retrieveParams;
       return authenticatedInstance.get(conceptsUrl, {
         params: {
@@ -55,7 +57,8 @@ const api = {
           ...optionallyIncludeList("conceptClass", classFilters),
           ...optionallyIncludeList("source", sourceFilters),
           timestamp: new Date().getTime(),
-          includeRetired: includeRetired ? 1 : 0
+          includeRetired,
+          includeAdded
         }
       });
     },
@@ -76,8 +79,8 @@ const api = {
         page = 1,
         limit = 10,
         q = "",
-        sortDirection = "sortAsc",
-        sortBy = "bestMatch",
+        sortDirection = "sortDesc",
+        sortBy = "_score",
         dataTypeFilters = [] as string[],
         classFilters = [] as string[],
         sourceFilters = [] as string[]
