@@ -94,14 +94,14 @@ const conceptNameCell = (
       {buttons.addToDictionary === undefined ? (
         <Link
           onClick={e => e.stopPropagation()}
-          to={`${row.url}?linkedDictionary=${linkedDictionary}`}
+          to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
         >
           {row.display_name}
         </Link>
       ) : (
         <Link
           onClick={e => e.stopPropagation()}
-          to={`${row.url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
+          to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
         >
           {row.display_name}
         </Link>
