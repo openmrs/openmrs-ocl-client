@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import ReactGA from "react-ga";
+import { useLocation } from "react-router";
 import {
   BrowserRouter as Router,
   Route,
@@ -133,7 +135,18 @@ const AuthenticatedRoutes: React.FC = () => {
     </Switch>
   );
 };
-
+const Analytics: React.FC = ({ children }) => {
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.initialize("UA-16695719-3");
+  }, []);
+  useEffect(() => {
+    const fullLocation = location.pathname + location.search;
+    ReactGA.set({ page: fullLocation });
+    ReactGA.pageview(fullLocation);
+  }, [location.pathname, location.search]);
+  return <>{children}</>;
+};
 const Routes: React.FC = () => {
   /**
    * The goal for all routes in the application is to mirror the API as much as possible
@@ -141,20 +154,22 @@ const Routes: React.FC = () => {
    */
   return (
     <Router>
-      <Switch>
-        <Route exact path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/">
-          <AuthenticationRequired>
-            {() => (
-              <NavDrawer>
-                <AuthenticatedRoutes />
-              </NavDrawer>
-            )}
-          </AuthenticationRequired>
-        </Route>
-      </Switch>
+      <Analytics>
+        <Switch>
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/">
+            <AuthenticationRequired>
+              {() => (
+                <NavDrawer>
+                  <AuthenticatedRoutes />
+                </NavDrawer>
+              )}
+            </AuthenticationRequired>
+          </Route>
+        </Switch>
+      </Analytics>
     </Router>
   );
 };
