@@ -32,7 +32,7 @@ EXPOSE 80
 
 # Copy the CI build number
 ARG OCL_BUILD
-ENV OCL_BUILD $OCL_BUILD
+ENV OCL_BUILD=$OCL_BUILD
 
 # Clear the default nginx folder
 RUN rm -rf /usr/share/nginx/html

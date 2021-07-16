@@ -11,7 +11,7 @@ echo "// Version: $(date -u)" > ${ENV_FILE}
 [ -n "${OCL_SIGNUP_URL}" ] && \
   echo "var OCL_SIGNUP_URL = \"${OCL_SIGNUP_URL}\";" >> ${ENV_FILE}
 [ -n "${OCL_BUILD}" ] && \
-  echo "var BUILD = \"${OCL_BUILD}\";" >> ${ENV_FILE}
+  echo "var OCL_BUILD = \"${OCL_BUILD}\";" >> ${ENV_FILE}
 
 echo "Using env-config.js:"
 cat ${ENV_FILE}
