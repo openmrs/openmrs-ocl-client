@@ -1,9 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  CSSProperties,
-  FocusEventHandler,
-  HTMLAttributes
-} from "react";
+import React, { CSSProperties, FocusEventHandler, HTMLAttributes } from "react";
 import {
   createStyles,
   makeStyles,
