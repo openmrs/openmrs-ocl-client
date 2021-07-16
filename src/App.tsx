@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import ReactGA from "react-ga";
+import React, { useEffect, useState } from "react";
+import ReactGA, { Tracker } from "react-ga";
 import { useLocation } from "react-router";
 import {
   BrowserRouter as Router,
@@ -42,6 +42,7 @@ import { ViewUserProfilePage } from "./apps/authentication/pages";
 
 import SourceRoutes from "./apps/sources";
 import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
+import { GA_TOKENS } from "./utils";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -137,14 +138,37 @@ const AuthenticatedRoutes: React.FC = () => {
 };
 const Analytics: React.FC = ({ children }) => {
   const location = useLocation();
+  const [trackerNames, setTrackerNames] = useState<string[]>([]);
+
   useEffect(() => {
-    ReactGA.initialize("UA-16695719-3");
+    if (GA_TOKENS) {
+      const trackers: Tracker[] = GA_TOKENS.map((tracker, n) => ({
+        trackingId: tracker,
+        gaOptions: {
+          name: `tracker_${n}`
+        }
+      }));
+
+      console.log(trackers);
+
+      setTrackerNames(
+        trackers
+          .map(t => (t.gaOptions && t.gaOptions.name ? t.gaOptions.name : ""))
+          .filter(it => it !== "")
+      );
+
+      ReactGA.initialize(trackers);
+    }
   }, []);
+
   useEffect(() => {
-    const fullLocation = location.pathname + location.search;
-    ReactGA.set({ page: fullLocation });
-    ReactGA.pageview(fullLocation);
-  }, [location.pathname, location.search]);
+    if (GA_TOKENS) {
+      const fullLocation = location.pathname + location.search;
+      console.log(trackerNames);
+      ReactGA.pageview(fullLocation, trackerNames);
+    }
+  }, [location.pathname, location.search, trackerNames]);
+
   return <>{children}</>;
 };
 const Routes: React.FC = () => {
