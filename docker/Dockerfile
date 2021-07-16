@@ -1,5 +1,7 @@
+# syntax=docker/dockerfile:1
+
 # Stage-1 Build process
-# Use the official node:12.19 runtime image for the build environment and tag the build as build-deps
+# Use the official node:14 runtime image for the build environment and tag the build as build-deps
 FROM node:14-alpine as build-deps
 
 # Create a working directory for the build project
@@ -18,13 +20,13 @@ ADD . /usr/src/app/
 ENV NODE_ENV production
 
 # Install the project dependencies
-RUN npm install
+RUN npm ci
 
 # Create an optimized build version of the project
 RUN npm run build
 
 # Stage-2 Production Environment
-# Use the nginx 1.19-alpine runtime image for the production environment
+# Use the nginx 1.21-alpine runtime image for the production environment
 FROM nginx:1.21-alpine
 
 # Make port 80 available to the world outside the container
