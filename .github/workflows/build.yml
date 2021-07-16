@@ -22,12 +22,12 @@ jobs:
         run: bash ./start_local_instance.sh
       - run: npm run test:integration
       # capture the screenshots on failure
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         if: failure()
         with:
-          if-no-files-found: ignore
           name: cypress-screenshots
           path: cypress/screenshots
+          if-no-files-found: ignore
       - uses: coverallsapp/github-action@v1.1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
