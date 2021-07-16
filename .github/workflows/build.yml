@@ -25,6 +25,7 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
+          if-no-files-found: ignore
           name: cypress-screenshots
           path: cypress/screenshots
       - uses: coverallsapp/github-action@v1.1.2
