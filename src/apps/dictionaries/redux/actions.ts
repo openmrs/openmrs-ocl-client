@@ -360,23 +360,22 @@ export const recursivelyAddConceptsToDictionaryAction = (
   bulk: boolean = false,
   sourceUrl?: string
 ) => {
-  return async (dispatch: Function, getState: Function) => {
-    if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
-      // eslint-disable-next-line no-throw-literal
-      throw {
-        message: "Cannot load string-only concepts without a source url",
-      };
-    }
+  return async (dispatch: Function, getState: function) => {
+  if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
+    throw {
+      message: "Cannot load string-only concepts without a source url",
+    };
+  }
 
-    const concepts = rawConcepts.map((concept) =>
-      typeof concept === "string"
-        ? {
-            id: concept,
-            url: `${sourceUrl}concepts/${concept}/`,
-            source_url: sourceUrl,
-          }
-        : concept
-    );
+  const concepts = rawConcepts.map((concept) =>
+    typeof concept === "string"
+      ? {
+          id: concept,
+          url: `${sourceUrl}concepts/${concept}/`,
+          source_url: sourceUrl,
+        }
+      : concept
+  );
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
@@ -398,31 +397,18 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    // const referencesToAdd = await recursivelyFetchToConcepts(
-     // concepts.map(concept => concept.id),
-     // updateProgress,
-    //  false,
-     // sourceUrl
-   // );
-
-   const referencesToAdd = await recursivelyFetchToConcepts(
-  '/sources/CIEL/',
-   concepts.map(concept => concept.id),
-  updateProgress
-  );
-
-  const groupedConcepts = groupBy(concepts, "source_url");
-  const referencesToAdd = flatten(
-    await Promise.all(
-      Object.entries(groupedConcepts).map(([source, concepts]) =>
-        recursivelyFetchToConcepts(
-          source,
-          concepts.map((concept) => concept.id),
-          updateProgress
+    const groupedConcepts = groupBy(concepts, "source_url");
+    const referencesToAdd = flatten(
+      await Promise.all(
+        Object.entries(groupedConcepts).map(([source, concepts]) =>
+          recursivelyFetchToConcepts(
+            source,
+            concepts.map((concept) => concept.id),
+            updateProgress
+          )
         )
       )
-    )
-  );
+    );
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
