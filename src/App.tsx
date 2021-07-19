@@ -141,7 +141,8 @@ const Analytics: React.FC = ({ children }) => {
   const [trackerNames, setTrackerNames] = useState<string[]>([]);
 
   useEffect(() => {
-    const tokens = GA_TOKENS !== undefined && Array.isArray(GA_TOKENS) ? GA_TOKENS : [];
+    const tokens =
+      GA_TOKENS !== undefined && Array.isArray(GA_TOKENS) ? GA_TOKENS : [];
     const trackers: Tracker[] = tokens.map((tracker, n) => ({
       trackingId: tracker,
       gaOptions: {
@@ -149,17 +150,23 @@ const Analytics: React.FC = ({ children }) => {
       }
     }));
 
-    setTrackerNames(trackers
-      .map(it => it?.gaOptions?.name ? it.gaOptions.name : "")
-      .filter(it => it !== ""));
+    setTrackerNames(
+      trackers
+        .map(it => (it?.gaOptions?.name ? it.gaOptions.name : ""))
+        .filter(it => it !== "")
+    );
 
     if (trackers && trackers.length > 0) {
       ReactGA.initialize(trackers);
     }
   }, []);
-  
+
   useEffect(() => {
-    if (trackerNames && Array.isArray(trackerNames) && trackerNames.length > 0) {
+    if (
+      trackerNames &&
+      Array.isArray(trackerNames) &&
+      trackerNames.length > 0
+    ) {
       ReactGA.pageview(location.pathname + location.search, trackerNames);
     }
   }, [location, trackerNames]);

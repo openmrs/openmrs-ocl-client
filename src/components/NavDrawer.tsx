@@ -135,14 +135,12 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         <div className={classes.toolbar}>
           {open ? (
             <>
-            <div>
-              <Typography variant="h6">
-                Dictionary Manager
-              </Typography>
-            </div>
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
+              <div>
+                <Typography variant="h6">Dictionary Manager</Typography>
+              </div>
+              <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton>
             </>
           ) : (
             <IconButton onClick={toggleDrawer}>
@@ -284,14 +282,14 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
           </Dialog>
         </div>
         {open && (
-            <Typography
-              variant="caption"
-              component="div"
-              className="MuiListItem-gutters"
-            >
-              OpenMRS Dictionary Manager: {BUILD}
-            </Typography>
-          )}
+          <Typography
+            variant="caption"
+            component="div"
+            className="MuiListItem-gutters"
+          >
+            OpenMRS Dictionary Manager: {BUILD}
+          </Typography>
+        )}
       </Drawer>
       <main className={classes.content}>{children}</main>
     </div>

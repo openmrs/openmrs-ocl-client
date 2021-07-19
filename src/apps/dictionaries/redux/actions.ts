@@ -475,5 +475,6 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
 );
 
 export const toggleShowVerifiedAction = () => {
-  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
+  return (dispatch: Function) =>
+    dispatch({ type: TOGGLE_SHOW_VERIFIED_ACTION });
 };

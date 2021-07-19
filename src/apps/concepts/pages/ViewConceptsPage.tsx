@@ -160,7 +160,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
-  const sourceUrl = '/sources/';
+  const sourceUrl = "/sources/";
   const sourcesLimit = 0;
   useEffect(() => {
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
@@ -183,13 +183,17 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
-  const [generalFilters, setGeneralFilters] = useState<string[]>(initialGeneralFilters);
+  const [generalFilters, setGeneralFilters] = useState<string[]>(
+    initialGeneralFilters
+  );
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
 
   const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
-  const includeAddedConcepts = generalFilters.includes('Include Added Concepts');
+  const includeAddedConcepts = generalFilters.includes(
+    "Include Added Concepts"
+  );
   const isImporting = dictionaryToAddTo !== undefined;
 
   const [q, setQ] = useState(initialQ);
@@ -219,7 +223,11 @@ const ViewConceptsPage: React.FC<Props> = ({
       : retrieveDictionary(containerUrl);
 
     retrieveConcepts({
-      conceptsUrl: isImporting ? (includeAddedConcepts ? url : excludeAddedConceptsUrl) : url,
+      conceptsUrl: isImporting
+        ? includeAddedConcepts
+          ? url
+          : excludeAddedConceptsUrl
+        : url,
       page: page,
       limit: limit,
       q: initialQ,

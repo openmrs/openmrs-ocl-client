@@ -22,7 +22,7 @@ const loadingAndErroredReducer = (
 ) => {
   const { type, payload, actionIndex, meta: actionMeta } = action;
 
-  if(type === LOGOUT_ACTION){
+  if (type === LOGOUT_ACTION) {
     return Object.assign({}, initialState);
   }
 

@@ -6,54 +6,54 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 const organisations = [
   {
-    "type":"Organization",
-    "uuid":"1",
-    "id":"T1",
-    "public_access":"View",
-    "name":"Test organisation 1",
-    "company":"Test company",
-    "website":"https://test.com",
-    "location":"Belgium",
-    "members":0,
-    "created_on":"2021-01-17T03:16:55.561172Z",
-    "updated_on":"2021-01-17T03:16:55.561197Z",
-    "url":"/orgs/T1/",
-    "extras":null,
-    "created_by":"ocladmin",
-    "updated_by":"ocladmin",
-    "sources_url":"/orgs/T1/sources/",
-    "public_sources":1,
-    "collections_url":"/orgs/T1/collections/",
-    "public_collections":0,
-    "logo_url":null,
-    "description":null,
-    "text":null,
-    "internal_reference_id":null
+    type: "Organization",
+    uuid: "1",
+    id: "T1",
+    public_access: "View",
+    name: "Test organisation 1",
+    company: "Test company",
+    website: "https://test.com",
+    location: "Belgium",
+    members: 0,
+    created_on: "2021-01-17T03:16:55.561172Z",
+    updated_on: "2021-01-17T03:16:55.561197Z",
+    url: "/orgs/T1/",
+    extras: null,
+    created_by: "ocladmin",
+    updated_by: "ocladmin",
+    sources_url: "/orgs/T1/sources/",
+    public_sources: 1,
+    collections_url: "/orgs/T1/collections/",
+    public_collections: 0,
+    logo_url: null,
+    description: null,
+    text: null,
+    internal_reference_id: null
   },
   {
-    "type":"Organization",
-    "uuid":"2",
-    "id":"T2",
-    "public_access":"View",
-    "name":"Test organisation 2",
-    "company":"Test org",
-    "website":"https://www.ama-assn.org/",
-    "location":"Uganda",
-    "members":0,
-    "created_on":"2021-06-09T18:59:17.842034Z",
-    "updated_on":"2021-06-09T18:59:17.842058Z",
-    "url":"/orgs/T2/",
-    "extras":{},
-    "created_by":"ocladmin",
-    "updated_by":"ocladmin",
-    "sources_url":"/orgs/T2/sources/",
-    "public_sources":1,
-    "collections_url":"/orgs/T2/collections/",
-    "public_collections":0,
-    "logo_url":null,
-    "description":"",
-    "text":"",
-    "internal_reference_id":null
+    type: "Organization",
+    uuid: "2",
+    id: "T2",
+    public_access: "View",
+    name: "Test organisation 2",
+    company: "Test org",
+    website: "https://www.ama-assn.org/",
+    location: "Uganda",
+    members: 0,
+    created_on: "2021-06-09T18:59:17.842034Z",
+    updated_on: "2021-06-09T18:59:17.842058Z",
+    url: "/orgs/T2/",
+    extras: {},
+    created_by: "ocladmin",
+    updated_by: "ocladmin",
+    sources_url: "/orgs/T2/sources/",
+    public_sources: 1,
+    collections_url: "/orgs/T2/collections/",
+    public_collections: 0,
+    logo_url: null,
+    description: "",
+    text: "",
+    internal_reference_id: null
   }
 ];
 
@@ -76,7 +76,7 @@ function renderOrgsUI(props: Partial<viewOrgsProps> = {}) {
       <ViewOrganisations {...baseProps} {...props} />
     </Router>
   );
-};
+}
 
 describe("ViewOrganisations", () => {
   it("should display orgId and name and orgUrl of the respective org that are present", () => {
@@ -94,14 +94,17 @@ describe("ViewOrganisations", () => {
     expect(getAllByTestId("org-id-0")[0]).toHaveTextContent("T1");
     expect(getAllByTestId("org-id-1")[0]).toHaveTextContent("T2");
 
-    expect(getAllByTestId("name-0")[0]).toHaveTextContent("Test organisation 1");
-    expect(getAllByTestId("name-1")[0]).toHaveTextContent("Test organisation 2");
+    expect(getAllByTestId("name-0")[0]).toHaveTextContent(
+      "Test organisation 1"
+    );
+    expect(getAllByTestId("name-1")[0]).toHaveTextContent(
+      "Test organisation 2"
+    );
 
     expect(getAllByTestId("url-0")[0]).toHaveTextContent("orgs/T1");
     expect(getAllByTestId("url-1")[0]).toHaveTextContent("orgs/T2");
 
     expect(getAllByTestId("viewButton-0")[0]).toHaveTextContent("View");
-
   });
 
   it('should display "No Organisation Found" when no orgs are present', () => {
