@@ -153,7 +153,9 @@ const Analytics: React.FC = ({ children }) => {
       .map(it => it?.gaOptions?.name ? it.gaOptions.name : "")
       .filter(it => it !== ""));
 
-    ReactGA.initialize(trackers);
+    if (trackers && trackers.length > 0) {
+      ReactGA.initialize(trackers);
+    }
   }, []);
   
   useEffect(() => {
