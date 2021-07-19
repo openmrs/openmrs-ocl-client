@@ -55,7 +55,8 @@ const ContainerSearch: React.FC<Props> = ({
 
   useEffect(
     () => (showOnlyVerified ? onSearch(VERIFIED_SOURCES[0]) : onSearch()),
-    [showOnlyVerified, onSearch]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [showOnlyVerified]
   );
 
   return (

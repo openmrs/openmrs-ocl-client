@@ -141,33 +141,26 @@ const Analytics: React.FC = ({ children }) => {
   const [trackerNames, setTrackerNames] = useState<string[]>([]);
 
   useEffect(() => {
-    if (GA_TOKENS) {
-      const trackers: Tracker[] = GA_TOKENS.map((tracker, n) => ({
-        trackingId: tracker,
-        gaOptions: {
-          name: `tracker_${n}`
-        }
-      }));
+    const tokens = GA_TOKENS !== undefined && Array.isArray(GA_TOKENS) ? GA_TOKENS : [];
+    const trackers: Tracker[] = tokens.map((tracker, n) => ({
+      trackingId: tracker,
+      gaOptions: {
+        name: `tracker_${n}`
+      }
+    }));
 
-      console.log(trackers);
+    setTrackerNames(trackers
+      .map(it => it?.gaOptions?.name ? it.gaOptions.name : "")
+      .filter(it => it !== ""));
 
-      setTrackerNames(
-        trackers
-          .map(t => (t.gaOptions && t.gaOptions.name ? t.gaOptions.name : ""))
-          .filter(it => it !== "")
-      );
-
-      ReactGA.initialize(trackers);
-    }
+    ReactGA.initialize(trackers);
   }, []);
-
+  
   useEffect(() => {
-    if (GA_TOKENS) {
-      const fullLocation = location.pathname + location.search;
-      console.log(trackerNames);
-      ReactGA.pageview(fullLocation, trackerNames);
+    if (trackerNames && Array.isArray(trackerNames) && trackerNames.length > 0) {
+      ReactGA.pageview(location.pathname + location.search, trackerNames);
     }
-  }, [location.pathname, location.search, trackerNames]);
+  }, [location, trackerNames]);
 
   return <>{children}</>;
 };
