@@ -71,6 +71,7 @@ export interface OrganisationState {
   orgMembers?: OrgMember[];
   showAddMemberDialog: boolean;
   showDeleteMemberDialog: boolean;
+  showOnlyVerified: boolean;
 }
 export interface OrgMember {
   username: string;

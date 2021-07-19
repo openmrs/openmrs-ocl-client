@@ -2,7 +2,8 @@
 import { AppState } from "../../../redux";
 import {
   retrievePersonalDictionariesAction,
-  retrievePersonalDictionariesLoadingSelector
+  retrievePersonalDictionariesLoadingSelector,
+  toggleShowVerifiedAction
 } from "../redux";
 import { connect } from "react-redux";
 import { ViewDictionariesPage } from "../components";
@@ -14,11 +15,13 @@ const mapStateToProps = (state: AppState) => ({
     state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]?.items,
   meta:
     state.dictionaries.dictionaries[PERSONAL_DICTIONARIES_ACTION_INDEX]
-      ?.responseMeta
+      ?.responseMeta,
+  showOnlyVerified: state.dictionaries.showOnlyVerified
 });
 
 const mapDispatchToProps = {
-  retrieveDictionaries: retrievePersonalDictionariesAction
+  retrieveDictionaries: retrievePersonalDictionariesAction,
+  toggleShowVerified: toggleShowVerifiedAction
 };
 
 export default connect(

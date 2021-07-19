@@ -15,6 +15,8 @@ interface Props {
   perPage: number;
   initialQ: string;
   title: string;
+  showOnlyVerified: boolean;
+  toggleShowVerified: () => void;
 }
 
 const ViewSources: React.FC<Props> = ({
@@ -25,11 +27,19 @@ const ViewSources: React.FC<Props> = ({
   page,
   perPage,
   initialQ,
-  title
+  title,
+  toggleShowVerified,
+  showOnlyVerified
 }) => {
   return (
     <>
-      <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
+      <ContainerSearch
+        title={title}
+        onSearch={onSearch}
+        initialQ={initialQ}
+        showOnlyVerified={showOnlyVerified}
+        toggleShowVerified={toggleShowVerified}
+      />
       <ContainerCards cards={sources} title={title} />
       <ContainerPagination
         num_found={Number(numFound)}

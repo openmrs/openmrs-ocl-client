@@ -4,15 +4,15 @@ import {
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import { getStore, getAuthToken } from "./utils";
+import { getStore, getAuthToken, getUser, getPassword } from "./utils";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
 Cypress.Commands.add(
   "login",
   (
-    username: string = Cypress.env("USERNAME") || "admin",
-    password: string = Cypress.env("PASSWORD") || "Admin123"
+    username: string = getUser(),
+    password: string = getPassword()
   ) => {
     cy.url().then(url => {
       if (url === undefined || url === null || url === "about:blank") {
@@ -78,7 +78,7 @@ Cypress.Commands.add(
   "createDictionary",
   (
     dictionary: string = `TD-${nanoid()}`,
-    username: string = Cypress.env("USERNAME") || "admin",
+    username: string = getUser(),
     public_access: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -126,7 +126,7 @@ Cypress.Commands.add(
   "deleteDictionary",
   (
     dictionary: string,
-    username: string = Cypress.env("USERNAME") || "admin",
+    username: string = getUser(),
     isCleanup: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -146,7 +146,7 @@ Cypress.Commands.add(
   "getDictionary",
   (
     dictionary: string,
-    username: string = Cypress.env("USERNAME") || "admin"
+    username: string = getUser(),
   ) => {
     return getAuthToken().then(authToken => {
       return cy
@@ -166,7 +166,7 @@ Cypress.Commands.add(
   "createSource",
   (
     source: string = `TD-${nanoid()}`,
-    username: string = Cypress.env("USERNAME") || "admin",
+    username: string = getUser(),
     public_access: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -209,7 +209,7 @@ Cypress.Commands.add(
   "deleteSource",
   (
     source: string,
-    username: string = Cypress.env("USERNAME") || "admin",
+    username: string = getUser(),
     isCleanup: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -227,7 +227,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "getSource",
-  (source: string, username: string = Cypress.env("USERNAME") || "admin") => {
+  (source: string, username: string = getUser()) => {
     getAuthToken().then(authToken => {
       return cy
         .request({
