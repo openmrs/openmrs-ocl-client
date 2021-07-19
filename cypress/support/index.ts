@@ -14,13 +14,10 @@
 // ***********************************************************
 
 // Import commands.ts using ES2015 syntax:
-import './commands';
+import "./commands";
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
-
-Cypress.on('uncaught:exception', (err, runnable) => {
-  console.debug('>> uncaught:exception disable in cypress/support/index.ts');
+Cypress.on("uncaught:exception", err => {
+  console.debug("Uncaught exception", err);
   // returning false here prevents Cypress from
   // failing the test
   return false;

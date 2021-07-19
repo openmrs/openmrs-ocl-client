@@ -26,9 +26,6 @@ When("the user clicks on the create new organisation button", () =>
 When("the user enters the organisation information", () => {
   cy.findByLabelText(/Organisation ID/i).type(organisationID);
   cy.findByLabelText(/Organisation Name/i).type(organisationID);
-  // these are the form drop-downs, which are quite hard to
-  // to automate, so I've elected to do this kind of hack
-  // hopefully it can be replaced with something better
   cy.get("#public_access").type("{enter}");
 });
 

@@ -22,5 +22,3 @@ Feature: Creating an organisation
       And the user submits the form
     Then the new organisation should be created
       And the organisation should be publicly visible
-      
-

@@ -244,7 +244,10 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "createOrganisation",
-  (organisation: string = `TD-${nanoid()}`, public_access: boolean = false) => {
+  (
+    organisation: string = `Org-${nanoid()}`,
+    public_access: boolean = false
+  ) => {
     getAuthToken().then(authToken =>
       cy
         .request({
