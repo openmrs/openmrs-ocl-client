@@ -45,8 +45,7 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
-  TOGGLE_SHOW_VERIFIED_ACTION
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION
 } from "./actionTypes";
 import { invalidateCache } from "../../../redux/utils";
 import {
@@ -99,7 +98,7 @@ export const createSourceAndDictionaryAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: public_access,
+      public_access: "None",
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales?.join(","),
@@ -232,8 +231,7 @@ export const editSourceAndDictionaryAction = (
       name,
       supported_locales: supported_locales.join(","),
       default_locale,
-      preferred_source,
-      public_access
+      preferred_source
     };
 
     if (linkedSource) {
@@ -285,8 +283,7 @@ export const createAndAddLinkedSourceAction = (
       supported_locales,
       owner_url,
       default_locale,
-      short_code,
-      public_access
+      short_code
     } = dictionaryData;
 
     let sourceResponse: APISource | boolean;
@@ -301,7 +298,7 @@ export const createAndAddLinkedSourceAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: public_access,
+      public_access: "None",
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales.join(","),
@@ -363,21 +360,23 @@ export const recursivelyAddConceptsToDictionaryAction = (
   bulk: boolean = false,
   sourceUrl?: string
 ) => {
-  if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
-    throw {
-      message: "Cannot load string-only concepts without a source url",
-    };
-  }
+  return async (dispatch: Function, getState: Function) => {
+    if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: "Cannot load string-only concepts without a source url",
+      };
+    }
 
-  const concepts = rawConcepts.map((concept) =>
-    typeof concept === "string"
-      ? {
-          id: concept,
-          url: `${sourceUrl}concepts/${concept}/`,
-          source_url: sourceUrl,
-        }
-      : concept
-  );
+    const concepts = rawConcepts.map((concept) =>
+      typeof concept === "string"
+        ? {
+            id: concept,
+            url: `${sourceUrl}concepts/${concept}/`,
+            source_url: sourceUrl,
+          }
+        : concept
+    );
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
@@ -399,18 +398,31 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    const groupedConcepts = groupBy(concepts, "source_url");
-    const referencesToAdd = flatten(
-      await Promise.all(
-        Object.entries(groupedConcepts).map(([source, concepts]) =>
-          recursivelyFetchToConcepts(
-            source,
-            concepts.map((concept) => concept.id),
-            updateProgress
-          )
+    // const referencesToAdd = await recursivelyFetchToConcepts(
+     // concepts.map(concept => concept.id),
+     // updateProgress,
+    //  false,
+     // sourceUrl
+   // );
+
+   const referencesToAdd = await recursivelyFetchToConcepts(
+  '/sources/CIEL/',
+   concepts.map(concept => concept.id),
+  updateProgress
+  );
+
+  const groupedConcepts = groupBy(concepts, "source_url");
+  const referencesToAdd = flatten(
+    await Promise.all(
+      Object.entries(groupedConcepts).map(([source, concepts]) =>
+        recursivelyFetchToConcepts(
+          source,
+          concepts.map((concept) => concept.id),
+          updateProgress
         )
       )
-    );
+    )
+  );
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
@@ -486,18 +498,3 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete
 );
-<<<<<<< HEAD
-
-export const toggleShowVerifiedAction = () => {
-  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
-};
-=======
-function getState(): import("../../../redux").AppState {
-  throw new Error("Function not implemented.");
-}
-
-function dispatch(arg0: { type: string; actionIndex: number; meta: any[]; }) {
-  throw new Error("Function not implemented.");
-}
-
->>>>>>> 869234c... OCLOMRS-967:Pick concepts from a dictionary (in addition to sources)
