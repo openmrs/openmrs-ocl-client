@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ReactGA, { Tracker } from "react-ga";
+import { useLocation } from "react-router";
 import {
   BrowserRouter as Router,
   Route,
@@ -40,6 +42,7 @@ import { ViewUserProfilePage } from "./apps/authentication/pages";
 
 import SourceRoutes from "./apps/sources";
 import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
+import { GA_TOKENS } from "./utils";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -133,7 +136,36 @@ const AuthenticatedRoutes: React.FC = () => {
     </Switch>
   );
 };
+const Analytics: React.FC = ({ children }) => {
+  const location = useLocation();
+  const [trackerNames, setTrackerNames] = useState<string[]>([]);
 
+  useEffect(() => {
+    const tokens = GA_TOKENS !== undefined && Array.isArray(GA_TOKENS) ? GA_TOKENS : [];
+    const trackers: Tracker[] = tokens.map((tracker, n) => ({
+      trackingId: tracker,
+      gaOptions: {
+        name: `tracker_${n}`
+      }
+    }));
+
+    setTrackerNames(trackers
+      .map(it => it?.gaOptions?.name ? it.gaOptions.name : "")
+      .filter(it => it !== ""));
+
+    if (trackers && trackers.length > 0) {
+      ReactGA.initialize(trackers);
+    }
+  }, []);
+  
+  useEffect(() => {
+    if (trackerNames && Array.isArray(trackerNames) && trackerNames.length > 0) {
+      ReactGA.pageview(location.pathname + location.search, trackerNames);
+    }
+  }, [location, trackerNames]);
+
+  return <>{children}</>;
+};
 const Routes: React.FC = () => {
   /**
    * The goal for all routes in the application is to mirror the API as much as possible
@@ -141,20 +173,22 @@ const Routes: React.FC = () => {
    */
   return (
     <Router>
-      <Switch>
-        <Route exact path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/">
-          <AuthenticationRequired>
-            {() => (
-              <NavDrawer>
-                <AuthenticatedRoutes />
-              </NavDrawer>
-            )}
-          </AuthenticationRequired>
-        </Route>
-      </Switch>
+      <Analytics>
+        <Switch>
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/">
+            <AuthenticationRequired>
+              {() => (
+                <NavDrawer>
+                  <AuthenticatedRoutes />
+                </NavDrawer>
+              )}
+            </AuthenticationRequired>
+          </Route>
+        </Switch>
+      </Analytics>
     </Router>
   );
 };
