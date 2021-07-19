@@ -8,7 +8,7 @@ import {
   resetAction
 } from "../../../redux";
 import api from "../api";
-import { groupBy, includes } from "lodash";
+import { flatten, groupBy, includes } from "lodash";
 import {
   APIDictionary,
   Dictionary,
@@ -363,15 +363,21 @@ export const recursivelyAddConceptsToDictionaryAction = (
   bulk: boolean = false,
   sourceUrl?: string
 ) => {
-  return async (dispatch: Function, getState: Function) => {
-    const concepts = rawConcepts.map(concept =>
-      typeof concept === "string"
-        ? {
-            id: concept,
-            url: `${sourceUrl}concepts/${concept}/`
-          }
-        : concept
-    );
+  if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
+    throw {
+      message: "Cannot load string-only concepts without a source url",
+    };
+  }
+
+  const concepts = rawConcepts.map((concept) =>
+    typeof concept === "string"
+      ? {
+          id: concept,
+          url: `${sourceUrl}concepts/${concept}/`,
+          source_url: sourceUrl,
+        }
+      : concept
+  );
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
@@ -393,26 +399,18 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    // const referencesToAdd = await recursivelyFetchToConcepts(
-     // concepts.map(concept => concept.id),
-     // updateProgress,
-    //  false,
-     // sourceUrl
-   // );
-
-   const referencesToAdd = await recursivelyFetchToConcepts(
-  '/sources/CIEL/',
-   concepts.map(concept => concept.id),
-  updateProgress
-  );
-
-    const groupedConcepts = groupBy(concepts, "source");
-    console.log(groupedConcepts)
-    // const referencesToAdd = await Object.entries(groupedConcepts).map(([source, concepts]) => recursivelyFetchToConcepts(
-    //  source,
-    //  concepts.map((concept: { id: any; }) => concept.id),
-    // updateProgress,1,
-    //  ));
+    const groupedConcepts = groupBy(concepts, "source_url");
+    const referencesToAdd = flatten(
+      await Promise.all(
+        Object.entries(groupedConcepts).map(([source, concepts]) =>
+          recursivelyFetchToConcepts(
+            source,
+            concepts.map((concept) => concept.id),
+            updateProgress
+          )
+        )
+      )
+    );
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
@@ -488,7 +486,18 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete
 );
+<<<<<<< HEAD
 
 export const toggleShowVerifiedAction = () => {
   return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
 };
+=======
+function getState(): import("../../../redux").AppState {
+  throw new Error("Function not implemented.");
+}
+
+function dispatch(arg0: { type: string; actionIndex: number; meta: any[]; }) {
+  throw new Error("Function not implemented.");
+}
+
+>>>>>>> 869234c... OCLOMRS-967:Pick concepts from a dictionary (in addition to sources)
