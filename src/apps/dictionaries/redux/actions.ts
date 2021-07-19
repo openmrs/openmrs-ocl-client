@@ -398,31 +398,19 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    // const referencesToAdd = await recursivelyFetchToConcepts(
-     // concepts.map(concept => concept.id),
-     // updateProgress,
-    //  false,
-     // sourceUrl
-   // );
-
-   const referencesToAdd = await recursivelyFetchToConcepts(
-  '/sources/CIEL/',
-   concepts.map(concept => concept.id),
-  updateProgress
-  );
-
-  const groupedConcepts = groupBy(concepts, "source_url");
-  const referencesToAdd = flatten(
-    await Promise.all(
-      Object.entries(groupedConcepts).map(([source, concepts]) =>
-        recursivelyFetchToConcepts(
-          source,
-          concepts.map((concept) => concept.id),
-          updateProgress
+    
+    const groupedConcepts = groupBy(concepts, "source_url");
+    const referencesToAdd = flatten(
+      await Promise.all(
+        Object.entries(groupedConcepts).map(([source, concepts]) =>
+          recursivelyFetchToConcepts(
+            source,
+            concepts.map((concept) => concept.id),
+            updateProgress
+          )
         )
       )
-    )
-  );
+    );
 
     const importMeta: ImportMetaData = {
       dictionary: dictionaryUrl,
