@@ -377,6 +377,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
           }
         : concept
     );
+    
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
