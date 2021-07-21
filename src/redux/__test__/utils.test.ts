@@ -27,14 +27,13 @@ describe("errorResponseMsg", () => {
       }
     };
     it(`should return appropriate error msg for ${error} scenario `, () => {
-      expect(errorMsgResponse(response)).toEqual(errorMsgs[error]);
+      expect(errorMsgResponse(response)["name"]).toEqual(errorMsgs[error])
     });
   }
 
   it("should return generics error msg if no error response from server", () => {
     const response = {};
-    expect(errorMsgResponse(response)).toEqual(
+    expect(errorMsgResponse(response)["__detail__"])
       "Action could not be completed. Please retry."
-    );
   });
 });
