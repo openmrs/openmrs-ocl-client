@@ -6,7 +6,7 @@ api_endpoint=http://localhost:8000
 
 echo "Building App..."
 export OCL_API_HOST=$api_endpoint
-docker-compose build --build-arg OCL_BUILD=$(git rev-parse --short HEAD) || exit $?
+docker-compose build --compress --force-rm --build-arg OCL_BUILD=$(git rev-parse --short HEAD) || exit $?
 echo "Starting App..."
 docker-compose up -d || exit $?
 app_endpoint=http://localhost:8080
