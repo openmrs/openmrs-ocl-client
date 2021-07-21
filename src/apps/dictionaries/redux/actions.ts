@@ -360,7 +360,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
   bulk: boolean = false,
   sourceUrl?: string
 ) => {
-  return async (dispatch: Function, getState: function) => {
+  return async (dispatch: Function, getState: Function) => {
   if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
     throw {
       message: "Cannot load string-only concepts without a source url",
