@@ -45,7 +45,8 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
-  RETRIEVE_DICTIONARY_VERSIONS_ACTION
+  RETRIEVE_DICTIONARY_VERSIONS_ACTION,
+  TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
 import { invalidateCache } from "../../../redux/utils";
 import {
@@ -98,7 +99,7 @@ export const createSourceAndDictionaryAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales?.join(","),
@@ -231,7 +232,8 @@ export const editSourceAndDictionaryAction = (
       name,
       supported_locales: supported_locales.join(","),
       default_locale,
-      preferred_source
+      preferred_source,
+      public_access
     };
 
     if (linkedSource) {
@@ -283,7 +285,8 @@ export const createAndAddLinkedSourceAction = (
       supported_locales,
       owner_url,
       default_locale,
-      short_code
+      short_code,
+      public_access
     } = dictionaryData;
 
     let sourceResponse: APISource | boolean;
@@ -298,7 +301,7 @@ export const createAndAddLinkedSourceAction = (
       external_id: uuid(),
       full_name: name,
       name: name,
-      public_access: "None",
+      public_access: public_access,
       short_code: short_code,
       id: short_code,
       supported_locales: supported_locales.join(","),
@@ -487,3 +490,7 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
   REMOVE_REFERENCES_FROM_DICTIONARY,
   api.references.delete
 );
+
+export const toggleShowVerifiedAction = () => {
+  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
+};
