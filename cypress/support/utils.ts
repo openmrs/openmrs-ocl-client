@@ -20,9 +20,13 @@ export const getAuthToken = () =>
     .its("auth")
     .its("token")
     .then(token => `Token ${token}`);
-export const getDictionaryId = () => Cypress.env("dictionaryId");
-export const setDictionaryId = (dictionaryId: string) => Cypress.env("dictionaryId", dictionaryId);
-export const getConceptId = () => Cypress.env("conceptId");
-export const setConceptId = (conceptId: string) => Cypress.env("conceptId", conceptId);
 export const getUser = () => Cypress.env("USERNAME") || "ocladmin";
 export const getPassword = () => Cypress.env("PASSWORD") || "Root123";
+export const getDictionaryId = () => Cypress.env("dictionaryId");
+export const setDictionaryId = (dictionaryId: string) =>
+  Cypress.env("dictionaryId", dictionaryId);
+export const getConceptId = () => Cypress.env("conceptId");
+export const setConceptId = (conceptId: string) => Cypress.env("conceptId", conceptId);
+export const getOrganisationId = () => Cypress.env("organisationId");
+export const setOrganisationId = (organisationId: string) =>
+  Cypress.env("organisationId", organisationId);
