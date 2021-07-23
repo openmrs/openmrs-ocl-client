@@ -18,8 +18,7 @@ import {
 } from "@material-ui/core";
 import {
   PREFERRED_SOURCES_VIEW_ONLY,
-  useAnchor,
-  VERIFIED_SOURCES
+  useAnchor
 } from "../../../utils";
 import { APISource } from "../../sources";
 import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";

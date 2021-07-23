@@ -8,7 +8,7 @@ import {
   resetAction
 } from "../../../redux";
 import api from "../api";
-import { flatten, groupBy, includes } from "lodash";
+import { flatten, groupBy } from "lodash";
 import {
   APIDictionary,
   Dictionary,
