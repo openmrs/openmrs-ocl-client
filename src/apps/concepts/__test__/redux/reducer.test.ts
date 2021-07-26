@@ -61,7 +61,7 @@ describe("RETRIEVE_ACTIVE_CONCEPTS_ACTION", () => {
         responseMeta: { num_found: 1 }
       }
     };
-    
+
     expect(reducer(initialState, startAction)).toEqual(expectedState);
   });
 });

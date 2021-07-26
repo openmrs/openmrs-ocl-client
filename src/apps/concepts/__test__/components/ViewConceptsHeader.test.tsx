@@ -9,6 +9,7 @@ import {
 } from "../../constants";
 import { PREFERRED_SOURCES_VIEW_ONLY } from "../../../../utils/constants";
 import { APISource } from "../../../sources";
+import { APIDictionary } from "../../../dictionaries";
 
 type viewConceptsHeaderProps = React.ComponentProps<typeof ViewConceptsHeader>;
 
@@ -19,7 +20,8 @@ const baseProps: viewConceptsHeaderProps = {
     return arg2;
   },
   addConceptToDictionary: undefined,
-  sources: [{ name: 'test source', url: '/test/test123' } as APISource]
+  sources: [{ name: "test source", url: "/test/test123" } as APISource],
+  dictionaries: [{ name: "test dictionary", url: "/test/test123" } as APIDictionary]
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {

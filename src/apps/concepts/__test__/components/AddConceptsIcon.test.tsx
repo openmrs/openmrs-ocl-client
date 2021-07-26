@@ -14,7 +14,7 @@ const baseProps: addConceptsIconProps = {
     return arg2;
   },
   linkedSource: "linkedSource",
-  preferredSource: "Public Sources"
+  preferredSource: "All Public Concepts"
 };
 
 function renderUI(props: Partial<addConceptsIconProps> = {}) {

@@ -45,7 +45,12 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   const { page = 1, q: initialQ = "" } = queryParams;
 
   useEffect(() => {
-    retrieveDictionaries(url, showOnlyVerified ? "CIEL" : initialQ, PER_PAGE, page);
+    retrieveDictionaries(
+      url,
+      showOnlyVerified ? "CIEL" : initialQ,
+      PER_PAGE,
+      page
+    );
   }, [retrieveDictionaries, url, initialQ, page, showOnlyVerified]);
 
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
@@ -73,7 +78,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/collections/new/`}>
-          <Tooltip title="Create new dictionary" style={{zIndex:3}}>
+          <Tooltip title="Create new dictionary" style={{ zIndex: 3 }}>
             <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>

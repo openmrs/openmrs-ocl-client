@@ -8,6 +8,7 @@ import {
   resetAction
 } from "../../../redux";
 import api from "../api";
+import { flatten, groupBy } from "lodash";
 import {
   APIDictionary,
   Dictionary,
@@ -357,20 +358,29 @@ export const editDictionaryVersionAction = createActionThunk(
 );
 
 export const recursivelyAddConceptsToDictionaryAction = (
-  sourceUrl: string,
   dictionaryUrl: string,
   rawConcepts: (APIConcept | string)[],
-  bulk: boolean = false
+  bulk: boolean = false,
+  sourceUrl?: string
 ) => {
   return async (dispatch: Function, getState: Function) => {
-    const concepts = rawConcepts.map(concept =>
+    if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
+      // eslint-disable-next-line no-throw-literal
+      throw {
+        message: "Cannot load string-only concepts without a source url",
+      };
+    }
+
+    const concepts = rawConcepts.map((concept) =>
       typeof concept === "string"
         ? {
             id: concept,
-            url: `${sourceUrl}concepts/${concept}/`
+            url: `${sourceUrl}concepts/${concept}/`,
+            source_url: sourceUrl,
           }
         : concept
     );
+    
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
@@ -392,11 +402,18 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-
-    const referencesToAdd = await recursivelyFetchToConcepts(
-      sourceUrl,
-      concepts.map(concept => concept.id),
-      updateProgress
+    
+    const groupedConcepts = groupBy(concepts, "source_url");
+    const referencesToAdd = flatten(
+      await Promise.all(
+        Object.entries(groupedConcepts).map(([source, concepts]) =>
+          recursivelyFetchToConcepts(
+            source,
+            concepts.map((concept) => concept.id),
+            updateProgress
+          )
+        )
+      )
     );
 
     const importMeta: ImportMetaData = {

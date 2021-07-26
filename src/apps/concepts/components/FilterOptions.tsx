@@ -20,9 +20,7 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      
-    },
+    root: {},
     paper: {
       width: "100%",
       marginBottom: theme.spacing(2),

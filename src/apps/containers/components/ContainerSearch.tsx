@@ -55,9 +55,10 @@ const ContainerSearch: React.FC<Props> = ({
 
   useEffect(
     () => (showOnlyVerified ? onSearch(VERIFIED_SOURCES[0]) : onSearch()),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [showOnlyVerified]
   );
-  
+
   return (
     <Grid className={classes.searchContainer} item xs={12}>
       <form

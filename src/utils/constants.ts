@@ -13,6 +13,9 @@ export const OCL_SIGNUP_URL =
 export const BUILD: string =
   // @ts-ignore OCL_BUILD is injected at runtime via index.html
   window.OCL_BUILD || "local";
+export const GA_TOKENS: string[] =
+  // @ts-ignore OCL_GA_TOKENS is injected at runtime via index.html
+  window.OCL_GA_TOKENS || [];
 
 export const CUSTOM_VALIDATION_SCHEMA = "OpenMRS";
 
@@ -302,7 +305,7 @@ export const PREFERRED_SOURCES: { [key: string]: string } = {
 };
 
 export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
-  "Public Sources": ALL_PUBLIC_SOURCES_URL,
+  "All Public Concepts": ALL_PUBLIC_SOURCES_URL,
   ...PREFERRED_SOURCES
 };
 
@@ -314,4 +317,7 @@ export const CONTEXT = {
   edit: "edit"
 };
 
-export const CONCEPT_GENERAL: string[] = ["Include Retired", "Include Added Concepts"];
+export const CONCEPT_GENERAL: string[] = [
+  "Include Retired",
+  "Include Added Concepts"
+];

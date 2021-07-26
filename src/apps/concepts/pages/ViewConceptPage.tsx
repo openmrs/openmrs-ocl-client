@@ -58,8 +58,11 @@ const ViewConceptPage: React.FC<Props> = ({
     <>
       <Header
         allowImplicitNavigation
-        title={concept && concept.display_name ?
-          concept.display_name : "View concept"}
+        title={
+          concept && concept.display_name
+            ? concept.display_name
+            : "View concept"
+        }
       >
         <ProgressOverlay
           delayRender

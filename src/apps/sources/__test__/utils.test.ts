@@ -3,7 +3,7 @@ import { getSourceTypeFromPreviousPath } from "../utils";
 describe("getSourceTypeFromPreviousPath", () => {
   it("should return public sources for /sources/", () => {
     expect(getSourceTypeFromPreviousPath("/sources/")).toEqual(
-      "Public Sources"
+      "All Public Concepts"
     );
   });
 

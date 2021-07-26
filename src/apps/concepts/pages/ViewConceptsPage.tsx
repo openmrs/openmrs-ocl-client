@@ -34,7 +34,8 @@ import {
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   makeRetrieveDictionaryAction,
-  retrieveDictionaryLoadingSelector
+  retrieveDictionaryLoadingSelector,
+  retrievePublicDictionariesAction
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
@@ -47,11 +48,13 @@ import {
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
 import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
+import { PUBLIC_DICTIONARIES_ACTION_INDEX } from "../../dictionaries/redux/constants";
 
 export interface StateProps {
   concepts?: APIConcept[];
   modifiedConcepts?: APIConcept[];
   dictionary?: APIDictionary;
+  dictionaries?: APIDictionary[];
   source?: APISource;
   sources: APISource[];
   loading: boolean;
@@ -67,6 +70,9 @@ export type ActionProps = {
   ) => void;
   retrieveDictionary: (
     ...args: Parameters<ReturnType<typeof makeRetrieveDictionaryAction>>
+  ) => void;
+  retrievePublicDictionaries: (
+    ...args: Parameters<typeof retrievePublicDictionariesAction>
   ) => void;
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
@@ -111,6 +117,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   modifiedConcepts,
   dictionary,
+  dictionaries = [],
   source,
   retrievePublicSources,
   sources = [],
@@ -118,6 +125,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   errors,
   retrieveConcepts,
   retrieveDictionary,
+  retrievePublicDictionaries,
   retrieveSource,
   meta = {},
   profile,
@@ -138,7 +146,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   }>();
 
   // only relevant with the collection container
-  const preferredSource = dictionary?.preferred_source || "Public Sources";
+  const preferredSource = dictionary?.preferred_source || "All Public Concepts";
   const linkedSource =
     containerType === SOURCE_CONTAINER ||
     containerType === SOURCE_VERSION_CONTAINER
@@ -160,11 +168,14 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
-  const sourceUrl = '/sources/';
+  const sourceUrl = "/sources/";
+  const collectionsUrl = "/collections/";
   const sourcesLimit = 0;
+  const collectionsLimit = 0;
   useEffect(() => {
+    retrievePublicDictionaries(collectionsUrl, initialQ, collectionsLimit, page);
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
-  }, [initialQ, page, retrievePublicSources]);
+  }, [initialQ, page, retrievePublicSources, retrievePublicDictionaries]);
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
@@ -183,13 +194,17 @@ const ViewConceptsPage: React.FC<Props> = ({
   const [dataTypeFilters, setInitialDataTypeFilters] = useState<string[]>(
     initialDataTypeFilters
   );
-  const [generalFilters, setGeneralFilters] = useState<string[]>(initialGeneralFilters);
+  const [generalFilters, setGeneralFilters] = useState<string[]>(
+    initialGeneralFilters
+  );
   const [sourceFilters, setSourceFilters] = useState<string[]>(
     initialSourceFilters
   );
 
   const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
-  const includeAddedConcepts = generalFilters.includes('Include Added Concepts');
+  const includeAddedConcepts = generalFilters.includes(
+    "Include Added Concepts"
+  );
   const isImporting = dictionaryToAddTo !== undefined;
 
   const [q, setQ] = useState(initialQ);
@@ -219,7 +234,11 @@ const ViewConceptsPage: React.FC<Props> = ({
       : retrieveDictionary(containerUrl);
 
     retrieveConcepts({
-      conceptsUrl: isImporting ? (includeAddedConcepts ? url : excludeAddedConceptsUrl) : url,
+      conceptsUrl: isImporting
+        ? includeAddedConcepts
+          ? url
+          : excludeAddedConceptsUrl
+        : url,
       page: page,
       limit: limit,
       q: initialQ,
@@ -268,6 +287,7 @@ const ViewConceptsPage: React.FC<Props> = ({
       gimmeAUrl={gimmeAUrl}
       addConceptToDictionary={dictionaryToAddTo}
       sources={sources}
+      dictionaries={dictionaries}
     >
       <Grid
         container
@@ -294,8 +314,7 @@ const ViewConceptsPage: React.FC<Props> = ({
               concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
                 edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
-                addToDictionary:
-                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo // relevant for SOURCE_CONTAINER
+
               }}
               q={q}
               setQ={setQ}
@@ -310,9 +329,10 @@ const ViewConceptsPage: React.FC<Props> = ({
               addConceptsToDictionary={(concepts: APIConcept[]) =>
                 dictionaryToAddTo &&
                 addConceptsToDictionary(
-                  containerUrl,
                   dictionaryToAddTo,
-                  concepts
+                  concepts,
+                  false,
+                  containerUrl
                 )
               }
               dictionaryToAddTo={dictionaryToAddTo}
@@ -383,6 +403,8 @@ const mapStateToProps = (state: AppState) => {
       : undefined,
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
+    dictionaries: 
+        state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
     source: sourceSelector(state),
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
@@ -403,7 +425,8 @@ const mapActionsToProps = {
   retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
-  retrievePublicSources: retrievePublicSourcesAction
+  retrievePublicSources: retrievePublicSourcesAction,
+  retrievePublicDictionaries: retrievePublicDictionariesAction
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(
