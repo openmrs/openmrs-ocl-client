@@ -29,6 +29,7 @@ Before({ tags: "@dictionary" }, () => {
 Before({ tags: "@concept" }, () => {
   setConceptId(`CT-${nanoid()}`);
 });
+
 Before({ tags: "@version" }, () => {
   setVersionId(`Ver-${nanoid()}`);
 });

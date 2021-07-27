@@ -13,7 +13,7 @@ Feature: Creating a dictionary version Releasing it and copy subscription URL
   @version
   Scenario: The user should be able to create a new version, release it and copy subscription URL
     Given a dictionary exists
-      And the user is on the create new version dialog box
+      And the user clicks on the create new version dialog box
     When the user enters the version information
       And the user submits the form
     Then the new version should be created
@@ -24,8 +24,3 @@ Feature: Creating a dictionary version Releasing it and copy subscription URL
     When the user clicks the more actions button
       And the user selects the "Copy Subscription URL" menu list item
     Then the subscription url should be copied
-
-
-
-
-
