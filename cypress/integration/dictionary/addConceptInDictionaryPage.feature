@@ -6,7 +6,7 @@ Feature: Add concepts to an existing dictioanry
   Scenario: The user should be able to add concepts from their preferred source
     Given the user is on the view dictionary concepts page
      When the user clicks the "Add concepts" button
-      And the user selects "Import existing concepts"
+      And the user selects "Import existing concept"
       And the user selects "Pick concepts"
      Then the user should be on the "Import existing concept" page
       And the current source should be "CIEL"
