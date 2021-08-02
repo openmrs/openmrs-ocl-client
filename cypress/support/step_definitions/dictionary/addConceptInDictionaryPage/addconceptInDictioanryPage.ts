@@ -16,12 +16,16 @@ When('the user clicks the "Add concepts" button', () => {
   cy.findByTitle("Add concepts").click();
 });
 
+Then('the user selects "Import existing concept"', () => {
+  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
+});
+
 Then('the user should be on the "Import existing concept" page', () => {
   cy.url().should("contain", "/orgs/CIEL/sources/CIEL/concepts/");
 });
 
 Given('the user is on the "Import existing concept" page', () => {
-  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`)
+  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
 });
 
 When('the user clicks on the row for "Serum"', () => {
@@ -65,5 +69,6 @@ Then("the current source should be CIEL", () => {
 });
 
 Then("the user should be on the view concept page", () => {
-  cy.url().should("contain", "/users/openmrs/collections/")
+  cy.url().should("contain", `/users/openmrs/collections`);
+  cy.findByText("Serum,Whole blood sample, Plasma,  concept").should("be.visible");
 });
