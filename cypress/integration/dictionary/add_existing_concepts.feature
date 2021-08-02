@@ -12,6 +12,7 @@ Feature: Add concepts to an existing dictioanry
       And the current source should be "CIEL"
 
   @dictionary
+  @ciel
   Scenario: The user should be able to add a single concept from their preferred source
     Given the user is on the "Import existing concept" page
      When the user clicks on the row for "Serum"
@@ -20,6 +21,7 @@ Feature: Add concepts to an existing dictioanry
       And the "Serum" concept should be added to the dictionary
 
   @dictionary
+  @ciel
   Scenario: The user should be able to add multiple concepts from their preferred source
     Given the user is on the "Import existing concept" page
      When the user clicks on the row for "Serum"
@@ -32,6 +34,7 @@ Feature: Add concepts to an existing dictioanry
       And the "Plasma" concept should be added to the dictionary
 
   @dictionary
+  @ciel
   Scenario: The user should be able to add a single concept from their preferred source while viewing it
     Given the user is on the "Import existing concept" page
      When the user clicks on the link for "Serum"

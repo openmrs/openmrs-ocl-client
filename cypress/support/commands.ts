@@ -1,3 +1,4 @@
+/// <reference types="." />
 import "@testing-library/cypress/add-commands";
 import {
   LOGIN_ACTION,
@@ -165,7 +166,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "createSource",
   (
-    source: string = `TD-${nanoid()}`,
+    source: string = `TS-${nanoid()}`,
     username: string = getUser(),
     public_access: boolean = false
   ) => {
@@ -191,7 +192,50 @@ Cypress.Commands.add(
                 id: source,
                 custom_validation_schema: "OpenMRS",
                 short_code: source,
-                name: "Test Dictionary",
+                name: "Test Source",
+                description: "",
+                public_access: public_access ? "View" : "None",
+                source_type: "Dictionary"
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(source);
+  }
+);
+
+Cypress.Commands.add(
+  "createOrgSource",
+  (
+    source: string = `TOS-${nanoid()}`,
+    organisation: string = "CIEL",
+    public_access: boolean = false
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/orgs/${organisation}/sources/`,
+              body: {
+                id: source,
+                custom_validation_schema: "OpenMRS",
+                short_code: source,
+                name: `${source}`,
                 description: "",
                 public_access: public_access ? "View" : "None",
                 source_type: "Dictionary"
@@ -245,7 +289,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "createOrganisation",
   (
-    organisation: string = `Org-${nanoid()}`,
+    organisation: string = `ORG-${nanoid()}`,
     public_access: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -314,3 +358,30 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
       .its("body");
   });
 });
+
+Cypress.Commands.add(
+  "createConcept",
+  (
+    names: ConceptName[],
+    source_url: string,
+    id: string = `CT-${nanoid()}`,
+    concept_class: string = "Diagnosis",
+  ) => {
+    return getAuthToken().then(authToken => {
+      cy.request({
+        method: "POST",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${source_url}concepts/`,
+        body: {
+          id: id,
+          concept_class: concept_class,
+          names: names,
+          datatype: "N/A"
+        }
+      })
+    });
+
+    return cy.wrap(id);
+  });
