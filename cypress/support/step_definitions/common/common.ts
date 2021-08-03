@@ -4,7 +4,7 @@ import { After, Before, Given } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
 import {
   getDictionaryId,
-  getUser,
+  getUser, getVersionId,
   isLoggedIn,
   setConceptId,
   setDictionaryId,
@@ -21,6 +21,20 @@ Given("a dictionary exists", () => {
   cy.createSource(dictionaryId, user).then(() =>
     cy.createDictionary(dictionaryId, user)
   );
+});
+
+Given("a version exists", () => {
+  const versionId = getVersionId();
+  const dictionaryId = getDictionaryId();
+  const user = getUser();
+  cy.createVersion(versionId, dictionaryId, user);
+});
+
+Given("a version is released", () => {
+  const versionId = getVersionId();
+  const dictionaryId = getDictionaryId();
+  const user = getUser();
+  cy.updateVersion(versionId, dictionaryId, user);
 });
 
 Before({ tags: "@dictionary" }, () => {

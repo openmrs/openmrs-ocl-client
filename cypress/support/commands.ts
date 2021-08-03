@@ -4,7 +4,7 @@ import {
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import { getStore, getAuthToken, getUser, getPassword } from "./utils";
+import {getStore, getAuthToken, getUser, getPassword, getDictionaryId, getVersionId} from "./utils";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -314,3 +314,96 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
       .its("body");
   });
 });
+Cypress.Commands.add(
+    "createVersion",
+    (
+    version: string = `Ver-${nanoid()}`,
+    dictionary: string = `TD-${nanoid()}`,
+    username: string = getUser(),
+  ) => {
+        getAuthToken().then(authToken =>
+            cy.request({
+                method: "GET",
+                headers: {
+                    Authorization: authToken
+                },
+                url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+                failOnStatusCode: false
+            }).then(response => {
+                if (response.status !== 200) {
+                    cy.request({
+                        method: "POST",
+                        headers: {
+                            Authorization: authToken
+                        },
+                        url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/`,
+                        body: {
+                            id: version,
+                            released: false,
+                            description: ""
+                        }
+                    });
+                }
+            })
+        );
+        return cy.wrap(version);
+    }
+);
+
+Cypress.Commands.add(
+    "getVersion",
+    (
+        version: string ,
+        dictionary: string = getDictionaryId(),
+        username: string = getUser(),
+        shouldFail: boolean = true
+    ) => {
+        return getAuthToken().then(authToken => {
+            return cy
+                .request({
+                    method: "GET",
+                    headers: {
+                        Authorization: authToken
+                    },
+                    url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+                    failOnStatusCode: shouldFail
+                })
+                .its("body");
+        });
+    }
+);
+Cypress.Commands.add(
+    "updateVersion",
+    (
+        version: string = getVersionId(),
+        dictionary: string = getDictionaryId(),
+        username: string = getUser()
+    ) => {
+        getAuthToken().then(authToken =>
+            cy.request({
+                method: "GET",
+                headers: {
+                    Authorization: authToken
+                },
+                url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+                failOnStatusCode: false
+            }).then(response => {
+                if (response.status !== 200) {
+                    cy.request({
+                        method: "PUT",
+                        headers: {
+                            Authorization: authToken
+                        },
+                        url: `${apiUrl}/users/${username}/collections/${dictionary}/${version}/`,
+                        body: {
+                            id: version,
+                            released: true,
+                            description: ""
+                        }
+                    });
+                }
+            })
+        );
+        return cy.wrap(version);
+    }
+);
