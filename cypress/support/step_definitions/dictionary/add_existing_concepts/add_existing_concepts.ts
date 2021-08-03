@@ -51,7 +51,10 @@ When('the user clicks the "Add selected to dictionary" button', () => {
 });
 
 When('the user clicks on the row for "Whole blood sample"', () => {
-  cy.findByText("Whole blood sample").click();
+  cy.findByText("Whole blood sample")
+    .parent()
+    .next()
+    .click();
 });
 
 Then('the "Serum" concept should be added to the dictionary', () => {
@@ -62,7 +65,10 @@ Then('the "Serum" concept should be added to the dictionary', () => {
 });
 
 When('the user clicks on the row for "Plasma"', () => {
-  cy.findByText("Plasma").click();
+  cy.findByText("Plasma")
+    .parent()
+    .next()
+    .click();
 });
 
 When('the user clicks on the link for "Serum"', () => {
