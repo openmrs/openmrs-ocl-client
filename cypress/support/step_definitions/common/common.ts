@@ -2,7 +2,14 @@
 /// <reference types="../../" />
 import { After, Before, Given } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
-import { getDictionaryId, getUser, isLoggedIn, setConceptId, setDictionaryId } from "../../utils";
+import {
+  getDictionaryId,
+  getUser, getVersionId,
+  isLoggedIn,
+  setConceptId,
+  setDictionaryId,
+  setVersionId
+} from "../../utils";
 
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 4);
 
@@ -16,12 +23,29 @@ Given("a dictionary exists", () => {
   );
 });
 
+Given("a version exists", () => {
+  const versionId = getVersionId();
+  const dictionaryId = getDictionaryId();
+  const user = getUser();
+  cy.createVersion(versionId, dictionaryId, user);
+});
+
+Given("a version is released", () => {
+  const versionId = getVersionId();
+  const dictionaryId = getDictionaryId();
+  const user = getUser();
+  cy.updateVersion(versionId, dictionaryId, user);
+});
+
 Before({ tags: "@dictionary" }, () => {
   setDictionaryId(`TD-${nanoid()}`);
 });
-
 Before({ tags: "@concept" }, () => {
   setConceptId(`CT-${nanoid()}`);
+});
+
+Before({ tags: "@version" }, () => {
+  setVersionId(`Ver-${nanoid()}`);
 });
 
 After({ tags: "@dictionary" }, () => {

@@ -57,6 +57,21 @@ declare namespace Cypress {
       source_url: string,
       id?: string,
       concept_class?: string
+    createVersion(
+      version?: string,
+      dictionary?: string,
+      username?: string,
+    ): Chainable<Subject>;
+    getVersion(
+      version?: string,
+      dictionary?: string,
+      username?: string,
+      shouldFail?:boolean
+    ): Chainable<Subject>;
+    updateVersion(
+        version?: string,
+        dictionary?: string,
+        username?: string
     ): Chainable<Subject>;
   }
 }

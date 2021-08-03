@@ -5,13 +5,7 @@ import {
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import {
-  getStore,
-  getAuthToken,
-  getUser,
-  getPassword,
-  getConceptId
-} from "./utils";
+import {getStore, getAuthToken, getUser, getPassword, getDictionaryId, getVersionId, getConceptId} from "./utils";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -358,7 +352,6 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
       .its("body");
   });
 });
-
 Cypress.Commands.add(
   "getConcept",
   (source_url: string, id: string = getConceptId()) => {
@@ -401,3 +394,5 @@ Cypress.Commands.add(
     return cy.wrap(id);
   }
 );
+
+         
