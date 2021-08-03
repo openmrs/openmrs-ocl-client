@@ -1,11 +1,13 @@
 /// <reference types="cypress" />
 /// <reference types="../../../" />
 import {
+  After,
+  Before,
   Given,
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getDictionaryId, getUser } from "../../../utils";
+import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 
 
 Given("the user is on the view dictionary concepts page", () => {
@@ -37,23 +39,35 @@ Then('the current source should be "CIEL"', () => {
 });
 
 When('the user clicks on the row for "Serum"', () => {
-  cy.findByText("Serum").click();
+  cy.findByText("Serum")
+  .parent()
+  .next()
+  .click();
 });
 
-When('the user clicks the "Add Serum to dictionary" button', () => {
-  cy.findByTitle("Add Serum to dictionary").click();
+When('the user clicks the "Add selected to dictionary" button', () => {
+  cy.findByTitle("Add selected to dictionary").click();
 });
 
 Then('the "Serum" concept should be added to the dictionary', () => {
-  cy.url().should('include', `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/Serum/`)
+  cy.getConcept(
+    `/users/${getUser()}/collections/${getDictionaryId()}/`,
+    "1001"
+  );
 });
 
 When('the user clicks on the row for "Whole blood sample"', () => {
-  cy.findByText("Whole blood sample").click();
+  cy.findByText("Whole blood sample")
+    .parent()
+    .next()
+    .click();
 });
 
 When('the user clicks on the row for "Plasma"', () => {
-  cy.findByText("Plasma").click()
+  cy.findByText("Plasma")
+    .parent()
+    .next()
+    .click();
 });
 
 When('the user clicks on the link for "Serum"', () => {
@@ -75,4 +89,49 @@ Then("the current source should be CIEL", () => {
 Then("the user should be on the view concept page", () => {
   cy.url().should("contain", `/users/openmrs/collections`);
   cy.findByText("Serum,Whole blood sample, Plasma,  concept").should("be.visible");
+});
+
+Before({ tags: "@ciel" }, () => {
+  cy.createOrganisation("CIEL", true)
+    .createOrgSource("CIEL", "CIEL", true)
+    .createConcept(
+      [
+        {
+          name: "Serum",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1001"
+    )
+    .createConcept(
+      [
+        {
+          name: "Whole blood sample",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1000"
+    )
+    .createConcept(
+      [
+        {
+          name: "Plasma",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1002"
+    );
+});
+
+After({ tags: "@ciel" }, () => {
+  cy.deleteOrganisation("CIEL", true);
 });
