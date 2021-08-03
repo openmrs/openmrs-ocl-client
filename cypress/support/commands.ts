@@ -5,16 +5,19 @@ import {
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import { getStore, getAuthToken, getUser, getPassword } from "./utils";
+import {
+  getStore,
+  getAuthToken,
+  getUser,
+  getPassword,
+  getConceptId
+} from "./utils";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
 Cypress.Commands.add(
   "login",
-  (
-    username: string = getUser(),
-    password: string = getPassword()
-  ) => {
+  (username: string = getUser(), password: string = getPassword()) => {
     cy.url().then(url => {
       if (url === undefined || url === null || url === "about:blank") {
         cy.visit("/");
@@ -145,10 +148,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "getDictionary",
-  (
-    dictionary: string,
-    username: string = getUser(),
-  ) => {
+  (dictionary: string, username: string = getUser()) => {
     return getAuthToken().then(authToken => {
       return cy
         .request({
@@ -360,14 +360,29 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
 });
 
 Cypress.Commands.add(
+  "getConcept",
+  (source_url: string, id: string = getConceptId()) => {
+    return getAuthToken().then(authToken => {
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${source_url}concepts/${id}/`
+      }).its("body");
+    });
+  }
+);
+
+Cypress.Commands.add(
   "createConcept",
   (
     names: ConceptName[],
     source_url: string,
-    id: string = `CT-${nanoid()}`,
-    concept_class: string = "Diagnosis",
+    id: string = getConceptId(),
+    concept_class: string = "Diagnosis"
   ) => {
-    return getAuthToken().then(authToken => {
+    getAuthToken().then(authToken => {
       cy.request({
         method: "POST",
         headers: {
@@ -380,8 +395,9 @@ Cypress.Commands.add(
           names: names,
           datatype: "N/A"
         }
-      })
+      });
     });
 
     return cy.wrap(id);
-  });
+  }
+);
