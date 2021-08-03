@@ -7,12 +7,14 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getDictionaryId, getUser } from "../../../utils";
-
+import { getConceptId, getDictionaryId, getUser } from "../../../utils";
 
 Given("the user is on the view dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
-  cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
+  cy.url().should(
+    "contain",
+    `/users/${getUser()}/collections/${getDictionaryId()}/concepts/`
+  );
 });
 
 When('the user clicks the "Add concepts" button', () => {
@@ -28,20 +30,24 @@ Then('the user should be on the "Import existing concept" page', () => {
 });
 
 Given('the user is on the "Import existing concept" page', () => {
-  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
-  cy.url().should("contain", `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
+  cy.visit(
+    `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`
+  );
+  cy.url().should(
+    "contain",
+    `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`
+  );
 });
 
 When('the user clicks on the row for "Serum"', () => {
-  cy.findByText("Serum").parent().next().click();
+  cy.findByText("Serum")
+    .parent()
+    .next()
+    .click();
 });
 
 When('the user clicks the "Add selected to dictionary" button', () => {
   cy.findByTitle("Add selected to dictionary").click();
-});
-
-Then('the "Serum" concept should be added to the dictionary', () => {
-  cy.url().should('include', `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/Serum/`)
 });
 
 When('the user clicks on the row for "Whole blood sample"', () => {
@@ -49,11 +55,14 @@ When('the user clicks on the row for "Whole blood sample"', () => {
 });
 
 Then('the "Serum" concept should be added to the dictionary', () => {
-  cy.visit("users/openmrs/collections")
+  cy.getConcept(
+    `/users/${getUser()}/collections/${getDictionaryId()}/`,
+    "1001"
+  );
 });
 
 When('the user clicks on the row for "Plasma"', () => {
-  cy.findByText("Plasma").click()
+  cy.findByText("Plasma").click();
 });
 
 When('the user clicks on the link for "Serum"', () => {
@@ -61,7 +70,7 @@ When('the user clicks on the link for "Serum"', () => {
 });
 
 When("the user is sent to the view concept page", () => {
-  cy.visit("users/openmrs/collections")
+  cy.visit("users/openmrs/collections");
 });
 
 When('the user clicks on the "Add selected to dictionary" button', () => {
@@ -74,30 +83,50 @@ Then("the current source should be CIEL", () => {
 
 Then("the user should be on the view concept page", () => {
   cy.url().should("contain", `/users/openmrs/collections`);
-  cy.findByText("Serum,Whole blood sample, Plasma,  concept").should("be.visible");
+  cy.findByText("Serum,Whole blood sample, Plasma,  concept").should(
+    "be.visible"
+  );
 });
 
 Before({ tags: "@ciel" }, () => {
   cy.createOrganisation("CIEL", true)
     .createOrgSource("CIEL", "CIEL", true)
-    .createConcept([{
-      name: "Serum",
-      locale: "en",
-      locale_preferred: true,
-      name_type: "FULLY_SPECIFIED"
-    }], "/orgs/CIEL/sources/CIEL/")
-    .createConcept([{
-      name: "Whole blood sample",
-      locale: "en",
-      locale_preferred: true,
-      name_type: "FULLY_SPECIFIED"
-    }], "/orgs/CIEL/sources/CIEL/")
-    .createConcept([{
-      name: "Plasma",
-      locale: "en",
-      locale_preferred: true,
-      name_type: "FULLY_SPECIFIED"
-    }], "/orgs/CIEL/sources/CIEL/");
+    .createConcept(
+      [
+        {
+          name: "Serum",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1001"
+    )
+    .createConcept(
+      [
+        {
+          name: "Whole blood sample",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1000"
+    )
+    .createConcept(
+      [
+        {
+          name: "Plasma",
+          locale: "en",
+          locale_preferred: true,
+          name_type: "FULLY_SPECIFIED"
+        }
+      ],
+      "/orgs/CIEL/sources/CIEL/",
+      "1002"
+    );
 });
 
 After({ tags: "@ciel" }, () => {

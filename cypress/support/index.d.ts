@@ -51,6 +51,7 @@ declare namespace Cypress {
       organisation: string,
       username?: string
     ): Chainable<Subject>;
+    getConcept(source_url: string, id?: string): Chainable<Subject>;
     createConcept(
       names: ConceptName[],
       source_url: string,
