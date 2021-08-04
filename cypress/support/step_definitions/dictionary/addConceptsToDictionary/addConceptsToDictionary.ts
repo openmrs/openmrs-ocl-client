@@ -58,9 +58,14 @@ When('the user clicks on the row for "Whole blood sample"', () => {
 });
 
 Then('the "Serum" concept should be added to the dictionary', () => {
-  cy.getConcept(
-    `/users/${getUser()}/collections/${getDictionaryId()}/`,
-    "1001"
+  cy.waitUntil(
+    () =>
+      cy.getConcept(
+        `/users/${getUser()}/collections/${getDictionaryId()}/`,
+        "1001",
+        false
+      ),
+    { timeout: 10000 }
   );
 });
 

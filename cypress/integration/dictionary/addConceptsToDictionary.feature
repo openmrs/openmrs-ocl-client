@@ -1,4 +1,4 @@
-Feature: Add concepts to an existing dictioanry
+Feature: Add concepts to an existing dictionary
   Background:
     Given the user is logged in
 
@@ -9,7 +9,7 @@ Feature: Add concepts to an existing dictioanry
       And the user selects "Import existing concept"
       And the user selects "Pick concepts"
      Then the user should be on the "Import existing concept" page
-      And the current source should be CIEL
+      And the current source should be "CIEL"
 
   @dictionary
   @ciel

@@ -424,14 +424,19 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
 
 Cypress.Commands.add(
   "getConcept",
-  (source_url: string, id: string = getConceptId()) => {
+  (
+    source_url: string,
+    id: string = getConceptId(),
+    shouldFail: boolean = true
+  ) => {
     return getAuthToken().then(authToken => {
       cy.request({
         method: "GET",
         headers: {
           Authorization: authToken
         },
-        url: `${apiUrl}${source_url}concepts/${id}/`
+        url: `${apiUrl}${source_url}concepts/${id}/`,
+        failOnStatusCode: shouldFail
       }).its("body");
     });
   }
