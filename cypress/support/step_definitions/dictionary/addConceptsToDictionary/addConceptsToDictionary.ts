@@ -54,8 +54,8 @@ When('the user clicks on the row for "Serum"', () => {
     .click();
 });
 
-When('the user clicks the "Add selected to dictionary" button', () => {
-  cy.findByTitle("Add selected to dictionary").click();
+When('the user clicks the "Add Serum to dictionary" button', () => {
+  cy.findByTitle("Add Serum to dictionary").click();
 });
 
 When('the user clicks on the row for "Whole blood sample"', () => {
@@ -71,6 +71,18 @@ Then('the "Serum" concept should be added to the dictionary', () => {
       cy.getConcept(
         `/users/${getUser()}/collections/${getDictionaryId()}/`,
         "1001",
+        false
+      ),
+    { timeout: 10000 }
+  );
+});
+
+Then('the "Whole blood sample" concept should be added to the dictionary', () => {
+  cy.waitUntil(
+    () =>
+      cy.getConcept(
+        `/users/${getUser()}/collections/${getDictionaryId()}/`,
+        "1000",
         false
       ),
     { timeout: 10000 }
