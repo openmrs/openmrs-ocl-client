@@ -364,23 +364,29 @@ export const recursivelyAddConceptsToDictionaryAction = (
   sourceUrl?: string
 ) => {
   return async (dispatch: Function, getState: Function) => {
-    if (!!!sourceUrl && !!rawConcepts.find((c) => typeof c === "string")) {
+    if (!!!sourceUrl && !!rawConcepts.find(c => typeof c === "string")) {
       // eslint-disable-next-line no-throw-literal
       throw {
-        message: "Cannot load string-only concepts without a source url",
+        message: "Cannot load string-only concepts without a source url"
       };
     }
 
-    const concepts = rawConcepts.map((concept) =>
-      typeof concept === "string"
-        ? {
-            id: concept,
-            url: `${sourceUrl}concepts/${concept}/`,
-            source_url: sourceUrl,
-          }
-        : concept
-    );
-    
+    const concepts = rawConcepts.map(concept => {
+      if (typeof concept === "string") {
+        return {
+          id: concept,
+          url: `${sourceUrl}concepts/${concept}/`,
+          source_url: sourceUrl
+        };
+      }
+
+      if (!concept.hasOwnProperty("source_url") || !!!concept.source_url) {
+        concept.source_url = concept.url.split("/", 5).join("/") + "/";
+      }
+
+      return concept;
+    });
+
     let inProgressList;
     const conceptOrConcepts =
       concepts.length > 1 ? `concepts (${concepts.length})` : "concept";
@@ -402,14 +408,14 @@ export const recursivelyAddConceptsToDictionaryAction = (
     dispatch(
       startAction(indexedAction(ADD_CONCEPTS_TO_DICTIONARY, actionIndex))
     );
-    
+
     const groupedConcepts = groupBy(concepts, "source_url");
     const referencesToAdd = flatten(
       await Promise.all(
         Object.entries(groupedConcepts).map(([source, concepts]) =>
           recursivelyFetchToConcepts(
             source,
-            concepts.map((concept) => concept.id),
+            concepts.map(concept => concept.id),
             updateProgress
           )
         )
@@ -492,5 +498,6 @@ export const removeReferencesFromDictionaryAction = createActionThunk(
 );
 
 export const toggleShowVerifiedAction = () => {
-  return (dispatch: Function) => dispatch({type: TOGGLE_SHOW_VERIFIED_ACTION});
+  return (dispatch: Function) =>
+    dispatch({ type: TOGGLE_SHOW_VERIFIED_ACTION });
 };

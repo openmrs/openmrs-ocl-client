@@ -139,7 +139,12 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
   const { pathname: url } = useLocation();
-  const containerUrl = url.replace("/concepts", "");
+  const [containerUrl, setContainerUrl] = useState("");
+
+  useEffect(() => {
+    setContainerUrl(url.replace("/concepts", ""));
+  }, [url]);
+
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
@@ -172,10 +177,17 @@ const ViewConceptsPage: React.FC<Props> = ({
   const collectionsUrl = "/collections/";
   const sourcesLimit = 0;
   const collectionsLimit = 0;
+
   useEffect(() => {
-    retrievePublicDictionaries(collectionsUrl, initialQ, collectionsLimit, page);
+    retrievePublicDictionaries(
+      collectionsUrl,
+      initialQ,
+      collectionsLimit,
+      page
+    );
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
   }, [initialQ, page, retrievePublicSources, retrievePublicDictionaries]);
+
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
@@ -185,6 +197,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [showOptions, setShowOptions] = useState(true);
+
   // why did he put the filtered state here and not inside the component, you ask?
   // consistency my friend, consistency. The key thing here is one can trigger a requery by changing
   // the page count/ number and if the state is not up here then, we query with stale options
@@ -313,8 +326,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
-                edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
-
+                edit: canModifyDictionary || canModifySource // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
               }}
               q={q}
               setQ={setQ}
@@ -389,7 +401,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 const mapStateToProps = (state: AppState) => {
   const dictionary = dictionarySelector(state);
   const concepts = state.concepts.concepts.items || [];
-  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const dictionaryConcepts = dictionary?.references?.map(r => r.expression);
   const modifiedConcepts = concepts?.map(c =>
     includes(dictionaryConcepts, c.version_url)
       ? { ...c, added: true }
@@ -403,8 +415,8 @@ const mapStateToProps = (state: AppState) => {
       : undefined,
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
-    dictionaries: 
-        state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
+    dictionaries:
+      state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
     source: sourceSelector(state),
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
