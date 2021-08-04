@@ -7,7 +7,7 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getConceptId, getDictionaryId, getUser } from "../../../utils";
+import { getDictionaryId, getUser } from "../../../utils";
 
 Given("the user is on the view dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
@@ -19,6 +19,10 @@ Given("the user is on the view dictionary concepts page", () => {
 
 When('the user clicks the "Add concepts" button', () => {
   cy.findByTitle("Add concepts").click();
+});
+
+When('the user selects "Pick concepts"', () => {
+  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
 });
 
 Then('the user selects "Import existing concept"', () => {
@@ -37,6 +41,10 @@ Given('the user is on the "Import existing concept" page', () => {
     "contain",
     `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`
   );
+});
+
+Then('the current source should be "CIEL"', () => {
+  cy.url().should("contain", "/orgs/CIEL/sources/CIEL/concepts/");
 });
 
 When('the user clicks on the row for "Serum"', () => {
