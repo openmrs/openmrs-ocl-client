@@ -421,6 +421,7 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
       .its("body");
   });
 });
+
 Cypress.Commands.add(
   "getConcept",
   (source_url: string, id: string = getConceptId()) => {
