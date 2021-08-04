@@ -14,6 +14,7 @@ import {
   getVersionId,
   getDictionaryId
 } from "./utils";
+import { ConceptName } from "../../src/apps/concepts";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -162,6 +163,44 @@ Cypress.Commands.add(
         })
         .its("body");
     });
+  }
+);
+
+Cypress.Commands.add(
+  "createVersion",
+  (
+    version: string = `Ver-${nanoid()}`,
+    dictionary: string = getDictionaryId(),
+    username: string = getUser()
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/`,
+              body: {
+                id: version,
+                released: false,
+                description: ""
+              }
+            });
+          }
+        })
+    );
+    return cy.wrap(version);
   }
 );
 
