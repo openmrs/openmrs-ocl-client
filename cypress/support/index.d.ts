@@ -54,6 +54,11 @@ declare namespace Cypress {
       username?: string,
       isCleanup?: boolean
     ): Chainable<Subject>;
+    deleteOrgSource(
+      source: string,
+      organisation?: string,
+      isCleanup?: boolean
+    ): Chainable<Subject>;
     getSource(source: string, username?: string): Chainable<Subject>;
     createOrganisation(
       organisation?: string,

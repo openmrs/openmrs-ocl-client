@@ -372,6 +372,26 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "deleteOrgSource",
+  (
+    source: string,
+    organisation: string = "CIEL",
+    isCleanup: boolean = false
+  ) => {
+    getAuthToken().then(authToken =>
+      cy.request({
+        method: "DELETE",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+        failOnStatusCode: !!!isCleanup
+      })
+    );
+  }
+);
+
+Cypress.Commands.add(
   "getSource",
   (source: string, username: string = getUser()) => {
     getAuthToken().then(authToken => {

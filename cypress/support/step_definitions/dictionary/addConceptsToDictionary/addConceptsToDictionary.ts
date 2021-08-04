@@ -22,7 +22,9 @@ When('the user clicks the "Add concepts" button', () => {
 });
 
 When('the user selects "Pick concepts"', () => {
-  cy.visit(`/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
+  cy.visit(
+    `/orgs/CIEL/sources/CIEL/concepts/?addToDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`
+  );
 });
 
 Then('the user selects "Import existing concept"', () => {
@@ -77,17 +79,20 @@ Then('the "Serum" concept should be added to the dictionary', () => {
   );
 });
 
-Then('the "Whole blood sample" concept should be added to the dictionary', () => {
-  cy.waitUntil(
-    () =>
-      cy.getConcept(
-        `/users/${getUser()}/collections/${getDictionaryId()}/`,
-        "1000",
-        false
-      ),
-    { timeout: 10000 }
-  );
-});
+Then(
+  'the "Whole blood sample" concept should be added to the dictionary',
+  () => {
+    cy.waitUntil(
+      () =>
+        cy.getConcept(
+          `/users/${getUser()}/collections/${getDictionaryId()}/`,
+          "1000",
+          false
+        ),
+      { timeout: 10000 }
+    );
+  }
+);
 
 When('the user clicks on the row for "Plasma"', () => {
   cy.findByText("Plasma")
@@ -161,5 +166,5 @@ Before({ tags: "@ciel" }, () => {
 });
 
 After({ tags: "@ciel" }, () => {
-  cy.deleteOrganisation("CIEL", true);
+  cy.deleteOrganisation("CIEL", true).deleteOrgSource("CIEL", "CIEL", true);
 });
