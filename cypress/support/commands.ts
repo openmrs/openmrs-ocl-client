@@ -5,7 +5,15 @@ import {
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import {getStore, getAuthToken, getUser, getPassword, getDictionaryId, getVersionId, getConceptId} from "./utils";
+import {
+  getStore,
+  getAuthToken,
+  getUser,
+  getPassword,
+  getConceptId,
+  getVersionId,
+  getDictionaryId
+} from "./utils";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -154,6 +162,67 @@ Cypress.Commands.add(
         })
         .its("body");
     });
+  }
+);
+
+Cypress.Commands.add(
+  "getVersion",
+  (
+    version: string,
+    dictionary: string = getDictionaryId(),
+    username: string = getUser(),
+    shouldFail: boolean = true
+  ) => {
+    return getAuthToken().then(authToken => {
+      return cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: shouldFail
+        })
+        .its("body");
+    });
+  }
+);
+
+Cypress.Commands.add(
+  "updateVersion",
+  (
+    version: string = getVersionId(),
+    dictionary: string = getDictionaryId(),
+    username: string = getUser()
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "PUT",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/${username}/collections/${dictionary}/${version}/`,
+              body: {
+                id: version,
+                released: true,
+                description: ""
+              }
+            });
+          }
+        })
+    );
+    return cy.wrap(version);
   }
 );
 
@@ -394,5 +463,3 @@ Cypress.Commands.add(
     return cy.wrap(id);
   }
 );
-
-         
