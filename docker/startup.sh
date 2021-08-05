@@ -14,7 +14,6 @@ echo "// Version: $(date -u)" > ${ENV_FILE}
   echo "var OCL_BUILD = \"${OCL_BUILD}\";" >> ${ENV_FILE}
 # converts a space separated list of GA tokens into a JS array
 if [ -n "${OCL_GA_TOKENS}" ]; then
-  TOKEN_STRING=""
   for token in ${OCL_GA_TOKENS};
   do
     if [ -z "${TOKEN_STRING}" ]; then
