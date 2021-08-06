@@ -7,7 +7,7 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getDictionaryId, getUser } from "../../../utils";
+import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 
 Given("the user is on the view dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
