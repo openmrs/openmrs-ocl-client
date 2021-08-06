@@ -536,7 +536,7 @@ Cypress.Commands.add(
           headers: {
             Authorization: authToken
           },
-          url: `${apiUrl}${source_url}concepts/${id}`,
+          url: `${apiUrl}${source_url}concepts/${id}/`,
           failOnStatusCode: false
         })
         .then(response => {
