@@ -1,8 +1,4 @@
-import {
-  Given,
-  Then,
-  When
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, Then, When } from "cypress-cucumber-preprocessor/steps";
 import { getOrganisationId } from "../../../utils";
 
 Given(/a (public|private) organization exists/, type => {
@@ -45,4 +41,3 @@ Then("the organization should be publicly visible", () =>
     .its("public_access")
     .should("eq", "View")
 );
-

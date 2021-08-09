@@ -3,11 +3,14 @@
 import { After, Before, Given } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
 import {
-  getDictionaryId, getOrganisationId,
-  getUser, getVersionId,
+  getDictionaryId,
+  getOrganisationId,
+  getUser,
+  getVersionId,
   isLoggedIn,
   setConceptId,
-  setDictionaryId, setOrganisationId,
+  setDictionaryId,
+  setOrganisationId,
   setVersionId
 } from "../../utils";
 
