@@ -7,7 +7,7 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getDictionaryId, getUser } from "../../../utils";
+import { getDictionaryId, getUser} from "../../../utils";
 
 Given("the user is on the view dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
@@ -50,14 +50,14 @@ Then('the current source should be "CIEL"', () => {
 });
 
 When('the user clicks on the row for "Serum"', () => {
-  cy.findByText("Serum")
+  cy.findAllByText("Serum")
     .parent()
     .next()
     .click();
 });
 
-When('the user clicks on the "Add Serum to dictionary" button', () => {
-  cy.findByTitle("Add Serum to dictionary").click();
+When('the user clicks on the "Add selected to dictionary" button', () => {
+  cy.findByTitle("Add selected to dictionary").click();
 });
 
 When('the user clicks on the row for "Whole blood sample"', () => {
@@ -99,6 +99,18 @@ When('the user clicks on the row for "Plasma"', () => {
     .parent()
     .next()
     .click();
+});
+
+Then('the "Plasma" concept should be added to the dictionary', () => {
+  cy.waitUntil(
+    () =>
+      cy.getConcept(
+        `/users/${getUser()}/collections/${getDictionaryId()}/`,
+        "1002",
+        false
+      ),
+    { timeout: 10000 }
+  );
 });
 
 When('the user clicks on the link for "Serum"', () => {

@@ -39,7 +39,7 @@ Feature: Add concepts to an existing dictionary
     Given the user is on the "Import existing concept" page
      When the user clicks on the link for "Serum"
       And the user is sent to the view concept page
-      And the user clicks on the "Add Serum to dictionary" button
+      And the user clicks on the "Add selected to dictionary" button
      Then the user should be on the view concept page
       And the "Serum" concept should be added to the dictionary
 
