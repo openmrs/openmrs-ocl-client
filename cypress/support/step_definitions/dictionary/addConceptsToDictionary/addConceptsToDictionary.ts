@@ -7,7 +7,7 @@ import {
   Then,
   When
 } from "cypress-cucumber-preprocessor/steps";
-import { getDictionaryId, getUser, getConceptId } from "../../../utils";
+import { getDictionaryId, getUser } from "../../../utils";
 
 Given("the user is on the view dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
@@ -56,7 +56,7 @@ When('the user clicks on the row for "Serum"', () => {
     .click();
 });
 
-When('the user clicks the "Add Serum to dictionary" button', () => {
+When('the user clicks on the "Add Serum to dictionary" button', () => {
   cy.findByTitle("Add Serum to dictionary").click();
 });
 
@@ -109,7 +109,7 @@ When("the user is sent to the view concept page", () => {
   cy.visit("users/openmrs/collections");
 });
 
-When('the user clicks on the "Add selected to dictionary" button', () => {
+When('the user clicks the "Add selected to dictionary" button', () => {
   cy.findByTitle("Add selected to dictionary").click();
 });
 
