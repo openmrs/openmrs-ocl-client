@@ -49,7 +49,7 @@ Then('the current source should be "CIEL"', () => {
   cy.url().should("contain", "/orgs/CIEL/sources/CIEL/concepts/");
 });
 
-When('the user clicks on the row for "Serum"', () => {
+When('the user clicks the row for "Serum"', () => {
   cy.findByText("Serum")
     .parent()
     .next()
