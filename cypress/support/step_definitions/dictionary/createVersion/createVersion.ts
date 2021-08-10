@@ -1,4 +1,5 @@
-import 'cypress-wait-until';
+/// <reference types="cypress" />
+/// <reference types="../../../" />
 import { Given, Then, When } from "cypress-cucumber-preprocessor/steps";
 import { getDictionaryId, getUser, getVersionId } from "../../../utils";
 

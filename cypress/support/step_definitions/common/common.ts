@@ -22,7 +22,8 @@ Given("a dictionary exists", () => {
   const dictionaryId = getDictionaryId();
   const user = getUser();
   cy.createSource(dictionaryId, user).then(() =>
-    cy.createDictionary(dictionaryId, user)
+    cy.createDictionary(dictionaryId, user).then(() =>
+      cy.waitUntil(() => cy.getDictionary(dictionaryId, user)))
   );
 });
 

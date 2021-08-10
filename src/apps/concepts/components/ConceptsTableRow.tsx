@@ -80,10 +80,22 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
-  buttons: { [key: string]: boolean },
   linkedDictionary?: string,
   dictionaryToAddTo?: string
 ) => {
+  let link = row.version_url;
+  const params = new URLSearchParams();
+  if (linkedDictionary) {
+    params.append("linkedDictionary", linkedDictionary);
+  }
+
+  if (dictionaryToAddTo) {
+    params.append("dictionaryToAddTo", dictionaryToAddTo);
+  }
+
+  const queryString = params.toString();
+  link = queryString ? row.version_url + "?" + queryString : row.version_url;
+
   return (
     <TableCell
       onClick={event => toggleSelect(event, row.id)}
@@ -91,21 +103,9 @@ const conceptNameCell = (
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
     >
-      {buttons.addToDictionary === undefined ? (
-        <Link
-          onClick={e => e.stopPropagation()}
-          to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
-        >
-          {row.display_name}
-        </Link>
-      ) : (
-        <Link
-          onClick={e => e.stopPropagation()}
-          to={`${row.version_url}?linkedDictionary=${linkedDictionary}&dictionaryToAddTo=${dictionaryToAddTo}`}
-        >
-          {row.display_name}
-        </Link>
-      )}
+      <Link onClick={e => e.stopPropagation()} to={link}>
+        {row.display_name}
+      </Link>
     </TableCell>
   );
 };
@@ -289,13 +289,7 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(
-        toggleSelect,
-        row,
-        buttons,
-        linkedDictionary,
-        dictionaryToAddTo
-      )}
+      {conceptNameCell(toggleSelect, row, linkedDictionary, dictionaryToAddTo)}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptSourceCell(toggleSelect, row)}

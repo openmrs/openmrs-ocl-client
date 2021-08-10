@@ -1,19 +1,26 @@
+/// <reference types="." />
 import "@testing-library/cypress/add-commands";
 import {
   LOGIN_ACTION,
   LOGOUT_ACTION
 } from "../../src/apps/authentication/redux/actionTypes";
 import { nanoid } from "nanoid";
-import {getStore, getAuthToken, getUser, getPassword, getDictionaryId, getVersionId} from "./utils";
+import {
+  getStore,
+  getAuthToken,
+  getUser,
+  getPassword,
+  getConceptId,
+  getVersionId,
+  getDictionaryId
+} from "./utils";
+import { ConceptName } from "../../src/apps/concepts";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
 Cypress.Commands.add(
   "login",
-  (
-    username: string = getUser(),
-    password: string = getPassword()
-  ) => {
+  (username: string = getUser(), password: string = getPassword()) => {
     cy.url().then(url => {
       if (url === undefined || url === null || url === "about:blank") {
         cy.visit("/");
@@ -144,10 +151,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   "getDictionary",
-  (
-    dictionary: string,
-    username: string = getUser(),
-  ) => {
+  (dictionary: string, username: string = getUser()) => {
     return getAuthToken().then(authToken => {
       return cy
         .request({
@@ -163,9 +167,108 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "createVersion",
+  (
+    version: string = `Ver-${nanoid()}`,
+    dictionary: string = getDictionaryId(),
+    username: string = getUser()
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/`,
+              body: {
+                id: version,
+                released: false,
+                description: ""
+              }
+            });
+          }
+        })
+    );
+    return cy.wrap(version);
+  }
+);
+
+Cypress.Commands.add(
+  "getVersion",
+  (
+    version: string,
+    dictionary: string = getDictionaryId(),
+    username: string = getUser(),
+    shouldFail: boolean = true
+  ) => {
+    return getAuthToken().then(authToken => {
+      return cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: shouldFail
+        })
+        .its("body");
+    });
+  }
+);
+
+Cypress.Commands.add(
+  "updateVersion",
+  (
+    version: string = getVersionId(),
+    dictionary: string = getDictionaryId(),
+    username: string = getUser()
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "PUT",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/${username}/collections/${dictionary}/${version}/`,
+              body: {
+                id: version,
+                released: true,
+                description: ""
+              }
+            });
+          }
+        })
+    );
+    return cy.wrap(version);
+  }
+);
+
+Cypress.Commands.add(
   "createSource",
   (
-    source: string = `TD-${nanoid()}`,
+    source: string = `TS-${nanoid()}`,
     username: string = getUser(),
     public_access: boolean = false
   ) => {
@@ -191,7 +294,50 @@ Cypress.Commands.add(
                 id: source,
                 custom_validation_schema: "OpenMRS",
                 short_code: source,
-                name: "Test Dictionary",
+                name: "Test Source",
+                description: "",
+                public_access: public_access ? "View" : "None",
+                source_type: "Dictionary"
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(source);
+  }
+);
+
+Cypress.Commands.add(
+  "createOrgSource",
+  (
+    source: string = `TOS-${nanoid()}`,
+    organisation: string = "CIEL",
+    public_access: boolean = false
+  ) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/orgs/${organisation}/sources/`,
+              body: {
+                id: source,
+                custom_validation_schema: "OpenMRS",
+                short_code: source,
+                name: `${source}`,
                 description: "",
                 public_access: public_access ? "View" : "None",
                 source_type: "Dictionary"
@@ -226,6 +372,41 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add(
+  "deleteOrgSource",
+  (
+    source: string,
+    organisation: string = "CIEL",
+    isCleanup: boolean = false
+  ) => {
+    getAuthToken().then(authToken => {
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+        failOnStatusCode: !isCleanup
+      }).then(response => {
+        if (
+          response.status >= 200 &&
+          response.status < 400 &&
+          getUser() === response.body.created_by
+        ) {
+          cy.request({
+            method: "DELETE",
+            headers: {
+              Authorization: authToken
+            },
+            url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+            failOnStatusCode: !isCleanup
+          });
+        }
+      });
+    });
+  }
+);
+
+Cypress.Commands.add(
   "getSource",
   (source: string, username: string = getUser()) => {
     getAuthToken().then(authToken => {
@@ -245,7 +426,7 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "createOrganisation",
   (
-    organisation: string = `Org-${nanoid()}`,
+    organisation: string = `ORG-${nanoid()}`,
     public_access: boolean = false
   ) => {
     getAuthToken().then(authToken =>
@@ -288,16 +469,31 @@ Cypress.Commands.add(
 Cypress.Commands.add(
   "deleteOrganisation",
   (organisation: string, isCleanup: boolean = false) => {
-    getAuthToken().then(authToken =>
+    getAuthToken().then(authToken => {
       cy.request({
-        method: "DELETE",
+        method: "GET",
         headers: {
           Authorization: authToken
         },
         url: `${apiUrl}/orgs/${organisation}/`,
-        failOnStatusCode: !!!isCleanup
-      })
-    );
+        failOnStatusCode: !isCleanup
+      }).then(response => {
+        if (
+          response.status >= 200 &&
+          response.status < 400 &&
+          getUser() === response.body.created_by
+        ) {
+          cy.request({
+            method: "DELETE",
+            headers: {
+              Authorization: authToken
+            },
+            url: `${apiUrl}/orgs/${organisation}/`,
+            failOnStatusCode: !isCleanup
+          });
+        }
+      });
+    });
   }
 );
 
@@ -314,96 +510,62 @@ Cypress.Commands.add("getOrganisation", (organisation: string) => {
       .its("body");
   });
 });
+
 Cypress.Commands.add(
-    "createVersion",
-    (
-    version: string = `Ver-${nanoid()}`,
-    dictionary: string = `TD-${nanoid()}`,
-    username: string = getUser(),
+  "getConcept",
+  (
+    source_url: string,
+    id: string = getConceptId(),
+    shouldFail: boolean = true
   ) => {
-        getAuthToken().then(authToken =>
-            cy.request({
-                method: "GET",
-                headers: {
-                    Authorization: authToken
-                },
-                url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
-                failOnStatusCode: false
-            }).then(response => {
-                if (response.status !== 200) {
-                    cy.request({
-                        method: "POST",
-                        headers: {
-                            Authorization: authToken
-                        },
-                        url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/`,
-                        body: {
-                            id: version,
-                            released: false,
-                            description: ""
-                        }
-                    });
-                }
-            })
-        );
-        return cy.wrap(version);
-    }
+    return getAuthToken().then(authToken => {
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${source_url}concepts/${id}/`,
+        failOnStatusCode: shouldFail
+      }).its("body");
+    });
+  }
 );
 
 Cypress.Commands.add(
-    "getVersion",
-    (
-        version: string ,
-        dictionary: string = getDictionaryId(),
-        username: string = getUser(),
-        shouldFail: boolean = true
-    ) => {
-        return getAuthToken().then(authToken => {
-            return cy
-                .request({
-                    method: "GET",
-                    headers: {
-                        Authorization: authToken
-                    },
-                    url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
-                    failOnStatusCode: shouldFail
-                })
-                .its("body");
-        });
-    }
-);
-Cypress.Commands.add(
-    "updateVersion",
-    (
-        version: string = getVersionId(),
-        dictionary: string = getDictionaryId(),
-        username: string = getUser()
-    ) => {
-        getAuthToken().then(authToken =>
-            cy.request({
-                method: "GET",
-                headers: {
-                    Authorization: authToken
-                },
-                url: `${apiUrl}/users/${username}/collections/${dictionary}/versions/${version}`,
-                failOnStatusCode: false
-            }).then(response => {
-                if (response.status !== 200) {
-                    cy.request({
-                        method: "PUT",
-                        headers: {
-                            Authorization: authToken
-                        },
-                        url: `${apiUrl}/users/${username}/collections/${dictionary}/${version}/`,
-                        body: {
-                            id: version,
-                            released: true,
-                            description: ""
-                        }
-                    });
-                }
-            })
-        );
-        return cy.wrap(version);
-    }
+  "createConcept",
+  (
+    names: ConceptName[],
+    source_url: string,
+    id: string = getConceptId(),
+    concept_class: string = "Diagnosis"
+  ) => {
+    getAuthToken().then(authToken => {
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${source_url}concepts/${id}/`,
+        failOnStatusCode: false
+      }).then(response => {
+        if (response.status !== 200) {
+          cy.request({
+            method: "POST",
+            headers: {
+              Authorization: authToken
+            },
+            url: `${apiUrl}${source_url}concepts/`,
+            body: {
+              id: id,
+              concept_class: concept_class,
+              names: names,
+              datatype: "N/A"
+            }
+          });
+        }
+      });
+    });
+
+    return cy.wrap(id);
+  }
 );

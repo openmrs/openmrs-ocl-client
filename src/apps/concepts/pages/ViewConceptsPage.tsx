@@ -139,7 +139,12 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
   const { pathname: url } = useLocation();
-  const containerUrl = url.replace("/concepts", "");
+  const [containerUrl, setContainerUrl] = useState("");
+
+  useEffect(() => {
+    setContainerUrl(url.replace("/concepts", ""));
+  }, [url]);
+
   const { ownerType, owner } = useParams<{
     ownerType: string;
     owner: string;
@@ -172,19 +177,27 @@ const ViewConceptsPage: React.FC<Props> = ({
   const collectionsUrl = "/collections/";
   const sourcesLimit = 0;
   const collectionsLimit = 0;
+
   useEffect(() => {
-    retrievePublicDictionaries(collectionsUrl, initialQ, collectionsLimit, page);
+    retrievePublicDictionaries(
+      collectionsUrl,
+      initialQ,
+      collectionsLimit,
+      page
+    );
     retrievePublicSources(sourceUrl, initialQ, sourcesLimit, page);
   }, [initialQ, page, retrievePublicSources, retrievePublicDictionaries]);
+
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
     if (dictionary === undefined && dictionaryToAddTo) {
       retrieveDictionary(dictionaryToAddTo);
     }
-  }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dictionary, dictionaryToAddTo, retrieveDictionary]);
 
   const [showOptions, setShowOptions] = useState(true);
+
   // why did he put the filtered state here and not inside the component, you ask?
   // consistency my friend, consistency. The key thing here is one can trigger a requery by changing
   // the page count/ number and if the state is not up here then, we query with stale options
@@ -226,50 +239,36 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    // we don't make this reactive(only depend on the initial values), because the requirement
-    // was only trigger queries on user search(enter or apply filters, or change page)
-    containerType === SOURCE_CONTAINER ||
-    containerType === SOURCE_VERSION_CONTAINER
-      ? retrieveSource(containerUrl)
-      : retrieveDictionary(containerUrl);
+    if (containerUrl) {
+      // we don't make this reactive(only depend on the initial values), because the requirement
+      // was only trigger queries on user search(enter or apply filters, or change page)
+      containerType === SOURCE_CONTAINER ||
+      containerType === SOURCE_VERSION_CONTAINER
+        ? retrieveSource(containerUrl)
+        : retrieveDictionary(containerUrl);
 
-    retrieveConcepts({
-      conceptsUrl: isImporting
-        ? includeAddedConcepts
-          ? url
-          : excludeAddedConceptsUrl
-        : url,
-      page: page,
-      limit: limit,
-      q: initialQ,
-      sortDirection: sortDirection,
-      sortBy: sortBy,
-      dataTypeFilters: initialDataTypeFilters,
-      classFilters: initialClassFilters,
-      sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("Include Retired"),
-      includeAdded: generalFilters.includes("Include Added Concepts")
-    });
+      retrieveConcepts({
+        conceptsUrl: isImporting
+          ? includeAddedConcepts
+            ? url
+            : excludeAddedConceptsUrl
+          : url,
+        page: page,
+        limit: limit,
+        q: initialQ,
+        sortDirection: sortDirection,
+        sortBy: sortBy,
+        dataTypeFilters: initialDataTypeFilters,
+        classFilters: initialClassFilters,
+        sourceFilters: initialSourceFilters,
+        includeRetired: initialGeneralFilters.includes("Include Retired"),
+        includeAdded: generalFilters.includes("Include Added Concepts")
+      });
+    }
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    retrieveConcepts,
-    url,
-    page,
-    limit,
-    initialQ,
-    sortDirection,
-    sortBy,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialDataTypeFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialClassFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialSourceFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialGeneralFilters.toString()
-  ]);
+  }, [retrieveConcepts, retrieveDictionary, retrieveSource, containerUrl]);
 
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
@@ -313,8 +312,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
               buttons={{
-                edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
-
+                edit: canModifyDictionary || canModifySource // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
               }}
               q={q}
               setQ={setQ}
@@ -336,7 +334,10 @@ const ViewConceptsPage: React.FC<Props> = ({
                 )
               }
               dictionaryToAddTo={dictionaryToAddTo}
-              linkedDictionary={containerUrl}
+              linkedDictionary={
+                (containerType === DICTIONARY_CONTAINER && containerUrl) ||
+                undefined
+              }
               linkedSource={linkedSource}
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
@@ -389,7 +390,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 const mapStateToProps = (state: AppState) => {
   const dictionary = dictionarySelector(state);
   const concepts = state.concepts.concepts.items || [];
-  const dictionaryConcepts = dictionary?.references.map(r => r.expression);
+  const dictionaryConcepts = dictionary?.references?.map(r => r.expression);
   const modifiedConcepts = concepts?.map(c =>
     includes(dictionaryConcepts, c.version_url)
       ? { ...c, added: true }
@@ -403,8 +404,8 @@ const mapStateToProps = (state: AppState) => {
       : undefined,
     modifiedConcepts: modifiedConcepts,
     dictionary: dictionarySelector(state),
-    dictionaries: 
-        state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
+    dictionaries:
+      state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]?.items,
     source: sourceSelector(state),
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts

@@ -1,4 +1,13 @@
 /// <reference types="cypress" />
+
+interface ConceptName {
+  name: string;
+  locale: string;
+  external_id?: string;
+  locale_preferred?: boolean;
+  name_type?: string;
+}
+
 declare namespace Cypress {
   interface Chainable<Subject> {
     login(username?: string, password?: string): Chainable<Subject>;
@@ -14,14 +23,40 @@ declare namespace Cypress {
       isCleanup?: boolean
     ): Chainable<Subject>;
     getDictionary(dictionary: string, username?: string): Chainable<Subject>;
+    createVersion(
+      version?: string,
+      dictionary?: string,
+      username?: string
+    ): Chainable<Subject>;
+    getVersion(
+      version?: string,
+      dictionary?: string,
+      username?: string,
+      shouldFail?: boolean
+    ): Chainable<Subject>;
+    updateVersion(
+      version?: string,
+      dictionary?: string,
+      username?: string
+    ): Chainable<Subject>;
     createSource(
       source?: string,
       username?: string,
       public_access?: boolean
     ): Chainable<Subject>;
+    createOrgSource(
+      source?: string,
+      organisation?: string,
+      public_access?: boolean
+    ): Chainable<Subject>;
     deleteSource(
       source: string,
       username?: string,
+      isCleanup?: boolean
+    ): Chainable<Subject>;
+    deleteOrgSource(
+      source: string,
+      organisation?: string,
       isCleanup?: boolean
     ): Chainable<Subject>;
     getSource(source: string, username?: string): Chainable<Subject>;
@@ -37,21 +72,16 @@ declare namespace Cypress {
       organisation: string,
       username?: string
     ): Chainable<Subject>;
-    createVersion(
-      version?: string,
-      dictionary?: string,
-      username?: string,
+    getConcept(
+      source_url: string,
+      id?: string,
+      shouldFail?: boolean
     ): Chainable<Subject>;
-    getVersion(
-      version?: string,
-      dictionary?: string,
-      username?: string,
-      shouldFail?:boolean
-    ): Chainable<Subject>;
-    updateVersion(
-        version?: string,
-        dictionary?: string,
-        username?: string
+    createConcept(
+      names: ConceptName[],
+      source_url: string,
+      id?: string,
+      concept_class?: string
     ): Chainable<Subject>;
   }
 }
