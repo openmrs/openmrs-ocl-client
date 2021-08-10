@@ -50,7 +50,7 @@ Then('the current source should be "CIEL"', () => {
 });
 
 When('the user clicks on the row for "Serum"', () => {
-  cy.findAllByText("Serum")
+  cy.findByText("Serum")
     .parent()
     .next()
     .click();
@@ -121,7 +121,7 @@ When("the user is sent to the view concept page", () => {
   cy.visit("users/openmrs/collections");
 });
 
-When('the user clicks the "Add selected to dictionary" button', () => {
+When('the user clicks on the "Add selected to dictionary" button', () => {
   cy.findByTitle("Add selected to dictionary").click();
 });
 
