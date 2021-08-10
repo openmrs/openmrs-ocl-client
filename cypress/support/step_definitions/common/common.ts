@@ -4,10 +4,13 @@ import { After, Before, Given } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
 import {
   getDictionaryId,
-  getUser, getVersionId,
+  getOrganisationId,
+  getUser,
+  getVersionId,
   isLoggedIn,
   setConceptId,
   setDictionaryId,
+  setOrganisationId,
   setVersionId
 } from "../../utils";
 
@@ -48,6 +51,9 @@ Before({ tags: "@version" }, () => {
   setVersionId(`Ver-${nanoid()}`);
 });
 
+Before({ tags: "@organisation" }, () => {
+  setOrganisationId(`Org-${nanoid()}`);
+});
 After({ tags: "@dictionary" }, () => {
   isLoggedIn().then(loggedIn => {
     if (loggedIn) {
@@ -55,6 +61,14 @@ After({ tags: "@dictionary" }, () => {
       const user = getUser();
       cy.deleteDictionary(dictionaryId, user, true);
       cy.deleteSource(dictionaryId, user, true);
+    }
+  });
+});
+After({ tags: "@organisation" }, () => {
+  isLoggedIn().then(loggedIn => {
+    if (loggedIn) {
+      const organisationId = getOrganisationId();
+      cy.deleteOrganisation(organisationId, true);
     }
   });
 });
