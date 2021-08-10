@@ -475,16 +475,21 @@ Cypress.Commands.add(
         headers: {
           Authorization: authToken
         },
-        url: `${apiUrl}/orgs/${organisation}/`
+        url: `${apiUrl}/orgs/${organisation}/`,
+        failOnStatusCode: !isCleanup
       }).then(response => {
-        if (getUser() === response.body.created_by) {
+        if (
+          response.status >= 200 &&
+          response.status < 400 &&
+          getUser() === response.body.created_by
+        ) {
           cy.request({
             method: "DELETE",
             headers: {
               Authorization: authToken
             },
             url: `${apiUrl}/orgs/${organisation}/`,
-            failOnStatusCode: !!!isCleanup
+            failOnStatusCode: !isCleanup
           });
         }
       });
