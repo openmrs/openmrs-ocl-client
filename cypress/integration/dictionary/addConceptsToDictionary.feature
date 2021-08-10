@@ -16,7 +16,7 @@ Feature: Add concepts to an existing dictionary
   Scenario: The user should be able to add a single concept from their preferred source
     Given the user is on the "Import existing concept" page
      When the user clicks on the row for "Serum"
-      And the user clicks the "Add selected to dictionary" button
+      And the user clicks on the "Add selected to dictionary" button
      Then the user should be on the "Import existing concept" page
       And the "Serum" concept should be added to the dictionary
 
@@ -27,7 +27,7 @@ Feature: Add concepts to an existing dictionary
      When the user clicks on the row for "Serum"
       And the user clicks on the row for "Whole blood sample"
       And the user clicks on the row for "Plasma"
-      And the user clicks the "Add selected to dictionary" button
+      And the user clicks on the "Add selected to dictionary" button
      Then the user should be on the "Import existing concept" page
       And the "Serum" concept should be added to the dictionary
       And the "Whole blood sample" concept should be added to the dictionary

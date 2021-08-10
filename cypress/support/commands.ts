@@ -385,15 +385,20 @@ Cypress.Commands.add(
           Authorization: authToken
         },
         url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
+        failOnStatusCode: !isCleanup
       }).then(response => {
-        if (getUser() === response.body.created_by) {
+        if (
+          response.status >= 200 &&
+          response.status < 400 &&
+          getUser() === response.body.created_by
+        ) {
           cy.request({
             method: "DELETE",
             headers: {
               Authorization: authToken
             },
             url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
-            failOnStatusCode: !!!isCleanup
+            failOnStatusCode: !isCleanup
           });
         }
       });
@@ -470,7 +475,7 @@ Cypress.Commands.add(
         headers: {
           Authorization: authToken
         },
-        url: `${apiUrl}/orgs/${organisation}/`,
+        url: `${apiUrl}/orgs/${organisation}/`
       }).then(response => {
         if (getUser() === response.body.created_by) {
           cy.request({
@@ -530,32 +535,30 @@ Cypress.Commands.add(
     concept_class: string = "Diagnosis"
   ) => {
     getAuthToken().then(authToken => {
-      cy
-        .request({
-          method: "GET",
-          headers: {
-            Authorization: authToken
-          },
-          url: `${apiUrl}${source_url}concepts/${id}/`,
-          failOnStatusCode: false
-        })
-        .then(response => {
-          if (response.status !== 200) {
-            cy.request({
-              method: "POST",
-              headers: {
-                Authorization: authToken
-              },
-              url: `${apiUrl}${source_url}concepts/`,
-              body: {
-                id: id,
-                concept_class: concept_class,
-                names: names,
-                datatype: "N/A"
-              }
-            });
-          }
-        });
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${source_url}concepts/${id}/`,
+        failOnStatusCode: false
+      }).then(response => {
+        if (response.status !== 200) {
+          cy.request({
+            method: "POST",
+            headers: {
+              Authorization: authToken
+            },
+            url: `${apiUrl}${source_url}concepts/`,
+            body: {
+              id: id,
+              concept_class: concept_class,
+              names: names,
+              datatype: "N/A"
+            }
+          });
+        }
+      });
     });
 
     return cy.wrap(id);
