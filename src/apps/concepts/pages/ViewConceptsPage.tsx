@@ -194,7 +194,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     if (dictionary === undefined && dictionaryToAddTo) {
       retrieveDictionary(dictionaryToAddTo);
     }
-  }, [dictionary, dictionaryToAddTo]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dictionary, dictionaryToAddTo, retrieveDictionary]);
 
   const [showOptions, setShowOptions] = useState(true);
 
@@ -239,50 +239,36 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    // we don't make this reactive(only depend on the initial values), because the requirement
-    // was only trigger queries on user search(enter or apply filters, or change page)
-    containerType === SOURCE_CONTAINER ||
-    containerType === SOURCE_VERSION_CONTAINER
-      ? retrieveSource(containerUrl)
-      : retrieveDictionary(containerUrl);
+    if (containerUrl) {
+      // we don't make this reactive(only depend on the initial values), because the requirement
+      // was only trigger queries on user search(enter or apply filters, or change page)
+      containerType === SOURCE_CONTAINER ||
+      containerType === SOURCE_VERSION_CONTAINER
+        ? retrieveSource(containerUrl)
+        : retrieveDictionary(containerUrl);
 
-    retrieveConcepts({
-      conceptsUrl: isImporting
-        ? includeAddedConcepts
-          ? url
-          : excludeAddedConceptsUrl
-        : url,
-      page: page,
-      limit: limit,
-      q: initialQ,
-      sortDirection: sortDirection,
-      sortBy: sortBy,
-      dataTypeFilters: initialDataTypeFilters,
-      classFilters: initialClassFilters,
-      sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("Include Retired"),
-      includeAdded: generalFilters.includes("Include Added Concepts")
-    });
+      retrieveConcepts({
+        conceptsUrl: isImporting
+          ? includeAddedConcepts
+            ? url
+            : excludeAddedConceptsUrl
+          : url,
+        page: page,
+        limit: limit,
+        q: initialQ,
+        sortDirection: sortDirection,
+        sortBy: sortBy,
+        dataTypeFilters: initialDataTypeFilters,
+        classFilters: initialClassFilters,
+        sourceFilters: initialSourceFilters,
+        includeRetired: initialGeneralFilters.includes("Include Retired"),
+        includeAdded: generalFilters.includes("Include Added Concepts")
+      });
+    }
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    retrieveConcepts,
-    url,
-    page,
-    limit,
-    initialQ,
-    sortDirection,
-    sortBy,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialDataTypeFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialClassFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialSourceFilters.toString(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialGeneralFilters.toString()
-  ]);
+  }, [retrieveConcepts, retrieveDictionary, retrieveSource, containerUrl]);
 
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
