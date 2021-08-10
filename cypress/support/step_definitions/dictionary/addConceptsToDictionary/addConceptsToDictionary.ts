@@ -50,7 +50,7 @@ Then('the current source should be "CIEL"', () => {
 });
 
 When('the user clicks the row for "Serum"', () => {
-  cy.findByText("Serum")
+  cy.findAllByText("Serum")
     .parent()
     .next()
     .click();
