@@ -17,3 +17,4 @@ Feature: Editing a organisation
     When the user selects "View" Public Access
       And the user submits the form
     Then the organization should be publicly visible
+ 
