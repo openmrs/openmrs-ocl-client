@@ -65,8 +65,8 @@ When("the user is sent to the view concept page", () => {
   cy.url().should("contain", "/");
 });
 
-When('the user clicks on the "Add selected to dictionary" button', () => {
-  cy.findByTitle("Add selected to dictionary").click();
+When('the user clicks on the "Add Serum to dictionary" button', () => {
+  cy.findByTitle("Add Serum to dictionary").click({ force: true });
 });
 
 Then('the current source should be "CIEL"', () => {

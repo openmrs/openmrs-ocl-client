@@ -334,7 +334,10 @@ const ViewConceptsPage: React.FC<Props> = ({
                 )
               }
               dictionaryToAddTo={dictionaryToAddTo}
-              linkedDictionary={containerUrl}
+              linkedDictionary={
+                (containerType === DICTIONARY_CONTAINER && containerUrl) ||
+                undefined
+              }
               linkedSource={linkedSource}
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
