@@ -27,28 +27,28 @@ import {
   });
   
   Then('the user should be on the "Add concepts in bulk from CIEL" page', () => {
-    cy.url().should("contain", `/collections/${getDictionaryId()}/add/?fromSource=CIEL/`)
+    cy.url().should("contain", `/users/collections/${getDictionaryId()}/add/?fromSource=CIEL/`)
   });
   
   Given('the user is on the "Add concepts in bulk from CIEL" page', () => {
     cy.url().should(
       "contain",
-      `/collections/${getDictionaryId()}/add/?fromSource=CIEL/`)
+      `/users/collections/${getDictionaryId()}/add/?fromSource=CIEL/`)
   });
   
   Then('the current source should be "CIEL"', () => {
     cy.url().should("contain", "/orgs/CIEL/sources/CIEL/concepts/");
   });
   
-  When('the user enters concept ID "1000"', () => {
+  When('the user enters concept Id "1000"', () => {
     cy.get("#1000").type(getConceptId());
   });
 
-  When('the user enters concept ID "1001"', () => {
+  When('the user enters concept Id "1001"', () => {
     cy.get("#1001").type(getConceptId());
   });
 
-  When('the user enters concept ID "1002"', () => {
+  When('the user enters concept Id "1002"', () => {
     cy.get("#1002").type(getConceptId());
   });
   
@@ -97,12 +97,8 @@ import {
     cy.findByTitle("Add concepts").click();
   });
   
-  Then("the current source should be CIEL", () => {
-    cy.url().should("contain", "/collections/openmrs/collections/");
-  });
-  
   Then('the user should be on the "Progress notifications" page', () => {
-    cy.url().should("contain", `/collections/${getDictionaryId()}/add/?fromSource=CIEL/`);
+    cy.url().should("contain", `/actions/`);
     cy.findByText("1000, 1001, 1002,  concept").should(
       "be.visible"
     );
@@ -114,6 +110,7 @@ import {
       .createConcept(
         [
           {
+            id: "1001",
             name: "Serum",
             locale: "en",
             locale_preferred: true,
@@ -126,6 +123,7 @@ import {
       .createConcept(
         [
           {
+            id: "1000",
             name: "Whole blood sample",
             locale: "en",
             locale_preferred: true,
@@ -138,6 +136,7 @@ import {
       .createConcept(
         [
           {
+            id: "1002",
             name: "Plasma",
             locale: "en",
             locale_preferred: true,
