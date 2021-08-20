@@ -63,6 +63,7 @@ const ViewConceptPage: React.FC<Props> = ({
             ? concept.display_name
             : "View concept"
         }
+        backUrl={linkedDictionary ? `${linkedDictionary}concepts/` : `${dictionaryToAddTo}concepts/` }
       >
         <ProgressOverlay
           delayRender
