@@ -1,5 +1,5 @@
 import { authenticatedInstance } from "../../api";
-import { BaseConcept, Mapping } from "./types";
+import { APIConcept, BaseConcept, Mapping } from "./types";
 import { buildPartialSearchQuery } from "../../utils";
 
 const optionallyIncludeList = (key: string, value: string[]) =>
@@ -101,7 +101,7 @@ const api = {
   },
   concept: {
     retrieve: (conceptUrl: string) =>
-      authenticatedInstance.get(conceptUrl, {
+      authenticatedInstance.get<APIConcept>(conceptUrl, {
         params: {
           verbose: true,
           includeMappings: true

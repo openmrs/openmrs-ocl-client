@@ -18,11 +18,11 @@ export interface ConceptDescription {
 export interface Mapping {
   map_type: string;
   external_id: string;
-  from_concept_url: string;
+  from_concept_url?: string;
   to_concept_url?: string | null; // internal mapping
   to_source_url?: string; // external mapping
   to_concept_code?: string; // external mapping
-  to_concept_name_resolved?: string | null;
+  to_concept_name_resolved?: string;
   to_concept_name?: string | null;
   url?: string;
   retired?: boolean;

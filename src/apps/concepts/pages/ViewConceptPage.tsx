@@ -3,6 +3,7 @@ import { Grid } from "@material-ui/core";
 import { ConceptForm, ConceptSpeedDial } from "../components";
 import { AppState } from "../../../redux";
 import {
+  cloneConceptToDictionaryAction,
   retrieveConceptAction,
   viewConceptErrorsSelector,
   viewConceptLoadingSelector
@@ -27,6 +28,9 @@ interface Props {
   addConceptsToDictionary?: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
+  cloneConceptToDictionary?: (
+    ...args: Parameters<typeof cloneConceptToDictionaryAction>
+  ) => void;
 }
 
 const ViewConceptPage: React.FC<Props> = ({
@@ -37,7 +41,8 @@ const ViewConceptPage: React.FC<Props> = ({
   errors,
   profile,
   usersOrgs,
-  addConceptsToDictionary
+  addConceptsToDictionary,
+  cloneConceptToDictionary
 }) => {
   const { pathname: url } = useLocation();
   const { ownerType, owner } = useParams<{
@@ -54,11 +59,8 @@ const ViewConceptPage: React.FC<Props> = ({
     retrieveConcept(url);
   }, [url, retrieveConcept]);
 
-  const backUrl = linkedDictionary
-    ? `${linkedDictionary}concepts/`
-    : dictionaryToAddTo
-    ? undefined
-    : `${conceptSource}concepts/`;
+  const fromDictionary = linkedDictionary ?? dictionaryToAddTo;
+  const backUrl = `${fromDictionary ? fromDictionary : conceptSource}concepts/`;
 
   return (
     <>
@@ -98,6 +100,8 @@ const ViewConceptPage: React.FC<Props> = ({
               linkedDictionary={linkedDictionary}
               dictionaryToAddTo={dictionaryToAddTo}
               conceptUrl={url}
+              addConceptsToDictionary={addConceptsToDictionary}
+              cloneConceptToDictionary={cloneConceptToDictionary}
             />
           )}
         </ProgressOverlay>
@@ -117,7 +121,8 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapActionsToProps = {
   retrieveConcept: retrieveConceptAction,
-  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction
+  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
+  cloneConceptToDictionary: cloneConceptToDictionaryAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(ViewConceptPage);

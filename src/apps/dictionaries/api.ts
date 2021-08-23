@@ -1,4 +1,5 @@
 import {
+  APIDictionary,
   APIDictionaryVersion,
   DictionaryVersion,
   EditableDictionaryFields,
@@ -18,7 +19,7 @@ const api = {
   dictionaries: {
     retrieve: {
       public: (dictionariesUrl: string, q: string = "", limit = 20, page = 1) =>
-        unAuthenticatedInstance.get(dictionariesUrl, {
+        unAuthenticatedInstance.get<APIDictionary>(dictionariesUrl, {
           params: {
             limit,
             page,
@@ -34,7 +35,7 @@ const api = {
         limit = 20,
         page = 1
       ) =>
-        authenticatedInstance.get(dictionariesUrl, {
+        authenticatedInstance.get<APIDictionary>(dictionariesUrl, {
           params: {
             limit,
             page,
