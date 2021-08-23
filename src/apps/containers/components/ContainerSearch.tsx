@@ -100,7 +100,7 @@ const ContainerSearch: React.FC<Props> = ({
           />
         }
         label={
-          showOnlyVerified ? "Showing verified only" : "Show Verified Only"
+          showOnlyVerified ? `Showing verified ${title} only` : `Show Verified ${title} Only`
         }
       />
     </Grid>
