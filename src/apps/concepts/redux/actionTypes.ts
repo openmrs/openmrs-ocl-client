@@ -5,3 +5,4 @@ export const UPSERT_CONCEPT_AND_MAPPINGS = "concepts/createConceptAndMappings";
 export const RETRIEVE_CONCEPTS_ACTION = "concepts/retrieveConcepts";
 export const RETRIEVE_ACTIVE_CONCEPTS_ACTION =
   "concepts/retrieveActiveConcepts";
+export const CLONE_CONCEPT_ACTION = "concept/cloneConceptAndMappings";

@@ -55,6 +55,7 @@ import {
   updateLocalStorageArray
 } from "../../../redux/localStorageUtils";
 import dayjs from "dayjs";
+import axios from "axios";
 
 const createDictionaryAction = createActionThunk(
   CREATE_DICTIONARY_ACTION,
@@ -364,6 +365,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
   sourceUrl?: string
 ) => {
   return async (dispatch: Function, getState: Function) => {
+    console.log("recursively called", dictionaryUrl, rawConcepts, sourceUrl)
     if (!!!sourceUrl && !!rawConcepts.find(c => typeof c === "string")) {
       // eslint-disable-next-line no-throw-literal
       throw {
@@ -466,18 +468,21 @@ export const recursivelyAddConceptsToDictionaryAction = (
         });
       }
     } catch (e) {
-      updateLocalStorageArray({
-        name: "notification",
-        key: "erroredList",
-        value: e.response?.data,
-        index: index
-      });
-      dispatch({
-        type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
-        actionIndex: actionIndex,
-        payload: e.response?.data,
-        meta: [dictionaryUrl, concepts, bulk]
-      });
+      if (axios.isAxiosError(e)) {
+        updateLocalStorageArray({
+          name: "notification",
+          key: "erroredList",
+          value: e.response?.data,
+          index: index
+        });
+
+        dispatch({
+          type: `${ADD_CONCEPTS_TO_DICTIONARY}_${FAILURE}`,
+          actionIndex: actionIndex,
+          payload: e.response?.data,
+          meta: [dictionaryUrl, concepts, bulk]
+        });
+      }
     }
 
     updateLocalStorageArray({
