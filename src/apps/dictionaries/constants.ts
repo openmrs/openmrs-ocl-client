@@ -2,7 +2,7 @@ import { TabType } from "../containers/types";
 
 export const TAB_LIST: TabType[] = [
   {
-    labelName: "Your Dictionaries",
+    labelName: "My Dictionaries",
     labelURL: "/user/collections/"
   },
   {
