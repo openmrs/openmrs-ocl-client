@@ -54,6 +54,9 @@ const ViewConceptPage: React.FC<Props> = ({
     retrieveConcept(url);
   }, [url, retrieveConcept]);
 
+  const fromDictionary = linkedDictionary ?? dictionaryToAddTo;
+  const backUrl = `${fromDictionary ? fromDictionary : conceptSource}concepts/`
+
   return (
     <>
       <Header
@@ -63,7 +66,7 @@ const ViewConceptPage: React.FC<Props> = ({
             ? concept.display_name
             : "View concept"
         }
-        backUrl={linkedDictionary ? `${linkedDictionary}concepts/` : `${dictionaryToAddTo}concepts/` }
+        backUrl={backUrl}
       >
         <ProgressOverlay
           delayRender
