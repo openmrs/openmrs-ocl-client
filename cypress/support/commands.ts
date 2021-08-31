@@ -12,7 +12,8 @@ import {
   getPassword,
   getConceptId,
   getVersionId,
-  getDictionaryId
+  getDictionaryId,
+  getNewUser
 } from "./utils";
 import { ConceptName } from "../../src/apps/concepts";
 
@@ -567,5 +568,74 @@ Cypress.Commands.add(
     });
 
     return cy.wrap(id);
+  }
+);
+Cypress.Commands.add(
+  "createUser",
+  (username: string = getNewUser(), password: string = nanoid()) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/`,
+              body: {
+                username: username,
+                password: password,
+                email: `${username}@example.com`,
+                first_name: "Test",
+                last_name: "User"
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(username);
+  }
+);
+
+Cypress.Commands.add(
+  "addMember",
+  (organisation: string = `ORG-${nanoid()}`, member: string = getNewUser()) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/members/${member}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "PUT",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/orgs/${organisation}/members/${member}/`,
+              body: {
+                username: member
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(member);
   }
 );
