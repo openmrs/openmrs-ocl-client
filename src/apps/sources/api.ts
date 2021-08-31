@@ -22,6 +22,7 @@ const api = {
           params: {
             limit,
             page,
+            verbose: true,
             q: buildPartialSearchQuery(q),
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
@@ -31,6 +32,7 @@ const api = {
           params: {
             limit,
             page,
+            verbose: true,
             q: buildPartialSearchQuery(q),
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
