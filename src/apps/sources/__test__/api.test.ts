@@ -18,13 +18,21 @@ describe("api", () => {
     const q: string = "";
     const limit: number = 20;
     const page: number = 1;
-    const response = await api.sources.retrieve.private(url, q, limit, page);
+    const verbose: boolean = true;
+    const response = await api.sources.retrieve.private(
+      url,
+      q,
+      limit,
+      page,
+      verbose
+    );
 
     expect(authenticatedInstance.get).toHaveBeenCalledWith(url, {
       params: {
         limit: 20,
         page: 1,
         q: "",
+        verbose: true,
         timestamp: expect.anything()
       }
     });
@@ -36,13 +44,21 @@ describe("api", () => {
     const q: string = "";
     const limit: number = 20;
     const page: number = 1;
-    const response = await api.sources.retrieve.public(url, q, limit, page);
+    const verbose: boolean = true;
+    const response = await api.sources.retrieve.public(
+      url,
+      q,
+      limit,
+      page,
+      verbose
+    );
 
     expect(unAuthenticatedInstance.get).toHaveBeenCalledWith(url, {
       params: {
         limit: 20,
         page: 1,
         q: "",
+        verbose: true,
         timestamp: expect.anything()
       }
     });
