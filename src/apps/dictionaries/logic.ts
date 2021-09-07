@@ -50,6 +50,7 @@ const recursivelyFetchToConcepts = async (
   const loadedConcepts = new Set();
   for (let i = 0; i < levelsToCheck; i += 1) {
     const toConceptCodes = mappingsLists[i]
+      .filter(m => m.map_type === 'Q-AND-A' || m.map_type === 'CONCEPT-SET')
       .map(mapping => mapping.to_concept_code)
       .filter(code => !loadedConcepts.has(code));
 
