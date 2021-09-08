@@ -22,7 +22,6 @@ const api = {
           params: {
             limit,
             page,
-            verbose: true,
             q: buildPartialSearchQuery(q),
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
@@ -38,7 +37,6 @@ const api = {
           params: {
             limit,
             page,
-            verbose: true,
             q: buildPartialSearchQuery(q),
             customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
