@@ -49,6 +49,11 @@ declare namespace Cypress {
       organisation?: string,
       public_access?: boolean
     ): Chainable<Subject>;
+    createMyOrgSource(
+      source?: string,
+      organisation?: string,
+      public_access?: boolean
+    ): Chainable<Subject>;
     deleteSource(
       source: string,
       username?: string,
@@ -60,6 +65,7 @@ declare namespace Cypress {
       isCleanup?: boolean
     ): Chainable<Subject>;
     getSource(source: string, username?: string): Chainable<Subject>;
+    getOrgSources(org: string): Chainable<Subject>;
     createOrganisation(
       organisation?: string,
       public_access?: boolean
