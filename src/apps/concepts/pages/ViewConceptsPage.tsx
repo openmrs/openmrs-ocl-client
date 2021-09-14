@@ -239,7 +239,6 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (containerUrl) {
       // we don't make this reactive(only depend on the initial values), because the requirement
       // was only trigger queries on user search(enter or apply filters, or change page)
       containerType === SOURCE_CONTAINER ||
@@ -264,12 +263,26 @@ const ViewConceptsPage: React.FC<Props> = ({
         includeRetired: initialGeneralFilters.includes("Include Retired"),
         includeAdded: generalFilters.includes("Include Added Concepts")
       });
-    }
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retrieveConcepts, retrieveDictionary, retrieveSource, containerUrl]);
-
+  }, [
+    retrieveConcepts,
+    url,
+    page,
+    limit,
+    initialQ,
+    sortDirection,
+    sortBy,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialDataTypeFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialClassFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialSourceFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialGeneralFilters.toString()
+  ]);
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
