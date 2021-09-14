@@ -79,6 +79,8 @@ const conceptCodeFromUrl = (url: string): string => {
   return letters.join("");
 };
 
+const conceptFromUrl = (url: string) => url.split("/").slice(0, -3).join("/") + "/";
+
 interface SourceOption extends Option {
   isInternalSource: boolean;
 }
@@ -288,6 +290,8 @@ const MappingsTableRow: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedMappingType]);
 
+  const sourceUrl = toSourceUrl ?? (!!toConceptUrl && conceptFromUrl(toConceptUrl));
+
   return (
     <>
       <TableRow
@@ -323,8 +327,8 @@ const MappingsTableRow: React.FC<Props> = ({
                 }
               }}
               value={
-                toSourceUrl
-                  ? option(toSourceUrl, conceptCodeFromUrl(toSourceUrl))
+                sourceUrl
+                  ? option(sourceUrl, conceptCodeFromUrl(sourceUrl))
                   : undefined
               }
               placeholder="Select a source"

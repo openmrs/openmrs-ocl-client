@@ -17,20 +17,34 @@ const api = {
     authenticatedInstance.put(sourceUrl, data),
   sources: {
     retrieve: {
-      private: (sourcesUrl: string, q: string = "", limit = 20, page = 1) =>
+      private: (
+        sourcesUrl: string,
+        q: string = "",
+        limit = 20,
+        page = 1,
+        verbose = true
+      ) =>
         authenticatedInstance.get(sourcesUrl, {
           params: {
             limit,
             page,
+            verbose: true,
             q: buildPartialSearchQuery(q),
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
         }),
-      public: (sourcesUrl: string, q: string = "", limit = 20, page = 1) =>
+      public: (
+        sourcesUrl: string,
+        q: string = "",
+        limit = 20,
+        page = 1,
+        verbose = true
+      ) =>
         unAuthenticatedInstance.get(sourcesUrl, {
           params: {
             limit,
             page,
+            verbose: true,
             q: buildPartialSearchQuery(q),
             timestamp: new Date().getTime() // work around seemingly unhelpful caching
           }
