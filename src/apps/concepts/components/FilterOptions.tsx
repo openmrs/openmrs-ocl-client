@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import { CONCEPT_CLASSES, DATA_TYPES, CONCEPT_GENERAL } from "../../../utils";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -163,12 +164,14 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({
 }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState("");
+  const { replace: goTo } = useHistory();
 
   const clearAllFilters = () => {
     setCheckedClasses([]);
     setCheckedDataTypes([]);
     setCheckedGeneral([]);
     setCheckedSources([]);
+    goTo(url);
   };
 
   return (
