@@ -139,7 +139,11 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
   const { pathname: url } = useLocation();
-  const containerUrl = url.replace("/concepts", "");
+  const [containerUrl, setContainerUrl] = useState("");
+
+  useEffect(() => {
+    setContainerUrl(url.replace("/concepts", ""));
+  }, [url]);
 
   const { ownerType, owner } = useParams<{
     ownerType: string;
@@ -235,35 +239,40 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    // we don't make this reactive(only depend on the initial values), because the requirement
-    // was only trigger queries on user search(enter or apply filters, or change page)
-    containerType === SOURCE_CONTAINER ||
-    containerType === SOURCE_VERSION_CONTAINER
-      ? retrieveSource(containerUrl)
-      : retrieveDictionary(containerUrl);
+    if (containerUrl) {
+      // we don't make this reactive(only depend on the initial values), because the requirement
+      // was only trigger queries on user search(enter or apply filters, or change page)
+      containerType === SOURCE_CONTAINER ||
+      containerType === SOURCE_VERSION_CONTAINER
+        ? retrieveSource(containerUrl)
+        : retrieveDictionary(containerUrl);
 
-    retrieveConcepts({
-      conceptsUrl: isImporting
-        ? includeAddedConcepts
-          ? url
-          : excludeAddedConceptsUrl
-        : url,
-      page: page,
-      limit: limit,
-      q: initialQ,
-      sortDirection: sortDirection,
-      sortBy: sortBy,
-      dataTypeFilters: initialDataTypeFilters,
-      classFilters: initialClassFilters,
-      sourceFilters: initialSourceFilters,
-      includeRetired: initialGeneralFilters.includes("Include Retired"),
-      includeAdded: generalFilters.includes("Include Added Concepts")
-    });
+      retrieveConcepts({
+        conceptsUrl: isImporting
+          ? includeAddedConcepts
+            ? url
+            : excludeAddedConceptsUrl
+          : url,
+        page: page,
+        limit: limit,
+        q: initialQ,
+        sortDirection: sortDirection,
+        sortBy: sortBy,
+        dataTypeFilters: initialDataTypeFilters,
+        classFilters: initialClassFilters,
+        sourceFilters: initialSourceFilters,
+        includeRetired: initialGeneralFilters.includes("Include Retired"),
+        includeAdded: generalFilters.includes("Include Added Concepts")
+      });
+    }
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     retrieveConcepts,
+    retrieveDictionary,
+    retrieveSource,
+    containerUrl,
     url,
     page,
     limit,
