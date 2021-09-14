@@ -269,9 +269,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    retrieveConcepts,
-    retrieveDictionary,
-    retrieveSource,
+    retrieveConcepts, 
+    retrieveDictionary, 
+    retrieveSource, 
     containerUrl,
     url,
     page,
@@ -288,6 +288,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialGeneralFilters.toString()
   ]);
+
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
