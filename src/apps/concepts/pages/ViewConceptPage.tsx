@@ -54,8 +54,11 @@ const ViewConceptPage: React.FC<Props> = ({
     retrieveConcept(url);
   }, [url, retrieveConcept]);
 
-  const fromDictionary = linkedDictionary ?? dictionaryToAddTo;
-  const backUrl = `${fromDictionary ? fromDictionary : conceptSource}concepts/`
+  const backUrl = linkedDictionary
+    ? `${linkedDictionary}concepts/`
+    : dictionaryToAddTo
+    ? undefined
+    : `${conceptSource}concepts/`;
 
   return (
     <>
