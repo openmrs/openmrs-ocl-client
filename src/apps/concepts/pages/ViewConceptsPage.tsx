@@ -268,7 +268,26 @@ const ViewConceptsPage: React.FC<Props> = ({
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retrieveConcepts, retrieveDictionary, retrieveSource, containerUrl]);
+  }, [
+    retrieveConcepts, 
+    retrieveDictionary, 
+    retrieveSource, 
+    containerUrl,
+    url,
+    page,
+    limit,
+    initialQ,
+    sortDirection,
+    sortBy,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialDataTypeFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialClassFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialSourceFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialGeneralFilters.toString()
+  ]);
 
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
