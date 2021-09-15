@@ -6,12 +6,15 @@ Feature: Organisation details Page
         Scenario: The user should see all details of the organisation
             Given an organization exists
               And the user is on the organisation details page
-             Then the user should see details of the organisation
-        
+             Then the organisation name should be displayed
+              And the organisation sources should be displayed
+              And the organisation members should be displayed
+              And the organisation dictionaries should be displayed
+  
         @organisation
         Scenario: The user should see organisation sources
             Given an organization exists
-              And a source organisation exists
+              And a source exists in the organisation
              When the user is on the organisation details page
              Then the user should see the organisation source
              When the user clicks on the source

@@ -338,50 +338,7 @@ Cypress.Commands.add(
                 id: source,
                 custom_validation_schema: "OpenMRS",
                 short_code: source,
-                name: `${source}`,
-                description: "",
-                public_access: public_access ? "View" : "None",
-                source_type: "Dictionary"
-              }
-            });
-          }
-        })
-    );
-
-    return cy.wrap(source);
-  }
-);
-
-Cypress.Commands.add(
-  "createMyOrgSource",
-  (
-    source: string = `TOS-${nanoid()}`,
-    organisation: string = getOrganisationId(),
-    public_access: boolean = false
-  ) => {
-    getAuthToken().then(authToken =>
-      cy
-        .request({
-          method: "GET",
-          headers: {
-            Authorization: authToken
-          },
-          url: `${apiUrl}/orgs/${organisation}/sources/${source}/`,
-          failOnStatusCode: false
-        })
-        .then(response => {
-          if (response.status !== 200) {
-            cy.request({
-              method: "POST",
-              headers: {
-                Authorization: authToken
-              },
-              url: `${apiUrl}/orgs/${organisation}/sources/`,
-              body: {
-                id: source,
-                custom_validation_schema: "OpenMRS",
-                short_code: source,
-                name: "My Org Source",
+                name: "Test Org Source",
                 description: "",
                 public_access: public_access ? "View" : "None",
                 source_type: "Dictionary"
@@ -507,23 +464,6 @@ Cypress.Commands.add(
     );
 
     return cy.wrap(organisation);
-  }
-);
-
-Cypress.Commands.add(
-  "getOrgSources",
-  (org:string) => {
-    getAuthToken().then(authToken => {
-      return cy
-        .request({
-          method: "GET",
-          headers: {
-            Authorization: authToken
-          },
-          url: `${apiUrl}/orgs/${org}/sources/`
-        })
-        .its("body");
-    });
   }
 );
 
