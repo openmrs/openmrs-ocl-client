@@ -290,10 +290,12 @@ const SourceForm: React.FC<Props> = ({
               </InputLabel>
               <Field
                 multiple
-                value={[]}
+                fullWidth
+                defaultValue={[]}
                 name="supported_locales"
                 id="supported_locales"
                 component={Select}
+                style={{ whiteSpace: "inherit !important" }}
               >
                 {supportedLocalesLabel(values)}
               </Field>

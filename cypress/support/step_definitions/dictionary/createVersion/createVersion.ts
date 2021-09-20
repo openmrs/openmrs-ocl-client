@@ -55,10 +55,7 @@ When(/the user selects the "(.+)" menu list item/, menuItem =>
 Then("the subscription url should be copied", () => {
   cy.window().then(win => {
     win.navigator.clipboard.readText().then(text => {
-      assert.equal(
-        text,
-        `/users/${getUser()}/collections/${getDictionaryId()}/${getVersionId()}`
-      );
+      expect(text).to.contain(`/users/${getUser()}/collections/${getDictionaryId()}/${getVersionId()}/`)
     });
   });
 });
