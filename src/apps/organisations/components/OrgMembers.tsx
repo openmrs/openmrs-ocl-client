@@ -50,8 +50,8 @@ interface Props {
     ...args: Parameters<typeof resetDeleteOrgMemberAction>
   ) => void;
   deleteError?: string;
-  showDeleteMemberDialog: boolean;
-  displayDeleteMemberDialog: () => void;
+  showDeleteMemberDialog?: string;
+  displayDeleteMemberDialog: (...args: Parameters<typeof showDeleteMemberDialogAction>) => void;
   hideDeleteMemberDialog: () => void;
 }
 
@@ -90,6 +90,14 @@ const OrganisationMembers: React.FC<Props> = ({
           <Typography component="legend" variant="h5" gutterBottom>
             Members
           </Typography>
+          <DeleteMemberDialog
+            open={showDeleteMemberDialog !== undefined}
+            handleClose={hideDeleteMemberDialog}
+            handleSubmit={() => deleteMember(orgUrl,  showDeleteMemberDialog ?? '')}
+            user={showDeleteMemberDialog}
+            orgName={orgName}
+            error={deleteError}
+          />
           <List>
             {members?.length ? (
               members.map(m => (
@@ -97,17 +105,9 @@ const OrganisationMembers: React.FC<Props> = ({
                   {m.username || m.name}
                   {!canModifyMembers ? null : (
                     <>
-                      <IconButton onClick={displayDeleteMemberDialog}>
+                      <IconButton onClick={() => displayDeleteMemberDialog(m.username)}>
                         <DeleteIcon />
                       </IconButton>
-                      <DeleteMemberDialog
-                        open={showDeleteMemberDialog}
-                        handleClose={hideDeleteMemberDialog}
-                        handleSubmit={() => deleteMember(orgUrl, m.username)}
-                        user={m.name ?? m.username}
-                        orgName={orgName}
-                        error={deleteError}
-                      />
                     </>
                   )}
                 </ListItem>

@@ -14,8 +14,8 @@ When("the user clicks on the delete member button", () =>{
     .click();
 cy.findByRole("button", { name: /Yes/i }).click();
 }
-
 );
+
 Then("the member should be deleted", () => {
   cy.get("li").should("not.contain", "openmrs");
 });

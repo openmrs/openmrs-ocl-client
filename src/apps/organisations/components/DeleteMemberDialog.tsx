@@ -15,7 +15,7 @@ interface Props {
   open: boolean;
   handleClose: () => void;
   handleSubmit?: () => void;
-  user: string;
+  user?: string;
   orgName: string;
   error?: {};
 }
