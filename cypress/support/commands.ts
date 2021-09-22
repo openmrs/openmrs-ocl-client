@@ -338,7 +338,7 @@ Cypress.Commands.add(
                 id: source,
                 custom_validation_schema: "OpenMRS",
                 short_code: source,
-                name: `${source}`,
+                name: "Test Org Source",
                 description: "",
                 public_access: public_access ? "View" : "None",
                 source_type: "Dictionary"
@@ -349,6 +349,48 @@ Cypress.Commands.add(
     );
 
     return cy.wrap(source);
+  }
+);
+
+Cypress.Commands.add(
+  "createOrgDictionary",
+  (
+  dictionary: string = `TOC-${nanoid()}`,
+  organisation: string = "CIEL",
+  public_access: boolean = false
+  ) => {
+      getAuthToken().then(authToken =>
+        cy
+        .request({
+            method: "GET",
+            headers: {
+                Authorization: authToken
+            },
+            url: `${apiUrl}/orgs/${organisation}/collections/${dictionary}/`,
+            failOnStatusCode: false
+        })
+        .then(response => {
+            if (response.status !== 200) {
+                cy.request({
+                    method: "POST",
+                    headers: {
+                        Authorization: authToken
+                    },
+                    url: `${apiUrl}/orgs/${organisation}/collections/`,
+                    body: {
+                        id: dictionary,
+                        custom_validation_schema: "OpenMRS",
+                        short_code: dictionary,
+                        name: "Test Org Dictionary",
+                        description: "",
+                        public_access: public_access ? "View" : "None",
+                        source_type: "Dictionary"
+                    }
+                });
+            }
+        })
+      );
+      return cy.wrap(dictionary);
   }
 );
 

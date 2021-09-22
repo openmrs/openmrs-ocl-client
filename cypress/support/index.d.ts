@@ -49,6 +49,11 @@ declare namespace Cypress {
       organisation?: string,
       public_access?: boolean
     ): Chainable<Subject>;
+    createOrgDictionary(
+      dictionary?: string,
+      organisation?: string,
+      public_access?: boolean
+    ): Chainable<Subject>;
     deleteSource(
       source: string,
       username?: string,
