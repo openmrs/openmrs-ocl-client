@@ -1,6 +1,7 @@
 import api from "./api";
 import { APIMapping, InternalAPIMapping } from "../concepts";
 import { union } from "lodash";
+import { AxiosResponse } from "axios";
 
 const fetchConceptMappings = async (
   sourceUrl: string,
@@ -73,4 +74,13 @@ const recursivelyFetchToConcepts = async (
   return getConceptUrls(mappingsLists);
 };
 
-export { recursivelyFetchToConcepts };
+const retrieveDictionariesCount = async (
+  dictionaryUrl: string,
+): Promise<AxiosResponse<any>> => {
+  const totalCount = api.dictionariesCount.retrieveCount(dictionaryUrl)
+  const response = await totalCount 
+  console.log(response)
+  return response
+  
+}
+export { recursivelyFetchToConcepts, retrieveDictionariesCount };

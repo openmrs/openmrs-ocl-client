@@ -12,15 +12,14 @@ import {
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
-  TOGGLE_SHOW_VERIFIED_ACTION
-} from "./actionTypes";
+  TOGGLE_SHOW_VERIFIED_ACTION} from "./actionTypes";
 import { LOGOUT_ACTION } from "../../authentication/redux/actionTypes";
 
 const initialState: DictionaryState = {
   dictionaries: [],
   versions: [],
   addReferencesResults: [],
-  showOnlyVerified: false
+  showOnlyVerified: false,
 };
 export const reducer = createReducer(initialState, {
   [TOGGLE_SHOW_VERIFIED_ACTION]: (state, action) => ({
