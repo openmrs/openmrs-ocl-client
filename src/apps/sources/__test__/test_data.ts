@@ -57,7 +57,7 @@ export const organisationState: OrganisationState = {
   organisation: {} as APIOrganisation,
   organisations: [],
   showAddMemberDialog: false,
-  showDeleteMemberDialog: false,
+  showDeleteMemberDialog: undefined,
   showOnlyVerified: false
 };
 

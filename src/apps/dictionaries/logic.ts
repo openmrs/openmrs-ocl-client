@@ -13,6 +13,13 @@ const fetchConceptMappings = async (
   }
 };
 
+const filterUnneededMappings = (mappings: APIMapping[]) =>
+  mappings
+    .filter(m => m.to_concept_url !== undefined)
+    .filter(
+      m => m.map_type === "Q-AND-A" || m.map_type === "CONCEPT-SET"
+    ) as InternalAPIMapping[];
+
 const recursivelyFetchToConcepts = async (
   fromSource: string,
   fromConceptIds: string[],
@@ -30,19 +37,14 @@ const recursivelyFetchToConcepts = async (
     return toConceptUrls.filter(toConceptUrl => !!toConceptUrl);
   };
 
-  const removeExternalMappings = (
-    mappingsList: APIMapping[]
-  ): InternalAPIMapping[] =>
-    mappingsList.filter(
-      mapping => mapping.to_concept_url
-    ) as InternalAPIMapping[];
-
   updateNotification("Finding dependent concepts...");
   const startingConceptMappings: APIMapping[] = await fetchMappings(
     fromSource,
     fromConceptIds
   );
-  const mappingsLists = [removeExternalMappings(startingConceptMappings)];
+
+  const mappingsLists = [filterUnneededMappings(startingConceptMappings)];
+
   updateNotification(
     `Found ${getConceptUrls(mappingsLists).length} dependent concepts to add...`
   );
@@ -60,7 +62,7 @@ const recursivelyFetchToConcepts = async (
     toConceptCodes.forEach(code => loadedConcepts.add(code));
 
     const conceptMappings = await fetchMappings(fromSource, toConceptCodes);
-    mappingsLists.push(removeExternalMappings(conceptMappings));
+    mappingsLists.push(filterUnneededMappings(conceptMappings));
     updateNotification(
       `Found ${
         getConceptUrls(mappingsLists).length
