@@ -19,4 +19,12 @@ Feature: Organisation details Page
              Then the user should see the organisation source
              When the user clicks on the source
              Then the user should be on the org source page
- 
+
+        @organisation
+        Scenario: The user should see organisation dictionary
+            Given an organization exists
+              And a dictionary exists in the organisation
+             When the user is on the organisation details page
+             Then the user should see the organisation dictionary
+             When the user clicks on the dictionary
+             Then the user should be on the org dictionary page

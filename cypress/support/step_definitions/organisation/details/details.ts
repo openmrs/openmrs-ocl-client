@@ -9,6 +9,10 @@ Given("a source exists in the organisation", () => {
   cy.createOrgSource(undefined, getOrganisationId());
 });
 
+Given("a dictionary exists in the organisation", () => {
+  cy.createOrgDictionary(undefined, getOrganisationId());
+});
+
 Given("the user is on the organisation details page", () =>
   cy.visit(`/orgs/${getOrganisationId()}/`)
 );
@@ -31,13 +35,25 @@ Then("the organisation dictionaries should be displayed", () => {
 });
 
 Then("the user should see the organisation source", () => {
-  cy.findByText("Test Org Source", { selector: "li" }).should("be.visible");
+  cy.contains("li", "Test Org Source");
 });
 
 When("the user clicks on the source", () =>
-  cy.get('Test Org Source').click()
+    cy.contains("li", "Test Org Source").get("li > a").click()
 );
 
 Then("the user should be on the org source page", () =>
-  cy.url().contains(`orgs/${getOrganisationId()}/sources/`)
+  cy.url().should("contain",`/orgs/${getOrganisationId()}/sources/`)
+);
+
+Then("the user should see the organisation dictionary", () => {
+  cy.contains("li", "Test Org Dictionary");
+});
+
+When("the user clicks on the dictionary", () =>
+    cy.contains("li", "Test Org Dictionary").get("li > a").click()
+);
+
+Then("the user should be on the org dictionary page", () =>
+    cy.url().should("contain",`/orgs/${getOrganisationId()}/collections/`)
 );
