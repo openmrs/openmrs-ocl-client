@@ -60,6 +60,8 @@ export interface StateProps {
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
+  dictionaryMeta?: { num_found?: number };
+  sourcesMeta?: { num_found?: number };
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
 }
@@ -128,6 +130,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   retrievePublicDictionaries,
   retrieveSource,
   meta = {},
+  dictionaryMeta = {},
+  sourcesMeta = {},
   profile,
   usersOrgs,
   containerType,
@@ -172,6 +176,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     sourceFilters: initialSourceFilters = [],
     addToDictionary: dictionaryToAddTo
   } = queryParams;
+
+  const headerQueryParams: {  q?: string } = useQueryParams();
+  const {  q: initialSearch = "" } = queryParams;
 
   const sourceUrl = "/sources/";
   const collectionsUrl = "/collections/";
@@ -221,6 +228,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   const isImporting = dictionaryToAddTo !== undefined;
 
   const [q, setQ] = useState(initialQ);
+  const [showOnlyVerified, setShowOnlyVerified] = useState(false);
 
   const gimmeAUrl = (params: QueryParams = {}, conceptsUrl: string = url) => {
     const newParams: QueryParams = {
@@ -231,11 +239,19 @@ const ViewConceptsPage: React.FC<Props> = ({
         generalFilters: generalFilters,
         sourceFilters: sourceFilters,
         page: 1,
-        q
+        q,
       },
       ...params
     };
     return `${conceptsUrl}?${qs.stringify(newParams)}`;
+  };
+
+  const pathUrl = (params: {  q?: string }) => {
+    const newParams: { q?: string } = {
+      ...headerQueryParams,
+      ...params
+    };
+    return `${url}?${qs.stringify(newParams)}`;
   };
 
   useEffect(() => {
@@ -305,7 +321,14 @@ const ViewConceptsPage: React.FC<Props> = ({
       gimmeAUrl={gimmeAUrl}
       addConceptToDictionary={dictionaryToAddTo}
       sources={sources}
-      dictionaries={dictionaries}
+      dictionaries={dictionaries} 
+      showOnlyVerified={showOnlyVerified} 
+      toggleShowVerified={(e)=>setShowOnlyVerified(e.target.checked)} 
+      goTo={goTo}
+      initialSearch={initialSearch}
+      pathUrl={pathUrl}
+      dictionaryMeta={dictionaryMeta}
+      sourcesMeta={sourcesMeta}
     >
       <Grid
         container
@@ -429,6 +452,12 @@ const mapStateToProps = (state: AppState) => {
     sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
     meta: state.concepts.concepts
       ? state.concepts.concepts.responseMeta
+      : undefined,
+    dictionaryMeta: state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX]
+      ? state.dictionaries.dictionaries[PUBLIC_DICTIONARIES_ACTION_INDEX].responseMeta
+      : undefined,
+    sourcesMeta: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]
+      ? state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX].responseMeta
       : undefined,
     loading:
       viewConceptsLoadingSelector(state) ||

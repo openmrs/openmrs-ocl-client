@@ -11,6 +11,10 @@ import { default as containerAPI } from "../containers/api";
 
 const api = {
   ...containerAPI,
+  dictionariesCount: {
+    retrieveCount: (dictionaryUrl: string) =>
+      authenticatedInstance.head(`${dictionaryUrl}dictionaries`),
+  },
   create: (ownerUrl: string, data: NewAPIDictionary) =>
     authenticatedInstance.post(`${ownerUrl}collections/`, data),
   update: (dictionaryUrl: string, data: EditableDictionaryFields) =>

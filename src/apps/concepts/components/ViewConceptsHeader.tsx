@@ -10,20 +10,27 @@ import { getContainerIdFromUrl } from "../utils";
 import {
   Button,
   createStyles,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
   makeStyles,
   Menu,
   MenuItem,
-  TextField,
+  Switch,
   Theme
 } from "@material-ui/core";
-import {
-  PREFERRED_SOURCES_VIEW_ONLY,
-  useAnchor
-} from "../../../utils";
+import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
-import { APIDictionary } from '../../dictionaries/types';
-
+import {
+  AccountTreeOutlined,
+  FolderOpen,
+  Search as SearchIcon
+} from "@material-ui/icons";
+import { APIDictionary, Dictionary } from '../../dictionaries/types';
+import { VerifiedSource } from "../../../components/VerifiedSource";
+import InfiniteScroll from "react-infinite-scroll-component";
 interface Props {
   containerType: string;
   containerUrl?: string;
@@ -32,8 +39,14 @@ interface Props {
   children?: React.ReactNode[];
   sources: APISource[];
   dictionaries: APIDictionary[];
+  showOnlyVerified: boolean;
+  toggleShowVerified: React.ChangeEventHandler<HTMLInputElement>;
+  goTo: Function;
+  initialSearch: string;
+  pathUrl: Function;
+  dictionaryMeta?: { num_found?: number };
+  sourcesMeta?: { num_found?: number };
 }
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
@@ -42,6 +55,9 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       padding: "0.2rem 1rem",
       cursor: "none"
+    },
+    sourcesDropdownHeader: {
+      padding: "0.5rem 1rem"
     },
     input: {
       cursor: "pointer",
@@ -60,9 +76,12 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: "0.2rem",
       fill: "#8080809c"
     },
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
+    }
   })
 );
-
 const ViewConceptsHeader: React.FC<Props> = ({
   containerType,
   containerUrl,
@@ -70,20 +89,43 @@ const ViewConceptsHeader: React.FC<Props> = ({
   addConceptToDictionary,
   children,
   sources,
-  dictionaries
+  dictionaries,
+  goTo,
+  initialSearch,
+  pathUrl,
+  dictionaryMeta,
+  sourcesMeta
 }) => {
-  const [showSources, setShowSources] = useState(false);
-  const [preferredSources, setPreferredSources] = useState< { name: string; url: string }[] >();
+  const [showAllSources, setShowAllSources] = useState(false);
+  const [queryString, setQueryString] = useState(initialSearch);
+  const [currentSources, setCurrentSources] = useState<
+    { name: string; url: string }[]
+  >();
   useEffect(() => {
-  const defaultSources = Object.entries( PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key, url: value }));
-  if (showSources) {
-  const allSources = defaultSources
+    const defaultSources = Object.entries(
+      PREFERRED_SOURCES_VIEW_ONLY
+    ).map(([key, value]) => ({ name: key, url: value }));
+    if (showAllSources) {
+      const allSources = defaultSources
         .concat(sources.map(s => ({ name: s.name, url: s.url })))
         .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
-        setPreferredSources(allSources);
-      } else setPreferredSources(defaultSources);
-    }, [showSources, sources, dictionaries]);
-
+      setCurrentSources(allSources);
+      console.log(allSources);
+    } else setCurrentSources(defaultSources);
+  }, [showAllSources, sources, dictionaries, initialSearch]);
+  // TODO - Check if this is correct
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      const previousSources = currentSources
+        ?.filter(Boolean)
+        .concat(currentSources.slice(11));
+      setCurrentSources(previousSources);
+    }, 1000);
+  };
+  const handleSearch = (q: string) => goTo(pathUrl({ q }));
+  const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowAllSources(event.target.checked);
+  };
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
@@ -92,7 +134,6 @@ const ViewConceptsHeader: React.FC<Props> = ({
     handleSwitchSourceClick,
     handleSwitchSourceClose
   ] = useAnchor();
-
   const getTitleBasedOnContainerType = () => {
     return isAddToDictionary
       ? `Import existing concept from ${getContainerIdFromUrl(containerUrl)}`
@@ -100,6 +141,12 @@ const ViewConceptsHeader: React.FC<Props> = ({
           containerType === DICTIONARY_VERSION_CONTAINER ? "v" : ""
         }${getContainerIdFromUrl(containerUrl)}`;
   };
+  const dictionaryObj = dictionaryMeta ? dictionaryMeta:{};
+  const dictionaryCount = dictionaryObj.num_found ? dictionaryObj.num_found:0;
+
+  const sourceObj = sourcesMeta ? sourcesMeta:{};
+  const sourcesCount = sourceObj.num_found ? sourceObj.num_found:0;
+  const totalCount = sourcesCount + dictionaryCount
 
   const showSwitchSourceBasedOnContainerType = () => {
     return !isAddToDictionary ? null : (
@@ -123,46 +170,102 @@ const ViewConceptsHeader: React.FC<Props> = ({
           }}
           anchorEl={switchSourceAnchor}
           keepMounted
-          open={Boolean(switchSourceAnchor)}
+          open={!!switchSourceAnchor}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
-          multiline
-          className={classes.textField} 
-          InputProps={{
-            className: classes.underline
-          }} 
-            inputProps={{
-              className: classes.input
-            }}
-            value={
-              showSources ? "Choose a source/dictionary" : "Select a different source/dictionary"
-            }
-            onClick={() => setShowSources(!showSources)}
-          />
-            {preferredSources?.map(({ name, url }) => (
-            <MenuItem
-              // replace because we want to keep the back button useful
-              replace
-              to={gimmeAUrl({}, `${url}concepts/`)}
-              key={name}
-              component={Link}
-              onClick={handleSwitchSourceClose}
-              data-testid={name}
+          <Grid 
+          container 
+          direction="column" 
+          className={classes.sourcesDropdownHeader}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showAllSources}
+                  onChange={handleShowSources}
+                  color="primary"
+                  name="displayVerified"
+                />
+              }
+              label={
+                showAllSources
+                  ? `Showing all Sources`
+                  : `Show all Sources`
+              }
+            />
+            {showAllSources && <form
+              onSubmit={(e: React.SyntheticEvent) => {
+                e.preventDefault();
+                handleSearch(queryString);
+              }}
             >
-              {url?.includes("/collection") ? (
-                <FolderOpen className={classes.sourceIcon} />
-              ) : (
-                <AccountTreeOutlined className={classes.sourceIcon} />
-              )}
-              {name}
-            </MenuItem>
-          ))}
+              <Input
+                color="primary"
+                type="search"
+                fullWidth
+                placeholder={"Select an alternative source"}
+                value={queryString}
+                onChange={e => setQueryString(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => handleSearch(queryString)}>
+                      <SearchIcon/>
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </form>}
+          </Grid>
+          {showAllSources ? (
+            <InfiniteScroll
+              dataLength={totalCount}
+              next={fetchMoreData}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
+              endMessage={<h4>end</h4>}
+              scrollableTarget="scrollableDiv"
+            >
+              {currentSources?.map(({ name, url }) => (
+                <MenuItem
+                  // replace because we want to keep the back button useful
+                  replace
+                  to={gimmeAUrl({}, `${url}concepts/`)}
+                  key={name}
+                  component={Link}
+                  onClick={handleSwitchSourceClose}
+                >
+                  {url?.includes("/collection") ? (
+                    <FolderOpen className={classes.sourceIcon} />
+                  ) : (
+                    <AccountTreeOutlined className={classes.sourceIcon} />
+                  )}
+                  {name}
+                </MenuItem>
+              ))}
+            </InfiniteScroll>
+          ) : (
+            currentSources?.map(({ name, url }) => (
+              <MenuItem
+                // replace because we want to keep the back button useful
+                replace
+                to={gimmeAUrl({}, `${url}concepts/`)}
+                key={name}
+                component={Link}
+                onClick={handleSwitchSourceClose}
+                data-testid={name}
+              >
+                {url?.includes("/collection") ? (
+                  <FolderOpen className={classes.sourceIcon} />
+                ) : (
+                  <AccountTreeOutlined className={classes.sourceIcon} />
+                )}
+                {name}
+              </MenuItem>
+            ))
+          )}
         </Menu>
       </>
     );
   };
-
   return (
     <Header
       title={getTitleBasedOnContainerType()}
@@ -180,5 +283,4 @@ const ViewConceptsHeader: React.FC<Props> = ({
     </Header>
   );
 };
-
 export default ViewConceptsHeader;

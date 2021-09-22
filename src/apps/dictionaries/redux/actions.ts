@@ -197,7 +197,7 @@ export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
 export const retrievePublicDictionariesAction = createActionThunk(
   RETRIEVE_DICTIONARIES_ACTION,
   api.dictionaries.retrieve.public
-);
+)
 export const retrievePersonalDictionariesAction = createActionThunk(
   indexedAction(
     RETRIEVE_DICTIONARIES_ACTION,
@@ -381,7 +381,7 @@ export const recursivelyAddConceptsToDictionaryAction = (
       }
 
       if (!concept.hasOwnProperty("source_url") || !!!concept.source_url) {
-        concept.source_url = concept.url.split("/", 5).join("/") + "/";
+        return {...concept, source_url: concept.url.split("/", 5).join("/") + "/"};
       }
 
       return concept;
