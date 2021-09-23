@@ -13,7 +13,8 @@ import {
   getConceptId,
   getVersionId,
   getDictionaryId,
-  getNewUser
+  getNewUser,
+  setConceptVersionUrl
 } from "./utils";
 import { ConceptName } from "../../src/apps/concepts";
 
@@ -569,7 +570,9 @@ Cypress.Commands.add(
         },
         url: `${apiUrl}${source_url}concepts/${id}/`,
         failOnStatusCode: shouldFail
-      }).its("body");
+      }).its("body").then((response)=>{
+        setConceptVersionUrl(response.version_url)
+      });
     });
   }
 );

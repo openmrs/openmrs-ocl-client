@@ -62,22 +62,19 @@ Given("a new member is added", () => {
 });
 
 Given("a concept exists", () => {
-    cy.createOrganisation(getOrganisationId()).then(() =>
-    cy.createOrgSource(undefined, getOrganisationId())
-    .createConcept(
-      [
-        {
-          name: "Test Concept 1",
-          locale: "en",
-          locale_preferred: true,
-          name_type: "FULLY_SPECIFIED"
-        }
-      ],
-      `/users/${getUser()}/sources/${getDictionaryId()}/`,
-      getConceptId()
-    )
-    .then(() => cy.waitUntil(() => cy.getConcept(`/users/${getUser()}/sources/${getDictionaryId()}/`, getConceptId())))
-    );
+  cy.createConcept(
+    [
+      {
+        name: "Test Concept 1",
+        locale: "en",
+        locale_preferred: true,
+        name_type: "FULLY_SPECIFIED"
+      }
+    ],
+    `/users/${getUser()}/sources/${getDictionaryId()}/`,
+    getConceptId()
+  )
+  .then(() => cy.waitUntil(() => cy.getConcept(`/users/${getUser()}/sources/${getDictionaryId()}/`, getConceptId())))
 });
 
 Before({ tags: "@dictionary" }, () => {
