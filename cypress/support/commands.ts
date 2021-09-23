@@ -17,6 +17,7 @@ import {
   setConceptVersionUrl
 } from "./utils";
 import { ConceptName } from "../../src/apps/concepts";
+import { v4 as uuid } from "uuid";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -605,7 +606,8 @@ Cypress.Commands.add(
               id: id,
               concept_class: concept_class,
               names: names,
-              datatype: "N/A"
+              datatype: "N/A",
+              external_id: uuid()
             }
           });
         }
