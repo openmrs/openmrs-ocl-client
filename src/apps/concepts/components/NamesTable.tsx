@@ -45,6 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     minimumCellWidth: {
       minWidth: "150px"
+    },
+    menuItemSynonym: {
+      color: "#A9A9A9",
+      fontStyle: "italic"
     }
   })
 );
@@ -144,7 +148,13 @@ const NamesTable: React.FC<Props> = ({
                       >
                         {NAME_TYPES.map(nameType => (
                           <MenuItem key={nameType.value} value={nameType.value}>
-                            {nameType.label}
+                            {nameType.label.includes("Synonym") ? (
+                              <div className={classes.menuItemSynonym}>
+                                ({nameType.label})
+                              </div>
+                            ) : (
+                              <div>{nameType.label}</div>
+                            )}
                           </MenuItem>
                         ))}
                       </Field>
