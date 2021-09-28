@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       component: "h6"
     },
     icon: {
-      color: theme.palette.background.default
+      background: theme.palette.background.default
     }
   })
 );
@@ -89,14 +89,19 @@ export const AppsMenu: React.FC = () => {
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin: "right top"
+              transformOrigin: "right top", marginTop:"12px"
             }}
           >
             <Paper>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
                   <MenuItem onClick={handleClose} className={classes.menuItem}>
-                    <a href={getOCLURL()} className={classes.link}>
+                    <a
+                      href={getOCLURL()}
+                      className={classes.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <Box className={classes.box}>
                         <Web fontSize="large" />
                         <Typography className={classes.text}>
@@ -106,7 +111,12 @@ export const AppsMenu: React.FC = () => {
                     </a>
                   </MenuItem>
                   <MenuItem onClick={handleClose} className={classes.menuItem}>
-                    <Link to="/" className={classes.link}>
+                    <Link
+                      to="/"
+                      className={classes.link}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <Box className={classes.box}>
                         <OpenMRSLogo />
                         <Typography className={classes.text}>
@@ -119,6 +129,8 @@ export const AppsMenu: React.FC = () => {
                     <a
                       href={`${getOCLURL()}#/imports/`}
                       className={classes.link}
+                      target="_blank"
+                      rel="noreferrer"
                     >
                       <Box className={classes.box}>
                         <ImportIcon fontSize="large" />
