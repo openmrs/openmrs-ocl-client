@@ -1,4 +1,4 @@
-import { LOCALES } from "./constants";
+import { LOCALES, OCL_URL } from "./constants";
 import { snakeCase } from "lodash";
 
 export const findLocale = (localeCode: string, fallback = "en") =>
@@ -119,3 +119,24 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   });
   return stabilizedThis.map(el => el[0]);
 }
+// @ts-ignore
+export const getEnv = forURL => {
+  const fqdn = window.location.origin;
+  if (fqdn.match("openmrs.staging.openconceptlab.org")) return "staging";
+  if (fqdn.match("openmrs.qa.openconceptlab.org")) return "qa";
+  if (fqdn.match("openmrs.demo.openconceptlab.org")) return "demo";
+  if (fqdn.match("openmrs.openconceptlab.org"))
+    return forURL ? "" : "production";
+
+  return "development";
+};
+
+export const getOCLURL = () => {
+  let env = getEnv(true);
+
+  if (env === "development") env = "qa";
+
+  if (env) env += ".";
+
+  return OCL_URL.replace("openmrs.", `openmrs.${env}`);
+};

@@ -1,5 +1,7 @@
 import { Option } from "./types";
 
+export const OCL_URL = "https://app.openconceptlab.org/";
+
 export const BASE_URL: string =
   // @ts-ignore OCL_API_HOST is injected at runtime via index.html
   window.OCL_API_HOST || "https://api.staging.openconceptlab.org";

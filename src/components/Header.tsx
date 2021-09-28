@@ -20,6 +20,7 @@ import { connect } from "react-redux";
 import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link, useHistory } from "react-router-dom";
+import { AppsMenu } from "./AppsMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -94,6 +95,9 @@ const Header: React.FC<Props> = ({
             {title}
           </Typography>
           <div className={classes.grow} />
+          <div>
+            <AppsMenu />
+          </div>
           {headerComponent ? headerComponent : null}
           <div>
             {!(loadingItemsLength > 0) ? null : (
