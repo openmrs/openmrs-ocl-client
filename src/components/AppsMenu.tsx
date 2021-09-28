@@ -18,7 +18,6 @@ import {
   Web,
   Publish as ImportIcon
 } from "@material-ui/icons";
-import { APIProfile } from "../apps/authentication";
 import { getOCLURL } from "../utils";
 import OpenMRSLogo from "./OpenMRSLogo";
 
