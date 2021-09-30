@@ -268,8 +268,8 @@ export const DATA_TYPES: string[] = [
 ];
 
 export const NAME_TYPES: { [key: string]: string }[] = [
-  { value: "null", label: "Synonym" }, // value here should be null but inputs html can't handle null as a value
   { value: "FULLY_SPECIFIED", label: "Fully Specified" },
+  { value: "null", label: "Synonym" }, // value here should be null but inputs html can't handle null as a value
   { value: "SHORT", label: "Short" },
   { value: "INDEX_TERM", label: "Index Term" }
 ];
