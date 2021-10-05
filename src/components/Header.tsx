@@ -20,7 +20,6 @@ import { connect } from "react-redux";
 import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link, useHistory } from "react-router-dom";
-import { AppsMenu } from "./AppsMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

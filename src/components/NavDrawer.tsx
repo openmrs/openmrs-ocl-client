@@ -17,7 +17,8 @@ import {
   People,
   AccountTreeOutlined,
   Notifications as NotificationsIcon,
-  PersonOutline as ProfileIcon
+  PersonOutline as ProfileIcon,
+  Apps as AppsIcon
 } from "@material-ui/icons";
 import { NavLink as Link } from "react-router-dom";
 import {
@@ -103,7 +104,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);
-
+  const [openMenu, setOpenMenu] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -205,10 +206,15 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         </List>
         <Divider component="hr" />
         <List component="div">
-          <ListItem button dense={false} key="AppsMenu">
+          <ListItem
+            button
+            dense={false}
+            key="AppsMenu"
+            onClick={() => setOpenMenu(!openMenu)}
+          >
             <Tooltip title="Apps Menu">
               <ListItemIcon className="list-item-icon">
-                <AppsMenu />
+                <AppsIcon />
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary="Apps Menu" />
@@ -302,6 +308,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
           </Typography>
         )}
       </Drawer>
+      <AppsMenu open={openMenu} navOpen={open} />
       <main className={classes.content}>{children}</main>
     </div>
   );

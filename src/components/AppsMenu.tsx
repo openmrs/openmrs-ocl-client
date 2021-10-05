@@ -1,119 +1,118 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
-  IconButton,
   MenuItem,
   Box,
   Grow,
   Paper,
   Popper,
   MenuList,
-  ClickAwayListener
+  ClickAwayListener,
+  Link
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import {
-  Apps as AppsIcon,
-  Web,
-  Publish as ImportIcon
-} from "@material-ui/icons";
+import { Web, Publish as ImportIcon } from "@material-ui/icons";
 import { getOCLURL } from "../utils";
 import OpenMRSLogo from "./OpenMRSLogo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    link: {
-      color: "inherit",
-      display: "inline-flex",
-      alignItems: "center",
-      textDecoration: "none"
-    },
     box: {
-      alignContent:"center",
+      alignContent: "center",
       align: "center",
-      textAlign: "center",
-
+      textAlign: "center"
     },
     icon: {
-      marginLeft:"-10px"
+      marginLeft: "-10px"
     },
-    paper:{
+    paper: {
       marginLeft: "50px"
+    },
+    popperWithOpenNav: {
+      display: "block",
+      position: "absolute!important" as "absolute",
+      top: "245px !important",
+      left: "210px !important"
+    },
+    popper: {
+      display: "block",
+      position: "absolute!important" as "absolute",
+      top: "245px !important",
+      left: "25px !important"
     }
   })
 );
 
-export const AppsMenu: React.FC = () => {
+interface Props {
+  open: boolean;
+  navOpen?: boolean;
+}
+
+export const AppsMenu: React.FC<Props> = ({ open, navOpen }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleMenu = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   return (
-    <div>
-        <IconButton onClick={handleMenu} className={classes.icon}>
-          <AppsIcon />
-        </IconButton>
-      <Popper
-        placement="right-start"
-        open={open}
-        anchorEl={anchorEl}
-        role={undefined}
-        transition
-        disablePortal
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-          >
-            <Paper className={classes.paper}>
-              <ClickAwayListener onClickAway={handleClose}>
-                <MenuList autoFocusItem={open} id="menu-list-grow">
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to={getOCLURL()}
-                      className={classes.link}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Box className={classes.box}>
-                        <Web fontSize="small" />  OCL TermBrowser
-                      </Box>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link
-                      to="/"
-                      className={classes.link}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Box className={classes.box}>
-                        <OpenMRSLogo />   OpenMRS Dictionary Manager
-                      </Box>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    <Link to={`${getOCLURL()}#/imports/`}
-                      className={classes.link}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Box className={classes.box}>
-                        <ImportIcon />  Bulk Importer
-                      </Box>
-                    </Link>
-                  </MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </div>
+    <Popper
+      className={navOpen ? classes.popperWithOpenNav : classes.popper}
+      placement="right-start"
+      open={open}
+      anchorEl={anchorEl}
+      role={undefined}
+      transition
+      disablePortal
+    >
+      {({ TransitionProps, placement }) => (
+        <Grow {...TransitionProps}>
+          <Paper className={classes.paper}>
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList autoFocusItem={open} id="menu-list-grow">
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    href={getOCLURL()}
+                    underline="none"
+                    color={"inherit"}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Box className={classes.box}>
+                      <Web fontSize="small" /> OCL TermBrowser
+                    </Box>
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    href="/"
+                    underline="none"
+                    color={"inherit"}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Box className={classes.box}>
+                      <OpenMRSLogo /> OpenMRS Dictionary Manager
+                    </Box>
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link
+                    href={`${getOCLURL()}#/imports/`}
+                    underline="none"
+                    color={"inherit"}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <Box className={classes.box}>
+                      <ImportIcon /> Bulk Importer
+                    </Box>
+                  </Link>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      )}
+    </Popper>
   );
 };
