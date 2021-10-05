@@ -116,3 +116,4 @@ export const AppsMenu: React.FC<Props> = ({ open, navOpen }) => {
     </Popper>
   );
 };
+
