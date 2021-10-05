@@ -5,7 +5,7 @@ const OpenMRSLogo: React.FC<React.DetailedHTMLProps<
   HTMLDivElement
   >> = () => {
   return (
-      <img src="/openmrs_logo_white.gif"  alt={"openmrs"} style={{width:"30px"}} />
+      <img src="/omrs-logo.svg"  alt={"openmrs"} style={{width:"20px"}} />
   );
 };
 export default OpenMRSLogo;

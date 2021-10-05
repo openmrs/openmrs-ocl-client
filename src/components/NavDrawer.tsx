@@ -39,6 +39,7 @@ import {
 import { action } from "../redux/utils";
 import { AppState } from "../redux";
 import { BUILD } from "../utils";
+import { AppsMenu } from "./AppsMenu";
 
 const drawerWidth = 240;
 
@@ -200,6 +201,17 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary="Notifications" />
+          </ListItem>
+        </List>
+        <Divider component="hr" />
+        <List component="div">
+          <ListItem button dense={false} key="AppsMenu">
+            <Tooltip title="Apps Menu">
+              <ListItemIcon className="list-item-icon">
+                <AppsMenu />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary="Apps Menu" />
           </ListItem>
         </List>
         <Divider component="hr" />

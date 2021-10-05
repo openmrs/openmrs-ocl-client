@@ -119,8 +119,8 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   });
   return stabilizedThis.map(el => el[0]);
 }
-// @ts-ignore
-export const getEnv = forURL => {
+
+export const getEnv = (forURL: boolean) => {
   const fqdn = window.location.origin;
   if (fqdn.match("openmrs.staging.openconceptlab.org")) return "staging";
   if (fqdn.match("openmrs.qa.openconceptlab.org")) return "qa";

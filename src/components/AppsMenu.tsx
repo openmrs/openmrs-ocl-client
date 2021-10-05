@@ -2,10 +2,8 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
   IconButton,
-  Tooltip,
   MenuItem,
   Box,
-  Typography,
   Grow,
   Paper,
   Popper,
@@ -23,12 +21,6 @@ import OpenMRSLogo from "./OpenMRSLogo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "inline-flex"
-    },
-    menuItem: {
-      display: "inline-block"
-    },
     link: {
       color: "inherit",
       display: "inline-flex",
@@ -36,24 +28,16 @@ const useStyles = makeStyles((theme: Theme) =>
       textDecoration: "none"
     },
     box: {
-      justifyContent: "space-around",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      width: "90px",
-      margin: "4px",
-      borderRadius: "5px",
-      padding: "10px"
-    },
-    text: {
-      lineHeight: "1.2",
-      marginTop: "15px",
-      textAlign: "center",
+      alignContent:"center",
       align: "center",
-      component: "h6"
+      textAlign: "center",
+
     },
     icon: {
-      background: theme.palette.background.default
+      marginLeft:"-10px"
+    },
+    paper:{
+      marginLeft: "50px"
     }
   })
 );
@@ -70,47 +54,38 @@ export const AppsMenu: React.FC = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Tooltip title="Apps menu">
-        <IconButton className={classes.icon} onClick={handleMenu}>
+    <div>
+        <IconButton onClick={handleMenu} className={classes.icon}>
           <AppsIcon />
         </IconButton>
-      </Tooltip>
       <Popper
-        placement="bottom-end"
+        placement="right-start"
         open={open}
         anchorEl={anchorEl}
         role={undefined}
         transition
         disablePortal
-        style={{ zIndex: 1 }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
-            style={{
-              transformOrigin: "right top", marginTop:"12px"
-            }}
           >
-            <Paper>
+            <Paper className={classes.paper}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="menu-list-grow">
-                  <MenuItem onClick={handleClose} className={classes.menuItem}>
-                    <a
-                      href={getOCLURL()}
+                  <MenuItem onClick={handleClose}>
+                    <Link
+                      to={getOCLURL()}
                       className={classes.link}
                       target="_blank"
                       rel="noreferrer"
                     >
                       <Box className={classes.box}>
-                        <Web fontSize="large" />
-                        <Typography className={classes.text}>
-                          OCL <br /> TermBrowser
-                        </Typography>
+                        <Web fontSize="small" />  OCL TermBrowser
                       </Box>
-                    </a>
+                    </Link>
                   </MenuItem>
-                  <MenuItem onClick={handleClose} className={classes.menuItem}>
+                  <MenuItem onClick={handleClose}>
                     <Link
                       to="/"
                       className={classes.link}
@@ -118,27 +93,20 @@ export const AppsMenu: React.FC = () => {
                       rel="noreferrer"
                     >
                       <Box className={classes.box}>
-                        <OpenMRSLogo />
-                        <Typography className={classes.text}>
-                          OpenMRS <br /> Dictionary <br /> Manager
-                        </Typography>
+                        <OpenMRSLogo />   OpenMRS Dictionary Manager
                       </Box>
                     </Link>
                   </MenuItem>
-                  <MenuItem onClick={handleClose} className={classes.menuItem}>
-                    <a
-                      href={`${getOCLURL()}#/imports/`}
+                  <MenuItem onClick={handleClose}>
+                    <Link to={`${getOCLURL()}#/imports/`}
                       className={classes.link}
                       target="_blank"
                       rel="noreferrer"
                     >
                       <Box className={classes.box}>
-                        <ImportIcon fontSize="large" />
-                        <Typography className={classes.text}>
-                          Bulk <br /> Importer
-                        </Typography>
+                        <ImportIcon />  Bulk Importer
                       </Box>
-                    </a>
+                    </Link>
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>
