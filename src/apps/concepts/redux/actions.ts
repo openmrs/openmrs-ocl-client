@@ -309,7 +309,6 @@ export const cloneConceptToDictionaryAction = (
     const newConcept = pick(
       apiConceptToConcept(concept, concept.mappings),
       "id",
-      "external_id",
       "concept_class",
       "datatype",
       "names",
@@ -321,6 +320,8 @@ export const cloneConceptToDictionaryAction = (
       "retired"
     ) as Concept;
 
+    newConcept.external_id = uuid();
+
     for (let i = 0; i < newConcept.names.length; i++) {
       newConcept.names[i] = pick(
         newConcept.names[i],
@@ -330,6 +331,8 @@ export const cloneConceptToDictionaryAction = (
         "locale_preferred",
         "name_type"
       );
+
+      newConcept.names[i].external_id = uuid();
     }
 
     for (let i = 0; i < newConcept.descriptions.length; i++) {
@@ -340,6 +343,8 @@ export const cloneConceptToDictionaryAction = (
         "external_id",
         "locale_preferred"
       );
+
+      newConcept.descriptions[i].external_id = uuid();
     }
 
     for (let i = 0; i < newConcept.answers.length; i++) {
