@@ -16,7 +16,7 @@ import {
   Apps as AppsIcon
 } from "@material-ui/icons";
 import { OCL_URL } from "../utils";
-import { ReactComponent as OMRSLogo } from "../omrs-logo.svg";
+import { ReactComponent as OmrsLogo } from "./omrs-logo.svg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -75,7 +75,7 @@ export const AppsMenu: React.FC<Props> = ({ handleClose, open }) => {
                       rel="noreferrer"
                     >
                       <Box className={classes.box}>
-                        <OMRSLogo /> OpenMRS Dictionary Manager
+                        <OmrsLogo height={24} width={24} /> OpenMRS Dictionary Manager
                       </Box>
                     </Link>
                   </MenuItem>
