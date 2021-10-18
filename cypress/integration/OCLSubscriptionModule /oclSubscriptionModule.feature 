@@ -1,0 +1,31 @@
+Feature: OCL Subscription module
+  Background:
+    Given the user is logged in
+
+@subscription
+  Scenario: The user should be able to add metadata from the dictionary manager
+    Given the user is on the home page
+     When the user clicks the "configure Metadata" button
+      And the user selects "Manage OCL"
+     Then the user should be on the "Open Concept Lab" page
+      And the "Setup subscription" is displayed
+
+  @subscription
+  @ocl
+  Scenario: The user should be able to import a dictionary in OpenMRS from OCL
+    Given the user is on the "Open Concept Lab" page
+     When the user clicks on the "Setup subscription"
+     Then the user should be on the "Subscription" page
+      And the user enters the url of a new released dictionary
+      And the "Token" title is visible
+
+  @subscription
+  @ocl
+  Scenario: The user should be able to add the Token url of the user
+    Given the user is on the "Subscription" page
+     When the user clicks on the "Token"
+      And the user enters the "User url"
+      And the user clicks on the "Save changes" button
+     Then the user should be on the "Open Concept Lab" page
+      And the "API" should be displayed on the previous imports
+      
