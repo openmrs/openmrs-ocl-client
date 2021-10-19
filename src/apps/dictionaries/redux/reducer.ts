@@ -11,6 +11,7 @@ import {
   EDIT_DICTIONARY_VERSION_ACTION,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
+  RETRIEVE_DICTIONARY_CONCEPT_COUNTS_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
   TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
@@ -56,6 +57,13 @@ export const reducer = createReducer(initialState, {
   [EDIT_DICTIONARY_ACTION]: (state, action) => ({
     ...state,
     editedDictionary: action.payload
+  }),
+  [RETRIEVE_DICTIONARY_CONCEPT_COUNTS_ACTION]: (state, action) => ({
+    ...state,
+    dictionary: {
+      ...state?.dictionary,
+      concept_counts: action.payload
+    }
   }),
   [RETRIEVE_DICTIONARY_VERSIONS_ACTION]: (state, action) => ({
     ...state,

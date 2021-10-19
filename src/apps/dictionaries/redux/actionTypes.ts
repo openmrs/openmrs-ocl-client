@@ -17,3 +17,4 @@ export const ADD_CONCEPTS_TO_DICTIONARY =
 export const REMOVE_REFERENCES_FROM_DICTIONARY =
   "dictionaries/Remove reference(s) from dictionary";
 export const TOGGLE_SHOW_VERIFIED_ACTION = "dictionary/toggleShowVerified";
+export const RETRIEVE_DICTIONARY_CONCEPT_COUNTS_ACTION = "dictionary/retrieveConceptCounts";

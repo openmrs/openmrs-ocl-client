@@ -34,3 +34,8 @@ export interface IndexedAction {
   actionType: string;
   actionIndex: number;
 }
+
+export interface TaskResponse {
+  data: any;
+  headers: any;
+}

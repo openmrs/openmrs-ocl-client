@@ -41,6 +41,11 @@ export interface APIDictionary extends BaseAPIDictionary {
   active_concepts: string;
   references: { [key: string]: string }[];
   concepts_url: string;
+  concept_counts: {
+    total: number;
+    from_preferred_source: number;
+    custom: number;
+  }
 }
 
 export interface DictionaryState {

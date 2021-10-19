@@ -1,6 +1,5 @@
-import { AxiosResponse } from "axios";
 import { isEqual } from "lodash";
-import { Action, AppState, IndexedAction } from "./types";
+import { Action, AppState, IndexedAction, TaskResponse } from "./types";
 import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";
 
@@ -127,11 +126,12 @@ export function errorMsgResponse(response: any) {
 
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
-  task: (...args: T) => Promise<AxiosResponse<any>>,
+  task: (...args: T) => Promise<TaskResponse>,
   useCache = false
 ) => {
   /*
-   ** Create an redux thunk that dispatches start, runs task then dispatches (success or failure) and completed actions
+   * Create a redux thunk that dispatches start, runs task,
+   * and then dispatches (success or failure) and completed actions.
    */
 
   const action = getIndexedAction(actionOrActionType);
