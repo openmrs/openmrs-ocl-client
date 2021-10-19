@@ -53,7 +53,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
   }, [retrieveDictionaries, url, initialQ, page, showOnlyVerified]);
 
   const changePage = (params: { page?: number; q?: string }) => {
-    const targetURL = generateURLWithQueryParams(url, params);
+    const targetURL = generateURLWithQueryParams(url, params, queryParams);
     goTo(targetURL);
     window.scrollTo({
       top: 0,
