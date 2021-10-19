@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
+import { APIDictionary } from "../types";
+import { ProgressOverlay } from "../../../utils/components";
+import { generateURLWithQueryParams, useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import ViewDictionaries from "../components/ViewDictionaries";
+import {
+  retrievePublicDictionariesAction,
+  toggleShowVerifiedAction
+} from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
-
-import ViewDictionaries from "../components/ViewDictionaries";
-import { Header } from "../../../components";
+import { Link } from "react-router-dom";
 import { ContainerOwnerTabs } from "../../containers/components";
-import { retrievePublicDictionariesAction, toggleShowVerifiedAction } from "../redux";
-
+import { Header } from "../../../components";
 import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
-import { useQueryParams, generateURLWithQueryParams } from "../../../utils";
-import { ProgressOverlay } from "../../../utils/components";
-
-import { APIDictionary } from "../types";
 
 interface Props {
   loading: boolean;

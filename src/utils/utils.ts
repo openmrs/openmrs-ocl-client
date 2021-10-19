@@ -1,8 +1,6 @@
 import { LOCALES } from "./constants";
 import { snakeCase } from "lodash";
 
-export * from "./urlUtils";
-
 export const findLocale = (localeCode: string, fallback = "en") =>
   LOCALES.find(currentLocale => currentLocale.value === localeCode) ||
   (LOCALES.find(currentLocale => currentLocale.value === fallback) as {
