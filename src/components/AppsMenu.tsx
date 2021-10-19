@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     box: {
       marginLeft: "10px"
+    },
+    popperWithOpenNav: {
+      display: "block",
+      left: "220px !important"
     }
   })
 );
@@ -40,13 +44,13 @@ export const AppsMenu: React.FC<Props> = ({ handleClose, open }) => {
     <div>
       <AppsIcon ref={anchorRef} />
       <Popper
-        placement="bottom-start"
+        className={classes.popperWithOpenNav}
+        placement="right-start"
         open={open}
         role={undefined}
         transition
         disablePortal
         anchorEl={anchorRef.current}
-        style={{ zIndex: 1, width: "275px" }}
       >
         {({ TransitionProps, placement }) => (
           <Grow {...TransitionProps}>
@@ -75,7 +79,8 @@ export const AppsMenu: React.FC<Props> = ({ handleClose, open }) => {
                       rel="noreferrer"
                     >
                       <Box className={classes.box}>
-                        <OmrsLogo height={24} width={24} /> OpenMRS Dictionary Manager
+                        <OmrsLogo height={24} width={24} /> OpenMRS Dictionary
+                        Manager
                       </Box>
                     </Link>
                   </MenuItem>
