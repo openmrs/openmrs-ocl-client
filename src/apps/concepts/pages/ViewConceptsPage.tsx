@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { includes } from "lodash";
+import { includes, uniqBy } from "lodash";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -269,9 +269,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    retrieveConcepts, 
-    retrieveDictionary, 
-    retrieveSource, 
+    retrieveConcepts,
+    retrieveDictionary,
+    retrieveSource,
     containerUrl,
     url,
     page,
@@ -329,7 +329,11 @@ const ViewConceptsPage: React.FC<Props> = ({
             component="div"
           >
             <ConceptsTable
-              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
+              concepts={
+                (viewDictConcepts
+                  ? uniqBy(concepts, "uuid")
+                  : uniqBy(modifiedConcepts, "uuid")) ?? []
+              }
               buttons={{
                 edit: canModifyDictionary || canModifySource // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
               }}
