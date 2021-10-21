@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { APIDictionary } from "../types";
 import { ProgressOverlay } from "../../../utils/components";
-import { useQueryParams } from "../../../utils";
+import { generateURLWithQueryParams, useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
-import qs from "qs";
 import ViewDictionaries from "../components/ViewDictionaries";
 import {
   retrievePublicDictionariesAction,
@@ -53,13 +52,15 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
     );
   }, [retrieveDictionaries, url, initialQ, page, showOnlyVerified]);
 
-  const gimmeAUrl = (params: { page?: number; q?: string }) => {
-    const newParams: { page?: number; q?: string } = {
-      ...queryParams,
-      ...params
-    };
-    return `${url}?${qs.stringify(newParams)}`;
-  };
+  const changePage = (params: { page?: number; q?: string }) => {
+    const targetURL = generateURLWithQueryParams(url, params, queryParams);
+    goTo(targetURL);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    })
+  }
 
   return (
     <Header title="Dictionaries">
@@ -69,8 +70,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           initialQ={initialQ}
           page={page}
           perPage={PER_PAGE}
-          onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
-          onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
+          onSearch={(q: string) => changePage({ q })}
+          onPageChange={(page: number) => changePage({ page })}
           dictionaries={dictionaries}
           numFound={numFound}
           title={TITLE}
