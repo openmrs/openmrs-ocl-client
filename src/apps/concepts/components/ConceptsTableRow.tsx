@@ -86,8 +86,8 @@ const conceptNameCell = (
   let link = row.version_url;
   const params = new URLSearchParams();
   if (linkedDictionary) {
-                          params.append("linkedDictionary", linkedDictionary);
-                        }
+    params.append("linkedDictionary", linkedDictionary);
+  }
 
   if (dictionaryToAddTo) {
     params.append("dictionaryToAddTo", dictionaryToAddTo);
