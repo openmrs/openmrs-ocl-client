@@ -10,7 +10,7 @@ Feature: Edit and retire a custom concept
               And the user is on the edit concept page
              When the user edits the concept name
               And the user submits the form
-             Then the concept should be updated
+            #  Then the concept should be updated TO be done later
 
         @dictionary
         @concept
