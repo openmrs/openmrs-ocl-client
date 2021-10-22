@@ -2,8 +2,7 @@ import { Option } from "./types";
 
 export const OCL_URL: string =
   // @ts-ignore OCL_URL is injected at runtime
-  window.OCL_URL ||
-  "https://app.staging.openconceptlab.org/#/";
+  window.OCL_URL || "https://app.staging.openconceptlab.org/#/";
 export const BASE_URL: string =
   // @ts-ignore OCL_API_HOST is injected at runtime via index.html
   window.OCL_API_HOST || "https://api.staging.openconceptlab.org";
@@ -12,8 +11,7 @@ export const TRADITIONAL_OCL_URL =
   window.TRADITIONAL_OCL_HOST || "https://staging.openconceptlab.org";
 export const OCL_SIGNUP_URL =
   // @ts-ignore OCL_SIGNUP_URL is injected at runtime via index.html
-  window.OCL_SIGNUP_URL ||
-  "https://app.staging.openconceptlab.org/#/accounts/signup";
+  window.OCL_SIGNUP_URL || `${OCL_URL}accounts/signup/`;
 export const BUILD: string =
   // @ts-ignore OCL_BUILD is injected at runtime via index.html
   window.OCL_BUILD || "local";

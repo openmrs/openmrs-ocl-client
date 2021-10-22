@@ -116,11 +116,11 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
     }
     logout();
   };
-  const handelClick = (event: any) => {
+  const handleClick = (event: any) => {
     setOpen(true);
     setAnchorEl(event.target);
   };
-  const handelClose = () => {
+  const handleClose = () => {
     setOpen(false);
     setAnchorEl(null);
   };
@@ -214,10 +214,10 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
         </List>
         <Divider component="hr" />
         <List component="div">
-          <ListItem button dense={false} key="AppsMenu" onClick={handelClick}>
+          <ListItem button dense={false} key="AppsMenu" onClick={handleClick}>
             <Tooltip title="Apps Menu">
               <ListItemIcon className="list-item-icon">
-                <AppsMenu handleClose={handelClose} open={Boolean(anchorEl)} />
+                <AppsMenu handleClose={handleClose} open={Boolean(anchorEl)} />
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary="Apps Menu" />
