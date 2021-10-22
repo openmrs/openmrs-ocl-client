@@ -147,7 +147,7 @@ export const createActionThunk = <T extends any[]>(
         return true;
       }
 
-      let result = true;
+      let result: boolean | S = true;
 
       try {
         dispatch(startAction(action, ...args));
@@ -162,7 +162,7 @@ export const createActionThunk = <T extends any[]>(
             responseMeta: response.headers
           });
 
-          result = response.data;
+          result = response.data as S;
         } catch (error) {
           debug(error, "redux/utils/#createActionThunk#:catch");
 

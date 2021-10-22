@@ -35,7 +35,8 @@ export interface IndexedAction {
   actionIndex: number;
 }
 
-export interface TaskResponse {
-  data: any;
-  headers: any;
+export interface TaskResponse<T = unknown> {
+  data: T;
+  status?: number;
+  headers?: Record<string, string>;
 }

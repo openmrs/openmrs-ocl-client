@@ -77,7 +77,7 @@ export const retrieveDictionaryConceptCounts = async (
   dictionaryUrl: string,
   preferredSource: string,
   dictionaryId: string
-): Promise<{ data: { [key: string]: number }, headers: null }> => {
+): Promise<{ data: { [key: string]: number }}> => {
   const totalCount = api.conceptCounts.retrieve(dictionaryUrl);
   const fromPreferredSourceCount = api.conceptCounts.retrieve(dictionaryUrl, preferredSource);
   const customCount = api.conceptCounts.retrieve(dictionaryUrl, dictionaryId);
@@ -87,7 +87,6 @@ export const retrieveDictionaryConceptCounts = async (
       total: parseInt(responses[0].headers.num_found, 10) || 0,
       from_preferred_source: parseInt(responses[1].headers.num_found, 10) || 0,
       custom: parseInt(responses[2].headers.num_found, 10) || 0
-    },
-    headers: null
+    }
   }
 }
