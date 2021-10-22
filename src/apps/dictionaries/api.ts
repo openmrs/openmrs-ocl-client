@@ -13,7 +13,7 @@ const api = {
   ...containerAPI,
   conceptCounts: {
     retrieve: (dictionaryUrl: string, source?: string) =>
-      unAuthenticatedInstance.head(`${dictionaryUrl}concepts`, { params: { source } }),
+      authenticatedInstance.head(`${dictionaryUrl}concepts`, { params: { source } }),
   },
   create: (ownerUrl: string, data: NewAPIDictionary) =>
     authenticatedInstance.post(`${ownerUrl}collections/`, data),
