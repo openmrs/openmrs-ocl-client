@@ -73,18 +73,18 @@ Then('the user should be on the "Add concepts in bulk from CIEL" page', () => {
 });
 
 Then(
-  /the concept Id "1000" should be in the dictionary/, conceptId => {
-    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}`).should("exist");
+  /the concept Id "1000" should be in the dictionary/, () => {
+    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/`).should("exist");
   });
 
 Then(
-  /the concept Id "(1000|1001|1002)" should be in the dictionary/, conceptId => {
-    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}/`, "1000, 1001, 1002");
+  /the concept Id "(1000|1001|1002)" should be in the dictionary/, () => {
+    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/`, "1001, 1002");
     cy.get('["2-concepts-were-added-message"]').should("be.visible");
   });    
 
-Then('the "1000" concept should be skippped', conceptId => {
-   cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}`).should("skip");
+Then('the "1000" concept should be skippped', () => {
+  cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/`).should("skip");
    cy.get('["Adding-concept-skipped-message"]').should("be.visible");
 });   
 
