@@ -2,6 +2,10 @@
 
 ### [![Build Status](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/build.yml) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-ocl-client/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-ocl-client?branch=master)
 
+## Automated Tests Workflows
+[![Basic Dictionary Management](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/basic-dictionary.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/basic-dictionary.yml)
+[![Organization Management](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/organisation-management.yml/badge.svg)](https://github.com/openmrs/openmrs-ocl-client/actions/workflows/organisation-management.yml)
+
 # OpenMRS Dictionary Manager
 
 The OpenMRS Dictionary Manager is a tool to create and maintain OpenMRS concept dictionaries in the cloud, using both expert-curated concepts from sources such as CIEL as well as custom implementation-specific concepts.
