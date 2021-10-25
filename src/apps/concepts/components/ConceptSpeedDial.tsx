@@ -1,6 +1,5 @@
-import { Fab, Tooltip } from "@material-ui/core";
-import { AddOutlined, EditOutlined, MoreVert } from "@material-ui/icons";
-import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
+import { Fab, Tooltip, SpeedDial, SpeedDialAction } from "@mui/material";
+import { AddOutlined, EditOutlined, MoreVert } from "@mui/icons-material";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
@@ -81,10 +80,12 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         <Fab
           onClick={() =>
             addConceptsToDictionary &&
-            addConceptsToDictionary( dictionaryToAddTo, [
-              concept
-            ],false, linkedDictionary)
-            
+            addConceptsToDictionary(
+              dictionaryToAddTo,
+              [concept],
+              false,
+              linkedDictionary
+            )
           }
           color="primary"
           className="fab"
@@ -128,9 +129,12 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         onClick={() => {
           setOpen(false);
           addConceptsToDictionary &&
-            addConceptsToDictionary( dictionaryToAddTo, [
-              concept
-            ],false, linkedDictionary);
+            addConceptsToDictionary(
+              dictionaryToAddTo,
+              [concept],
+              false,
+              linkedDictionary
+            );
         }}
       />
     </SpeedDial>

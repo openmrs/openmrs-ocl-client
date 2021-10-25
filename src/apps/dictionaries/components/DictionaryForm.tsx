@@ -3,11 +3,10 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Typography,
   TextField as MuiTextField
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   getCustomErrorMessage,
   getPrettyError,
@@ -35,6 +34,7 @@ import {
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
 import { createSourceAndDictionaryAction } from "../redux";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   onSubmit?: (

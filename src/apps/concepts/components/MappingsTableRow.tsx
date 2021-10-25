@@ -3,17 +3,16 @@
  * And I'm not proud of everything here. A lot could improve, but the at the moment I don't know how
  */
 import {
-  createStyles,
   FormControl,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   TableCell,
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
 import { MAP_TYPES, Option, VERIFIED_SOURCES } from "../../../utils";
@@ -26,7 +25,7 @@ import { includes } from "lodash";
 import {
   DeleteOutline as DeleteOutlineIcon,
   MoreVert as MoreVertIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import clsx from "clsx";
 import * as Yup from "yup";
 import { VerifiedSource } from "../../../components/VerifiedSource";
@@ -79,7 +78,11 @@ const conceptCodeFromUrl = (url: string): string => {
   return letters.join("");
 };
 
-const conceptFromUrl = (url: string) => url.split("/").slice(0, -3).join("/") + "/";
+const conceptFromUrl = (url: string) =>
+  url
+    .split("/")
+    .slice(0, -3)
+    .join("/") + "/";
 
 interface SourceOption extends Option {
   isInternalSource: boolean;
@@ -290,7 +293,8 @@ const MappingsTableRow: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fixedMappingType]);
 
-  const sourceUrl = toSourceUrl ?? (!!toConceptUrl && conceptFromUrl(toConceptUrl));
+  const sourceUrl =
+    toSourceUrl ?? (!!toConceptUrl && conceptFromUrl(toConceptUrl));
 
   return (
     <>

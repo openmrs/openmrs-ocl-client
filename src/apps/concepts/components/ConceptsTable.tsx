@@ -1,22 +1,13 @@
 import React from "react";
-import {
-  createStyles,
-  lighten,
-  makeStyles,
-  Theme
-} from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-
-import TablePagination from "@material-ui/core/TablePagination";
-
-import Paper from "@material-ui/core/Paper";
-
+import { createStyles, makeStyles } from "@mui/styles";
+import Table from "@mui/material/Table";
+import TablePagination from "@mui/material/TablePagination";
+import Paper from "@mui/material/Paper";
 import { APIConcept, QueryParams, SortableField } from "../types";
-
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedTableToolbar } from "./EnhancedTableToolbar";
 import { ConceptsTableRow } from "./ConceptsTableRow";
-import { TableBody } from "@material-ui/core";
+import { lighten, Theme, TableBody } from "@mui/material";
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -56,7 +47,7 @@ export const useToolbarStyles = makeStyles((theme: Theme) =>
       paddingRight: theme.spacing(1)
     },
     highlight:
-      theme.palette.type === "light"
+      theme.palette.mode === "light"
         ? {
             color: theme.palette.secondary.main,
             backgroundColor: lighten(theme.palette.secondary.light, 0.85)
@@ -266,8 +257,8 @@ export const ConceptsTable: React.FC<Props> = ({
           nextIconButtonProps={{
             "aria-label": "next page"
           }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </div>

@@ -4,15 +4,14 @@ import {
   Card,
   CardActions,
   CardContent,
-  createStyles,
   Grid,
-  makeStyles,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { VERIFIED_SOURCES } from "../../../utils";
 import { VerifiedSource } from "../../../components/VerifiedSource";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   name: string;

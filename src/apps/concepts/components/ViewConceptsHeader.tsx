@@ -9,20 +9,19 @@ import {
 import { getContainerIdFromUrl } from "../utils";
 import {
   Button,
-  createStyles,
-  makeStyles,
   Menu,
   MenuItem,
   TextField,
   Theme
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   PREFERRED_SOURCES_VIEW_ONLY,
   useAnchor
 } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
+import { AccountTreeOutlined, FolderOpen } from "@mui/icons-material";
 import { APIDictionary } from '../../dictionaries/types';
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   containerType: string;

@@ -12,9 +12,10 @@
     "npm": ">=6.4.1"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@mui/icons-material": "^5.0.4",
+    "@mui/lab": "^5.0.0-alpha.50",
+    "@mui/material": "^5.0.4",
+    "@mui/styles": "^5.0.1",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/lodash": "^4.14.165",
     "@types/qs": "^6.9.3",
@@ -32,7 +33,7 @@
     "clsx": "^1.1.1",
     "dayjs": "^1.9.6",
     "formik": "^2.2.6",
-    "formik-material-ui": "^3.0.1",
+    "formik-material-ui": "4.0.0-alpha.2",
     "lodash": "^4.17.15",
     "qs": "^6.9.1",
     "react": "^17.0.2",

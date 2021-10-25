@@ -3,11 +3,11 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Typography,
   TextField as MuiTextField
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { getCustomErrorMessage, getPrettyError, CONTEXT } from "../../../utils";
 import {
   ErrorMessage,

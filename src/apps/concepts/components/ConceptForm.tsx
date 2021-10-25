@@ -23,11 +23,11 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  makeStyles,
   MenuItem,
   Paper,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { Select, TextField } from "formik-material-ui";
 import {
   CONCEPT_CLASSES,
@@ -44,7 +44,7 @@ import {
   CONCEPT_DATATYPE_CODED
 } from "../../../utils";
 import NameOrDescriptionTable from "./NamesTable";
-import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { EditOutlined as EditIcon } from "@mui/icons-material";
 import * as Yup from "yup";
 import MappingsTable from "./MappingsTable";
 import {
@@ -616,7 +616,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
   return (
     <Grid direction="column" container>
       {PRECISION_INPUTS.map(input_group => (
-        <Grid className={classes.flex} justify="space-around">
+        <Grid className={classes.flex} justifyContent="space-around">
           {input_group.map(([key, value]) => (
             <Field
               // fullWidth
@@ -649,18 +649,8 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
             type="boolean"
             component={Select}
           >
-            <MenuItem
-              // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-              value={false}
-            >
-              No
-            </MenuItem>
-            <MenuItem
-              // @ts-ignore
-              value={true}
-            >
-              Yes
-            </MenuItem>
+            <MenuItem>No</MenuItem>
+            <MenuItem>Yes</MenuItem>
           </Field>
           <Typography color="error" variant="caption" component="div">
             <ErrorMessage name="extras.precise" component="span" />

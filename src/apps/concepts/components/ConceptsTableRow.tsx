@@ -6,8 +6,8 @@ import {
   Checkbox,
   Tooltip,
   IconButton
-} from "@material-ui/core";
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+} from "@mui/material";
+import { MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { ConceptsActionMenu } from "./ConceptsActionMenu";
 import { AlreadyAddedIcon } from "./AlreadyAddedIcon";

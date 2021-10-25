@@ -3,12 +3,11 @@ import {
   Button,
   Card,
   CardContent,
-  createStyles,
   Grid,
-  makeStyles,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 interface Props {
   name: string;

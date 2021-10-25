@@ -1,9 +1,7 @@
 import {
   Button,
-  createStyles,
   FormControl,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Table,
@@ -14,17 +12,18 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { Select, TextField } from "formik-material-ui";
 import { findLocale, NAME_TYPES } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,
   MoreVert as MoreVertIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import React from "react";
 import { uniqBy } from "lodash";
 import { ConceptDescription, ConceptName } from "../types";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -213,18 +212,8 @@ const NamesTable: React.FC<Props> = ({
                       data-testid={`${valuesKey}_${index}_locale_preferred`}
                       component={Select}
                     >
-                      <MenuItem
-                        // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                        value={false}
-                      >
-                        No
-                      </MenuItem>
-                      <MenuItem
-                        // @ts-ignore
-                        value={true}
-                      >
-                        Yes
-                      </MenuItem>
+                      <MenuItem>No</MenuItem>
+                      <MenuItem>Yes</MenuItem>
                     </Field>
                     <Typography color="error" variant="caption" component="div">
                       <ErrorMessage

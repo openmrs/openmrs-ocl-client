@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Fab, Grid, Menu, MenuItem, Tooltip } from "@material-ui/core";
+import { Fab, Grid, Menu, MenuItem, Tooltip } from "@mui/material";
 import { ConceptForm } from "../components";
 import { AppState } from "../../../redux";
 import {
@@ -30,7 +30,7 @@ import {
   MoreVert as MenuIcon,
   Pageview as PageViewIcon,
   RestoreFromTrashOutlined as RestoreIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { APIDictionary } from "../../dictionaries";
 import {

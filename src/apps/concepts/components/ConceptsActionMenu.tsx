@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem } from "@mui/material";
 import { APIConcept } from "../types";
 import {
   showEditMenuItem,
@@ -10,7 +10,7 @@ import {
   Add as AddIcon,
   DeleteSweepOutlined as DeleteIcon,
   EditOutlined as EditIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 const addConceptsToDictionaryMenu = (
   addConceptsToDictionary: Function,

@@ -9,7 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { usePrevious } from "../../../utils";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
@@ -98,18 +98,8 @@ const ContainerVersionForm: React.FC<Props> = ({
                     label="Release?"
                     component={Select}
                   >
-                    <MenuItem
-                      // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                      value={false}
-                    >
-                      No
-                    </MenuItem>
-                    <MenuItem
-                      // @ts-ignore
-                      value={true}
-                    >
-                      Yes
-                    </MenuItem>
+                    <MenuItem>No</MenuItem>
+                    <MenuItem>Yes</MenuItem>
                   </Field>
                 </FormControl>
                 <Field

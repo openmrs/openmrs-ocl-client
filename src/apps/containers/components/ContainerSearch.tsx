@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
-  createStyles,
   Grid,
   Input,
   InputAdornment,
-  makeStyles,
-  Theme
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import { Search as SearchIcon } from "@material-ui/icons";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+  Theme,IconButton,Switch,FormControlLabel
+} from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { VERIFIED_SOURCES } from "../../../utils";
 import { VerifiedSource } from "../../../components/VerifiedSource";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   title: string;

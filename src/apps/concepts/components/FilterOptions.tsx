@@ -3,20 +3,19 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
-  createStyles,
   Input,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   ListSubheader,
-  makeStyles,
   Paper,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { CONCEPT_CLASSES, DATA_TYPES, CONCEPT_GENERAL } from "../../../utils";
 import { Link } from "react-router-dom";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

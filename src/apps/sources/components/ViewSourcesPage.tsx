@@ -11,8 +11,8 @@ import { TAB_LIST, PER_PAGE, TITLE } from "../constants";
 
 import { ContainerOwnerTabs } from "../../containers/components";
 import { Link } from "react-router-dom";
-import { Fab, Tooltip } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
+import { Fab, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { toggleShowVerifiedAction } from "../../dictionaries/redux";
 
 interface Props {

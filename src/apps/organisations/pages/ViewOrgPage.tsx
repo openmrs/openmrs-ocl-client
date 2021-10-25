@@ -15,11 +15,12 @@ import {
   OrganisationSources
 } from "../components";
 import { ProgressOverlay } from "../../../utils/components";
-import { Grid, makeStyles, createStyles } from "@material-ui/core";
+import { Grid, Theme } from "@mui/material";
 import { EditButton } from "../../containers/components/EditButton";
 import { AppState } from "../../../redux";
 import { APIOrg, APIProfile, profileSelector } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   profile?: APIProfile;
@@ -32,7 +33,7 @@ interface Props {
   retrieveOrg: (...args: Parameters<typeof retrieveOrganisationAction>) => void;
 }
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     gridContainers: {
       display: "flex",

@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
 import { TextField } from "formik-material-ui";

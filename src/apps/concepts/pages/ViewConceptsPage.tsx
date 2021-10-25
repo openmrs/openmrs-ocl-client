@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { includes } from "lodash";
-import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
+import { Grid, Theme } from "@mui/material";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
 import {
@@ -49,6 +49,7 @@ import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
 import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
 import { PUBLIC_DICTIONARIES_ACTION_INDEX } from "../../dictionaries/redux/constants";
+import { createStyles, makeStyles } from "@mui/styles";
 
 export interface StateProps {
   concepts?: APIConcept[];
@@ -269,9 +270,9 @@ const ViewConceptsPage: React.FC<Props> = ({
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    retrieveConcepts, 
-    retrieveDictionary, 
-    retrieveSource, 
+    retrieveConcepts,
+    retrieveDictionary,
+    retrieveSource,
     containerUrl,
     url,
     page,
@@ -311,7 +312,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         container
         className={classes.content}
         component="div"
-        justify="space-around"
+        justifyContent="space-around"
         alignItems="flex-start"
       >
         <ProgressOverlay

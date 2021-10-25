@@ -12,19 +12,18 @@ import {
 import {
   Button,
   ButtonGroup,
-  createStyles,
   Grid,
   List,
-  makeStyles,
   Paper,
   Typography,
   Dialog,
   IconButton,
   ListItem
-} from "@material-ui/core";
+} from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import { OrgMember } from "../types";
 import AddMemberForm from "./AddMemberForm";
-import { DeleteOutline as DeleteIcon } from "@material-ui/icons";
+import { DeleteOutline as DeleteIcon } from "@mui/icons-material";
 import DeleteMemberDialog from "./DeleteMemberDialog";
 import { AppState, errorSelector } from "../../../redux";
 import { connect } from "react-redux";
@@ -51,7 +50,9 @@ interface Props {
   ) => void;
   deleteError?: string;
   showDeleteMemberDialog?: string;
-  displayDeleteMemberDialog: (...args: Parameters<typeof showDeleteMemberDialogAction>) => void;
+  displayDeleteMemberDialog: (
+    ...args: Parameters<typeof showDeleteMemberDialogAction>
+  ) => void;
   hideDeleteMemberDialog: () => void;
 }
 
@@ -93,7 +94,9 @@ const OrganisationMembers: React.FC<Props> = ({
           <DeleteMemberDialog
             open={showDeleteMemberDialog !== undefined}
             handleClose={hideDeleteMemberDialog}
-            handleSubmit={() => deleteMember(orgUrl,  showDeleteMemberDialog ?? '')}
+            handleSubmit={() =>
+              deleteMember(orgUrl, showDeleteMemberDialog ?? "")
+            }
             user={showDeleteMemberDialog}
             orgName={orgName}
             error={deleteError}
@@ -105,7 +108,9 @@ const OrganisationMembers: React.FC<Props> = ({
                   {m.username || m.name}
                   {!canModifyMembers ? null : (
                     <>
-                      <IconButton onClick={() => displayDeleteMemberDialog(m.username)}>
+                      <IconButton
+                        onClick={() => displayDeleteMemberDialog(m.username)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </>

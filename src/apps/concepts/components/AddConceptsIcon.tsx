@@ -1,20 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  createStyles,
-  Fab,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Theme,
-  Tooltip
-} from "@material-ui/core";
+import { Fab, Menu, MenuItem, Theme, Tooltip } from "@mui/material";
 import {
   CONCEPT_CLASSES,
   PREFERRED_SOURCES_VIEW_ONLY,
   useAnchor
 } from "../../../utils";
-import { Add as AddIcon } from "@material-ui/icons";
+import { Add as AddIcon } from "@mui/icons-material";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   canModifyDictionary: boolean;
@@ -112,7 +105,7 @@ const AddConceptsIcon: React.FC<Props> = ({
         >
           Import existing concept
         </MenuItem>
-        <Tooltip interactive title={getTitleBasedOnLinkedSource()}>
+        <Tooltip title={getTitleBasedOnLinkedSource()}>
           <span>
             <MenuItem
               disabled={!linkedSource}

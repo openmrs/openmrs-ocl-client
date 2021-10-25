@@ -6,7 +6,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles,
   Paper,
   Table,
   TableBody,
@@ -15,11 +14,12 @@ import {
   TableRow,
   Typography,
   TablePagination
-} from "@material-ui/core";
+} from "@mui/material";
 import { NotificationItemRow, NotificationItem } from "../types";
 import { EnhancedNotificationSummaryTableHead } from "./EnhancedNotificationSummaryTableHead";
 import { getComparator, stableSort } from "../../../utils";
 import { CSVLink } from "react-csv";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   open: boolean;
@@ -207,8 +207,8 @@ const NotificationDetails: React.FC<Props> = ({
         count={summaryRowsToDisplay.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     );
   };
@@ -229,11 +229,7 @@ const NotificationDetails: React.FC<Props> = ({
         fullWidth
         maxWidth={"md"}
       >
-        <DialogTitle
-          data-testid="title"
-          className={classes.dialogTitle}
-          disableTypography
-        >
+        <DialogTitle data-testid="title" className={classes.dialogTitle}>
           {getDialogTitle()}
         </DialogTitle>
         <DialogContent dividers className={classes.noPadding}>

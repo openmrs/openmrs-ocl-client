@@ -1,12 +1,7 @@
 import React from "react";
 import clsx from "clsx";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import FilterListIcon from "@material-ui/icons/FilterList";
-import { Add as AddIcon, Search as SearchIcon } from "@material-ui/icons";
-import { Input, InputAdornment } from "@material-ui/core";
+import {Toolbar, Typography,IconButton,Tooltip,InputAdornment,Input}from "@mui/material";
+import { Add as AddIcon, Search as SearchIcon ,FilterList as FilterListIcon} from "@mui/icons-material";
 import { useToolbarStyles } from "./ConceptsTable";
 
 interface EnhancedTableToolbarProps {

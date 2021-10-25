@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import {
   Button,
-  createStyles,
   Grid,
-  makeStyles,
   Menu,
   MenuItem,
   TextField,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { recursivelyAddConceptsToDictionaryAction } from "../redux";
 import { useLocation } from "react-router";
 import { connect } from "react-redux";
 import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -17,14 +17,13 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  makeStyles,
   Grid
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   MoreVert as MoreVertIcon,
   FileCopy as FileCopyIcon,
   Visibility as VisibilityIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../../../utils";
 import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
@@ -32,6 +31,7 @@ import dayjs from "dayjs";
 import ContainerVersionForm from "./ContainerVersionForm";
 import { Version } from "../../../utils";
 import { APIDictionary } from "../../dictionaries/types";
+import {  makeStyles } from "@mui/styles";
 
 interface Props {
   versions: Version[];

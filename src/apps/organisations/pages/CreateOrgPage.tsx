@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import { OrganisationForm } from "../components";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@mui/material";
 import {
   createOrganisationErrorSelector,
   createOrganisationLoadingSelector

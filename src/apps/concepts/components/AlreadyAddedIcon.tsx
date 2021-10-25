@@ -1,7 +1,7 @@
 import React from "react";
 
-import { CheckOutlined as CheckedIcon } from "@material-ui/icons";
-import { Tooltip } from "@material-ui/core";
+import { CheckOutlined as CheckedIcon } from "@mui/icons-material";
+import { Tooltip } from "@mui/material";
 
 export const AlreadyAddedIcon: React.FC = () => {
   return (

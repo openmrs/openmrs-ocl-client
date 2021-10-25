@@ -1,6 +1,6 @@
 import React from "react";
-import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
-import TablePagination from "@material-ui/core/TablePagination";
+import {  Grid, Theme,TablePagination } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   num_found: number;
@@ -43,7 +43,7 @@ const ContainerPagination: React.FC<Props> = ({
         nextIconButtonProps={{
           "aria-label": "next page"
         }}
-        onChangePage={(_: any, page: number) => onPageChange(page + 1)}
+        onPageChange={(_: any, page: number) => onPageChange(page + 1)}
         data-testid="pagination"
       />
     </Grid>

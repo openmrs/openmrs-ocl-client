@@ -3,10 +3,9 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { CONTEXT, getPrettyError } from "../../../utils";
 import { Organisation } from "../types";
 import {
@@ -19,6 +18,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import { Select, TextField } from "formik-material-ui";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   onSubmit?: (values: Organisation) => void;

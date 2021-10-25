@@ -1,8 +1,6 @@
 import {
   Button,
-  createStyles,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Table,
@@ -13,15 +11,16 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { ArrayHelpers, ErrorMessage } from "formik";
 import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
-import { MoreVert as MenuIcon } from "@material-ui/icons";
+import { MoreVert as MenuIcon } from "@mui/icons-material";
 import { DragHandle } from "../../../components/DragHandle";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

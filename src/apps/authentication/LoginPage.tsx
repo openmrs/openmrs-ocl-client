@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { Container, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Container, Grid, Typography } from "@mui/material";
+import { makeStyles } from '@mui/styles';
 import { Login } from "./components";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
 import { clearNextPageAction, loginAction } from "./redux";
@@ -69,7 +70,7 @@ const LoginPage: React.FC<Props> = ({
       <>
         <Grid
           container
-          justify="center"
+          justifyContent="center"
           alignItems="center"
           className={classes.loginPage}
           component={Container}
@@ -79,7 +80,7 @@ const LoginPage: React.FC<Props> = ({
             container
             item
             component="div"
-            justify="center"
+            justifyContent="center"
             alignItems="center"
             className={classes.header}
           >

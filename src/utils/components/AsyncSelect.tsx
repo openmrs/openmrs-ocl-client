@@ -1,21 +1,23 @@
 import React, { CSSProperties, FocusEventHandler, HTMLAttributes } from "react";
+import { createStyles, makeStyles } from "@mui/styles";
 import {
-  createStyles,
-  makeStyles,
-  Theme,
-  useTheme
-} from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import TextField, { BaseTextFieldProps } from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
+  Typography,
+  TextField,
+  BaseTextFieldProps,
+  Paper,
+  MenuItem,
+  CircularProgress,
+  Tooltip
+} from "@mui/material";
 import { ValueContainerProps } from "react-select/src/components/containers";
 import { ControlProps } from "react-select/src/components/Control";
 import { MenuProps, NoticeProps } from "react-select/src/components/Menu";
 import { OptionProps } from "react-select/src/components/Option";
 import { PlaceholderProps } from "react-select/src/components/Placeholder";
 import { SingleValueProps } from "react-select/src/components/SingleValue";
-import { Omit } from "@material-ui/types";
+import { DistributiveOmit } from "@mui/types";
+import { useTheme, Theme } from "@mui/material";
+
 import {
   ActionMeta,
   components as ReactSelectComponents,
@@ -27,8 +29,7 @@ import { Option } from "../types";
 import {
   ArrowDropDown as ArrowDropDownIcon,
   Close as CloseIcon
-} from "@material-ui/icons";
-import { CircularProgress, Tooltip } from "@material-ui/core";
+} from "@mui/icons-material";
 import { LoadingIndicatorProps } from "react-select/src/components/indicators";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -145,7 +146,7 @@ function OptionComponent(props: OptionProps<Option, false>) {
   );
 }
 
-type MuiPlaceholderProps = Omit<PlaceholderProps<Option, false>, "innerProps"> &
+type MuiPlaceholderProps = DistributiveOmit<PlaceholderProps<Option, false>, "innerProps"> &
   Partial<Pick<PlaceholderProps<Option, false>, "innerProps">>;
 
 function Placeholder(props: MuiPlaceholderProps) {

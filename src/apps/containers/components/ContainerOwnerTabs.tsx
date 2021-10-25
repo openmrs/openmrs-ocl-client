@@ -1,7 +1,8 @@
 import React from "react";
-import { makeStyles, Tab, Tabs } from "@material-ui/core";
+import { Tab, Tabs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TabType } from "../types";
+import {  makeStyles } from "@mui/styles";
 
 interface Props {
   currentPageUrl: string;

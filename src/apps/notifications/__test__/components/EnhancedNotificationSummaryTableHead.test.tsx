@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "@material-ui/core";
+import { Table } from "@mui/material";
 import { render } from "@testing-library/react";
 import { EnhancedNotificationSummaryTableHead } from "../../components/EnhancedNotificationSummaryTableHead";
 
