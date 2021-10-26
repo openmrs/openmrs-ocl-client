@@ -649,8 +649,18 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
             type="boolean"
             component={Select}
           >
-            <MenuItem>No</MenuItem>
-            <MenuItem>Yes</MenuItem>
+            <MenuItem
+                // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                data-value={false}
+            >
+              No
+            </MenuItem>
+            <MenuItem
+                // @ts-ignore
+                data-value={true}
+            >
+              Yes
+            </MenuItem>
           </Field>
           <Typography color="error" variant="caption" component="div">
             <ErrorMessage name="extras.precise" component="span" />

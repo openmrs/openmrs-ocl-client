@@ -98,8 +98,18 @@ const ContainerVersionForm: React.FC<Props> = ({
                     label="Release?"
                     component={Select}
                   >
-                    <MenuItem>No</MenuItem>
-                    <MenuItem>Yes</MenuItem>
+                    <MenuItem
+                        // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                        data-value={false}
+                    >
+                      No
+                    </MenuItem>
+                    <MenuItem
+                        // @ts-ignore
+                        data-value={true}
+                    >
+                      Yes
+                    </MenuItem>
                   </Field>
                 </FormControl>
                 <Field
