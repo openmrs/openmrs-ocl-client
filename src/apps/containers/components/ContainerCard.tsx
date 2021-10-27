@@ -32,11 +32,14 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: "pointer",
       display: "flex",
       width: "100%",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      height: "100%"
     },
     details: {
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      justifyContent: "space-between",
+      width: "100%"
     },
     trustedIcon: {
       margin: "3rem",
