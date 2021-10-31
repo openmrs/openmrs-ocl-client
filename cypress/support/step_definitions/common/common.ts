@@ -8,6 +8,7 @@ import {
   getOrganisationId,
   getUser,
   getVersionId,
+  getConceptId,
   isLoggedIn,
   setConceptId,
   setDictionaryId,
@@ -58,6 +59,22 @@ Given("a new member is added", () => {
   const username = getNewUser();
   const organisationId = getOrganisationId();
   cy.addMember(organisationId, username);
+});
+
+Given("a concept exists", () => {
+  cy.createConcept(
+    [
+      {
+        name: "Test Concept 1",
+        locale: "en",
+        locale_preferred: true,
+        name_type: "FULLY_SPECIFIED"
+      }
+    ],
+    `/users/${getUser()}/sources/${getDictionaryId()}/`,
+    getConceptId()
+  )
+  .then(() => cy.waitUntil(() => cy.getConcept(`/users/${getUser()}/sources/${getDictionaryId()}/`, getConceptId())))
 });
 
 Before({ tags: "@dictionary" }, () => {

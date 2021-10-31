@@ -39,6 +39,7 @@ import {
 import { action } from "../redux/utils";
 import { AppState } from "../redux";
 import { BUILD } from "../utils";
+import { AppsMenu } from "./AppsMenu";
 
 const drawerWidth = 240;
 
@@ -59,7 +60,8 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      })
+      }),
+      overflowY: "unset"
     },
     drawerClose: {
       transition: theme.transitions.create("width", {
@@ -102,7 +104,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [confirmLogoutOpen, setConfirmLogoutOpen] = React.useState(false);
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -113,6 +115,14 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
       console.log(error);
     }
     logout();
+  };
+  const handleClick = (event: any) => {
+    setOpen(true);
+    setAnchorEl(event.target);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
@@ -200,6 +210,17 @@ export const NavDrawer: React.FC<Props> = ({ children, logout, profile }) => {
               </ListItemIcon>
             </Tooltip>
             <ListItemText primary="Notifications" />
+          </ListItem>
+        </List>
+        <Divider component="hr" />
+        <List component="div">
+          <ListItem button dense={false} key="AppsMenu" onClick={handleClick}>
+            <Tooltip title="Apps Menu">
+              <ListItemIcon className="list-item-icon">
+                <AppsMenu handleClose={handleClose} open={Boolean(anchorEl)} />
+              </ListItemIcon>
+            </Tooltip>
+            <ListItemText primary="Apps Menu" />
           </ListItem>
         </List>
         <Divider component="hr" />
