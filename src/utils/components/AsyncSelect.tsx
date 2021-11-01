@@ -112,6 +112,7 @@ function Control(props: ControlProps<Option, false>) {
 
   return (
     <TextField
+      variant="standard"
       fullWidth
       InputProps={{
         inputComponent,

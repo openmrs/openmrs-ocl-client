@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     gridContainers: {
       display: "flex",
       flexWrap: "nowrap",
+      padding:"25px",
       marginTop: "0",
       margin: "1.25rem"
     },
@@ -84,29 +85,35 @@ const ViewOrganisationPage: React.FC<Props> = ({
     >
       <ProgressOverlay delayRender loading={loading}>
         <Grid
-          item
           container
           xs={12}
           spacing={5}
           className={classes.gridContainers}
         >
-          <OrganisationDetails organisation={organisation} />
-          <OrganisationMembers
-            canModifyMembers={canModify}
-            members={members}
-            orgUrl={orgUrl}
-            orgName={name}
-          />
+          <Grid item xs={6}>
+            <OrganisationDetails organisation={organisation} />
+          </Grid>
+          <Grid item xs={6}>
+            <OrganisationMembers
+              canModifyMembers={canModify}
+              members={members}
+              orgUrl={orgUrl}
+              orgName={name}
+            />
+          </Grid>
         </Grid>
         <Grid
-          item
           container
           xs={12}
           spacing={5}
           className={classes.gridContainers}
         >
-          <OrganisationSources sources={sources} />
-          <OrganisationDictionaries collections={collections} />
+          <Grid item xs={6}>
+            <OrganisationSources sources={sources} />
+          </Grid>
+          <Grid item xs={6}>
+            <OrganisationDictionaries collections={collections} />
+          </Grid>
         </Grid>
         {!canModify ? null : (
           <EditButton url={`${url}edit/`} title="Edit this Organisation" />

@@ -18,7 +18,8 @@ import {
   Typography,
   Dialog,
   IconButton,
-  ListItem
+  ListItem,
+  Theme
 } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { OrgMember } from "../types";

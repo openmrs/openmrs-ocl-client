@@ -22,7 +22,7 @@ import { createStyles, makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
-      paddingLeft: theme.spacing(7) + 1
+      paddingLeft: theme.spacing(7)
     },
     content: {
       marginTop: "32px",

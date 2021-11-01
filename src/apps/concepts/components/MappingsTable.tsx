@@ -220,7 +220,6 @@ const MappingsTable: React.FC<Props> = ({
                                     ? "0 0 .4rem #666"
                                     : "none",
                                   display: "flex",
-                                  alignItems: "center"
                                 }}
                               >
                                 <DragHandle {...provided.dragHandleProps} />

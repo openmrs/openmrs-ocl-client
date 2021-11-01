@@ -11,7 +11,8 @@ interface Props {
 
 const useStyles = makeStyles({
   fullWidth: {
-    width: "100%"
+    width: "100%",
+    color:"black"
   }
 });
 
@@ -22,6 +23,7 @@ const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
     <Tabs
       // centered
       className={classes.fullWidth}
+      indicatorColor="secondary"
       variant="fullWidth"
       value={currentPageUrl}
       data-testid="tabs"

@@ -78,6 +78,7 @@ const ContainerVersionForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
+                    variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="id"
@@ -86,12 +87,14 @@ const ContainerVersionForm: React.FC<Props> = ({
                   component={TextField}
                 />
                 <FormControl
+                    variant="standard"
                   fullWidth
                   // required
                   margin="normal"
                 >
-                  <InputLabel htmlFor="released">Release</InputLabel>
+                  <InputLabel shrink htmlFor="released">Release</InputLabel>
                   <Field
+                      variant="standard"
                     fullWidth
                     id="released"
                     name="released"
@@ -113,6 +116,7 @@ const ContainerVersionForm: React.FC<Props> = ({
                   </Field>
                 </FormControl>
                 <Field
+                    variant="standard"
                   fullWidth
                   multiline
                   rowsMax={4}

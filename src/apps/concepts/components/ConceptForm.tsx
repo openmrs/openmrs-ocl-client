@@ -332,6 +332,7 @@ const ConceptForm: React.FC<Props> = ({
                 Concept Details
               </Typography>
               <Field
+                variant="standard"
                 fullWidth
                 id="external_id"
                 name="external_id"
@@ -354,6 +355,7 @@ const ConceptForm: React.FC<Props> = ({
                 }}
               />
               <Field
+                variant="standard"
                 fullWidth
                 id="id"
                 name="id"
@@ -362,9 +364,10 @@ const ConceptForm: React.FC<Props> = ({
                 component={TextField}
                 disabled={!(allowEditing && allowIdEdits)}
               />
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="concept_class">Class</InputLabel>
+              <FormControl variant="standard" fullWidth margin="normal">
+                <InputLabel shrink  htmlFor="concept_class">Class</InputLabel>
                 <Field
+                  variant="standard"
                   name="concept_class"
                   id="concept_class"
                   component={Select}
@@ -380,9 +383,14 @@ const ConceptForm: React.FC<Props> = ({
                   <ErrorMessage name="concept_class" component="span" />
                 </Typography>
               </FormControl>
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="datatype">Datatype</InputLabel>
-                <Field name="datatype" id="datatype" component={Select}>
+              <FormControl variant="standard" fullWidth margin="normal">
+                <InputLabel shrink htmlFor="datatype">Datatype</InputLabel>
+                <Field
+                  variant="standard"
+                  name="datatype"
+                  id="datatype"
+                  component={Select}
+                >
                   {DATA_TYPES.map(datatype => (
                     <MenuItem key={datatype} value={datatype}>
                       {datatype}
@@ -620,6 +628,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
           {input_group.map(([key, value]) => (
             <Field
               // fullWidth
+              variant="standard"
               id={`extras.${key}`}
               name={`extras.${key}`}
               label={value}
@@ -633,6 +642,7 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
       ))}
       <Grid>
         <Field
+          variant="standard"
           fullWidth
           id="extras.units"
           name="extras.units"
@@ -641,23 +651,24 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
           component={TextField}
           size="small"
         />
-        <FormControl fullWidth margin="dense" size="small">
-          <InputLabel htmlFor="extras.precise">Allow Decimal</InputLabel>
+        <FormControl variant="standard" fullWidth margin="dense" size="small">
+          <InputLabel shrink htmlFor="extras.precise">Allow Decimal</InputLabel>
           <Field
+            variant="standard"
             name="extras.precise"
             id="extras.precise"
             type="boolean"
             component={Select}
           >
             <MenuItem
-                // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                data-value={false}
+              // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+              data-value={false}
             >
               No
             </MenuItem>
             <MenuItem
-                // @ts-ignore
-                data-value={true}
+              // @ts-ignore
+              data-value={true}
             >
               Yes
             </MenuItem>

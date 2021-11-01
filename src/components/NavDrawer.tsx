@@ -46,7 +46,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex"
+      display: "flex",
     },
     hide: {
       display: "none"
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
       }),
-      overflowY: "unset"
+      overflowY: "hidden"
     },
     drawerClose: {
       transition: theme.transitions.create("width", {
@@ -69,9 +69,9 @@ const useStyles = makeStyles((theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen
       }),
       overflowX: "hidden",
-      width: theme.spacing(7) + 1,
+      width: theme.spacing(7),
       [theme.breakpoints.up("sm")]: {
-        width: theme.spacing(9) + 1
+        width: theme.spacing(9)
       },
       whiteSpace: "nowrap"
     },

@@ -352,8 +352,9 @@ const MappingsTableRow: React.FC<Props> = ({
             component="td"
             scope="row"
           >
-            <FormControl fullWidth margin="dense">
+            <FormControl variant="standard" fullWidth margin="dense">
               <Field
+                variant="standard"
                 style={{ marginTop: "10px" }}
                 id={`${valueKey}.map_type`}
                 name={`${valueKey}.map_type`}

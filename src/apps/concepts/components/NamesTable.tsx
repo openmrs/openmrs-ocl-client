@@ -121,6 +121,7 @@ const NamesTable: React.FC<Props> = ({
                   scope="row"
                 >
                   <Field
+                    variant="standard"
                     fullWidth
                     className={classes.minimumCellWidth}
                     id={`${valuesKey}[${index}].${type}`}
@@ -137,8 +138,9 @@ const NamesTable: React.FC<Props> = ({
                     component="td"
                     scope="row"
                   >
-                    <FormControl fullWidth margin="dense">
+                    <FormControl variant="standard" fullWidth margin="dense">
                       <Field
+                        variant="standard"
                         id={`${valuesKey}[${index}].${type}_type`}
                         name={`${valuesKey}[${index}].${type}_type`}
                         data-testid={`${valuesKey}_${index}_${type}_type`}
@@ -176,8 +178,9 @@ const NamesTable: React.FC<Props> = ({
                   component="td"
                   scope="row"
                 >
-                  <FormControl fullWidth margin="dense">
+                  <FormControl variant="standard" fullWidth margin="dense">
                     <Field
+                      variant="standard"
                       id={`${valuesKey}[${index}].locale`}
                       name={`${valuesKey}[${index}].locale`}
                       data-testid={`${valuesKey}_${index}_locale`}
@@ -205,22 +208,23 @@ const NamesTable: React.FC<Props> = ({
                   component="td"
                   scope="row"
                 >
-                  <FormControl fullWidth margin="dense">
+                  <FormControl variant="standard" fullWidth margin="dense">
                     <Field
+                      variant="standard"
                       id={`${valuesKey}[${index}].locale_preferred`}
                       name={`${valuesKey}[${index}].locale_preferred`}
                       data-testid={`${valuesKey}_${index}_locale_preferred`}
                       component={Select}
                     >
                       <MenuItem
-                          // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                          data-value={false}
+                        // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                        data-value={false}
                       >
                         No
                       </MenuItem>
                       <MenuItem
-                          // @ts-ignore
-                          data-value={true}
+                        // @ts-ignore
+                        data-value={true}
                       >
                         Yes
                       </MenuItem>

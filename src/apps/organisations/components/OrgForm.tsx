@@ -101,6 +101,7 @@ const OrganisationForm: React.FC<Props> = ({
           <Form>
             <Field
               // required
+              variant="standard"
               fullWidth
               autoComplete="off"
               disabled={editing || isSubmitting}
@@ -114,6 +115,7 @@ const OrganisationForm: React.FC<Props> = ({
             />
             <Field
               // required
+              variant="standard"
               fullWidth
               autoComplete="off"
               id="name"
@@ -125,6 +127,7 @@ const OrganisationForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               disabled={isSubmitting}
               autoComplete="off"
@@ -137,6 +140,7 @@ const OrganisationForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               multiline
               rowsMax={4}
@@ -147,6 +151,7 @@ const OrganisationForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               multiline
               rowsMax={4}
@@ -156,9 +161,16 @@ const OrganisationForm: React.FC<Props> = ({
               margin="normal"
               component={TextField}
             />
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="public_access">Public Access</InputLabel>
-              <Field name="public_access" id="public_access" component={Select}>
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="public_access">
+                Public Access
+              </InputLabel>
+              <Field
+                variant="standard"
+                name="public_access"
+                id="public_access"
+                component={Select}
+              >
                 <MenuItem value="View">View</MenuItem>
                 <MenuItem value="None">Edit</MenuItem>
                 <MenuItem value="None">None</MenuItem>
