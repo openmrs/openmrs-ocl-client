@@ -47,6 +47,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
               checked={numSelected === rowCount}
               onChange={onSelectAllClick}
               inputProps={{ "aria-label": "select all desserts" }}
+              color="secondary"
             />
           </TableCell>
         )}

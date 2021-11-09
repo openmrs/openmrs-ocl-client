@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     popperWithOpenNav: {
       display: "block",
-      left: "220px !important"
+      left: "210px !important"
     }
   })
 );

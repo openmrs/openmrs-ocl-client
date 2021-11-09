@@ -183,6 +183,7 @@ const checkBoxCell = (
         onClick={event => toggleSelect(event, row.id)}
         checked={isItemSelected}
         inputProps={{ "aria-labelledby": labelId }}
+        color="secondary"
       />
     </TableCell>
   );

@@ -18,8 +18,7 @@ import {
   Typography,
   Dialog,
   IconButton,
-  ListItem,
-  Theme
+  ListItem
 } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { OrgMember } from "../types";
@@ -62,7 +61,7 @@ const useStyles = makeStyles(theme =>
     root: {
       width: "100%",
       display: "flex",
-      justifyContent: "space-between"
+      justifyContent: "space-between!important" as "space-between"
     }
   })
 );

@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
       }),
-      overflowY: "hidden"
+      overflowY: "unset!important" as "unset"
     },
     drawerClose: {
       transition: theme.transitions.create("width", {
