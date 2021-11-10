@@ -1,13 +1,14 @@
-import { Fab, Tooltip } from "@material-ui/core";
 import { AddOutlined, EditOutlined, MoreVert } from "@material-ui/icons";
 import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { CopyContentIcon } from "../../../components/CopyContentIcon";
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
+import { CloneButton } from "../../containers/components/CloneButton";
 import { EditButton } from "../../containers/components/EditButton";
-import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries";
+import { recursivelyAddConceptsToDictionaryAction } from "../../dictionaries/redux";
+import { cloneConceptToDictionaryAction } from "../redux";
 import { APIConcept } from "../types";
-
 interface Props {
   concept: APIConcept;
   conceptSource: string;
@@ -21,6 +22,9 @@ interface Props {
   addConceptsToDictionary?: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
+  cloneConceptToDictionary?: (
+    ...args: Parameters<typeof cloneConceptToDictionaryAction>
+  ) => void;
 }
 
 export const ConceptSpeedDial: React.FC<Props> = ({
@@ -33,7 +37,8 @@ export const ConceptSpeedDial: React.FC<Props> = ({
   profile,
   usersOrgs,
   conceptUrl,
-  addConceptsToDictionary
+  addConceptsToDictionary,
+  cloneConceptToDictionary
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -59,39 +64,33 @@ export const ConceptSpeedDial: React.FC<Props> = ({
     return canModifyContainer(ownerType, owner, profile, usersOrgs);
   })();
 
-  if (!showEditConceptButton && !showAddConceptButton) {
+  if (!showEditConceptButton && !showAddConceptButton && !dictionaryToAddTo) {
     return null;
   }
 
-  if (!showAddConceptButton) {
+  if (showEditConceptButton && !showAddConceptButton && !dictionaryToAddTo) {
     return (
       <EditButton
-        url={`${conceptUrl}edit/?linkedDictionary=${linkedDictionary}`}
         title={`Edit ${concept.names ? concept.names[0].name : "concept"}`}
+        url={`${conceptUrl}edit/${
+          linkedDictionary !== undefined
+            ? "?linkedDictionary=" + linkedDictionary
+            : ""
+        }`}
       />
     );
-  } else if (!showAddConceptButton) {
+  } else if (!showAddConceptButton && dictionaryToAddTo) {
     return (
-      <Tooltip
-        title={`Add ${
+      <CloneButton
+        title={`Clone ${
           concept.names ? concept.names[0].name : "concept"
         } to dictionary`}
-        data-testid="addConceptToDictionaryIcon"
-      >
-        <Fab
-          onClick={() =>
-            addConceptsToDictionary &&
-            addConceptsToDictionary( dictionaryToAddTo, [
-              concept
-            ],false, linkedDictionary)
-            
-          }
-          color="primary"
-          className="fab"
-        >
-          <AddOutlined />
-        </Fab>
-      </Tooltip>
+        onClick={e => {
+          e.preventDefault();
+          cloneConceptToDictionary &&
+            cloneConceptToDictionary(dictionaryToAddTo, concept);
+        }}
+      />
     );
   }
 
@@ -104,35 +103,60 @@ export const ConceptSpeedDial: React.FC<Props> = ({
       onClose={() => setOpen(false)}
       open={open}
     >
-      <SpeedDialAction
-        key="edit_concept"
-        icon={<EditOutlined />}
-        tooltipTitle={`Edit ${
-          concept.names ? concept.names[0].name : "concept"
-        }`}
-        onClick={() => {
-          setOpen(false);
-          return (
-            <Redirect
-              to={`${conceptUrl}edit/?linkedDictionary=${linkedDictionary}`}
-            />
-          );
-        }}
-      />
-      <SpeedDialAction
-        key="add_concept"
-        icon={<AddOutlined />}
-        tooltipTitle={`Add ${
-          concept.names ? concept.names[0].name : "concept"
-        } to dictionary`}
-        onClick={() => {
-          setOpen(false);
-          addConceptsToDictionary &&
-            addConceptsToDictionary( dictionaryToAddTo, [
-              concept
-            ],false, linkedDictionary);
-        }}
-      />
+      {showEditConceptButton && (
+        <SpeedDialAction
+          key="edit_concept"
+          icon={<EditOutlined />}
+          tooltipTitle={`Edit ${
+            concept.names ? concept.names[0].name : "concept"
+          }`}
+          onClick={() => {
+            setOpen(false);
+            return (
+              <Redirect
+                to={`${conceptUrl}edit/${
+                  linkedDictionary !== undefined
+                    ? "?linkedDictionary=" + linkedDictionary
+                    : ""
+                }`}
+              />
+            );
+          }}
+        />
+      )}
+      {showAddConceptButton && (
+        <SpeedDialAction
+          key="add_concept"
+          icon={<AddOutlined />}
+          tooltipTitle={`Add ${
+            concept.names ? concept.names[0].name : "concept"
+          } to dictionary`}
+          onClick={() => {
+            setOpen(false);
+            addConceptsToDictionary &&
+              addConceptsToDictionary(
+                dictionaryToAddTo,
+                [concept],
+                false,
+                linkedDictionary
+              );
+          }}
+        />
+      )}
+      {dictionaryToAddTo && (
+        <SpeedDialAction
+          key="clone_concept"
+          icon={<CopyContentIcon />}
+          tooltipTitle={`Clone ${
+            concept.names ? concept.names[0].name : "concept"
+          } to dictionary`}
+          onClick={() => {
+            setOpen(false);
+            cloneConceptToDictionary &&
+              cloneConceptToDictionary(dictionaryToAddTo, concept);
+          }}
+        />
+      )}
     </SpeedDial>
   );
 };

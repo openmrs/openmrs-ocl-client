@@ -8,9 +8,12 @@ import {
   startAction
 } from "../../../redux";
 import api from "../api";
-import { APIConcept, Concept, Mapping } from "../types";
+import dictionaryApi from "../../dictionaries/api";
+import { APIConcept, apiConceptToConcept, Concept, Mapping } from "../types";
 import {
   addConceptsToDictionaryAction as addConceptsToDictionary,
+  APIDictionary,
+  recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction as removeReferencesFromDictionary
 } from "../../dictionaries";
 import {
@@ -19,13 +22,20 @@ import {
   RETRIEVE_ACTIVE_CONCEPTS_ACTION,
   UPSERT_CONCEPT_ACTION,
   UPSERT_CONCEPT_AND_MAPPINGS,
-  UPSERT_MAPPING_ACTION
+  UPSERT_MAPPING_ACTION,
+  CLONE_CONCEPT_ACTION
 } from "./actionTypes";
 import {
   ANSWERS_BATCH_INDEX,
   MAPPINGS_BATCH_INDEX,
   SETS_BATCH_INDEX
 } from "./constants";
+import { debug, STATUS_CODES_TO_MESSAGES } from "../../../utils";
+import axios, { AxiosResponse } from "axios";
+import { errorMsgResponse, FAILURE } from "../../../redux/utils";
+import { v4 as uuid } from "uuid";
+import { pick } from "lodash";
+import { populatedMappingToMapping } from "../utils";
 
 export const retrieveConceptAction = createActionThunk(
   RETRIEVE_CONCEPT_ACTION,
@@ -242,5 +252,178 @@ export const resetConceptFormAction = () => {
   return (dispatch: Function) => {
     dispatch(resetAction(UPSERT_CONCEPT_ACTION));
     dispatch(resetAction(UPSERT_CONCEPT_AND_MAPPINGS));
+  };
+};
+
+export const cloneConceptToDictionaryAction = (
+  dictionaryUrl: string,
+  concept: APIConcept
+) => {
+  return async (dispatch: Function) => {
+    dispatch(startAction(CLONE_CONCEPT_ACTION));
+
+    let dictionaryResponse: AxiosResponse<APIDictionary>;
+    try {
+      dictionaryResponse = await dictionaryApi.dictionaries.retrieve.private(
+        dictionaryUrl
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        debug(
+          JSON.stringify(error),
+          "cloneConceptsToDictionaryAction#fetchDictionary"
+        );
+
+        const response = error.response;
+
+        let errorMsg = errorMsgResponse(response);
+
+        const errorMessage: string | undefined | {} | [] =
+          response?.data || response
+            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
+            : errorMsg;
+
+        dispatch({
+          type: `${CLONE_CONCEPT_ACTION}_${FAILURE}`,
+          payload: errorMessage
+        });
+      }
+
+      return;
+    }
+
+    const sourceUrl = dictionaryResponse.data.extras?.source;
+
+    if (sourceUrl === undefined) {
+      const errorMessage = `${dictionaryUrl} does not have a linked source`;
+      debug(errorMessage, "cloneConceptsToDictionaryAction");
+
+      dispatch({
+        type: `${CLONE_CONCEPT_ACTION}_${FAILURE}`,
+        payload: errorMessage
+      });
+
+      return;
+    }
+
+    const newConcept = pick(
+      apiConceptToConcept(concept, concept.mappings),
+      "id",
+      "concept_class",
+      "datatype",
+      "names",
+      "descriptions",
+      "extras",
+      "answers",
+      "sets",
+      "mappings",
+      "retired"
+    ) as Concept;
+
+    newConcept.external_id = uuid();
+
+    for (let i = 0; i < newConcept.names.length; i++) {
+      newConcept.names[i] = pick(
+        newConcept.names[i],
+        "name",
+        "locale",
+        "external_id",
+        "locale_preferred",
+        "name_type"
+      );
+
+      newConcept.names[i].external_id = uuid();
+    }
+
+    for (let i = 0; i < newConcept.descriptions.length; i++) {
+      newConcept.descriptions[i] = pick(
+        newConcept.descriptions[i],
+        "description",
+        "locale",
+        "external_id",
+        "locale_preferred"
+      );
+
+      newConcept.descriptions[i].external_id = uuid();
+    }
+
+    for (let i = 0; i < newConcept.answers.length; i++) {
+      newConcept.answers[i] = populatedMappingToMapping(newConcept.answers[i]);
+    }
+
+    for (let i = 0; i < newConcept.sets.length; i++) {
+      newConcept.sets[i] = populatedMappingToMapping(newConcept.sets[i]);
+    }
+
+    for (let i = 0; i < newConcept.mappings.length; i++) {
+      newConcept.mappings[i] = populatedMappingToMapping(
+        newConcept.mappings[i]
+      );
+    }
+
+    console.log(concept, newConcept);
+    if (newConcept === undefined) {
+      dispatch(completeAction(CLONE_CONCEPT_ACTION));
+      return;
+    }
+
+    newConcept.mappings.push({
+      map_type: "SAME-AS",
+      external_id: uuid(),
+      from_concept_url: `${sourceUrl}concepts/${newConcept.id}/`,
+      to_concept_url: concept.url
+    });
+
+    let response = await dispatch(
+      upsertConceptAndMappingsAction(newConcept, sourceUrl)
+    );
+
+    if (response === false) {
+      dispatch({
+        type: `${CLONE_CONCEPT_ACTION}_${FAILURE}`,
+        payload: "Couldn't create concept"
+      });
+
+      dispatch(completeAction(CLONE_CONCEPT_ACTION));
+      return;
+    }
+
+    let newlyAddedConceptResponse: AxiosResponse<APIConcept>;
+    try {
+      newlyAddedConceptResponse = await api.concept.retrieve(
+        `${sourceUrl}concepts/${encodeURIComponent(newConcept.id)}/`
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        debug(
+          JSON.stringify(error),
+          "cloneConceptsToDictionaryAction#fetchNewConcept"
+        );
+
+        const response = error.response;
+
+        let errorMsg = errorMsgResponse(response);
+
+        const errorMessage: string | undefined | {} | [] =
+          response?.data || response
+            ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
+            : errorMsg;
+
+        dispatch({
+          type: `${CLONE_CONCEPT_ACTION}_${FAILURE}`,
+          payload: errorMessage
+        });
+      }
+
+      return;
+    }
+
+    await dispatch(
+      recursivelyAddConceptsToDictionaryAction(dictionaryUrl, [
+        newlyAddedConceptResponse.data
+      ])
+    );
+
+    dispatch(completeAction(CLONE_CONCEPT_ACTION));
   };
 };
