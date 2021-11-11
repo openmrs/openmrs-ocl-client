@@ -4,6 +4,8 @@ import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { fireEvent } from "@testing-library/dom";
 import ContainerSearch from "../ContainerSearch";
+import { ThemeProvider } from "@mui/material/styles";
+import {theme} from "../../../../index";
 
 type searchProps = React.ComponentProps<typeof ContainerSearch>;
 
@@ -16,7 +18,9 @@ const baseProps: searchProps = {
 function renderUI(props: Partial<searchProps> = {}) {
   return render(
     <Router>
+      <ThemeProvider theme={theme}>
       <ContainerSearch {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }

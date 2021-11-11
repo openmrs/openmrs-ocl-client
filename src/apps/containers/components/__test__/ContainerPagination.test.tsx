@@ -3,6 +3,8 @@ import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContainerPagination from "../ContainerPagination";
+import { ThemeProvider } from "@mui/material/styles";
+import {theme} from "../../../../index";
 
 type paginationProps = React.ComponentProps<typeof ContainerPagination>;
 
@@ -16,7 +18,9 @@ const baseProps: paginationProps = {
 function renderUI(props: Partial<paginationProps> = {}) {
   return render(
     <Router>
+      <ThemeProvider theme={theme}>
       <ContainerPagination {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }

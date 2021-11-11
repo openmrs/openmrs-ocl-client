@@ -3,6 +3,8 @@ import ViewOrganisations from "../../components/ViewOrgs";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import {theme} from "../../../../index";
 
 const organisations = [
   {
@@ -73,7 +75,9 @@ const baseProps: viewOrgsProps = {
 function renderOrgsUI(props: Partial<viewOrgsProps> = {}) {
   return render(
     <Router>
+      <ThemeProvider theme={theme}>
       <ViewOrganisations {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }

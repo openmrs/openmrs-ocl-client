@@ -6,6 +6,8 @@ import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { APISource } from "../../types";
 import { fireEvent } from "@testing-library/dom";
+import { ThemeProvider } from "@mui/material/styles";
+import {theme} from "../../../../index";
 
 type viewSourcesProps = React.ComponentProps<typeof ViewSources>;
 
@@ -69,7 +71,9 @@ const baseProps: viewSourcesProps = {
 function renderUI(props: Partial<viewSourcesProps> = {}) {
   return render(
     <Router>
+      <ThemeProvider theme={theme}>
       <ViewSources {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }
