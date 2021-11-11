@@ -78,7 +78,7 @@ const DictionaryVersionForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="id"
@@ -88,14 +88,16 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   component={TextField}
                 />
                 <FormControl
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   // required
                   margin="normal"
                 >
-                  <InputLabel shrink htmlFor="released">Release</InputLabel>
+                  <InputLabel shrink htmlFor="released">
+                    Release
+                  </InputLabel>
                   <Field
-                      variant="standard"
+                    variant="standard"
                     fullWidth
                     id="released"
                     name="released"
@@ -105,20 +107,20 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   >
                     <MenuItem
                       // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                      data-value={false}
+                      value={0}
                     >
                       No
                     </MenuItem>
                     <MenuItem
                       // @ts-ignore
-                      data-value={true}
+                      value={1}
                     >
                       Yes
                     </MenuItem>
                   </Field>
                 </FormControl>
                 <Field
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   multiline
                   rowsMax={4}

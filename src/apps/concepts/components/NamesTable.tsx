@@ -218,13 +218,13 @@ const NamesTable: React.FC<Props> = ({
                     >
                       <MenuItem
                         // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                        data-value={false}
+                        value={0}
                       >
                         No
                       </MenuItem>
                       <MenuItem
                         // @ts-ignore
-                        data-value={true}
+                        value={1}
                       >
                         Yes
                       </MenuItem>

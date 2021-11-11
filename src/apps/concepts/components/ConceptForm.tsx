@@ -365,7 +365,9 @@ const ConceptForm: React.FC<Props> = ({
                 disabled={!(allowEditing && allowIdEdits)}
               />
               <FormControl variant="standard" fullWidth margin="normal">
-                <InputLabel shrink  htmlFor="concept_class">Class</InputLabel>
+                <InputLabel shrink htmlFor="concept_class">
+                  Class
+                </InputLabel>
                 <Field
                   variant="standard"
                   name="concept_class"
@@ -384,7 +386,9 @@ const ConceptForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
               <FormControl variant="standard" fullWidth margin="normal">
-                <InputLabel shrink htmlFor="datatype">Datatype</InputLabel>
+                <InputLabel shrink htmlFor="datatype">
+                  Datatype
+                </InputLabel>
                 <Field
                   variant="standard"
                   name="datatype"
@@ -652,7 +656,9 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
           size="small"
         />
         <FormControl variant="standard" fullWidth margin="dense" size="small">
-          <InputLabel shrink htmlFor="extras.precise">Allow Decimal</InputLabel>
+          <InputLabel shrink htmlFor="extras.precise">
+            Allow Decimal
+          </InputLabel>
           <Field
             variant="standard"
             name="extras.precise"
@@ -662,13 +668,13 @@ const PrecisionOptions: React.FC<PrecisionOptionsProps> = () => {
           >
             <MenuItem
               // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-              data-value={false}
+              value={0}
             >
               No
             </MenuItem>
             <MenuItem
               // @ts-ignore
-              data-value={true}
+              value={1}
             >
               Yes
             </MenuItem>

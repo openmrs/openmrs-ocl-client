@@ -6,7 +6,7 @@ import "./index.scss";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       light: "#757ce8",
