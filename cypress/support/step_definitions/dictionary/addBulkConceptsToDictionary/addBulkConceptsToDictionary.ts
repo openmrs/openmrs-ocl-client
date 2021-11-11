@@ -18,17 +18,28 @@ Given("the user is on the view dictionary concepts page", () => {
 
 Given('the user is on the "Add concepts in bulk from CIEL" page', () => {
   cy.visit(
-    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL/`
+    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL`
   );
   
   cy.url().should(
     "contain",
-    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL/`
+    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL`
   );
 });
 
-Given('CIEL concept "1000" is already in the dictionary', (conceptId) => {
-  cy.createConcept(conceptId, "1000");
+Given('CIEL concept "1000" is already in the dictionary', () => {
+  cy.createConcept(
+    [
+      {
+        name: "Whole blood sample",
+        locale: "en",
+        locale_preferred: true,
+        name_type: "FULLY_SPECIFIED"
+      }
+    ],
+    "/orgs/CIEL/sources/CIEL/",
+    "1000"
+  );
 });
 
 When('the user clicks the "Add concepts" button', () => {
@@ -37,7 +48,7 @@ When('the user clicks the "Add concepts" button', () => {
 
 When('the user selects "Add bulk concepts"', () => {
   cy.visit(
-    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL/`
+    `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL`
   );
 });
 
@@ -48,19 +59,20 @@ Then('the user navigates to the "Progess notification" page', () => {
   cy.url().should("contain", `/actions`);
 });
 
-When('the user enters concept Id 1000', () => {
+When('the user enters concept Id "1000"', () => {
     cy.get("textarea").type("1000")
   }
 );
 
 When('the user clicks the "ADD CONCEPTS" button', () => {
+  cy.intercept('/orgs/CIEL/sources/CIEL/*/*').as('loadMappings');
   cy.findByText("Add concepts").click();
+  cy.get('[title="In progress"]').should('exist').wait('@loadMappings');
 });
 
 When(
-  /the user enters concept Id "(1000|1001|1002)"/, () => {
-    // eslint-disable-next-line no-sequences
-    cy.get("textarea").type(`1000, 1001, 1002`);
+  /the user enters concept Id "(1001|1002)"/, (conceptId) => {
+    cy.get("textarea").type(` ${conceptId}`);
   }
 ); 
  
@@ -69,24 +81,26 @@ Then('the user selects "Import existing concept"', () => {
 });
 
 Then('the user should be on the "Add concepts in bulk from CIEL" page', () => {
-   cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL/`);
+   cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/add/?fromSource=CIEL`);
 });
 
 Then(
-  /the concept Id "1000" should be in the dictionary/, (conceptId) => {
-    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}`).should("exist");
-  });
-
-Then(
   /the concept Id "(1000|1001|1002)" should be in the dictionary/, (conceptId) => {
-    cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}`, "1001, 1002");
+    cy.waitUntil(
+      () =>
+        cy.getConcept(
+          `/users/${getUser()}/collections/${getDictionaryId()}`,
+          conceptId,
+          false
+        ),
+      { timeout: 10000 }
+    );
     cy.get('["2-concepts-were-added-message"]').should("be.visible");
   });    
 
-Then('the "1000" concept should be skippped', (conceptId) => {
-  cy.getConcept(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/${conceptId}`).should("skip");
-   cy.get('["Adding-concept-skipped-message"]').should("be.visible");
-});   
+Then('concept Id "1000" should be skipped', () => {
+  cy.get('["Adding-concept-skipped-message"]').should("be.visible");
+});
 
 Before({ tags: "@ciel" }, () => {
    cy.createOrganisation("CIEL", true)

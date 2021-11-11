@@ -35,8 +35,8 @@ Feature: Add bulk concepts to an existing dictionary
   Scenario: The system should be able to skip an already added bulk concepts from CIEL
     Given CIEL concept "1000" is already in the dictionary
       And the user is on the "Add concepts in bulk from CIEL" page
-      And the user enters concept Id 1000
+      And the user enters concept Id "1000"
       And the user clicks the "ADD CONCEPTS" button
-    Then the user navigates to the "Progess notification" page
-      Then concept Id "1000" should be skippped 
+     Then the user navigates to the "Progess notification" page
+      And concept Id "1000" should be skipped 
                 
