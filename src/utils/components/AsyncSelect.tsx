@@ -35,7 +35,7 @@ import { LoadingIndicatorProps } from "react-select/src/components/indicators";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     input: {
-      display: "contents",
+      display: "inline-flex!important" as "inline-flex",
       paddingTop: theme.spacing(0.5)
     },
     icon: {
@@ -147,7 +147,10 @@ function OptionComponent(props: OptionProps<Option, false>) {
   );
 }
 
-type MuiPlaceholderProps = DistributiveOmit<PlaceholderProps<Option, false>, "innerProps"> &
+type MuiPlaceholderProps = DistributiveOmit<
+  PlaceholderProps<Option, false>,
+  "innerProps"
+> &
   Partial<Pick<PlaceholderProps<Option, false>, "innerProps">>;
 
 function Placeholder(props: MuiPlaceholderProps) {

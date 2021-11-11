@@ -78,7 +78,7 @@ const ContainerVersionForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="id"
@@ -87,36 +87,37 @@ const ContainerVersionForm: React.FC<Props> = ({
                   component={TextField}
                 />
                 <FormControl
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   // required
                   margin="normal"
                 >
-                  <InputLabel shrink htmlFor="released">Release</InputLabel>
+                  <InputLabel shrink htmlFor="released">
+                    Release
+                  </InputLabel>
                   <Field
-                      variant="standard"
+                    variant="standard"
                     fullWidth
                     id="released"
                     name="released"
-                    label="Release?"
                     component={Select}
                   >
                     <MenuItem
-                        // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                        data-value={false}
+                      // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
+                      data-value={false}
                     >
                       No
                     </MenuItem>
                     <MenuItem
-                        // @ts-ignore
-                        data-value={true}
+                      // @ts-ignore
+                      data-value={true}
                     >
                       Yes
                     </MenuItem>
                   </Field>
                 </FormControl>
                 <Field
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   multiline
                   rowsMax={4}
