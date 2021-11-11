@@ -28,9 +28,10 @@ import {
   FolderOpen,
   Search as SearchIcon
 } from "@material-ui/icons";
-import { APIDictionary, Dictionary } from '../../dictionaries/types';
+import { APIDictionary } from '../../dictionaries/types';
 import { VerifiedSource } from "../../../components/VerifiedSource";
 import InfiniteScroll from "react-infinite-scroll-component";
+import api from '../../organisations/api';
 interface Props {
   containerType: string;
   containerUrl?: string;
@@ -44,8 +45,8 @@ interface Props {
   goTo: Function;
   initialSearch: string;
   pathUrl: Function;
-  dictionaryMeta?: { num_found?: number };
-  sourcesMeta?: { num_found?: number };
+  dictionaryMeta?: { num_found?: number, page_number?:number,pages?:number };
+  sourcesMeta?: { num_found?: number, page_number?:number,pages?:number };
 }
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -110,18 +111,16 @@ const ViewConceptsHeader: React.FC<Props> = ({
         .concat(sources.map(s => ({ name: s.name, url: s.url })))
         .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
       setCurrentSources(allSources);
-      console.log(allSources);
     } else setCurrentSources(defaultSources);
   }, [showAllSources, sources, dictionaries, initialSearch]);
-  // TODO - Check if this is correct
+  // const hasMoreData = () => {
+  //   return currentPage === totalPages;
+  // }
+  // // TODO - Check if this is correct
   const fetchMoreData = () => {
-    setTimeout(() => {
-      const previousSources = currentSources
-        ?.filter(Boolean)
-        .concat(currentSources.slice(11));
-      setCurrentSources(previousSources);
-    }, 1000);
-  };
+  //   const results = api.dictionaries.retrieve.public(page = currentPage + 1)
+  //   setCurrentSources([].concat(currentSources, results));
+   };
   const handleSearch = (q: string) => goTo(pathUrl({ q }));
   const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowAllSources(event.target.checked);
@@ -143,9 +142,13 @@ const ViewConceptsHeader: React.FC<Props> = ({
   };
   const dictionaryObj = dictionaryMeta ? dictionaryMeta:{};
   const dictionaryCount = dictionaryObj.num_found ? dictionaryObj.num_found:0;
-
+  const dictionaryPageNumber = dictionaryObj.page_number ? dictionaryObj.page_number:0;
+  const dictionaryPages = dictionaryObj.pages ? dictionaryObj.pages:0;
+  
   const sourceObj = sourcesMeta ? sourcesMeta:{};
   const sourcesCount = sourceObj.num_found ? sourceObj.num_found:0;
+  const sourcesPageNumber = sourceObj.page_number ? sourceObj.page_number:0;
+  const sourcesPages = sourceObj.pages ? sourceObj.pages:0;
   const totalCount = sourcesCount + dictionaryCount
 
   const showSwitchSourceBasedOnContainerType = () => {
@@ -217,7 +220,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
           </Grid>
           {showAllSources ? (
             <InfiniteScroll
-              dataLength={totalCount}
+              dataLength={totalCount} 
               next={fetchMoreData}
               hasMore={true}
               loader={<h4>Loading...</h4>}

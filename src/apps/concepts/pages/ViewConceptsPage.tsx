@@ -60,8 +60,8 @@ export interface StateProps {
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
-  dictionaryMeta?: { num_found?: number };
-  sourcesMeta?: { num_found?: number };
+  dictionaryMeta?: {  num_found?: number, page_number?:number,pages?:number };
+  sourcesMeta?: { num_found?: number, page_number?:number,pages?:number };
   profile?: APIProfile;
   usersOrgs?: APIOrg[];
 }
