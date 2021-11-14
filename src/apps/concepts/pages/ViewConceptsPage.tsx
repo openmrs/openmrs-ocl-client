@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { includes } from "lodash";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
@@ -141,6 +141,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   const { pathname: url } = useLocation();
   const [containerUrl, setContainerUrl] = useState("");
 
+  const retrievingDictionary = useRef(false);
+
   useEffect(() => {
     setContainerUrl(url.replace("/concepts", ""));
   }, [url]);
@@ -191,8 +193,11 @@ const ViewConceptsPage: React.FC<Props> = ({
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
-    if (dictionary === undefined && dictionaryToAddTo) {
+    if (!dictionary && dictionaryToAddTo) {
+      retrievingDictionary.current = true;
       retrieveDictionary(dictionaryToAddTo);
+    } else if (dictionary && retrievingDictionary.current) {
+      retrievingDictionary.current = false;
     }
   }, [dictionary, dictionaryToAddTo, retrieveDictionary]);
 
@@ -214,7 +219,6 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialSourceFilters
   );
 
-  const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
   const includeAddedConcepts = generalFilters.includes(
     "Include Added Concepts"
   );
@@ -239,7 +243,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (containerUrl) {
+    if (containerUrl && dictionary) {
       // we don't make this reactive(only depend on the initial values), because the requirement
       // was only trigger queries on user search(enter or apply filters, or change page)
       containerType === SOURCE_CONTAINER ||
@@ -247,12 +251,15 @@ const ViewConceptsPage: React.FC<Props> = ({
         ? retrieveSource(containerUrl)
         : retrieveDictionary(containerUrl);
 
+      const excludeAddedConceptsUrl = `${url}?collection=!${encodeURI(dictionary.name)}&collectionOwnerUrl=!${dictionary.owner_url}`;
+      const conceptsUrl =  isImporting
+        ? includeAddedConcepts
+          ? url
+          : excludeAddedConceptsUrl
+        : url;
+
       retrieveConcepts({
-        conceptsUrl: isImporting
-          ? includeAddedConcepts
-            ? url
-            : excludeAddedConceptsUrl
-          : url,
+        conceptsUrl,
         page: page,
         limit: limit,
         q: initialQ,
@@ -269,9 +276,10 @@ const ViewConceptsPage: React.FC<Props> = ({
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    retrieveConcepts, 
-    retrieveDictionary, 
-    retrieveSource, 
+    dictionary,
+    retrieveConcepts,
+    retrieveDictionary,
+    retrieveSource,
     containerUrl,
     url,
     page,
@@ -315,7 +323,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         alignItems="flex-start"
       >
         <ProgressOverlay
-          loading={loading}
+          loading={retrievingDictionary.current || loading}
           error={
             errors
               ? "Could not fetch concepts. Refresh this page to retry"
