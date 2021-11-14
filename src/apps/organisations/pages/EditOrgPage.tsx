@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isEmpty } from "lodash";
 import { OrganisationForm } from "../components";
 import { Grid, Paper } from "@material-ui/core";
@@ -52,10 +52,18 @@ const EditOrganisationPage: React.FC<Props> = ({
   const orgUrl = pathname.replace("/user", "").replace("edit/", "");
 
   const previouslyLoading = usePrevious(loading);
+  const retrievingOrg = useRef(false);
 
   useEffect(() => {
+    retrievingOrg.current = true;
     retrieveOrg(orgUrl);
   }, [orgUrl, retrieveOrg]);
+
+  useEffect(() => {
+    if (!isEmpty(organisation) && retrievingOrg) {
+      retrievingOrg.current = false;
+    }
+  }, [organisation]);
 
   if (!loading && previouslyLoading && editedOrganisation) {
     return <Redirect to={orgUrl} />;
@@ -96,14 +104,14 @@ const EditOrganisationPage: React.FC<Props> = ({
           type="error"
         />
       ) : null}
-      <ProgressOverlay loading={loading}>
+      <ProgressOverlay loading={retrievingOrg.current || loading} delayRender>
         <Grid id="edit-organisation-page" item xs={6} component="div">
           <Paper>
             <OrganisationForm
               context={CONTEXT.edit}
               errors={errors}
               loading={loading}
-              savedValues={!isEmpty(organisation) ? organisation : organisation}
+              savedValues={organisation}
               onSubmit={(values: EditableOrganisationFields) => {
                 editOrg(orgUrl, values);
                 setOpenAlert(true);
