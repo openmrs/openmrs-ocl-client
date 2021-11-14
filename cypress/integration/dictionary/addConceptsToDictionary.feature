@@ -14,7 +14,8 @@ Feature: Add concepts to an existing dictionary
   @dictionary
   @ciel
   Scenario: The user should be able to add a single concept from their preferred source
-    Given the user is on the "Import existing concept" page
+    Given a dictionary exists
+      And the user is on the "Import existing concept" page
      When the user clicks on the row for "Serum"
       And the user clicks on the "Add selected to dictionary" button
      Then the user should be on the "Import existing concept" page
@@ -23,7 +24,8 @@ Feature: Add concepts to an existing dictionary
   @dictionary
   @ciel
   Scenario: The user should be able to add multiple concepts from their preferred source
-    Given the user is on the "Import existing concept" page
+    Given a dictionary exists
+      And the user is on the "Import existing concept" page
      When the user clicks on the row for "Serum"
       And the user clicks on the row for "Whole blood sample"
       And the user clicks on the row for "Plasma"
@@ -36,7 +38,8 @@ Feature: Add concepts to an existing dictionary
   @dictionary
   @ciel
   Scenario: The user should be able to add a single concept from their preferred source while viewing it
-    Given the user is on the "Import existing concept" page
+    Given a dictionary exists
+      And the user is on the "Import existing concept" page
      When the user clicks on the link for "Serum"
       And the user is sent to the view concept page
       And the user clicks on the "Add Serum to dictionary" button
