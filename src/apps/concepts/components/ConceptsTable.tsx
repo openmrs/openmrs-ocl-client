@@ -131,7 +131,7 @@ export const ConceptsTable: React.FC<Props> = ({
   }>({ index: -1, anchor: null });
 
   const resetSelected = () => setSelected([]);
-  const isSelected = (id: string) => selected.includes(id);
+  const isSelected = (uuid: string) => selected.includes(uuid);
 
   const toggleMenu = (
     index: number,
@@ -157,19 +157,19 @@ export const ConceptsTable: React.FC<Props> = ({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = concepts.map(concept => concept.id);
+      const newSelecteds = concepts.map(concept => concept.uuid || "");
       setSelected(newSelecteds);
       return;
     }
     resetSelected();
   };
 
-  const toggleSelect = (event: React.MouseEvent<unknown>, id: string) => {
-    const selectedIndex = selected.indexOf(id);
+  const toggleSelect = (event: React.MouseEvent<unknown>, uuid: string) => {
+    const selectedIndex = selected.indexOf(uuid);
     let newSelected: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, uuid);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -205,7 +205,7 @@ export const ConceptsTable: React.FC<Props> = ({
           showAddConcepts={buttons.addToDictionary}
           addSelectedConcepts={() => {
             addConceptsToDictionary(
-              concepts.filter(concept => selected.includes(concept.id))
+              concepts.filter(concept => selected.includes(concept.uuid || ""))
             );
             resetSelected();
           }}
@@ -228,11 +228,11 @@ export const ConceptsTable: React.FC<Props> = ({
             />
             <TableBody>
               {concepts.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+                const isItemSelected = isSelected(row.uuid || "");
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <ConceptsTableRow
-                    key={`${row.id}-${index}`}
+                    key={`${row.uuid}-${index}`}
                     row={row}
                     index={index}
                     selected={selected}
