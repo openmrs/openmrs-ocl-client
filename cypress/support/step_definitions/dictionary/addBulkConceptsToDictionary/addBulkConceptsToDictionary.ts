@@ -39,6 +39,10 @@ Given('CIEL concept "1000" is already in the dictionary', () => {
     ],
     "/orgs/CIEL/sources/CIEL/",
     "1000"
+  ).addConceptToDictionary(
+    `/users/${getUser()}/collections/${getDictionaryId()}/`,
+    "/orgs/CIEL/sources/CIEL/",
+    "1000"
   );
 });
 
@@ -66,8 +70,8 @@ When('the user enters concept Id "1000"', () => {
 
 When('the user clicks the "ADD CONCEPTS" button', () => {
   cy.intercept('/orgs/CIEL/sources/CIEL/*/*').as('loadMappings');
-  cy.intercept('PUT', `/users/${`getUser()`}/collections/${getDictionaryId()}/references/*`).as('addReferences')
-  cy.findByText("Add concepts").click().wait(['@loadMappings', '@loadMappings']).wait('@addReferences');
+  cy.intercept('PUT', `/users/${getUser()}/collections/${getDictionaryId()}/references/*`).as('addReferences')
+  cy.findByText("Add concepts").click().wait('@loadMappings').wait('@addReferences');
 });
 
 When(
@@ -99,7 +103,7 @@ Then(
 
 Then('concept Id "1000" should be skipped', () => {
   cy.visit("/actions")
-  cy.findByText("1 concept skipped").should("be.visible");
+  cy.findByText("1 concept was skipped").should("be.visible");
 });
 
 Before({ tags: "@ciel" }, () => {
