@@ -224,10 +224,10 @@ const addOrgMemberAction = (
   };
 };
 
-const showDeleteMemberDialogAction = () => (
+const showDeleteMemberDialogAction = (user: string) => (
   dispatch: (action: Action) => void
 ) => {
-  dispatch({ type: SHOW_DELETE_MEMBER_DIALOG, actionIndex: 0, meta: [] });
+  return dispatch({ type: SHOW_DELETE_MEMBER_DIALOG, actionIndex: 0, meta: [], payload: user });
 };
 
 const hideDeleteMemberDialogAction = () => (

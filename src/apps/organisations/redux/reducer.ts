@@ -22,7 +22,7 @@ const initialState: OrganisationState = {
   organisations: [],
   organisation: {} as APIOrganisation,
   showAddMemberDialog: false,
-  showDeleteMemberDialog: false,
+  showDeleteMemberDialog: undefined,
   showOnlyVerified: false
 };
 
@@ -74,13 +74,13 @@ export const reducer = createReducer(initialState, {
     ...state,
     showAddMemberDialog: false
   }),
-  [SHOW_DELETE_MEMBER_DIALOG]: state => ({
+  [SHOW_DELETE_MEMBER_DIALOG]: (state, action) => ({
     ...state,
-    showDeleteMemberDialog: true
+    showDeleteMemberDialog: action.payload
   }),
-  [HIDE_DELETE_MEMBER_DIALOG]: state => ({
+  [HIDE_DELETE_MEMBER_DIALOG]: (state, action) => ({
     ...state,
-    showDeleteMemberDialog: false
+    showDeleteMemberDialog: action.payload
   }),
   [LOGOUT_ACTION]: () => {
     return initialState;

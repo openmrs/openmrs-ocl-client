@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { includes } from "lodash";
+import { includes, uniqBy } from "lodash";
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -268,7 +268,26 @@ const ViewConceptsPage: React.FC<Props> = ({
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [retrieveConcepts, retrieveDictionary, retrieveSource, containerUrl]);
+  }, [
+    retrieveConcepts,
+    retrieveDictionary,
+    retrieveSource,
+    containerUrl,
+    url,
+    page,
+    limit,
+    initialQ,
+    sortDirection,
+    sortBy,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialDataTypeFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialClassFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialSourceFilters.toString(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialGeneralFilters.toString()
+  ]);
 
   const canModifyDictionary =
     containerType === DICTIONARY_CONTAINER &&
@@ -310,7 +329,11 @@ const ViewConceptsPage: React.FC<Props> = ({
             component="div"
           >
             <ConceptsTable
-              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
+              concepts={
+                (viewDictConcepts
+                  ? uniqBy(concepts, "uuid")
+                  : uniqBy(modifiedConcepts, "uuid")) ?? []
+              }
               buttons={{
                 edit: canModifyDictionary || canModifySource // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
               }}

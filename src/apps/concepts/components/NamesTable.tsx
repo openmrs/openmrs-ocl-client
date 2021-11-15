@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     minimumCellWidth: {
       minWidth: "150px"
+    },
+    menuItemSynonym: {
+      opacity: 0.38
     }
   })
 );
@@ -144,7 +147,15 @@ const NamesTable: React.FC<Props> = ({
                       >
                         {NAME_TYPES.map(nameType => (
                           <MenuItem key={nameType.value} value={nameType.value}>
-                            {nameType.label}
+                            <div
+                              className={
+                                nameType.label === "Synonym"
+                                  ? classes.menuItemSynonym
+                                  : undefined
+                              }
+                            >
+                              ({nameType.label})
+                            </div>
                           </MenuItem>
                         ))}
                       </Field>

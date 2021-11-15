@@ -1,4 +1,4 @@
-name: Build with Node
+name: Organization Management
 
 on:
   push:
@@ -16,11 +16,9 @@ jobs:
         with:
           node-version: '10'
       - run: npm install
-      - name: Unit tests
-        run: npm run test:ci
       - name: Start OCL instance
         run: bash ./start_local_instance.sh
-      - run: npm run test:integration
+      - run: npm run organisationManagement
       # capture the screenshots on failure
       - uses: actions/upload-artifact@v2
         if: failure()
@@ -28,6 +26,3 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots
           if-no-files-found: ignore
-      - uses: coverallsapp/github-action@v1.1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}

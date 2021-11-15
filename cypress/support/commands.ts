@@ -12,9 +12,12 @@ import {
   getPassword,
   getConceptId,
   getVersionId,
-  getDictionaryId
+  getDictionaryId,
+  getNewUser,
+  setConceptVersionUrl
 } from "./utils";
 import { ConceptName } from "../../src/apps/concepts";
+import { v4 as uuid } from "uuid";
 
 const apiUrl: string = Cypress.env("API_URL") || "http://localhost:8000";
 
@@ -337,7 +340,7 @@ Cypress.Commands.add(
                 id: source,
                 custom_validation_schema: "OpenMRS",
                 short_code: source,
-                name: `${source}`,
+                name: "Test Org Source",
                 description: "",
                 public_access: public_access ? "View" : "None",
                 source_type: "Dictionary"
@@ -348,6 +351,48 @@ Cypress.Commands.add(
     );
 
     return cy.wrap(source);
+  }
+);
+
+Cypress.Commands.add(
+  "createOrgDictionary",
+  (
+  dictionary: string = `TOC-${nanoid()}`,
+  organisation: string = "CIEL",
+  public_access: boolean = false
+  ) => {
+      getAuthToken().then(authToken =>
+        cy
+        .request({
+            method: "GET",
+            headers: {
+                Authorization: authToken
+            },
+            url: `${apiUrl}/orgs/${organisation}/collections/${dictionary}/`,
+            failOnStatusCode: false
+        })
+        .then(response => {
+            if (response.status !== 200) {
+                cy.request({
+                    method: "POST",
+                    headers: {
+                        Authorization: authToken
+                    },
+                    url: `${apiUrl}/orgs/${organisation}/collections/`,
+                    body: {
+                        id: dictionary,
+                        custom_validation_schema: "OpenMRS",
+                        short_code: dictionary,
+                        name: "Test Org Dictionary",
+                        description: "",
+                        public_access: public_access ? "View" : "None",
+                        source_type: "Dictionary"
+                    }
+                });
+            }
+        })
+      );
+      return cy.wrap(dictionary);
   }
 );
 
@@ -526,7 +571,9 @@ Cypress.Commands.add(
         },
         url: `${apiUrl}${source_url}concepts/${id}/`,
         failOnStatusCode: shouldFail
-      }).its("body");
+      }).its("body").then((response)=>{
+        setConceptVersionUrl(response.version_url)
+      });
     });
   }
 );
@@ -559,7 +606,8 @@ Cypress.Commands.add(
               id: id,
               concept_class: concept_class,
               names: names,
-              datatype: "N/A"
+              datatype: "N/A",
+              external_id: uuid()
             }
           });
         }
@@ -603,4 +651,74 @@ Cypress.Commands.add(
       });
     });
   }
-)
+);
+
+Cypress.Commands.add(
+  "createUser",
+  (username: string = getNewUser(), password: string = nanoid()) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/users/${username}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "POST",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/users/`,
+              body: {
+                username: username,
+                password: password,
+                email: `${username}@example.com`,
+                first_name: "Test",
+                last_name: "User"
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(username);
+  }
+);
+
+Cypress.Commands.add(
+  "addMember",
+  (organisation: string = `ORG-${nanoid()}`, member: string = getNewUser()) => {
+    getAuthToken().then(authToken =>
+      cy
+        .request({
+          method: "GET",
+          headers: {
+            Authorization: authToken
+          },
+          url: `${apiUrl}/orgs/${organisation}/members/${member}`,
+          failOnStatusCode: false
+        })
+        .then(response => {
+          if (response.status !== 200) {
+            cy.request({
+              method: "PUT",
+              headers: {
+                Authorization: authToken
+              },
+              url: `${apiUrl}/orgs/${organisation}/members/${member}/`,
+              body: {
+                username: member
+              }
+            });
+          }
+        })
+    );
+
+    return cy.wrap(member);
+  }
+);

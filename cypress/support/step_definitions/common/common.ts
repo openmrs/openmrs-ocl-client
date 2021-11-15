@@ -4,12 +4,15 @@ import { After, Before, Given } from "cypress-cucumber-preprocessor/steps";
 import { customAlphabet } from "nanoid";
 import {
   getDictionaryId,
+  getNewUser,
   getOrganisationId,
   getUser,
   getVersionId,
+  getConceptId,
   isLoggedIn,
   setConceptId,
   setDictionaryId,
+  setNewUser,
   setOrganisationId,
   setVersionId
 } from "../../utils";
@@ -22,8 +25,9 @@ Given("a dictionary exists", () => {
   const dictionaryId = getDictionaryId();
   const user = getUser();
   cy.createSource(dictionaryId, user).then(() =>
-    cy.createDictionary(dictionaryId, user).then(() =>
-      cy.waitUntil(() => cy.getDictionary(dictionaryId, user)))
+    cy
+      .createDictionary(dictionaryId, user)
+      .then(() => cy.waitUntil(() => cy.getDictionary(dictionaryId, user)))
   );
 });
 
@@ -41,6 +45,38 @@ Given("a version is released", () => {
   cy.updateVersion(versionId, dictionaryId, user);
 });
 
+Given("an organization exists", () => {
+  const organisationId = getOrganisationId();
+  cy.createOrganisation(organisationId);
+});
+
+Given("a new user exists", () => {
+  const username = getNewUser();
+  cy.createUser(username);
+});
+
+Given("a new member is added", () => {
+  const username = getNewUser();
+  const organisationId = getOrganisationId();
+  cy.addMember(organisationId, username);
+});
+
+Given("a concept exists", () => {
+  cy.createConcept(
+    [
+      {
+        name: "Test Concept 1",
+        locale: "en",
+        locale_preferred: true,
+        name_type: "FULLY_SPECIFIED"
+      }
+    ],
+    `/users/${getUser()}/sources/${getDictionaryId()}/`,
+    getConceptId()
+  )
+  .then(() => cy.waitUntil(() => cy.getConcept(`/users/${getUser()}/sources/${getDictionaryId()}/`, getConceptId())))
+});
+
 Before({ tags: "@dictionary" }, () => {
   setDictionaryId(`TD-${nanoid()}`);
 });
@@ -55,6 +91,11 @@ Before({ tags: "@version" }, () => {
 Before({ tags: "@organisation" }, () => {
   setOrganisationId(`Org-${nanoid()}`);
 });
+
+Before({ tags: "@member" }, () => {
+  setNewUser(`openmrs`);
+});
+
 After({ tags: "@dictionary" }, () => {
   isLoggedIn().then(loggedIn => {
     if (loggedIn) {

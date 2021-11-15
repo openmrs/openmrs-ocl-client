@@ -34,3 +34,7 @@ export const setOrganisationId = (organisationId: string) =>
 export const getVersionId = () => Cypress.env("versionId");
 export const setVersionId = (versionId: string) =>
   Cypress.env("versionId", versionId);
+export const getNewUser = () => Cypress.env("newUser");
+export const setNewUser = (newUser: string) => Cypress.env("newUser", newUser);
+export const getConceptVersionUrl=()=> Cypress.env("url");
+export const setConceptVersionUrl=(url: string) => Cypress.env("url", url);

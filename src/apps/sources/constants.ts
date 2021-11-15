@@ -4,7 +4,7 @@ export const OCL_SOURCE_TYPE = "Dictionary";
 
 export const TAB_LIST: TabType[] = [
   {
-    labelName: "Your Sources",
+    labelName: "My Sources",
     labelURL: "/user/sources/"
   },
   {
@@ -12,7 +12,7 @@ export const TAB_LIST: TabType[] = [
     labelURL: "/user/orgs/sources/"
   },
   {
-    labelName: "All Public Concepts",
+    labelName: "Public Sources",
     labelURL: "/sources/"
   }
 ];

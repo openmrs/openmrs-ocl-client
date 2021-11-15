@@ -70,7 +70,7 @@ export interface OrganisationState {
   orgCollections?: OrgCollection[];
   orgMembers?: OrgMember[];
   showAddMemberDialog: boolean;
-  showDeleteMemberDialog: boolean;
+  showDeleteMemberDialog?: string;
   showOnlyVerified: boolean;
 }
 export interface OrgMember {
