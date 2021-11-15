@@ -66,8 +66,8 @@ When('the user enters concept Id "1000"', () => {
 
 When('the user clicks the "ADD CONCEPTS" button', () => {
   cy.intercept('/orgs/CIEL/sources/CIEL/*/*').as('loadMappings');
-  cy.findByText("Add concepts").click();
-  cy.get('[title="In progress"]').should('exist').wait('@loadMappings');
+  cy.intercept('PUT', `/users/${`getUser()`}/collections/${getDictionaryId()}/references/*`).as('addReferences')
+  cy.findByText("Add concepts").click().wait(['@loadMappings', '@loadMappings']).wait('@addReferences');
 });
 
 When(
@@ -95,11 +95,11 @@ Then(
         ),
       { timeout: 10000 }
     );
-    cy.get('["2-concepts-were-added-message"]').should("be.visible");
   });    
 
 Then('concept Id "1000" should be skipped', () => {
-  cy.get('["Adding-concept-skipped-message"]').should("be.visible");
+  cy.visit("/actions")
+  cy.findByText("1 concept skipped").should("be.visible");
 });
 
 Before({ tags: "@ciel" }, () => {
