@@ -10,7 +10,8 @@ import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 
 Given("the user is on the dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
-  cy.findByText(`Concepts in ${getDictionaryId()}`).should("be.visible");
+  // delay until the dictionary is fully loaded
+  cy.findByText("Create custom concept").should('be.enabled');
 });
 
 When("the user clicks the add concepts button", () => {
