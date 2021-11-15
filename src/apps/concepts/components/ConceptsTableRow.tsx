@@ -78,7 +78,7 @@ const actionIcon = (
 };
 
 const conceptNameCell = (
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void,
   row: APIConcept,
   linkedDictionary?: string,
   dictionaryToAddTo?: string
@@ -98,7 +98,7 @@ const conceptNameCell = (
 
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.uuid ||"")}
       data-testclass="name"
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
@@ -111,12 +111,12 @@ const conceptNameCell = (
 };
 
 const conceptClassCell = (
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void,
   row: APIConcept
 ) => {
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       data-testclass="conceptClass"
       style={{ wordWrap: "break-word" }}
     >
@@ -126,12 +126,12 @@ const conceptClassCell = (
 };
 
 const conceptDataTypeCell = (
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void,
   row: APIConcept
 ) => {
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       data-testclass="datatype"
       style={{ wordWrap: "break-word" }}
     >
@@ -141,12 +141,12 @@ const conceptDataTypeCell = (
 };
 
 const conceptSourceCell = (
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void,
   row: APIConcept
 ) => {
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       data-testclass="source"
       style={{ wordWrap: "break-word" }}
     >
@@ -156,12 +156,12 @@ const conceptSourceCell = (
 };
 
 const conceptIDCell = (
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void,
   row: APIConcept
 ) => {
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.id)}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       style={{ wordBreak: "break-all" }}
     >
       {row.id}
@@ -236,7 +236,7 @@ interface ConceptsTableRowProps {
   row: APIConcept;
   index: number;
   selected: string[];
-  toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void;
+  toggleSelect: (event: React.MouseEvent<unknown>, uuid: string) => void;
   linkedDictionary?: string;
   buttons: { [key: string]: boolean };
   linkedSource: string | undefined;

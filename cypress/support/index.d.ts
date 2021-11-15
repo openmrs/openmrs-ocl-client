@@ -88,6 +88,11 @@ declare namespace Cypress {
       id?: string,
       concept_class?: string
     ): Chainable<Subject>;
+    addConceptToDictionary(
+      dictionary_url: string,
+      source_url: string,
+      id?: string
+    ): Chainable<Subject>;
     createUser(username: string): Chainable<Subject>;
     addMember(organisation: string, username: string): Chainable<Subject>;
   }

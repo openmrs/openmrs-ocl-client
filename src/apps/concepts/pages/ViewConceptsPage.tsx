@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { includes } from "lodash";
+import { includes, uniqBy } from "lodash";
 import { Grid, Theme } from "@mui/material";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
@@ -330,7 +330,11 @@ const ViewConceptsPage: React.FC<Props> = ({
             component="div"
           >
             <ConceptsTable
-              concepts={(viewDictConcepts ? concepts : modifiedConcepts) ?? []}
+              concepts={
+                (viewDictConcepts
+                  ? uniqBy(concepts, "uuid")
+                  : uniqBy(modifiedConcepts, "uuid")) ?? []
+              }
               buttons={{
                 edit: canModifyDictionary || canModifySource // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
               }}
