@@ -29,7 +29,7 @@ interface Props {
   containerUrl?: string;
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
-  children?: React.ReactNode[];
+  children?: React.ReactNode | React.ReactNode[];
   sources: APISource[];
   dictionaries: APIDictionary[];
 }
@@ -126,12 +126,12 @@ const ViewConceptsHeader: React.FC<Props> = ({
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
+          <TextField
           multiline
-          className={classes.textField} 
+          className={classes.textField}
           InputProps={{
             className: classes.underline
-          }} 
+          }}
             inputProps={{
               className: classes.input
             }}
