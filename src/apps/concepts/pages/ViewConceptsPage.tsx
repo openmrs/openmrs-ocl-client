@@ -114,6 +114,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const INITIAL_LIMIT = 10; // todo get limit from settings
 
+enum DATA_LOAD_STATE {
+  INITIAL = "INITIAL",
+  INITIAL_LOADING = "INITIAL_LOADING",
+  INITIAL_LOADED = "INITIAL_LOADED"
+}
+
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   modifiedConcepts,
@@ -141,8 +147,10 @@ const ViewConceptsPage: React.FC<Props> = ({
   const { replace: goTo } = useHistory(); // replace because we want to keep the back button useful
   const { pathname: url } = useLocation();
   const [containerUrl, setContainerUrl] = useState("");
+  const [preferredSource, setPreferredSource] = useState<string>("All Public Concepts");
+  const [linkedSource, setLinkedSource] = useState<string | undefined>("");
 
-  const retrievingDictionary = useRef(false);
+  const retrievingConcepts = useRef<DATA_LOAD_STATE>(DATA_LOAD_STATE.INITIAL);
 
   useEffect(() => {
     setContainerUrl(url.replace("/concepts", ""));
@@ -152,15 +160,6 @@ const ViewConceptsPage: React.FC<Props> = ({
     ownerType: string;
     owner: string;
   }>();
-
-  // only relevant with the collection container
-  const preferredSource = dictionary?.preferred_source || "All Public Concepts";
-  const linkedSource =
-    containerType === SOURCE_CONTAINER ||
-    containerType === SOURCE_VERSION_CONTAINER
-      ? source?.url
-      : dictionary?.extras?.source;
-  // end only relevant with the collection container
 
   const queryParams: QueryParams = useQueryParams();
   const {
@@ -194,13 +193,30 @@ const ViewConceptsPage: React.FC<Props> = ({
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
-    if (!dictionary && dictionaryToAddTo) {
-      retrievingDictionary.current = true;
+    if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && !dictionary && dictionaryToAddTo) {
+      retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
       retrieveDictionary(dictionaryToAddTo);
-    } else if (dictionary && retrievingDictionary.current) {
-      retrievingDictionary.current = false;
+    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL_LOADING && (dictionary || source)) {
+      retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
+    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL) {
+      retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
+      containerType === SOURCE_CONTAINER ||
+      containerType === SOURCE_VERSION_CONTAINER
+        ? retrieveSource(containerUrl)
+        : retrieveDictionary(containerUrl);
     }
-  }, [dictionary, dictionaryToAddTo, retrieveDictionary]);
+
+    // only relevant with the collection container
+    if (dictionary?.preferred_source) {
+      setPreferredSource(dictionary.preferred_source);
+    }
+
+    const _linkedSource = (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
+        ? source?.url
+        : dictionary?.extras?.source;
+    setLinkedSource(_linkedSource || "");
+    // end only relevant with the collection container
+  }, [dictionary, dictionaryToAddTo, retrieveDictionary, retrieveSource, source]);
 
   const [showOptions, setShowOptions] = useState(true);
 
@@ -244,7 +260,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (containerUrl && dictionary) {
+    if (containerUrl && retrievingConcepts.current === DATA_LOAD_STATE.INITIAL_LOADED) {
       // we don't make this reactive(only depend on the initial values), because the requirement
       // was only trigger queries on user search(enter or apply filters, or change page)
       containerType === SOURCE_CONTAINER ||
@@ -252,7 +268,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         ? retrieveSource(containerUrl)
         : retrieveDictionary(containerUrl);
 
-      const excludeAddedConceptsUrl = `${url}?collection=!${encodeURI(dictionary.name)}&collectionOwnerUrl=!${dictionary.owner_url}`;
+      const excludeAddedConceptsUrl = `${url}?collection=!${encodeURI(dictionary?.name || "")}&collectionOwnerUrl=!${dictionary?.owner_url}`;
       const conceptsUrl =  isImporting
         ? includeAddedConcepts
           ? url
@@ -277,7 +293,6 @@ const ViewConceptsPage: React.FC<Props> = ({
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    dictionary,
     retrieveConcepts,
     retrieveDictionary,
     retrieveSource,
@@ -324,12 +339,13 @@ const ViewConceptsPage: React.FC<Props> = ({
         alignItems="flex-start"
       >
         <ProgressOverlay
-          loading={retrievingDictionary.current || loading}
+          loading={retrievingConcepts.current !== DATA_LOAD_STATE.INITIAL_LOADED || loading}
           error={
             errors
               ? "Could not fetch concepts. Refresh this page to retry"
               : undefined
           }
+          delayRender={true}
         >
           <Grid
             id="viewConceptsPage"
@@ -404,17 +420,16 @@ const ViewConceptsPage: React.FC<Props> = ({
               />
             </Grid>
           )}
+          <AddConceptsIcon
+            canModifyDictionary={canModifyDictionary}
+            canModifySource={canModifySource}
+            containerUrl={containerUrl}
+            gimmeAUrl={gimmeAUrl}
+            linkedSource={linkedSource}
+            preferredSource={preferredSource}
+          />
         </ProgressOverlay>
       </Grid>
-
-      <AddConceptsIcon
-        canModifyDictionary={canModifyDictionary}
-        canModifySource={canModifySource}
-        containerUrl={containerUrl}
-        gimmeAUrl={gimmeAUrl}
-        linkedSource={linkedSource}
-        preferredSource={preferredSource}
-      />
     </ViewConceptsHeader>
   );
 };
