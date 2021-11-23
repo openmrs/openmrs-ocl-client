@@ -17,7 +17,7 @@ import {
   FormikValues
 } from "formik";
 import * as Yup from "yup";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { makeStyles } from "@mui/styles";
 
 interface Props {

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-mui";
 import { OrgMember } from "../types";
 import { AppState } from "../../../redux";
 import { addOrgMemberLoadingSelector } from "../redux";

@@ -1,13 +1,11 @@
-///<reference path="../../../../../node_modules/@types/testing-library__dom/queries.d.ts"/>
 import React from "react";
 import ViewSources from "../../components/ViewSources";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import { APISource } from "../../types";
 import { fireEvent } from "@testing-library/dom";
 import { ThemeProvider } from "@mui/material/styles";
-import {theme} from "../../../../index";
+import { theme } from "../../../../App";
 
 type viewSourcesProps = React.ComponentProps<typeof ViewSources>;
 
@@ -65,16 +63,16 @@ const baseProps: viewSourcesProps = {
   page: 1,
   perPage: 20,
   initialQ: "",
-  title: ""
+  title: "",
+  showOnlyVerified: false,
+  toggleShowVerified: () => {}
 };
 
 function renderUI(props: Partial<viewSourcesProps> = {}) {
   return render(
-    <Router>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <ViewSources {...baseProps} {...props} />
-      </ThemeProvider>
-    </Router>
+    </ThemeProvider>
   );
 }
 describe("ViewSources", () => {

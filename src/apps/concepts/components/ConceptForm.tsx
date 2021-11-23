@@ -28,7 +28,7 @@ import {
   Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import {
   CONCEPT_CLASSES,
   DATA_TYPES,

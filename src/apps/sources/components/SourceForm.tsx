@@ -17,7 +17,7 @@ import {
   FormikProps,
   FormikValues
 } from "formik";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";

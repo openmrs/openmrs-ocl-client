@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { fireEvent } from "@testing-library/dom";
 import ContainerSearch from "../ContainerSearch";
 import { ThemeProvider } from "@mui/material/styles";
-import {theme} from "../../../../index";
+import { theme } from "../../../../App";
 
 type searchProps = React.ComponentProps<typeof ContainerSearch>;
 

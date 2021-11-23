@@ -2,9 +2,9 @@ import React from "react";
 import ViewOrganisations from "../../components/ViewOrgs";
 import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { MemoryRouter as Router } from "react-router";
 import { ThemeProvider } from "@mui/material/styles";
-import {theme} from "../../../../index";
+import { theme } from "../../../../App";
 
 const organisations = [
   {
@@ -59,9 +59,9 @@ const organisations = [
   }
 ];
 
-type viewOrgsProps = React.ComponentProps<typeof ViewOrganisations>;
+type ViewOrgsProps = React.ComponentProps<typeof ViewOrganisations>;
 
-const baseProps: viewOrgsProps = {
+const baseProps: ViewOrgsProps = {
   organisations: [],
   numFound: 10,
   onPageChange: function onPageChange() {},
@@ -69,14 +69,16 @@ const baseProps: viewOrgsProps = {
   page: 1,
   perPage: 20,
   initialQ: "",
-  title: ""
+  title: "",
+  showOnlyVerified: false,
+  toggleShowVerified: () => {}
 };
 
-function renderOrgsUI(props: Partial<viewOrgsProps> = {}) {
+function renderOrgsUI(props: Partial<ViewOrgsProps> = {}) {
   return render(
     <Router>
       <ThemeProvider theme={theme}>
-      <ViewOrganisations {...baseProps} {...props} />
+        <ViewOrganisations {...baseProps} {...props} />
       </ThemeProvider>
     </Router>
   );

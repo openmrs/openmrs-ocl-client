@@ -16,7 +16,7 @@ import { createStyles, makeStyles } from "@mui/styles";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
 import { AsyncSelect, NestedErrorMessage } from "../../../utils/components";
 import { MAP_TYPES, Option, VERIFIED_SOURCES } from "../../../utils";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
 import api from "../api";

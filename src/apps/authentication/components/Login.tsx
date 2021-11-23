@@ -4,7 +4,7 @@ import { makeStyles } from '@mui/styles';
 import { OCL_SIGNUP_URL, TRADITIONAL_OCL_URL } from "../../../utils/constants";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-mui";
 
 interface Props {
   onSubmit: Function;

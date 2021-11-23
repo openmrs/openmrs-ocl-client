@@ -43,6 +43,8 @@ import { ViewUserProfilePage } from "./apps/authentication/pages";
 import SourceRoutes from "./apps/sources";
 import CreateSourcePage from "./apps/sources/pages/CreateSourcePage";
 import { GA_TOKENS } from "./utils";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/system";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -173,6 +175,7 @@ const Analytics: React.FC = ({ children }) => {
 
   return <>{children}</>;
 };
+
 const Routes: React.FC = () => {
   /**
    * The goal for all routes in the application is to mirror the API as much as possible
@@ -200,11 +203,30 @@ const Routes: React.FC = () => {
   );
 };
 
+export const theme = createTheme({
+  palette: {
+    primary: {
+      light: "#757ce8",
+      main: "#3f51b5",
+      dark: "#002884",
+      contrastText: "#fff"
+    },
+    secondary: {
+      light: "#ff7961",
+      main: "#f50057",
+      dark: "#ba000d",
+      contrastText: "#000"
+    }
+  }
+});
+
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </ThemeProvider>
   );
 };
 

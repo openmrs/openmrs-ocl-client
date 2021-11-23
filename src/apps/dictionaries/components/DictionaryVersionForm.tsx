@@ -13,7 +13,7 @@ import {
 import { usePrevious } from "../../../utils";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 
 import { DictionaryVersion } from "../types";
 import { v4 as uuid } from "uuid";

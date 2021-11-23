@@ -14,7 +14,7 @@ import {
   Typography
 } from "@mui/material";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { findLocale, NAME_TYPES } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,

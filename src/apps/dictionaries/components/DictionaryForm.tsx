@@ -22,7 +22,7 @@ import {
   FormikValues
 } from "formik";
 import * as Yup from "yup";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { snakeCase } from "lodash";
 import { Dictionary, CopyableDictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";

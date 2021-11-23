@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContainerPagination from "../ContainerPagination";
 import { ThemeProvider } from "@mui/material/styles";
-import {theme} from "../../../../index";
+import { theme } from "../../../../App";
 
 type paginationProps = React.ComponentProps<typeof ContainerPagination>;
 
