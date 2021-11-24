@@ -19,7 +19,7 @@ function renderUI(props: Partial<paginationProps> = {}) {
   return render(
     <Router>
       <ThemeProvider theme={theme}>
-      <ContainerPagination {...baseProps} {...props} />
+        <ContainerPagination {...baseProps} {...props} />
       </ThemeProvider>
     </Router>
   );
@@ -37,8 +37,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {
@@ -60,8 +60,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {
@@ -83,8 +83,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {

@@ -160,8 +160,8 @@ describe("ViewOrganisations", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     if (pagination !== null) {
       expect(pagination.children[0]).toHaveTextContent("1-20 of 50");
@@ -181,8 +181,8 @@ describe("ViewOrganisations", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     if (pagination !== null) {
       expect(pagination.children[0]).toHaveTextContent("21-40 of 50");

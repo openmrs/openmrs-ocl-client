@@ -8,6 +8,8 @@ import { APISource } from "../../types";
 import { createSourceDispatchAction } from "../../redux";
 import { currentState, personalSources } from "../test_data";
 import { render } from "../../../../test-utils.test";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 type createSourcePageProps = React.ComponentProps<typeof CreateSourcePage>;
 const apiProfile: APIProfile = {
@@ -52,7 +54,11 @@ const baseProps: createSourcePageProps = {
 };
 
 function renderUI(props: Partial<createSourcePageProps> = {}) {
-  return render(<CreateSourcePage {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <CreateSourcePage {...baseProps} {...props} />
+    </ThemeProvider>
+  );
 }
 const state = currentState(personalSources);
 describe("CreateSourcePage", () => {

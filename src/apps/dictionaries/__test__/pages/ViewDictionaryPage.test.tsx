@@ -24,6 +24,8 @@ import {
 import { ConceptsState } from "../../../concepts";
 import { SourceState } from "../../../sources";
 import { APIOrganisation, OrganisationState } from "../../../organisations";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 type viewDictionaryPageProps = React.ComponentProps<typeof ViewDictionaryPage>;
 
@@ -129,7 +131,9 @@ function renderUI(props: Partial<viewDictionaryPageProps> = {}) {
   return render(
     <Provider store={store}>
       <Router>
-        <ViewDictionaryPage {...baseProps} {...props} />
+        <ThemeProvider theme={theme}>
+          <ViewDictionaryPage {...baseProps} {...props} />
+        </ThemeProvider>
       </Router>
     </Provider>
   );
