@@ -71,11 +71,13 @@ const MappingsTable: React.FC<Props> = ({
   const classes = useStyles();
   const [sorted, setSorted] = useState<Mapping[]>();
   const [isAnswer, setAnswer] = useState(false);
+  const [isSetMember, setSetMember] = useState(false);
 
   useEffect(() => setAnswer(title === "Answer"), [title]);
+  useEffect(() => setSetMember(title === "Set Member"), [title]);
 
   useEffect(() => {
-    if (sorted && isAnswer) {
+    if ((sorted && isAnswer) || (sorted && isSetMember)) {
       const values = sorted;
       values.sort((v1, v2) => {
         if (v1.extras?.sort_weight) {
@@ -97,10 +99,10 @@ const MappingsTable: React.FC<Props> = ({
       });
       setSorted(values);
     }
-  }, [sorted, isAnswer]);
+  }, [sorted, isAnswer, isSetMember]);
 
   useEffect(() => {
-    if (isAnswer && isSubmitting) {
+    if ((isAnswer && isSubmitting)||(isSetMember && isSubmitting)) {
       for (let i = 0; i < values.length; i++) {
         handleChange(
           buildEvent(`${valuesKey}[${i}].extras`, { sort_weight: i + 1 })
@@ -109,6 +111,7 @@ const MappingsTable: React.FC<Props> = ({
     }
   }, [
     isAnswer,
+    isSetMember,
     isSubmitting,
     submitCount,
     handleChange,
@@ -190,7 +193,7 @@ const MappingsTable: React.FC<Props> = ({
               </TableCell>
             </TableRow>
           </TableHead>
-          {isAnswer && editing ? (
+          {(isAnswer && editing) || (isSetMember && editing)? (
             <DragDropContext
               onDragEnd={param => {
                 const srcI = param.source.index;
