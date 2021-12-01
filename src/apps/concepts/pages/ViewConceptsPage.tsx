@@ -214,7 +214,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialSourceFilters
   );
 
-  const excludeAddedConceptsUrl = `${url}?collection=!${dictionary?.name}&collectionOwnerUrl=!${dictionary?.owner_url}`;
+  const excludeAddedConceptsUrl = `${url}?collectionUrl=!${dictionary?.url}`;
   const includeAddedConcepts = generalFilters.includes(
     "Include Added Concepts"
   );
