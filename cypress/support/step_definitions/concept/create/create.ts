@@ -11,11 +11,11 @@ import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 Given("the user is on the dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
   // delay until the dictionary is fully loaded
-  cy.findByText("Create custom concept").should('be.enabled');
+  cy.findByTestId("addConceptsIcon").should('be.visible');
 });
 
 When("the user clicks the add concepts button", () => {
-  cy.findByTitle("Add concepts").click();
+  cy.findByTestId("addConceptsIcon").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem =>
