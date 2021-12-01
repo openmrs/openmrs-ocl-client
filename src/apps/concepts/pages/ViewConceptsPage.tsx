@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { includes, uniqBy } from "lodash";
+import { includes, isArray, uniqBy } from "lodash";
 
 import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
@@ -117,7 +117,9 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 enum DATA_LOAD_STATE {
   INITIAL = "INITIAL",
   INITIAL_LOADING = "INITIAL_LOADING",
-  INITIAL_LOADED = "INITIAL_LOADED"
+  INITIAL_LOADED = "INITIAL_LOADED",
+  CONCEPTS_LOADING = "CONCEPTS_LOADING",
+  CONCEPTS_LOADED = "CONCEPTS_LOADED"
 }
 
 const ViewConceptsPage: React.FC<Props> = ({
@@ -193,30 +195,43 @@ const ViewConceptsPage: React.FC<Props> = ({
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
-    if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && !dictionary && dictionaryToAddTo) {
+    if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && dictionaryToAddTo) {
       retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
       retrieveDictionary(dictionaryToAddTo);
-    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL_LOADING && (dictionary || source)) {
-      retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
-    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL) {
-      retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
-      containerType === SOURCE_CONTAINER ||
-      containerType === SOURCE_VERSION_CONTAINER
-        ? retrieveSource(containerUrl)
-        : retrieveDictionary(containerUrl);
+    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL_LOADING) {
+      if (dictionaryToAddTo && dictionary) {
+        retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
+      } else if (!dictionaryToAddTo) {
+        retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
+      }
+    } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && containerUrl) {
+      const isFromSource = containerType === SOURCE_CONTAINER ||
+        containerType === SOURCE_VERSION_CONTAINER;
+
+      if (isFromSource && !source) {
+        retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
+        retrieveSource(containerUrl);
+      } else if (!isFromSource && !dictionary) {
+        retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
+        retrieveDictionary(containerUrl);
+      } else {
+        retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
+      }
     }
 
     // only relevant with the collection container
-    if (dictionary?.preferred_source) {
-      setPreferredSource(dictionary.preferred_source);
-    }
+    if (containerUrl) {
+      if (dictionary?.preferred_source) {
+        setPreferredSource(dictionary.preferred_source);
+      }
 
-    const _linkedSource = (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
+      const _linkedSource = (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
         ? source?.url
         : dictionary?.extras?.source;
-    setLinkedSource(_linkedSource || "");
+      setLinkedSource(_linkedSource || "");
+    }
     // end only relevant with the collection container
-  }, [dictionary, dictionaryToAddTo, retrieveDictionary, retrieveSource, source]);
+  }, [containerUrl, dictionary, dictionaryToAddTo, retrieveDictionary, retrieveSource, source]);
 
   const [showOptions, setShowOptions] = useState(true);
 
@@ -274,7 +289,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           ? url
           : excludeAddedConceptsUrl
         : url;
-
+      retrievingConcepts.current = DATA_LOAD_STATE.CONCEPTS_LOADING;
       retrieveConcepts({
         conceptsUrl,
         page: page,
@@ -288,11 +303,16 @@ const ViewConceptsPage: React.FC<Props> = ({
         includeRetired: initialGeneralFilters.includes("Include Retired"),
         includeAdded: generalFilters.includes("Include Added Concepts")
       });
+    } else if (retrievingConcepts.current === DATA_LOAD_STATE.CONCEPTS_LOADING && isArray(concepts)) {
+      retrievingConcepts.current = DATA_LOAD_STATE.CONCEPTS_LOADED;
     }
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
+    concepts,
+    dictionary,
+    source,
     retrieveConcepts,
     retrieveDictionary,
     retrieveSource,
@@ -339,13 +359,13 @@ const ViewConceptsPage: React.FC<Props> = ({
         alignItems="flex-start"
       >
         <ProgressOverlay
-          loading={retrievingConcepts.current !== DATA_LOAD_STATE.INITIAL_LOADED || loading}
+          loading={retrievingConcepts.current !== DATA_LOAD_STATE.CONCEPTS_LOADED || loading}
           error={
             errors
               ? "Could not fetch concepts. Refresh this page to retry"
               : undefined
           }
-          delayRender={true}
+          delayRender
         >
           <Grid
             id="viewConceptsPage"
