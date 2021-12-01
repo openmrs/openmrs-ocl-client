@@ -195,6 +195,8 @@ const ViewConceptsPage: React.FC<Props> = ({
   // This useEffect is to fetch the dictionary while on the concepts page,
   // before when one would refresh the page the would lose the dictionary.
   useEffect(() => {
+    const isFromSource = containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER;
+
     if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && dictionaryToAddTo) {
       retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
       retrieveDictionary(dictionaryToAddTo);
@@ -205,9 +207,6 @@ const ViewConceptsPage: React.FC<Props> = ({
         retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADED;
       }
     } else if (retrievingConcepts.current === DATA_LOAD_STATE.INITIAL && containerUrl) {
-      const isFromSource = containerType === SOURCE_CONTAINER ||
-        containerType === SOURCE_VERSION_CONTAINER;
-
       if (isFromSource && !source) {
         retrievingConcepts.current = DATA_LOAD_STATE.INITIAL_LOADING;
         retrieveSource(containerUrl);
@@ -225,10 +224,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         setPreferredSource(dictionary.preferred_source);
       }
 
-      const _linkedSource = (containerType === SOURCE_CONTAINER || containerType === SOURCE_VERSION_CONTAINER)
-        ? source?.url
-        : dictionary?.extras?.source;
-      setLinkedSource(_linkedSource || "");
+      setLinkedSource((isFromSource ? source?.url : dictionary?.extras?.source) || "");
     }
     // end only relevant with the collection container
   }, [containerUrl, dictionary, dictionaryToAddTo, retrieveDictionary, retrieveSource, source]);

@@ -60,7 +60,7 @@ const EditOrganisationPage: React.FC<Props> = ({
   }, [orgUrl, retrieveOrg]);
 
   useEffect(() => {
-    if (!isEmpty(organisation) && retrievingOrg) {
+    if (!isEmpty(organisation) && retrievingOrg.current) {
       retrievingOrg.current = false;
     }
   }, [organisation]);
