@@ -617,6 +617,42 @@ Cypress.Commands.add(
     return cy.wrap(id);
   }
 );
+
+Cypress.Commands.add(
+  "addConceptToDictionary",
+  (
+    dictionary_url: string,
+    source_url: string,
+    id: string = getConceptId()
+  ) => {
+    getAuthToken().then(authToken => {
+      cy.request({
+        method: "GET",
+        headers: {
+          Authorization: authToken
+        },
+        url: `${apiUrl}${dictionary_url}concepts/${id}/`,
+        failOnStatusCode: false
+      }).then(response => {
+        if (response.status !== 200) {
+          cy.request({
+            method: "PUT",
+            headers: {
+              Authorization: authToken
+            },
+            url: `${apiUrl}${dictionary_url}references/?cascade=sourcemappings`,
+            body: {
+              data: {
+                expressions: [`${source_url}concepts/${id}/`]
+              }
+            }
+          })
+        }
+      });
+    });
+  }
+);
+
 Cypress.Commands.add(
   "createUser",
   (username: string = getNewUser(), password: string = nanoid()) => {

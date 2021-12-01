@@ -71,8 +71,10 @@ const MappingsTable: React.FC<Props> = ({
   const classes = useStyles();
   const [sorted, setSorted] = useState<Mapping[]>();
   const [isAnswer, setAnswer] = useState(false);
+  const [isSetMember, setSetMember] = useState(false);
 
   useEffect(() => setAnswer(title === "Answer"), [title]);
+  useEffect(() => setSetMember(title === "Set Member"), [title]);
 
   useEffect(() => {
     if (sorted && isAnswer) {
@@ -100,6 +102,31 @@ const MappingsTable: React.FC<Props> = ({
   }, [sorted, isAnswer]);
 
   useEffect(() => {
+    if (sorted && isSetMember) {
+      const values = sorted;
+      values.sort((v1, v2) => {
+        if (v1.extras?.sort_weight) {
+          if (v2.extras?.sort_weight) {
+            return (
+              (v1.extras.sort_weight as number) -
+              (v2.extras.sort_weight as number)
+            );
+          }
+
+          return 1;
+        }
+
+        if (v2.extras?.sort_weight) {
+          return -1;
+        }
+
+        return 0;
+      });
+      setSorted(values);
+    }
+  }, [sorted, isSetMember]);
+
+  useEffect(() => {
     if (isAnswer && isSubmitting) {
       for (let i = 0; i < values.length; i++) {
         handleChange(
@@ -109,6 +136,23 @@ const MappingsTable: React.FC<Props> = ({
     }
   }, [
     isAnswer,
+    isSubmitting,
+    submitCount,
+    handleChange,
+    values.length,
+    valuesKey
+  ]);
+
+  useEffect(() => {
+    if (isSetMember && isSubmitting) {
+      for (let i = 0; i < values.length; i++) {
+        handleChange(
+          buildEvent(`${valuesKey}[${i}].extras`, { sort_weight: i + 1 })
+        );
+      }
+    }
+  }, [
+    isSetMember,
     isSubmitting,
     submitCount,
     handleChange,
@@ -190,7 +234,7 @@ const MappingsTable: React.FC<Props> = ({
               </TableCell>
             </TableRow>
           </TableHead>
-          {isAnswer && editing ? (
+          {(isAnswer && editing) || (isSetMember && editing) ? (
             <DragDropContext
               onDragEnd={param => {
                 const srcI = param.source.index;
