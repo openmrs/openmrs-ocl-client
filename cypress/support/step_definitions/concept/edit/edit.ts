@@ -26,7 +26,7 @@ When("the user submits the form", () =>
 // });
 
 When("the user clicks the Menu button", () => {
-  cy.findByTitle("Menu").click();
+  cy.findByTestId("editConceptMenu").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem => {

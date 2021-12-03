@@ -47,7 +47,7 @@ Given('CIEL concept "1000" is already in the dictionary', () => {
 });
 
 When('the user clicks the "Add concepts" button', () => {
-  cy.findByTitle("Add concepts").click();
+  cy.findByTestId("addConceptsIcon").click();
 });
 
 When('the user selects "Add bulk concepts"', () => {
@@ -64,7 +64,7 @@ Then('the user navigates to the "Progess notification" page', () => {
 });
 
 When('the user enters concept Id "1000"', () => {
-    cy.get("textarea").type("1000")
+    cy.findByTestId("bulkImportTextArea").type("1000")
   }
 );
 
@@ -76,7 +76,7 @@ When('the user clicks the "ADD CONCEPTS" button', () => {
 
 When(
   /the user enters concept Id "(1001|1002)"/, (conceptId) => {
-    cy.get("textarea").type(` ${conceptId}`);
+    cy.findByTestId("bulkImportTextArea").type(` ${conceptId}`);
   }
 ); 
  

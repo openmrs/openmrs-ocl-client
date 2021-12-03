@@ -47,7 +47,7 @@ Then("the version should be released", () =>
 );
 
 When("the user clicks the more actions button", () =>
-  cy.findByTitle("More actions").click()
+  cy.findByTestId("more-actions").click()
 );
 When(/the user selects the "(.+)" menu list item/, menuItem =>
   cy.findByText(menuItem).click()

@@ -34,7 +34,8 @@ Given('the user is on the "Import existing concept" page', () => {
 });
 
 When('the user clicks the "Add concepts" button', () => {
-  cy.findByTitle("Add concepts").click();
+  cy.findByTestId("addConceptsIcon").click();
+
 });
 
 When('the user selects "Pick concepts"', () => {
@@ -44,7 +45,7 @@ When('the user selects "Pick concepts"', () => {
 });
 
 When('the user clicks on the "Add selected to dictionary" button', () => {
-  cy.findByTitle("Add selected to dictionary").click();
+  cy.findByTestId("addSelectedToDictionary").click();
 });
 
 When(
@@ -66,7 +67,7 @@ When("the user is sent to the view concept page", () => {
 });
 
 When('the user clicks on the "Add Serum to dictionary" button', () => {
-  cy.findByTitle("Add Serum to dictionary").click({ force: true });
+  cy.findByTestId("addConceptToDictionary").click({ force: true });
 });
 
 Then('the current source should be "CIEL"', () => {

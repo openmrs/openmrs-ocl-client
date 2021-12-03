@@ -16,7 +16,7 @@ Given("the user is on the create new dictionary page", () =>
 );
 
 When("the user clicks on the create new dictionary button", () =>
-  cy.findByTitle(/Create new dictionary/i).click()
+  cy.findByTestId("createNewDictionary").click()
 );
 
 When("the user enters the dictionary information", () => {

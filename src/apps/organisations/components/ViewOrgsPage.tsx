@@ -80,7 +80,7 @@ const ViewOrganisationsPage: React.FC<Props> = ({
           toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/orgs/new/`}>
-          <Tooltip title="Create new organisation">
+          <Tooltip data-testid="createNewOrganization" title="Create new organisation">
             <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>

@@ -66,7 +66,7 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <>
           {showAddConcepts ? null : (
-            <Tooltip title="Add selected to dictionary">
+            <Tooltip  data-testid="addSelectedToDictionary" title="Add selected to dictionary">
               <IconButton onClick={e => addSelectedConcepts()} aria-label="add">
                 <AddIcon />
               </IconButton>

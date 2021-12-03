@@ -94,6 +94,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
         </Typography>
         <br />
         <TextField
+          data-testid="bulkImportTextArea"
           placeholder="1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007"
           onChange={e => setConceptsToAdd(e.target.value.split(/[\s,\r\n]+/))}
           fullWidth

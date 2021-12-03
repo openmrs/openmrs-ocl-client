@@ -28,7 +28,7 @@ const addConceptsToDictionaryMenu = (
         toggleMenu(index);
       }}
     >
-      <AddIcon /> Add to dictionary
+      <AddIcon data-testid="addToDictionary" /> Add to dictionary
     </MenuItem>
   );
 };

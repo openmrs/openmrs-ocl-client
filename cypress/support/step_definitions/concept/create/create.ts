@@ -14,7 +14,7 @@ Given("the user is on the dictionary concepts page", () => {
 });
 
 When("the user clicks the add concepts button", () => {
-  cy.findByTitle("Add concepts").click();
+  cy.findByTestId("addConceptsIcon").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem =>
