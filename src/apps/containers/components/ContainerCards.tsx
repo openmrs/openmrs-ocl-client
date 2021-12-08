@@ -18,7 +18,7 @@ interface Props {
 
 const ContainerCards: React.FC<Props> = ({ cards, title }) => {
   return (
-    <Box width="100%" p={4}>
+    <Box width="100%" p={4} paddingBottom={"4rem"}>
       <Grid
         item
         xs={12}
