@@ -19,7 +19,7 @@ function renderUI(props: Partial<searchProps> = {}) {
   return render(
     <Router>
       <ThemeProvider theme={theme}>
-      <ContainerSearch {...baseProps} {...props} />
+        <ContainerSearch {...baseProps} {...props} />
       </ThemeProvider>
     </Router>
   );

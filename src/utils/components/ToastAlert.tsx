@@ -1,6 +1,6 @@
 import React from "react";
-import { Snackbar, SnackbarCloseReason ,Alert,Theme} from "@mui/material";
-import {  makeStyles } from "@mui/styles";
+import { Snackbar, SnackbarCloseReason, Alert, Theme } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   message?: string;
@@ -9,7 +9,7 @@ interface Props {
   setOpen: Function;
 }
 
-const useStyles = makeStyles((theme :Theme)=> ({
+const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
     "& > * + *": {

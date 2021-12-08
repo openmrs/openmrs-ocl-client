@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Paper, Tooltip, Typography } from "@mui/material";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   token?: string;

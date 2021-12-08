@@ -1,7 +1,18 @@
 import React from "react";
 import clsx from "clsx";
-import {Toolbar, Typography,IconButton,Tooltip,InputAdornment,Input}from "@mui/material";
-import { Add as AddIcon, Search as SearchIcon ,FilterList as FilterListIcon} from "@mui/icons-material";
+import {
+  Toolbar,
+  Typography,
+  IconButton,
+  Tooltip,
+  InputAdornment,
+  Input
+} from "@mui/material";
+import {
+  Add as AddIcon,
+  Search as SearchIcon,
+  FilterList as FilterListIcon
+} from "@mui/icons-material";
 import { useToolbarStyles } from "./ConceptsTable";
 
 interface EnhancedTableToolbarProps {
@@ -66,7 +77,10 @@ export const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
       {numSelected > 0 ? (
         <>
           {showAddConcepts ? null : (
-            <Tooltip  data-testid="addSelectedToDictionary" title="Add selected to dictionary">
+            <Tooltip
+              data-testid="addSelectedToDictionary"
+              title="Add selected to dictionary"
+            >
               <IconButton onClick={e => addSelectedConcepts()} aria-label="add">
                 <AddIcon />
               </IconButton>

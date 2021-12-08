@@ -2,7 +2,7 @@ import { Field, FormikState, getIn } from "formik";
 
 const NestedErrorMessage = ({ name }: { name: string }) => (
   <Field
-      variant="standard"
+    variant="standard"
     name={name}
     render={({ form }: { form: FormikState<any> }) => {
       const error = getIn(form.errors, name);

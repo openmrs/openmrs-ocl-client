@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     gridContainers: {
       display: "flex",
       flexWrap: "nowrap",
-      padding:"25px",
+      padding: "25px",
       marginTop: "0",
       margin: "1.25rem"
     },
@@ -84,12 +84,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
       justifyChildren="space-around"
     >
       <ProgressOverlay delayRender loading={loading}>
-        <Grid
-          container
-          xs={12}
-          spacing={5}
-          className={classes.gridContainers}
-        >
+        <Grid container xs={12} spacing={5} className={classes.gridContainers}>
           <Grid item xs={6}>
             <OrganisationDetails organisation={organisation} />
           </Grid>
@@ -102,12 +97,7 @@ const ViewOrganisationPage: React.FC<Props> = ({
             />
           </Grid>
         </Grid>
-        <Grid
-          container
-          xs={12}
-          spacing={5}
-          className={classes.gridContainers}
-        >
+        <Grid container xs={12} spacing={5} className={classes.gridContainers}>
           <Grid item xs={6}>
             <OrganisationSources sources={sources} />
           </Grid>

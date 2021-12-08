@@ -15,7 +15,8 @@ import {
   IconButton,
   ListItem,
   ListItemIcon,
-  ListItemText, Theme
+  ListItemText,
+  Theme
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -46,7 +47,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: "flex",
+      display: "flex"
     },
     hide: {
       display: "none"

@@ -64,7 +64,7 @@ const AddMemberForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
-                    variant="standard"
+                  variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="username"

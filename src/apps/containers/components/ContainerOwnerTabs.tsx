@@ -2,7 +2,7 @@ import React from "react";
 import { Tab, Tabs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TabType } from "../types";
-import {  makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   currentPageUrl: string;
@@ -12,7 +12,7 @@ interface Props {
 const useStyles = makeStyles({
   fullWidth: {
     width: "100%",
-    color:"black"
+    color: "black"
   }
 });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Paper, Typography } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import { APIOrg } from "../types";
 import List from "@mui/material/List";
 import { Link } from "react-router-dom";

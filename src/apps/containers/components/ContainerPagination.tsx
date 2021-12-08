@@ -1,5 +1,5 @@
 import React from "react";
-import {  Grid, Theme,TablePagination } from "@mui/material";
+import { Grid, Theme, TablePagination } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {

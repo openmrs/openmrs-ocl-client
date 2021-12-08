@@ -98,7 +98,7 @@ const conceptNameCell = (
 
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.uuid ||"")}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       data-testclass="name"
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}

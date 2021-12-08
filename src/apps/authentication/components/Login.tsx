@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Button, Link, Paper, Typography } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import { OCL_SIGNUP_URL, TRADITIONAL_OCL_URL } from "../../../utils/constants";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";

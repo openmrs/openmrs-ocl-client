@@ -3,7 +3,10 @@ import {
   Grid,
   Input,
   InputAdornment,
-  Theme,IconButton,Switch,FormControlLabel
+  Theme,
+  IconButton,
+  Switch,
+  FormControlLabel
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 import { VERIFIED_SOURCES } from "../../../utils";
@@ -97,7 +100,9 @@ const ContainerSearch: React.FC<Props> = ({
           />
         }
         label={
-          showOnlyVerified ? `Showing verified ${title} only` : `Show verified ${title} only`
+          showOnlyVerified
+            ? `Showing verified ${title} only`
+            : `Show verified ${title} only`
         }
       />
     </Grid>

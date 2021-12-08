@@ -228,7 +228,9 @@ const SourceForm: React.FC<Props> = ({
               </FormControl>
             ) : (
               <FormControl variant="standard" fullWidth margin="normal">
-                <InputLabel shrink htmlFor="owner_url">Owner</InputLabel>
+                <InputLabel shrink htmlFor="owner_url">
+                  Owner
+                </InputLabel>
                 <Field
                   variant="standard"
                   value=""
@@ -249,7 +251,9 @@ const SourceForm: React.FC<Props> = ({
               </FormControl>
             )}
             <FormControl variant="standard" fullWidth margin="normal">
-              <InputLabel shrink htmlFor="source_type">Source Type</InputLabel>
+              <InputLabel shrink htmlFor="source_type">
+                Source Type
+              </InputLabel>
               <Field
                 variant="standard"
                 name="source_type"
@@ -270,7 +274,9 @@ const SourceForm: React.FC<Props> = ({
               </Typography>
             </FormControl>
             <FormControl variant="standard" fullWidth margin="normal">
-              <InputLabel shrink htmlFor="public_access">Visibility</InputLabel>
+              <InputLabel shrink htmlFor="public_access">
+                Visibility
+              </InputLabel>
               <Field
                 variant="standard"
                 name="public_access"

@@ -71,11 +71,11 @@ const baseProps: viewSourcesProps = {
 
 function renderUI(props: Partial<viewSourcesProps> = {}) {
   return render(
-      <Router>
-    <ThemeProvider theme={theme}>
-      <ViewSources {...baseProps} {...props} />
-    </ThemeProvider>
-      </Router>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <ViewSources {...baseProps} {...props} />
+      </ThemeProvider>
+    </Router>
   );
 }
 describe("ViewSources", () => {

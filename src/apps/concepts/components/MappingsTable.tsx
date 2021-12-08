@@ -219,7 +219,7 @@ const MappingsTable: React.FC<Props> = ({
                                   boxShadow: snapshot.isDragging
                                     ? "0 0 .4rem #666"
                                     : "none",
-                                  display: "flex",
+                                  display: "flex"
                                 }}
                               >
                                 <DragHandle {...provided.dragHandleProps} />

@@ -31,7 +31,7 @@ import dayjs from "dayjs";
 import ContainerVersionForm from "./ContainerVersionForm";
 import { Version } from "../../../utils";
 import { APIDictionary } from "../../dictionaries/types";
-import {  makeStyles } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   versions: Version[];

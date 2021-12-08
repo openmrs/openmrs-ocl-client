@@ -59,8 +59,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
       top: 0,
       left: 0,
       behavior: "smooth"
-    })
-  }
+    });
+  };
 
   return (
     <Header title="Dictionaries">
@@ -79,7 +79,11 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/collections/new/`}>
-          <Tooltip data-testid="createNewDictionary" title="Create new dictionary" style={{ zIndex: 3 }}>
+          <Tooltip
+            data-testid="createNewDictionary"
+            title="Create new dictionary"
+            style={{ zIndex: 3 }}
+          >
             <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>

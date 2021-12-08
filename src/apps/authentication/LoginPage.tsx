@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Container, Grid, Typography } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles";
 import { Login } from "./components";
 import { authErrorsSelector, authLoadingSelector } from "./redux/reducer";
 import { clearNextPageAction, loginAction } from "./redux";
