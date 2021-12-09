@@ -121,7 +121,6 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         }}
       />
       <SpeedDialAction
-        data-testid="addConceptToDictionary"
         key="add_concept"
         icon={<AddOutlined />}
         tooltipTitle={`Add ${

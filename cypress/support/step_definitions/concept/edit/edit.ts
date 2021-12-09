@@ -1,23 +1,17 @@
 // <reference types="cypress" />
 /// <reference types="../../../" />
-import {
-  Given,
-  Then,
-  When
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, Then, When } from "cypress-cucumber-preprocessor/steps";
 import { getConceptVersionUrl } from "../../../utils";
 
 Given("the user is on the edit concept page", () => {
-  cy.visit(`${getConceptVersionUrl()}edit/`)
+  cy.visit(`${getConceptVersionUrl()}edit/`);
 });
 
 When("the user edits the concept name", () => {
   cy.get("input[name='names[0].name']").type("test concept edited");
 });
 
-When("the user submits the form", () =>
-  cy.get("form").submit()
-);
+When("the user submits the form", () => cy.get("form").submit());
 
 // This has some weird behaviour, we shall come back to it later
 // Then("the concept should be updated", () => {
@@ -26,7 +20,7 @@ When("the user submits the form", () =>
 // });
 
 When("the user clicks the Menu button", () => {
-  cy.findByTestId("editConceptMenu").click();
+  cy.findByLabelText("Menu").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem => {
@@ -34,5 +28,5 @@ When(/the user selects the "(.+)" menu list item/, menuItem => {
 });
 
 Then("the concept should be retired", () => {
-  cy.url().should("not.contain", '/edit');
+  cy.url().should("not.contain", "/edit");
 });

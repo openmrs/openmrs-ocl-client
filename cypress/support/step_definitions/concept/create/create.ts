@@ -1,12 +1,7 @@
 /// <reference types="cypress" />
 /// <reference types="../../../" />
-import {
-  Given,
-  Then,
-  When
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, Then, When } from "cypress-cucumber-preprocessor/steps";
 import { getDictionaryId, getUser, getConceptId } from "../../../utils";
-
 
 Given("the user is on the dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
@@ -14,7 +9,7 @@ Given("the user is on the dictionary concepts page", () => {
 });
 
 When("the user clicks the add concepts button", () => {
-  cy.findByTestId("addConceptsIcon").click();
+  cy.findByLabelText("Add concepts").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem =>
@@ -26,7 +21,9 @@ Then("the user should be on the create concept page", () =>
 );
 
 Given("the user is on the create concept page", () => {
-  cy.visit(`/users/${getUser()}/sources/${getDictionaryId()}/concepts/new/?linkedDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`);
+  cy.visit(
+    `/users/${getUser()}/sources/${getDictionaryId()}/concepts/new/?linkedDictionary=/users/${getUser()}/collections/${getDictionaryId()}/`
+  );
   cy.findByText("Create concept").should("be.visible");
 });
 

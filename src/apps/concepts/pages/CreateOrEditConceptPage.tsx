@@ -172,7 +172,7 @@ const CreateOrEditConceptPage: React.FC<Props> = ({
 
         {context !== CONTEXT.edit ? null : (
           <>
-            <Tooltip title="Menu" data-testid="editConceptMenu">
+            <Tooltip title="Menu">
               <Fab onClick={handleMenuClick} color="primary" className="fab">
                 <MenuIcon />
               </Fab>

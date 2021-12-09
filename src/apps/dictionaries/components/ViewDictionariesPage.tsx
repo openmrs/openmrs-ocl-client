@@ -79,11 +79,7 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
           toggleShowVerified={toggleShowVerified}
         />
         <Link to={`/collections/new/`}>
-          <Tooltip
-            data-testid="createNewDictionary"
-            title="Create new dictionary"
-            style={{ zIndex: 3 }}
-          >
+          <Tooltip title="Create new dictionary" style={{ zIndex: 3 }}>
             <Fab color="primary" className="fab">
               <AddIcon />
             </Fab>

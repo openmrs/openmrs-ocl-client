@@ -17,27 +17,28 @@ Then("the user should be on the create new version dialog box", () =>
 Given("the user clicks on the create new version dialog box", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/`);
   cy.findByRole("button", { name: /Create new version/i }).click();
-  cy.findByText("Create new version", { selector: "h2" }).should("be.visible")
+  cy.findByText("Create new version", { selector: "h2" }).should("be.visible");
 });
 When("the user enters the version information", () => {
   cy.findByLabelText("ID").type("1");
   cy.get("#released").type("{enter}");
 });
-When("the user submits the form", () =>{
+When("the user submits the form", () => {
   cy.findByRole("button", { name: /Submit/i }).click();
-}
-);
+});
 Then("the new version should be created", () => {
   cy.get("table").contains("td", "1");
   cy.get('[type="checkbox"]').should("not.be.checked");
 });
 
-When("the user clicks release status switch", () =>{
+When("the user clicks release status switch", () => {
   cy.reload(true);
-  cy.waitUntil(() =>  cy.getVersion(getVersionId(), getDictionaryId(), getUser(), false), { timeout: 10000 });
+  cy.waitUntil(
+    () => cy.getVersion(getVersionId(), getDictionaryId(), getUser(), false),
+    { timeout: 10000 }
+  );
   cy.get('[type="checkbox"]').check();
-}
-);
+});
 When("the release dialog opens", () =>
   cy.get("#confirmation-dialog-title").should("be.visible")
 );
@@ -47,7 +48,7 @@ Then("the version should be released", () =>
 );
 
 When("the user clicks the more actions button", () =>
-  cy.findByTestId("more-actions").click()
+  cy.findByLabelText("More actions").click()
 );
 When(/the user selects the "(.+)" menu list item/, menuItem =>
   cy.findByText(menuItem).click()
@@ -55,7 +56,9 @@ When(/the user selects the "(.+)" menu list item/, menuItem =>
 Then("the subscription url should be copied", () => {
   cy.window().then(win => {
     win.navigator.clipboard.readText().then(text => {
-      expect(text).to.contain(`/users/${getUser()}/collections/${getDictionaryId()}/${getVersionId()}/`)
+      expect(text).to.contain(
+        `/users/${getUser()}/collections/${getDictionaryId()}/${getVersionId()}/`
+      );
     });
   });
 });
