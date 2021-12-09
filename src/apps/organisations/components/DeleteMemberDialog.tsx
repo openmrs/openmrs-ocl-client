@@ -8,7 +8,7 @@ import {
   DialogContentText,
   DialogTitle,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { Form, Formik, FormikProps, FormikValues } from "formik";
 
 interface Props {

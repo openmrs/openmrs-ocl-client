@@ -1,10 +1,6 @@
 /// <reference types="cypress" />
 /// <reference types="../../../" />
-import {
-  Given,
-  Then,
-  When
-} from "cypress-cucumber-preprocessor/steps";
+import { Given, Then, When } from "cypress-cucumber-preprocessor/steps";
 import { getDictionaryId, getUser } from "../../../utils";
 
 Given("the user is on the dictionaries page", () =>
@@ -16,7 +12,7 @@ Given("the user is on the create new dictionary page", () =>
 );
 
 When("the user clicks on the create new dictionary button", () =>
-  cy.findByTitle(/Create new dictionary/i).click()
+  cy.findByLabelText(/Create new dictionary/i).click()
 );
 
 When("the user enters the dictionary information", () => {
@@ -46,7 +42,10 @@ When(/the user selects "(.+)" visibility/, public_access => {
 
 When("the user submits the form", () => {
   cy.get("form").submit();
-  cy.url().should("contain", `/users/${getUser()}/collections/${getDictionaryId()}/`);
+  cy.url().should(
+    "contain",
+    `/users/${getUser()}/collections/${getDictionaryId()}/`
+  );
 });
 
 Then("the user should be on the create new dictionary page", () =>

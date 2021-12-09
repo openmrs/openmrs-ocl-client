@@ -2,29 +2,27 @@ import React, { useEffect } from "react";
 import {
   AppBar,
   Badge,
-  createStyles,
   Grid,
-  GridJustification,
   IconButton,
-  makeStyles,
   Theme,
   Toolbar,
   Tooltip,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   ArrowBack as BackIcon,
   NotificationsOutlined as NotificationsIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { connect } from "react-redux";
 import { addConceptsToDictionaryLoadingListSelector } from "../apps/dictionaries";
 import { AppState } from "../redux";
 import { Link, useHistory } from "react-router-dom";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     appBar: {
-      paddingLeft: theme.spacing(7) + 1
+      paddingLeft: theme.spacing(7)
     },
     content: {
       marginTop: "32px",
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   children?: React.ReactNode;
   title: string;
-  justifyChildren?: GridJustification;
+  justifyChildren?: string;
   loadingList: boolean[];
   backUrl?: string;
   backText?: string;
@@ -114,7 +112,7 @@ const Header: React.FC<Props> = ({
         container
         className={classes.content}
         component="div"
-        justify={justifyChildren}
+        justifyContent={justifyChildren}
         alignItems="flex-start"
       >
         {children}

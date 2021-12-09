@@ -12,6 +12,8 @@ import {
   editSourceDispatchAction,
   retrieveSourceAndDetailsAction
 } from "../../redux";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 type EditSourcePageProps = React.ComponentProps<typeof EditSourcePage>;
 
@@ -47,7 +49,11 @@ const baseProps: EditSourcePageProps = { ...stateProps, ...actionProps };
 const state = currentState(personalSources);
 
 function renderUI(props: Partial<EditSourcePageProps> = {}) {
-  return render(<EditSourcePage {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <EditSourcePage {...baseProps} {...props} />{" "}
+    </ThemeProvider>
+  );
 }
 
 describe("EditSourcePage", () => {

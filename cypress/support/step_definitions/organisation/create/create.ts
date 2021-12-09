@@ -20,7 +20,7 @@ Given("the user is on the create new organisation page", () =>
 );
 
 When("the user clicks on the create new organisation button", () =>
-  cy.findByTitle(/Create new organisation/i).click()
+  cy.findByLabelText(/Create new organisation/i).click()
 );
 
 When("the user enters the organisation information", () => {

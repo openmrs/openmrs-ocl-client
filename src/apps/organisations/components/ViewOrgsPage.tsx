@@ -4,8 +4,8 @@ import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 
 import { retrievePublicOrganisationsAction } from "../redux";
-import { Fab, Tooltip } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
+import { Fab, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { Header } from "../../../components";
 import { BaseAPIOrganisation } from "../types";
 

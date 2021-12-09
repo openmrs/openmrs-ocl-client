@@ -3,11 +3,11 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Typography,
   TextField as MuiTextField
-} from "@material-ui/core";
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { getCustomErrorMessage, getPrettyError, CONTEXT } from "../../../utils";
 import {
   ErrorMessage,
@@ -17,7 +17,7 @@ import {
   FormikProps,
   FormikValues
 } from "formik";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
@@ -174,6 +174,7 @@ const SourceForm: React.FC<Props> = ({
         {({ isSubmitting, values }) => (
           <Form>
             <Field
+              variant="standard"
               fullWidth
               autoComplete="off"
               id="name"
@@ -185,6 +186,7 @@ const SourceForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               autoComplete="off"
               id="short_code"
@@ -197,6 +199,7 @@ const SourceForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               multiline
               rowsMax={4}
@@ -207,8 +210,9 @@ const SourceForm: React.FC<Props> = ({
               component={TextField}
             />
             {viewing || editing ? (
-              <FormControl fullWidth margin="normal">
+              <FormControl variant="standard" fullWidth margin="normal">
                 <Field
+                  variant="standard"
                   defaultValue={getOrg || "Owner"}
                   label="Owner"
                   disabled={editing || isSubmitting}
@@ -223,9 +227,12 @@ const SourceForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
             ) : (
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="owner_url">Owner</InputLabel>
+              <FormControl variant="standard" fullWidth margin="normal">
+                <InputLabel shrink htmlFor="owner_url">
+                  Owner
+                </InputLabel>
                 <Field
+                  variant="standard"
                   value=""
                   disabled={editing || isSubmitting}
                   name="owner_url"
@@ -243,9 +250,16 @@ const SourceForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
             )}
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="source_type">Source Type</InputLabel>
-              <Field name="source_type" id="source_type" component={Select}>
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="source_type">
+                Source Type
+              </InputLabel>
+              <Field
+                variant="standard"
+                name="source_type"
+                id="source_type"
+                component={Select}
+              >
                 <MenuItem value="Dictionary">Dictionary</MenuItem>
                 <MenuItem value="Interface Terminology">
                   Interface Terminology
@@ -259,9 +273,16 @@ const SourceForm: React.FC<Props> = ({
                 <ErrorMessage name="source_type" component="span" />
               </Typography>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="public_access">Visibility</InputLabel>
-              <Field name="public_access" id="public_access" component={Select}>
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="public_access">
+                Visibility
+              </InputLabel>
+              <Field
+                variant="standard"
+                name="public_access"
+                id="public_access"
+                component={Select}
+              >
                 <MenuItem value="View">Public</MenuItem>
                 <MenuItem value="None">Private</MenuItem>
               </Field>
@@ -269,11 +290,12 @@ const SourceForm: React.FC<Props> = ({
                 <ErrorMessage name="public_access" component="span" />
               </Typography>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="default_locale">
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="default_locale">
                 Preferred Language
               </InputLabel>
               <Field
+                variant="standard"
                 name="default_locale"
                 id="default_locale"
                 component={Select}
@@ -284,11 +306,12 @@ const SourceForm: React.FC<Props> = ({
                 <ErrorMessage name="default_locale" component="span" />
               </Typography>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="supported_locales">
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="supported_locales">
                 Other Languages
               </InputLabel>
               <Field
+                variant="standard"
                 multiple
                 fullWidth
                 defaultValue={[]}

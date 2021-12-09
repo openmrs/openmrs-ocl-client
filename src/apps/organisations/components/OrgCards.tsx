@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography, Box } from "@mui/material";
 
 import OrganisationCard from "./OrgCard";
 export interface Card {
@@ -20,7 +20,7 @@ const OrganisationCards: React.FC<Props> = ({ cards, title }) => {
         xs={12}
         container
         spacing={2}
-        justify="center"
+        justifyContent="center"
         data-testid="cards"
       >
         {cards.length === 0 ? (

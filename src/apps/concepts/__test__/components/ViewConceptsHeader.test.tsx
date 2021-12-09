@@ -10,6 +10,8 @@ import {
 import { PREFERRED_SOURCES_VIEW_ONLY } from "../../../../utils/constants";
 import { APISource } from "../../../sources";
 import { APIDictionary } from "../../../dictionaries";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 type viewConceptsHeaderProps = React.ComponentProps<typeof ViewConceptsHeader>;
 
@@ -21,11 +23,17 @@ const baseProps: viewConceptsHeaderProps = {
   },
   addConceptToDictionary: undefined,
   sources: [{ name: "test source", url: "/test/test123" } as APISource],
-  dictionaries: [{ name: "test dictionary", url: "/test/test123" } as APIDictionary]
+  dictionaries: [
+    { name: "test dictionary", url: "/test/test123" } as APIDictionary
+  ]
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {
-  return render(<ViewConceptsHeader {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <ViewConceptsHeader {...baseProps} {...props} />
+    </ThemeProvider>
+  );
 }
 
 describe("ViewConceptHeader", () => {

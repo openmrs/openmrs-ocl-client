@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Typography,
-  List,
-  Paper,
-  ListItem,
-  Grid,
-  makeStyles
-} from "@material-ui/core";
+import { Typography, List, Paper, ListItem, Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+
 import { APIOrganisation } from "../types";
 interface Props {
   organisation: APIOrganisation;

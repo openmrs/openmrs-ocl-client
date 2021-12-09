@@ -1,6 +1,6 @@
 import React from "react";
-import { Fab, Tooltip } from "@material-ui/core";
-import { EditOutlined as EditIcon } from "@material-ui/icons";
+import { Fab, Tooltip } from "@mui/material";
+import { EditOutlined as EditIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 interface Props {

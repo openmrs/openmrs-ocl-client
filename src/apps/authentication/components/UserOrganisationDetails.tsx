@@ -1,8 +1,8 @@
 import React from "react";
-import { Paper, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Paper, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { APIOrg } from "../types";
-import List from "@material-ui/core/List";
+import List from "@mui/material/List";
 import { Link } from "react-router-dom";
 interface Props {
   orgs?: APIOrg[];

@@ -7,7 +7,7 @@ Given("the user is on the dictionary page", () => {
   cy.findByText("Versions").should("be.visible");
 });
 When("the user clicks the more actions button", () =>
-  cy.findByTitle("More actions").click()
+  cy.findByTestId("more-actions").click()
 );
 When(/the user selects the "(.+)" menu list item/, menuItem =>
   cy.findByText(menuItem).click()

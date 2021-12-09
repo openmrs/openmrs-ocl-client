@@ -1,4 +1,4 @@
-import { ListSubheader, MenuItem } from "@material-ui/core";
+import { ListSubheader, MenuItem } from "@mui/material";
 import React from "react";
 import { APIOrg, APIProfile } from "../../authentication";
 import { BaseConceptContainer, LOCALES } from "../../../utils";
