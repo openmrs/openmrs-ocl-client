@@ -87,6 +87,7 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         } to dictionary`}
         onClick={e => {
           e.preventDefault();
+          // TODO prompt for new concept id if necessary
           cloneConceptToDictionary &&
             cloneConceptToDictionary(dictionaryToAddTo, concept);
         }}

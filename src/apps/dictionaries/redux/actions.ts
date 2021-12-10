@@ -365,7 +365,6 @@ export const recursivelyAddConceptsToDictionaryAction = (
   sourceUrl?: string
 ) => {
   return async (dispatch: Function, getState: Function) => {
-    console.log("recursively called", dictionaryUrl, rawConcepts, sourceUrl)
     if (!!!sourceUrl && !!rawConcepts.find(c => typeof c === "string")) {
       // eslint-disable-next-line no-throw-literal
       throw {

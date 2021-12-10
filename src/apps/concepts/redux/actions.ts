@@ -361,7 +361,6 @@ export const cloneConceptToDictionaryAction = (
       );
     }
 
-    console.log(concept, newConcept);
     if (newConcept === undefined) {
       dispatch(completeAction(CLONE_CONCEPT_ACTION));
       return;
