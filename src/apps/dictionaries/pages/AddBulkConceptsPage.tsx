@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router";
+import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 import {
   Button,
   createStyles,
@@ -8,14 +12,33 @@ import {
   MenuItem,
   TextField,
   Theme,
-  Typography
+  Typography,
+  FormControlLabel,
+  Switch,
+  Input,
+  InputAdornment,
+  IconButton,
+  Tooltip
 } from "@material-ui/core";
+import {
+  AccountTreeOutlined,
+  Search as SearchIcon,
+  GetApp
+} from "@material-ui/icons";
 import { recursivelyAddConceptsToDictionaryAction } from "../redux";
-import { useLocation } from "react-router";
-import { connect } from "react-redux";
+import { retrieveConceptsAction } from "../../concepts/redux";
+import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
+import {
+  retrievePublicSourcesAction
+} from "../../sources/redux";
+
 import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
-import { Link } from "react-router-dom";
+import { APISource } from "../../sources";
+import { APIConcept } from "../../concepts";
+
+import { AppState } from "../../../redux";
+import { CSVLink } from "react-csv";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,20 +48,105 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     lightColour: {
       color: theme.palette.background.default
+    },
+    sourcesDropdownHeader: {
+      padding: "0.5rem 1rem"
+    },
+    input: {
+      cursor: "pointer",
+      borderBottom: "1px dotted black",
+      paddingBottom: "0.25rem"
+    },
+    underline: {
+      "&&&:before": {
+        borderBottom: "none"
+      },
+      "&&:after": {
+        borderBottom: "none"
+      }
+    },
+    sourceIcon: {
+      marginRight: "0.2rem",
+      fill: "#8080809c"
+    },
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
+    },
+    csvLink: {
+      marginTop: "0.5rem"
+    },
+    downloadIcon: {
+      color: "white"
     }
   })
 );
 
 interface Props {
+  sources: APISource[];
+  concepts?: APIConcept[];
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
+  retrievePublicSources: (
+    ...args: Parameters<typeof retrievePublicSourcesAction>
+  ) => void;
+  retrieveConcepts: (
+    ...args: Parameters<typeof retrieveConceptsAction>
+  ) => void;
 }
 
-const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
+const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources = [], retrievePublicSources, retrieveConcepts, concepts = [] }) => {
   const classes = useStyles();
   const { pathname: url } = useLocation();
   const { fromSource } = useQueryParams();
+
+  const [showAllSources, setShowAllSources] = useState(false);
+
+  const [queryString, setQueryString] = useState('');
+  const handleSearch = (q: string) => setQueryString(q);
+
+  const [currentSources, setCurrentSources] = useState<
+    { name: string; sourceUrl: string }[]
+  >();
+
+  const defaultSources = Object.entries(
+    PREFERRED_SOURCES
+  ).map(([key, value]) => ({ name: key, sourceUrl: value }));
+
+  const allSources = defaultSources.concat(sources.map(s => ({ name: s.name, sourceUrl: s.url })))
+
+  const selectedSource = allSources?.find(s => s.name === fromSource);
+
+  const conceptsUrl = `${selectedSource?.sourceUrl}concepts/`;
+
+  console.log(conceptsUrl, 'curl');
+
+  useEffect(() => {
+    const defaultSources = Object.entries(
+      PREFERRED_SOURCES
+    ).map(([key, value]) => ({ name: key, sourceUrl: value }));
+    if (showAllSources) {
+      const allSources = defaultSources
+        .concat(sources.map(s => ({ name: s.name, sourceUrl: s.url })))
+      setCurrentSources(allSources);
+    } else setCurrentSources(defaultSources);
+  }, [showAllSources, sources]);
+
+  const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowAllSources(event.target.checked);
+  };
+
+  const sourceUrl = "/sources/";
+  useEffect(() => {
+    retrievePublicSources(sourceUrl, queryString);
+  }, [retrievePublicSources, queryString]);
+
+  useEffect(() => {
+    if (selectedSource && fromSource) {
+      retrieveConcepts({ conceptsUrl });
+    }
+  }, [fromSource]); // eslint-disable-line
 
   const [
     switchSourceAnchor,
@@ -49,42 +157,133 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   const dictionaryUrl = url.replace("/add", "");
   const [conceptsToAdd, setConceptsToAdd] = useState<string[]>([]);
 
+  const csvHeaders = [
+    { label: "Concept ID", key: "id" },
+    { label: "Concept Type", key: "type" },
+    { label: "Concept Class", key: "concept_class"},
+    { label: "Name", key: "display_name" },
+    { label: "Source", key: "source" }
+  ];
+
   return (
     <Header
       allowImplicitNavigation
       title={`Add concepts in bulk from ${fromSource}`}
       headerComponent={
         <>
-          <Button
-            className={classes.lightColour}
-            variant="text"
-            size="large"
-            aria-haspopup="true"
-            onClick={handleSwitchSourceClick}
-          >
-            Switch source (Currently {fromSource})
-          </Button>
-          <Menu
-            anchorEl={switchSourceAnchor}
-            keepMounted
-            open={Boolean(switchSourceAnchor)}
-            onClose={handleSwitchSourceClose}
-          >
-            {Object.entries(PREFERRED_SOURCES).map(
-              ([sourceName, sourceUrl]) => (
-                <MenuItem onClick={handleSwitchSourceClose}>
-                  <Link
-                    replace
-                    className="link"
-                    to={`${url}?fromSource=${sourceName}`}
-                  >
-                    {sourceName}
-                  </Link>
+        <Button
+          data-testid="switch-source"
+          className={classes.lightColour}
+          variant="text"
+          size="large"
+          aria-haspopup="true"
+          onClick={handleSwitchSourceClick}
+        >
+          Switch source (Currently {fromSource})
+          <Tooltip title={`Dowload Concepts for ${fromSource}`}>
+            <CSVLink
+              className={classes.csvLink}
+              headers={csvHeaders}
+              data={concepts}
+              filename={`${fromSource}_concepts.csv`}
+              enclosingCharacter={``}>
+              <GetApp className={classes.downloadIcon} />
+            </CSVLink>
+          </Tooltip>
+        </Button>
+        <Menu
+          PaperProps={{
+            style: {
+              marginTop: "30px",
+              marginLeft: "10px"
+            }
+          }}
+          anchorEl={switchSourceAnchor}
+          keepMounted
+          open={!!switchSourceAnchor}
+          onClose={handleSwitchSourceClose}
+        >
+          <Grid 
+          container 
+          direction="column" 
+          className={classes.sourcesDropdownHeader}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showAllSources}
+                  onChange={handleShowSources}
+                  color="primary"
+                  name="displayVerified"
+                />
+              }
+              label={
+                showAllSources
+                  ? `Showing all Sources`
+                  : `Show all Sources`
+              }
+            />
+            {showAllSources && <form
+              onSubmit={(e: React.SyntheticEvent) => {
+                e.preventDefault();
+                handleSearch(queryString);
+              }}
+            >
+              <Input
+                color="primary"
+                type="search"
+                fullWidth
+                placeholder={"Select an alternative source"}
+                value={queryString}
+                onChange={e => setQueryString(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => handleSearch(queryString)}>
+                      <SearchIcon/>
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </form>}
+          </Grid>
+          {showAllSources ? (
+            <InfiniteScroll
+              dataLength={50} 
+              next={() => {}}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
+              endMessage={<h4>end</h4>}
+              scrollableTarget="scrollableDiv"
+            >
+              {currentSources?.map(({ name, sourceUrl }) => (
+                <MenuItem
+                  // replace because we want to keep the back button useful
+                  replace
+                  to={`${url}?fromSource=${name}`}
+                  key={name}
+                  component={Link}
+                  onClick={handleSwitchSourceClose}
+                >
+                  <AccountTreeOutlined className={classes.sourceIcon} />
+                  {name}
                 </MenuItem>
-              )
-            )}
-          </Menu>
-        </>
+              ))}
+            </InfiniteScroll>
+          ) : (
+            currentSources?.map(({ name, sourceUrl }) => (
+              <MenuItem
+                replace
+                to={`${url}?fromSource=${name}`}
+                key={name}
+                component={Link}
+                onClick={handleSwitchSourceClose}
+                data-testid={name}>
+                <AccountTreeOutlined className={classes.sourceIcon} />
+                {name}
+              </MenuItem>
+            ))
+          )}
+        </Menu>
+      </>
       }
     >
       <Grid item xs={6}>
@@ -129,8 +328,18 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   );
 };
 
+const mapStateToProps = (state: AppState) => {
+  return {
+    sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
+    concepts: state.concepts.concepts
+      ? state.concepts.concepts.items
+      : undefined,
+  };
+};
 const mapActionsToProps = {
-  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction
+  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
+  retrievePublicSources: retrievePublicSourcesAction,
+  retrieveConcepts: retrieveConceptsAction,
 };
 
-export default connect(undefined, mapActionsToProps)(AddBulkConceptsPage);
+export default connect(mapStateToProps, mapActionsToProps)(AddBulkConceptsPage);
