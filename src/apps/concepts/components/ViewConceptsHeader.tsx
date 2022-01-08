@@ -27,7 +27,7 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
-      color: theme.palette.background.default
+      color: "white !important"
     },
     textField: {
       padding: "0.2rem 1rem",
