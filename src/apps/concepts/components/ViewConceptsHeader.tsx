@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sourceIcon: {
       marginRight: "0.2rem",
-      fill: "#8080809c"
+      fill: "#8080809c",
+      color:"#000000ad"
     }
   })
 );
