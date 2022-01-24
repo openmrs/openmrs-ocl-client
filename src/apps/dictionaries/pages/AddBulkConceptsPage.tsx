@@ -76,6 +76,21 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: "0.5rem",
       width: "1rem",
       height: "1rem"
+    },
+    loadMoreButton: {
+      margin: "auto",
+      display: "flex",
+      border: "none",
+      fontWeight: "bold",
+      marginTop: "1rem",
+      marginBottom: "1rem"
+    },
+    seenAllText: {
+      margin: "auto",
+      fontWeight: "bold",
+      marginTop: "1rem",
+      marginBottom: "1rem",
+      textAlign: "center"
     }
   })
 );
@@ -183,7 +198,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
         >
           Switch source (Currently {fromSource})
         </Button>
-        <Tooltip title={`View All Concepts in ${fromSource}`}>
+        <Tooltip title={`Browser to view All Concepts in ${fromSource}`}>
           <Link to={conceptsUrl} target="_blank" rel="noopener noreferrer">
             <OpenInNew className={classes.newPageIcon} />
           </Link>
@@ -192,7 +207,8 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
           PaperProps={{
             style: {
               marginTop: "30px",
-              marginLeft: "10px"
+              marginLeft: "10px",
+              minWidth: "20rem"
             }
           }}
           anchorEl={switchSourceAnchor}
@@ -258,7 +274,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
                 </MenuItem>
               ))
               }
-            {hasMoreSources ? <button onClick={() => loadSourcesList()}>Load More Sources</button> : <div className="text-center">No data anymore ...</div>}
+            {hasMoreSources ? <button onMouseEnter={() => loadSourcesList()} className={classes.loadMoreButton}>Load More Sources ...</button> : <div className={classes.seenAllText}>Yay! You have seen all {numberFound} Sources...</div>}
             </div>
           ) : (
             currentSources?.map(({ name, sourceUrl }) => (
