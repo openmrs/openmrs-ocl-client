@@ -40,8 +40,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       marginTop: "2vh"
     },
-    lightColour: {
-      color: theme.palette.background.default
+    switchButton: {
+      color: "white !important"
     },
     sourcesDropdownHeader: {
       padding: "0.5rem 1rem"
@@ -189,12 +189,11 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
         <>
         <Button
           data-testid="switch-source"
-          className={classes.lightColour}
+          className={classes.switchButton}
           variant="text"
           size="large"
           aria-haspopup="true"
-          onClick={handleSwitchSourceClick}
-        >
+          onClick={handleSwitchSourceClick}>
           Switch source (Currently {fromSource})
         </Button>
         <Tooltip title={`Browser to view All Concepts in ${fromSource}`}>
@@ -273,7 +272,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
                 </MenuItem>
               ))
               }
-            {hasMoreSources ? <button onMouseEnter={() => loadSourcesList()} className={classes.loadMoreButton}>Load More Sources ...</button> : <div className={classes.seenAllText}>Yay! You have seen all {numberFound} Sources...</div>}
+            {hasMoreSources ? <button onMouseEnter={() => loadSourcesList()} className={classes.loadMoreButton}>Load More Sources ...</button> : <div className={classes.seenAllText}>Yay! You have seen all {numberFound} Sources.</div>}
             </div>
           ) : (
             currentSources?.map(({ name, sourceUrl }) => (

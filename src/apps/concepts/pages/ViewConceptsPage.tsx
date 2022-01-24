@@ -174,11 +174,6 @@ const ViewConceptsPage: React.FC<Props> = ({
     addToDictionary: dictionaryToAddTo
   } = queryParams;
 
-  
-
-  const headerQueryParams: {  q?: string } = useQueryParams();
-  const {  q: initialSearch = "" } = queryParams;
-
   const sourceUrl = "/sources/";
   const collectionsUrl = "/collections/";
   const sourcesLimit = 0;
