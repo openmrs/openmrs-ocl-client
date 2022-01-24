@@ -1,8 +1,6 @@
 import {
   Button,
-  createStyles,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Table,
@@ -13,15 +11,16 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { ArrayHelpers, ErrorMessage } from "formik";
 import React, { useEffect, useState } from "react";
 import { Mapping } from "../types";
 import MappingsTableRow from "./MappingsTableRow";
 import { Option } from "../../../utils";
-import { MoreVert as MenuIcon } from "@material-ui/icons";
+import { MoreVert as MenuIcon } from "@mui/icons-material";
 import { DragHandle } from "../../../components/DragHandle";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,14 +69,15 @@ const MappingsTable: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const [sorted, setSorted] = useState<Mapping[]>();
-  const [isAnswer, setAnswer] = useState(false);
-  const [isSetMember, setSetMember] = useState(false);
+  const [allowReordering, setAllowReordering] = useState(false);
 
-  useEffect(() => setAnswer(title === "Answer"), [title]);
-  useEffect(() => setSetMember(title === "Set Member"), [title]);
+  useEffect(
+    () => setAllowReordering(title === "Answer" || title === "Set Members"),
+    [title]
+  );
 
   useEffect(() => {
-    if (sorted && isAnswer) {
+    if (sorted && allowReordering) {
       const values = sorted;
       values.sort((v1, v2) => {
         if (v1.extras?.sort_weight) {
@@ -99,35 +99,10 @@ const MappingsTable: React.FC<Props> = ({
       });
       setSorted(values);
     }
-  }, [sorted, isAnswer]);
+  }, [sorted, allowReordering]);
 
   useEffect(() => {
-    if (sorted && isSetMember) {
-      const values = sorted;
-      values.sort((v1, v2) => {
-        if (v1.extras?.sort_weight) {
-          if (v2.extras?.sort_weight) {
-            return (
-              (v1.extras.sort_weight as number) -
-              (v2.extras.sort_weight as number)
-            );
-          }
-
-          return 1;
-        }
-
-        if (v2.extras?.sort_weight) {
-          return -1;
-        }
-
-        return 0;
-      });
-      setSorted(values);
-    }
-  }, [sorted, isSetMember]);
-
-  useEffect(() => {
-    if (isAnswer && isSubmitting) {
+    if (allowReordering && isSubmitting) {
       for (let i = 0; i < values.length; i++) {
         handleChange(
           buildEvent(`${valuesKey}[${i}].extras`, { sort_weight: i + 1 })
@@ -135,24 +110,7 @@ const MappingsTable: React.FC<Props> = ({
       }
     }
   }, [
-    isAnswer,
-    isSubmitting,
-    submitCount,
-    handleChange,
-    values.length,
-    valuesKey
-  ]);
-
-  useEffect(() => {
-    if (isSetMember && isSubmitting) {
-      for (let i = 0; i < values.length; i++) {
-        handleChange(
-          buildEvent(`${valuesKey}[${i}].extras`, { sort_weight: i + 1 })
-        );
-      }
-    }
-  }, [
-    isSetMember,
+    allowReordering,
     isSubmitting,
     submitCount,
     handleChange,
@@ -234,7 +192,7 @@ const MappingsTable: React.FC<Props> = ({
               </TableCell>
             </TableRow>
           </TableHead>
-          {(isAnswer && editing) || (isSetMember && editing) ? (
+          {allowReordering && editing ? (
             <DragDropContext
               onDragEnd={param => {
                 const srcI = param.source.index;
@@ -264,8 +222,7 @@ const MappingsTable: React.FC<Props> = ({
                                   boxShadow: snapshot.isDragging
                                     ? "0 0 .4rem #666"
                                     : "none",
-                                  display: "flex",
-                                  alignItems: "center"
+                                  display: "flex"
                                 }}
                               >
                                 <DragHandle {...provided.dragHandleProps} />

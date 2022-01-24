@@ -3,6 +3,8 @@ import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import ContainerPagination from "../ContainerPagination";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../../../App";
 
 type paginationProps = React.ComponentProps<typeof ContainerPagination>;
 
@@ -16,7 +18,9 @@ const baseProps: paginationProps = {
 function renderUI(props: Partial<paginationProps> = {}) {
   return render(
     <Router>
-      <ContainerPagination {...baseProps} {...props} />
+      <ThemeProvider theme={theme}>
+        <ContainerPagination {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }
@@ -33,8 +37,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {
@@ -56,8 +60,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {
@@ -79,8 +83,8 @@ describe("ContainerPagination", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     expect(pagination).not.toBeNull();
     if (pagination !== null) {

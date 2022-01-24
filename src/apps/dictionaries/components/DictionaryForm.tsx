@@ -3,11 +3,10 @@ import {
   Button,
   FormControl,
   InputLabel,
-  makeStyles,
   MenuItem,
   Typography,
   TextField as MuiTextField
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   getCustomErrorMessage,
   getPrettyError,
@@ -23,7 +22,7 @@ import {
   FormikValues
 } from "formik";
 import * as Yup from "yup";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { snakeCase } from "lodash";
 import { Dictionary, CopyableDictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
@@ -35,6 +34,7 @@ import {
   supportedLocalesLabel
 } from "../../containers/components/FormUtils";
 import { createSourceAndDictionaryAction } from "../redux";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   onSubmit?: (
@@ -174,6 +174,7 @@ const DictionaryForm: React.FC<Props> = ({
         {({ isSubmitting, status, values }) => (
           <Form>
             <Field
+              variant="standard"
               fullWidth
               autoComplete="off"
               id="name"
@@ -185,6 +186,7 @@ const DictionaryForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               disabled={editing || isSubmitting}
               autoComplete="off"
@@ -197,6 +199,7 @@ const DictionaryForm: React.FC<Props> = ({
               component={TextField}
             />
             <Field
+              variant="standard"
               fullWidth
               multiline
               rowsMax={4}
@@ -206,11 +209,12 @@ const DictionaryForm: React.FC<Props> = ({
               margin="normal"
               component={TextField}
             />
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="preferred_source">
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="preferred_source">
                 Preferred Source
               </InputLabel>
               <Field
+                variant="standard"
                 name="preferred_source"
                 id="preferred_source"
                 component={Select}
@@ -226,8 +230,9 @@ const DictionaryForm: React.FC<Props> = ({
               </Typography>
             </FormControl>
             {viewing || editing ? (
-              <FormControl fullWidth margin="normal">
+              <FormControl variant="standard" fullWidth margin="normal">
                 <Field
+                  variant="standard"
                   defaultValue={getOrg || "Owner"}
                   label="Owner"
                   disabled={editing || isSubmitting}
@@ -242,9 +247,12 @@ const DictionaryForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
             ) : (
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="owner_url">Owner</InputLabel>
+              <FormControl variant="standard" fullWidth margin="normal">
+                <InputLabel shrink htmlFor="owner_url">
+                  Owner
+                </InputLabel>
                 <Field
+                  variant="standard"
                   disabled={editing || isSubmitting}
                   name="owner_url"
                   id="owner_url"
@@ -261,9 +269,16 @@ const DictionaryForm: React.FC<Props> = ({
                 </Typography>
               </FormControl>
             )}
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="public_access">Visibility</InputLabel>
-              <Field name="public_access" id="public_access" component={Select}>
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="public_access">
+                Visibility
+              </InputLabel>
+              <Field
+                variant="standard"
+                name="public_access"
+                id="public_access"
+                component={Select}
+              >
                 <MenuItem value="View">Public</MenuItem>
                 <MenuItem value="None">Private</MenuItem>
               </Field>
@@ -271,11 +286,12 @@ const DictionaryForm: React.FC<Props> = ({
                 <ErrorMessage name="public_access" component="span" />
               </Typography>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="default_locale">
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="default_locale">
                 Preferred Language
               </InputLabel>
               <Field
+                variant="standard"
                 name="default_locale"
                 id="default_locale"
                 component={Select}
@@ -286,11 +302,12 @@ const DictionaryForm: React.FC<Props> = ({
                 <ErrorMessage name="default_locale" component="span" />
               </Typography>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="supported_locales">
+            <FormControl variant="standard" fullWidth margin="normal">
+              <InputLabel shrink htmlFor="supported_locales">
                 Other Languages
               </InputLabel>
               <Field
+                variant="standard"
                 multiple
                 fullWidth
                 defaultValue={[]}
@@ -309,6 +326,7 @@ const DictionaryForm: React.FC<Props> = ({
               ""
             ) : (
               <Field
+                variant="standard"
                 fullWidth
                 multiline
                 rowsMax={4}

@@ -1,11 +1,12 @@
-///<reference path="../../../../../node_modules/@types/testing-library__dom/queries.d.ts"/>
 import React from "react";
 import ViewSources from "../../components/ViewSources";
 import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { BrowserRouter as Router } from "react-router-dom";
 import { APISource } from "../../types";
 import { fireEvent } from "@testing-library/dom";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../../../App";
+import { MemoryRouter as Router } from "react-router";
 
 type viewSourcesProps = React.ComponentProps<typeof ViewSources>;
 
@@ -63,13 +64,17 @@ const baseProps: viewSourcesProps = {
   page: 1,
   perPage: 20,
   initialQ: "",
-  title: ""
+  title: "",
+  showOnlyVerified: false,
+  toggleShowVerified: () => {}
 };
 
 function renderUI(props: Partial<viewSourcesProps> = {}) {
   return render(
     <Router>
-      <ViewSources {...baseProps} {...props} />
+      <ThemeProvider theme={theme}>
+        <ViewSources {...baseProps} {...props} />
+      </ThemeProvider>
     </Router>
   );
 }
@@ -176,8 +181,8 @@ describe("ViewSources", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     if (pagination !== null) {
       expect(pagination.children[0]).toHaveTextContent("1-20 of 60");
@@ -197,8 +202,8 @@ describe("ViewSources", () => {
     const pagination: HTMLElement | null = container.querySelector(
       "[data-testid='pagination']"
     );
-    const previousPageIcon = getAllByTitle("Previous page");
-    const nextPageIcon = getAllByTitle("Next page");
+    const previousPageIcon = getAllByTitle("Go to previous page");
+    const nextPageIcon = getAllByTitle("Go to next page");
 
     if (pagination !== null) {
       expect(pagination.children[0]).toHaveTextContent("21-40 of 60");

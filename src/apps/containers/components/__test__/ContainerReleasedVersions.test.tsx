@@ -192,7 +192,7 @@ describe("when user is not the owner of sources", () => {
     expect(toggleButton).not.toBeNull();
     toggleButton !== null && fireEvent.mouseMove(toggleButton);
     expect(toggleButton).toHaveAttribute(
-      "title",
+      "aria-label",
       "You don't have permission to change the status"
     );
   });

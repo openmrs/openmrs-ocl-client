@@ -1,7 +1,8 @@
 import React from "react";
-import { makeStyles, Tab, Tabs } from "@material-ui/core";
+import { Tab, Tabs } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TabType } from "../types";
+import { makeStyles } from "@mui/styles";
 
 interface Props {
   currentPageUrl: string;
@@ -10,7 +11,8 @@ interface Props {
 
 const useStyles = makeStyles({
   fullWidth: {
-    width: "100%"
+    width: "100%",
+    color: "black"
   }
 });
 
@@ -21,6 +23,7 @@ const ContainerOwnerTabs: React.FC<Props> = ({ currentPageUrl, tabList }) => {
     <Tabs
       // centered
       className={classes.fullWidth}
+      indicatorColor="secondary"
       variant="fullWidth"
       value={currentPageUrl}
       data-testid="tabs"

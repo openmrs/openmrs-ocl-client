@@ -6,10 +6,10 @@ import {
   DialogContent,
   DialogTitle,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
-import { TextField } from "formik-material-ui";
+import { TextField } from "formik-mui";
 import { OrgMember } from "../types";
 import { AppState } from "../../../redux";
 import { addOrgMemberLoadingSelector } from "../redux";
@@ -64,6 +64,7 @@ const AddMemberForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
+                  variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="username"

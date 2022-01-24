@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@mui/material";
 import { connect } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import {

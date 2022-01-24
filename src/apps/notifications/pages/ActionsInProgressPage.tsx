@@ -1,8 +1,8 @@
 import React from "react";
-import { Chip, Grid, List, Typography } from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import ErrorIcon from "@material-ui/icons/Error";
-import AutorenewIcon from "@material-ui/icons/Autorenew";
+import { Chip, Grid, List, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorIcon from "@mui/icons-material/Error";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import { AppState } from "../../../redux";
 import {
   addConceptsToDictionaryErrorListSelector,

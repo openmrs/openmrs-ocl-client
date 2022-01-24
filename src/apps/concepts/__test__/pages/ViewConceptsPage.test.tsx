@@ -12,6 +12,8 @@ import {
 import * as React from "react";
 import { APIProfile } from "../../../authentication";
 import { DICTIONARY_VERSION_CONTAINER } from "../../constants";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 type viewConceptsPageProps = React.ComponentProps<typeof ViewConceptsPage>;
 
@@ -51,7 +53,9 @@ function renderUI(props: Partial<viewConceptsPageProps> = {}) {
   return render(
     <Provider store={store}>
       <Router>
-        <ViewConceptsPage {...baseProps} {...props} />
+        <ThemeProvider theme={theme}>
+          <ViewConceptsPage {...baseProps} {...props} />
+        </ThemeProvider>
       </Router>
     </Provider>
   );

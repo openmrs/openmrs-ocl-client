@@ -4,9 +4,7 @@ import { useLocation } from "react-router";
 import { connect } from "react-redux";
 import {
   Button,
-  createStyles,
   Grid,
-  makeStyles,
   Menu,
   MenuItem,
   TextField,
@@ -18,12 +16,12 @@ import {
   InputAdornment,
   IconButton,
   Tooltip
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   AccountTreeOutlined,
   Search as SearchIcon,
   OpenInNew
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { recursivelyAddConceptsToDictionaryAction } from "../redux";
 import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
 import {
@@ -34,6 +32,7 @@ import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
 import { APISource } from "../../sources";
 import { AppState } from "../../../redux";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -302,6 +301,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
         </Typography>
         <br />
         <TextField
+          data-testid="bulkImportTextArea"
           placeholder="1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007"
           onChange={e => setConceptsToAdd(e.target.value.split(/[\s,\r\n]+/))}
           fullWidth

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { DictionaryDetails, DictionaryForm } from "../components";
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@mui/material";
 import { connect } from "react-redux";
 import {
   APIDictionary,

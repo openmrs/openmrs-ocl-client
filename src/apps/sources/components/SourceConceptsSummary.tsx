@@ -9,9 +9,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText
-} from "@material-ui/core";
+} from "@mui/material";
 import { Link } from "react-router-dom";
-import { StarBorder, DeleteForever } from "@material-ui/icons";
+import { StarBorder, DeleteForever } from "@mui/icons-material";
 
 interface Props {
   source?: APISource;

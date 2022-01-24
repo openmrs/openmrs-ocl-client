@@ -9,11 +9,11 @@ import {
   InputLabel,
   MenuItem,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { usePrevious } from "../../../utils";
 import { Field, Form, Formik, FormikProps, FormikValues } from "formik";
 import * as Yup from "yup";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 
 import { DictionaryVersion } from "../types";
 import { v4 as uuid } from "uuid";
@@ -78,6 +78,7 @@ const DictionaryVersionForm: React.FC<Props> = ({
             <Form>
               <DialogContent>
                 <Field
+                  variant="standard"
                   fullWidth
                   autoComplete="off"
                   id="id"
@@ -87,12 +88,16 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   component={TextField}
                 />
                 <FormControl
+                  variant="standard"
                   fullWidth
                   // required
                   margin="normal"
                 >
-                  <InputLabel htmlFor="released">Release</InputLabel>
+                  <InputLabel shrink htmlFor="released">
+                    Release
+                  </InputLabel>
                   <Field
+                    variant="standard"
                     fullWidth
                     id="released"
                     name="released"
@@ -102,19 +107,20 @@ const DictionaryVersionForm: React.FC<Props> = ({
                   >
                     <MenuItem
                       // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                      value={false}
+                      value={0}
                     >
                       No
                     </MenuItem>
                     <MenuItem
                       // @ts-ignore
-                      value={true}
+                      value={1}
                     >
                       Yes
                     </MenuItem>
                   </Field>
                 </FormControl>
                 <Field
+                  variant="standard"
                   fullWidth
                   multiline
                   rowsMax={4}

@@ -1,9 +1,7 @@
 import {
   Button,
-  createStyles,
   FormControl,
   IconButton,
-  makeStyles,
   Menu,
   MenuItem,
   Table,
@@ -14,17 +12,18 @@ import {
   TableRow,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { ArrayHelpers, ErrorMessage, Field } from "formik";
-import { Select, TextField } from "formik-material-ui";
+import { Select, TextField } from "formik-mui";
 import { findLocale, NAME_TYPES } from "../../../utils";
 import {
   DeleteOutline as DeleteOutlineIcon,
   MoreVert as MoreVertIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import React from "react";
 import { uniqBy } from "lodash";
 import { ConceptDescription, ConceptName } from "../types";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,6 +121,7 @@ const NamesTable: React.FC<Props> = ({
                   scope="row"
                 >
                   <Field
+                    variant="standard"
                     fullWidth
                     className={classes.minimumCellWidth}
                     id={`${valuesKey}[${index}].${type}`}
@@ -138,8 +138,9 @@ const NamesTable: React.FC<Props> = ({
                     component="td"
                     scope="row"
                   >
-                    <FormControl fullWidth margin="dense">
+                    <FormControl variant="standard" fullWidth margin="dense">
                       <Field
+                        variant="standard"
                         id={`${valuesKey}[${index}].${type}_type`}
                         name={`${valuesKey}[${index}].${type}_type`}
                         data-testid={`${valuesKey}_${index}_${type}_type`}
@@ -177,8 +178,9 @@ const NamesTable: React.FC<Props> = ({
                   component="td"
                   scope="row"
                 >
-                  <FormControl fullWidth margin="dense">
+                  <FormControl variant="standard" fullWidth margin="dense">
                     <Field
+                      variant="standard"
                       id={`${valuesKey}[${index}].locale`}
                       name={`${valuesKey}[${index}].locale`}
                       data-testid={`${valuesKey}_${index}_locale`}
@@ -206,8 +208,9 @@ const NamesTable: React.FC<Props> = ({
                   component="td"
                   scope="row"
                 >
-                  <FormControl fullWidth margin="dense">
+                  <FormControl variant="standard" fullWidth margin="dense">
                     <Field
+                      variant="standard"
                       id={`${valuesKey}[${index}].locale_preferred`}
                       name={`${valuesKey}[${index}].locale_preferred`}
                       data-testid={`${valuesKey}_${index}_locale_preferred`}
@@ -215,13 +218,13 @@ const NamesTable: React.FC<Props> = ({
                     >
                       <MenuItem
                         // @ts-ignore: some casting is done for us we don't need to worry about using booleans as values
-                        value={false}
+                        value={0}
                       >
                         No
                       </MenuItem>
                       <MenuItem
                         // @ts-ignore
-                        value={true}
+                        value={1}
                       >
                         Yes
                       </MenuItem>

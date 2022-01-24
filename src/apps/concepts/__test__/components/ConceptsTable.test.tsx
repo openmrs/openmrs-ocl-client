@@ -8,7 +8,8 @@ import {
   APIConcept,
   APIMapping
 } from "../../types";
-
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../../../App";
 type conceptsTableProps = React.ComponentProps<typeof ConceptsTable>;
 const baseProps: conceptsTableProps = {
   concepts: [],
@@ -73,7 +74,11 @@ const testConcept: APIConcept = {
 };
 
 function renderUI(props: Partial<conceptsTableProps> = {}) {
-  return render(<ConceptsTable {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <ConceptsTable {...baseProps} {...props} />{" "}
+    </ThemeProvider>
+  );
 }
 
 describe("Action Icon for the Concepts in Concepts Table", () => {

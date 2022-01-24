@@ -7,22 +7,12 @@ import {
   SOURCE_CONTAINER
 } from "../constants";
 import { getContainerIdFromUrl } from "../utils";
-import {
-  Button,
-  createStyles,
-  makeStyles,
-  Menu,
-  MenuItem,
-  TextField,
-  Theme
-} from "@material-ui/core";
-import {
-  PREFERRED_SOURCES_VIEW_ONLY,
-  useAnchor
-} from "../../../utils";
+import { Button, Menu, MenuItem, TextField, Theme } from "@mui/material";
+import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined, FolderOpen } from "@material-ui/icons";
-import { APIDictionary } from '../../dictionaries/types';
+import { AccountTreeOutlined, FolderOpen } from "@mui/icons-material";
+import { APIDictionary } from "../../dictionaries/types";
+import { createStyles, makeStyles } from "@mui/styles";
 
 interface Props {
   containerType: string;
@@ -37,7 +27,7 @@ interface Props {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     lightColour: {
-      color: theme.palette.background.default
+      color: "white !important"
     },
     textField: {
       padding: "0.2rem 1rem",
@@ -58,8 +48,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sourceIcon: {
       marginRight: "0.2rem",
-      fill: "#8080809c"
-    },
+      fill: "#8080809c",
+      color:"#000000ad"
+    }
   })
 );
 
@@ -73,16 +64,20 @@ const ViewConceptsHeader: React.FC<Props> = ({
   dictionaries
 }) => {
   const [showSources, setShowSources] = useState(false);
-  const [preferredSources, setPreferredSources] = useState< { name: string; url: string }[] >();
+  const [preferredSources, setPreferredSources] = useState<
+    { name: string; url: string }[]
+  >();
   useEffect(() => {
-  const defaultSources = Object.entries( PREFERRED_SOURCES_VIEW_ONLY).map(([key, value]) => ({ name: key, url: value }));
-  if (showSources) {
-  const allSources = defaultSources
+    const defaultSources = Object.entries(
+      PREFERRED_SOURCES_VIEW_ONLY
+    ).map(([key, value]) => ({ name: key, url: value }));
+    if (showSources) {
+      const allSources = defaultSources
         .concat(sources.map(s => ({ name: s.name, url: s.url })))
         .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
-        setPreferredSources(allSources);
-      } else setPreferredSources(defaultSources);
-    }, [showSources, sources, dictionaries]);
+      setPreferredSources(allSources);
+    } else setPreferredSources(defaultSources);
+  }, [showSources, sources, dictionaries]);
 
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
@@ -126,21 +121,23 @@ const ViewConceptsHeader: React.FC<Props> = ({
           open={Boolean(switchSourceAnchor)}
           onClose={handleSwitchSourceClose}
         >
-          <TextField 
-          multiline
-          className={classes.textField} 
-          InputProps={{
-            className: classes.underline
-          }} 
+          <TextField
+            multiline
+            className={classes.textField}
+            InputProps={{
+              className: classes.underline
+            }}
             inputProps={{
               className: classes.input
             }}
             value={
-              showSources ? "Choose a source/dictionary" : "Select a different source/dictionary"
+              showSources
+                ? "Choose a source/dictionary"
+                : "Select a different source/dictionary"
             }
             onClick={() => setShowSources(!showSources)}
           />
-            {preferredSources?.map(({ name, url }) => (
+          {preferredSources?.map(({ name, url }) => (
             <MenuItem
               // replace because we want to keep the back button useful
               replace
