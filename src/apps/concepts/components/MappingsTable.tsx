@@ -72,7 +72,7 @@ const MappingsTable: React.FC<Props> = ({
   const [allowReordering, setAllowReordering] = useState(false);
 
   useEffect(
-    () => setAllowReordering(title === "Answer" || title === "Set Members"),
+    () => setAllowReordering(title === "Answer" || title === "Set Member"),
     [title]
   );
 
