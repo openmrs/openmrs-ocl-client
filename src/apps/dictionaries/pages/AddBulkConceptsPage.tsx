@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import { connect } from "react-redux";
 import {
   Button,
@@ -109,7 +109,9 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
   const classes = useStyles();
   const { pathname: url } = useLocation();
   const { fromSource } = useQueryParams();
+  const history = useHistory();
 
+  
   const [showAllSources, setShowAllSources] = useState(false);
 
   const [queryString, setQueryString] = useState('');
@@ -126,6 +128,15 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
   const allSources = defaultSources.concat(sources.map(s => ({ name: s.name, sourceUrl: s.url })))
 
   const selectedSource = allSources?.find(s => s.name === fromSource);
+
+  useEffect(() => {
+    if (!selectedSource) {
+      const defaultQueryParam = 'fromSource=CIEL';
+      history.replace({
+        search: defaultQueryParam.toString(),
+      })
+    }
+  }, []); // eslint-disable-line
 
   const conceptsUrl = `${selectedSource?.sourceUrl}concepts/`;
 
