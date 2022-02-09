@@ -334,7 +334,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
                 dictionaryUrl,
                 conceptsToAdd,
                 true,
-                PREFERRED_SOURCES[fromSource]
+                currentSources?.find(s => s.name === fromSource)?.sourceUrl
               );
             }}
           >
