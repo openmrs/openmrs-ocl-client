@@ -2,7 +2,7 @@ import React from "react";
 import { EnhancedTableHead } from "../../components/EnhancedTableHead";
 import { render } from "../../../../test-utils.test";
 import "@testing-library/jest-dom";
-import Table from "@material-ui/core/Table";
+import Table from "@mui/material/Table";
 
 type enhancedTableHeadProps = React.ComponentProps<typeof EnhancedTableHead>;
 const baseProps: enhancedTableHeadProps = {

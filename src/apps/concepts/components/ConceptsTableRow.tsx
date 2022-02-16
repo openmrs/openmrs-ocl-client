@@ -6,8 +6,8 @@ import {
   Checkbox,
   Tooltip,
   IconButton
-} from "@material-ui/core";
-import { MoreVert as MoreVertIcon } from "@material-ui/icons";
+} from "@mui/material";
+import { MoreVert as MoreVertIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { ConceptsActionMenu } from "./ConceptsActionMenu";
 import { AlreadyAddedIcon } from "./AlreadyAddedIcon";
@@ -98,7 +98,7 @@ const conceptNameCell = (
 
   return (
     <TableCell
-      onClick={event => toggleSelect(event, row.uuid ||"")}
+      onClick={event => toggleSelect(event, row.uuid || "")}
       data-testclass="name"
       className={row.retired ? "retired" : ""}
       style={{ wordBreak: "break-all" }}
@@ -183,6 +183,7 @@ const checkBoxCell = (
         onClick={event => toggleSelect(event, row.id)}
         checked={isItemSelected}
         inputProps={{ "aria-labelledby": labelId }}
+        color="secondary"
       />
     </TableCell>
   );

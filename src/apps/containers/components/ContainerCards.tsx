@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Box } from "@material-ui/core";
+import { Grid, Typography, Box } from "@mui/material";
 import ContainerCard from "./ContainerCard";
 
 export interface Card {
@@ -18,13 +18,13 @@ interface Props {
 
 const ContainerCards: React.FC<Props> = ({ cards, title }) => {
   return (
-    <Box width="100%" p={4}>
+    <Box width="100%" p={4} paddingBottom={"4rem"}>
       <Grid
         item
         xs={12}
         container
         spacing={2}
-        justify="center"
+        justifyContent="center"
         data-testid="cards"
       >
         {cards.length === 0 ? (

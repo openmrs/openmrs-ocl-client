@@ -13,6 +13,8 @@ import {
   ViewUserProfilePage
 } from "../../pages/ViewUserProfilePage";
 import { getUserDetailsAction } from "../../redux";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "../../../../App";
 
 type viewUserProfilePageProps = React.ComponentProps<
   typeof ViewUserProfilePage
@@ -25,7 +27,11 @@ const baseProps: viewUserProfilePageProps = {
 };
 
 function renderUI(props: Partial<viewUserProfilePageProps> = {}) {
-  return render(<ViewUserProfilePage {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <ViewUserProfilePage {...baseProps} {...props} />{" "}
+    </ThemeProvider>
+  );
 }
 
 describe("viewUserProfilePage", () => {

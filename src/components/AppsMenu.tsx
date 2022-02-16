@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 import {
   MenuItem,
   Box,
@@ -8,13 +8,14 @@ import {
   Popper,
   MenuList,
   ClickAwayListener,
-  Link
-} from "@material-ui/core";
+  Link,
+  Theme
+} from "@mui/material";
 import {
   Web,
   Publish as ImportIcon,
   Apps as AppsIcon
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { OCL_URL } from "../utils";
 import { ReactComponent as OmrsLogo } from "./omrs-logo.svg";
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     popperWithOpenNav: {
       display: "block",
-      left: "220px !important"
+      left: "210px !important"
     }
   })
 );

@@ -1,13 +1,8 @@
 import React from "react";
-import {
-  CircularProgress,
-  createStyles,
-  makeStyles,
-  Theme,
-  Typography
-} from "@material-ui/core";
-import { BrokenImageOutlined as ErrorIcon } from "@material-ui/icons";
+import { CircularProgress, Theme, Typography } from "@mui/material";
+import { BrokenImageOutlined as ErrorIcon } from "@mui/icons-material";
 import clsx from "clsx";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

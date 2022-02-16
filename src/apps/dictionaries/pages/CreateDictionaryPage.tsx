@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DictionaryForm } from "../components";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid, Paper } from "@mui/material";
 import { connect } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import {

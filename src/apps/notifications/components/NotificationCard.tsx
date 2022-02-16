@@ -6,15 +6,15 @@ import {
   CardContent,
   Chip,
   ListItem,
-  makeStyles,
   Tooltip,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { ImportMetaData } from "../../dictionaries";
 import { dictionaryNameFromUrl } from "../../dictionaries/utils";
 import { NotificationItem } from "../types";
+import { makeStyles } from "@mui/styles";
 
 dayjs.extend(relativeTime);
 

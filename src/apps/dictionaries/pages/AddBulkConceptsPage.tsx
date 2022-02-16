@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import {
   Button,
-  createStyles,
   Grid,
-  makeStyles,
   Menu,
   MenuItem,
   TextField,
   Theme,
   Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import { recursivelyAddConceptsToDictionaryAction } from "../redux";
 import { useLocation } from "react-router";
 import { connect } from "react-redux";
 import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
 import { Link } from "react-router-dom";
+import { createStyles, makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -95,6 +94,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
         </Typography>
         <br />
         <TextField
+          data-testid="bulkImportTextArea"
           placeholder="1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007"
           onChange={e => setConceptsToAdd(e.target.value.split(/[\s,\r\n]+/))}
           fullWidth

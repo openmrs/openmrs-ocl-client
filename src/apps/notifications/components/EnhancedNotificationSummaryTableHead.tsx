@@ -1,10 +1,6 @@
 import React from "react";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import { makeStyles } from "@material-ui/core";
-
+import { TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 interface EnhancedNotificationSummaryTableHeadProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   order: "asc" | "desc";

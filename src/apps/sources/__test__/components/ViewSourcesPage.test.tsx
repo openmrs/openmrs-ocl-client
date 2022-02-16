@@ -4,6 +4,8 @@ import { render } from "../../../../test-utils.test";
 
 import { ViewSourcesPage } from "../../components/index";
 import routeData from "react-router";
+import { theme } from "../../../../App";
+import { ThemeProvider } from "@mui/material/styles";
 
 const mockLocation = {
   pathname: "/sources/",
@@ -25,7 +27,11 @@ const baseProps: viewSourcesPageProps = {
 };
 
 function renderUI(props: Partial<viewSourcesPageProps> = {}) {
-  return render(<ViewSourcesPage {...baseProps} {...props} />);
+  return render(
+    <ThemeProvider theme={theme}>
+      <ViewSourcesPage {...baseProps} {...props} />
+    </ThemeProvider>
+  );
 }
 describe("ViewSourcesPage", () => {
   it("should match snapshot and it should have all the child components", () => {

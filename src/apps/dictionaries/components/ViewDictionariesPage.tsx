@@ -8,8 +8,8 @@ import {
   retrievePublicDictionariesAction,
   toggleShowVerifiedAction
 } from "../redux";
-import { Fab, Tooltip } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
+import { Fab, Tooltip } from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { ContainerOwnerTabs } from "../../containers/components";
 import { Header } from "../../../components";
@@ -59,8 +59,8 @@ const ViewPublicDictionariesPage: React.FC<Props> = ({
       top: 0,
       left: 0,
       behavior: "smooth"
-    })
-  }
+    });
+  };
 
   return (
     <Header title="Dictionaries">

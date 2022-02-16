@@ -1,5 +1,5 @@
-import { Fab, Menu, MenuItem, Tooltip } from "@material-ui/core";
-import { MoreVert as MenuIcon } from "@material-ui/icons";
+import { Fab, Menu, MenuItem, Tooltip } from "@mui/material";
+import { MoreVert as MenuIcon } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import React from "react";
 import { useAnchor } from "../../../utils";

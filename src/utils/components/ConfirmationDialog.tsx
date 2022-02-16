@@ -5,7 +5,7 @@ import {
   Dialog,
   DialogActions,
   DialogTitle
-} from "@material-ui/core";
+} from "@mui/material";
 
 interface Props {
   open: boolean;

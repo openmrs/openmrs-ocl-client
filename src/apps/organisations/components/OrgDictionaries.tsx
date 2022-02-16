@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Paper, Typography, List, ListItem } from "@material-ui/core";
+import { Grid, Paper, Typography, List, ListItem } from "@mui/material";
 import { OrgCollection } from "../types";
 import { Link } from "react-router-dom";
 
