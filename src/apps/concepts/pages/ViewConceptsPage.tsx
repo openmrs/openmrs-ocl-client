@@ -361,7 +361,6 @@ const ViewConceptsPage: React.FC<Props> = ({
               ? "Could not fetch concepts. Refresh this page to retry"
               : undefined
           }
-          delayRender
         >
           <Grid
             id="viewConceptsPage"
