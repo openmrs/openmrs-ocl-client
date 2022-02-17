@@ -22,10 +22,10 @@ import {
   Search as SearchIcon,
   OpenInNew
 } from "@mui/icons-material";
-import { recursivelyAddConceptsToDictionaryAction } from "../redux";
-import { PUBLIC_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
+import { recursivelyAddConceptsToDictionaryAction, dictionarySelector } from "../redux";
+import { PERSONAL_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
 import {
-  retrievePublicSourcesAction
+  retrievePersonalSourcesAction
 } from "../../sources/redux";
 
 import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
@@ -33,6 +33,7 @@ import Header from "../../../components/Header";
 import { APISource } from "../../sources";
 import { AppState } from "../../../redux";
 import { createStyles, makeStyles } from "@mui/styles";
+import { APIDictionary } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,15 +98,23 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   sources: APISource[];
   meta?: { num_found?: number };
+  dictionary?: APIDictionary;
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
-  retrievePublicSources: (
-    ...args: Parameters<typeof retrievePublicSourcesAction>
+  retrievePrivateSources: (
+    ...args: Parameters<typeof retrievePersonalSourcesAction>
   ) => Promise<any>;
 }
 
-const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources = [], retrievePublicSources, meta = {} }) => {
+const AddBulkConceptsPage: React.FC<Props> = ({ 
+  addConceptsToDictionary, 
+  sources = [], 
+  retrievePrivateSources, 
+  meta = {},
+  dictionary = {}
+}) => {
+  const { preferred_source } = dictionary;
   const classes = useStyles();
   const { pathname: url } = useLocation();
   const { fromSource } = useQueryParams();
@@ -125,15 +134,24 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
     PREFERRED_SOURCES
   ).map(([key, value]) => ({ name: key, sourceUrl: value }));
 
-  const allSources = defaultSources.concat(sources.map(s => ({ name: s.name, sourceUrl: s.url })))
+  const mapSources = (s: APISource) => ({
+    name: s.name,
+    sourceUrl: s.url
+  });
 
-  const selectedSource = allSources?.find(s => s.name === fromSource);
+  const allSources = defaultSources.concat(sources.map(s => mapSources(s)));
+
+  const [selectedSource, setSelectedSource] = useState<{ name: string | undefined; sourceUrl: string | undefined } | undefined>(allSources?.find(s => s.name === fromSource));
 
   useEffect(() => {
-    if (!selectedSource) {
-      const defaultQueryParam = 'fromSource=CIEL';
+    setSelectedSource(allSources?.find(s => s.name === fromSource));
+  }, [fromSource]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!selectedSource && !fromSource) {
+      const defaultQueryParam = `fromSource=${preferred_source || 'CIEL'}`;
       history.replace({
-        search: defaultQueryParam.toString(),
+        search: defaultQueryParam?.toString(),
       })
     }
   }, []); // eslint-disable-line
@@ -151,10 +169,10 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
   const loadSourcesList = () => {
     setPaginating(true);
     setPage(page+1);
-    retrievePublicSources(sourceUrl, queryString, limit, page)
+    retrievePrivateSources(sourceUrl, queryString, limit, page)
       .then((res) => {
-        const newList = currentSources?.length  ? [...currentSources, ...res.map((s: any) => ({ name: s.name, sourceUrl: s.url }))] : [...res.map((s: any) => ({ name: s.name, sourceUrl: s.url }))];
-        setCurrentSources(newList);
+        const newList = res.map((s: APISource) => mapSources(s));
+        setCurrentSources([...currentSources ?? [], ...newList])
       })
       .catch((err) => {
         console.log(err);
@@ -162,25 +180,20 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
   };
 
   useEffect(() => {
-    const defaultSources = Object.entries(
-      PREFERRED_SOURCES
-    ).map(([key, value]) => ({ name: key, sourceUrl: value }));
     if (showAllSources && !paginating) {
-      const allSources = defaultSources
-        .concat(sources.map(s => ({ name: s.name, sourceUrl: s.url })))
       setCurrentSources(allSources);
     } else if (!showAllSources) {
       setCurrentSources(defaultSources)
     }
-  }, [showAllSources, sources]); // eslint-disable-line
+  }, [showAllSources]); // eslint-disable-line
 
   const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowAllSources(event.target.checked);
   };
   
   useEffect(() => {
-    retrievePublicSources(sourceUrl, queryString);
-  }, [retrievePublicSources, queryString]);
+    retrievePrivateSources(sourceUrl, queryString);
+  }, [retrievePrivateSources, queryString]);
 
   const [
     switchSourceAnchor,
@@ -348,13 +361,14 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary, sources
 
 const mapStateToProps = (state: AppState) => {
   return {
-    sources: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.items,
-    meta: state.sources.sources[PUBLIC_SOURCES_ACTION_INDEX]?.responseMeta
+    sources: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.items,
+    meta: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.responseMeta,
+    dictionary: dictionarySelector(state)
   };
 };
 const mapActionsToProps = {
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  retrievePublicSources: retrievePublicSourcesAction
+  retrievePrivateSources: retrievePersonalSourcesAction
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(AddBulkConceptsPage);
