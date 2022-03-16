@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { isEqual } from "lodash";
 import { Action, AppState, IndexedAction } from "./types";
-import { debug, STATUS_CODES_TO_MESSAGES } from "../utils";
+import { debug,STATUS_CODES_TO_MESSAGES } from "../utils";
 import { errorSelector, metaSelector } from "./selectors";
 
 export const RESET = "RESET";
@@ -102,28 +102,27 @@ export function invalidateCache(action: string, dispatch: Function) {
   dispatch(resetAction(action));
 }
 
-export function errorMsgResponse(response: any) {
-  let errorMsgResponse: string[] = [];
-  const genericErrorMessage = "Action could not be completed. Please retry.";
+export function errorMsgResponse(response: AxiosResponse) {
+  const errorMsgResponse: {[key: string]: string} = {
+    "__detail__": "Action could not be completed. Please retry."
+  };
 
-  if (
-    response.data &&
-    Object.prototype.hasOwnProperty.call(response.data, "detail")
-  ) {
-    errorMsgResponse.push(response.data.detail);
-  } else {
-    for (let key in response.data) {
-      errorMsgResponse.push(
+  if (response.data && Object.prototype.hasOwnProperty.call(response.data, "detail")) { 
+    errorMsgResponse["__detail__"] = response.data.detail;
+  } else if (response.status in STATUS_CODES_TO_MESSAGES) {
+    errorMsgResponse["__detail__"] = STATUS_CODES_TO_MESSAGES[response.status];
+  }
+  
+  for (let key in response.data) {
+    if (key === "__detail__") continue;
+    errorMsgResponse[key] =
         Array.isArray(response.data[key])
           ? response.data[key].join(",")
           : response.data[key]
-      );
-    }
-  }
-  return errorMsgResponse.length > 0
-    ? errorMsgResponse.join("\n")
-    : genericErrorMessage;
-}
+    } 
+    
+  return errorMsgResponse;
+};
 
 export const createActionThunk = <T extends any[]>(
   actionOrActionType: IndexedAction | string,
@@ -166,14 +165,13 @@ export const createActionThunk = <T extends any[]>(
         } catch (error) {
           debug(error, "redux/utils/#createActionThunk#:catch");
 
-          const response = error.response;
+          const response: AxiosResponse = error.response;
 
           let errorMsg = errorMsgResponse(response);
 
-          const errorMessage: string | undefined | {} | [] =
-            response?.data || response
-              ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
-              : errorMsg;
+          const errorMsgResponse: {[key: string]: string} = {
+            "__detail__": "Action could not be completed. Please retry."
+          }
 
           dispatch({
             type: `${actionType}_${FAILURE}`,
