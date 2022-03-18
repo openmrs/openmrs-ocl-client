@@ -96,7 +96,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  sources: APISource[];
   meta?: { num_found?: number };
   dictionary?: APIDictionary;
   addConceptsToDictionary: (
@@ -109,7 +108,6 @@ interface Props {
 
 const AddBulkConceptsPage: React.FC<Props> = ({ 
   addConceptsToDictionary, 
-  sources = [], 
   retrievePrivateSources, 
   meta = {},
   dictionary = {}
@@ -138,17 +136,15 @@ const AddBulkConceptsPage: React.FC<Props> = ({
     name: s.name,
     sourceUrl: s.url
   });
-
-  const allSources = defaultSources.concat(sources.map(s => mapSources(s)));
-
-  const [selectedSource, setSelectedSource] = useState<{ name: string | undefined; sourceUrl: string | undefined } | undefined>(allSources?.find(s => s.name === fromSource));
+  
+  const [selectedSource, setSelectedSource] = useState<{ name: string | undefined; sourceUrl: string | undefined } | undefined>(currentSources?.find(s => s.name === fromSource));
 
   useEffect(() => {
-    setSelectedSource(allSources?.find(s => s.name === fromSource));
-  }, [fromSource]); // eslint-disable-line
+    setSelectedSource(currentSources?.find(s => s.name === fromSource));
+  }, [fromSource, selectedSource]); // eslint-disable-line
 
   useEffect(() => {
-    if (!selectedSource && !fromSource) {
+    if (!selectedSource) {
       const defaultQueryParam = `fromSource=${preferred_source || 'CIEL'}`;
       history.replace({
         search: defaultQueryParam?.toString(),
@@ -159,15 +155,13 @@ const AddBulkConceptsPage: React.FC<Props> = ({
   const conceptsUrl = `${selectedSource?.sourceUrl}concepts/`;
 
   const [page, setPage] = useState<number>(1);
-  const [paginating, setPaginating] = useState(false);
   
-  const { num_found: numberFound = sources.length } = meta;
+  const { num_found: numberFound = 0 } = meta;
 
   const sourceUrl = "/sources/";
   const limit = 20;
 
   const loadSourcesList = () => {
-    setPaginating(true);
     setPage(page+1);
     retrievePrivateSources(sourceUrl, queryString, limit, page)
       .then((res) => {
@@ -180,8 +174,8 @@ const AddBulkConceptsPage: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (showAllSources && !paginating) {
-      setCurrentSources(allSources);
+    if (showAllSources) {
+      loadSourcesList();
     } else if (!showAllSources) {
       setCurrentSources(defaultSources)
     }
@@ -286,7 +280,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({
                 <MenuItem
                   // replace because we want to keep the back button useful
                   replace
-                  to={`${url}?fromSource=${name}`}
+                  to={`${url}?fromSource=${encodeURIComponent(name)}`}
                   key={name+i}
                   component={Link}
                   onClick={handleSwitchSourceClose}
@@ -302,7 +296,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({
             currentSources?.map(({ name, sourceUrl }) => (
               <MenuItem
                 replace
-                to={`${url}?fromSource=${name}`}
+                to={`${url}?fromSource=${encodeURIComponent(name)}`}
                 key={name}
                 component={Link}
                 onClick={handleSwitchSourceClose}
@@ -361,7 +355,6 @@ const AddBulkConceptsPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: AppState) => {
   return {
-    sources: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.items,
     meta: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.responseMeta,
     dictionary: dictionarySelector(state)
   };
