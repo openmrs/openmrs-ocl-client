@@ -34,7 +34,7 @@ const addConceptsToDictionaryMenu = (
 };
 
 const removeConceptsFromDictionaryMenu = (
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void,
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void,
   row: APIConcept,
   toggleMenu: (
     index: number,
@@ -46,7 +46,7 @@ const removeConceptsFromDictionaryMenu = (
     <MenuItem
       onClick={() => {
         if (removeConceptsFromDictionary)
-          removeConceptsFromDictionary([row.version_url]);
+          removeConceptsFromDictionary([row.url]);
         toggleMenu(index);
       }}
     >
@@ -105,7 +105,7 @@ const removeMenu = (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => void,
   linkedSource: string | undefined,
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void
 ) => {
   return !showRemoveFromDictionaryMenuItem(row, buttons.edit, linkedSource)
     ? null
@@ -144,7 +144,7 @@ interface ConceptsActionMenuProps {
   ) => void;
   menu: { index: number; anchor: null | HTMLElement };
   canModifyConcept: (concept: APIConcept) => boolean;
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void;
   addConceptsToDictionary: Function;
   linkedSource: string | undefined;
   linkedDictionary: string | undefined;

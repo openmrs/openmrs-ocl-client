@@ -200,7 +200,7 @@ export const upsertConceptAndMappingsAction = (
             // we don't remove the toConceptUrls because we can't be sure no other mapping depends on them
             // that would break the OCL module importer
             // ...state.concepts.mappings.map(mapping => mapping.url), todo ensure the cascade is working and delete this if so
-            concept.version_url
+            concept.url
           ].filter(reference => reference) as string[];
           await dispatch(
             removeReferencesFromDictionary(linkedDictionary, referencesToRemove)
