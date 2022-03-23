@@ -97,6 +97,7 @@ const ViewConceptPage: React.FC<Props> = ({
               usersOrgs={usersOrgs}
               linkedDictionary={linkedDictionary}
               dictionaryToAddTo={dictionaryToAddTo}
+              addConceptsToDictionary={addConceptsToDictionary}
               conceptUrl={url}
             />
           )}
