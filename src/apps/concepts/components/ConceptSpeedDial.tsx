@@ -69,7 +69,7 @@ export const ConceptSpeedDial: React.FC<Props> = ({
         title={`Edit ${concept.names ? concept.names[0].name : "concept"}`}
       />
     );
-  } else if (!showAddConceptButton) {
+  } else if (!showEditConceptButton) {
     return (
       <Tooltip
         title={`Add ${
