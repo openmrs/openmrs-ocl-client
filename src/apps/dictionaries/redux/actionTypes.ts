@@ -3,6 +3,7 @@ export const CREATE_SOURCE_AND_DICTIONARY_ACTION =
   "dictionaries/createSourceAndDictionary";
 export const RETRIEVE_DICTIONARY_ACTION = "dictionaries/retrieveDictionary";
 export const RETRIEVE_DICTIONARIES_ACTION = "dictionaries/retrieveDictionaries";
+export const RETRIEVE_DICTIONARIES_COUNT_ACTION = "dictionaries/retrieveDictionaries";
 export const EDIT_SOURCE_AND_DICTIONARY_ACTION =
   "dictionaries/editSourceAndDictionary";
 export const CREATE_AND_ADD_LINKED_SOURCE_ACTION =

@@ -7,12 +7,31 @@ import {
   SOURCE_CONTAINER
 } from "../constants";
 import { getContainerIdFromUrl } from "../utils";
-import { Button, Menu, MenuItem, TextField, Theme } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  Menu,
+  MenuItem,
+  Switch,
+  Theme
+} from "@mui/material";
 import { PREFERRED_SOURCES_VIEW_ONLY, useAnchor } from "../../../utils";
 import { APISource } from "../../sources";
-import { AccountTreeOutlined, FolderOpen } from "@mui/icons-material";
+import {
+  AccountTreeOutlined,
+  FolderOpen,
+  Search as SearchIcon
+} from "@mui/icons-material";
 import { APIDictionary } from "../../dictionaries/types";
 import { createStyles, makeStyles } from "@mui/styles";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { partialRight, pick } from "lodash";
+import dictionaryApi from "../../dictionaries/api";
+import sourceApi from "../../sources/api";
 
 interface Props {
   containerType: string;
@@ -22,6 +41,23 @@ interface Props {
   children?: React.ReactNode[];
   sources: APISource[];
   dictionaries: APIDictionary[];
+  showOnlyVerified: boolean;
+  toggleShowVerified: React.ChangeEventHandler<HTMLInputElement>;
+  goTo: Function;
+  initialSearch: string;
+  pathUrl: Function;
+  dictionaryMeta?: {
+    num_found?: number;
+    page_number?: number;
+    pages?: number;
+    num_returned?: number;
+  };
+  sourcesMeta?: {
+    num_found?: number;
+    page_number?: number;
+    pages?: number;
+    num_returned?: number;
+  };
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,6 +68,9 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       padding: "0.2rem 1rem",
       cursor: "none"
+    },
+    sourcesDropdownHeader: {
+      padding: "0.5rem 1rem"
     },
     input: {
       cursor: "pointer",
@@ -48,12 +87,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sourceIcon: {
       marginRight: "0.2rem",
-      fill: "#8080809c",
-      color:"#000000ad"
+      fill: "#8080809c"
+    },
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
     }
   })
 );
-
 const ViewConceptsHeader: React.FC<Props> = ({
   containerType,
   containerUrl,
@@ -61,24 +102,82 @@ const ViewConceptsHeader: React.FC<Props> = ({
   addConceptToDictionary,
   children,
   sources,
-  dictionaries
+  dictionaries,
+  goTo,
+  initialSearch,
+  pathUrl
 }) => {
-  const [showSources, setShowSources] = useState(false);
-  const [preferredSources, setPreferredSources] = useState<
+  const [showAllSources, setShowAllSources] = useState(false);
+  const [queryString, setQueryString] = useState(initialSearch);
+  const [currentSources, setCurrentSources] = useState<
     { name: string; url: string }[]
   >();
+  const [useSources, setUseSources] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [apiMethod, setApiMethod] = useState<
+    | typeof sourceApi.sources.retrieve.private
+    | typeof dictionaryApi.dictionaries.retrieve.private
+  >(sourceApi.sources.retrieve.private);
+  const [totalResultCount, setTotalResultCount] = useState(0);
+  const [currentResultCount, setCurrentResultCount] = useState(0);
+  const [resultsLoadedCount, setResultsLoadedCount] = useState(0);
+
   useEffect(() => {
     const defaultSources = Object.entries(
       PREFERRED_SOURCES_VIEW_ONLY
     ).map(([key, value]) => ({ name: key, url: value }));
-    if (showSources) {
+    if (showAllSources) {
       const allSources = defaultSources
-        .concat(sources.map(s => ({ name: s.name, url: s.url })))
-        .concat(dictionaries.map(d => ({ name: d.name, url: d.url })));
-      setPreferredSources(allSources);
-    } else setPreferredSources(defaultSources);
-  }, [showSources, sources, dictionaries]);
+        .concat(sources.map((s) => ({ name: s.name, url: s.url })))
+        .concat(dictionaries.map((d) => ({ name: d.name, url: d.url })));
+      setCurrentSources(allSources);
+    } else setCurrentSources(defaultSources);
+  }, [showAllSources, sources, dictionaries, initialSearch]);
 
+  useEffect(() => setCurrentPage(0), [useSources]);
+  useEffect(
+    () =>
+      useSources
+        ? setApiMethod(sourceApi.sources.retrieve.private)
+        : setApiMethod(dictionaryApi.dictionaries.retrieve.private),
+    [useSources]
+  );
+
+  const fetchMoreData = (page: number) => {
+    setCurrentPage(page);
+    apiMethod(
+      useSources ? "/sources/" : "/collections/",
+      "",
+      25,
+      currentPage
+    ).then((results) => {
+      const sources = results.data.map(partialRight(pick, "name", "url")) as {
+        name: string;
+        url: string;
+      }[];
+
+      if (currentPage === 1) {
+        setTotalResultCount(results.headers.num_found);
+      }
+
+      setCurrentResultCount(results.headers.num_returned);
+      setResultsLoadedCount(
+        results.headers.offset + results.headers.num_returned
+      );
+
+      const existingSources = currentSources ? currentSources : [];
+      setCurrentSources([...existingSources, ...sources]);
+    });
+  };
+
+  const loadData = () => {
+    fetchMoreData(currentPage + 1);
+  };
+
+  const handleSearch = (q: string) => goTo(pathUrl({ q }));
+  const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowAllSources(event.target.checked);
+  };
   const classes = useStyles();
   const isSourceContainer = containerType === SOURCE_CONTAINER;
   const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
@@ -87,7 +186,6 @@ const ViewConceptsHeader: React.FC<Props> = ({
     handleSwitchSourceClick,
     handleSwitchSourceClose
   ] = useAnchor();
-
   const getTitleBasedOnContainerType = () => {
     return isAddToDictionary
       ? `Import existing concept from ${getContainerIdFromUrl(containerUrl)}`
@@ -118,48 +216,103 @@ const ViewConceptsHeader: React.FC<Props> = ({
           }}
           anchorEl={switchSourceAnchor}
           keepMounted
-          open={Boolean(switchSourceAnchor)}
+          open={!!switchSourceAnchor}
           onClose={handleSwitchSourceClose}
         >
-          <TextField
-            multiline
-            className={classes.textField}
-            InputProps={{
-              className: classes.underline
-            }}
-            inputProps={{
-              className: classes.input
-            }}
-            value={
-              showSources
-                ? "Choose a source/dictionary"
-                : "Select a different source/dictionary"
-            }
-            onClick={() => setShowSources(!showSources)}
-          />
-          {preferredSources?.map(({ name, url }) => (
-            <MenuItem
-              // replace because we want to keep the back button useful
-              replace
-              to={gimmeAUrl({}, `${url}concepts/`)}
-              key={name}
-              component={Link}
-              onClick={handleSwitchSourceClose}
-              data-testid={name}
+          <Grid
+            container
+            direction="column"
+            className={classes.sourcesDropdownHeader}
+          >
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showAllSources}
+                  onChange={handleShowSources}
+                  color="primary"
+                  name="displayVerified"
+                />
+              }
+              label={
+                showAllSources ? `Showing all Sources` : `Show all Sources`
+              }
+            />
+            {showAllSources && (
+              <form
+                onSubmit={(e: React.SyntheticEvent) => {
+                  e.preventDefault();
+                  handleSearch(queryString);
+                }}
+              >
+                <Input
+                  color="primary"
+                  type="search"
+                  fullWidth
+                  placeholder={"Select an alternative source"}
+                  value={queryString}
+                  onChange={(e) => setQueryString(e.target.value)}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => handleSearch(queryString)}>
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </form>
+            )}
+          </Grid>
+          {showAllSources ? (
+            <InfiniteScroll
+              dataLength={currentResultCount}
+              next={loadData}
+              hasMore={resultsLoadedCount < totalResultCount}
+              loader={<h4>Loading...</h4>}
+              endMessage={<h4>end</h4>}
+              scrollableTarget="scrollableDiv"
             >
-              {url?.includes("/collection") ? (
-                <FolderOpen className={classes.sourceIcon} />
-              ) : (
-                <AccountTreeOutlined className={classes.sourceIcon} />
-              )}
-              {name}
-            </MenuItem>
-          ))}
+              {currentSources?.map(({ name, url }) => (
+                <MenuItem
+                  // replace because we want to keep the back button useful
+                  replace
+                  to={gimmeAUrl({}, `${url}concepts/`)}
+                  key={name}
+                  component={Link}
+                  onClick={handleSwitchSourceClose}
+                >
+                  {url?.includes("/collection") ? (
+                    <FolderOpen className={classes.sourceIcon} />
+                  ) : (
+                    <AccountTreeOutlined className={classes.sourceIcon} />
+                  )}
+                  {name}
+                </MenuItem>
+              ))}
+            </InfiniteScroll>
+          ) : (
+            currentSources?.map(({ name, url }) => (
+              <MenuItem
+                // replace because we want to keep the back button useful
+                replace
+                to={gimmeAUrl({}, `${url}concepts/`)}
+                key={name}
+                component={Link}
+                onClick={handleSwitchSourceClose}
+                data-testid={name}
+              >
+                {url?.includes("/collection") ? (
+                  <FolderOpen className={classes.sourceIcon} />
+                ) : (
+                  <AccountTreeOutlined className={classes.sourceIcon} />
+                )}
+                {name}
+              </MenuItem>
+            ))
+          )}
         </Menu>
       </>
     );
   };
-
   return (
     <Header
       title={getTitleBasedOnContainerType()}
@@ -177,5 +330,4 @@ const ViewConceptsHeader: React.FC<Props> = ({
     </Header>
   );
 };
-
 export default ViewConceptsHeader;
