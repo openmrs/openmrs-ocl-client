@@ -70,12 +70,13 @@ const api = {
     add: (
       dictionaryUrl: string,
       references?: string[],
-      cascade: string = "sourcemappings"
+      cascade: string = "sourcemappings",
+      transformReferences: string = "resourceVersions"
     ) =>
       authenticatedInstance.put(
         `${dictionaryUrl}references/`,
         { data: { expressions: references } }, // the nesting is not an error. Check API docs
-        { params: { cascade: cascade } }
+        { params: { cascade: cascade, transformReferences: transformReferences } }
       ),
     delete: (
       dictionaryUrl: string,
