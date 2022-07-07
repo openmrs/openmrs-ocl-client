@@ -31,7 +31,7 @@ import {
   PERSONAL_DICTIONARIES_ACTION_INDEX
 } from "./constants";
 import { APIConcept } from "../../concepts";
-import { recursivelyFetchToConcepts } from "../logic";
+import { recursivelyFetchToConcepts, retrieveDictionaryConceptCounts } from "../logic";
 import { addConceptsToDictionaryProgressListSelector } from "./selectors";
 import {
   ADD_CONCEPTS_TO_DICTIONARY,
@@ -45,6 +45,7 @@ import {
   REMOVE_REFERENCES_FROM_DICTIONARY,
   RETRIEVE_DICTIONARIES_ACTION,
   RETRIEVE_DICTIONARY_ACTION,
+  RETRIEVE_DICTIONARY_CONCEPT_COUNTS_ACTION,
   RETRIEVE_DICTIONARY_VERSIONS_ACTION,
   TOGGLE_SHOW_VERIFIED_ACTION
 } from "./actionTypes";
@@ -192,6 +193,11 @@ export const retrieveDictionaryAndDetailsAction = (dictionaryUrl: string) => {
     if (!retrieveDictionaryResult) return;
 
     dispatch(retrieveDictionaryVersionsAction(dictionaryUrl));
+    dispatch(retrieveDictionaryConceptCountsAction(
+      dictionaryUrl,
+      retrieveDictionaryResult.preferred_source,
+      retrieveDictionaryResult.id
+    ));
   };
 };
 export const retrievePublicDictionariesAction = createActionThunk(
@@ -501,3 +507,8 @@ export const toggleShowVerifiedAction = () => {
   return (dispatch: Function) =>
     dispatch({ type: TOGGLE_SHOW_VERIFIED_ACTION });
 };
+
+export const retrieveDictionaryConceptCountsAction = createActionThunk(
+  RETRIEVE_DICTIONARY_CONCEPT_COUNTS_ACTION,
+  retrieveDictionaryConceptCounts
+);

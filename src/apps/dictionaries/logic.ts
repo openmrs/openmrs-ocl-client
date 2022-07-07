@@ -20,7 +20,7 @@ const filterUnneededMappings = (mappings: APIMapping[]) =>
       m => m.map_type === "Q-AND-A" || m.map_type === "CONCEPT-SET"
     ) as InternalAPIMapping[];
 
-const recursivelyFetchToConcepts = async (
+export const recursivelyFetchToConcepts = async (
   fromSource: string,
   fromConceptIds: string[],
   updateNotification: (message: string) => void,
@@ -73,4 +73,20 @@ const recursivelyFetchToConcepts = async (
   return getConceptUrls(mappingsLists);
 };
 
-export { recursivelyFetchToConcepts };
+export const retrieveDictionaryConceptCounts = async (
+  dictionaryUrl: string,
+  preferredSource: string,
+  dictionaryId: string
+): Promise<{ data: { [key: string]: number }}> => {
+  const totalCount = api.conceptCounts.retrieve(dictionaryUrl);
+  const fromPreferredSourceCount = api.conceptCounts.retrieve(dictionaryUrl, preferredSource);
+  const customCount = api.conceptCounts.retrieve(dictionaryUrl, dictionaryId);
+  const responses = await Promise.all([totalCount, fromPreferredSourceCount, customCount]);
+  return {
+    data: {
+      total: parseInt(responses[0].headers.num_found, 10) || 0,
+      from_preferred_source: parseInt(responses[1].headers.num_found, 10) || 0,
+      custom: parseInt(responses[2].headers.num_found, 10) || 0
+    }
+  }
+}

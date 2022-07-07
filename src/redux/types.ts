@@ -34,3 +34,9 @@ export interface IndexedAction {
   actionType: string;
   actionIndex: number;
 }
+
+export interface TaskResponse<T = unknown> {
+  data: T;
+  status?: number;
+  headers?: Record<string, string>;
+}

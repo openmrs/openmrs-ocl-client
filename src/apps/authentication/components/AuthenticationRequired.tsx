@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import {
@@ -28,9 +28,22 @@ export const AuthenticationRequired: React.FC<Props> = ({
   profileLoading,
   setNextPage
 }) => {
+  const getProfileCalled = useRef(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    if (isLoggedIn) getProfile();
+    if (isLoggedIn) {
+      getProfileCalled.current = true;
+      setIsLoading(true);
+      getProfile();
+    }
   }, [isLoggedIn, getProfile]);
+
+  useEffect(() => {
+    if (!profileLoading && getProfileCalled.current) {
+      setIsLoading(false);
+    }
+  }, [profileLoading]);
 
   const location = useLocation();
 
@@ -43,7 +56,7 @@ export const AuthenticationRequired: React.FC<Props> = ({
   return (
     <ProgressOverlay
       delayRender
-      loading={profileLoading}
+      loading={isLoading}
       loadingMessage="Setting things up..."
     >
       <Component profile={profile} />

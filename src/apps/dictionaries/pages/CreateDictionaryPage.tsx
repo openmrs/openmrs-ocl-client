@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DictionaryForm } from "../components";
 import { Grid, Paper } from "@mui/material";
 import { connect } from "react-redux";
@@ -55,6 +55,12 @@ interface UseLocation {
   prevPath: string;
 }
 
+enum DictionaryToCopyLoadState {
+  INITIAL = "INITIAL",
+  LOADING = "LOADING",
+  LOADED = "LOADED"
+}
+
 const CreateDictionaryPage: React.FC<Props> = ({
   profile,
   usersOrgs,
@@ -78,16 +84,26 @@ const CreateDictionaryPage: React.FC<Props> = ({
     copyFrom: string;
   }>();
 
+  const dictionaryToCopyLoadState = useRef<DictionaryToCopyLoadState>(DictionaryToCopyLoadState.INITIAL);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => resetCreateDictionary, []);
 
   useEffect(() => {
-    if (copyFrom) {
-      retrieveDictionaryAndDetails(copyFrom);
-    } else if (dictionary) {
-      resetCopyDictionary();
+    if (dictionaryToCopyLoadState.current === DictionaryToCopyLoadState.INITIAL) {
+      if (copyFrom) {
+        dictionaryToCopyLoadState.current = DictionaryToCopyLoadState.LOADING;
+        retrieveDictionaryAndDetails(copyFrom);
+      } else {
+        if (dictionary) {
+          resetCopyDictionary();
+        }
+        dictionaryToCopyLoadState.current = DictionaryToCopyLoadState.LOADED;
+      }
+    } else if (dictionaryToCopyLoadState.current === DictionaryToCopyLoadState.LOADING && !loading) {
+      dictionaryToCopyLoadState.current = DictionaryToCopyLoadState.LOADED;
     }
-  }, [copyFrom, dictionary, retrieveDictionaryAndDetails, resetCopyDictionary]);
+  }, [copyFrom, dictionary, loading, newDictionary]);
 
   useEffect(() => {
     if (dictionary) {
@@ -117,7 +133,7 @@ const CreateDictionaryPage: React.FC<Props> = ({
             errors={errors}
             profile={profile}
             usersOrgs={usersOrgs ?? []}
-            loading={loading}
+            loading={loading || dictionaryToCopyLoadState.current !== DictionaryToCopyLoadState.LOADED}
             onSubmit={createSourceAndDictionary}
             copiedDictionary={copiedDictionary}
           />

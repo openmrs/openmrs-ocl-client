@@ -9,8 +9,7 @@ Given("the user is on the organisation detail page", () => {
 When("the user clicks on the delete member button", () =>{
   cy
     .contains("li", "openmrs")
-    .get("li > button")
-    .first()
+    .find("button")
     .click();
 cy.findByRole("button", { name: /Yes/i }).click();
 }

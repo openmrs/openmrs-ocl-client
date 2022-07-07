@@ -78,7 +78,7 @@ const AddConceptsIcon: React.FC<Props> = ({
     ) : (
       <span className={classes.largerTooltip}>
         This dictionary doesn't have a linked source attached to it. You'll need
-        to
+        to{" "}
         <Link
           to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
         >

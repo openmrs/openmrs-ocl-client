@@ -19,7 +19,7 @@ interface Props {
   containerUrl?: string;
   gimmeAUrl: Function;
   addConceptToDictionary?: string;
-  children?: React.ReactNode[];
+  children?: React.ReactNode | React.ReactNode[];
   sources: APISource[];
   dictionaries: APIDictionary[];
 }

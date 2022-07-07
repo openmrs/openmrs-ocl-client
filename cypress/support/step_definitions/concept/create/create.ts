@@ -5,11 +5,12 @@ import { getDictionaryId, getUser, getConceptId } from "../../../utils";
 
 Given("the user is on the dictionary concepts page", () => {
   cy.visit(`/users/${getUser()}/collections/${getDictionaryId()}/concepts/`);
-  cy.findByText(`Concepts in ${getDictionaryId()}`).should("be.visible");
+  // delay until the dictionary is fully loaded
+  cy.findByTestId("addConceptsIcon").should('be.visible');
 });
 
 When("the user clicks the add concepts button", () => {
-  cy.findByLabelText("Add concepts").click();
+  cy.findByTestId("addConceptsIcon").click();
 });
 
 When(/the user selects the "(.+)" menu list item/, menuItem =>

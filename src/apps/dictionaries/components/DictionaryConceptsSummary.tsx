@@ -18,18 +18,14 @@ const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
   const classes = useStyles();
 
   const {
-    references,
     concepts_url: conceptsUrl,
-    preferred_source: preferredSource
+    preferred_source: preferredSource,
+    concept_counts: {
+      total: totalConceptCount = 0,
+      from_preferred_source: preferredSourceConceptCount = 0,
+      custom: customConceptCount = 0
+    } = {},
   } = dictionary;
-
-  const conceptReferences = references
-    ? references.filter(({ reference_type }) => reference_type === "concepts")
-    : [];
-  const fromPreferredSource = conceptReferences.filter(({ expression }) =>
-    expression.includes(preferredSource)
-  ).length;
-  const customConceptCount = conceptReferences.length - fromPreferredSource;
 
   return (
     <Paper className="fieldsetParent">
@@ -38,7 +34,7 @@ const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
           Concepts(HEAD Version)
         </Typography>
         <Typography variant="h6" gutterBottom>
-          <b>Total Concepts: {conceptReferences.length}</b>
+          <b>Total Concepts: {totalConceptCount}</b>
         </Typography>
         <Typography
           component="div"
@@ -47,7 +43,7 @@ const DictionaryConceptsSummary: React.FC<Props> = ({ dictionary }) => {
           className={classes.conceptCountBreakDown}
         >
           <span data-testid="preferredConceptCount">
-            From {preferredSource}: {fromPreferredSource}
+            From {preferredSource}: {preferredSourceConceptCount}
           </span>
           <br />
           <span data-testid="customConceptCount">

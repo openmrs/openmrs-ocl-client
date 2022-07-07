@@ -1,6 +1,7 @@
 Feature: Add concepts to an existing dictionary
   Background:
     Given the user is logged in
+      And a dictionary exists
 
   @dictionary
   Scenario: The user should be able to add concepts from their preferred source
