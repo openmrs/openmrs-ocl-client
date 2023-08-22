@@ -406,8 +406,8 @@ const ViewConceptsPage: React.FC<Props> = ({
               canModifyConcept={(concept: APIConcept) =>
                 canModifyConcept(concept.url, profile, usersOrgs)
               }
-              removeConceptsFromDictionary={(conceptVersionUrls: string[]) =>
-                removeConceptsFromDictionary(containerUrl, conceptVersionUrls)
+              removeConceptsFromDictionary={(conceptUrls: string[]) =>
+                removeConceptsFromDictionary(containerUrl, conceptUrls)
               }
             />
           </Grid>

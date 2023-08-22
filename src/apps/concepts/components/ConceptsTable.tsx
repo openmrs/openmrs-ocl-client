@@ -20,7 +20,7 @@ interface Props extends QueryParams {
   buttons?: { [key: string]: boolean };
   addConceptsToDictionary: Function;
   dictionaryToAddTo?: string;
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void;
   linkedDictionary?: string;
   linkedSource?: string;
   canModifyConcept: (concept: APIConcept) => boolean;

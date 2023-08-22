@@ -69,7 +69,7 @@ export const reducer = createReducer<ConceptsState>(initialState, {
     }: { actionIndex: number; payload: {}; meta: [string, string[]] }
   ) => {
     state.concepts.items = state.concepts.items.filter(
-      (concept: APIConcept) => !meta[1].includes(concept.version_url)
+      (concept: APIConcept) => !meta[1].includes(concept.url)
     );
   },
   [LOGOUT_ACTION]: () => {

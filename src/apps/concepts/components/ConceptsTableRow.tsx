@@ -199,7 +199,7 @@ const actionCell = (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => void,
   menu: { index: number; anchor: null | HTMLElement },
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void,
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void,
   addConceptsToDictionary: Function,
 
   linkedSource: string | undefined,
@@ -246,7 +246,7 @@ interface ConceptsTableRowProps {
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => void;
   menu: { index: number; anchor: null | HTMLElement };
-  removeConceptsFromDictionary: (conceptVersionUrls: string[]) => void;
+  removeConceptsFromDictionary: (conceptUrls: string[]) => void;
   addConceptsToDictionary: Function;
   dictionaryToAddTo?: string;
   isItemSelected: boolean;
