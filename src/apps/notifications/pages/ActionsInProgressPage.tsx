@@ -84,7 +84,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
     .map((loading: boolean | undefined, index: number) =>
       typeof loading == "boolean" && !loading && erroredListLocalStorage[index]
         ? {
-            error: erroredListLocalStorage[index],
+            error: typeof erroredListLocalStorage[index] === 'object' ? erroredListLocalStorage[index]?.detail : erroredListLocalStorage[index],
             progress: inProgressListLocalStorage[index]
           }
         : null

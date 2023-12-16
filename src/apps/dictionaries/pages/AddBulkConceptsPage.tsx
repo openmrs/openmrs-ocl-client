@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useLocation, useHistory } from "react-router";
+import { connect } from "react-redux";
 import {
   Button,
   Grid,
@@ -6,15 +9,31 @@ import {
   MenuItem,
   TextField,
   Theme,
-  Typography
+  Typography,
+  FormControlLabel,
+  Switch,
+  Input,
+  InputAdornment,
+  IconButton,
+  Tooltip
 } from "@mui/material";
-import { recursivelyAddConceptsToDictionaryAction } from "../redux";
-import { useLocation } from "react-router";
-import { connect } from "react-redux";
+import {
+  AccountTreeOutlined,
+  Search as SearchIcon,
+  OpenInNew
+} from "@mui/icons-material";
+import { recursivelyAddConceptsToDictionaryAction, dictionarySelector } from "../redux";
+import { PERSONAL_SOURCES_ACTION_INDEX } from "../../sources/redux/constants";
+import {
+  retrievePersonalSourcesAction
+} from "../../sources/redux";
+
 import { PREFERRED_SOURCES, useAnchor, useQueryParams } from "../../../utils";
 import Header from "../../../components/Header";
-import { Link } from "react-router-dom";
+import { APISource } from "../../sources";
+import { AppState } from "../../../redux";
 import { createStyles, makeStyles } from "@mui/styles";
+import { APIDictionary } from "../types";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,22 +41,153 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
       marginTop: "2vh"
     },
-    lightColour: {
-      color: theme.palette.background.default
+    switchButton: {
+      color: "white !important"
+    },
+    sourcesDropdownHeader: {
+      padding: "0.5rem 1rem"
+    },
+    input: {
+      cursor: "pointer",
+      borderBottom: "1px dotted black",
+      paddingBottom: "0.25rem"
+    },
+    underline: {
+      "&&&:before": {
+        borderBottom: "none"
+      },
+      "&&:after": {
+        borderBottom: "none"
+      }
+    },
+    sourceIcon: {
+      marginRight: "0.2rem",
+      fill: "#8080809c"
+    },
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
+    },
+    csvLink: {
+      marginTop: "0.5rem"
+    },
+    newPageIcon: {
+      color: "white",
+      marginTop: "0.5rem",
+      width: "1rem",
+      height: "1rem"
+    },
+    loadMoreButton: {
+      margin: "auto",
+      display: "flex",
+      border: "none",
+      fontWeight: "bold",
+      marginTop: "1rem",
+      marginBottom: "1rem"
+    },
+    seenAllText: {
+      margin: "auto",
+      fontWeight: "bold",
+      marginTop: "1rem",
+      marginBottom: "1rem",
+      textAlign: "center"
     }
   })
 );
 
 interface Props {
+  meta?: { num_found?: number };
+  dictionary?: APIDictionary;
   addConceptsToDictionary: (
     ...args: Parameters<typeof recursivelyAddConceptsToDictionaryAction>
   ) => void;
+  retrievePrivateSources: (
+    ...args: Parameters<typeof retrievePersonalSourcesAction>
+  ) => Promise<any>;
 }
 
-const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
+const AddBulkConceptsPage: React.FC<Props> = ({ 
+  addConceptsToDictionary, 
+  retrievePrivateSources, 
+  meta = {},
+  dictionary = {}
+}) => {
+  const { preferred_source } = dictionary;
   const classes = useStyles();
   const { pathname: url } = useLocation();
   const { fromSource } = useQueryParams();
+  const history = useHistory();
+
+  
+  const [showAllSources, setShowAllSources] = useState(false);
+
+  const [queryString, setQueryString] = useState('');
+  const handleSearch = (q: string) => setQueryString(q);
+
+  const [currentSources, setCurrentSources] = useState<
+    { name: string; sourceUrl: string }[]
+  >([]);
+
+  const defaultSources = Object.entries(
+    PREFERRED_SOURCES
+  ).map(([key, value]) => ({ name: key, sourceUrl: value }));
+
+  const mapSources = (s: APISource) => ({
+    name: s.name,
+    sourceUrl: s.url
+  });
+  
+  const [selectedSource, setSelectedSource] = useState<{ name: string | undefined; sourceUrl: string | undefined } | undefined>(currentSources?.find(s => s.name === fromSource));
+
+  useEffect(() => {
+    setSelectedSource(currentSources?.find(s => s.name === fromSource));
+  }, [fromSource, selectedSource]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!selectedSource) {
+      const defaultQueryParam = `fromSource=${preferred_source || 'CIEL'}`;
+      history.replace({
+        search: defaultQueryParam?.toString(),
+      })
+    }
+  }, []); // eslint-disable-line
+
+  const conceptsUrl = `${selectedSource?.sourceUrl}concepts/`;
+
+  const [page, setPage] = useState<number>(1);
+  
+  const { num_found: numberFound = 0 } = meta;
+
+  const sourceUrl = "/sources/";
+  const limit = 20;
+
+  const loadSourcesList = () => {
+    setPage(page+1);
+    retrievePrivateSources(sourceUrl, queryString, limit, page)
+      .then((res) => {
+        const newList = res.map((s: APISource) => mapSources(s));
+        setCurrentSources([...currentSources ?? [], ...newList])
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  };
+
+  useEffect(() => {
+    if (showAllSources) {
+      loadSourcesList();
+    } else if (!showAllSources) {
+      setCurrentSources(defaultSources)
+    }
+  }, [showAllSources]); // eslint-disable-line
+
+  const handleShowSources = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowAllSources(event.target.checked);
+  };
+  
+  useEffect(() => {
+    retrievePrivateSources(sourceUrl, queryString);
+  }, [retrievePrivateSources, queryString]);
 
   const [
     switchSourceAnchor,
@@ -47,6 +197,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
 
   const dictionaryUrl = url.replace("/add", "");
   const [conceptsToAdd, setConceptsToAdd] = useState<string[]>([]);
+  const hasMoreSources = numberFound > currentSources?.length;
 
   return (
     <Header
@@ -54,36 +205,109 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
       title={`Add concepts in bulk from ${fromSource}`}
       headerComponent={
         <>
-          <Button
-            className={classes.lightColour}
-            variant="text"
-            size="large"
-            aria-haspopup="true"
-            onClick={handleSwitchSourceClick}
-          >
-            Switch source (Currently {fromSource})
-          </Button>
-          <Menu
-            anchorEl={switchSourceAnchor}
-            keepMounted
-            open={Boolean(switchSourceAnchor)}
-            onClose={handleSwitchSourceClose}
-          >
-            {Object.entries(PREFERRED_SOURCES).map(
-              ([sourceName, sourceUrl]) => (
-                <MenuItem onClick={handleSwitchSourceClose}>
-                  <Link
-                    replace
-                    className="link"
-                    to={`${url}?fromSource=${sourceName}`}
-                  >
-                    {sourceName}
-                  </Link>
+        <Button
+          data-testid="switch-source"
+          className={classes.switchButton}
+          variant="text"
+          size="large"
+          aria-haspopup="true"
+          onClick={handleSwitchSourceClick}>
+          Switch source (Currently {fromSource})
+        </Button>
+        <Tooltip title={`Browser to view All Concepts in ${fromSource}`}>
+          <Link to={conceptsUrl} target="_blank" rel="noopener noreferrer">
+            <OpenInNew className={classes.newPageIcon} />
+          </Link>
+        </Tooltip>
+        <Menu
+          PaperProps={{
+            style: {
+              marginTop: "30px",
+              marginLeft: "10px",
+              minWidth: "20rem"
+            }
+          }}
+          anchorEl={switchSourceAnchor}
+          keepMounted
+          open={!!switchSourceAnchor}
+          onClose={handleSwitchSourceClose}
+        >
+          <Grid 
+          container 
+          direction="column" 
+          className={classes.sourcesDropdownHeader}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={showAllSources}
+                  onChange={handleShowSources}
+                  color="primary"
+                  name="displayVerified"
+                />
+              }
+              label={
+                showAllSources
+                  ? `Showing all Sources`
+                  : `Show all Sources`
+              }
+            />
+            {showAllSources && <form
+              onSubmit={(e: React.SyntheticEvent) => {
+                e.preventDefault();
+                handleSearch(queryString);
+              }}
+            >
+              <Input
+                color="primary"
+                type="search"
+                fullWidth
+                placeholder={"Select an alternative source"}
+                value={queryString}
+                onChange={e => setQueryString(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => handleSearch(queryString)}>
+                      <SearchIcon/>
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </form>}
+          </Grid>
+          {showAllSources ? (
+            <div className="">
+              {currentSources?.map(({ name, sourceUrl }, i) => (
+                <MenuItem
+                  // replace because we want to keep the back button useful
+                  replace
+                  to={`${url}?fromSource=${encodeURIComponent(name)}`}
+                  key={name+i}
+                  component={Link}
+                  onClick={handleSwitchSourceClose}
+                >
+                  <AccountTreeOutlined className={classes.sourceIcon} />
+                  {name}
                 </MenuItem>
-              )
-            )}
-          </Menu>
-        </>
+              ))
+              }
+            {hasMoreSources ? <button onMouseEnter={() => loadSourcesList()} className={classes.loadMoreButton}>Load More Sources ...</button> : <div className={classes.seenAllText}>Yay! You have seen all {numberFound} Sources.</div>}
+            </div>
+          ) : (
+            currentSources?.map(({ name, sourceUrl }) => (
+              <MenuItem
+                replace
+                to={`${url}?fromSource=${encodeURIComponent(name)}`}
+                key={name}
+                component={Link}
+                onClick={handleSwitchSourceClose}
+                data-testid={name}>
+                <AccountTreeOutlined className={classes.sourceIcon} />
+                {name}
+              </MenuItem>
+            ))
+          )}
+        </Menu>
+      </>
       }
     >
       <Grid item xs={6}>
@@ -117,7 +341,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
                 dictionaryUrl,
                 conceptsToAdd,
                 true,
-                PREFERRED_SOURCES[fromSource]
+                currentSources?.find(s => s.name === fromSource)?.sourceUrl
               );
             }}
           >
@@ -129,8 +353,15 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
   );
 };
 
+const mapStateToProps = (state: AppState) => {
+  return {
+    meta: state.sources.sources[PERSONAL_SOURCES_ACTION_INDEX]?.responseMeta,
+    dictionary: dictionarySelector(state)
+  };
+};
 const mapActionsToProps = {
-  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction
+  addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
+  retrievePrivateSources: retrievePersonalSourcesAction
 };
 
-export default connect(undefined, mapActionsToProps)(AddBulkConceptsPage);
+export default connect(mapStateToProps, mapActionsToProps)(AddBulkConceptsPage);
